@@ -117,21 +117,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   /// Query cache managers for this widget.
 
-  final _staffsManager = FutureRequestManager<int>();
-  Future<int> staffs({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Future<int> Function() requestFn,
-  }) =>
-      _staffsManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearStaffsCache() => _staffsManager.clear();
-  void clearStaffsCacheKey(String? uniqueKey) =>
-      _staffsManager.clearRequest(uniqueKey);
-
   final _salesTotalManager = StreamRequestManager<List<TransactionsRecord>>();
   Stream<List<TransactionsRecord>> salesTotal({
     String? uniqueQueryKey,
@@ -170,8 +155,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     unfocusNode.dispose();
 
     /// Dispose query cache managers for this widget.
-
-    clearStaffsCache();
 
     clearSalesTotalCache();
 

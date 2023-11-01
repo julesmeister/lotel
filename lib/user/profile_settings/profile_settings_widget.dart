@@ -846,19 +846,15 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               setState(() {
-                                                FFAppState().hotel = 'Serenity';
                                                 FFAppState().bedPrice =
-                                                    valueOrDefault<double>(
-                                                  statusToggleHotelSettingsRecordList
-                                                      .where((e) =>
-                                                          statusToggleHotelSettingsRecordList
-                                                              .first.hotel ==
-                                                          'Serenity')
-                                                      .toList()
-                                                      .first
-                                                      .bedPrice,
-                                                  0.0,
-                                                );
+                                                    statusToggleHotelSettingsRecordList
+                                                        .where((e) =>
+                                                            statusToggleHotelSettingsRecordList
+                                                                .first.hotel ==
+                                                            'Serenity')
+                                                        .toList()
+                                                        .first
+                                                        .bedPrice;
                                                 FFAppState().lastRemit =
                                                     statusToggleHotelSettingsRecordList
                                                         .where((e) =>
@@ -868,7 +864,41 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                                         .toList()
                                                         .first
                                                         .lastRemit;
+                                                FFAppState().hotel = 'Serenity';
                                               });
+                                              // clear rooms cache
+                                              FFAppState().clearRoomsCache();
+                                              // clear checkincount
+                                              FFAppState()
+                                                  .clearCheckInCountCache();
+                                              // clear replenish count
+                                              FFAppState()
+                                                  .clearReplenishCountCache();
+                                              // clear issues
+                                              FFAppState()
+                                                  .clearIssuesHomeCache();
+                                              // clear staff count
+                                              FFAppState().clearStaffsCache();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'You have switched to another hotel!',
+                                                    style: TextStyle(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                    ),
+                                                  ),
+                                                  duration: Duration(
+                                                      milliseconds: 4000),
+                                                  backgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondary,
+                                                ),
+                                              );
                                             },
                                             child: Container(
                                               width: 115.0,
@@ -945,16 +975,12 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               setState(() {
-                                                FFAppState().hotel =
-                                                    'My Lifestyle';
-                                              });
-                                              setState(() {
                                                 FFAppState().bedPrice =
                                                     statusToggleHotelSettingsRecordList
                                                         .where((e) =>
                                                             statusToggleHotelSettingsRecordList
                                                                 .first.hotel ==
-                                                            FFAppState().hotel)
+                                                            'My Lifestyle')
                                                         .toList()
                                                         .first
                                                         .bedPrice;
@@ -963,11 +989,24 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                                         .where((e) =>
                                                             statusToggleHotelSettingsRecordList
                                                                 .first.hotel ==
-                                                            FFAppState().hotel)
+                                                            'My Lifestyle')
                                                         .toList()
                                                         .first
                                                         .lastRemit;
+                                                FFAppState().hotel =
+                                                    'My Lifestyle';
                                               });
+                                              // clear rooms cache
+                                              FFAppState().clearRoomsCache();
+                                              // clear checkincount
+                                              FFAppState()
+                                                  .clearCheckInCountCache();
+                                              // clear replenish count
+                                              FFAppState()
+                                                  .clearReplenishCountCache();
+                                              // clear issues
+                                              FFAppState()
+                                                  .clearIssuesHomeCache();
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
                                                 SnackBar(

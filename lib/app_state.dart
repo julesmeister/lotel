@@ -199,6 +199,21 @@ class FFAppState extends ChangeNotifier {
   void clearIssuedCache() => _issuedManager.clear();
   void clearIssuedCacheKey(String? uniqueKey) =>
       _issuedManager.clearRequest(uniqueKey);
+
+  final _staffsManager = FutureRequestManager<int>();
+  Future<int> staffs({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<int> Function() requestFn,
+  }) =>
+      _staffsManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearStaffsCache() => _staffsManager.clear();
+  void clearStaffsCacheKey(String? uniqueKey) =>
+      _staffsManager.clearRequest(uniqueKey);
 }
 
 LatLng? _latLngFromString(String? val) {

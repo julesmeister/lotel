@@ -773,8 +773,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       FutureBuilder<int>(
                                                         future: FFAppState()
                                                             .checkInCount(
-                                                          uniqueQueryKey:
-                                                              'CheckIns',
                                                           requestFn: () =>
                                                               queryBookingsRecordCount(
                                                             queryBuilder:
@@ -1106,7 +1104,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             .start,
                                                     children: [
                                                       FutureBuilder<int>(
-                                                        future: _model.staffs(
+                                                        future:
+                                                            FFAppState().staffs(
                                                           requestFn: () =>
                                                               queryUsersRecordCount(
                                                             queryBuilder:
@@ -1121,6 +1120,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           'role',
                                                                           isEqualTo:
                                                                               'staff',
+                                                                        )
+                                                                        .where(
+                                                                          'expired',
+                                                                          isEqualTo:
+                                                                              false,
                                                                         ),
                                                           ),
                                                         ),
