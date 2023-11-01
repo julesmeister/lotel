@@ -575,7 +575,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                             decimalType:
                                                                 DecimalType
                                                                     .automatic,
-                                                            currency: '₱',
+                                                            currency: 'P ',
                                                           ),
                                                           textAlign:
                                                               TextAlign.start,

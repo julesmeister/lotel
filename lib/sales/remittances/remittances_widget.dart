@@ -465,7 +465,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                             FormatType.decimal,
                                                         decimalType: DecimalType
                                                             .automatic,
-                                                        currency: '₱ ',
+                                                        currency: 'P ',
                                                       ),
                                                       '0',
                                                     ),
@@ -594,7 +594,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                             decimalType:
                                                                 DecimalType
                                                                     .automatic,
-                                                            currency: '₱ ',
+                                                            currency: 'P ',
                                                           ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
@@ -687,7 +687,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                             decimalType:
                                                                 DecimalType
                                                                     .automatic,
-                                                            currency: '₱ ',
+                                                            currency: 'P ',
                                                           ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)

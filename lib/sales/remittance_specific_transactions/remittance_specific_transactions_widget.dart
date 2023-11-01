@@ -356,7 +356,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           decimalType:
                                                               DecimalType
                                                                   .automatic,
-                                                          currency: '₱ ',
+                                                          currency: 'P ',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -663,7 +663,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                 decimalType:
                                                                     DecimalType
                                                                         .automatic,
-                                                                currency: '₱ ',
+                                                                currency: 'P ',
                                                               ),
                                                               textAlign:
                                                                   TextAlign.end,
@@ -1433,7 +1433,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           decimalType:
                                                               DecimalType
                                                                   .automatic,
-                                                          currency: '₱ ',
+                                                          currency: 'P ',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -1704,7 +1704,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                 decimalType:
                                                                     DecimalType
                                                                         .automatic,
-                                                                currency: '₱ ',
+                                                                currency: 'P ',
                                                               ),
                                                               textAlign:
                                                                   TextAlign.end,
@@ -1900,7 +1900,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           decimalType:
                                                               DecimalType
                                                                   .automatic,
-                                                          currency: '₱ ',
+                                                          currency: 'P ',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -2182,7 +2182,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                 decimalType:
                                                                     DecimalType
                                                                         .automatic,
-                                                                currency: '₱ ',
+                                                                currency: 'P ',
                                                               ),
                                                               textAlign:
                                                                   TextAlign.end,
@@ -2331,7 +2331,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           decimalType:
                                                               DecimalType
                                                                   .automatic,
-                                                          currency: '₱ ',
+                                                          currency: 'P ',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -2648,7 +2648,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         DecimalType
                                                                             .automatic,
                                                                     currency:
-                                                                        '₱ ',
+                                                                        'P ',
                                                                   ),
                                                                   textAlign:
                                                                       TextAlign

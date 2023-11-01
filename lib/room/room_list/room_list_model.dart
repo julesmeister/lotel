@@ -28,6 +28,8 @@ class RoomListModel extends FlutterFlowModel<RoomListWidget> {
           int index, Function(DocumentReference) updateFn) =>
       selectedRooms[index] = updateFn(selectedRooms[index]);
 
+  int loopCounter = 0;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

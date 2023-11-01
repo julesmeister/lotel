@@ -300,6 +300,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                         createUsersRecordData(
                                                   role: FFAppState().role,
                                                   expired: false,
+                                                  displayName: _model
+                                                      .textController.text,
+                                                  hotel:
+                                                      containerHotelSettingsRecord
+                                                          ?.hotel,
                                                 ));
                                                 // Set Hotel Only
                                                 FFAppState().hotel =

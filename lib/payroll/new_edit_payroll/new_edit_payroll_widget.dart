@@ -224,7 +224,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                         functions.sumOfSalaries(_model.salaries.toList()),
                         formatType: FormatType.decimal,
                         decimalType: DecimalType.automatic,
-                        currency: '₱ ',
+                        currency: 'P ',
                       ),
                       style: FlutterFlowTheme.of(context).headlineMedium,
                     ),
@@ -671,7 +671,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           FormatType.decimal,
                                                       decimalType:
                                                           DecimalType.automatic,
-                                                      currency: '₱ ',
+                                                      currency: 'P ',
                                                     ),
                                                     style: FlutterFlowTheme.of(
                                                             context)
@@ -716,7 +716,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           FormatType.decimal,
                                                       decimalType:
                                                           DecimalType.automatic,
-                                                      currency: '₱ ',
+                                                      currency: 'P ',
                                                     ),
                                                     style: FlutterFlowTheme.of(
                                                             context)
@@ -762,7 +762,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           FormatType.decimal,
                                                       decimalType:
                                                           DecimalType.automatic,
-                                                      currency: '₱ ',
+                                                      currency: 'P ',
                                                     ),
                                                     style: FlutterFlowTheme.of(
                                                             context)
@@ -808,7 +808,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           FormatType.decimal,
                                                       decimalType:
                                                           DecimalType.automatic,
-                                                      currency: '₱ ',
+                                                      currency: 'P ',
                                                     ),
                                                     style: FlutterFlowTheme.of(
                                                             context)
@@ -854,7 +854,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           FormatType.decimal,
                                                       decimalType:
                                                           DecimalType.automatic,
-                                                      currency: '₱ ',
+                                                      currency: 'P ',
                                                     ),
                                                     style: FlutterFlowTheme.of(
                                                             context)

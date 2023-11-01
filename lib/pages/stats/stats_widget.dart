@@ -452,7 +452,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                       FormatType.decimal,
                                                   decimalType:
                                                       DecimalType.automatic,
-                                                  currency: '₱ ',
+                                                  currency: 'P ',
                                                 ),
                                                 style:
                                                     FlutterFlowTheme.of(context)
@@ -528,7 +528,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                 formatType: FormatType.decimal,
                                                 decimalType:
                                                     DecimalType.automatic,
-                                                currency: '₱ ',
+                                                currency: 'P ',
                                               ),
                                               style:
                                                   FlutterFlowTheme.of(context)
@@ -603,7 +603,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                 formatType: FormatType.decimal,
                                                 decimalType:
                                                     DecimalType.automatic,
-                                                currency: '₱ ',
+                                                currency: 'P ',
                                               ),
                                               style:
                                                   FlutterFlowTheme.of(context)
@@ -680,7 +680,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                 formatType: FormatType.decimal,
                                                 decimalType:
                                                     DecimalType.automatic,
-                                                currency: '₱ ',
+                                                currency: 'P ',
                                               ),
                                               style:
                                                   FlutterFlowTheme.of(context)

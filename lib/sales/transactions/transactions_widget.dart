@@ -490,7 +490,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               decimalType:
                                                                   DecimalType
                                                                       .automatic,
-                                                              currency: '₱ ',
+                                                              currency: 'P ',
                                                             ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
@@ -875,7 +875,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           DecimalType
                                                                               .automatic,
                                                                       currency:
-                                                                          '₱ ',
+                                                                          'P ',
                                                                     ),
                                                                     textAlign:
                                                                         TextAlign
@@ -1678,7 +1678,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               decimalType:
                                                                   DecimalType
                                                                       .automatic,
-                                                              currency: '₱ ',
+                                                              currency: 'P ',
                                                             ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
@@ -1984,7 +1984,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           DecimalType
                                                                               .automatic,
                                                                       currency:
-                                                                          '₱ ',
+                                                                          'P ',
                                                                     ),
                                                                     textAlign:
                                                                         TextAlign
@@ -2193,7 +2193,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               decimalType:
                                                                   DecimalType
                                                                       .automatic,
-                                                              currency: '₱ ',
+                                                              currency: 'P ',
                                                             ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
@@ -2491,7 +2491,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       DecimalType
                                                                           .automatic,
                                                                   currency:
-                                                                      '₱ ',
+                                                                      'P ',
                                                                 ),
                                                                 textAlign:
                                                                     TextAlign
@@ -2621,7 +2621,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               decimalType:
                                                                   DecimalType
                                                                       .automatic,
-                                                              currency: '₱ ',
+                                                              currency: 'P ',
                                                             ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
@@ -2948,7 +2948,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           DecimalType
                                                                               .automatic,
                                                                       currency:
-                                                                          '₱ ',
+                                                                          'P ',
                                                                     ),
                                                                     textAlign:
                                                                         TextAlign

@@ -359,7 +359,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                           decimalType:
                                                               DecimalType
                                                                   .automatic,
-                                                          currency: '₱',
+                                                          currency: 'P ',
                                                         ),
                                                         style:
                                                             FlutterFlowTheme.of(

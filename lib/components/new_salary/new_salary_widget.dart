@@ -596,7 +596,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                                 _model.caController.text)),
                                         formatType: FormatType.decimal,
                                         decimalType: DecimalType.automatic,
-                                        currency: '₱ ',
+                                        currency: 'P ',
                                       ),
                                       style: TextStyle(
                                         color: FlutterFlowTheme.of(context)

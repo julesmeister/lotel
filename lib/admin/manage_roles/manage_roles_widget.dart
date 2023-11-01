@@ -464,10 +464,6 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                 _model.selectedUsers.length,
                                 0,
                               )) {
-                            await _model.selectedUsers[_model.loopCounter]
-                                .update(createUsersRecordData(
-                              expired: true,
-                            ));
                             if (_model.selectedRoleValue == 'expire') {
                               // expire user
 

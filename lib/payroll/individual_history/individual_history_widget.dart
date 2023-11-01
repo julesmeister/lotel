@@ -439,7 +439,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                       DecimalType
                                                                           .automatic,
                                                                   currency:
-                                                                      '₱ ',
+                                                                      'P ',
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
@@ -702,7 +702,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                 decimalType:
                                                                     DecimalType
                                                                         .automatic,
-                                                                currency: '₱ ',
+                                                                currency: 'P ',
                                                               ),
                                                               style: FlutterFlowTheme
                                                                       .of(context)

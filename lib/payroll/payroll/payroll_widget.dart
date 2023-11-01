@@ -700,7 +700,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                               functions.totalOfCAs(textAdvancesRecordList.toList()),
                                                                               formatType: FormatType.decimal,
                                                                               decimalType: DecimalType.automatic,
-                                                                              currency: '₱ ',
+                                                                              currency: 'P ',
                                                                             ),
                                                                             style: FlutterFlowTheme.of(context).displaySmall.override(
                                                                                   fontFamily: 'Outfit',
@@ -1267,7 +1267,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                 decimalType:
                                                                     DecimalType
                                                                         .automatic,
-                                                                currency: '₱ ',
+                                                                currency: 'P ',
                                                               ),
                                                               textAlign:
                                                                   TextAlign.end,

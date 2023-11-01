@@ -65,12 +65,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // last login of user
       _model.log = await queryLastLoginRecordOnce(
         parent: currentUserReference,
         queryBuilder: (lastLoginRecord) =>
             lastLoginRecord.orderBy('datetime', descending: true),
         singleRecord: true,
       ).then((s) => s.firstOrNull);
+      // new date for last login
 
       await _model.log!.reference.update({
         ...mapToFirestore(
@@ -80,6 +82,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
         ),
       });
       if (FFAppState().lastRemit == null) {
+        // update last remit
         setState(() {
           FFAppState().lastRemit = functions.yesterdayDate();
         });
@@ -96,7 +99,18 @@ class _HomePageWidgetState extends State<HomePageWidget>
         setState(() {
           _model.remittanceCount = _model.remittance!;
         });
+      } else {
+        if (valueOrDefault<bool>(currentUserDocument?.expired, false)) {
+          GoRouter.of(context).prepareAuthEvent();
+          await authManager.signOut();
+          GoRouter.of(context).clearRedirectLocation();
+
+          context.pushNamedAuth('Login', context.mounted);
+
+          return;
+        }
       }
+
       if (FFAppState().statsReference != null) {
         // if this stat is correct
         _model.alreadyStats =
@@ -396,7 +410,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   .toList()),
                                           formatType: FormatType.decimal,
                                           decimalType: DecimalType.automatic,
-                                          currency: '₱ ',
+                                          currency: 'P ',
                                         ),
                                         style: FlutterFlowTheme.of(context)
                                             .displaySmall
@@ -1433,7 +1447,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       DecimalType
                                                                           .automatic,
                                                                   currency:
-                                                                      '₱ ',
+                                                                      'P ',
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
@@ -1632,7 +1646,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: Color(0xFFF1F4F8),
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
                           ),
                           child: FutureBuilder<int>(
                             future: FFAppState().issued(

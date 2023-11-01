@@ -209,8 +209,40 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                       color: FlutterFlowTheme.of(context).primaryText,
                       size: 24.0,
                     ),
-                    onPressed: () {
-                      print('DeleteRoom pressed ...');
+                    onPressed: () async {
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: Text('Are you sure?'),
+                                content:
+                                    Text('The selected rooms will be deleted.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        while (
+                            _model.loopCounter != _model.selectedRooms.length) {
+                          await _model.selectedRooms[_model.loopCounter]
+                              .delete();
+                          setState(() {
+                            _model.loopCounter = _model.loopCounter + 1;
+                          });
+                        }
+                      }
                     },
                   ),
                 ),
@@ -222,239 +254,249 @@ class _RoomListWidgetState extends State<RoomListWidget> {
         ),
         body: Stack(
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Padding(
+            SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 12.0, 0.0, 0.0),
+                            child: Text(
+                              'Select to edit or delete',
+                              style: FlutterFlowTheme.of(context).labelMedium,
+                            ),
+                          ),
+                        ),
+                        Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 12.0, 0.0, 0.0),
                           child: Text(
-                            'Select to edit or delete',
-                            style: FlutterFlowTheme.of(context).labelMedium,
+                            _model.selectedRooms.length.toString(),
+                            style: FlutterFlowTheme.of(context).bodyMedium,
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 12.0, 0.0, 0.0),
-                        child: Text(
-                          _model.selectedRooms.length.toString(),
-                          style: FlutterFlowTheme.of(context).bodyMedium,
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              2.0, 12.0, 0.0, 0.0),
+                          child: Text(
+                            'Selected',
+                            style: FlutterFlowTheme.of(context).bodyMedium,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(2.0, 12.0, 0.0, 0.0),
-                        child: Text(
-                          'Selected',
-                          style: FlutterFlowTheme.of(context).bodyMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                  child: StreamBuilder<List<RoomsRecord>>(
-                    stream: queryRoomsRecord(
-                      queryBuilder: (roomsRecord) => roomsRecord
-                          .where(
-                            'hotel',
-                            isEqualTo: FFAppState().hotel != ''
-                                ? FFAppState().hotel
-                                : null,
-                          )
-                          .orderBy('number'),
+                      ],
                     ),
-                    builder: (context, snapshot) {
-                      // Customize what your widget looks like when it's loading.
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: SizedBox(
-                            width: 50.0,
-                            height: 50.0,
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                FlutterFlowTheme.of(context).primary,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      List<RoomsRecord> listViewRoomsRecordList =
-                          snapshot.data!;
-                      if (listViewRoomsRecordList.isEmpty) {
-                        return Center(
-                          child: Image.asset(
-                            'assets/images/ae8ac2fa217d23aadcc913989fcc34a2.jpg',
-                          ),
-                        );
-                      }
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        primary: false,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: listViewRoomsRecordList.length,
-                        itemBuilder: (context, listViewIndex) {
-                          final listViewRoomsRecord =
-                              listViewRoomsRecordList[listViewIndex];
-                          return Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 0.0, 16.0, 8.0),
-                            child: Container(
-                              width: 100.0,
-                              height: 70.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                borderRadius: BorderRadius.circular(12.0),
-                                border: Border.all(
-                                  color: FlutterFlowTheme.of(context).alternate,
-                                  width: 1.0,
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                    child: StreamBuilder<List<RoomsRecord>>(
+                      stream: queryRoomsRecord(
+                        queryBuilder: (roomsRecord) => roomsRecord
+                            .where(
+                              'hotel',
+                              isEqualTo: FFAppState().hotel != ''
+                                  ? FFAppState().hotel
+                                  : null,
+                            )
+                            .orderBy('number'),
+                      ),
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  FlutterFlowTheme.of(context).primary,
                                 ),
                               ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 0.0, 0.0, 0.0),
-                                    child: Card(
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      elevation: 0.0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(50.0),
-                                      ),
-                                      child: Container(
-                                        width: 44.0,
-                                        height: 44.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
-                                          shape: BoxShape.circle,
+                            ),
+                          );
+                        }
+                        List<RoomsRecord> allRoomsRoomsRecordList =
+                            snapshot.data!;
+                        if (allRoomsRoomsRecordList.isEmpty) {
+                          return Center(
+                            child: Image.asset(
+                              'assets/images/ae8ac2fa217d23aadcc913989fcc34a2.jpg',
+                            ),
+                          );
+                        }
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          primary: false,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: allRoomsRoomsRecordList.length,
+                          itemBuilder: (context, allRoomsIndex) {
+                            final allRoomsRoomsRecord =
+                                allRoomsRoomsRecordList[allRoomsIndex];
+                            return Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 0.0, 16.0, 8.0),
+                              child: Container(
+                                width: 100.0,
+                                height: 70.0,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  border: Border.all(
+                                    color:
+                                        FlutterFlowTheme.of(context).alternate,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          8.0, 0.0, 0.0, 0.0),
+                                      child: Card(
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        elevation: 0.0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
                                         ),
-                                        child: Align(
-                                          alignment:
-                                              AlignmentDirectional(0.00, 0.00),
-                                          child: Text(
-                                            listViewRoomsRecord.number
-                                                .toString(),
-                                            textAlign: TextAlign.center,
+                                        child: Container(
+                                          width: 44.0,
+                                          height: 44.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Align(
+                                            alignment: AlignmentDirectional(
+                                                0.00, 0.00),
+                                            child: Text(
+                                              allRoomsRoomsRecord.number
+                                                  .toString(),
+                                              textAlign: TextAlign.center,
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .accent4,
+                                                    fontSize: 20.0,
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Theme(
+                                        data: ThemeData(
+                                          unselectedWidgetColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryText,
+                                        ),
+                                        child: CheckboxListTile(
+                                          value: _model
+                                                  .checkboxListTileValueMap1[
+                                              allRoomsRoomsRecord] ??= false,
+                                          onChanged: (newValue) async {
+                                            setState(() =>
+                                                _model.checkboxListTileValueMap1[
+                                                        allRoomsRoomsRecord] =
+                                                    newValue!);
+                                            if (newValue!) {
+                                              setState(() {
+                                                _model.addToSelectedRooms(
+                                                    allRoomsRoomsRecord
+                                                        .reference);
+                                              });
+                                            } else {
+                                              setState(() {
+                                                _model.removeFromSelectedRooms(
+                                                    allRoomsRoomsRecord
+                                                        .reference);
+                                              });
+                                            }
+                                          },
+                                          title: Text(
+                                            formatNumber(
+                                              allRoomsRoomsRecord.price,
+                                              formatType: FormatType.decimal,
+                                              decimalType:
+                                                  DecimalType.periodDecimal,
+                                              currency: 'P ',
+                                            ),
                                             style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
+                                                .bodyLarge
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  lineHeight: 2.0,
+                                                ),
+                                          ),
+                                          subtitle: Text(
+                                            formatNumber(
+                                              allRoomsRoomsRecord.capacity,
+                                              formatType: FormatType.decimal,
+                                              decimalType:
+                                                  DecimalType.periodDecimal,
+                                              currency: 'Capacity: ',
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodySmall
                                                 .override(
                                                   fontFamily: 'Readex Pro',
                                                   color: FlutterFlowTheme.of(
                                                           context)
-                                                      .accent4,
-                                                  fontSize: 20.0,
+                                                      .secondary,
                                                 ),
                                           ),
+                                          tileColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryBackground,
+                                          activeColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                          checkColor: Colors.white,
+                                          dense: false,
+                                          controlAffinity:
+                                              ListTileControlAffinity.trailing,
+                                          contentPadding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  8.0, 0.0, 8.0, 0.0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Theme(
-                                      data: ThemeData(
-                                        unselectedWidgetColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                      ),
-                                      child: CheckboxListTile(
-                                        value: _model.checkboxListTileValueMap1[
-                                            listViewRoomsRecord] ??= false,
-                                        onChanged: (newValue) async {
-                                          setState(() => _model
-                                                  .checkboxListTileValueMap1[
-                                              listViewRoomsRecord] = newValue!);
-                                          if (newValue!) {
-                                            setState(() {
-                                              _model.addToSelectedRooms(
-                                                  listViewRoomsRecord
-                                                      .reference);
-                                            });
-                                          } else {
-                                            setState(() {
-                                              _model.removeFromSelectedRooms(
-                                                  listViewRoomsRecord
-                                                      .reference);
-                                            });
-                                          }
-                                        },
-                                        title: Text(
-                                          formatNumber(
-                                            listViewRoomsRecord.price,
-                                            formatType: FormatType.decimal,
-                                            decimalType:
-                                                DecimalType.periodDecimal,
-                                            currency: '₱',
-                                          ),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyLarge
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                lineHeight: 2.0,
-                                              ),
-                                        ),
-                                        subtitle: Text(
-                                          formatNumber(
-                                            listViewRoomsRecord.capacity,
-                                            formatType: FormatType.decimal,
-                                            decimalType:
-                                                DecimalType.periodDecimal,
-                                            currency: 'Capacity: ',
-                                          ),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodySmall
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondary,
-                                              ),
-                                        ),
-                                        tileColor: FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                        activeColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                        checkColor: Colors.white,
-                                        dense: false,
-                                        controlAffinity:
-                                            ListTileControlAffinity.trailing,
-                                        contentPadding:
-                                            EdgeInsetsDirectional.fromSTEB(
-                                                8.0, 0.0, 8.0, 0.0),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

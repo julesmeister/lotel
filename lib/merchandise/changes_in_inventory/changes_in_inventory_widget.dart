@@ -539,7 +539,8 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                   decimalType:
                                                                       DecimalType
                                                                           .automatic,
-                                                                  currency: '₱',
+                                                                  currency:
+                                                                      'P ',
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
@@ -571,7 +572,8 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                   decimalType:
                                                                       DecimalType
                                                                           .automatic,
-                                                                  currency: '₱',
+                                                                  currency:
+                                                                      'P ',
                                                                 ),
                                                                 style:
                                                                     TextStyle(

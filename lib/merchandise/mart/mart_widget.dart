@@ -572,7 +572,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                             decimalType:
                                                                 DecimalType
                                                                     .automatic,
-                                                            currency: '₱',
+                                                            currency: 'P ',
                                                           ),
                                                           textAlign:
                                                               TextAlign.start,
