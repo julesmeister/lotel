@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
@@ -7,6 +8,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -201,20 +203,22 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
     context.watch<FFAppState>();
 
     return StreamBuilder<List<TransactionsRecord>>(
-      stream: queryTransactionsRecord(
-        queryBuilder: (transactionsRecord) => transactionsRecord
-            .where(
-              'date',
-              isGreaterThan: functions.startOfDay(_model.date!),
-            )
-            .where(
-              'hotel',
-              isEqualTo: FFAppState().hotel,
-            )
-            .where(
-              'date',
-              isLessThan: functions.endOfDay(_model.date!),
-            ),
+      stream: _model.transactions(
+        requestFn: () => queryTransactionsRecord(
+          queryBuilder: (transactionsRecord) => transactionsRecord
+              .where(
+                'date',
+                isGreaterThan: functions.startOfDay(_model.date!),
+              )
+              .where(
+                'hotel',
+                isEqualTo: FFAppState().hotel,
+              )
+              .where(
+                'date',
+                isLessThan: functions.endOfDay(_model.date!),
+              ),
+        ),
       ),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
@@ -287,33 +291,37 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                           ).animateOnPageLoad(
                               animationsMap['textOnPageLoadAnimation']!),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                12.0, 0.0, 0.0, 0.0),
-                            child: FlutterFlowIconButton(
-                              borderColor:
-                                  FlutterFlowTheme.of(context).alternate,
-                              borderRadius: 12.0,
-                              borderWidth: 1.0,
-                              buttonSize: 44.0,
-                              icon: Icon(
-                                Icons.calendar_month,
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                size: 24.0,
+                        if (valueOrDefault(currentUserDocument?.role, '') ==
+                            'admin')
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: AuthUserStreamWidget(
+                                builder: (context) => FlutterFlowIconButton(
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).alternate,
+                                  borderRadius: 12.0,
+                                  borderWidth: 1.0,
+                                  buttonSize: 44.0,
+                                  icon: Icon(
+                                    Icons.calendar_month,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    size: 24.0,
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {
+                                      _model.showDatePicker =
+                                          !_model.showDatePicker;
+                                    });
+                                  },
+                                ).animateOnPageLoad(animationsMap[
+                                    'iconButtonOnPageLoadAnimation']!),
                               ),
-                              onPressed: () async {
-                                setState(() {
-                                  _model.showDatePicker =
-                                      !_model.showDatePicker;
-                                });
-                              },
-                            ).animateOnPageLoad(animationsMap[
-                                'iconButtonOnPageLoadAnimation']!),
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -1227,7 +1235,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       DecimalType
                                                                           .automatic,
                                                                   currency:
-                                                                      '₱ ',
+                                                                      'P ',
                                                                 ),
                                                                 textAlign:
                                                                     TextAlign
@@ -1244,38 +1252,119 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     ),
                                                               ),
                                                             ),
-                                                            Card(
-                                                              clipBehavior: Clip
-                                                                  .antiAliasWithSaveLayer,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryBackground,
-                                                              elevation: 1.0,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            40.0),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0),
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .keyboard_arrow_right_rounded,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                                  size: 24.0,
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin')
+                                                              AuthUserStreamWidget(
+                                                                builder:
+                                                                    (context) =>
+                                                                        InkWell(
+                                                                  splashColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  focusColor: Colors
+                                                                      .transparent,
+                                                                  hoverColor: Colors
+                                                                      .transparent,
+                                                                  highlightColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  onTap:
+                                                                      () async {
+                                                                    var confirmDialogResponse =
+                                                                        await showDialog<bool>(
+                                                                              context: context,
+                                                                              builder: (alertDialogContext) {
+                                                                                return AlertDialog(
+                                                                                  title: Text('Are you sure?'),
+                                                                                  content: Text('This transaction will be deleted.'),
+                                                                                  actions: [
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                      child: Text('Cancel'),
+                                                                                    ),
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                      child: Text('Confirm'),
+                                                                                    ),
+                                                                                  ],
+                                                                                );
+                                                                              },
+                                                                            ) ??
+                                                                            false;
+                                                                    if (confirmDialogResponse) {
+                                                                      // decrease stats
+
+                                                                      await FFAppState()
+                                                                          .statsReference!
+                                                                          .update({
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'goodsIncome':
+                                                                                FieldValue.increment(-(goodsItem.total)),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                      // delete transactions
+                                                                      await goodsItem
+                                                                          .reference
+                                                                          .delete();
+                                                                      ScaffoldMessenger.of(
+                                                                              context)
+                                                                          .showSnackBar(
+                                                                        SnackBar(
+                                                                          content:
+                                                                              Text(
+                                                                            'Transaction is deleted!',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: FlutterFlowTheme.of(context).info,
+                                                                            ),
+                                                                          ),
+                                                                          duration:
+                                                                              Duration(milliseconds: 4000),
+                                                                          backgroundColor:
+                                                                              FlutterFlowTheme.of(context).error,
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                  child: Card(
+                                                                    clipBehavior:
+                                                                        Clip.antiAliasWithSaveLayer,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryBackground,
+                                                                    elevation:
+                                                                        1.0,
+                                                                    shape:
+                                                                        RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              40.0),
+                                                                    ),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          4.0,
+                                                                          4.0,
+                                                                          4.0,
+                                                                          4.0),
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .delete_outlined,
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .secondaryText,
+                                                                        size:
+                                                                            24.0,
+                                                                      ),
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
                                                           ],
                                                         ),
                                                       ],
@@ -1302,7 +1391,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                           0)
                                         Builder(
                                           builder: (context) {
-                                            final goods =
+                                            final expenses =
                                                 transactionsTransactionsRecordList
                                                     .where((e) =>
                                                         e.type == 'expense')
@@ -1312,11 +1401,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                               primary: false,
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
-                                              itemCount: goods.length,
+                                              itemCount: expenses.length,
                                               itemBuilder:
-                                                  (context, goodsIndex) {
-                                                final goodsItem =
-                                                    goods[goodsIndex];
+                                                  (context, expensesIndex) {
+                                                final expensesItem =
+                                                    expenses[expensesIndex];
                                                 return Container(
                                                   width: double.infinity,
                                                   constraints: BoxConstraints(
@@ -1393,7 +1482,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     children: [
                                                                       TextSpan(
                                                                         text: functions
-                                                                            .startBigLetter(goodsItem.description),
+                                                                            .startBigLetter(expensesItem.description),
                                                                         style:
                                                                             TextStyle(),
                                                                       )
@@ -1421,14 +1510,14 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   child: Text(
                                                                     dateTimeFormat(
                                                                         'h:mm a',
-                                                                        goodsItem
+                                                                        expensesItem
                                                                             .date!),
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
                                                                         .labelMedium,
                                                                   ),
                                                                 ),
-                                                                if (goodsItem
+                                                                if (expensesItem
                                                                         .goods
                                                                         .length >
                                                                     0)
@@ -1477,7 +1566,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             10.0),
                                                                         child:
                                                                             Text(
-                                                                          functions.cartToTextSummary(goodsItem
+                                                                          functions.cartToTextSummary(expensesItem
                                                                               .goods
                                                                               .toList())!,
                                                                           style:
@@ -1507,7 +1596,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           20.0),
                                                               child: Text(
                                                                 formatNumber(
-                                                                  goodsItem
+                                                                  expensesItem
                                                                       .total,
                                                                   formatType:
                                                                       FormatType
@@ -1516,7 +1605,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       DecimalType
                                                                           .automatic,
                                                                   currency:
-                                                                      '₱ ',
+                                                                      'P ',
                                                                 ),
                                                                 textAlign:
                                                                     TextAlign
@@ -1533,38 +1622,119 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     ),
                                                               ),
                                                             ),
-                                                            Card(
-                                                              clipBehavior: Clip
-                                                                  .antiAliasWithSaveLayer,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryBackground,
-                                                              elevation: 1.0,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            40.0),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0),
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .keyboard_arrow_right_rounded,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                                  size: 24.0,
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin')
+                                                              AuthUserStreamWidget(
+                                                                builder:
+                                                                    (context) =>
+                                                                        InkWell(
+                                                                  splashColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  focusColor: Colors
+                                                                      .transparent,
+                                                                  hoverColor: Colors
+                                                                      .transparent,
+                                                                  highlightColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  onTap:
+                                                                      () async {
+                                                                    var confirmDialogResponse =
+                                                                        await showDialog<bool>(
+                                                                              context: context,
+                                                                              builder: (alertDialogContext) {
+                                                                                return AlertDialog(
+                                                                                  title: Text('Are you sure?'),
+                                                                                  content: Text('This transaction will be deleted.'),
+                                                                                  actions: [
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                      child: Text('Cancel'),
+                                                                                    ),
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                      child: Text('Confirm'),
+                                                                                    ),
+                                                                                  ],
+                                                                                );
+                                                                              },
+                                                                            ) ??
+                                                                            false;
+                                                                    if (confirmDialogResponse) {
+                                                                      // decrease stats
+
+                                                                      await FFAppState()
+                                                                          .statsReference!
+                                                                          .update({
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'expenses':
+                                                                                FieldValue.increment(-(expensesItem.total)),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                      // delete transactions
+                                                                      await expensesItem
+                                                                          .reference
+                                                                          .delete();
+                                                                      ScaffoldMessenger.of(
+                                                                              context)
+                                                                          .showSnackBar(
+                                                                        SnackBar(
+                                                                          content:
+                                                                              Text(
+                                                                            'Transaction is deleted!',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: FlutterFlowTheme.of(context).info,
+                                                                            ),
+                                                                          ),
+                                                                          duration:
+                                                                              Duration(milliseconds: 4000),
+                                                                          backgroundColor:
+                                                                              FlutterFlowTheme.of(context).error,
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                  child: Card(
+                                                                    clipBehavior:
+                                                                        Clip.antiAliasWithSaveLayer,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryBackground,
+                                                                    elevation:
+                                                                        1.0,
+                                                                    shape:
+                                                                        RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              40.0),
+                                                                    ),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          4.0,
+                                                                          4.0,
+                                                                          4.0,
+                                                                          4.0),
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .delete_outlined,
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .secondaryText,
+                                                                        size:
+                                                                            24.0,
+                                                                      ),
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
                                                           ],
                                                         ),
                                                       ],

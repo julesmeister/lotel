@@ -1002,7 +1002,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                 decimalType:
                                                                     DecimalType
                                                                         .automatic,
-                                                                currency: '₱ ',
+                                                                currency: 'P ',
                                                               ),
                                                               textAlign:
                                                                   TextAlign.end,
@@ -1283,7 +1283,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                 decimalType:
                                                                     DecimalType
                                                                         .automatic,
-                                                                currency: '₱ ',
+                                                                currency: 'P ',
                                                               ),
                                                               textAlign:
                                                                   TextAlign.end,

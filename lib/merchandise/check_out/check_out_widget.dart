@@ -121,6 +121,28 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                 onPressed: widget.cart?.length == 0
                     ? null
                     : () async {
+                        if (_model.expense) {
+                          if ((_model.whichExpense == 'consumedBy') &&
+                              (_model.priceController1.text == null ||
+                                  _model.priceController1.text == '')) {
+                            // who consumed?
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Who consumed?',
+                                  style: TextStyle(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
+                                ),
+                                duration: Duration(milliseconds: 4000),
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).secondary,
+                              ),
+                            );
+                            return;
+                          }
+                        }
                         while (_model.loopCounter !=
                             valueOrDefault<int>(
                               widget.cart?.length,

@@ -825,6 +825,7 @@ class _StatsWidgetState extends State<StatsWidget>
                   final roomUsages = _model.roomUsage.toList();
                   return ListView.builder(
                     padding: EdgeInsets.zero,
+                    primary: false,
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemCount: roomUsages.length,
