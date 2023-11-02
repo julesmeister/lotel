@@ -770,3 +770,17 @@ int quantityBasedOnCart(
   // Ensure the result is non-negative
   return math.max(0, adjustedQuantity);
 }
+
+List<bool> showUnremittedOnlyIfNotAdmin(String role) {
+  // if admin role give both, otherwise only false
+  if (role == 'admin') {
+    return [true, false];
+  } else {
+    return [false];
+  }
+}
+
+List<String> intListToStringList(List<int> numbers) {
+  // int list to string list typecast
+  return numbers.map((number) => number.toString()).toList();
+}

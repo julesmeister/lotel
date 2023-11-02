@@ -317,7 +317,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         updateCount: (count) => setState(
                                             () => _model.nightsValue = count),
                                         stepSize: 1,
-                                        minimum: 1,
+                                        minimum: 0,
                                       ),
                                     ),
                                   ],
