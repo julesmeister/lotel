@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -8,6 +9,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -35,8 +37,21 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
     super.initState();
     _model = createModel(context, () => ChangeRemittanceModel());
 
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // statsToModify
+      _model.statsToModifyCopy =
+          await StatsRecord.getDocumentOnce(FFAppState().statsReference!);
+      setState(() {
+        _model.roomUsage = _model.statsToModifyCopy!.roomUsage
+            .toList()
+            .cast<RoomUsageStruct>();
+      });
+    });
+
     _model.changeExtraController ??= TextEditingController();
     _model.changeExtraFocusNode ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -226,10 +241,6 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                               _model.inventoriesToRemit = [];
                               _model.bookingsToRemit = [];
                             });
-                            // statsToModify
-                            _model.statsToModify =
-                                await StatsRecord.getDocumentOnce(
-                                    FFAppState().statsReference!);
                             while (_model.loopTransactionsCounter !=
                                 _model.transactions?.length) {
                               // Add to TransactionToRemit
@@ -256,24 +267,17 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                         .transactions![
                                             _model.loopTransactionsCounter]
                                         .booking!);
-                                // update roomUsage Stats
-
-                                await FFAppState().statsReference!.update({
-                                  ...mapToFirestore(
-                                    {
-                                      'roomUsage':
-                                          getRoomUsageListFirestoreData(
-                                        functions.modifyRoomUsage(
-                                            _model.statsToModify!.roomUsage
-                                                .toList(),
-                                            _model
-                                                .transactions![_model
-                                                    .loopTransactionsCounter]
-                                                .room,
-                                            _model.booking!.nights),
-                                      ),
-                                    },
-                                  ),
+                                // update use of room
+                                setState(() {
+                                  _model.updateRoomUsageAtIndex(
+                                    functions.indexOfRoomInRoomUsage(
+                                        _model.roomUsage.toList(),
+                                        _model
+                                            .transactions![
+                                                _model.loopTransactionsCounter]
+                                            .room),
+                                    (e) => e..use = _model.booking?.nights,
+                                  );
                                 });
                                 // remitted book
 
@@ -300,6 +304,17 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                     _model.loopTransactionsCounter + 1;
                               });
                             }
+                            // update roomUsage
+
+                            await FFAppState().statsReference!.update({
+                              ...mapToFirestore(
+                                {
+                                  'roomUsage': getRoomUsageListFirestoreData(
+                                    _model.roomUsage,
+                                  ),
+                                },
+                              ),
+                            });
                             while (_model.loopInventoryCounter !=
                                 valueOrDefault<int>(
                                   _model.inventoriesToRemitFirestore?.length,
@@ -338,7 +353,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               .transactionsToRemit
                                               .toList())
                                           .toDouble(),
-                                      _model.statsToModify!.roomLine),
+                                      _model.statsToModifyCopy!.roomLine),
                                   clearUnsetFields: false,
                                 ),
                                 goodsLine: updateLineGraphStruct(
@@ -348,7 +363,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               .transactionsToRemit
                                               .toList())
                                           .toDouble(),
-                                      _model.statsToModify!.goodsLine),
+                                      _model.statsToModifyCopy!.goodsLine),
                                   clearUnsetFields: false,
                                 ),
                               ),

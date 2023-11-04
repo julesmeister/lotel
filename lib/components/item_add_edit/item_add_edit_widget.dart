@@ -56,14 +56,18 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
     _model.descController ??=
         TextEditingController(text: widget.edit ? widget.desc : '');
     _model.descFocusNode ??= FocusNode();
+
     _model.priceController ??= TextEditingController(
         text: widget.edit ? widget.price?.toString() : '');
     _model.priceFocusNode ??= FocusNode();
+
     _model.quantityController ??= TextEditingController(
         text: widget.edit ? widget.quantity?.toString() : '');
     _model.quantityFocusNode ??= FocusNode();
+
     _model.whyController ??= TextEditingController(text: '');
     _model.whyFocusNode ??= FocusNode();
+
     _model.categoryController ??=
         TextEditingController(text: widget.edit ? widget.category : '');
 
@@ -461,6 +465,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 onEditingComplete,
                               ) {
                                 _model.categoryFocusNode = focusNode;
+
                                 _model.categoryController =
                                     textEditingController;
                                 return TextFormField(

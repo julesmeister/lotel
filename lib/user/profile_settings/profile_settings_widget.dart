@@ -333,6 +333,10 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                       if (_shouldSetState) setState(() {});
                       return;
                     } else {
+                      // clear stats reference
+                      setState(() {
+                        FFAppState().statsReference = null;
+                      });
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(

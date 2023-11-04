@@ -39,6 +39,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
       '0',
     ));
     _model.textFieldFocusNode ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 

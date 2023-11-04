@@ -784,3 +784,11 @@ List<String> intListToStringList(List<int> numbers) {
   // int list to string list typecast
   return numbers.map((number) => number.toString()).toList();
 }
+
+int indexOfRoomInRoomUsage(
+  List<RoomUsageStruct> roomUsage,
+  int room,
+) {
+  int index = roomUsage.indexWhere((ru) => ru.number == room);
+  return index;
+}

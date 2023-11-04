@@ -59,8 +59,10 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
 
     _model.amountController ??= TextEditingController();
     _model.amountFocusNode ??= FocusNode();
+
     _model.descriptionController ??= TextEditingController();
     _model.descriptionFocusNode ??= FocusNode();
+
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -375,210 +377,225 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                         },
                       ),
                     ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 12.0),
-                    child: FFButtonWidget(
-                      onPressed: () async {
-                        if (_model.choicesValue == 'Cash Advance') {
-                          if (_model.staffSelected != null) {
-                            // Cash Advance? Sure?
-                            var confirmDialogResponse = await showDialog<bool>(
-                                  context: context,
-                                  builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Cash Advance'),
-                                      content: Text(
-                                          'Are you sure you want to cash in advance?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(
-                                              alertDialogContext, false),
-                                          child: Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(
-                                              alertDialogContext, true),
-                                          child: Text('Confirm'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ) ??
-                                false;
-                            if (confirmDialogResponse) {
-                              await AdvancesRecord.createDoc(
-                                      _model.staffSelected!)
-                                  .set({
-                                ...createAdvancesRecordData(
-                                  settled: false,
-                                  amount: double.tryParse(
-                                      _model.amountController.text),
-                                  requestedBy: currentUserReference,
-                                ),
-                                ...mapToFirestore(
-                                  {
-                                    'date': FieldValue.serverTimestamp(),
-                                  },
-                                ),
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'You have cashed in advance!',
-                                    style: TextStyle(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
+                  if (valueOrDefault(currentUserDocument?.role, '') !=
+                      'generic')
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 12.0),
+                      child: AuthUserStreamWidget(
+                        builder: (context) => FFButtonWidget(
+                          onPressed: () async {
+                            if (_model.choicesValue == 'Cash Advance') {
+                              if (_model.staffSelected != null) {
+                                // Cash Advance? Sure?
+                                var confirmDialogResponse =
+                                    await showDialog<bool>(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: Text('Cash Advance'),
+                                              content: Text(
+                                                  'Are you sure you want to cash in advance?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          false),
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          true),
+                                                  child: Text('Confirm'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ) ??
+                                        false;
+                                if (confirmDialogResponse) {
+                                  await AdvancesRecord.createDoc(
+                                          _model.staffSelected!)
+                                      .set({
+                                    ...createAdvancesRecordData(
+                                      settled: false,
+                                      amount: double.tryParse(
+                                          _model.amountController.text),
+                                      requestedBy: currentUserReference,
                                     ),
+                                    ...mapToFirestore(
+                                      {
+                                        'date': FieldValue.serverTimestamp(),
+                                      },
+                                    ),
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'You have cashed in advance!',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondary,
+                                    ),
+                                  );
+                                } else {
+                                  return;
+                                }
+
+                                // Create transaction expense
+
+                                await TransactionsRecord.collection.doc().set({
+                                  ...createTransactionsRecordData(
+                                    staff: currentUserReference,
+                                    total: double.tryParse(
+                                        _model.amountController.text),
+                                    type: 'expense',
+                                    hotel: FFAppState().hotel,
+                                    description:
+                                        _model.descriptionController.text,
+                                    remitted: false,
                                   ),
-                                  duration: Duration(milliseconds: 4000),
-                                  backgroundColor:
-                                      FlutterFlowTheme.of(context).secondary,
-                                ),
-                              );
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'You have not selected a staff yet!',
+                                      style: TextStyle(
+                                        color:
+                                            FlutterFlowTheme.of(context).info,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).error,
+                                  ),
+                                );
+                                return;
+                              }
                             } else {
-                              return;
+                              // Are you sure?
+                              var confirmDialogResponse =
+                                  await showDialog<bool>(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: Text('Are you sure?'),
+                                            content: Text(
+                                                'You are submitting a new expense.'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, false),
+                                                child: Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, true),
+                                                child: Text('Confirm'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ) ??
+                                      false;
+                              if (confirmDialogResponse) {
+                                // Create transaction expense
+
+                                await TransactionsRecord.collection.doc().set({
+                                  ...createTransactionsRecordData(
+                                    staff: currentUserReference,
+                                    total: double.tryParse(
+                                        _model.amountController.text),
+                                    type: 'expense',
+                                    hotel: FFAppState().hotel,
+                                    description:
+                                        _model.descriptionController.text,
+                                    remitted: false,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
+                                // Saved
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Expense saved!',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).secondary,
+                                  ),
+                                );
+                              } else {
+                                return;
+                              }
                             }
 
-                            // Create transaction expense
-
-                            await TransactionsRecord.collection.doc().set({
-                              ...createTransactionsRecordData(
-                                staff: currentUserReference,
-                                total: double.tryParse(
-                                    _model.amountController.text),
-                                type: 'expense',
-                                hotel: FFAppState().hotel,
-                                description: _model.descriptionController.text,
-                                remitted: false,
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'date': FieldValue.serverTimestamp(),
-                                },
-                              ),
+                            // Reset choice chips
+                            setState(() {
+                              _model.choicesValueController?.reset();
                             });
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'You have not selected a staff yet!',
-                                  style: TextStyle(
-                                    color: FlutterFlowTheme.of(context).info,
-                                  ),
-                                ),
-                                duration: Duration(milliseconds: 4000),
-                                backgroundColor:
-                                    FlutterFlowTheme.of(context).error,
-                              ),
-                            );
-                            return;
-                          }
-                        } else {
-                          // Are you sure?
-                          var confirmDialogResponse = await showDialog<bool>(
-                                context: context,
-                                builder: (alertDialogContext) {
-                                  return AlertDialog(
-                                    title: Text('Are you sure?'),
-                                    content: Text(
-                                        'You are submitting a new expense.'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(
-                                            alertDialogContext, false),
-                                        child: Text('Cancel'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(
-                                            alertDialogContext, true),
-                                        child: Text('Confirm'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ) ??
-                              false;
-                          if (confirmDialogResponse) {
-                            // Create transaction expense
-
-                            await TransactionsRecord.collection.doc().set({
-                              ...createTransactionsRecordData(
-                                staff: currentUserReference,
-                                total: double.tryParse(
-                                    _model.amountController.text),
-                                type: 'expense',
-                                hotel: FFAppState().hotel,
-                                description: _model.descriptionController.text,
-                                remitted: false,
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'date': FieldValue.serverTimestamp(),
-                                },
-                              ),
+                            // Reset amount/description
+                            setState(() {
+                              _model.amountController?.clear();
+                              _model.descriptionController?.clear();
                             });
-                            // Saved
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Expense saved!',
-                                  style: TextStyle(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                  ),
-                                ),
-                                duration: Duration(milliseconds: 4000),
-                                backgroundColor:
-                                    FlutterFlowTheme.of(context).secondary,
-                              ),
-                            );
-                          } else {
-                            return;
-                          }
-                        }
-
-                        // Reset choice chips
-                        setState(() {
-                          _model.choicesValueController?.reset();
-                        });
-                        // Reset amount/description
-                        setState(() {
-                          _model.amountController?.clear();
-                          _model.descriptionController?.clear();
-                        });
-                        // Reset selected staff
-                        setState(() {
-                          _model.selectedNameValueController?.reset();
-                        });
-                      },
-                      text: 'Submit Expense',
-                      icon: Icon(
-                        Icons.receipt_long,
-                        size: 15.0,
-                      ),
-                      options: FFButtonOptions(
-                        width: double.infinity,
-                        height: 54.0,
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: FlutterFlowTheme.of(context).primary,
-                        textStyle:
-                            FlutterFlowTheme.of(context).titleSmall.override(
+                            // Reset selected staff
+                            setState(() {
+                              _model.selectedNameValueController?.reset();
+                            });
+                          },
+                          text: 'Submit Expense',
+                          icon: Icon(
+                            Icons.receipt_long,
+                            size: 15.0,
+                          ),
+                          options: FFButtonOptions(
+                            width: double.infinity,
+                            height: 54.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            color: FlutterFlowTheme.of(context).primary,
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
                                   fontFamily: 'Readex Pro',
                                   color: Colors.white,
                                 ),
-                        elevation: 4.0,
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                          width: 1.0,
+                            elevation: 4.0,
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(12.0),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),

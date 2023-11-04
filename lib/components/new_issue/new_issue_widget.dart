@@ -34,6 +34,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
 
     _model.detailController ??= TextEditingController();
     _model.detailFocusNode ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 

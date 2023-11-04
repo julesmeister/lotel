@@ -50,12 +50,15 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
     _model.numberController ??= TextEditingController(
         text: widget.edit ? widget.number?.toString() : '');
     _model.numberFocusNode ??= FocusNode();
+
     _model.priceController ??= TextEditingController(
         text: widget.edit ? widget.price?.toString() : '');
     _model.priceFocusNode ??= FocusNode();
+
     _model.capacityController ??= TextEditingController(
         text: widget.edit ? widget.capacity?.toString() : '');
     _model.capacityFocusNode ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 

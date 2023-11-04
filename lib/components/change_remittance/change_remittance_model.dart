@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -9,6 +10,7 @@ import 'change_remittance_widget.dart' show ChangeRemittanceWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -59,8 +61,19 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
           int index, Function(DocumentReference) updateFn) =>
       bookingsToRemit[index] = updateFn(bookingsToRemit[index]);
 
+  List<RoomUsageStruct> roomUsage = [];
+  void addToRoomUsage(RoomUsageStruct item) => roomUsage.add(item);
+  void removeFromRoomUsage(RoomUsageStruct item) => roomUsage.remove(item);
+  void removeAtIndexFromRoomUsage(int index) => roomUsage.removeAt(index);
+  void insertAtIndexInRoomUsage(int index, RoomUsageStruct item) =>
+      roomUsage.insert(index, item);
+  void updateRoomUsageAtIndex(int index, Function(RoomUsageStruct) updateFn) =>
+      roomUsage[index] = updateFn(roomUsage[index]);
+
   ///  State fields for stateful widgets in this component.
 
+  // Stores action output result for [Backend Call - Read Document] action in ChangeRemittance widget.
+  StatsRecord? statsToModifyCopy;
   // State field(s) for changeExtra widget.
   FocusNode? changeExtraFocusNode;
   TextEditingController? changeExtraController;
@@ -69,8 +82,6 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
   List<TransactionsRecord>? transactions;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   List<InventoriesRecord>? inventoriesToRemitFirestore;
-  // Stores action output result for [Backend Call - Read Document] action in Button widget.
-  StatsRecord? statsToModify;
   // Stores action output result for [Backend Call - Read Document] action in Button widget.
   BookingsRecord? booking;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.

@@ -4,37 +4,31 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'staff_add_edit_model.dart';
-export 'staff_add_edit_model.dart';
+import 'transaction_edit_model.dart';
+export 'transaction_edit_model.dart';
 
-class StaffAddEditWidget extends StatefulWidget {
-  const StaffAddEditWidget({
+class TransactionEditWidget extends StatefulWidget {
+  const TransactionEditWidget({
     Key? key,
-    this.staffRef,
-    bool? edit,
-    this.name,
-    this.sss,
-    this.weeklyRate,
-  })  : this.edit = edit ?? false,
-        super(key: key);
+    required this.ref,
+    required this.description,
+    required this.price,
+  }) : super(key: key);
 
-  final DocumentReference? staffRef;
-  final bool edit;
-  final String? name;
-  final double? sss;
-  final double? weeklyRate;
+  final DocumentReference? ref;
+  final String? description;
+  final double? price;
 
   @override
-  _StaffAddEditWidgetState createState() => _StaffAddEditWidgetState();
+  _TransactionEditWidgetState createState() => _TransactionEditWidgetState();
 }
 
-class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
-  late StaffAddEditModel _model;
+class _TransactionEditWidgetState extends State<TransactionEditWidget> {
+  late TransactionEditModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -45,19 +39,14 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => StaffAddEditModel());
+    _model = createModel(context, () => TransactionEditModel());
 
-    _model.nameController ??=
-        TextEditingController(text: widget.edit ? widget.name : '');
-    _model.nameFocusNode ??= FocusNode();
+    _model.descController ??= TextEditingController(text: widget.description);
+    _model.descFocusNode ??= FocusNode();
 
-    _model.sssController ??=
-        TextEditingController(text: widget.edit ? widget.sss?.toString() : '');
-    _model.sssFocusNode ??= FocusNode();
-
-    _model.rateController ??= TextEditingController(
-        text: widget.edit ? widget.weeklyRate?.toString() : '');
-    _model.rateFocusNode ??= FocusNode();
+    _model.priceController ??=
+        TextEditingController(text: widget.price?.toString());
+    _model.priceFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -144,9 +133,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                widget.edit
-                                    ? 'Edit Staff\'s Rates'
-                                    : 'New Staff',
+                                'Edit Transaction Description',
                                 style:
                                     FlutterFlowTheme.of(context).headlineSmall,
                               ),
@@ -169,20 +156,26 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextFormField(
-                              controller: _model.nameController,
-                              focusNode: _model.nameFocusNode,
+                              controller: _model.descController,
+                              focusNode: _model.descFocusNode,
                               textCapitalization: TextCapitalization.words,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: 'Name',
-                                hintText: 'Name',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 28.0,
+                                    ),
+                                hintText:
+                                    'Change the description of the transaction',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 28.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 enabledBorder: OutlineInputBorder(
@@ -220,30 +213,37 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                 contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
+                                  ),
+                              maxLines: 28,
                               minLines: 1,
-                              keyboardType: TextInputType.number,
-                              validator: _model.nameControllerValidator
+                              validator: _model.descControllerValidator
                                   .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
-                              ],
                             ),
                             TextFormField(
-                              controller: _model.sssController,
-                              focusNode: _model.sssFocusNode,
+                              controller: _model.priceController,
+                              focusNode: _model.priceFocusNode,
+                              textCapitalization: TextCapitalization.words,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: 'SSS Rate',
-                                hintText: 'SSS Rate',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 28.0,
+                                    ),
+                                hintText: 'Price',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 28.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 enabledBorder: OutlineInputBorder(
@@ -281,73 +281,15 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                 contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
-                              minLines: 1,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              validator: _model.sssControllerValidator
-                                  .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
-                              ],
-                            ),
-                            TextFormField(
-                              controller: _model.rateController,
-                              focusNode: _model.rateFocusNode,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                labelText: 'Fortnight Rate',
-                                hintText: 'Fortnight Rate',
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    width: 1.0,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                   ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 24.0, 20.0, 24.0),
-                              ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
                               minLines: 1,
                               keyboardType: TextInputType.number,
-                              validator: _model.rateControllerValidator
+                              validator: _model.priceControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -367,33 +309,8 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  10.0, 0.0, 0.0, 0.0),
-                              child: RichText(
-                                textScaleFactor:
-                                    MediaQuery.of(context).textScaleFactor,
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: '',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                    )
-                                  ],
-                                  style:
-                                      FlutterFlowTheme.of(context).bodyMedium,
-                                ),
-                              ),
-                            ),
                             Container(
                               width: 150.0,
                               height: 44.0,
@@ -407,65 +324,28 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.edit == false) {
-                                    // create staff
-
-                                    var staffsRecordReference =
-                                        StaffsRecord.collection.doc();
-                                    await staffsRecordReference
-                                        .set(createStaffsRecordData(
-                                      hotel: FFAppState().hotel,
-                                      name: _model.nameController.text,
-                                      weeklyRate: double.tryParse(
-                                          _model.rateController.text),
-                                      sssRate: double.tryParse(
-                                          _model.sssController.text),
-                                      fired: false,
-                                    ));
-                                    _model.createPayload =
-                                        StaffsRecord.getDocumentFromData(
-                                            createStaffsRecordData(
-                                              hotel: FFAppState().hotel,
-                                              name: _model.nameController.text,
-                                              weeklyRate: double.tryParse(
-                                                  _model.rateController.text),
-                                              sssRate: double.tryParse(
-                                                  _model.sssController.text),
-                                              fired: false,
-                                            ),
-                                            staffsRecordReference);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'New Staff Added!',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                          ),
+                                  await widget.ref!
+                                      .update(createTransactionsRecordData(
+                                    description: _model.descController.text,
+                                    total: double.tryParse(
+                                        _model.priceController.text),
+                                  ));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Transaction description now updated!',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
                                         ),
-                                        duration: Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
                                       ),
-                                    );
-                                  } else {
-                                    // update staff
-
-                                    await widget.staffRef!
-                                        .update(createStaffsRecordData(
-                                      weeklyRate: double.tryParse(
-                                          _model.rateController.text),
-                                      sssRate: double.tryParse(
-                                          _model.sssController.text),
-                                      name: _model.nameController.text,
-                                    ));
-                                  }
-
+                                      duration: Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondary,
+                                    ),
+                                  );
                                   Navigator.pop(context);
-                                  setState(() {});
-
-                                  setState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -475,22 +355,22 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
-                                        widget.edit ? 'Save' : 'Create',
+                                        'Save',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
                                               fontFamily: 'Readex Pro',
                                               color:
                                                   FlutterFlowTheme.of(context)
-                                                      .primary,
+                                                      .secondary,
                                               fontWeight: FontWeight.w500,
                                             ),
                                       ),
                                     ),
                                     Icon(
                                       Icons.send_rounded,
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondary,
                                       size: 28.0,
                                     ),
                                   ],

@@ -105,9 +105,11 @@ class _CheckInWidgetState extends State<CheckInWidget>
     _model.textController1 ??= TextEditingController(
         text: widget.extend == true ? widget.bookingToExtend?.contact : '');
     _model.textFieldFocusNode1 ??= FocusNode();
+
     _model.textController2 ??= TextEditingController(
         text: widget.extend == true ? widget.bookingToExtend?.details : '');
     _model.textFieldFocusNode2 ??= FocusNode();
+
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||

@@ -474,6 +474,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               .toList();
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
+                                            primary: false,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemCount: bookings.length,
@@ -797,6 +798,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               .toList();
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
+                                            primary: false,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemCount: goods.length,
@@ -1081,6 +1083,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               .toList();
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
+                                            primary: false,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemCount: goods.length,
@@ -1515,6 +1518,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               0,
                                               0,
                                             ),
+                                            primary: false,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemCount: bookings.length,
@@ -1977,6 +1981,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               .toList();
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
+                                            primary: false,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemCount: goods.length,
@@ -2413,6 +2418,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               0,
                                               0,
                                             ),
+                                            primary: false,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemCount: goods.length,

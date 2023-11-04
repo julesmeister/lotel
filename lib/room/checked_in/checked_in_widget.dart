@@ -47,6 +47,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
 
     _model.newPriceController ??= TextEditingController();
     _model.newPriceFocusNode ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -917,23 +918,6 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         {
                                                                           'date':
                                                                               FieldValue.serverTimestamp(),
-                                                                        },
-                                                                      ),
-                                                                    });
-                                                                    // update stat
-
-                                                                    await FFAppState()
-                                                                        .statsReference!
-                                                                        .update({
-                                                                      ...mapToFirestore(
-                                                                        {
-                                                                          'roomsIncome': FieldValue.increment(functions.getTotalAmount(
-                                                                              checkedInBookingsRecord.extraBeds,
-                                                                              checkedInBookingsRecord.nights,
-                                                                              checkedInBookingsRecord.total,
-                                                                              FFAppState().bedPrice,
-                                                                              '-1',
-                                                                              0)!),
                                                                         },
                                                                       ),
                                                                     });

@@ -365,61 +365,74 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           fontWeight: FontWeight.w500,
                                         ),
                                   ),
-                                  StreamBuilder<List<TransactionsRecord>>(
-                                    stream: _model.salesTotal(
-                                      requestFn: () => queryTransactionsRecord(
-                                        queryBuilder: (transactionsRecord) =>
-                                            transactionsRecord
-                                                .where(
-                                                  'hotel',
-                                                  isEqualTo: FFAppState().hotel,
-                                                )
-                                                .where(
-                                                  'remitted',
-                                                  isEqualTo: false,
+                                  if (valueOrDefault(
+                                          currentUserDocument?.role, '') !=
+                                      'generic')
+                                    AuthUserStreamWidget(
+                                      builder: (context) => StreamBuilder<
+                                          List<TransactionsRecord>>(
+                                        stream: _model.salesTotal(
+                                          requestFn: () =>
+                                              queryTransactionsRecord(
+                                            queryBuilder:
+                                                (transactionsRecord) =>
+                                                    transactionsRecord
+                                                        .where(
+                                                          'hotel',
+                                                          isEqualTo:
+                                                              FFAppState()
+                                                                  .hotel,
+                                                        )
+                                                        .where(
+                                                          'remitted',
+                                                          isEqualTo: false,
+                                                        ),
+                                          ),
+                                        ),
+                                        builder: (context, snapshot) {
+                                          // Customize what your widget looks like when it's loading.
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 50.0,
+                                                height: 50.0,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                  ),
                                                 ),
+                                              ),
+                                            );
+                                          }
+                                          List<TransactionsRecord>
+                                              textTransactionsRecordList =
+                                              snapshot.data!;
+                                          return Text(
+                                            formatNumber(
+                                              functions.totalToRemit(
+                                                  textTransactionsRecordList
+                                                      .toList()),
+                                              formatType: FormatType.decimal,
+                                              decimalType:
+                                                  DecimalType.automatic,
+                                              currency: 'P ',
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .displaySmall
+                                                .override(
+                                                  fontFamily: 'Outfit',
+                                                  color: Color(0xFF14181B),
+                                                  fontSize: 36.0,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          );
+                                        },
                                       ),
                                     ),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 50.0,
-                                            height: 50.0,
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                FlutterFlowTheme.of(context)
-                                                    .primary,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      List<TransactionsRecord>
-                                          textTransactionsRecordList =
-                                          snapshot.data!;
-                                      return Text(
-                                        formatNumber(
-                                          functions.totalToRemit(
-                                              textTransactionsRecordList
-                                                  .toList()),
-                                          formatType: FormatType.decimal,
-                                          decimalType: DecimalType.automatic,
-                                          currency: 'P ',
-                                        ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .displaySmall
-                                            .override(
-                                              fontFamily: 'Outfit',
-                                              color: Color(0xFF14181B),
-                                              fontSize: 36.0,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                      );
-                                    },
-                                  ),
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 4.0, 0.0, 0.0),

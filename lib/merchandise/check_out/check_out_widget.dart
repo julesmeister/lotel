@@ -47,8 +47,10 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
 
     _model.priceController1 ??= TextEditingController();
     _model.priceFocusNode1 ??= FocusNode();
+
     _model.priceController2 ??= TextEditingController();
     _model.priceFocusNode2 ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -104,32 +106,168 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                 ),
           ),
           actions: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
-              child: FlutterFlowIconButton(
-                borderColor: FlutterFlowTheme.of(context).primaryBackground,
-                borderRadius: 20.0,
-                borderWidth: 1.0,
-                buttonSize: 40.0,
-                fillColor: FlutterFlowTheme.of(context).primaryBackground,
-                disabledIconColor: Color(0xFFDADBDC),
-                icon: FaIcon(
-                  FontAwesomeIcons.amazonPay,
-                  color: FlutterFlowTheme.of(context).primaryText,
-                  size: 24.0,
-                ),
-                onPressed: widget.cart?.length == 0
-                    ? null
-                    : () async {
-                        if (_model.expense) {
-                          if ((_model.whichExpense == 'consumedBy') &&
-                              (_model.priceController1.text == null ||
-                                  _model.priceController1.text == '')) {
-                            // who consumed?
+            Visibility(
+              visible:
+                  valueOrDefault(currentUserDocument?.role, '') != 'generic',
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                child: AuthUserStreamWidget(
+                  builder: (context) => FlutterFlowIconButton(
+                    borderColor: FlutterFlowTheme.of(context).primaryBackground,
+                    borderRadius: 20.0,
+                    borderWidth: 1.0,
+                    buttonSize: 40.0,
+                    fillColor: FlutterFlowTheme.of(context).primaryBackground,
+                    disabledIconColor: Color(0xFFDADBDC),
+                    icon: FaIcon(
+                      FontAwesomeIcons.amazonPay,
+                      color: FlutterFlowTheme.of(context).primaryText,
+                      size: 24.0,
+                    ),
+                    onPressed: widget.cart?.length == 0
+                        ? null
+                        : () async {
+                            if (_model.expense) {
+                              if ((_model.whichExpense == 'consumedBy') &&
+                                  (_model.priceController1.text == null ||
+                                      _model.priceController1.text == '')) {
+                                // who consumed?
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Who consumed?',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).secondary,
+                                  ),
+                                );
+                                return;
+                              }
+                            }
+                            while (_model.loopCounter !=
+                                valueOrDefault<int>(
+                                  widget.cart?.length,
+                                  0,
+                                )) {
+                              // Subtract Quantity of Item
+
+                              await widget.cart![_model.loopCounter].reference
+                                  .update({
+                                ...mapToFirestore(
+                                  {
+                                    'quantity': FieldValue.increment(-(1)),
+                                  },
+                                ),
+                              });
+                              // incrementLoopCounter
+                              _model.loopCounter = _model.loopCounter + 1;
+                            }
+                            // New Transaction
+
+                            await TransactionsRecord.collection.doc().set({
+                              ...createTransactionsRecordData(
+                                staff: currentUserReference,
+                                total: _model.expense
+                                    ? (functions
+                                        .totalOfCart(widget.cart?.toList())!)
+                                    : functions
+                                        .totalOfCart(widget.cart?.toList()),
+                                hotel: FFAppState().hotel,
+                                type: _model.expense ? 'expense' : 'goods',
+                                remitted: false,
+                                description: _model.expense
+                                    ? valueOrDefault<String>(
+                                        functions.descriptionOfExpense(
+                                            _model.whichExpense,
+                                            _model.priceController1.text,
+                                            _model.priceController2.text),
+                                        'deducted for some reason',
+                                      )
+                                    : 'sold',
+                              ),
+                              ...mapToFirestore(
+                                {
+                                  'date': FieldValue.serverTimestamp(),
+                                  'goods': getCartGoodsListFirestoreData(
+                                    functions
+                                        .summarizeCart(widget.cart?.toList()),
+                                  ),
+                                },
+                              ),
+                            });
+                            while (_model.loopGoodsCounter !=
+                                functions
+                                    .summarizeCart(widget.cart?.toList())
+                                    ?.length) {
+                              // create inventory
+
+                              await InventoriesRecord.collection
+                                  .doc()
+                                  .set(createInventoriesRecordData(
+                                    date: functions.today(),
+                                    activity: _model.expense
+                                        ? valueOrDefault<String>(
+                                            functions.descriptionOfExpense(
+                                                _model.whichExpense,
+                                                _model.priceController1.text,
+                                                _model.priceController2.text),
+                                            'deducted for some reason',
+                                          )
+                                        : 'sold',
+                                    hotel: FFAppState().hotel,
+                                    staff: currentUserReference,
+                                    quantityChange: (functions.summarizeCart(
+                                                widget.cart?.toList())?[
+                                            _model.loopGoodsCounter])
+                                        ?.quantity,
+                                    previousQuantity: (functions.summarizeCart(
+                                                widget.cart?.toList())?[
+                                            _model.loopGoodsCounter])
+                                        ?.previousQuantity,
+                                    item: (functions.summarizeCart(
+                                                widget.cart?.toList())?[
+                                            _model.loopGoodsCounter])
+                                        ?.description,
+                                    operator: 'minus',
+                                    previousPrice: (functions.summarizeCart(
+                                                widget.cart?.toList())?[
+                                            _model.loopGoodsCounter])
+                                        ?.price,
+                                    priceChange: (functions.summarizeCart(
+                                                widget.cart?.toList())?[
+                                            _model.loopGoodsCounter])
+                                        ?.price,
+                                    remitted: false,
+                                  ));
+                              // Increment loopGoodsCounter
+                              setState(() {
+                                _model.loopGoodsCounter =
+                                    _model.loopGoodsCounter + 1;
+                              });
+                            }
+                            if (Navigator.of(context).canPop()) {
+                              context.pop();
+                            }
+                            context.pushNamed(
+                              'mart',
+                              extra: <String, dynamic>{
+                                kTransitionInfoKey: TransitionInfo(
+                                  hasTransition: true,
+                                  transitionType:
+                                      PageTransitionType.rightToLeft,
+                                ),
+                              },
+                            );
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  'Who consumed?',
+                                  'Transaction Successful!',
                                   style: TextStyle(
                                     color: FlutterFlowTheme.of(context)
                                         .primaryText,
@@ -140,134 +278,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                     FlutterFlowTheme.of(context).secondary,
                               ),
                             );
-                            return;
-                          }
-                        }
-                        while (_model.loopCounter !=
-                            valueOrDefault<int>(
-                              widget.cart?.length,
-                              0,
-                            )) {
-                          // Subtract Quantity of Item
-
-                          await widget.cart![_model.loopCounter].reference
-                              .update({
-                            ...mapToFirestore(
-                              {
-                                'quantity': FieldValue.increment(-(1)),
-                              },
-                            ),
-                          });
-                          // incrementLoopCounter
-                          _model.loopCounter = _model.loopCounter + 1;
-                        }
-                        // New Transaction
-
-                        await TransactionsRecord.collection.doc().set({
-                          ...createTransactionsRecordData(
-                            staff: currentUserReference,
-                            total: _model.expense
-                                ? (functions
-                                    .totalOfCart(widget.cart?.toList())!)
-                                : functions.totalOfCart(widget.cart?.toList()),
-                            hotel: FFAppState().hotel,
-                            type: _model.expense ? 'expense' : 'goods',
-                            remitted: false,
-                            description: _model.expense
-                                ? valueOrDefault<String>(
-                                    functions.descriptionOfExpense(
-                                        _model.whichExpense,
-                                        _model.priceController1.text,
-                                        _model.priceController2.text),
-                                    'deducted for some reason',
-                                  )
-                                : 'sold',
-                          ),
-                          ...mapToFirestore(
-                            {
-                              'date': FieldValue.serverTimestamp(),
-                              'goods': getCartGoodsListFirestoreData(
-                                functions.summarizeCart(widget.cart?.toList()),
-                              ),
-                            },
-                          ),
-                        });
-                        while (_model.loopGoodsCounter !=
-                            functions
-                                .summarizeCart(widget.cart?.toList())
-                                ?.length) {
-                          // create inventory
-
-                          await InventoriesRecord.collection
-                              .doc()
-                              .set(createInventoriesRecordData(
-                                date: functions.today(),
-                                activity: _model.expense
-                                    ? valueOrDefault<String>(
-                                        functions.descriptionOfExpense(
-                                            _model.whichExpense,
-                                            _model.priceController1.text,
-                                            _model.priceController2.text),
-                                        'deducted for some reason',
-                                      )
-                                    : 'sold',
-                                hotel: FFAppState().hotel,
-                                staff: currentUserReference,
-                                quantityChange: (functions.summarizeCart(widget
-                                        .cart
-                                        ?.toList())?[_model.loopGoodsCounter])
-                                    ?.quantity,
-                                previousQuantity: (functions.summarizeCart(
-                                            widget.cart?.toList())?[
-                                        _model.loopGoodsCounter])
-                                    ?.previousQuantity,
-                                item: (functions.summarizeCart(widget.cart
-                                        ?.toList())?[_model.loopGoodsCounter])
-                                    ?.description,
-                                operator: 'minus',
-                                previousPrice: (functions.summarizeCart(widget
-                                        .cart
-                                        ?.toList())?[_model.loopGoodsCounter])
-                                    ?.price,
-                                priceChange: (functions.summarizeCart(widget
-                                        .cart
-                                        ?.toList())?[_model.loopGoodsCounter])
-                                    ?.price,
-                                remitted: false,
-                              ));
-                          // Increment loopGoodsCounter
-                          setState(() {
-                            _model.loopGoodsCounter =
-                                _model.loopGoodsCounter + 1;
-                          });
-                        }
-                        if (Navigator.of(context).canPop()) {
-                          context.pop();
-                        }
-                        context.pushNamed(
-                          'mart',
-                          extra: <String, dynamic>{
-                            kTransitionInfoKey: TransitionInfo(
-                              hasTransition: true,
-                              transitionType: PageTransitionType.rightToLeft,
-                            ),
                           },
-                        );
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Transaction Successful!',
-                              style: TextStyle(
-                                color: FlutterFlowTheme.of(context).primaryText,
-                              ),
-                            ),
-                            duration: Duration(milliseconds: 4000),
-                            backgroundColor:
-                                FlutterFlowTheme.of(context).secondary,
-                          ),
-                        );
-                      },
+                  ),
+                ),
               ),
             ),
           ],

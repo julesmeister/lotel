@@ -35,6 +35,7 @@ class _NameEditWidgetState extends State<NameEditWidget> {
     _model.nameController ??=
         TextEditingController(text: currentUserDisplayName);
     _model.nameFocusNode ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 

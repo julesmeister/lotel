@@ -66,15 +66,19 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
     _model.rateController ??= TextEditingController(
         text: _model.edit ? widget.salaryDoc?.rate?.toString() : '0');
     _model.rateFocusNode ??= FocusNode();
+
     _model.sssController ??= TextEditingController(
         text: _model.edit ? widget.salaryDoc?.sss?.toString() : '0');
     _model.sssFocusNode ??= FocusNode();
+
     _model.caController ??= TextEditingController(
         text: _model.edit ? widget.salaryDoc?.cashAdvance?.toString() : '0');
     _model.caFocusNode ??= FocusNode();
+
     _model.cabController ??= TextEditingController(
         text: _model.edit ? widget.salaryDoc?.pendingCA?.toString() : '0');
     _model.cabFocusNode ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
