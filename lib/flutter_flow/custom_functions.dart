@@ -792,3 +792,55 @@ int indexOfRoomInRoomUsage(
   int index = roomUsage.indexWhere((ru) => ru.number == room);
   return index;
 }
+
+String changesToBookingTransaction(
+  String prevDesc,
+  String currentDesc,
+  String prevPrice,
+  String currentPrice,
+) {
+  List<String> changes = [];
+
+  if (prevDesc != currentDesc) {
+    changes.add("Description has changed from '$prevDesc' to '$currentDesc'.");
+  }
+
+  if (prevPrice != currentPrice) {
+    changes.add("Price has changed from '$prevPrice' to '$currentPrice'.");
+  }
+
+  if (changes.isEmpty) {
+    return "No changes detected but transaction was attempted to be edited.";
+  } else {
+    return changes.join(' ');
+  }
+}
+
+String roomUpdateHistoryDescription(
+  int prevNumber,
+  double prevPrice,
+  int prevCapacity,
+  int currentNumber,
+  double currentPrice,
+  int currentCapacity,
+) {
+  List<String> changes = [];
+
+  if (prevNumber != currentNumber) {
+    changes.add("Number changed from $prevNumber to $currentNumber.");
+  }
+
+  if (prevPrice != currentPrice) {
+    changes.add("Price changed from $prevPrice to $currentPrice.");
+  }
+
+  if (prevCapacity != currentCapacity) {
+    changes.add("Capacity changed from $prevCapacity to $currentCapacity.");
+  }
+
+  if (changes.isEmpty) {
+    return "No changes detected, but there was an attempt to change the details of this room.";
+  } else {
+    return changes.join(' ');
+  }
+}

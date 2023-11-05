@@ -748,6 +748,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             bookingsItem.description,
                                                                         price: bookingsItem
                                                                             .total,
+                                                                        roomRef:
+                                                                            listContainerBookingsRecord.room!,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -763,7 +765,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               double.infinity,
                                                           constraints:
                                                               BoxConstraints(
-                                                            maxWidth: 570.0,
+                                                            maxWidth:
+                                                                double.infinity,
                                                           ),
                                                           decoration:
                                                               BoxDecoration(
@@ -808,150 +811,132 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   CrossAxisAlignment
                                                                       .start,
                                                               children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          12.0,
-                                                                          0.0),
+                                                                Expanded(
+                                                                  flex: 5,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            12.0,
+                                                                            0.0),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Text(
+                                                                          bookingsItem
+                                                                              .description
+                                                                              .maybeHandleOverflow(maxChars: 250),
+                                                                          maxLines:
+                                                                              5,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                fontSize: 16.0,
+                                                                              ),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              0.0,
+                                                                              4.0,
+                                                                              0.0,
+                                                                              0.0),
+                                                                          child:
+                                                                              Text(
+                                                                            dateTimeFormat('h:mm a',
+                                                                                bookingsItem.date!),
+                                                                            style:
+                                                                                FlutterFlowTheme.of(context).labelMedium,
+                                                                          ),
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                                                                              child: RichText(
+                                                                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                                                                                text: TextSpan(
+                                                                                  children: [
+                                                                                    TextSpan(
+                                                                                      text: 'Nights: ',
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                    ),
+                                                                                    TextSpan(
+                                                                                      text: listContainerBookingsRecord.nights.toString(),
+                                                                                      style: TextStyle(
+                                                                                        color: FlutterFlowTheme.of(context).tertiary,
+                                                                                        fontWeight: FontWeight.normal,
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                  style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                                                                        fontFamily: 'Readex Pro',
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(10.0, 20.0, 0.0, 0.0),
+                                                                              child: RichText(
+                                                                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                                                                                text: TextSpan(
+                                                                                  children: [
+                                                                                    TextSpan(
+                                                                                      text: 'Room:  ',
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                    ),
+                                                                                    TextSpan(
+                                                                                      text: bookingsItem.room.toString(),
+                                                                                      style: TextStyle(
+                                                                                        color: FlutterFlowTheme.of(context).tertiary,
+                                                                                        fontWeight: FontWeight.normal,
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                  style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                                                                        fontFamily: 'Readex Pro',
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 2,
                                                                   child: Column(
                                                                     mainAxisSize:
                                                                         MainAxisSize
                                                                             .max,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
                                                                     crossAxisAlignment:
                                                                         CrossAxisAlignment
-                                                                            .start,
+                                                                            .end,
                                                                     children: [
-                                                                      RichText(
-                                                                        textScaleFactor:
-                                                                            MediaQuery.of(context).textScaleFactor,
-                                                                        text:
-                                                                            TextSpan(
-                                                                          children: [
-                                                                            TextSpan(
-                                                                              text: bookingsItem.description,
-                                                                              style: TextStyle(),
-                                                                            )
-                                                                          ],
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .bodyLarge
-                                                                              .override(
-                                                                                fontFamily: 'Readex Pro',
-                                                                                color: FlutterFlowTheme.of(context).primaryText,
-                                                                                fontSize: 16.0,
-                                                                              ),
-                                                                        ),
-                                                                      ),
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        child:
-                                                                            Text(
-                                                                          dateTimeFormat(
-                                                                              'h:mm a',
-                                                                              bookingsItem.date!),
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelMedium,
-                                                                        ),
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        children: [
-                                                                          Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                0.0,
-                                                                                20.0,
-                                                                                0.0,
-                                                                                0.0),
-                                                                            child:
-                                                                                RichText(
-                                                                              textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                                                                              text: TextSpan(
-                                                                                children: [
-                                                                                  TextSpan(
-                                                                                    text: 'Nights: ',
-                                                                                    style: TextStyle(
-                                                                                      fontSize: 14.0,
-                                                                                    ),
-                                                                                  ),
-                                                                                  TextSpan(
-                                                                                    text: listContainerBookingsRecord.nights.toString(),
-                                                                                    style: TextStyle(
-                                                                                      color: FlutterFlowTheme.of(context).tertiary,
-                                                                                      fontWeight: FontWeight.normal,
-                                                                                      fontSize: 14.0,
-                                                                                    ),
-                                                                                  )
-                                                                                ],
-                                                                                style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                                                                      fontFamily: 'Readex Pro',
-                                                                                      fontSize: 14.0,
-                                                                                    ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                10.0,
-                                                                                20.0,
-                                                                                0.0,
-                                                                                0.0),
-                                                                            child:
-                                                                                RichText(
-                                                                              textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                                                                              text: TextSpan(
-                                                                                children: [
-                                                                                  TextSpan(
-                                                                                    text: 'Room:  ',
-                                                                                    style: TextStyle(
-                                                                                      fontSize: 14.0,
-                                                                                    ),
-                                                                                  ),
-                                                                                  TextSpan(
-                                                                                    text: bookingsItem.room.toString(),
-                                                                                    style: TextStyle(
-                                                                                      color: FlutterFlowTheme.of(context).tertiary,
-                                                                                      fontWeight: FontWeight.normal,
-                                                                                      fontSize: 14.0,
-                                                                                    ),
-                                                                                  )
-                                                                                ],
-                                                                                style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                                                                      fontFamily: 'Readex Pro',
-                                                                                      fontSize: 14.0,
-                                                                                    ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          20.0),
-                                                                      child:
-                                                                          Text(
+                                                                      Text(
                                                                         formatNumber(
                                                                           bookingsItem
                                                                               .total,
@@ -971,80 +956,91 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               color: bookingsItem.total < 0.0 ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).success,
                                                                             ),
                                                                       ),
-                                                                    ),
-                                                                    InkWell(
-                                                                      splashColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      focusColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      hoverColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      highlightColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      onTap:
-                                                                          () async {
-                                                                        context
-                                                                            .pushNamed(
-                                                                          'CheckedIn',
-                                                                          queryParameters:
-                                                                              {
-                                                                            'booking':
-                                                                                serializeParam(
-                                                                              bookingsItem.booking,
-                                                                              ParamType.DocumentReference,
-                                                                            ),
-                                                                            'roomNo':
-                                                                                serializeParam(
-                                                                              bookingsItem.room,
-                                                                              ParamType.int,
-                                                                            ),
-                                                                          }.withoutNulls,
-                                                                          extra: <String,
-                                                                              dynamic>{
-                                                                            kTransitionInfoKey:
-                                                                                TransitionInfo(
-                                                                              hasTransition: true,
-                                                                              transitionType: PageTransitionType.rightToLeft,
-                                                                            ),
-                                                                          },
-                                                                        );
-                                                                      },
-                                                                      child:
-                                                                          Card(
-                                                                        clipBehavior:
-                                                                            Clip.antiAliasWithSaveLayer,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryBackground,
-                                                                        elevation:
-                                                                            1.0,
-                                                                        shape:
-                                                                            RoundedRectangleBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(40.0),
-                                                                        ),
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            10.0),
                                                                         child:
-                                                                            Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              4.0,
-                                                                              4.0,
-                                                                              4.0,
-                                                                              4.0),
+                                                                            Text(
+                                                                          bookingsItem.remitted
+                                                                              ? 'remitted'
+                                                                              : 'unremitted',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                color: bookingsItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
+                                                                                fontSize: 10.0,
+                                                                              ),
+                                                                        ),
+                                                                      ),
+                                                                      InkWell(
+                                                                        splashColor:
+                                                                            Colors.transparent,
+                                                                        focusColor:
+                                                                            Colors.transparent,
+                                                                        hoverColor:
+                                                                            Colors.transparent,
+                                                                        highlightColor:
+                                                                            Colors.transparent,
+                                                                        onTap:
+                                                                            () async {
+                                                                          context
+                                                                              .pushNamed(
+                                                                            'CheckedIn',
+                                                                            queryParameters:
+                                                                                {
+                                                                              'booking': serializeParam(
+                                                                                bookingsItem.booking,
+                                                                                ParamType.DocumentReference,
+                                                                              ),
+                                                                              'roomNo': serializeParam(
+                                                                                bookingsItem.room,
+                                                                                ParamType.int,
+                                                                              ),
+                                                                            }.withoutNulls,
+                                                                            extra: <String,
+                                                                                dynamic>{
+                                                                              kTransitionInfoKey: TransitionInfo(
+                                                                                hasTransition: true,
+                                                                                transitionType: PageTransitionType.rightToLeft,
+                                                                              ),
+                                                                            },
+                                                                          );
+                                                                        },
+                                                                        child:
+                                                                            Card(
+                                                                          clipBehavior:
+                                                                              Clip.antiAliasWithSaveLayer,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryBackground,
+                                                                          elevation:
+                                                                              1.0,
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(40.0),
+                                                                          ),
                                                                           child:
-                                                                              Icon(
-                                                                            Icons.keyboard_arrow_right_rounded,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryText,
-                                                                            size:
-                                                                                24.0,
+                                                                              Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                4.0,
+                                                                                4.0,
+                                                                                4.0,
+                                                                                4.0),
+                                                                            child:
+                                                                                Icon(
+                                                                              Icons.keyboard_arrow_right_rounded,
+                                                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                                                              size: 24.0,
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                  ],
+                                                                    ],
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),
@@ -1288,6 +1284,33 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 CrossAxisAlignment
                                                                     .end,
                                                             children: [
+                                                              Text(
+                                                                formatNumber(
+                                                                  goodsItem
+                                                                      .total,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineSmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .success,
+                                                                    ),
+                                                              ),
                                                               Padding(
                                                                 padding:
                                                                     EdgeInsetsDirectional
@@ -1295,31 +1318,23 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             0.0,
                                                                             0.0,
                                                                             0.0,
-                                                                            20.0),
+                                                                            10.0),
                                                                 child: Text(
-                                                                  formatNumber(
-                                                                    goodsItem
-                                                                        .total,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .decimal,
-                                                                    decimalType:
-                                                                        DecimalType
-                                                                            .automatic,
-                                                                    currency:
-                                                                        'P ',
-                                                                  ),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .end,
+                                                                  goodsItem
+                                                                          .remitted
+                                                                      ? 'remitted'
+                                                                      : 'unremitted',
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .headlineSmall
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
-                                                                            'Outfit',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .success,
+                                                                            'Readex Pro',
+                                                                        color: goodsItem.remitted
+                                                                            ? FlutterFlowTheme.of(context).secondary
+                                                                            : FlutterFlowTheme.of(context).tertiary,
+                                                                        fontSize:
+                                                                            10.0,
                                                                       ),
                                                                 ),
                                                               ),
@@ -1660,6 +1675,33 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 CrossAxisAlignment
                                                                     .end,
                                                             children: [
+                                                              Text(
+                                                                formatNumber(
+                                                                  expensesItem
+                                                                      .total,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineSmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .error,
+                                                                    ),
+                                                              ),
                                                               Padding(
                                                                 padding:
                                                                     EdgeInsetsDirectional
@@ -1667,31 +1709,23 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             0.0,
                                                                             0.0,
                                                                             0.0,
-                                                                            20.0),
+                                                                            10.0),
                                                                 child: Text(
-                                                                  formatNumber(
-                                                                    expensesItem
-                                                                        .total,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .decimal,
-                                                                    decimalType:
-                                                                        DecimalType
-                                                                            .automatic,
-                                                                    currency:
-                                                                        'P ',
-                                                                  ),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .end,
+                                                                  expensesItem
+                                                                          .remitted
+                                                                      ? 'remitted'
+                                                                      : 'unremitted',
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .headlineSmall
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
-                                                                            'Outfit',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .error,
+                                                                            'Readex Pro',
+                                                                        color: expensesItem.remitted
+                                                                            ? FlutterFlowTheme.of(context).secondary
+                                                                            : FlutterFlowTheme.of(context).tertiary,
+                                                                        fontSize:
+                                                                            10.0,
                                                                       ),
                                                                 ),
                                                               ),
@@ -2061,311 +2095,362 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       }
                                                       final listContainerBookingsRecord =
                                                           snapshot.data!;
-                                                      return Container(
-                                                        width: double.infinity,
-                                                        constraints:
-                                                            BoxConstraints(
-                                                          maxWidth: 570.0,
-                                                        ),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryBackground,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              blurRadius: 0.0,
-                                                              color: Color(
-                                                                  0x33000000),
-                                                              offset: Offset(
-                                                                  0.0, 1.0),
-                                                            )
-                                                          ],
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      0.0),
-                                                          border: Border.all(
+                                                      return InkWell(
+                                                        splashColor:
+                                                            Colors.transparent,
+                                                        focusColor:
+                                                            Colors.transparent,
+                                                        hoverColor:
+                                                            Colors.transparent,
+                                                        highlightColor:
+                                                            Colors.transparent,
+                                                        onLongPress: () async {
+                                                          if (valueOrDefault(
+                                                                  currentUserDocument
+                                                                      ?.role,
+                                                                  '') ==
+                                                              'admin') {
+                                                            await showModalBottomSheet(
+                                                              isScrollControlled:
+                                                                  true,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return GestureDetector(
+                                                                  onTap: () => _model
+                                                                          .unfocusNode
+                                                                          .canRequestFocus
+                                                                      ? FocusScope.of(
+                                                                              context)
+                                                                          .requestFocus(_model
+                                                                              .unfocusNode)
+                                                                      : FocusScope.of(
+                                                                              context)
+                                                                          .unfocus(),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: MediaQuery
+                                                                        .viewInsetsOf(
+                                                                            context),
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          180.0,
+                                                                      child:
+                                                                          OptionToBookingTransactionWidget(
+                                                                        ref: bookingsItem
+                                                                            .reference,
+                                                                        roomNo:
+                                                                            bookingsItem.room,
+                                                                        description:
+                                                                            bookingsItem.description,
+                                                                        price: bookingsItem
+                                                                            .total,
+                                                                        roomRef:
+                                                                            listContainerBookingsRecord.room!,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ).then((value) =>
+                                                                safeSetState(
+                                                                    () {}));
+                                                          }
+                                                        },
+                                                        child: Container(
+                                                          width:
+                                                              double.infinity,
+                                                          constraints:
+                                                              BoxConstraints(
+                                                            maxWidth: 570.0,
+                                                          ),
+                                                          decoration:
+                                                              BoxDecoration(
                                                             color: FlutterFlowTheme
                                                                     .of(context)
-                                                                .alternate,
+                                                                .secondaryBackground,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                blurRadius: 0.0,
+                                                                color: Color(
+                                                                    0x33000000),
+                                                                offset: Offset(
+                                                                    0.0, 1.0),
+                                                              )
+                                                            ],
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        0.0),
+                                                            border: Border.all(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .alternate,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      16.0,
-                                                                      12.0,
-                                                                      16.0,
-                                                                      12.0),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        16.0,
+                                                                        12.0,
+                                                                        16.0,
+                                                                        12.0),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Expanded(
+                                                                  flex: 5,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
                                                                             12.0,
                                                                             0.0),
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    RichText(
-                                                                      textScaleFactor:
-                                                                          MediaQuery.of(context)
-                                                                              .textScaleFactor,
-                                                                      text:
-                                                                          TextSpan(
-                                                                        children: [
-                                                                          TextSpan(
-                                                                            text:
-                                                                                bookingsItem.description,
-                                                                            style:
-                                                                                TextStyle(),
-                                                                          )
-                                                                        ],
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyLarge
-                                                                            .override(
-                                                                              fontFamily: 'Readex Pro',
-                                                                              color: FlutterFlowTheme.of(context).primaryText,
-                                                                              fontSize: 16.0,
-                                                                            ),
-                                                                      ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          4.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      child:
-                                                                          Text(
-                                                                        dateTimeFormat(
-                                                                            'h:mm a',
-                                                                            bookingsItem.date!),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .labelMedium,
-                                                                      ),
-                                                                    ),
-                                                                    Row(
+                                                                    child:
+                                                                        Column(
                                                                       mainAxisSize:
                                                                           MainAxisSize
                                                                               .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
                                                                       children: [
-                                                                        Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              0.0,
-                                                                              20.0,
-                                                                              0.0,
-                                                                              0.0),
-                                                                          child:
-                                                                              RichText(
-                                                                            textScaleFactor:
-                                                                                MediaQuery.of(context).textScaleFactor,
-                                                                            text:
-                                                                                TextSpan(
-                                                                              children: [
-                                                                                TextSpan(
-                                                                                  text: 'Nights: ',
-                                                                                  style: TextStyle(
-                                                                                    fontSize: 14.0,
-                                                                                  ),
+                                                                        RichText(
+                                                                          textScaleFactor:
+                                                                              MediaQuery.of(context).textScaleFactor,
+                                                                          text:
+                                                                              TextSpan(
+                                                                            children: [
+                                                                              TextSpan(
+                                                                                text: bookingsItem.description,
+                                                                                style: TextStyle(),
+                                                                              )
+                                                                            ],
+                                                                            style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  color: FlutterFlowTheme.of(context).primaryText,
+                                                                                  fontSize: 16.0,
                                                                                 ),
-                                                                                TextSpan(
-                                                                                  text: listContainerBookingsRecord.nights.toString(),
-                                                                                  style: TextStyle(
-                                                                                    color: FlutterFlowTheme.of(context).tertiary,
-                                                                                    fontWeight: FontWeight.normal,
-                                                                                    fontSize: 14.0,
-                                                                                  ),
-                                                                                )
-                                                                              ],
-                                                                              style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                                                                    fontFamily: 'Readex Pro',
-                                                                                    fontSize: 14.0,
-                                                                                  ),
-                                                                            ),
                                                                           ),
+                                                                          maxLines:
+                                                                              5,
                                                                         ),
                                                                         Padding(
                                                                           padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              10.0,
-                                                                              20.0,
+                                                                              0.0,
+                                                                              4.0,
                                                                               0.0,
                                                                               0.0),
                                                                           child:
-                                                                              RichText(
-                                                                            textScaleFactor:
-                                                                                MediaQuery.of(context).textScaleFactor,
-                                                                            text:
-                                                                                TextSpan(
-                                                                              children: [
-                                                                                TextSpan(
-                                                                                  text: 'Room:  ',
-                                                                                  style: TextStyle(
-                                                                                    fontSize: 14.0,
-                                                                                  ),
-                                                                                ),
-                                                                                TextSpan(
-                                                                                  text: bookingsItem.room.toString(),
-                                                                                  style: TextStyle(
-                                                                                    color: FlutterFlowTheme.of(context).tertiary,
-                                                                                    fontWeight: FontWeight.normal,
-                                                                                    fontSize: 14.0,
-                                                                                  ),
-                                                                                )
-                                                                              ],
-                                                                              style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                                                                    fontFamily: 'Readex Pro',
-                                                                                    fontSize: 14.0,
-                                                                                  ),
-                                                                            ),
+                                                                              Text(
+                                                                            dateTimeFormat('h:mm a',
+                                                                                bookingsItem.date!),
+                                                                            style:
+                                                                                FlutterFlowTheme.of(context).labelMedium,
                                                                           ),
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                                                                              child: RichText(
+                                                                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                                                                                text: TextSpan(
+                                                                                  children: [
+                                                                                    TextSpan(
+                                                                                      text: 'Nights: ',
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                    ),
+                                                                                    TextSpan(
+                                                                                      text: listContainerBookingsRecord.nights.toString(),
+                                                                                      style: TextStyle(
+                                                                                        color: FlutterFlowTheme.of(context).tertiary,
+                                                                                        fontWeight: FontWeight.normal,
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                  style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                                                                        fontFamily: 'Readex Pro',
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(10.0, 20.0, 0.0, 0.0),
+                                                                              child: RichText(
+                                                                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                                                                                text: TextSpan(
+                                                                                  children: [
+                                                                                    TextSpan(
+                                                                                      text: 'Room:  ',
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                    ),
+                                                                                    TextSpan(
+                                                                                      text: bookingsItem.room.toString(),
+                                                                                      style: TextStyle(
+                                                                                        color: FlutterFlowTheme.of(context).tertiary,
+                                                                                        fontWeight: FontWeight.normal,
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                  style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                                                                        fontFamily: 'Readex Pro',
+                                                                                        fontSize: 14.0,
+                                                                                      ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
                                                                         ),
                                                                       ],
                                                                     ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            20.0),
-                                                                    child: Text(
-                                                                      formatNumber(
-                                                                        bookingsItem
-                                                                            .total,
-                                                                        formatType:
-                                                                            FormatType.decimal,
-                                                                        decimalType:
-                                                                            DecimalType.automatic,
-                                                                        currency:
-                                                                            'P ',
-                                                                      ),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .end,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .headlineSmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Outfit',
-                                                                            color: bookingsItem.total < 0.0
-                                                                                ? FlutterFlowTheme.of(context).error
-                                                                                : FlutterFlowTheme.of(context).success,
-                                                                          ),
-                                                                    ),
                                                                   ),
-                                                                  InkWell(
-                                                                    splashColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    focusColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    hoverColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    highlightColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    onTap:
-                                                                        () async {
-                                                                      context
-                                                                          .pushNamed(
-                                                                        'CheckedIn',
-                                                                        queryParameters:
-                                                                            {
-                                                                          'booking':
-                                                                              serializeParam(
-                                                                            bookingsItem.booking,
-                                                                            ParamType.DocumentReference,
-                                                                          ),
-                                                                          'roomNo':
-                                                                              serializeParam(
-                                                                            0,
-                                                                            ParamType.int,
-                                                                          ),
-                                                                        }.withoutNulls,
-                                                                        extra: <String,
-                                                                            dynamic>{
-                                                                          kTransitionInfoKey:
-                                                                              TransitionInfo(
-                                                                            hasTransition:
-                                                                                true,
-                                                                            transitionType:
-                                                                                PageTransitionType.rightToLeft,
-                                                                          ),
-                                                                        },
-                                                                      );
-                                                                    },
-                                                                    child: Card(
-                                                                      clipBehavior:
-                                                                          Clip.antiAliasWithSaveLayer,
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondaryBackground,
-                                                                      elevation:
-                                                                          1.0,
-                                                                      shape:
-                                                                          RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(40.0),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 2,
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .end,
+                                                                    children: [
+                                                                      Text(
+                                                                        formatNumber(
+                                                                          bookingsItem
+                                                                              .total,
+                                                                          formatType:
+                                                                              FormatType.decimal,
+                                                                          decimalType:
+                                                                              DecimalType.automatic,
+                                                                          currency:
+                                                                              'P ',
+                                                                        ),
+                                                                        textAlign:
+                                                                            TextAlign.end,
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .headlineSmall
+                                                                            .override(
+                                                                              fontFamily: 'Outfit',
+                                                                              color: bookingsItem.total < 0.0 ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).success,
+                                                                            ),
                                                                       ),
-                                                                      child:
-                                                                          Padding(
+                                                                      Padding(
                                                                         padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0),
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            10.0),
                                                                         child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .keyboard_arrow_right_rounded,
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).secondaryText,
-                                                                          size:
-                                                                              24.0,
+                                                                            Text(
+                                                                          bookingsItem.remitted
+                                                                              ? 'remitted'
+                                                                              : 'unremitted',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                color: bookingsItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
+                                                                                fontSize: 10.0,
+                                                                              ),
                                                                         ),
                                                                       ),
-                                                                    ),
+                                                                      InkWell(
+                                                                        splashColor:
+                                                                            Colors.transparent,
+                                                                        focusColor:
+                                                                            Colors.transparent,
+                                                                        hoverColor:
+                                                                            Colors.transparent,
+                                                                        highlightColor:
+                                                                            Colors.transparent,
+                                                                        onTap:
+                                                                            () async {
+                                                                          context
+                                                                              .pushNamed(
+                                                                            'CheckedIn',
+                                                                            queryParameters:
+                                                                                {
+                                                                              'booking': serializeParam(
+                                                                                bookingsItem.booking,
+                                                                                ParamType.DocumentReference,
+                                                                              ),
+                                                                              'roomNo': serializeParam(
+                                                                                0,
+                                                                                ParamType.int,
+                                                                              ),
+                                                                            }.withoutNulls,
+                                                                            extra: <String,
+                                                                                dynamic>{
+                                                                              kTransitionInfoKey: TransitionInfo(
+                                                                                hasTransition: true,
+                                                                                transitionType: PageTransitionType.rightToLeft,
+                                                                              ),
+                                                                            },
+                                                                          );
+                                                                        },
+                                                                        child:
+                                                                            Card(
+                                                                          clipBehavior:
+                                                                              Clip.antiAliasWithSaveLayer,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryBackground,
+                                                                          elevation:
+                                                                              1.0,
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(40.0),
+                                                                          ),
+                                                                          child:
+                                                                              Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                4.0,
+                                                                                4.0,
+                                                                                4.0,
+                                                                                4.0),
+                                                                            child:
+                                                                                Icon(
+                                                                              Icons.keyboard_arrow_right_rounded,
+                                                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                                                              size: 24.0,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
-                                                                ],
-                                                              ),
-                                                            ],
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       );
@@ -2767,6 +2852,33 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 CrossAxisAlignment
                                                                     .end,
                                                             children: [
+                                                              Text(
+                                                                formatNumber(
+                                                                  goodsItem
+                                                                      .total,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineSmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .success,
+                                                                    ),
+                                                              ),
                                                               Padding(
                                                                 padding:
                                                                     EdgeInsetsDirectional
@@ -2774,31 +2886,23 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             0.0,
                                                                             0.0,
                                                                             0.0,
-                                                                            20.0),
+                                                                            10.0),
                                                                 child: Text(
-                                                                  formatNumber(
-                                                                    goodsItem
-                                                                        .total,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .decimal,
-                                                                    decimalType:
-                                                                        DecimalType
-                                                                            .automatic,
-                                                                    currency:
-                                                                        'P ',
-                                                                  ),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .end,
+                                                                  goodsItem
+                                                                          .remitted
+                                                                      ? 'remitted'
+                                                                      : 'unremitted',
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .headlineSmall
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
-                                                                            'Outfit',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .success,
+                                                                            'Readex Pro',
+                                                                        color: goodsItem.remitted
+                                                                            ? FlutterFlowTheme.of(context).secondary
+                                                                            : FlutterFlowTheme.of(context).tertiary,
+                                                                        fontSize:
+                                                                            10.0,
                                                                       ),
                                                                 ),
                                                               ),
@@ -3002,7 +3106,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                             0)
                                           Builder(
                                             builder: (context) {
-                                              final goods =
+                                              final expense =
                                                   transactionsTransactionsRecordList
                                                       .where((e) =>
                                                           (e.type ==
@@ -3025,11 +3129,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                 primary: false,
                                                 shrinkWrap: true,
                                                 scrollDirection: Axis.vertical,
-                                                itemCount: goods.length,
+                                                itemCount: expense.length,
                                                 itemBuilder:
-                                                    (context, goodsIndex) {
-                                                  final goodsItem =
-                                                      goods[goodsIndex];
+                                                    (context, expenseIndex) {
+                                                  final expenseItem =
+                                                      expense[expenseIndex];
                                                   return Container(
                                                     width: double.infinity,
                                                     constraints: BoxConstraints(
@@ -3075,124 +3179,119 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        12.0,
-                                                                        0.0),
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  RichText(
-                                                                    textScaleFactor:
-                                                                        MediaQuery.of(context)
-                                                                            .textScaleFactor,
-                                                                    text:
-                                                                        TextSpan(
-                                                                      children: [
-                                                                        TextSpan(
-                                                                          text:
-                                                                              functions.startBigLetter(goodsItem.description),
-                                                                          style:
-                                                                              TextStyle(),
-                                                                        )
-                                                                      ],
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyLarge
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primaryText,
-                                                                            fontSize:
-                                                                                16.0,
-                                                                          ),
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          12.0,
+                                                                          0.0),
+                                                              child:
+                                                                  SingleChildScrollView(
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    RichText(
+                                                                      textScaleFactor:
+                                                                          MediaQuery.of(context)
+                                                                              .textScaleFactor,
+                                                                      text:
+                                                                          TextSpan(
+                                                                        children: [
+                                                                          TextSpan(
+                                                                            text:
+                                                                                functions.startBigLetter(expenseItem.description),
+                                                                            style:
+                                                                                TextStyle(),
+                                                                          )
+                                                                        ],
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyLarge
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              color: FlutterFlowTheme.of(context).primaryText,
+                                                                              fontSize: 16.0,
+                                                                            ),
+                                                                      ),
+                                                                      maxLines:
+                                                                          5,
                                                                     ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      dateTimeFormat(
-                                                                          'h:mm a',
-                                                                          goodsItem
-                                                                              .date!),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelMedium,
-                                                                    ),
-                                                                  ),
-                                                                  if (goodsItem
-                                                                          .goods
-                                                                          .length >
-                                                                      0)
                                                                     Padding(
                                                                       padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
-                                                                          12.0,
+                                                                          4.0,
                                                                           0.0,
                                                                           0.0),
                                                                       child:
-                                                                          Container(
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          boxShadow: [
-                                                                            BoxShadow(
-                                                                              blurRadius: 1.0,
-                                                                              color: FlutterFlowTheme.of(context).alternate,
-                                                                              offset: Offset(0.0, 0.0),
-                                                                            )
-                                                                          ],
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(5.0),
-                                                                          border:
-                                                                              Border.all(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).alternate,
-                                                                            width:
-                                                                                1.0,
-                                                                          ),
-                                                                        ),
-                                                                        alignment: AlignmentDirectional(
-                                                                            -1.00,
-                                                                            0.00),
+                                                                          Text(
+                                                                        dateTimeFormat(
+                                                                            'h:mm a',
+                                                                            expenseItem.date!),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelMedium,
+                                                                      ),
+                                                                    ),
+                                                                    if (expenseItem
+                                                                            .goods
+                                                                            .length >
+                                                                        0)
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            12.0,
+                                                                            0.0,
+                                                                            0.0),
                                                                         child:
-                                                                            Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              10.0,
-                                                                              10.0,
-                                                                              10.0,
-                                                                              10.0),
+                                                                            Container(
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).secondaryBackground,
+                                                                            boxShadow: [
+                                                                              BoxShadow(
+                                                                                blurRadius: 1.0,
+                                                                                color: FlutterFlowTheme.of(context).alternate,
+                                                                                offset: Offset(0.0, 0.0),
+                                                                              )
+                                                                            ],
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(5.0),
+                                                                            border:
+                                                                                Border.all(
+                                                                              color: FlutterFlowTheme.of(context).alternate,
+                                                                              width: 1.0,
+                                                                            ),
+                                                                          ),
+                                                                          alignment: AlignmentDirectional(
+                                                                              -1.00,
+                                                                              0.00),
                                                                           child:
-                                                                              Text(
-                                                                            functions.cartToTextSummary(goodsItem.goods.toList())!,
-                                                                            style:
-                                                                                FlutterFlowTheme.of(context).labelMedium,
+                                                                              Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                10.0,
+                                                                                10.0,
+                                                                                10.0,
+                                                                                10.0),
+                                                                            child:
+                                                                                Text(
+                                                                              functions.cartToTextSummary(expenseItem.goods.toList())!,
+                                                                              style: FlutterFlowTheme.of(context).labelMedium,
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                ],
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
@@ -3200,7 +3299,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               UsersRecord>(
                                                             future: UsersRecord
                                                                 .getDocumentOnce(
-                                                                    goodsItem
+                                                                    expenseItem
                                                                         .staff!),
                                                             builder: (context,
                                                                 snapshot) {
@@ -3236,35 +3335,55 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     CrossAxisAlignment
                                                                         .end,
                                                                 children: [
+                                                                  Text(
+                                                                    formatNumber(
+                                                                      expenseItem
+                                                                          .total,
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .decimal,
+                                                                      decimalType:
+                                                                          DecimalType
+                                                                              .automatic,
+                                                                      currency:
+                                                                          'P ',
+                                                                    ),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .end,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .headlineSmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Outfit',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).error,
+                                                                        ),
+                                                                  ),
                                                                   Padding(
                                                                     padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
                                                                             0.0,
-                                                                            25.0),
+                                                                            10.0),
                                                                     child: Text(
-                                                                      formatNumber(
-                                                                        goodsItem
-                                                                            .total,
-                                                                        formatType:
-                                                                            FormatType.decimal,
-                                                                        decimalType:
-                                                                            DecimalType.automatic,
-                                                                        currency:
-                                                                            'P ',
-                                                                      ),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .end,
+                                                                      expenseItem
+                                                                              .remitted
+                                                                          ? 'remitted'
+                                                                          : 'unremitted',
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .headlineSmall
+                                                                          .bodyMedium
                                                                           .override(
                                                                             fontFamily:
-                                                                                'Outfit',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).error,
+                                                                                'Readex Pro',
+                                                                            color: expenseItem.remitted
+                                                                                ? FlutterFlowTheme.of(context).secondary
+                                                                                : FlutterFlowTheme.of(context).tertiary,
+                                                                            fontSize:
+                                                                                10.0,
                                                                           ),
                                                                     ),
                                                                   ),

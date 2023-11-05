@@ -337,7 +337,51 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               (val) async {
                                                             setState(() => _model
                                                                     .choiceChipsValue =
-                                                                val?.first); // rebook to selected room
+                                                                val?.first); // from room history
+
+                                                            await HistoryRecord
+                                                                    .createDoc(
+                                                                        widget
+                                                                            .ref!)
+                                                                .set({
+                                                              ...createHistoryRecordData(
+                                                                description:
+                                                                    'Guest is moving out of this room and into room ${_model.choiceChipsValue}',
+                                                                staff:
+                                                                    currentUserReference,
+                                                              ),
+                                                              ...mapToFirestore(
+                                                                {
+                                                                  'date': FieldValue
+                                                                      .serverTimestamp(),
+                                                                },
+                                                              ),
+                                                            });
+                                                            // transfer to room history
+
+                                                            await HistoryRecord.createDoc(choiceChipsRoomsRecordList
+                                                                    .where((e) =>
+                                                                        e.number ==
+                                                                        (int.parse(
+                                                                            _model.choiceChipsValue!)))
+                                                                    .toList()
+                                                                    .first
+                                                                    .reference)
+                                                                .set({
+                                                              ...createHistoryRecordData(
+                                                                description:
+                                                                    'Guest/s have transferred in from room ${widget.roomNo?.toString()}',
+                                                                staff:
+                                                                    currentUserReference,
+                                                              ),
+                                                              ...mapToFirestore(
+                                                                {
+                                                                  'date': FieldValue
+                                                                      .serverTimestamp(),
+                                                                },
+                                                              ),
+                                                            });
+                                                            // rebook to selected room
 
                                                             await choiceChipsRoomsRecordList
                                                                 .where((e) =>
@@ -883,6 +927,24 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       status:
                                                                           'paid',
                                                                     ));
+                                                                    // add paid amount to history
+
+                                                                    await HistoryRecord.createDoc(
+                                                                            checkedInBookingsRecord.room!)
+                                                                        .set({
+                                                                      ...createHistoryRecordData(
+                                                                        description:
+                                                                            'Guest/s have settled the amount of Php ${functions.getTotalAmount(checkedInBookingsRecord.extraBeds, checkedInBookingsRecord.nights, checkedInBookingsRecord.total, FFAppState().bedPrice, '-1', 0)?.toString()}',
+                                                                        staff:
+                                                                            currentUserReference,
+                                                                      ),
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'date':
+                                                                              FieldValue.serverTimestamp(),
+                                                                        },
+                                                                      ),
+                                                                    });
                                                                     // New Transaction
 
                                                                     await TransactionsRecord
@@ -981,6 +1043,24 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           true,
                                                                       guests: 0,
                                                                     ));
+                                                                    // add checkout to history
+
+                                                                    await HistoryRecord.createDoc(
+                                                                            checkedInBookingsRecord.room!)
+                                                                        .set({
+                                                                      ...createHistoryRecordData(
+                                                                        description:
+                                                                            '${checkedInBookingsRecord.guests} guest/s in room ${widget.roomNo?.toString()} have checked out.',
+                                                                        staff:
+                                                                            currentUserReference,
+                                                                      ),
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'date':
+                                                                              FieldValue.serverTimestamp(),
+                                                                        },
+                                                                      ),
+                                                                    });
                                                                     // Check out
 
                                                                     await widget
@@ -1334,6 +1414,24 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       remitted:
                                                                           false,
                                                                     ));
+                                                                    // add this price change to history
+
+                                                                    await HistoryRecord.createDoc(
+                                                                            checkedInBookingsRecord.room!)
+                                                                        .set({
+                                                                      ...createHistoryRecordData(
+                                                                        description:
+                                                                            'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${_model.newPriceController.text}. For the reason ${_model.priceChangedescriptionValue}.This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)).toString()}.',
+                                                                        staff:
+                                                                            currentUserReference,
+                                                                      ),
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'date':
+                                                                              FieldValue.serverTimestamp(),
+                                                                        },
+                                                                      ),
+                                                                    });
                                                                     // new transaction
 
                                                                     await TransactionsRecord

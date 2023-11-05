@@ -247,6 +247,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'Stats',
           path: '/stats',
           builder: (context, params) => StatsWidget(),
+        ),
+        FFRoute(
+          name: 'RoomHistory',
+          path: '/roomHistory',
+          asyncParams: {
+            'room': getDoc(['rooms'], RoomsRecord.fromSnapshot),
+          },
+          builder: (context, params) => RoomHistoryWidget(
+            room: params.getParam('room', ParamType.Document),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

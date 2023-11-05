@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -406,19 +407,49 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   if (widget.edit == false) {
-                                    await RoomsRecord.collection
-                                        .doc()
+                                    var roomsRecordReference =
+                                        RoomsRecord.collection.doc();
+                                    await roomsRecordReference
                                         .set(createRoomsRecordData(
-                                          number: int.tryParse(
-                                              _model.numberController.text),
-                                          capacity: int.tryParse(
-                                              _model.capacityController.text),
-                                          price: double.tryParse(
-                                              _model.priceController.text),
-                                          vacant: true,
-                                          guests: 0,
-                                          hotel: FFAppState().hotel,
-                                        ));
+                                      number: int.tryParse(
+                                          _model.numberController.text),
+                                      capacity: int.tryParse(
+                                          _model.capacityController.text),
+                                      price: double.tryParse(
+                                          _model.priceController.text),
+                                      vacant: true,
+                                      guests: 0,
+                                      hotel: FFAppState().hotel,
+                                    ));
+                                    _model.createRoom =
+                                        RoomsRecord.getDocumentFromData(
+                                            createRoomsRecordData(
+                                              number: int.tryParse(
+                                                  _model.numberController.text),
+                                              capacity: int.tryParse(_model
+                                                  .capacityController.text),
+                                              price: double.tryParse(
+                                                  _model.priceController.text),
+                                              vacant: true,
+                                              guests: 0,
+                                              hotel: FFAppState().hotel,
+                                            ),
+                                            roomsRecordReference);
+                                    // history creation
+
+                                    await HistoryRecord.createDoc(
+                                            _model.createRoom!.reference)
+                                        .set({
+                                      ...createHistoryRecordData(
+                                        description: 'Room created!',
+                                        staff: currentUserReference,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
                                   } else {
                                     await widget.roomRef!
                                         .update(createRoomsRecordData(
@@ -429,9 +460,36 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                       price: double.tryParse(
                                           _model.priceController.text),
                                     ));
+                                    // history update
+
+                                    await HistoryRecord.createDoc(
+                                            widget.roomRef!)
+                                        .set({
+                                      ...createHistoryRecordData(
+                                        description: functions
+                                            .roomUpdateHistoryDescription(
+                                                widget.number!,
+                                                widget.price!,
+                                                widget.capacity!,
+                                                int.parse(_model
+                                                    .numberController.text),
+                                                double.parse(_model
+                                                    .priceController.text),
+                                                int.parse(_model
+                                                    .capacityController.text)),
+                                        staff: currentUserReference,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
                                   }
 
                                   Navigator.pop(context);
+
+                                  setState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

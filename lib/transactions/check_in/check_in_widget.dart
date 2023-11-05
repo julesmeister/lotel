@@ -1061,6 +1061,26 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       },
                                     ),
                                   });
+                                  // add this change to history
+
+                                  await HistoryRecord.createDoc(widget.ref!)
+                                      .set({
+                                    ...createHistoryRecordData(
+                                      description: functions
+                                          .quantityDescriptionForBookings(
+                                              _model.startingBeds!,
+                                              _model.bedsValue!,
+                                              _model.startingNights,
+                                              _model.nightsValue,
+                                              widget.roomNo!),
+                                      staff: currentUserReference,
+                                    ),
+                                    ...mapToFirestore(
+                                      {
+                                        'date': FieldValue.serverTimestamp(),
+                                      },
+                                    ),
+                                  });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
@@ -1077,6 +1097,21 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ),
                                   );
                                 } else {
+                                  // update guest data history
+
+                                  await HistoryRecord.createDoc(widget.ref!)
+                                      .set({
+                                    ...createHistoryRecordData(
+                                      description:
+                                          'Something other than the price have been updated with this booking. Probably entered data of guest\'s ID or contact number.',
+                                      staff: currentUserReference,
+                                    ),
+                                    ...mapToFirestore(
+                                      {
+                                        'date': FieldValue.serverTimestamp(),
+                                      },
+                                    ),
+                                  });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
@@ -1115,6 +1150,20 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     room: widget.roomNo,
                                     description: 'New Checkin',
                                     remitted: false,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
+                                // Check In To History
+
+                                await HistoryRecord.createDoc(widget.ref!).set({
+                                  ...createHistoryRecordData(
+                                    description:
+                                        '${_model.guestsValue} new guest/s have checked in!',
+                                    staff: currentUserReference,
                                   ),
                                   ...mapToFirestore(
                                     {

@@ -27,3 +27,4 @@ export '/payroll/individual_history/individual_history_widget.dart'
 export '/pages/issues_list/issues_list_widget.dart' show IssuesListWidget;
 export '/pages/replenish/replenish_widget.dart' show ReplenishWidget;
 export '/pages/stats/stats_widget.dart' show StatsWidget;
+export '/room/room_history/room_history_widget.dart' show RoomHistoryWidget;

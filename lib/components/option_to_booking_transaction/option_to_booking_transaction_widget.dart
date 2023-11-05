@@ -18,12 +18,14 @@ class OptionToBookingTransactionWidget extends StatefulWidget {
     required this.roomNo,
     required this.description,
     required this.price,
+    required this.roomRef,
   }) : super(key: key);
 
   final DocumentReference? ref;
   final int? roomNo;
   final String? description;
   final double? price;
+  final DocumentReference? roomRef;
 
   @override
   _OptionToBookingTransactionWidgetState createState() =>
@@ -110,6 +112,7 @@ class _OptionToBookingTransactionWidgetState
                               ref: widget.ref!,
                               description: widget.description!,
                               price: widget.price!,
+                              roomRef: widget.roomRef!,
                             ),
                           ),
                         );
@@ -163,6 +166,7 @@ class _OptionToBookingTransactionWidgetState
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
+                    // delete transaction?
                     var confirmDialogResponse = await showDialog<bool>(
                           context: context,
                           builder: (alertDialogContext) {
@@ -187,9 +191,23 @@ class _OptionToBookingTransactionWidgetState
                         ) ??
                         false;
                     if (confirmDialogResponse) {
-                      // trans
+                      // transaction action output
                       _model.trans =
                           await TransactionsRecord.getDocumentOnce(widget.ref!);
+                      // history taking
+
+                      await HistoryRecord.createDoc(widget.roomRef!).set({
+                        ...createHistoryRecordData(
+                          description:
+                              'There was a mistake that caused admin to remove a transaction worth Php ${widget.price?.toString()}',
+                          staff: currentUserReference,
+                        ),
+                        ...mapToFirestore(
+                          {
+                            'date': FieldValue.serverTimestamp(),
+                          },
+                        ),
+                      });
                       if (_model.trans!.remitted) {
                         // decrease stats
 

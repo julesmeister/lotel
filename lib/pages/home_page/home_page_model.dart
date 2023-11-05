@@ -114,6 +114,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   HotelSettingsRecord? hotel;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   RemittancesRecord? unRemitted;
+  // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
+  int? historyCount;
 
   /// Query cache managers for this widget.
 
