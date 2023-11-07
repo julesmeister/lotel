@@ -220,7 +220,7 @@ bool moreBeds(
   return startingBedInt < widgetBedInt;
 }
 
-int sumOfGoodsIncome(List<TransactionsRecord> transactions) {
+double sumOfGoodsIncome(List<TransactionsRecord> transactions) {
   //   // sum of each total of transactions with type book and goods
   double sum = 0.0;
   for (TransactionsRecord transaction in transactions) {
@@ -228,7 +228,7 @@ int sumOfGoodsIncome(List<TransactionsRecord> transactions) {
       sum += transaction.total;
     }
   }
-  return sum.toInt();
+  return sum;
 }
 
 String quantityDescriptionForBookings(
@@ -368,7 +368,9 @@ double grossTransactions(List<TransactionsRecord> transactions) {
   //   // sum of each total of transactions with type book and goods
   double sum = 0.0;
   for (TransactionsRecord transaction in transactions) {
-    if (transaction.type == 'book' || transaction.type == 'goods') {
+    if (transaction.type == 'book' ||
+        transaction.type == 'goods' ||
+        transaction.type == 'change') {
       sum += transaction.total;
     }
   }
@@ -515,7 +517,7 @@ double totalExpenses(List<TransactionsRecord> transactions) {
   return total;
 }
 
-int sumOfRoomsIncome(List<TransactionsRecord> transactions) {
+double sumOfRoomsIncome(List<TransactionsRecord> transactions) {
   //   // sum of each total of transactions with type book and goods
   double sum = 0.0;
   for (TransactionsRecord transaction in transactions) {
@@ -523,7 +525,7 @@ int sumOfRoomsIncome(List<TransactionsRecord> transactions) {
       sum += transaction.total;
     }
   }
-  return sum.toInt();
+  return sum;
 }
 
 double totalGoodsSales(List<TransactionsRecord> transactions) {
@@ -843,4 +845,42 @@ String roomUpdateHistoryDescription(
   } else {
     return changes.join(' ');
   }
+}
+
+DateTime startOfMonth(String month) {
+  // starting time of the given month only
+  final now = DateTime.now();
+  final selectedMonth = DateFormat('MMMM').parse(month).month;
+  return DateTime(now.year, selectedMonth, 1);
+}
+
+List<StaffsRecord> staffsToAddSalary(
+  List<StaffsRecord> staffs,
+  List<SalariesRecord> salaries,
+) {
+  // staffs not found in salary.staff
+  final staffsWithoutSalary = <StaffsRecord>[];
+  for (final staff in staffs) {
+    final hasSalary = salaries.any((salary) => salary.staff == staff.reference);
+    if (!hasSalary) {
+      staffsWithoutSalary.add(staff);
+    }
+  }
+  return staffsWithoutSalary;
+}
+
+double updateSalaryTotal(
+  bool rateSet,
+  bool sssSet,
+  double oldRate,
+  double? newRate,
+  double oldSSS,
+  double? newSSS,
+  double ca,
+) {
+  final rate = rateSet ? newRate! : oldRate;
+  final sss = sssSet ? newSSS! : oldSSS;
+
+  final total = rate - sss - ca;
+  return total;
 }

@@ -222,13 +222,8 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                               ),
                               style: FlutterFlowTheme.of(context).bodyMedium,
                               minLines: 1,
-                              keyboardType: TextInputType.number,
                               validator: _model.nameControllerValidator
                                   .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
-                              ],
                             ),
                             TextFormField(
                               controller: _model.sssController,

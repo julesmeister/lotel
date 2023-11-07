@@ -109,6 +109,8 @@ class _StatsWidgetState extends State<StatsWidget>
           _model.goodsLine = _model.currentStat?.goodsLine;
           _model.roomLine = _model.currentStat?.roomLine;
           _model.rooms = _model.currentStat!.roomsIncome;
+          _model.goods = _model.currentStat!.goodsIncome;
+          _model.statsRef = _model.currentStat?.reference;
         });
       } else {
         // no data yet
@@ -250,6 +252,8 @@ class _StatsWidgetState extends State<StatsWidget>
                               .toList()
                               .cast<RoomUsageStruct>();
                           _model.month = _model.foundMonthDoc!.month;
+                          _model.goods = _model.foundMonthDoc!.goodsIncome;
+                          _model.statsRef = _model.foundMonthDoc?.reference;
                         });
                       } else {
                         // no data yet
@@ -343,6 +347,8 @@ class _StatsWidgetState extends State<StatsWidget>
                           _model.goodsLine = _model.foundYearDoc?.goodsLine;
                           _model.roomLine = _model.foundYearDoc?.roomLine;
                           _model.year = _model.foundYearDoc!.year;
+                          _model.goods = _model.foundYearDoc!.goodsIncome;
+                          _model.statsRef = _model.foundYearDoc?.reference;
                         });
                       } else {
                         // no data yet
@@ -434,7 +440,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Monthly Income',
+                                        'Rooms Income',
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium,
                                       ),
@@ -445,18 +451,257 @@ class _StatsWidgetState extends State<StatsWidget>
                                             child: Padding(
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 4.0, 4.0, 0.0),
-                                              child: Text(
-                                                formatNumber(
-                                                  _model.rooms,
-                                                  formatType:
-                                                      FormatType.decimal,
-                                                  decimalType:
-                                                      DecimalType.automatic,
-                                                  currency: 'P ',
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onDoubleTap: () async {
+                                                  var confirmDialogResponse =
+                                                      await showDialog<bool>(
+                                                            context: context,
+                                                            builder:
+                                                                (alertDialogContext) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    'Update Stats'),
+                                                                content: Text(
+                                                                    'This will recalculate all transactions under room bookings.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            false),
+                                                                    child: Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            true),
+                                                                    child: Text(
+                                                                        'Confirm'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          ) ??
+                                                          false;
+                                                  if (confirmDialogResponse) {
+                                                    _model.bookingTransactionsOnly =
+                                                        await queryTransactionsRecordOnce(
+                                                      queryBuilder:
+                                                          (transactionsRecord) =>
+                                                              transactionsRecord
+                                                                  .where(
+                                                                    'hotel',
+                                                                    isEqualTo:
+                                                                        FFAppState()
+                                                                            .hotel,
+                                                                  )
+                                                                  .where(
+                                                                    'date',
+                                                                    isGreaterThan:
+                                                                        functions
+                                                                            .startOfMonth(_model.month),
+                                                                  )
+                                                                  .where(
+                                                                    'type',
+                                                                    isEqualTo:
+                                                                        'book',
+                                                                  ),
+                                                    );
+                                                    // upate rooms income var
+                                                    setState(() {
+                                                      _model.rooms = functions
+                                                          .sumOfRoomsIncome(_model
+                                                              .bookingTransactionsOnly!
+                                                              .toList());
+                                                    });
+                                                    // update stats room income
+
+                                                    await _model.statsRef!.update(
+                                                        createStatsRecordData(
+                                                      roomsIncome: _model.rooms,
+                                                    ));
+                                                  }
+
+                                                  setState(() {});
+                                                },
+                                                child: Text(
+                                                  formatNumber(
+                                                    _model.rooms,
+                                                    formatType:
+                                                        FormatType.decimal,
+                                                    decimalType:
+                                                        DecimalType.automatic,
+                                                    currency: 'P ',
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .displaySmall,
                                                 ),
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .displaySmall,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            0.0, 12.0, 0.0, 12.0),
+                        child: Container(
+                          height: 120.0,
+                          constraints: BoxConstraints(
+                            maxWidth: 270.0,
+                          ),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 16.0, 0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 16.0, 0.0),
+                                  child: Icon(
+                                    Icons.trending_up_rounded,
+                                    color:
+                                        FlutterFlowTheme.of(context).secondary,
+                                    size: 32.0,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Goods Income',
+                                        style: FlutterFlowTheme.of(context)
+                                            .labelMedium,
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Expanded(
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 4.0, 4.0, 0.0),
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onDoubleTap: () async {
+                                                  var confirmDialogResponse =
+                                                      await showDialog<bool>(
+                                                            context: context,
+                                                            builder:
+                                                                (alertDialogContext) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    'Update Stats'),
+                                                                content: Text(
+                                                                    'This will recalculate all transactions under goods sold.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            false),
+                                                                    child: Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            true),
+                                                                    child: Text(
+                                                                        'Confirm'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          ) ??
+                                                          false;
+                                                  if (confirmDialogResponse) {
+                                                    _model.goodsTransactionsOnly =
+                                                        await queryTransactionsRecordOnce(
+                                                      queryBuilder:
+                                                          (transactionsRecord) =>
+                                                              transactionsRecord
+                                                                  .where(
+                                                                    'hotel',
+                                                                    isEqualTo:
+                                                                        FFAppState()
+                                                                            .hotel,
+                                                                  )
+                                                                  .where(
+                                                                    'date',
+                                                                    isGreaterThan:
+                                                                        functions
+                                                                            .startOfMonth(_model.month),
+                                                                  )
+                                                                  .where(
+                                                                    'type',
+                                                                    isEqualTo:
+                                                                        'goods',
+                                                                  ),
+                                                    );
+                                                    // upate goods income var
+                                                    setState(() {
+                                                      _model.goods = functions
+                                                          .sumOfGoodsIncome(_model
+                                                              .goodsTransactionsOnly!
+                                                              .toList());
+                                                    });
+                                                    // update stats room income
+
+                                                    await _model.statsRef!.update(
+                                                        createStatsRecordData(
+                                                      goodsIncome: _model.goods,
+                                                    ));
+                                                  }
+
+                                                  setState(() {});
+                                                },
+                                                child: Text(
+                                                  formatNumber(
+                                                    _model.goods,
+                                                    formatType:
+                                                        FormatType.decimal,
+                                                    decimalType:
+                                                        DecimalType.automatic,
+                                                    currency: 'P ',
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .displaySmall,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -674,7 +919,8 @@ class _StatsWidgetState extends State<StatsWidget>
                                                     0.0, 4.0, 4.0, 0.0),
                                             child: Text(
                                               formatNumber(
-                                                _model.rooms -
+                                                _model.rooms +
+                                                    _model.goods -
                                                     _model.expenses -
                                                     _model.salaries,
                                                 formatType: FormatType.decimal,

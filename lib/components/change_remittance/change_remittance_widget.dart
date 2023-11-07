@@ -40,12 +40,12 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // statsToModify
-      _model.statsToModifyCopy =
+      _model.initStat =
           await StatsRecord.getDocumentOnce(FFAppState().statsReference!);
+      // roomUsage init
       setState(() {
-        _model.roomUsage = _model.statsToModifyCopy!.roomUsage
-            .toList()
-            .cast<RoomUsageStruct>();
+        _model.roomUsage =
+            _model.initStat!.roomUsage.toList().cast<RoomUsageStruct>();
       });
     });
 
@@ -276,7 +276,8 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             .transactions![
                                                 _model.loopTransactionsCounter]
                                             .room),
-                                    (e) => e..use = _model.booking?.nights,
+                                    (e) =>
+                                        e..incrementUse(_model.booking!.nights),
                                   );
                                 });
                                 // remitted book
@@ -342,41 +343,33 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                     _model.loopInventoryCounter + 1;
                               });
                             }
-                            // update graph
+                            // update stats and graph
 
                             await FFAppState().statsReference!.update({
                               ...createStatsRecordData(
                                 roomLine: updateLineGraphStruct(
                                   functions.newLineGraph(
-                                      functions
-                                          .sumOfRoomsIncome(_model
-                                              .transactionsToRemit
-                                              .toList())
-                                          .toDouble(),
-                                      _model.statsToModifyCopy!.roomLine),
+                                      functions.sumOfRoomsIncome(
+                                          _model.transactionsToRemit.toList()),
+                                      _model.initStat!.roomLine),
                                   clearUnsetFields: false,
                                 ),
                                 goodsLine: updateLineGraphStruct(
                                   functions.newLineGraph(
-                                      functions
-                                          .sumOfGoodsIncome(_model
-                                              .transactionsToRemit
-                                              .toList())
-                                          .toDouble(),
-                                      _model.statsToModifyCopy!.goodsLine),
+                                      functions.sumOfGoodsIncome(
+                                          _model.transactionsToRemit.toList()),
+                                      _model.initStat!.goodsLine),
                                   clearUnsetFields: false,
                                 ),
                               ),
                               ...mapToFirestore(
                                 {
-                                  'roomsIncome': FieldValue.increment(functions
-                                      .sumOfRoomsIncome(
-                                          _model.transactionsToRemit.toList())
-                                      .toDouble()),
-                                  'goodsIncome': FieldValue.increment(functions
-                                      .sumOfGoodsIncome(
-                                          _model.transactionsToRemit.toList())
-                                      .toDouble()),
+                                  'roomsIncome': FieldValue.increment(
+                                      functions.sumOfRoomsIncome(
+                                          _model.transactionsToRemit.toList())),
+                                  'goodsIncome': FieldValue.increment(
+                                      functions.sumOfGoodsIncome(
+                                          _model.transactionsToRemit.toList())),
                                   'expenses': FieldValue.increment(
                                       functions.sumOfExpenses(
                                           _model.transactionsToRemit.toList())),

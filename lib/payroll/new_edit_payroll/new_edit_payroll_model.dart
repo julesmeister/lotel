@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'new_edit_payroll_widget.dart' show NewEditPayrollWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -59,6 +60,19 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
 
   int loopCACounterUnsettle = 0;
 
+  List<StaffsRecord> staffs = [];
+  void addToStaffs(StaffsRecord item) => staffs.add(item);
+  void removeFromStaffs(StaffsRecord item) => staffs.remove(item);
+  void removeAtIndexFromStaffs(int index) => staffs.removeAt(index);
+  void insertAtIndexInStaffs(int index, StaffsRecord item) =>
+      staffs.insert(index, item);
+  void updateStaffsAtIndex(int index, Function(StaffsRecord) updateFn) =>
+      staffs[index] = updateFn(staffs[index]);
+
+  bool showChangeRate = false;
+
+  SalariesRecord? tempSalary;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -66,10 +80,20 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
   PayrollsRecord? existingPayroll;
   // Stores action output result for [Firestore Query - Query a collection] action in NewEditPayroll widget.
   List<SalariesRecord>? existingSalaries;
-  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
-  List<StaffsRecord>? staffsForSelection;
+  // Stores action output result for [Firestore Query - Query a collection] action in NewEditPayroll widget.
+  List<StaffsRecord>? staffsOfThisHotel;
   // Stores action output result for [Bottom Sheet - NewSalary] action in IconButton widget.
   SalariesRecord? salary;
+  // State field(s) for newRate widget.
+  FocusNode? newRateFocusNode;
+  TextEditingController? newRateController;
+  String? Function(BuildContext, String?)? newRateControllerValidator;
+  // State field(s) for newSSS widget.
+  FocusNode? newSSSFocusNode;
+  TextEditingController? newSSSController;
+  String? Function(BuildContext, String?)? newSSSControllerValidator;
+  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
+  List<SalariesRecord>? updatedSalaries;
   // Stores action output result for [Backend Call - Read Document] action in Button widget.
   StaffsRecord? staff;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
@@ -83,6 +107,11 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
 
   void dispose() {
     unfocusNode.dispose();
+    newRateFocusNode?.dispose();
+    newRateController?.dispose();
+
+    newSSSFocusNode?.dispose();
+    newSSSController?.dispose();
   }
 
   /// Action blocks are added here.

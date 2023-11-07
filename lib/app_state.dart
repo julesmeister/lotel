@@ -155,21 +155,6 @@ class FFAppState extends ChangeNotifier {
   void clearHoteSettingsCacheKey(String? uniqueKey) =>
       _hoteSettingsManager.clearRequest(uniqueKey);
 
-  final _issuesHomeManager = StreamRequestManager<List<IssuesRecord>>();
-  Stream<List<IssuesRecord>> issuesHome({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Stream<List<IssuesRecord>> Function() requestFn,
-  }) =>
-      _issuesHomeManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearIssuesHomeCache() => _issuesHomeManager.clear();
-  void clearIssuesHomeCacheKey(String? uniqueKey) =>
-      _issuesHomeManager.clearRequest(uniqueKey);
-
   final _replenishCountManager = FutureRequestManager<int>();
   Future<int> replenishCount({
     String? uniqueQueryKey,

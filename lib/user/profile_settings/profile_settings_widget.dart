@@ -946,9 +946,6 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                               // clear replenish count
                                               FFAppState()
                                                   .clearReplenishCountCache();
-                                              // clear issues
-                                              FFAppState()
-                                                  .clearIssuesHomeCache();
                                               // clear staff count
                                               FFAppState().clearStaffsCache();
                                               ScaffoldMessenger.of(context)
@@ -1074,9 +1071,6 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                               // clear replenish count
                                               FFAppState()
                                                   .clearReplenishCountCache();
-                                              // clear issues
-                                              FFAppState()
-                                                  .clearIssuesHomeCache();
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
                                                 SnackBar(

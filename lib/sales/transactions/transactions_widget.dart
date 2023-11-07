@@ -956,26 +956,28 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               color: bookingsItem.total < 0.0 ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).success,
                                                                             ),
                                                                       ),
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
-                                                                        child:
-                                                                            Text(
-                                                                          bookingsItem.remitted
-                                                                              ? 'remitted'
-                                                                              : 'unremitted',
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .bodyMedium
-                                                                              .override(
-                                                                                fontFamily: 'Readex Pro',
-                                                                                color: bookingsItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
-                                                                                fontSize: 10.0,
-                                                                              ),
+                                                                      if (valueOrDefault(
+                                                                              currentUserDocument?.role,
+                                                                              '') ==
+                                                                          'admin')
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              0.0,
+                                                                              0.0,
+                                                                              0.0,
+                                                                              10.0),
+                                                                          child:
+                                                                              Text(
+                                                                            bookingsItem.remitted
+                                                                                ? 'remitted'
+                                                                                : 'unremitted',
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  color: bookingsItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
+                                                                                  fontSize: 10.0,
+                                                                                ),
+                                                                          ),
                                                                         ),
-                                                                      ),
                                                                       InkWell(
                                                                         splashColor:
                                                                             Colors.transparent,
@@ -1311,33 +1313,37 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           .success,
                                                                     ),
                                                               ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
-                                                                child: Text(
-                                                                  goodsItem
-                                                                          .remitted
-                                                                      ? 'remitted'
-                                                                      : 'unremitted',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Readex Pro',
-                                                                        color: goodsItem.remitted
-                                                                            ? FlutterFlowTheme.of(context).secondary
-                                                                            : FlutterFlowTheme.of(context).tertiary,
-                                                                        fontSize:
-                                                                            10.0,
-                                                                      ),
+                                                              if (valueOrDefault(
+                                                                      currentUserDocument
+                                                                          ?.role,
+                                                                      '') ==
+                                                                  'admin')
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0),
+                                                                  child: Text(
+                                                                    goodsItem
+                                                                            .remitted
+                                                                        ? 'remitted'
+                                                                        : 'unremitted',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          color: goodsItem.remitted
+                                                                              ? FlutterFlowTheme.of(context).secondary
+                                                                              : FlutterFlowTheme.of(context).tertiary,
+                                                                          fontSize:
+                                                                              10.0,
+                                                                        ),
+                                                                  ),
                                                                 ),
-                                                              ),
                                                               if (valueOrDefault(
                                                                       currentUserDocument
                                                                           ?.role,
@@ -1702,33 +1708,37 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           .error,
                                                                     ),
                                                               ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
-                                                                child: Text(
-                                                                  expensesItem
-                                                                          .remitted
-                                                                      ? 'remitted'
-                                                                      : 'unremitted',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Readex Pro',
-                                                                        color: expensesItem.remitted
-                                                                            ? FlutterFlowTheme.of(context).secondary
-                                                                            : FlutterFlowTheme.of(context).tertiary,
-                                                                        fontSize:
-                                                                            10.0,
-                                                                      ),
+                                                              if (valueOrDefault(
+                                                                      currentUserDocument
+                                                                          ?.role,
+                                                                      '') ==
+                                                                  'admin')
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0),
+                                                                  child: Text(
+                                                                    expensesItem
+                                                                            .remitted
+                                                                        ? 'remitted'
+                                                                        : 'unremitted',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          color: expensesItem.remitted
+                                                                              ? FlutterFlowTheme.of(context).secondary
+                                                                              : FlutterFlowTheme.of(context).tertiary,
+                                                                          fontSize:
+                                                                              10.0,
+                                                                        ),
+                                                                  ),
                                                                 ),
-                                                              ),
                                                               if (valueOrDefault(
                                                                       currentUserDocument
                                                                           ?.role,
@@ -2363,26 +2373,28 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               color: bookingsItem.total < 0.0 ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).success,
                                                                             ),
                                                                       ),
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
-                                                                        child:
-                                                                            Text(
-                                                                          bookingsItem.remitted
-                                                                              ? 'remitted'
-                                                                              : 'unremitted',
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .bodyMedium
-                                                                              .override(
-                                                                                fontFamily: 'Readex Pro',
-                                                                                color: bookingsItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
-                                                                                fontSize: 10.0,
-                                                                              ),
+                                                                      if (valueOrDefault(
+                                                                              currentUserDocument?.role,
+                                                                              '') ==
+                                                                          'admin')
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              0.0,
+                                                                              0.0,
+                                                                              0.0,
+                                                                              10.0),
+                                                                          child:
+                                                                              Text(
+                                                                            bookingsItem.remitted
+                                                                                ? 'remitted'
+                                                                                : 'unremitted',
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  color: bookingsItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
+                                                                                  fontSize: 10.0,
+                                                                                ),
+                                                                          ),
                                                                         ),
-                                                                      ),
                                                                       InkWell(
                                                                         splashColor:
                                                                             Colors.transparent,
@@ -2879,33 +2891,37 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           .success,
                                                                     ),
                                                               ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
-                                                                child: Text(
-                                                                  goodsItem
-                                                                          .remitted
-                                                                      ? 'remitted'
-                                                                      : 'unremitted',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Readex Pro',
-                                                                        color: goodsItem.remitted
-                                                                            ? FlutterFlowTheme.of(context).secondary
-                                                                            : FlutterFlowTheme.of(context).tertiary,
-                                                                        fontSize:
-                                                                            10.0,
-                                                                      ),
+                                                              if (valueOrDefault(
+                                                                      currentUserDocument
+                                                                          ?.role,
+                                                                      '') ==
+                                                                  'admin')
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0),
+                                                                  child: Text(
+                                                                    goodsItem
+                                                                            .remitted
+                                                                        ? 'remitted'
+                                                                        : 'unremitted',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          color: goodsItem.remitted
+                                                                              ? FlutterFlowTheme.of(context).secondary
+                                                                              : FlutterFlowTheme.of(context).tertiary,
+                                                                          fontSize:
+                                                                              10.0,
+                                                                        ),
+                                                                  ),
                                                                 ),
-                                                              ),
                                                             ],
                                                           ),
                                                         ],
@@ -3361,32 +3377,31 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               FlutterFlowTheme.of(context).error,
                                                                         ),
                                                                   ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
-                                                                    child: Text(
-                                                                      expenseItem
-                                                                              .remitted
-                                                                          ? 'remitted'
-                                                                          : 'unremitted',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color: expenseItem.remitted
-                                                                                ? FlutterFlowTheme.of(context).secondary
-                                                                                : FlutterFlowTheme.of(context).tertiary,
-                                                                            fontSize:
-                                                                                10.0,
-                                                                          ),
+                                                                  if (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin')
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0),
+                                                                      child:
+                                                                          Text(
+                                                                        expenseItem.remitted
+                                                                            ? 'remitted'
+                                                                            : 'unremitted',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              color: expenseItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
+                                                                              fontSize: 10.0,
+                                                                            ),
+                                                                      ),
                                                                     ),
-                                                                  ),
                                                                   Text(
                                                                     'Issued By',
                                                                     style: FlutterFlowTheme.of(

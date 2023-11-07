@@ -252,9 +252,20 @@ class _PrintRemittanceState extends State<PrintRemittance> {
     }
 
     pw.Widget createBottomRow(RemittancesRecord remittance) {
-      final sales = remittance.gross.toStringAsFixed(2);
-      final expenses = remittance.expenses.toStringAsFixed(2);
-      final total = remittance.net.toStringAsFixed(2);
+      final sales = NumberFormat.currency(
+        symbol: 'Php ',
+        decimalDigits: 2,
+      ).format(remittance.gross);
+
+      final expenses = NumberFormat.currency(
+        symbol: 'Php ',
+        decimalDigits: 2,
+      ).format(remittance.expenses);
+
+      final total = NumberFormat.currency(
+        symbol: 'Php ',
+        decimalDigits: 2,
+      ).format(remittance.net);
 
       return pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceAround,

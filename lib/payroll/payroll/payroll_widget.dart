@@ -9,6 +9,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
@@ -629,9 +630,12 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                         CrossAxisAlignment
                                                                             .start,
                                                                     children: [
-                                                                      Text(
+                                                                      AutoSizeText(
                                                                         listViewStaffsRecord
-                                                                            .name,
+                                                                            .name
+                                                                            .maybeHandleOverflow(maxChars: 15),
+                                                                        maxLines:
+                                                                            1,
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .headlineSmall
                                                                             .override(
@@ -640,6 +644,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                               fontSize: 24.0,
                                                                               fontWeight: FontWeight.w500,
                                                                             ),
+                                                                        minFontSize:
+                                                                            10.0,
                                                                       ),
                                                                       Padding(
                                                                         padding: EdgeInsetsDirectional.fromSTEB(
@@ -649,67 +655,70 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                             0.0),
                                                                         child:
                                                                             Text(
-                                                                          'Outstanding CAs:',
+                                                                          'Unpaid CAs:',
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .titleSmall
                                                                               .override(
                                                                                 fontFamily: 'Plus Jakarta Sans',
                                                                                 color: Color(0x9AFFFFFF),
-                                                                                fontSize: 16.0,
+                                                                                fontSize: 12.0,
                                                                                 fontWeight: FontWeight.w500,
                                                                               ),
                                                                         ),
                                                                       ),
-                                                                      StreamBuilder<
-                                                                          List<
-                                                                              AdvancesRecord>>(
-                                                                        stream:
-                                                                            queryAdvancesRecord(
-                                                                          parent:
-                                                                              listViewStaffsRecord.reference,
-                                                                          queryBuilder: (advancesRecord) =>
-                                                                              advancesRecord.where(
-                                                                            'settled',
-                                                                            isEqualTo:
-                                                                                false,
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            3.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        child: StreamBuilder<
+                                                                            List<AdvancesRecord>>(
+                                                                          stream:
+                                                                              queryAdvancesRecord(
+                                                                            parent:
+                                                                                listViewStaffsRecord.reference,
+                                                                            queryBuilder: (advancesRecord) =>
+                                                                                advancesRecord.where(
+                                                                              'settled',
+                                                                              isEqualTo: false,
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                        builder:
-                                                                            (context,
-                                                                                snapshot) {
-                                                                          // Customize what your widget looks like when it's loading.
-                                                                          if (!snapshot
-                                                                              .hasData) {
-                                                                            return Center(
-                                                                              child: SizedBox(
-                                                                                width: 50.0,
-                                                                                height: 50.0,
-                                                                                child: CircularProgressIndicator(
-                                                                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                                                                    FlutterFlowTheme.of(context).primary,
+                                                                          builder:
+                                                                              (context, snapshot) {
+                                                                            // Customize what your widget looks like when it's loading.
+                                                                            if (!snapshot.hasData) {
+                                                                              return Center(
+                                                                                child: SizedBox(
+                                                                                  width: 50.0,
+                                                                                  height: 50.0,
+                                                                                  child: CircularProgressIndicator(
+                                                                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                      FlutterFlowTheme.of(context).primary,
+                                                                                    ),
                                                                                   ),
                                                                                 ),
+                                                                              );
+                                                                            }
+                                                                            List<AdvancesRecord>
+                                                                                textAdvancesRecordList =
+                                                                                snapshot.data!;
+                                                                            return Text(
+                                                                              formatNumber(
+                                                                                functions.totalOfCAs(textAdvancesRecordList.toList()),
+                                                                                formatType: FormatType.decimal,
+                                                                                decimalType: DecimalType.automatic,
+                                                                                currency: 'P ',
                                                                               ),
+                                                                              style: FlutterFlowTheme.of(context).displaySmall.override(
+                                                                                    fontFamily: 'Outfit',
+                                                                                    color: Colors.white,
+                                                                                    fontSize: 16.0,
+                                                                                    fontWeight: FontWeight.w600,
+                                                                                  ),
                                                                             );
-                                                                          }
-                                                                          List<AdvancesRecord>
-                                                                              textAdvancesRecordList =
-                                                                              snapshot.data!;
-                                                                          return Text(
-                                                                            formatNumber(
-                                                                              functions.totalOfCAs(textAdvancesRecordList.toList()),
-                                                                              formatType: FormatType.decimal,
-                                                                              decimalType: DecimalType.automatic,
-                                                                              currency: 'P ',
-                                                                            ),
-                                                                            style: FlutterFlowTheme.of(context).displaySmall.override(
-                                                                                  fontFamily: 'Outfit',
-                                                                                  color: Colors.white,
-                                                                                  fontSize: 14.0,
-                                                                                  fontWeight: FontWeight.w600,
-                                                                                ),
-                                                                          );
-                                                                        },
+                                                                          },
+                                                                        ),
                                                                       ),
                                                                     ],
                                                                   ).animateOnPageLoad(

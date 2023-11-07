@@ -149,6 +149,21 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void clearTotalTransactionsCacheKey(String? uniqueKey) =>
       _totalTransactionsManager.clearRequest(uniqueKey);
 
+  final _issueHomeManager = StreamRequestManager<List<IssuesRecord>>();
+  Stream<List<IssuesRecord>> issueHome({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Stream<List<IssuesRecord>> Function() requestFn,
+  }) =>
+      _issueHomeManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearIssueHomeCache() => _issueHomeManager.clear();
+  void clearIssueHomeCacheKey(String? uniqueKey) =>
+      _issueHomeManager.clearRequest(uniqueKey);
+
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {}
@@ -161,6 +176,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     clearSalesTotalCache();
 
     clearTotalTransactionsCache();
+
+    clearIssueHomeCache();
   }
 
   /// Action blocks are added here.

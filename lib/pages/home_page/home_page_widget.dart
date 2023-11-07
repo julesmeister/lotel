@@ -813,17 +813,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         future: FFAppState()
                                                             .checkInCount(
                                                           requestFn: () =>
-                                                              queryBookingsRecordCount(
+                                                              queryRoomsRecordCount(
                                                             queryBuilder:
-                                                                (bookingsRecord) =>
-                                                                    bookingsRecord
+                                                                (roomsRecord) =>
+                                                                    roomsRecord
                                                                         .where(
                                                                           'hotel',
                                                                           isEqualTo:
                                                                               FFAppState().hotel,
                                                                         )
                                                                         .where(
-                                                                          'remitted',
+                                                                          'vacant',
                                                                           isEqualTo:
                                                                               false,
                                                                         ),
@@ -1909,7 +1909,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     ),
                                   ),
                                   StreamBuilder<List<IssuesRecord>>(
-                                    stream: FFAppState().issuesHome(
+                                    stream: _model.issueHome(
                                       requestFn: () => queryIssuesRecord(
                                         queryBuilder: (issuesRecord) =>
                                             issuesRecord

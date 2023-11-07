@@ -73,7 +73,7 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Read Document] action in ChangeRemittance widget.
-  StatsRecord? statsToModifyCopy;
+  StatsRecord? initStat;
   // State field(s) for changeExtra widget.
   FocusNode? changeExtraFocusNode;
   TextEditingController? changeExtraController;

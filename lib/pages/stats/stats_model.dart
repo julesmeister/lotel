@@ -53,6 +53,10 @@ class StatsModel extends FlutterFlowModel<StatsWidget> {
 
   double rooms = 0.0;
 
+  double goods = 0.0;
+
+  DocumentReference? statsRef;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Firestore Query - Query a collection] action in Stats widget.
@@ -73,6 +77,10 @@ class StatsModel extends FlutterFlowModel<StatsWidget> {
   int? initStatsCountCopyCopy;
   // Stores action output result for [Firestore Query - Query a collection] action in year widget.
   StatsRecord? foundYearDoc;
+  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
+  List<TransactionsRecord>? bookingTransactionsOnly;
+  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
+  List<TransactionsRecord>? goodsTransactionsOnly;
 
   /// Initialization and disposal methods.
 

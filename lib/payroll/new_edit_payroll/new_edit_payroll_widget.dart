@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -58,13 +59,13 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
         _model.existingSalaries = await querySalariesRecordOnce(
           parent: widget.ref,
         );
+        // initialize payroll
         setState(() {
           _model.date = _model.existingPayroll?.date;
           _model.fortnight = _model.existingPayroll!.fortnight;
           _model.settled = _model.existingPayroll?.status == 'settled';
           _model.salaries =
               _model.existingSalaries!.toList().cast<SalariesRecord>();
-          _model.approved = _model.existingPayroll?.approvedBy != null;
         });
       } else {
         // new payroll
@@ -74,7 +75,23 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
           _model.settled = false;
         });
       }
+
+      _model.staffsOfThisHotel = await queryStaffsRecordOnce(
+        queryBuilder: (staffsRecord) => staffsRecord.where(
+          'hotel',
+          isEqualTo: FFAppState().hotel,
+        ),
+      );
+      setState(() {
+        _model.staffs = _model.staffsOfThisHotel!.toList().cast<StaffsRecord>();
+      });
     });
+
+    _model.newRateController ??= TextEditingController();
+    _model.newRateFocusNode ??= FocusNode();
+
+    _model.newSSSController ??= TextEditingController();
+    _model.newSSSFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -146,12 +163,6 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                     size: 24.0,
                   ),
                   onPressed: () async {
-                    _model.staffsForSelection = await queryStaffsRecordOnce(
-                      queryBuilder: (staffsRecord) => staffsRecord.where(
-                        'hotel',
-                        isEqualTo: FFAppState().hotel,
-                      ),
-                    );
                     await showModalBottomSheet(
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
@@ -168,7 +179,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               height: double.infinity,
                               child: NewSalaryWidget(
                                 payrollRef: widget.ref!,
-                                staffsForSelection: _model.staffsForSelection!,
+                                staffsForSelection: functions.staffsToAddSalary(
+                                    _model.staffs.toList(),
+                                    _model.salaries.toList()),
                               ),
                             ),
                           ),
@@ -204,31 +217,323 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Total',
-                        style: FlutterFlowTheme.of(context).labelLarge,
-                      ),
-                      Text(
-                        dateTimeFormat('EEEE MMM d y h:mm a', _model.date),
-                        style: FlutterFlowTheme.of(context).labelLarge.override(
-                              fontFamily: 'Readex Pro',
-                              color: FlutterFlowTheme.of(context).primaryText,
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Total',
+                            style: FlutterFlowTheme.of(context).labelLarge,
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 4.0, 0.0, 0.0),
+                            child: Text(
+                              formatNumber(
+                                functions
+                                    .sumOfSalaries(_model.salaries.toList()),
+                                formatType: FormatType.decimal,
+                                decimalType: DecimalType.automatic,
+                                currency: 'P ',
+                              ),
+                              style:
+                                  FlutterFlowTheme.of(context).headlineMedium,
                             ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            dateTimeFormat('EEEE MMM d y h:mm a', _model.date),
+                            style: FlutterFlowTheme.of(context)
+                                .labelLarge
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              if (_model.settled == false)
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 10.0, 0.0, 0.0),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      setState(() {
+                                        _model.showChangeRate =
+                                            !_model.showChangeRate;
+                                      });
+                                    },
+                                    child: Text(
+                                      'Change Rate',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
-                    child: Text(
-                      formatNumber(
-                        functions.sumOfSalaries(_model.salaries.toList()),
-                        formatType: FormatType.decimal,
-                        decimalType: DecimalType.automatic,
-                        currency: 'P ',
-                      ),
-                      style: FlutterFlowTheme.of(context).headlineMedium,
+                  if (_model.showChangeRate)
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 8.0, 0.0),
+                            child: TextFormField(
+                              controller: _model.newRateController,
+                              focusNode: _model.newRateFocusNode,
+                              autofocus: true,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelText: 'New Rate',
+                                labelStyle:
+                                    FlutterFlowTheme.of(context).labelMedium,
+                                hintStyle:
+                                    FlutterFlowTheme.of(context).labelMedium,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        FlutterFlowTheme.of(context).alternate,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                errorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedErrorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              style: FlutterFlowTheme.of(context).bodyMedium,
+                              keyboardType: TextInputType.number,
+                              validator: _model.newRateControllerValidator
+                                  .asValidator(context),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp('[0-9]'))
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 8.0, 0.0),
+                            child: TextFormField(
+                              controller: _model.newSSSController,
+                              focusNode: _model.newSSSFocusNode,
+                              autofocus: true,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelText: 'New SSS Rate',
+                                labelStyle:
+                                    FlutterFlowTheme.of(context).labelMedium,
+                                hintStyle:
+                                    FlutterFlowTheme.of(context).labelMedium,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        FlutterFlowTheme.of(context).alternate,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                errorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedErrorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              style: FlutterFlowTheme.of(context).bodyMedium,
+                              keyboardType: TextInputType.number,
+                              validator: _model.newSSSControllerValidator
+                                  .asValidator(context),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp('[0-9]'))
+                              ],
+                            ),
+                          ),
+                        ),
+                        FlutterFlowIconButton(
+                          borderRadius: 20.0,
+                          borderWidth: 1.0,
+                          buttonSize: 40.0,
+                          icon: Icon(
+                            Icons.currency_exchange,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            var confirmDialogResponse = await showDialog<bool>(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      title: Text('Are you sure?'),
+                                      content: Text(
+                                          'This will change the fortnight rate of all employees. '),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(
+                                              alertDialogContext, false),
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(
+                                              alertDialogContext, true),
+                                          child: Text('Confirm'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ) ??
+                                false;
+                            if (confirmDialogResponse) {
+                              // reset loop counter
+                              setState(() {
+                                _model.loopSalariesCounter = 0;
+                              });
+                              while (_model.loopSalariesCounter !=
+                                  _model.salaries.length) {
+                                if (_model.newRateController.text != null &&
+                                    _model.newRateController.text != '') {
+                                  // update rate every staff
+
+                                  await _model
+                                      .salaries[_model.loopSalariesCounter]
+                                      .reference
+                                      .update(createSalariesRecordData(
+                                    rate: double.tryParse(
+                                        _model.newRateController.text),
+                                  ));
+                                }
+                                if (_model.newSSSController.text != null &&
+                                    _model.newSSSController.text != '') {
+                                  if (_model
+                                          .salaries[_model.loopSalariesCounter]
+                                          .sss !=
+                                      0.0) {
+                                    // update rate every staff
+
+                                    await _model
+                                        .salaries[_model.loopSalariesCounter]
+                                        .reference
+                                        .update(createSalariesRecordData(
+                                      sss: double.tryParse(
+                                          _model.newSSSController.text),
+                                    ));
+                                  }
+                                }
+                                // update total
+
+                                await _model
+                                    .salaries[_model.loopSalariesCounter]
+                                    .reference
+                                    .update(createSalariesRecordData(
+                                  total: functions.updateSalaryTotal(
+                                      _model.newRateController.text != null &&
+                                          _model.newRateController.text != '',
+                                      _model.newSSSController.text != null &&
+                                          _model.newSSSController.text != '',
+                                      _model
+                                          .salaries[_model.loopSalariesCounter]
+                                          .rate,
+                                      double.tryParse(
+                                          _model.newRateController.text),
+                                      _model
+                                          .salaries[_model.loopSalariesCounter]
+                                          .sss,
+                                      double.tryParse(
+                                          _model.newSSSController.text),
+                                      _model
+                                          .salaries[_model.loopSalariesCounter]
+                                          .cashAdvance),
+                                ));
+                                // increment loop
+                                setState(() {
+                                  _model.loopSalariesCounter =
+                                      _model.loopSalariesCounter + 1;
+                                });
+                              }
+                              // updated salaries
+                              _model.updatedSalaries =
+                                  await querySalariesRecordOnce(
+                                parent: widget.ref,
+                              );
+                              // initialize payroll
+                              setState(() {
+                                _model.salaries = _model.updatedSalaries!
+                                    .toList()
+                                    .cast<SalariesRecord>();
+                                _model.showChangeRate = false;
+                              });
+                            }
+                            // reset form fields
+                            setState(() {
+                              _model.newRateController?.clear();
+                              _model.newSSSController?.clear();
+                            });
+
+                            setState(() {});
+                          },
+                        ),
+                      ],
                     ),
-                  ),
                   Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
@@ -1025,6 +1330,22 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                       ],
                     ),
                   ),
+                  if (_model.existingPayroll?.status == 'settled')
+                    Container(
+                      width: double.infinity,
+                      height: 48.0,
+                      child: custom_widgets.PrintPayroll(
+                        width: double.infinity,
+                        height: 48.0,
+                        hotel: FFAppState().hotel,
+                        salaries: _model.salaries,
+                        staffs: _model.staffs,
+                        total:
+                            functions.sumOfSalaries(_model.salaries.toList()),
+                        fortnight: _model.fortnight,
+                        date: _model.date!,
+                      ),
+                    ),
                   if (_model.existingPayroll?.status != 'settled')
                     Align(
                       alignment: AlignmentDirectional(0.00, 1.00),
@@ -1169,6 +1490,19 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   backgroundColor:
                                       FlutterFlowTheme.of(context).secondary,
                                 ),
+                              );
+                              // go to editing this payroll
+                              if (Navigator.of(context).canPop()) {
+                                context.pop();
+                              }
+                              context.pushNamed(
+                                'NewEditPayroll',
+                                queryParameters: {
+                                  'ref': serializeParam(
+                                    _model.newPayroll?.reference,
+                                    ParamType.DocumentReference,
+                                  ),
+                                }.withoutNulls,
                               );
                             }
 
