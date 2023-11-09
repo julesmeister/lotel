@@ -29,6 +29,20 @@
       ]
     },
     {
+      "collectionGroup": "remittances",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hotel",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "rooms",
       "queryScope": "COLLECTION",
       "fields": [

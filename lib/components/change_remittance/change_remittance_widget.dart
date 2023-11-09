@@ -267,7 +267,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                         .transactions![
                                             _model.loopTransactionsCounter]
                                         .booking!);
-                                // update use of room
+                                // update use of room local
                                 setState(() {
                                   _model.updateRoomUsageAtIndex(
                                     functions.indexOfRoomInRoomUsage(
@@ -305,7 +305,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                     _model.loopTransactionsCounter + 1;
                               });
                             }
-                            // update roomUsage
+                            // update roomUsage firestore
 
                             await FFAppState().statsReference!.update({
                               ...mapToFirestore(

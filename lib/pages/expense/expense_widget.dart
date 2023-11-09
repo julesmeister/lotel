@@ -461,7 +461,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                     type: 'expense',
                                     hotel: FFAppState().hotel,
                                     description:
-                                        _model.descriptionController.text,
+                                        '${_model.selectedNameValue} claimed ${_model.descriptionController.text}',
                                     remitted: false,
                                   ),
                                   ...mapToFirestore(
@@ -488,7 +488,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                 return;
                               }
                             } else {
-                              // Are you sure?
+                              // Not cash advance
                               var confirmDialogResponse =
                                   await showDialog<bool>(
                                         context: context,

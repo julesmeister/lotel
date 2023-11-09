@@ -148,6 +148,19 @@ class _PayrollWidgetState extends State<PayrollWidget>
             appBar: AppBar(
               backgroundColor: FlutterFlowTheme.of(context).info,
               automaticallyImplyLeading: false,
+              leading: FlutterFlowIconButton(
+                borderRadius: 20.0,
+                borderWidth: 1.0,
+                buttonSize: 40.0,
+                icon: Icon(
+                  Icons.chevron_left,
+                  color: FlutterFlowTheme.of(context).primaryText,
+                  size: 24.0,
+                ),
+                onPressed: () async {
+                  context.safePop();
+                },
+              ),
               title: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,

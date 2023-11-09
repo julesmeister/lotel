@@ -1068,7 +1068,9 @@ class _StatsWidgetState extends State<StatsWidget>
             if (_model.roomUsage.length > 0)
               Builder(
                 builder: (context) {
-                  final roomUsages = _model.roomUsage.toList();
+                  final roomUsages = functions
+                      .highestRoomUtilityOrderUsage(_model.roomUsage.toList())
+                      .toList();
                   return ListView.builder(
                     padding: EdgeInsets.zero,
                     primary: false,
@@ -1081,6 +1083,7 @@ class _StatsWidgetState extends State<StatsWidget>
                         padding: EdgeInsetsDirectional.fromSTEB(
                             16.0, 12.0, 12.0, 12.0),
                         child: Container(
+                          width: double.infinity,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
@@ -1149,37 +1152,37 @@ class _StatsWidgetState extends State<StatsWidget>
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      12.0, 12.0, 12.0, 12.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: LinearPercentIndicator(
-                                          percent: valueOrDefault<double>(
-                                            functions.progressRoomUsage(
-                                                _model.roomUsage.toList(),
-                                                roomUsagesItem),
-                                            0.0,
-                                          ),
-                                          width: 120.0,
-                                          lineHeight: 12.0,
-                                          animation: true,
-                                          animateFromLastPercent: true,
-                                          progressColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .accent4,
-                                          barRadius: Radius.circular(10.0),
-                                          padding: EdgeInsets.zero,
+                                ClipRRect(
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 30.0,
+                                    decoration: BoxDecoration(),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          12.0, 0.0, 12.0, 0.0),
+                                      child: LinearPercentIndicator(
+                                        percent: valueOrDefault<double>(
+                                          functions.progressRoomUsage(
+                                              _model.roomUsage.toList(),
+                                              roomUsagesItem),
+                                          0.0,
                                         ),
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                0.8,
+                                        lineHeight: 12.0,
+                                        animation: true,
+                                        animateFromLastPercent: true,
+                                        progressColor:
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .accent4,
+                                        barRadius: Radius.circular(10.0),
+                                        padding: EdgeInsets.zero,
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ],

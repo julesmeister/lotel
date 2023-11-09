@@ -130,9 +130,7 @@ class _NavBarPageState extends State<NavBarPage> {
       'HomePage': HomePageWidget(),
       'mart': MartWidget(),
       'transactions': TransactionsWidget(),
-      'remittances': RemittancesWidget(),
       'Expense': ExpenseWidget(),
-      'Payroll': PayrollWidget(),
       'ProfileSettings': ProfileSettingsWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
@@ -170,15 +168,7 @@ class _NavBarPageState extends State<NavBarPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.feed_outlined,
-              size: 24.0,
-            ),
-            label: 'Home',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.receipt,
+              Icons.menu_book,
               size: 24.0,
             ),
             label: 'Home',
@@ -187,14 +177,6 @@ class _NavBarPageState extends State<NavBarPage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.attachment,
-              size: 24.0,
-            ),
-            label: 'Home',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.local_atm_outlined,
               size: 24.0,
             ),
             label: 'Home',

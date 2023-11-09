@@ -189,9 +189,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'remittances',
           path: '/remittances',
           requireAuth: true,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'remittances')
-              : RemittancesWidget(),
+          builder: (context, params) => RemittancesWidget(),
         ),
         FFRoute(
           name: 'Expense',
@@ -203,9 +201,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'Payroll',
           path: '/payroll',
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'Payroll')
-              : PayrollWidget(),
+          builder: (context, params) => PayrollWidget(),
         ),
         FFRoute(
           name: 'NewEditPayroll',

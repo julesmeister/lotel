@@ -8,6 +8,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -232,6 +233,19 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
             appBar: AppBar(
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
               automaticallyImplyLeading: false,
+              leading: FlutterFlowIconButton(
+                borderRadius: 20.0,
+                borderWidth: 1.0,
+                buttonSize: 40.0,
+                icon: Icon(
+                  Icons.chevron_left,
+                  color: FlutterFlowTheme.of(context).primaryText,
+                  size: 24.0,
+                ),
+                onPressed: () async {
+                  context.safePop();
+                },
+              ),
               title: Align(
                 alignment: AlignmentDirectional(-1.00, 0.00),
                 child: Text(
@@ -263,14 +277,16 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                         children: [
                           Expanded(
                             flex: 5,
-                            child: Text(
+                            child: AutoSizeText(
                               dateTimeFormat('MMMMEEEEd', _model.date),
+                              maxLines: 1,
                               style: FlutterFlowTheme.of(context)
                                   .displaySmall
                                   .override(
                                     fontFamily: 'Outfit',
                                     fontSize: 26.0,
                                   ),
+                              minFontSize: 22.0,
                             ).animateOnPageLoad(
                                 animationsMap['textOnPageLoadAnimation']!),
                           ),

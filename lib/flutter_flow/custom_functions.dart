@@ -62,12 +62,10 @@ String? paidOrPending(bool? paid) {
 }
 
 DateTime? yesterdayDate() {
-  // return yesterday since 2pm utc 8
-  final now = DateTime.now().toUtc();
-  final yesterday = now.subtract(Duration(days: 1));
-  final yesterday2pm =
-      DateTime.utc(yesterday.year, yesterday.month, yesterday.day, 14);
-  return yesterday2pm;
+  // yesterday starting midnight
+  final now = DateTime.now();
+  final yesterday = DateTime(now.year, now.month, now.day - 1);
+  return yesterday;
 }
 
 String? whichItemCategory(String? category) {
@@ -685,23 +683,24 @@ double progressRoomUsage(
   List<RoomUsageStruct> list,
   RoomUsageStruct room,
 ) {
-  int totalUsage = list.fold(0, (sum, roomUsage) => sum + roomUsage.use);
+  double maxUtilization = 0;
+  for (var roomUsage in list) {
+    if (roomUsage.use > maxUtilization) {
+      maxUtilization = roomUsage.use.toDouble();
+    }
+  }
 
   // Find the room to compare
   RoomUsageStruct roomToCompare =
       list.firstWhere((roomUsage) => roomUsage.number == room.number);
 
-  if (roomToCompare.use == 0) {
-    // Return 0% if the room to compare has not been used
+  if (maxUtilization == 0) {
+    // Return 0% if the max utilization is 0
     return 0.0;
   }
 
-  // Calculate the average usage of other rooms
-  int otherRoomsTotalUsage = totalUsage - roomToCompare.use;
-  double averageUsage = otherRoomsTotalUsage / (list.length - 1);
-
-  // Calculate the utilization percentage based on the average
-  double utilizationPercentage = (roomToCompare.use / averageUsage);
+  // Calculate the percentage of the room's utilization relative to the max utilization
+  double utilizationPercentage = roomToCompare.use / maxUtilization;
 
   return utilizationPercentage <= 1.0 ? utilizationPercentage : 1.0;
 }
@@ -883,4 +882,11 @@ double updateSalaryTotal(
 
   final total = rate - sss - ca;
   return total;
+}
+
+List<RoomUsageStruct> highestRoomUtilityOrderUsage(
+    List<RoomUsageStruct> roomUsage) {
+  // sort by roomUsage.use descending
+  roomUsage.sort((a, b) => b.use.compareTo(a.use));
+  return roomUsage;
 }

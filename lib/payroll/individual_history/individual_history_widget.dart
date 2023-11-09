@@ -136,7 +136,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                     padding:
                         EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
                     child: Text(
-                      'Below are a summary of the staff\'s salary history.',
+                      'Below is the summary of the staff\'s salary history.',
                       style: FlutterFlowTheme.of(context).labelMedium,
                     ),
                   ),
@@ -385,22 +385,13 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                   CrossAxisAlignment
                                                                       .start,
                                                               children: [
-                                                                Text(
-                                                                  dateTimeFormat(
-                                                                      'MMM d y h:mm a',
-                                                                      listViewSalariesRecord
-                                                                          .date!),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyLarge,
-                                                                ),
                                                                 Padding(
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
-                                                                          4.0,
                                                                           0.0,
-                                                                          0.0),
+                                                                          0.0,
+                                                                          3.0),
                                                                   child: Text(
                                                                     'Date Issued',
                                                                     style: FlutterFlowTheme.of(
@@ -408,44 +399,42 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                         .labelSmall,
                                                                   ),
                                                                 ),
+                                                                Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      dateTimeFormat(
+                                                                          'MMM d y h:mm a',
+                                                                          listViewSalariesRecord
+                                                                              .date!),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyLarge,
+                                                                    ),
+                                                                    Text(
+                                                                      formatNumber(
+                                                                        listViewSalariesRecord
+                                                                            .total,
+                                                                        formatType:
+                                                                            FormatType.decimal,
+                                                                        decimalType:
+                                                                            DecimalType.automatic,
+                                                                        currency:
+                                                                            'P ',
+                                                                      ),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyLarge,
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ],
                                                             ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      0.0,
-                                                                      15.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Text(
-                                                                formatNumber(
-                                                                  listViewSalariesRecord
-                                                                      .total,
-                                                                  formatType:
-                                                                      FormatType
-                                                                          .decimal,
-                                                                  decimalType:
-                                                                      DecimalType
-                                                                          .automatic,
-                                                                  currency:
-                                                                      'P ',
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyLarge,
-                                                              ),
-                                                            ],
                                                           ),
                                                         ),
                                                       ],
@@ -630,155 +619,153 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                         ),
                                                       ),
                                                       Expanded(
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      12.0,
-                                                                      15.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                dateTimeFormat(
-                                                                    'MMM d y h:mm a',
-                                                                    listViewAdvancesRecord
-                                                                        .date!),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyLarge,
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          12.0,
+                                                                          15.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             4.0,
                                                                             0.0,
-                                                                            0.0),
-                                                                child: Text(
-                                                                  'Date Issued',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelSmall,
-                                                                ),
+                                                                            5.0),
+                                                                    child: Text(
+                                                                      'Date Issued',
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .labelSmall,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    dateTimeFormat(
+                                                                        'MMM d y h:mm a',
+                                                                        listViewAdvancesRecord
+                                                                            .date!),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge,
+                                                                  ),
+                                                                ],
                                                               ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    15.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Text(
-                                                              formatNumber(
-                                                                listViewAdvancesRecord
-                                                                    .amount,
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                                currency: 'P ',
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyLarge,
                                                             ),
                                                             Padding(
                                                               padding:
                                                                   EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
-                                                                          8.0,
+                                                                          15.0,
                                                                           0.0,
                                                                           0.0),
-                                                              child: Container(
-                                                                width: 91.0,
-                                                                height: 32.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: listViewAdvancesRecord
-                                                                              .settled ==
-                                                                          false
-                                                                      ? FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .accent3
-                                                                      : FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .accent2,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5.0),
-                                                                  border: Border
-                                                                      .all(
-                                                                    color: listViewAdvancesRecord.settled ==
-                                                                            false
-                                                                        ? FlutterFlowTheme.of(context)
-                                                                            .error
-                                                                        : FlutterFlowTheme.of(context)
-                                                                            .secondary,
-                                                                    width: 1.0,
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  Text(
+                                                                    formatNumber(
+                                                                      listViewAdvancesRecord
+                                                                          .amount,
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .decimal,
+                                                                      decimalType:
+                                                                          DecimalType
+                                                                              .automatic,
+                                                                      currency:
+                                                                          'P ',
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge,
                                                                   ),
-                                                                ),
-                                                                child: Align(
-                                                                  alignment:
-                                                                      AlignmentDirectional(
-                                                                          0.00,
-                                                                          0.00),
-                                                                  child:
-                                                                      Padding(
+                                                                  Padding(
                                                                     padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
-                                                                            8.0,
                                                                             0.0,
                                                                             8.0,
+                                                                            0.0,
                                                                             0.0),
-                                                                    child: Text(
-                                                                      listViewAdvancesRecord
-                                                                              .settled
-                                                                          ? 'settled'
-                                                                          : 'pending',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color: listViewAdvancesRecord.settled == false
-                                                                                ? FlutterFlowTheme.of(context).error
-                                                                                : FlutterFlowTheme.of(context).secondary,
+                                                                    child:
+                                                                        Container(
+                                                                      width:
+                                                                          91.0,
+                                                                      height:
+                                                                          32.0,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: listViewAdvancesRecord.settled ==
+                                                                                false
+                                                                            ? FlutterFlowTheme.of(context).accent3
+                                                                            : FlutterFlowTheme.of(context).accent2,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(5.0),
+                                                                        border:
+                                                                            Border.all(
+                                                                          color: listViewAdvancesRecord.settled == false
+                                                                              ? FlutterFlowTheme.of(context).error
+                                                                              : FlutterFlowTheme.of(context).secondary,
+                                                                          width:
+                                                                              1.0,
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          Align(
+                                                                        alignment: AlignmentDirectional(
+                                                                            0.00,
+                                                                            0.00),
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              8.0,
+                                                                              0.0,
+                                                                              8.0,
+                                                                              0.0),
+                                                                          child:
+                                                                              Text(
+                                                                            listViewAdvancesRecord.settled
+                                                                                ? 'settled'
+                                                                                : 'pending',
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  color: listViewAdvancesRecord.settled == false ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
+                                                                                ),
                                                                           ),
+                                                                        ),
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
+                                                                ],
                                                               ),
                                                             ),
                                                           ],

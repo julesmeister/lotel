@@ -564,6 +564,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     ) ??
                                                     false;
                                             if (confirmDialogResponse) {
+                                              // unremitted
                                               _model.unRemitted =
                                                   await queryRemittancesRecordOnce(
                                                 queryBuilder:
@@ -582,6 +583,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 singleRecord: true,
                                               ).then((s) => s.firstOrNull);
                                               _shouldSetState = true;
+                                              // update collected by
 
                                               await _model.unRemitted!.reference
                                                   .update(
@@ -2216,6 +2218,252 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 ],
                               );
                             },
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: Visibility(
+                            visible:
+                                valueOrDefault(currentUserDocument?.role, '') !=
+                                    'generic',
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 16.0),
+                              child: AuthUserStreamWidget(
+                                builder: (context) => Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 24.0, 24.0, 16.0),
+                                      child: FutureBuilder<
+                                          List<RemittancesRecord>>(
+                                        future: _model.homeRemittance(
+                                          requestFn: () =>
+                                              queryRemittancesRecordOnce(
+                                            queryBuilder: (remittancesRecord) =>
+                                                remittancesRecord
+                                                    .where(
+                                                      'hotel',
+                                                      isEqualTo:
+                                                          FFAppState().hotel,
+                                                    )
+                                                    .orderBy('date',
+                                                        descending: true),
+                                            singleRecord: true,
+                                          ),
+                                        ),
+                                        builder: (context, snapshot) {
+                                          // Customize what your widget looks like when it's loading.
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 50.0,
+                                                height: 50.0,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          List<RemittancesRecord>
+                                              topTitleRemittancesRecordList =
+                                              snapshot.data!;
+                                          // Return an empty Container when the item does not exist.
+                                          if (snapshot.data!.isEmpty) {
+                                            return Container();
+                                          }
+                                          final topTitleRemittancesRecord =
+                                              topTitleRemittancesRecordList
+                                                      .isNotEmpty
+                                                  ? topTitleRemittancesRecordList
+                                                      .first
+                                                  : null;
+                                          return Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Remittances',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Plus Jakarta Sans',
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                          fontSize: 14.0,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    valueOrDefault<String>(
+                                                      formatNumber(
+                                                        topTitleRemittancesRecord
+                                                            ?.net,
+                                                        formatType:
+                                                            FormatType.decimal,
+                                                        decimalType: DecimalType
+                                                            .automatic,
+                                                        currency: 'P ',
+                                                      ),
+                                                      '0',
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .displaySmall
+                                                        .override(
+                                                          fontFamily: 'Outfit',
+                                                          color:
+                                                              Color(0xFF14181B),
+                                                          fontSize: 36.0,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 4.0,
+                                                                0.0, 0.0),
+                                                    child: Text(
+                                                      'Last Remittance',
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelSmall
+                                                          .override(
+                                                            fontFamily:
+                                                                'Plus Jakarta Sans',
+                                                            color: Color(
+                                                                0xFF57636C),
+                                                            fontSize: 12.0,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    FlutterFlowIconButton(
+                                                      borderColor:
+                                                          Color(0xFFF1F4F8),
+                                                      borderRadius: 30.0,
+                                                      borderWidth: 2.0,
+                                                      buttonSize: 44.0,
+                                                      icon: Icon(
+                                                        Icons
+                                                            .arrow_forward_rounded,
+                                                        color:
+                                                            Color(0xFF57636C),
+                                                        size: 24.0,
+                                                      ),
+                                                      onPressed: () async {
+                                                        context.pushNamed(
+                                                            'remittances');
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    if (valueOrDefault(
+                                            currentUserDocument?.role, '') ==
+                                        'admin')
+                                      Divider(
+                                        height: 4.0,
+                                        thickness: 2.0,
+                                        indent: 20.0,
+                                        endIndent: 20.0,
+                                        color: Color(0xFFE0E3E7),
+                                      ),
+                                    if (valueOrDefault(
+                                            currentUserDocument?.role, '') ==
+                                        'admin')
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            24.0, 24.0, 24.0, 0.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Payroll',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .displaySmall
+                                                  .override(
+                                                    fontFamily: 'Outfit',
+                                                    color: Color(0xFF14181B),
+                                                    fontSize: 36.0,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  FlutterFlowIconButton(
+                                                    borderColor:
+                                                        Color(0xFFF1F4F8),
+                                                    borderRadius: 30.0,
+                                                    borderWidth: 2.0,
+                                                    buttonSize: 44.0,
+                                                    icon: Icon(
+                                                      Icons
+                                                          .arrow_forward_rounded,
+                                                      color: Color(0xFF57636C),
+                                                      size: 24.0,
+                                                    ),
+                                                    onPressed: () async {
+                                                      context
+                                                          .pushNamed('Payroll');
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],

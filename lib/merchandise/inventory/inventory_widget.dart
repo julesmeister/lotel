@@ -133,7 +133,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                           fillColor:
                               FlutterFlowTheme.of(context).secondaryBackground,
                           icon: Icon(
-                            Icons.assignment_turned_in_outlined,
+                            Icons.shelves,
                             color: FlutterFlowTheme.of(context).primaryText,
                             size: 24.0,
                           ),
