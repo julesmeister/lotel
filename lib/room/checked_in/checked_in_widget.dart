@@ -889,10 +889,12 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 FFButtonWidget(
                                                               onPressed:
                                                                   () async {
+                                                                var _shouldSetState =
+                                                                    false;
                                                                 if (checkedInBookingsRecord
                                                                         .status ==
                                                                     'pending') {
-                                                                  // confirm first
+                                                                  // confirm pay all pendings
                                                                   var confirmDialogResponse =
                                                                       await showDialog<
                                                                               bool>(
@@ -918,15 +920,77 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           ) ??
                                                                           false;
                                                                   if (confirmDialogResponse) {
-                                                                    // paid status
+                                                                    while (_model
+                                                                            .loopPendingCounter !=
+                                                                        checkedInBookingsRecord
+                                                                            .pendings
+                                                                            .length) {
+                                                                      // pendingTrans
+                                                                      _model
+                                                                          .pendingTrans = await TransactionsRecord.getDocumentOnce(checkedInBookingsRecord
+                                                                              .pendings[
+                                                                          _model
+                                                                              .loopPendingCounter]);
+                                                                      _shouldSetState =
+                                                                          true;
+                                                                      // pay balance of this transaction
+
+                                                                      await checkedInBookingsRecord
+                                                                          .pendings[
+                                                                              _model.loopPendingCounter]
+                                                                          .update({
+                                                                        ...createTransactionsRecordData(
+                                                                          pending:
+                                                                              false,
+                                                                          description: _model.pendingTrans!.total < 0.0
+                                                                              ? _model.pendingTrans?.description
+                                                                              : 'Guest paid the balance for ${_model.pendingTrans?.description}',
+                                                                        ),
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'date':
+                                                                                FieldValue.serverTimestamp(),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                      // remove trans from pending in booking
+
+                                                                      await widget
+                                                                          .booking!
+                                                                          .update({
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'pendings':
+                                                                                FieldValue.arrayRemove([
+                                                                              _model.pendingTrans?.reference
+                                                                            ]),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                      // increment loop
+                                                                      setState(
+                                                                          () {
+                                                                        _model.loopPendingCounter =
+                                                                            _model.loopPendingCounter +
+                                                                                1;
+                                                                      });
+                                                                    }
+                                                                    // paid booking status
 
                                                                     await widget
                                                                         .booking!
-                                                                        .update(
-                                                                            createBookingsRecordData(
-                                                                      status:
-                                                                          'paid',
-                                                                    ));
+                                                                        .update({
+                                                                      ...createBookingsRecordData(
+                                                                        status:
+                                                                            'paid',
+                                                                      ),
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'pendings':
+                                                                              _model.pendings,
+                                                                        },
+                                                                      ),
+                                                                    });
                                                                     // add paid amount to history
 
                                                                     await HistoryRecord.createDoc(
@@ -937,44 +1001,6 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                             'Guest/s have settled the amount of Php ${functions.getTotalAmount(checkedInBookingsRecord.extraBeds, checkedInBookingsRecord.nights, checkedInBookingsRecord.total, FFAppState().bedPrice, '-1', 0)?.toString()}',
                                                                         staff:
                                                                             currentUserReference,
-                                                                      ),
-                                                                      ...mapToFirestore(
-                                                                        {
-                                                                          'date':
-                                                                              FieldValue.serverTimestamp(),
-                                                                        },
-                                                                      ),
-                                                                    });
-                                                                    // New Transaction
-
-                                                                    await TransactionsRecord
-                                                                        .collection
-                                                                        .doc()
-                                                                        .set({
-                                                                      ...createTransactionsRecordData(
-                                                                        staff:
-                                                                            currentUserReference,
-                                                                        total: functions.getTotalAmount(
-                                                                            checkedInBookingsRecord.extraBeds,
-                                                                            checkedInBookingsRecord.nights,
-                                                                            checkedInBookingsRecord.total,
-                                                                            FFAppState().bedPrice,
-                                                                            '-1',
-                                                                            0),
-                                                                        type:
-                                                                            'book',
-                                                                        hotel: FFAppState()
-                                                                            .hotel,
-                                                                        booking:
-                                                                            checkedInBookingsRecord.reference,
-                                                                        guests:
-                                                                            functions.stringToInt(checkedInBookingsRecord.guests),
-                                                                        room: widget
-                                                                            .roomNo,
-                                                                        description:
-                                                                            'Guest at room ${widget.roomNo?.toString()} paid balance',
-                                                                        remitted:
-                                                                            false,
                                                                       ),
                                                                       ...mapToFirestore(
                                                                         {
@@ -1004,10 +1030,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       ),
                                                                     );
                                                                   } else {
+                                                                    if (_shouldSetState)
+                                                                      setState(
+                                                                          () {});
                                                                     return;
                                                                   }
                                                                 } else {
-                                                                  // confirm
+                                                                  // confirm check out
                                                                   var confirmDialogResponse =
                                                                       await showDialog<
                                                                               bool>(
@@ -1100,9 +1129,16 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     context
                                                                         .safePop();
                                                                   } else {
+                                                                    if (_shouldSetState)
+                                                                      setState(
+                                                                          () {});
                                                                     return;
                                                                   }
                                                                 }
+
+                                                                if (_shouldSetState)
+                                                                  setState(
+                                                                      () {});
                                                               },
                                                               text: checkedInBookingsRecord
                                                                           .status ==
@@ -1414,68 +1450,183 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       remitted:
                                                                           false,
                                                                     ));
-                                                                    // add this price change to history
+                                                                    if (checkedInBookingsRecord
+                                                                            .status ==
+                                                                        'paid') {
+                                                                      // new transaction
 
-                                                                    await HistoryRecord.createDoc(
-                                                                            checkedInBookingsRecord.room!)
-                                                                        .set({
-                                                                      ...createHistoryRecordData(
-                                                                        description:
-                                                                            'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${_model.newPriceController.text}. For the reason ${_model.priceChangedescriptionValue}.This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)).toString()}.',
-                                                                        staff:
-                                                                            currentUserReference,
-                                                                      ),
-                                                                      ...mapToFirestore(
-                                                                        {
-                                                                          'date':
-                                                                              FieldValue.serverTimestamp(),
-                                                                        },
-                                                                      ),
-                                                                    });
-                                                                    // new transaction
-
-                                                                    await TransactionsRecord
-                                                                        .collection
-                                                                        .doc()
-                                                                        .set({
-                                                                      ...createTransactionsRecordData(
-                                                                        staff:
-                                                                            currentUserReference,
-                                                                        total: functions.priceHasChanged(
-                                                                            checkedInBookingsRecord.total,
-                                                                            double.parse(_model.newPriceController.text)),
-                                                                        booking:
-                                                                            widget.booking,
-                                                                        hotel: FFAppState()
-                                                                            .hotel,
-                                                                        type:
-                                                                            'book',
-                                                                        guests:
-                                                                            int.parse(checkedInBookingsRecord.guests),
-                                                                        room: widget
-                                                                            .roomNo,
-                                                                        description:
-                                                                            _model.priceChangedescriptionValue,
-                                                                        remitted:
-                                                                            false,
-                                                                      ),
-                                                                      ...mapToFirestore(
-                                                                        {
-                                                                          'date':
-                                                                              FieldValue.serverTimestamp(),
-                                                                        },
-                                                                      ),
-                                                                    });
-                                                                    // adjust stats
-
-                                                                    await FFAppState()
-                                                                        .statsReference!
-                                                                        .update(
-                                                                            createStatsRecordData(
-                                                                          roomsIncome: functions.priceHasChanged(
+                                                                      await TransactionsRecord
+                                                                          .collection
+                                                                          .doc()
+                                                                          .set({
+                                                                        ...createTransactionsRecordData(
+                                                                          staff:
+                                                                              currentUserReference,
+                                                                          total: functions.priceHasChanged(
                                                                               checkedInBookingsRecord.total,
                                                                               double.parse(_model.newPriceController.text)),
-                                                                        ));
+                                                                          booking:
+                                                                              widget.booking,
+                                                                          hotel:
+                                                                              FFAppState().hotel,
+                                                                          type:
+                                                                              'book',
+                                                                          guests:
+                                                                              int.parse(checkedInBookingsRecord.guests),
+                                                                          room:
+                                                                              widget.roomNo,
+                                                                          description:
+                                                                              '${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                          remitted:
+                                                                              false,
+                                                                          pending:
+                                                                              false,
+                                                                        ),
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'date':
+                                                                                FieldValue.serverTimestamp(),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                      // add this price change to history
+
+                                                                      await HistoryRecord.createDoc(
+                                                                              checkedInBookingsRecord.room!)
+                                                                          .set({
+                                                                        ...createHistoryRecordData(
+                                                                          description:
+                                                                              'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${_model.newPriceController.text}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)).toString()}.',
+                                                                          staff:
+                                                                              currentUserReference,
+                                                                        ),
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'date':
+                                                                                FieldValue.serverTimestamp(),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                    } else {
+                                                                      // new pending transaction
+
+                                                                      var transactionsRecordReference2 = TransactionsRecord
+                                                                          .collection
+                                                                          .doc();
+                                                                      await transactionsRecordReference2
+                                                                          .set({
+                                                                        ...createTransactionsRecordData(
+                                                                          staff:
+                                                                              currentUserReference,
+                                                                          total: functions.priceHasChanged(
+                                                                              checkedInBookingsRecord.total,
+                                                                              double.parse(_model.newPriceController.text)),
+                                                                          booking:
+                                                                              widget.booking,
+                                                                          hotel:
+                                                                              FFAppState().hotel,
+                                                                          type:
+                                                                              'book',
+                                                                          guests:
+                                                                              int.parse(checkedInBookingsRecord.guests),
+                                                                          room:
+                                                                              widget.roomNo,
+                                                                          description:
+                                                                              '${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                          remitted:
+                                                                              false,
+                                                                          pending:
+                                                                              true,
+                                                                        ),
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'date':
+                                                                                FieldValue.serverTimestamp(),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                      _model.newPending =
+                                                                          TransactionsRecord
+                                                                              .getDocumentFromData({
+                                                                        ...createTransactionsRecordData(
+                                                                          staff:
+                                                                              currentUserReference,
+                                                                          total: functions.priceHasChanged(
+                                                                              checkedInBookingsRecord.total,
+                                                                              double.parse(_model.newPriceController.text)),
+                                                                          booking:
+                                                                              widget.booking,
+                                                                          hotel:
+                                                                              FFAppState().hotel,
+                                                                          type:
+                                                                              'book',
+                                                                          guests:
+                                                                              int.parse(checkedInBookingsRecord.guests),
+                                                                          room:
+                                                                              widget.roomNo,
+                                                                          description:
+                                                                              '${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                          remitted:
+                                                                              false,
+                                                                          pending:
+                                                                              true,
+                                                                        ),
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'date':
+                                                                                DateTime.now(),
+                                                                          },
+                                                                        ),
+                                                                      }, transactionsRecordReference2);
+                                                                      // add to pending list
+
+                                                                      await widget
+                                                                          .booking!
+                                                                          .update({
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'pendings':
+                                                                                FieldValue.arrayUnion([
+                                                                              _model.newPending?.reference
+                                                                            ]),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                      // add this price change to history
+
+                                                                      await HistoryRecord.createDoc(
+                                                                              checkedInBookingsRecord.room!)
+                                                                          .set({
+                                                                        ...createHistoryRecordData(
+                                                                          description:
+                                                                              'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${_model.newPriceController.text}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)).toString()}. But payment is pending.',
+                                                                          staff:
+                                                                              currentUserReference,
+                                                                        ),
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'date':
+                                                                                FieldValue.serverTimestamp(),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                    }
+
+                                                                    if (_model
+                                                                            .priceChangedescriptionValue ==
+                                                                        'Extra Bed') {
+                                                                      // change extra bed value
+
+                                                                      await widget
+                                                                          .booking!
+                                                                          .update(
+                                                                              createBookingsRecordData(
+                                                                        extraBeds: functions
+                                                                            .priceHasChanged(checkedInBookingsRecord.total,
+                                                                                double.parse(_model.newPriceController.text))
+                                                                            .toString(),
+                                                                      ));
+                                                                    }
                                                                     context
                                                                         .safePop();
                                                                     ScaffoldMessenger.of(
@@ -1518,6 +1669,9 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       ),
                                                                     );
                                                                   }
+
+                                                                  setState(
+                                                                      () {});
                                                                 },
                                                               ),
                                                             ],

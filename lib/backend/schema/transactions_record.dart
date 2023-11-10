@@ -71,6 +71,11 @@ class TransactionsRecord extends FirestoreRecord {
   bool get remitted => _remitted ?? false;
   bool hasRemitted() => _remitted != null;
 
+  // "pending" field.
+  bool? _pending;
+  bool get pending => _pending ?? false;
+  bool hasPending() => _pending != null;
+
   void _initializeFields() {
     _date = snapshotData['date'] as DateTime?;
     _staff = snapshotData['staff'] as DocumentReference?;
@@ -86,6 +91,7 @@ class TransactionsRecord extends FirestoreRecord {
     _room = castToType<int>(snapshotData['room']);
     _description = snapshotData['description'] as String?;
     _remitted = snapshotData['remitted'] as bool?;
+    _pending = snapshotData['pending'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -133,6 +139,7 @@ Map<String, dynamic> createTransactionsRecordData({
   int? room,
   String? description,
   bool? remitted,
+  bool? pending,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -146,6 +153,7 @@ Map<String, dynamic> createTransactionsRecordData({
       'room': room,
       'description': description,
       'remitted': remitted,
+      'pending': pending,
     }.withoutNulls,
   );
 
@@ -169,7 +177,8 @@ class TransactionsRecordDocumentEquality
         e1?.guests == e2?.guests &&
         e1?.room == e2?.room &&
         e1?.description == e2?.description &&
-        e1?.remitted == e2?.remitted;
+        e1?.remitted == e2?.remitted &&
+        e1?.pending == e2?.pending;
   }
 
   @override
@@ -184,7 +193,8 @@ class TransactionsRecordDocumentEquality
         e?.guests,
         e?.room,
         e?.description,
-        e?.remitted
+        e?.remitted,
+        e?.pending
       ]);
 
   @override

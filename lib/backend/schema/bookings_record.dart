@@ -81,6 +81,11 @@ class BookingsRecord extends FirestoreRecord {
   bool get remitted => _remitted ?? false;
   bool hasRemitted() => _remitted != null;
 
+  // "pendings" field.
+  List<DocumentReference>? _pendings;
+  List<DocumentReference> get pendings => _pendings ?? const [];
+  bool hasPendings() => _pendings != null;
+
   void _initializeFields() {
     _nights = castToType<int>(snapshotData['nights']);
     _total = castToType<double>(snapshotData['total']);
@@ -95,6 +100,7 @@ class BookingsRecord extends FirestoreRecord {
     _status = snapshotData['status'] as String?;
     _staff = snapshotData['staff'] as DocumentReference?;
     _remitted = snapshotData['remitted'] as bool?;
+    _pendings = getDataList(snapshotData['pendings']);
   }
 
   static CollectionReference get collection =>
@@ -172,6 +178,7 @@ class BookingsRecordDocumentEquality implements Equality<BookingsRecord> {
 
   @override
   bool equals(BookingsRecord? e1, BookingsRecord? e2) {
+    const listEquality = ListEquality();
     return e1?.nights == e2?.nights &&
         e1?.total == e2?.total &&
         e1?.room == e2?.room &&
@@ -184,7 +191,8 @@ class BookingsRecordDocumentEquality implements Equality<BookingsRecord> {
         e1?.guests == e2?.guests &&
         e1?.status == e2?.status &&
         e1?.staff == e2?.staff &&
-        e1?.remitted == e2?.remitted;
+        e1?.remitted == e2?.remitted &&
+        listEquality.equals(e1?.pendings, e2?.pendings);
   }
 
   @override
@@ -201,7 +209,8 @@ class BookingsRecordDocumentEquality implements Equality<BookingsRecord> {
         e?.guests,
         e?.status,
         e?.staff,
-        e?.remitted
+        e?.remitted,
+        e?.pendings
       ]);
 
   @override

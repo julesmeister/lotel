@@ -2643,7 +2643,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                 ),
                                                               );
                                                             }
-                                                            final columnUsersRecord =
+                                                            final staffUsersRecord =
                                                                 snapshot.data!;
                                                             return Column(
                                                               mainAxisSize:
@@ -2702,7 +2702,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                       ),
                                                                 ),
                                                                 Text(
-                                                                  columnUsersRecord
+                                                                  staffUsersRecord
                                                                       .displayName,
                                                                   style: FlutterFlowTheme.of(
                                                                           context)

@@ -4,7 +4,9 @@ import '/components/transaction_edit/transaction_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -18,14 +20,12 @@ class OptionToBookingTransactionWidget extends StatefulWidget {
     required this.roomNo,
     required this.description,
     required this.price,
-    required this.roomRef,
   }) : super(key: key);
 
   final DocumentReference? ref;
   final int? roomNo;
   final String? description;
   final double? price;
-  final DocumentReference? roomRef;
 
   @override
   _OptionToBookingTransactionWidgetState createState() =>
@@ -46,6 +46,22 @@ class _OptionToBookingTransactionWidgetState
   void initState() {
     super.initState();
     _model = createModel(context, () => OptionToBookingTransactionModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.room = await queryRoomsRecordOnce(
+        queryBuilder: (roomsRecord) => roomsRecord
+            .where(
+              'hotel',
+              isEqualTo: FFAppState().hotel,
+            )
+            .where(
+              'number',
+              isEqualTo: widget.roomNo,
+            ),
+        singleRecord: true,
+      ).then((s) => s.firstOrNull);
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -112,7 +128,7 @@ class _OptionToBookingTransactionWidgetState
                               ref: widget.ref!,
                               description: widget.description!,
                               price: widget.price!,
-                              roomRef: widget.roomRef!,
+                              roomRef: _model.room!.reference,
                             ),
                           ),
                         );
@@ -196,7 +212,8 @@ class _OptionToBookingTransactionWidgetState
                           await TransactionsRecord.getDocumentOnce(widget.ref!);
                       // history taking
 
-                      await HistoryRecord.createDoc(widget.roomRef!).set({
+                      await HistoryRecord.createDoc(_model.room!.reference)
+                          .set({
                         ...createHistoryRecordData(
                           description:
                               'There was a mistake that caused admin to remove a transaction worth Php ${widget.price?.toString()}',

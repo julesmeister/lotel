@@ -890,3 +890,10 @@ List<RoomUsageStruct> highestRoomUtilityOrderUsage(
   roomUsage.sort((a, b) => b.use.compareTo(a.use));
   return roomUsage;
 }
+
+List<TransactionsRecord> sortTransactionDescending(
+    List<TransactionsRecord> transactions) {
+  // sort transaction.date descending
+  transactions.sort((a, b) => b.date!.compareTo(a.date!));
+  return transactions;
+}

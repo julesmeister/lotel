@@ -84,11 +84,14 @@ class _CheckInWidgetState extends State<CheckInWidget>
         _model.paid = true;
       });
       if (widget.extend) {
+        // room
         _model.room = await RoomsRecord.getDocumentOnce(widget.ref!);
+        // set price, nights, beds, paid
         setState(() {
           _model.price = _model.room!.price;
           _model.startingNights = widget.bookingToExtend?.nights;
           _model.startingBeds = widget.bookingToExtend?.extraBeds;
+          _model.paid = widget.bookingToExtend?.status == 'paid';
         });
       } else {
         setState(() {
@@ -973,6 +976,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               ...mapToFirestore(
                                 {
                                   'dateIn': FieldValue.serverTimestamp(),
+                                  'pendings': widget.extend
+                                      ? widget.bookingToExtend?.pendings
+                                      : _model.pendings,
                                 },
                               ),
                             });
@@ -1003,6 +1009,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               ...mapToFirestore(
                                 {
                                   'dateIn': DateTime.now(),
+                                  'pendings': widget.extend
+                                      ? widget.bookingToExtend?.pendings
+                                      : _model.pendings,
                                 },
                               ),
                             }, bookingsRecordReference);
@@ -1054,6 +1063,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               _model.nightsValue,
                                               widget.roomNo!),
                                       remitted: false,
+                                      pending: false,
                                     ),
                                     ...mapToFirestore(
                                       {
@@ -1148,8 +1158,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     guests: functions
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
-                                    description: 'New Checkin',
+                                    description:
+                                        'New checkin in room ${widget.roomNo?.toString()} for ${_model.nightsValue?.toString()} nights',
                                     remitted: false,
+                                    pending: false,
                                   ),
                                   ...mapToFirestore(
                                     {
@@ -1187,7 +1199,305 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   ),
                                 );
                               }
+                            } else {
+                              if (widget.extend) {
+                                if (functions.getTotalAmount(
+                                        _model.bedsValue!,
+                                        _model.nightsValue!,
+                                        _model.price,
+                                        FFAppState().bedPrice,
+                                        _model.startingBeds!,
+                                        _model.startingNights!)! >
+                                    0.0) {
+                                  // New Pending Transaction
+
+                                  var transactionsRecordReference3 =
+                                      TransactionsRecord.collection.doc();
+                                  await transactionsRecordReference3.set({
+                                    ...createTransactionsRecordData(
+                                      staff: currentUserReference,
+                                      total: functions.getTotalAmount(
+                                          _model.bedsValue!,
+                                          _model.nightsValue!,
+                                          _model.price,
+                                          FFAppState().bedPrice,
+                                          _model.startingBeds!,
+                                          _model.startingNights!),
+                                      type: 'book',
+                                      hotel: FFAppState().hotel,
+                                      booking: _model.savedBooking?.reference,
+                                      guests: functions
+                                          .stringToInt(_model.guestsValue),
+                                      room: widget.roomNo,
+                                      description:
+                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} night/s extension',
+                                      remitted: false,
+                                      pending: true,
+                                    ),
+                                    ...mapToFirestore(
+                                      {
+                                        'date': FieldValue.serverTimestamp(),
+                                      },
+                                    ),
+                                  });
+                                  _model.newExtPending =
+                                      TransactionsRecord.getDocumentFromData({
+                                    ...createTransactionsRecordData(
+                                      staff: currentUserReference,
+                                      total: functions.getTotalAmount(
+                                          _model.bedsValue!,
+                                          _model.nightsValue!,
+                                          _model.price,
+                                          FFAppState().bedPrice,
+                                          _model.startingBeds!,
+                                          _model.startingNights!),
+                                      type: 'book',
+                                      hotel: FFAppState().hotel,
+                                      booking: _model.savedBooking?.reference,
+                                      guests: functions
+                                          .stringToInt(_model.guestsValue),
+                                      room: widget.roomNo,
+                                      description:
+                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} night/s extension',
+                                      remitted: false,
+                                      pending: true,
+                                    ),
+                                    ...mapToFirestore(
+                                      {
+                                        'date': DateTime.now(),
+                                      },
+                                    ),
+                                  }, transactionsRecordReference3);
+                                  _shouldSetState = true;
+                                  // add to pendings list
+
+                                  await _model.savedBooking!.reference.update({
+                                    ...mapToFirestore(
+                                      {
+                                        'pendings': FieldValue.arrayUnion(
+                                            [_model.newExtPending?.reference]),
+                                      },
+                                    ),
+                                  });
+                                  // add this change to history
+
+                                  await HistoryRecord.createDoc(widget.ref!)
+                                      .set({
+                                    ...createHistoryRecordData(
+                                      description:
+                                          'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} but pending',
+                                      staff: currentUserReference,
+                                    ),
+                                    ...mapToFirestore(
+                                      {
+                                        'date': FieldValue.serverTimestamp(),
+                                      },
+                                    ),
+                                  });
+                                } else {
+                                  if (functions.getTotalAmount(
+                                          _model.bedsValue!,
+                                          _model.nightsValue!,
+                                          _model.price,
+                                          FFAppState().bedPrice,
+                                          _model.startingBeds!,
+                                          _model.startingNights!)! <
+                                      0.0) {
+                                    // New Pending Transaction
+
+                                    var transactionsRecordReference4 =
+                                        TransactionsRecord.collection.doc();
+                                    await transactionsRecordReference4.set({
+                                      ...createTransactionsRecordData(
+                                        staff: currentUserReference,
+                                        total: functions.getTotalAmount(
+                                            _model.bedsValue!,
+                                            _model.nightsValue!,
+                                            _model.price,
+                                            FFAppState().bedPrice,
+                                            _model.startingBeds!,
+                                            _model.startingNights!),
+                                        type: 'book',
+                                        hotel: FFAppState().hotel,
+                                        booking: _model.savedBooking?.reference,
+                                        guests: functions
+                                            .stringToInt(_model.guestsValue),
+                                        room: widget.roomNo,
+                                        description:
+                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} night/s refund',
+                                        remitted: false,
+                                        pending: true,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
+                                    _model.newRefundPending =
+                                        TransactionsRecord.getDocumentFromData({
+                                      ...createTransactionsRecordData(
+                                        staff: currentUserReference,
+                                        total: functions.getTotalAmount(
+                                            _model.bedsValue!,
+                                            _model.nightsValue!,
+                                            _model.price,
+                                            FFAppState().bedPrice,
+                                            _model.startingBeds!,
+                                            _model.startingNights!),
+                                        type: 'book',
+                                        hotel: FFAppState().hotel,
+                                        booking: _model.savedBooking?.reference,
+                                        guests: functions
+                                            .stringToInt(_model.guestsValue),
+                                        room: widget.roomNo,
+                                        description:
+                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} night/s refund',
+                                        remitted: false,
+                                        pending: true,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': DateTime.now(),
+                                        },
+                                      ),
+                                    }, transactionsRecordReference4);
+                                    _shouldSetState = true;
+                                    // add to pendings list
+
+                                    await _model.savedBooking!.reference
+                                        .update({
+                                      ...mapToFirestore(
+                                        {
+                                          'pendings': FieldValue.arrayUnion([
+                                            _model.newRefundPending?.reference
+                                          ]),
+                                        },
+                                      ),
+                                    });
+                                    // add this change to history
+
+                                    await HistoryRecord.createDoc(widget.ref!)
+                                        .set({
+                                      ...createHistoryRecordData(
+                                        description:
+                                            'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} but pending',
+                                        staff: currentUserReference,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
+                                  } else {
+                                    // nothing changed
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Nothing Changed!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .info,
+                                          ),
+                                        ),
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
+                                      ),
+                                    );
+                                    if (_shouldSetState) setState(() {});
+                                    return;
+                                  }
+                                }
+                              } else {
+                                // New Pending Transaction
+
+                                var transactionsRecordReference5 =
+                                    TransactionsRecord.collection.doc();
+                                await transactionsRecordReference5.set({
+                                  ...createTransactionsRecordData(
+                                    staff: currentUserReference,
+                                    total: functions.getTotalAmount(
+                                        _model.bedsValue!,
+                                        _model.nightsValue!,
+                                        _model.price,
+                                        FFAppState().bedPrice,
+                                        _model.startingBeds!,
+                                        _model.startingNights!),
+                                    type: 'book',
+                                    hotel: FFAppState().hotel,
+                                    booking: _model.savedBooking?.reference,
+                                    guests: functions
+                                        .stringToInt(_model.guestsValue),
+                                    room: widget.roomNo,
+                                    description:
+                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} night/s',
+                                    remitted: false,
+                                    pending: true,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
+                                _model.newPending =
+                                    TransactionsRecord.getDocumentFromData({
+                                  ...createTransactionsRecordData(
+                                    staff: currentUserReference,
+                                    total: functions.getTotalAmount(
+                                        _model.bedsValue!,
+                                        _model.nightsValue!,
+                                        _model.price,
+                                        FFAppState().bedPrice,
+                                        _model.startingBeds!,
+                                        _model.startingNights!),
+                                    type: 'book',
+                                    hotel: FFAppState().hotel,
+                                    booking: _model.savedBooking?.reference,
+                                    guests: functions
+                                        .stringToInt(_model.guestsValue),
+                                    room: widget.roomNo,
+                                    description:
+                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} night/s',
+                                    remitted: false,
+                                    pending: true,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': DateTime.now(),
+                                    },
+                                  ),
+                                }, transactionsRecordReference5);
+                                _shouldSetState = true;
+                                // add to pendings list
+
+                                await _model.savedBooking!.reference.update({
+                                  ...mapToFirestore(
+                                    {
+                                      'pendings': FieldValue.arrayUnion(
+                                          [_model.newPending?.reference]),
+                                    },
+                                  ),
+                                });
+                                // add this change to history
+
+                                await HistoryRecord.createDoc(widget.ref!).set({
+                                  ...createHistoryRecordData(
+                                    description:
+                                        'New checkin but pending payment.',
+                                    staff: currentUserReference,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
+                              }
                             }
+
                             context.safePop();
                             // Update room display details
 

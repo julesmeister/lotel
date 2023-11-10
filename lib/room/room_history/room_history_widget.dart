@@ -169,19 +169,61 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context)
                                   .secondaryBackground,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 0.0,
+                                  color: FlutterFlowTheme.of(context).alternate,
+                                  offset: Offset(0.0, 1.0),
+                                )
+                              ],
                               borderRadius: BorderRadius.circular(0.0),
                             ),
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
-                                  30.0, 0.0, 25.0, 0.0),
+                                  16.0, 10.0, 16.0, 0.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      alignment:
+                                          AlignmentDirectional(-1.00, -1.00),
+                                      child: AnimatedContainer(
+                                        duration: Duration(milliseconds: 150),
+                                        curve: Curves.easeInOut,
+                                        width: 36.0,
+                                        height: 36.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .accent1,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            width: 2.0,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  2.0, 2.0, 2.0, 2.0),
+                                          child: Icon(
+                                            Icons.pending_actions,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            size: 20.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 7,
                                     child: Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          5.0, 10.0, 0.0, 0.0),
+                                          15.0, 0.0, 0.0, 0.0),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:

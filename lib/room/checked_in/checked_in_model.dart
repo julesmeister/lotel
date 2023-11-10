@@ -27,6 +27,17 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
 
   bool showMoveRoom = false;
 
+  List<DocumentReference> pendings = [];
+  void addToPendings(DocumentReference item) => pendings.add(item);
+  void removeFromPendings(DocumentReference item) => pendings.remove(item);
+  void removeAtIndexFromPendings(int index) => pendings.removeAt(index);
+  void insertAtIndexInPendings(int index, DocumentReference item) =>
+      pendings.insert(index, item);
+  void updatePendingsAtIndex(int index, Function(DocumentReference) updateFn) =>
+      pendings[index] = updateFn(pendings[index]);
+
+  int loopPendingCounter = 0;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -37,6 +48,8 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   TransactionsRecord? transaction;
   // Stores action output result for [Bottom Sheet - OptionToBooking] action in Button widget.
   bool? toChangePrice;
+  // Stores action output result for [Backend Call - Read Document] action in Button widget.
+  TransactionsRecord? pendingTrans;
   // State field(s) for priceChangedescription widget.
   String? priceChangedescriptionValue;
   FormFieldController<String>? priceChangedescriptionValueController;
@@ -44,6 +57,8 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   FocusNode? newPriceFocusNode;
   TextEditingController? newPriceController;
   String? Function(BuildContext, String?)? newPriceControllerValidator;
+  // Stores action output result for [Backend Call - Create Document] action in saveChangedPrice widget.
+  TransactionsRecord? newPending;
 
   /// Query cache managers for this widget.
 

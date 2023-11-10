@@ -41,21 +41,6 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
 
   /// Query cache managers for this widget.
 
-  final _justGetNightsManager = StreamRequestManager<BookingsRecord>();
-  Stream<BookingsRecord> justGetNights({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Stream<BookingsRecord> Function() requestFn,
-  }) =>
-      _justGetNightsManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearJustGetNightsCache() => _justGetNightsManager.clear();
-  void clearJustGetNightsCacheKey(String? uniqueKey) =>
-      _justGetNightsManager.clearRequest(uniqueKey);
-
   final _transactionsManager = StreamRequestManager<List<TransactionsRecord>>();
   Stream<List<TransactionsRecord>> transactions({
     String? uniqueQueryKey,
@@ -85,8 +70,6 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
     tabBarController?.dispose();
 
     /// Dispose query cache managers for this widget.
-
-    clearJustGetNightsCache();
 
     clearTransactionsCache();
   }

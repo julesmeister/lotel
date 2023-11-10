@@ -504,11 +504,17 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             Text(
                                                               formatNumber(
                                                                 functions.totalSalesLessExpenses(transactionsTransactionsRecordList
-                                                                    .where((e) => valueOrDefault(currentUserDocument?.role, '') ==
+                                                                    .where((e) => valueOrDefault(
+                                                                                currentUserDocument
+                                                                                    ?.role,
+                                                                                '') ==
                                                                             'admin'
-                                                                        ? true
-                                                                        : (e.remitted ==
-                                                                            false))
+                                                                        ? (e.pending !=
+                                                                            true)
+                                                                        : ((e.remitted ==
+                                                                                false) &&
+                                                                            (e.pending !=
+                                                                                true)))
                                                                     .toList()),
                                                                 formatType:
                                                                     FormatType
@@ -643,21 +649,24 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                             0)
                                           Builder(
                                             builder: (context) {
-                                              final bookings =
-                                                  transactionsTransactionsRecordList
-                                                      .where((e) =>
-                                                          ((e.type == 'book') ||
-                                                              (e.type ==
-                                                                  'change')) &&
-                                                          (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin'
-                                                              ? true
-                                                              : (e.remitted ==
-                                                                  false)))
-                                                      .toList();
+                                              final bookings = functions
+                                                  .sortTransactionDescending(
+                                                      transactionsTransactionsRecordList
+                                                          .where((e) =>
+                                                              ((e.type ==
+                                                                      'book') &&
+                                                                  (e.pending ==
+                                                                      false)) &&
+                                                              (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin'
+                                                                  ? true
+                                                                  : (e.remitted ==
+                                                                      false)))
+                                                          .toList())
+                                                  .toList();
                                               return ListView.builder(
                                                 padding: EdgeInsets.zero,
                                                 primary: false,
@@ -668,395 +677,318 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     (context, bookingsIndex) {
                                                   final bookingsItem =
                                                       bookings[bookingsIndex];
-                                                  return StreamBuilder<
-                                                      BookingsRecord>(
-                                                    stream:
-                                                        _model.justGetNights(
-                                                      requestFn: () =>
-                                                          BookingsRecord
-                                                              .getDocument(
-                                                                  bookingsItem
-                                                                      .booking!),
-                                                    ),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      // Customize what your widget looks like when it's loading.
-                                                      if (!snapshot.hasData) {
-                                                        return Center(
-                                                          child: SizedBox(
-                                                            width: 50.0,
-                                                            height: 50.0,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              valueColor:
-                                                                  AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }
-                                                      final listContainerBookingsRecord =
-                                                          snapshot.data!;
-                                                      return InkWell(
-                                                        splashColor:
-                                                            Colors.transparent,
-                                                        focusColor:
-                                                            Colors.transparent,
-                                                        hoverColor:
-                                                            Colors.transparent,
-                                                        highlightColor:
-                                                            Colors.transparent,
-                                                        onLongPress: () async {
-                                                          if (valueOrDefault(
-                                                                  currentUserDocument
-                                                                      ?.role,
-                                                                  '') ==
-                                                              'admin') {
-                                                            await showModalBottomSheet(
-                                                              isScrollControlled:
-                                                                  true,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent,
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                return GestureDetector(
-                                                                  onTap: () => _model
-                                                                          .unfocusNode
-                                                                          .canRequestFocus
-                                                                      ? FocusScope.of(
-                                                                              context)
-                                                                          .requestFocus(_model
+                                                  return InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onLongPress: () async {
+                                                      if (valueOrDefault(
+                                                              currentUserDocument
+                                                                  ?.role,
+                                                              '') ==
+                                                          'admin') {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return GestureDetector(
+                                                              onTap: () => _model
+                                                                      .unfocusNode
+                                                                      .canRequestFocus
+                                                                  ? FocusScope.of(
+                                                                          context)
+                                                                      .requestFocus(
+                                                                          _model
                                                                               .unfocusNode)
-                                                                      : FocusScope.of(
-                                                                              context)
-                                                                          .unfocus(),
+                                                                  : FocusScope.of(
+                                                                          context)
+                                                                      .unfocus(),
+                                                              child: Padding(
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
+                                                                child:
+                                                                    Container(
+                                                                  height: 180.0,
                                                                   child:
-                                                                      Padding(
-                                                                    padding: MediaQuery
-                                                                        .viewInsetsOf(
-                                                                            context),
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          180.0,
-                                                                      child:
-                                                                          OptionToBookingTransactionWidget(
-                                                                        ref: bookingsItem
-                                                                            .reference,
-                                                                        roomNo:
-                                                                            bookingsItem.room,
-                                                                        description:
-                                                                            bookingsItem.description,
-                                                                        price: bookingsItem
-                                                                            .total,
-                                                                        roomRef:
-                                                                            listContainerBookingsRecord.room!,
-                                                                      ),
-                                                                    ),
+                                                                      OptionToBookingTransactionWidget(
+                                                                    ref: bookingsItem
+                                                                        .reference,
+                                                                    roomNo:
+                                                                        bookingsItem
+                                                                            .room,
+                                                                    description:
+                                                                        bookingsItem
+                                                                            .description,
+                                                                    price: bookingsItem
+                                                                        .total,
                                                                   ),
-                                                                );
-                                                              },
-                                                            ).then((value) =>
-                                                                safeSetState(
-                                                                    () {}));
-                                                          }
-                                                        },
-                                                        child: Container(
-                                                          width:
-                                                              double.infinity,
-                                                          constraints:
-                                                              BoxConstraints(
-                                                            maxWidth:
-                                                                double.infinity,
-                                                          ),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryBackground,
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                blurRadius: 0.0,
-                                                                color: Color(
-                                                                    0x33000000),
-                                                                offset: Offset(
-                                                                    0.0, 1.0),
-                                                              )
-                                                            ],
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        0.0),
-                                                            border: Border.all(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .alternate,
-                                                            ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        16.0,
-                                                                        12.0,
-                                                                        16.0,
-                                                                        12.0),
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Expanded(
-                                                                  flex: 5,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            safeSetState(
+                                                                () {}));
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        maxWidth:
+                                                            double.infinity,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryBackground,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            blurRadius: 0.0,
+                                                            color: Color(
+                                                                0x33000000),
+                                                            offset: Offset(
+                                                                0.0, 1.0),
+                                                          )
+                                                        ],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(0.0),
+                                                        border: Border.all(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .alternate,
+                                                        ),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    16.0,
+                                                                    12.0,
+                                                                    16.0,
+                                                                    12.0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Expanded(
+                                                              flex: 5,
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
                                                                             12.0,
                                                                             0.0),
-                                                                    child:
-                                                                        Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Text(
-                                                                          bookingsItem
-                                                                              .description
-                                                                              .maybeHandleOverflow(maxChars: 250),
-                                                                          maxLines:
-                                                                              5,
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .bodyMedium
-                                                                              .override(
-                                                                                fontFamily: 'Readex Pro',
-                                                                                fontSize: 16.0,
-                                                                              ),
-                                                                        ),
-                                                                        Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              0.0,
-                                                                              4.0,
-                                                                              0.0,
-                                                                              0.0),
-                                                                          child:
-                                                                              Text(
-                                                                            dateTimeFormat('h:mm a',
-                                                                                bookingsItem.date!),
-                                                                            style:
-                                                                                FlutterFlowTheme.of(context).labelMedium,
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      bookingsItem
+                                                                          .description
+                                                                          .maybeHandleOverflow(
+                                                                              maxChars: 250),
+                                                                      maxLines:
+                                                                          5,
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            fontSize:
+                                                                                16.0,
                                                                           ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          4.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Text(
+                                                                        dateTimeFormat(
+                                                                            'h:mm a',
+                                                                            bookingsItem.date!),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelMedium,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              flex: 2,
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  Text(
+                                                                    formatNumber(
+                                                                      bookingsItem
+                                                                          .total,
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .decimal,
+                                                                      decimalType:
+                                                                          DecimalType
+                                                                              .automatic,
+                                                                      currency:
+                                                                          'P ',
+                                                                    ),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .end,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .headlineSmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Outfit',
+                                                                          color: bookingsItem.total < 0.0
+                                                                              ? FlutterFlowTheme.of(context).error
+                                                                              : FlutterFlowTheme.of(context).success,
                                                                         ),
-                                                                        Row(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          children: [
-                                                                            Padding(
-                                                                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                                                                              child: RichText(
-                                                                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                                                                                text: TextSpan(
-                                                                                  children: [
-                                                                                    TextSpan(
-                                                                                      text: 'Nights: ',
-                                                                                      style: TextStyle(
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                    ),
-                                                                                    TextSpan(
-                                                                                      text: listContainerBookingsRecord.nights.toString(),
-                                                                                      style: TextStyle(
-                                                                                        color: FlutterFlowTheme.of(context).tertiary,
-                                                                                        fontWeight: FontWeight.normal,
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                  style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                                                                        fontFamily: 'Readex Pro',
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                ),
-                                                                              ),
+                                                                  ),
+                                                                  if (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin')
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0),
+                                                                      child:
+                                                                          Text(
+                                                                        bookingsItem.remitted
+                                                                            ? 'remitted'
+                                                                            : 'unremitted',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              color: bookingsItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
+                                                                              fontSize: 10.0,
                                                                             ),
-                                                                            Padding(
-                                                                              padding: EdgeInsetsDirectional.fromSTEB(10.0, 20.0, 0.0, 0.0),
-                                                                              child: RichText(
-                                                                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                                                                                text: TextSpan(
-                                                                                  children: [
-                                                                                    TextSpan(
-                                                                                      text: 'Room:  ',
-                                                                                      style: TextStyle(
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                    ),
-                                                                                    TextSpan(
-                                                                                      text: bookingsItem.room.toString(),
-                                                                                      style: TextStyle(
-                                                                                        color: FlutterFlowTheme.of(context).tertiary,
-                                                                                        fontWeight: FontWeight.normal,
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                  style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                                                                        fontFamily: 'Readex Pro',
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
+                                                                      ),
+                                                                    ),
+                                                                  InkWell(
+                                                                    splashColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    focusColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    hoverColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    highlightColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    onTap:
+                                                                        () async {
+                                                                      context
+                                                                          .pushNamed(
+                                                                        'CheckedIn',
+                                                                        queryParameters:
+                                                                            {
+                                                                          'booking':
+                                                                              serializeParam(
+                                                                            bookingsItem.booking,
+                                                                            ParamType.DocumentReference,
+                                                                          ),
+                                                                          'roomNo':
+                                                                              serializeParam(
+                                                                            bookingsItem.room,
+                                                                            ParamType.int,
+                                                                          ),
+                                                                        }.withoutNulls,
+                                                                        extra: <String,
+                                                                            dynamic>{
+                                                                          kTransitionInfoKey:
+                                                                              TransitionInfo(
+                                                                            hasTransition:
+                                                                                true,
+                                                                            transitionType:
+                                                                                PageTransitionType.rightToLeft,
+                                                                          ),
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                    child: Card(
+                                                                      clipBehavior:
+                                                                          Clip.antiAliasWithSaveLayer,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryBackground,
+                                                                      elevation:
+                                                                          1.0,
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(40.0),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            4.0,
+                                                                            4.0,
+                                                                            4.0,
+                                                                            4.0),
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .keyboard_arrow_right_rounded,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                          size:
+                                                                              24.0,
                                                                         ),
-                                                                      ],
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 2,
-                                                                  child: Column(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .end,
-                                                                    children: [
-                                                                      Text(
-                                                                        formatNumber(
-                                                                          bookingsItem
-                                                                              .total,
-                                                                          formatType:
-                                                                              FormatType.decimal,
-                                                                          decimalType:
-                                                                              DecimalType.automatic,
-                                                                          currency:
-                                                                              'P ',
-                                                                        ),
-                                                                        textAlign:
-                                                                            TextAlign.end,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .headlineSmall
-                                                                            .override(
-                                                                              fontFamily: 'Outfit',
-                                                                              color: bookingsItem.total < 0.0 ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).success,
-                                                                            ),
-                                                                      ),
-                                                                      if (valueOrDefault(
-                                                                              currentUserDocument?.role,
-                                                                              '') ==
-                                                                          'admin')
-                                                                        Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              0.0,
-                                                                              0.0,
-                                                                              0.0,
-                                                                              10.0),
-                                                                          child:
-                                                                              Text(
-                                                                            bookingsItem.remitted
-                                                                                ? 'remitted'
-                                                                                : 'unremitted',
-                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                  fontFamily: 'Readex Pro',
-                                                                                  color: bookingsItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
-                                                                                  fontSize: 10.0,
-                                                                                ),
-                                                                          ),
-                                                                        ),
-                                                                      InkWell(
-                                                                        splashColor:
-                                                                            Colors.transparent,
-                                                                        focusColor:
-                                                                            Colors.transparent,
-                                                                        hoverColor:
-                                                                            Colors.transparent,
-                                                                        highlightColor:
-                                                                            Colors.transparent,
-                                                                        onTap:
-                                                                            () async {
-                                                                          context
-                                                                              .pushNamed(
-                                                                            'CheckedIn',
-                                                                            queryParameters:
-                                                                                {
-                                                                              'booking': serializeParam(
-                                                                                bookingsItem.booking,
-                                                                                ParamType.DocumentReference,
-                                                                              ),
-                                                                              'roomNo': serializeParam(
-                                                                                bookingsItem.room,
-                                                                                ParamType.int,
-                                                                              ),
-                                                                            }.withoutNulls,
-                                                                            extra: <String,
-                                                                                dynamic>{
-                                                                              kTransitionInfoKey: TransitionInfo(
-                                                                                hasTransition: true,
-                                                                                transitionType: PageTransitionType.rightToLeft,
-                                                                              ),
-                                                                            },
-                                                                          );
-                                                                        },
-                                                                        child:
-                                                                            Card(
-                                                                          clipBehavior:
-                                                                              Clip.antiAliasWithSaveLayer,
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          elevation:
-                                                                              1.0,
-                                                                          shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(40.0),
-                                                                          ),
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                4.0,
-                                                                                4.0,
-                                                                                4.0,
-                                                                                4.0),
-                                                                            child:
-                                                                                Icon(
-                                                                              Icons.keyboard_arrow_right_rounded,
-                                                                              color: FlutterFlowTheme.of(context).secondaryText,
-                                                                              size: 24.0,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
+                                                          ],
                                                         ),
-                                                      );
-                                                    },
+                                                      ),
+                                                    ),
                                                   );
                                                 },
                                               );
@@ -1089,19 +1021,22 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                             0)
                                           Builder(
                                             builder: (context) {
-                                              final goods =
-                                                  transactionsTransactionsRecordList
-                                                      .where((e) =>
-                                                          (e.type == 'goods') &&
-                                                          (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin'
-                                                              ? true
-                                                              : (e.remitted ==
-                                                                  false)))
-                                                      .toList();
+                                              final goods = functions
+                                                  .sortTransactionDescending(
+                                                      transactionsTransactionsRecordList
+                                                          .where((e) =>
+                                                              (e.type ==
+                                                                  'goods') &&
+                                                              (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin'
+                                                                  ? true
+                                                                  : (e.remitted ==
+                                                                      false)))
+                                                          .toList())
+                                                  .toList();
                                               return ListView.builder(
                                                 padding: EdgeInsets.zero,
                                                 primary: false,
@@ -1490,20 +1425,22 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                             0)
                                           Builder(
                                             builder: (context) {
-                                              final expenses =
-                                                  transactionsTransactionsRecordList
-                                                      .where((e) =>
-                                                          (e.type ==
-                                                              'expense') &&
-                                                          (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin'
-                                                              ? true
-                                                              : (e.remitted ==
-                                                                  false)))
-                                                      .toList();
+                                              final expenses = functions
+                                                  .sortTransactionDescending(
+                                                      transactionsTransactionsRecordList
+                                                          .where((e) =>
+                                                              (e.type ==
+                                                                  'expense') &&
+                                                              (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin'
+                                                                  ? true
+                                                                  : (e.remitted ==
+                                                                      false)))
+                                                          .toList())
+                                                  .toList();
                                               return ListView.builder(
                                                 padding: EdgeInsets.zero,
                                                 primary: false,
@@ -1963,11 +1900,17 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             Text(
                                                               formatNumber(
                                                                 functions.totalBookedSales(transactionsTransactionsRecordList
-                                                                    .where((e) => valueOrDefault(currentUserDocument?.role, '') ==
+                                                                    .where((e) => valueOrDefault(
+                                                                                currentUserDocument
+                                                                                    ?.role,
+                                                                                '') ==
                                                                             'admin'
-                                                                        ? true
-                                                                        : (e.remitted ==
-                                                                            false))
+                                                                        ? (e.pending !=
+                                                                            true)
+                                                                        : ((e.remitted ==
+                                                                                false) &&
+                                                                            (e.pending !=
+                                                                                true)))
                                                                     .toList()),
                                                                 formatType:
                                                                     FormatType
@@ -2055,19 +1998,24 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                             0)
                                           Builder(
                                             builder: (context) {
-                                              final bookingsOnly =
-                                                  transactionsTransactionsRecordList
-                                                      .where((e) =>
-                                                          (e.type == 'book') &&
-                                                          (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin'
-                                                              ? true
-                                                              : (e.remitted ==
-                                                                  false)))
-                                                      .toList();
+                                              final bookingsOnly = functions
+                                                  .sortTransactionDescending(
+                                                      transactionsTransactionsRecordList
+                                                          .where((e) =>
+                                                              ((e.type ==
+                                                                      'book') &&
+                                                                  (e.pending ==
+                                                                      false)) &&
+                                                              (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin'
+                                                                  ? true
+                                                                  : (e.remitted ==
+                                                                      false)))
+                                                          .toList())
+                                                  .toList();
                                               return ListView.builder(
                                                 padding: EdgeInsets.fromLTRB(
                                                   0,
@@ -2084,397 +2032,325 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                   final bookingsOnlyItem =
                                                       bookingsOnly[
                                                           bookingsOnlyIndex];
-                                                  return StreamBuilder<
-                                                      BookingsRecord>(
-                                                    stream: BookingsRecord
-                                                        .getDocument(
-                                                            bookingsOnlyItem
-                                                                .booking!),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      // Customize what your widget looks like when it's loading.
-                                                      if (!snapshot.hasData) {
-                                                        return Center(
-                                                          child: SizedBox(
-                                                            width: 50.0,
-                                                            height: 50.0,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              valueColor:
-                                                                  AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }
-                                                      final listContainerBookingsRecord =
-                                                          snapshot.data!;
-                                                      return InkWell(
-                                                        splashColor:
-                                                            Colors.transparent,
-                                                        focusColor:
-                                                            Colors.transparent,
-                                                        hoverColor:
-                                                            Colors.transparent,
-                                                        highlightColor:
-                                                            Colors.transparent,
-                                                        onLongPress: () async {
-                                                          if (valueOrDefault(
-                                                                  currentUserDocument
-                                                                      ?.role,
-                                                                  '') ==
-                                                              'admin') {
-                                                            await showModalBottomSheet(
-                                                              isScrollControlled:
-                                                                  true,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent,
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                return GestureDetector(
-                                                                  onTap: () => _model
-                                                                          .unfocusNode
-                                                                          .canRequestFocus
-                                                                      ? FocusScope.of(
-                                                                              context)
-                                                                          .requestFocus(_model
+                                                  return InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onLongPress: () async {
+                                                      if (valueOrDefault(
+                                                              currentUserDocument
+                                                                  ?.role,
+                                                              '') ==
+                                                          'admin') {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return GestureDetector(
+                                                              onTap: () => _model
+                                                                      .unfocusNode
+                                                                      .canRequestFocus
+                                                                  ? FocusScope.of(
+                                                                          context)
+                                                                      .requestFocus(
+                                                                          _model
                                                                               .unfocusNode)
-                                                                      : FocusScope.of(
-                                                                              context)
-                                                                          .unfocus(),
+                                                                  : FocusScope.of(
+                                                                          context)
+                                                                      .unfocus(),
+                                                              child: Padding(
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
+                                                                child:
+                                                                    Container(
+                                                                  height: 180.0,
                                                                   child:
-                                                                      Padding(
-                                                                    padding: MediaQuery
-                                                                        .viewInsetsOf(
-                                                                            context),
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          180.0,
-                                                                      child:
-                                                                          OptionToBookingTransactionWidget(
-                                                                        ref: bookingsOnlyItem
-                                                                            .reference,
-                                                                        roomNo:
-                                                                            bookingsOnlyItem.room,
-                                                                        description:
-                                                                            bookingsOnlyItem.description,
-                                                                        price: bookingsOnlyItem
-                                                                            .total,
-                                                                        roomRef:
-                                                                            listContainerBookingsRecord.room!,
-                                                                      ),
-                                                                    ),
+                                                                      OptionToBookingTransactionWidget(
+                                                                    ref: bookingsOnlyItem
+                                                                        .reference,
+                                                                    roomNo:
+                                                                        bookingsOnlyItem
+                                                                            .room,
+                                                                    description:
+                                                                        bookingsOnlyItem
+                                                                            .description,
+                                                                    price: bookingsOnlyItem
+                                                                        .total,
                                                                   ),
-                                                                );
-                                                              },
-                                                            ).then((value) =>
-                                                                safeSetState(
-                                                                    () {}));
-                                                          }
-                                                        },
-                                                        child: Container(
-                                                          width:
-                                                              double.infinity,
-                                                          constraints:
-                                                              BoxConstraints(
-                                                            maxWidth: 570.0,
-                                                          ),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryBackground,
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                blurRadius: 0.0,
-                                                                color: Color(
-                                                                    0x33000000),
-                                                                offset: Offset(
-                                                                    0.0, 1.0),
-                                                              )
-                                                            ],
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        0.0),
-                                                            border: Border.all(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .alternate,
-                                                            ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        16.0,
-                                                                        12.0,
-                                                                        16.0,
-                                                                        12.0),
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Expanded(
-                                                                  flex: 5,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            safeSetState(
+                                                                () {}));
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        maxWidth: 570.0,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryBackground,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            blurRadius: 0.0,
+                                                            color: Color(
+                                                                0x33000000),
+                                                            offset: Offset(
+                                                                0.0, 1.0),
+                                                          )
+                                                        ],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(0.0),
+                                                        border: Border.all(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .alternate,
+                                                        ),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    16.0,
+                                                                    12.0,
+                                                                    16.0,
+                                                                    12.0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Expanded(
+                                                              flex: 5,
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
                                                                             12.0,
                                                                             0.0),
-                                                                    child:
-                                                                        Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        RichText(
-                                                                          textScaleFactor:
-                                                                              MediaQuery.of(context).textScaleFactor,
-                                                                          text:
-                                                                              TextSpan(
-                                                                            children: [
-                                                                              TextSpan(
-                                                                                text: bookingsOnlyItem.description,
-                                                                                style: TextStyle(),
-                                                                              )
-                                                                            ],
-                                                                            style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                                                                  fontFamily: 'Readex Pro',
-                                                                                  color: FlutterFlowTheme.of(context).primaryText,
-                                                                                  fontSize: 16.0,
-                                                                                ),
-                                                                          ),
-                                                                          maxLines:
-                                                                              5,
-                                                                        ),
-                                                                        Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              0.0,
-                                                                              4.0,
-                                                                              0.0,
-                                                                              0.0),
-                                                                          child:
-                                                                              Text(
-                                                                            dateTimeFormat('h:mm a',
-                                                                                bookingsOnlyItem.date!),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    RichText(
+                                                                      textScaleFactor:
+                                                                          MediaQuery.of(context)
+                                                                              .textScaleFactor,
+                                                                      text:
+                                                                          TextSpan(
+                                                                        children: [
+                                                                          TextSpan(
+                                                                            text:
+                                                                                bookingsOnlyItem.description,
                                                                             style:
-                                                                                FlutterFlowTheme.of(context).labelMedium,
+                                                                                TextStyle(),
+                                                                          )
+                                                                        ],
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyLarge
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              color: FlutterFlowTheme.of(context).primaryText,
+                                                                              fontSize: 16.0,
+                                                                            ),
+                                                                      ),
+                                                                      maxLines:
+                                                                          5,
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          4.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Text(
+                                                                        dateTimeFormat(
+                                                                            'h:mm a',
+                                                                            bookingsOnlyItem.date!),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelMedium,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              flex: 2,
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  Text(
+                                                                    formatNumber(
+                                                                      bookingsOnlyItem
+                                                                          .total,
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .decimal,
+                                                                      decimalType:
+                                                                          DecimalType
+                                                                              .automatic,
+                                                                      currency:
+                                                                          'P ',
+                                                                    ),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .end,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .headlineSmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Outfit',
+                                                                          color: bookingsOnlyItem.total < 0.0
+                                                                              ? FlutterFlowTheme.of(context).error
+                                                                              : FlutterFlowTheme.of(context).success,
+                                                                        ),
+                                                                  ),
+                                                                  if (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin')
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0),
+                                                                      child:
+                                                                          Text(
+                                                                        bookingsOnlyItem.remitted
+                                                                            ? 'remitted'
+                                                                            : 'unremitted',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              color: bookingsOnlyItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
+                                                                              fontSize: 10.0,
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                  InkWell(
+                                                                    splashColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    focusColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    hoverColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    highlightColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    onTap:
+                                                                        () async {
+                                                                      context
+                                                                          .pushNamed(
+                                                                        'CheckedIn',
+                                                                        queryParameters:
+                                                                            {
+                                                                          'booking':
+                                                                              serializeParam(
+                                                                            bookingsOnlyItem.booking,
+                                                                            ParamType.DocumentReference,
                                                                           ),
+                                                                          'roomNo':
+                                                                              serializeParam(
+                                                                            bookingsOnlyItem.room,
+                                                                            ParamType.int,
+                                                                          ),
+                                                                        }.withoutNulls,
+                                                                        extra: <String,
+                                                                            dynamic>{
+                                                                          kTransitionInfoKey:
+                                                                              TransitionInfo(
+                                                                            hasTransition:
+                                                                                true,
+                                                                            transitionType:
+                                                                                PageTransitionType.rightToLeft,
+                                                                          ),
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                    child: Card(
+                                                                      clipBehavior:
+                                                                          Clip.antiAliasWithSaveLayer,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryBackground,
+                                                                      elevation:
+                                                                          1.0,
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(40.0),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            4.0,
+                                                                            4.0,
+                                                                            4.0,
+                                                                            4.0),
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .keyboard_arrow_right_rounded,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                          size:
+                                                                              24.0,
                                                                         ),
-                                                                        Row(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          children: [
-                                                                            Padding(
-                                                                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                                                                              child: RichText(
-                                                                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                                                                                text: TextSpan(
-                                                                                  children: [
-                                                                                    TextSpan(
-                                                                                      text: 'Nights: ',
-                                                                                      style: TextStyle(
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                    ),
-                                                                                    TextSpan(
-                                                                                      text: listContainerBookingsRecord.nights.toString(),
-                                                                                      style: TextStyle(
-                                                                                        color: FlutterFlowTheme.of(context).tertiary,
-                                                                                        fontWeight: FontWeight.normal,
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                  style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                                                                        fontFamily: 'Readex Pro',
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            Padding(
-                                                                              padding: EdgeInsetsDirectional.fromSTEB(10.0, 20.0, 0.0, 0.0),
-                                                                              child: RichText(
-                                                                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                                                                                text: TextSpan(
-                                                                                  children: [
-                                                                                    TextSpan(
-                                                                                      text: 'Room:  ',
-                                                                                      style: TextStyle(
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                    ),
-                                                                                    TextSpan(
-                                                                                      text: bookingsOnlyItem.room.toString(),
-                                                                                      style: TextStyle(
-                                                                                        color: FlutterFlowTheme.of(context).tertiary,
-                                                                                        fontWeight: FontWeight.normal,
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                  style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                                                                        fontFamily: 'Readex Pro',
-                                                                                        fontSize: 14.0,
-                                                                                      ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 2,
-                                                                  child: Column(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .end,
-                                                                    children: [
-                                                                      Text(
-                                                                        formatNumber(
-                                                                          bookingsOnlyItem
-                                                                              .total,
-                                                                          formatType:
-                                                                              FormatType.decimal,
-                                                                          decimalType:
-                                                                              DecimalType.automatic,
-                                                                          currency:
-                                                                              'P ',
-                                                                        ),
-                                                                        textAlign:
-                                                                            TextAlign.end,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .headlineSmall
-                                                                            .override(
-                                                                              fontFamily: 'Outfit',
-                                                                              color: bookingsOnlyItem.total < 0.0 ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).success,
-                                                                            ),
-                                                                      ),
-                                                                      if (valueOrDefault(
-                                                                              currentUserDocument?.role,
-                                                                              '') ==
-                                                                          'admin')
-                                                                        Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              0.0,
-                                                                              0.0,
-                                                                              0.0,
-                                                                              10.0),
-                                                                          child:
-                                                                              Text(
-                                                                            bookingsOnlyItem.remitted
-                                                                                ? 'remitted'
-                                                                                : 'unremitted',
-                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                  fontFamily: 'Readex Pro',
-                                                                                  color: bookingsOnlyItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
-                                                                                  fontSize: 10.0,
-                                                                                ),
-                                                                          ),
-                                                                        ),
-                                                                      InkWell(
-                                                                        splashColor:
-                                                                            Colors.transparent,
-                                                                        focusColor:
-                                                                            Colors.transparent,
-                                                                        hoverColor:
-                                                                            Colors.transparent,
-                                                                        highlightColor:
-                                                                            Colors.transparent,
-                                                                        onTap:
-                                                                            () async {
-                                                                          context
-                                                                              .pushNamed(
-                                                                            'CheckedIn',
-                                                                            queryParameters:
-                                                                                {
-                                                                              'booking': serializeParam(
-                                                                                bookingsOnlyItem.booking,
-                                                                                ParamType.DocumentReference,
-                                                                              ),
-                                                                              'roomNo': serializeParam(
-                                                                                bookingsOnlyItem.room,
-                                                                                ParamType.int,
-                                                                              ),
-                                                                            }.withoutNulls,
-                                                                            extra: <String,
-                                                                                dynamic>{
-                                                                              kTransitionInfoKey: TransitionInfo(
-                                                                                hasTransition: true,
-                                                                                transitionType: PageTransitionType.rightToLeft,
-                                                                              ),
-                                                                            },
-                                                                          );
-                                                                        },
-                                                                        child:
-                                                                            Card(
-                                                                          clipBehavior:
-                                                                              Clip.antiAliasWithSaveLayer,
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          elevation:
-                                                                              1.0,
-                                                                          shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(40.0),
-                                                                          ),
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                4.0,
-                                                                                4.0,
-                                                                                4.0,
-                                                                                4.0),
-                                                                            child:
-                                                                                Icon(
-                                                                              Icons.keyboard_arrow_right_rounded,
-                                                                              color: FlutterFlowTheme.of(context).secondaryText,
-                                                                              size: 24.0,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
+                                                          ],
                                                         ),
-                                                      );
-                                                    },
+                                                      ),
+                                                    ),
                                                   );
                                                 },
                                               );
@@ -2669,18 +2545,21 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                             0)
                                           Builder(
                                             builder: (context) {
-                                              final goods =
-                                                  transactionsTransactionsRecordList
-                                                      .where((e) =>
-                                                          (e.type == 'goods') &&
-                                                          (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin'
-                                                              ? true
-                                                              : !e.remitted))
-                                                      .toList();
+                                              final goods = functions
+                                                  .sortTransactionDescending(
+                                                      transactionsTransactionsRecordList
+                                                          .where((e) =>
+                                                              (e.type ==
+                                                                  'goods') &&
+                                                              (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin'
+                                                                  ? true
+                                                                  : !e.remitted))
+                                                          .toList())
+                                                  .toList();
                                               return ListView.builder(
                                                 padding: EdgeInsets.zero,
                                                 primary: false,
@@ -3130,19 +3009,21 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                             0)
                                           Builder(
                                             builder: (context) {
-                                              final expense =
-                                                  transactionsTransactionsRecordList
-                                                      .where((e) =>
-                                                          (e.type ==
-                                                              'expense') &&
-                                                          (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin'
-                                                              ? true
-                                                              : !e.remitted))
-                                                      .toList();
+                                              final expense = functions
+                                                  .sortTransactionDescending(
+                                                      transactionsTransactionsRecordList
+                                                          .where((e) =>
+                                                              (e.type ==
+                                                                  'expense') &&
+                                                              (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin'
+                                                                  ? true
+                                                                  : !e.remitted))
+                                                          .toList())
+                                                  .toList();
                                               return ListView.builder(
                                                 padding: EdgeInsets.fromLTRB(
                                                   0,

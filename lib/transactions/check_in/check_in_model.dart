@@ -30,6 +30,15 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
 
   String? startingBeds;
 
+  List<DocumentReference> pendings = [];
+  void addToPendings(DocumentReference item) => pendings.add(item);
+  void removeFromPendings(DocumentReference item) => pendings.remove(item);
+  void removeAtIndexFromPendings(int index) => pendings.removeAt(index);
+  void insertAtIndexInPendings(int index, DocumentReference item) =>
+      pendings.insert(index, item);
+  void updatePendingsAtIndex(int index, Function(DocumentReference) updateFn) =>
+      pendings[index] = updateFn(pendings[index]);
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Backend Call - Read Document] action in CheckIn widget.
@@ -52,6 +61,12 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
   FormFieldController<List<String>>? guestsValueController;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   BookingsRecord? savedBooking;
+  // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
+  TransactionsRecord? newExtPending;
+  // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
+  TransactionsRecord? newRefundPending;
+  // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
+  TransactionsRecord? newPending;
 
   /// Initialization and disposal methods.
 

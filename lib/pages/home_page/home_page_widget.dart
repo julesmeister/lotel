@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/change_remittance/change_remittance_widget.dart';
+import '/components/last_remit_edit/last_remit_edit_widget.dart';
 import '/components/new_issue/new_issue_widget.dart';
 import '/components/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -391,6 +392,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         .where(
                                                           'remitted',
                                                           isEqualTo: false,
+                                                        )
+                                                        .where(
+                                                          'pending',
+                                                          isNotEqualTo: true,
                                                         ),
                                           ),
                                         ),
@@ -465,55 +470,98 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 0.0, 15.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        RichText(
-                                          textScaleFactor:
-                                              MediaQuery.of(context)
-                                                  .textScaleFactor,
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: 'Last Remit: ',
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodyMedium
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryText,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                    ),
-                                              ),
-                                              TextSpan(
-                                                text: dateTimeFormat('yMMMd',
-                                                    FFAppState().lastRemit),
-                                                style: TextStyle(
+                                    child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onLongPress: () async {
+                                        if (valueOrDefault(
+                                                currentUserDocument?.role,
+                                                '') ==
+                                            'admin') {
+                                          // show last remit editor
+                                          await showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            context: context,
+                                            builder: (context) {
+                                              return GestureDetector(
+                                                onTap: () => _model.unfocusNode
+                                                        .canRequestFocus
+                                                    ? FocusScope.of(context)
+                                                        .requestFocus(
+                                                            _model.unfocusNode)
+                                                    : FocusScope.of(context)
+                                                        .unfocus(),
+                                                child: Padding(
+                                                  padding:
+                                                      MediaQuery.viewInsetsOf(
+                                                          context),
+                                                  child: Container(
+                                                    height: double.infinity,
+                                                    child:
+                                                        LastRemitEditWidget(),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ).then(
+                                              (value) => safeSetState(() {}));
+                                        }
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          RichText(
+                                            textScaleFactor:
+                                                MediaQuery.of(context)
+                                                    .textScaleFactor,
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Last Remit: ',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
+                                                ),
+                                                TextSpan(
+                                                  text: dateTimeFormat('yMMMd',
+                                                      FFAppState().lastRemit),
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                )
+                                              ],
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium,
+                                            ),
+                                          ),
+                                          Text(
+                                            dateTimeFormat(
+                                                'jm', FFAppState().lastRemit),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
                                                   fontWeight: FontWeight.w600,
                                                 ),
-                                              )
-                                            ],
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium,
                                           ),
-                                        ),
-                                        Text(
-                                          dateTimeFormat(
-                                              'jm', FFAppState().lastRemit),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   if (valueOrDefault(
@@ -1052,6 +1100,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           'hotel',
                                                                           isEqualTo:
                                                                               FFAppState().hotel,
+                                                                        )
+                                                                        .where(
+                                                                          'pending',
+                                                                          isNotEqualTo:
+                                                                              true,
                                                                         ),
                                                           ),
                                                         ),
@@ -2296,68 +2349,146 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    'Remittances',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          color:
-                                                              Color(0xFF57636C),
-                                                          fontSize: 14.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                  ),
-                                                  Text(
-                                                    valueOrDefault<String>(
-                                                      formatNumber(
-                                                        topTitleRemittancesRecord
-                                                            ?.net,
-                                                        formatType:
-                                                            FormatType.decimal,
-                                                        decimalType: DecimalType
-                                                            .automatic,
-                                                        currency: 'P ',
-                                                      ),
-                                                      '0',
-                                                    ),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .displaySmall
-                                                        .override(
-                                                          fontFamily: 'Outfit',
-                                                          color:
-                                                              Color(0xFF14181B),
-                                                          fontSize: 36.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                  ),
                                                   Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 4.0,
-                                                                0.0, 0.0),
+                                                            .fromSTEB(0.0, 0.0,
+                                                                0.0, 10.0),
                                                     child: Text(
-                                                      'Last Remittance',
-                                                      textAlign:
-                                                          TextAlign.start,
+                                                      'Last Remitted Amount',
                                                       style: FlutterFlowTheme
                                                               .of(context)
-                                                          .labelSmall
+                                                          .labelMedium
                                                           .override(
                                                             fontFamily:
                                                                 'Plus Jakarta Sans',
                                                             color: Color(
                                                                 0xFF57636C),
-                                                            fontSize: 12.0,
+                                                            fontSize: 14.0,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),
                                                     ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 0.0,
+                                                                0.0, 10.0),
+                                                    child: Text(
+                                                      valueOrDefault<String>(
+                                                        formatNumber(
+                                                          topTitleRemittancesRecord
+                                                              ?.net,
+                                                          formatType: FormatType
+                                                              .decimal,
+                                                          decimalType:
+                                                              DecimalType
+                                                                  .automatic,
+                                                          currency: 'P ',
+                                                        ),
+                                                        '0',
+                                                      ),
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .displaySmall
+                                                          .override(
+                                                            fontFamily:
+                                                                'Outfit',
+                                                            color: Color(
+                                                                0xFF14181B),
+                                                            fontSize: 36.0,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      FutureBuilder<
+                                                          List<
+                                                              TransactionsRecord>>(
+                                                        future:
+                                                            queryTransactionsRecordOnce(
+                                                          queryBuilder:
+                                                              (transactionsRecord) =>
+                                                                  transactionsRecord
+                                                                      .where(
+                                                                        'hotel',
+                                                                        isEqualTo:
+                                                                            FFAppState().hotel,
+                                                                      )
+                                                                      .where(
+                                                                        'remitted',
+                                                                        isEqualTo:
+                                                                            false,
+                                                                      )
+                                                                      .where(
+                                                                        'type',
+                                                                        isEqualTo:
+                                                                            'change',
+                                                                      ),
+                                                          singleRecord: true,
+                                                        ),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          // Customize what your widget looks like when it's loading.
+                                                          if (!snapshot
+                                                              .hasData) {
+                                                            return Center(
+                                                              child: SizedBox(
+                                                                width: 50.0,
+                                                                height: 50.0,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  valueColor:
+                                                                      AlwaysStoppedAnimation<
+                                                                          Color>(
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          List<TransactionsRecord>
+                                                              textTransactionsRecordList =
+                                                              snapshot.data!;
+                                                          // Return an empty Container when the item does not exist.
+                                                          if (snapshot
+                                                              .data!.isEmpty) {
+                                                            return Container();
+                                                          }
+                                                          final textTransactionsRecord =
+                                                              textTransactionsRecordList
+                                                                      .isNotEmpty
+                                                                  ? textTransactionsRecordList
+                                                                      .first
+                                                                  : null;
+                                                          return Text(
+                                                            'Excess from last remittance: ${formatNumber(
+                                                              textTransactionsRecord
+                                                                  ?.total,
+                                                              formatType:
+                                                                  FormatType
+                                                                      .decimal,
+                                                              decimalType:
+                                                                  DecimalType
+                                                                      .automatic,
+                                                              currency: 'Php ',
+                                                            )}',
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .labelSmall,
+                                                          );
+                                                        },
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),

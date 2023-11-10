@@ -252,53 +252,60 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                               if (_model
                                       .transactions?[
                                           _model.loopTransactionsCounter]
-                                      ?.type ==
-                                  'book') {
-                                // book to remit add to queue
-                                setState(() {
-                                  _model.addToBookingsToRemit(_model
-                                      .transactions![
-                                          _model.loopTransactionsCounter]
-                                      .booking!);
-                                });
-                                // booking
-                                _model.booking =
-                                    await BookingsRecord.getDocumentOnce(_model
+                                      ?.pending !=
+                                  true) {
+                                if (_model
+                                        .transactions?[
+                                            _model.loopTransactionsCounter]
+                                        ?.type ==
+                                    'book') {
+                                  // book to remit add to queue
+                                  setState(() {
+                                    _model.addToBookingsToRemit(_model
                                         .transactions![
                                             _model.loopTransactionsCounter]
                                         .booking!);
-                                // update use of room local
-                                setState(() {
-                                  _model.updateRoomUsageAtIndex(
-                                    functions.indexOfRoomInRoomUsage(
-                                        _model.roomUsage.toList(),
-                                        _model
-                                            .transactions![
-                                                _model.loopTransactionsCounter]
-                                            .room),
-                                    (e) =>
-                                        e..incrementUse(_model.booking!.nights),
-                                  );
-                                });
-                                // remitted book
+                                  });
+                                  // booking
+                                  _model.booking =
+                                      await BookingsRecord.getDocumentOnce(
+                                          _model
+                                              .transactions![_model
+                                                  .loopTransactionsCounter]
+                                              .booking!);
+                                  // update use of room local
+                                  setState(() {
+                                    _model.updateRoomUsageAtIndex(
+                                      functions.indexOfRoomInRoomUsage(
+                                          _model.roomUsage.toList(),
+                                          _model
+                                              .transactions![_model
+                                                  .loopTransactionsCounter]
+                                              .room),
+                                      (e) => e
+                                        ..incrementUse(_model.booking!.nights),
+                                    );
+                                  });
+                                  // remitted book
+
+                                  await _model
+                                      .transactions![
+                                          _model.loopTransactionsCounter]
+                                      .booking!
+                                      .update(createBookingsRecordData(
+                                    remitted: true,
+                                  ));
+                                }
+                                // remitted true including change
 
                                 await _model
-                                    .transactions![
+                                    .transactionsToRemit[
                                         _model.loopTransactionsCounter]
-                                    .booking!
-                                    .update(createBookingsRecordData(
+                                    .reference
+                                    .update(createTransactionsRecordData(
                                   remitted: true,
                                 ));
                               }
-                              // remitted true including change
-
-                              await _model
-                                  .transactionsToRemit[
-                                      _model.loopTransactionsCounter]
-                                  .reference
-                                  .update(createTransactionsRecordData(
-                                remitted: true,
-                              ));
                               // Increment Loop Counter
                               setState(() {
                                 _model.loopTransactionsCounter =

@@ -580,59 +580,25 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                   5.0,
                                                                   0.0,
                                                                   0.0),
-                                                      child: StreamBuilder<
-                                                          RemittancesRecord>(
-                                                        stream: RemittancesRecord
-                                                            .getDocument(
-                                                                mainCardRemittancesRecord!
-                                                                    .reference),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          // Customize what your widget looks like when it's loading.
-                                                          if (!snapshot
-                                                              .hasData) {
-                                                            return Center(
-                                                              child: SizedBox(
-                                                                width: 50.0,
-                                                                height: 50.0,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  valueColor:
-                                                                      AlwaysStoppedAnimation<
-                                                                          Color>(
-                                                                    FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primary,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          }
-                                                          final textRemittancesRecord =
-                                                              snapshot.data!;
-                                                          return Text(
-                                                            formatNumber(
-                                                              mainCardRemittancesRecord!
-                                                                  .expenses,
-                                                              formatType:
-                                                                  FormatType
-                                                                      .decimal,
-                                                              decimalType:
-                                                                  DecimalType
-                                                                      .automatic,
-                                                              currency: 'P ',
+                                                      child: Text(
+                                                        formatNumber(
+                                                          mainCardRemittancesRecord!
+                                                              .expenses,
+                                                          formatType: FormatType
+                                                              .decimal,
+                                                          decimalType:
+                                                              DecimalType
+                                                                  .automatic,
+                                                          currency: 'P ',
+                                                        ),
+                                                        style: FlutterFlowTheme
+                                                                .of(context)
+                                                            .bodyMedium
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Readex Pro',
+                                                              fontSize: 20.0,
                                                             ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  fontSize:
-                                                                      20.0,
-                                                                ),
-                                                          );
-                                                        },
                                                       ),
                                                     ),
                                                 ],
@@ -678,59 +644,25 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                   5.0,
                                                                   0.0,
                                                                   0.0),
-                                                      child: StreamBuilder<
-                                                          RemittancesRecord>(
-                                                        stream: RemittancesRecord
-                                                            .getDocument(
-                                                                mainCardRemittancesRecord!
-                                                                    .reference),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          // Customize what your widget looks like when it's loading.
-                                                          if (!snapshot
-                                                              .hasData) {
-                                                            return Center(
-                                                              child: SizedBox(
-                                                                width: 50.0,
-                                                                height: 50.0,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  valueColor:
-                                                                      AlwaysStoppedAnimation<
-                                                                          Color>(
-                                                                    FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primary,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          }
-                                                          final textRemittancesRecord =
-                                                              snapshot.data!;
-                                                          return Text(
-                                                            formatNumber(
-                                                              mainCardRemittancesRecord!
-                                                                  .gross,
-                                                              formatType:
-                                                                  FormatType
-                                                                      .decimal,
-                                                              decimalType:
-                                                                  DecimalType
-                                                                      .automatic,
-                                                              currency: 'P ',
+                                                      child: Text(
+                                                        formatNumber(
+                                                          mainCardRemittancesRecord!
+                                                              .gross,
+                                                          formatType: FormatType
+                                                              .decimal,
+                                                          decimalType:
+                                                              DecimalType
+                                                                  .automatic,
+                                                          currency: 'P ',
+                                                        ),
+                                                        style: FlutterFlowTheme
+                                                                .of(context)
+                                                            .bodyMedium
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Readex Pro',
+                                                              fontSize: 20.0,
                                                             ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  fontSize:
-                                                                      20.0,
-                                                                ),
-                                                          );
-                                                        },
                                                       ),
                                                     ),
                                                 ],
