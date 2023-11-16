@@ -57,6 +57,8 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   FocusNode? newPriceFocusNode;
   TextEditingController? newPriceController;
   String? Function(BuildContext, String?)? newPriceControllerValidator;
+  // Stores action output result for [Firestore Query - Query a collection] action in saveChangedPrice widget.
+  HotelSettingsRecord? hotelSetting;
   // Stores action output result for [Backend Call - Create Document] action in saveChangedPrice widget.
   TransactionsRecord? newPending;
 

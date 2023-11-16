@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'manage_roles_widget.dart' show ManageRolesWidget;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,7 +17,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 class ManageRolesModel extends FlutterFlowModel<ManageRolesWidget> {
@@ -39,17 +39,20 @@ class ManageRolesModel extends FlutterFlowModel<ManageRolesWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
-  // State field(s) for roleList widget.
+  // State field(s) for CheckboxListTile widget.
 
-  PagingController<DocumentSnapshot?, UsersRecord>? roleListPagingController;
-  Query? roleListPagingQuery;
-  List<StreamSubscription?> roleListStreamSubscriptions = [];
+  Map<UsersRecord, bool> checkboxListTileValueMap1 = {};
+  List<UsersRecord> get checkboxListTileCheckedItems1 =>
+      checkboxListTileValueMap1.entries
+          .where((e) => e.value)
+          .map((e) => e.key)
+          .toList();
 
   // State field(s) for CheckboxListTile widget.
 
-  Map<UsersRecord, bool> checkboxListTileValueMap = {};
-  List<UsersRecord> get checkboxListTileCheckedItems =>
-      checkboxListTileValueMap.entries
+  Map<UsersRecord, bool> checkboxListTileValueMap2 = {};
+  List<UsersRecord> get checkboxListTileCheckedItems2 =>
+      checkboxListTileValueMap2.entries
           .where((e) => e.value)
           .map((e) => e.key)
           .toList();
@@ -64,42 +67,9 @@ class ManageRolesModel extends FlutterFlowModel<ManageRolesWidget> {
 
   void dispose() {
     unfocusNode.dispose();
-    roleListStreamSubscriptions.forEach((s) => s?.cancel());
-    roleListPagingController?.dispose();
   }
 
   /// Action blocks are added here.
 
   /// Additional helper methods are added here.
-
-  PagingController<DocumentSnapshot?, UsersRecord> setRoleListController(
-    Query query, {
-    DocumentReference<Object?>? parent,
-  }) {
-    roleListPagingController ??= _createRoleListController(query, parent);
-    if (roleListPagingQuery != query) {
-      roleListPagingQuery = query;
-      roleListPagingController?.refresh();
-    }
-    return roleListPagingController!;
-  }
-
-  PagingController<DocumentSnapshot?, UsersRecord> _createRoleListController(
-    Query query,
-    DocumentReference<Object?>? parent,
-  ) {
-    final controller =
-        PagingController<DocumentSnapshot?, UsersRecord>(firstPageKey: null);
-    return controller
-      ..addPageRequestListener(
-        (nextPageMarker) => queryUsersRecordPage(
-          queryBuilder: (_) => roleListPagingQuery ??= query,
-          nextPageMarker: nextPageMarker,
-          streamSubscriptions: roleListStreamSubscriptions,
-          controller: controller,
-          pageSize: 25,
-          isStream: true,
-        ),
-      );
-  }
 }

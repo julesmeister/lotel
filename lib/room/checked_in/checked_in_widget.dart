@@ -1450,6 +1450,20 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       remitted:
                                                                           false,
                                                                     ));
+                                                                    // hotel settings
+                                                                    _model.hotelSetting =
+                                                                        await queryHotelSettingsRecordOnce(
+                                                                      queryBuilder:
+                                                                          (hotelSettingsRecord) =>
+                                                                              hotelSettingsRecord.where(
+                                                                        'hotel',
+                                                                        isEqualTo:
+                                                                            FFAppState().hotel,
+                                                                      ),
+                                                                      singleRecord:
+                                                                          true,
+                                                                    ).then((s) =>
+                                                                            s.firstOrNull);
                                                                     if (checkedInBookingsRecord
                                                                             .status ==
                                                                         'paid') {
@@ -1475,8 +1489,9 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               int.parse(checkedInBookingsRecord.guests),
                                                                           room:
                                                                               widget.roomNo,
-                                                                          description:
-                                                                              '${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                          description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
+                                                                              return (priceChange / bedPrice).toInt().abs().toString() + " ";
+                                                                            }(functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
                                                                           remitted:
                                                                               false,
                                                                           pending:
@@ -1531,8 +1546,9 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               int.parse(checkedInBookingsRecord.guests),
                                                                           room:
                                                                               widget.roomNo,
-                                                                          description:
-                                                                              '${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                          description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
+                                                                              return (priceChange / bedPrice).toInt().abs().toString() + " ";
+                                                                            }(functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
                                                                           remitted:
                                                                               false,
                                                                           pending:
@@ -1564,8 +1580,9 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               int.parse(checkedInBookingsRecord.guests),
                                                                           room:
                                                                               widget.roomNo,
-                                                                          description:
-                                                                              '${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                          description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
+                                                                              return (priceChange / bedPrice).toInt().abs().toString() + " ";
+                                                                            }(functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
                                                                           remitted:
                                                                               false,
                                                                           pending:
@@ -1621,10 +1638,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           .booking!
                                                                           .update(
                                                                               createBookingsRecordData(
-                                                                        extraBeds: functions
-                                                                            .priceHasChanged(checkedInBookingsRecord.total,
-                                                                                double.parse(_model.newPriceController.text))
-                                                                            .toString(),
+                                                                        extraBeds:
+                                                                            ((functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)) / _model.hotelSetting!.bedPrice).toInt().abs()).toString(),
                                                                       ));
                                                                     }
                                                                     context

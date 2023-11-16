@@ -3,10 +3,12 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/request_manager.dart';
 
 import 'expense_widget.dart' show ExpenseWidget;
@@ -22,6 +24,8 @@ class ExpenseModel extends FlutterFlowModel<ExpenseWidget> {
   ///  Local state fields for this page.
 
   DocumentReference? staffSelected;
+
+  DocumentReference? expenseRef;
 
   ///  State fields for stateful widgets in this page.
 
@@ -40,6 +44,10 @@ class ExpenseModel extends FlutterFlowModel<ExpenseWidget> {
   // State field(s) for selectedName widget.
   String? selectedNameValue;
   FormFieldController<String>? selectedNameValueController;
+  // Stores action output result for [Backend Call - Create Document] action in Button widget.
+  TransactionsRecord? newCA;
+  // Stores action output result for [Backend Call - Create Document] action in Button widget.
+  TransactionsRecord? newExp;
 
   /// Query cache managers for this widget.
 

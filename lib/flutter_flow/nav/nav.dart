@@ -196,7 +196,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/expense',
           builder: (context, params) => params.isEmpty
               ? NavBarPage(initialPage: 'Expense')
-              : ExpenseWidget(),
+              : ExpenseWidget(
+                  additional: params.getParam('additional', ParamType.bool),
+                  remittanceRef: params.getParam('remittanceRef',
+                      ParamType.DocumentReference, false, ['remittances']),
+                  net: params.getParam('net', ParamType.double),
+                ),
         ),
         FFRoute(
           name: 'Payroll',

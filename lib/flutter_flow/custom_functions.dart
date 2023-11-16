@@ -897,3 +897,12 @@ List<TransactionsRecord> sortTransactionDescending(
   transactions.sort((a, b) => b.date!.compareTo(a.date!));
   return transactions;
 }
+
+String resetFont(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontFamily: 'Outfit', // Set the desired font family
+    ),
+  ).data!;
+}

@@ -177,6 +177,9 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                 )
                               ],
                               borderRadius: BorderRadius.circular(0.0),
+                              border: Border.all(
+                                color: FlutterFlowTheme.of(context).alternate,
+                              ),
                             ),
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(

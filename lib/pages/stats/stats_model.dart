@@ -81,6 +81,8 @@ class StatsModel extends FlutterFlowModel<StatsWidget> {
   List<TransactionsRecord>? bookingTransactionsOnly;
   // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
   List<TransactionsRecord>? goodsTransactionsOnly;
+  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
+  List<TransactionsRecord>? expenseTransactionsOnly;
 
   /// Initialization and disposal methods.
 

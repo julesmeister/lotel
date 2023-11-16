@@ -579,64 +579,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             0.0),
                                                                 child: Text(
                                                                   dateTimeFormat(
-                                                                      'h:mm a',
+                                                                      'MMM d y h:mm a',
                                                                       bookingsItem
                                                                           .date!),
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
                                                                       .labelMedium,
-                                                                ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            20.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                child: RichText(
-                                                                  textScaleFactor:
-                                                                      MediaQuery.of(
-                                                                              context)
-                                                                          .textScaleFactor,
-                                                                  text:
-                                                                      TextSpan(
-                                                                    children: [
-                                                                      TextSpan(
-                                                                        text:
-                                                                            'Room: ',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              14.0,
-                                                                        ),
-                                                                      ),
-                                                                      TextSpan(
-                                                                        text: bookingsItem
-                                                                            .room
-                                                                            .toString(),
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).tertiary,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
-                                                                          fontSize:
-                                                                              14.0,
-                                                                        ),
-                                                                      )
-                                                                    ],
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyLarge
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          fontSize:
-                                                                              14.0,
-                                                                        ),
-                                                                  ),
                                                                 ),
                                                               ),
                                                             ],
@@ -914,7 +862,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             0.0),
                                                                 child: Text(
                                                                   dateTimeFormat(
-                                                                      'h:mm a',
+                                                                      'MMM d y h:mm a',
                                                                       goodsItem
                                                                           .date!),
                                                                   style: FlutterFlowTheme.of(
@@ -1196,7 +1144,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           0.0),
                                                                   child: Text(
                                                                     dateTimeFormat(
-                                                                        'h:mm a',
+                                                                        'MMM d y h:mm a',
                                                                         goodsItem
                                                                             .date!),
                                                                     style: FlutterFlowTheme.of(
@@ -1634,64 +1582,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             0.0),
                                                                 child: Text(
                                                                   dateTimeFormat(
-                                                                      'h:mm a',
+                                                                      'MMM d y h:mm a',
                                                                       bookingsItem
                                                                           .date!),
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
                                                                       .labelMedium,
-                                                                ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            20.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                child: RichText(
-                                                                  textScaleFactor:
-                                                                      MediaQuery.of(
-                                                                              context)
-                                                                          .textScaleFactor,
-                                                                  text:
-                                                                      TextSpan(
-                                                                    children: [
-                                                                      TextSpan(
-                                                                        text:
-                                                                            'Days: ',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              14.0,
-                                                                        ),
-                                                                      ),
-                                                                      TextSpan(
-                                                                        text: bookingsItem
-                                                                            .guests
-                                                                            .toString(),
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).tertiary,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
-                                                                          fontSize:
-                                                                              14.0,
-                                                                        ),
-                                                                      )
-                                                                    ],
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyLarge
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          fontSize:
-                                                                              14.0,
-                                                                        ),
-                                                                  ),
                                                                 ),
                                                               ),
                                                             ],
@@ -2108,7 +2004,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             0.0),
                                                                 child: Text(
                                                                   dateTimeFormat(
-                                                                      'h:mm a',
+                                                                      'MMM d y h:mm a',
                                                                       goodsItem
                                                                           .date!),
                                                                   style: FlutterFlowTheme.of(
@@ -2542,7 +2438,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           0.0),
                                                                   child: Text(
                                                                     dateTimeFormat(
-                                                                        'h:mm a',
+                                                                        'MMM d y h:mm a',
                                                                         goodsItem
                                                                             .date!),
                                                                     style: FlutterFlowTheme.of(

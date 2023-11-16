@@ -70,18 +70,18 @@ class _PrintRemittanceState extends State<PrintRemittance> {
 
     List<List<String>> generateRoomTableData() {
       final List<List<String>> entries = [];
+
+      widget.rooms.sort((a, b) => a.number.compareTo(b.number));
+
       for (final room in widget.rooms) {
         final List<String> entry = [];
         entry.add('Room ${room.number}');
-        BookingsRecord? booking;
-        if (room.currentBooking != null) {
-          for (var b in widget.bookings ?? []) {
-            if (b.reference == room.currentBooking) {
-              booking = b;
-              break;
-            }
-          }
-        }
+
+        // Find bookings for the current room
+        final roomBookings = widget.bookings
+                ?.where((booking) => booking.room == room.reference)
+                .toList() ??
+            [];
 
         // Find transactions related to the room
         final bookTransactions = widget.transactions
@@ -100,10 +100,15 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 : 'still occupied';
 
         entry.add(totalText);
-        entry.add(booking != null ? booking.nights.toString() : '0');
+        entry.add(roomBookings.isNotEmpty
+            ? roomBookings
+                .fold(0, (sum, booking) => sum + booking.nights)
+                .toString()
+            : '0');
 
         entries.add(entry);
       }
+
       return entries;
     }
 
@@ -156,14 +161,20 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 .reduce(
                     (value, element) => value > element ? value : element) ??
             0;
-        final remainingQuantity = startingQuantity - (data['quantity'] ?? 0.0);
+        final remainingQuantity = startingQuantity - (data['quantity'] ?? 0);
+        double price = data['price'] ?? 0.0;
+
+        String formattedPrice = NumberFormat.currency(
+          symbol: 'Php ',
+          decimalDigits: 2,
+        ).format(price);
 
         final List<String> entry = [
           description,
-          (data['quantity'] ?? 0.0).toString(),
+          (data['quantity'] ?? 0).toInt().toString(),
           startingQuantity.toString(),
-          remainingQuantity.toString(),
-          (data['price'] ?? 0.0).toStringAsFixed(2),
+          remainingQuantity.toInt().toString(),
+          formattedPrice,
         ];
         entries.add(entry);
       });
@@ -185,7 +196,13 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         final description = generateExpenseDescription(transaction);
 
         final total = transaction.total.toDouble();
-        final List<String> entry = [description, total.toStringAsFixed(2)];
+        final List<String> entry = [
+          description,
+          NumberFormat.currency(
+            symbol: 'Php ',
+            decimalDigits: 2,
+          ).format(total),
+        ];
         entries.add(entry);
       }
 
@@ -204,6 +221,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         data: data.sublist(1),
         border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
         headerAlignment: pw.Alignment.centerLeft,
+        // Define cell alignments for each column
         cellAlignment: pw.Alignment.centerLeft,
         headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
         cellStyle: pw.TextStyle(fontSize: 8),
@@ -216,21 +234,27 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         return pw.Text(
             'There are no goods.'); // Handle the case when data is empty
       }
-      return pw.TableHelper.fromTextArray(
-        headers: [
-          'Goods',
-          'Quantity Sold',
-          'Starting Quantity',
-          'Remaining Quantity',
-          'Total'
-        ],
-        data: data,
-        border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
-        headerAlignment: pw.Alignment.centerLeft,
-        cellAlignment: pw.Alignment.centerLeft,
-        headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
-        cellStyle: pw.TextStyle(fontSize: 8),
-        cellPadding: pw.EdgeInsets.symmetric(vertical: 1, horizontal: 3),
+
+      return pw.Container(
+        padding: pw.EdgeInsets.symmetric(horizontal: 24.0),
+        child: pw.TableHelper.fromTextArray(
+          headers: [
+            'Goods',
+            'Quantity Sold',
+            'Starting Quantity',
+            'Remaining Quantity',
+            'Total'
+          ],
+          data: data,
+          border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
+          headerAlignment: pw.Alignment.centerLeft,
+          // Define cell alignments for each column
+          cellAlignment: pw.Alignment.centerLeft,
+          headerStyle:
+              pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
+          cellStyle: pw.TextStyle(fontSize: 8),
+          cellPadding: pw.EdgeInsets.symmetric(vertical: 1, horizontal: 3),
+        ),
       );
     }
 
@@ -239,23 +263,43 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         return pw.Text(
             'There are no expenses.'); // Handle the case when data is empty
       }
-      return pw.TableHelper.fromTextArray(
-        headers: <dynamic>['Expenses', 'Total'],
-        data: data,
-        border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
-        headerAlignment: pw.Alignment.centerLeft,
-        cellAlignment: pw.Alignment.centerLeft,
-        headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
-        cellStyle: pw.TextStyle(fontSize: 8),
-        cellPadding: pw.EdgeInsets.symmetric(vertical: 1, horizontal: 3),
+
+      return pw.Container(
+        padding: pw.EdgeInsets.symmetric(horizontal: 24.0),
+        child: pw.TableHelper.fromTextArray(
+          headers: <dynamic>['Expenses', 'Total'],
+          data: data,
+          border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
+          headerAlignment: pw.Alignment.centerLeft,
+          cellAlignment: pw.Alignment.centerLeft,
+          headerStyle:
+              pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
+          cellStyle: pw.TextStyle(fontSize: 8),
+          cellPadding: pw.EdgeInsets.symmetric(vertical: 1, horizontal: 3),
+        ),
       );
     }
 
     pw.Widget createBottomRow(RemittancesRecord remittance) {
-      final sales = NumberFormat.currency(
+      final roomSales = NumberFormat.currency(
         symbol: 'Php ',
         decimalDigits: 2,
-      ).format(remittance.gross);
+      ).format(
+        // Calculate the sum of transactions.total for transaction.type == 'book'
+        (widget.transactions ?? [])
+            .where((transaction) => transaction.type == 'book')
+            .fold(0.0, (sum, transaction) => sum + transaction.total),
+      );
+
+      final goodsSales = NumberFormat.currency(
+        symbol: 'Php ',
+        decimalDigits: 2,
+      ).format(
+        // Calculate the sum of transactions.total for transaction.type == 'goods'
+        (widget.transactions ?? [])
+            .where((transaction) => transaction.type == 'goods')
+            .fold(0.0, (sum, transaction) => sum + transaction.total),
+      );
 
       final expenses = NumberFormat.currency(
         symbol: 'Php ',
@@ -267,13 +311,55 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         decimalDigits: 2,
       ).format(remittance.net);
 
-      return pw.Row(
-        mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
-        children: [
-          pw.Text('Sales: $sales', style: pw.TextStyle(fontSize: 12)),
-          pw.Text('Expenses: $expenses', style: pw.TextStyle(fontSize: 12)),
-          pw.Text('Total: $total', style: pw.TextStyle(fontSize: 12)),
-        ],
+      String capitalizeFirstLetter(String text) {
+        if (text.isEmpty) {
+          return text;
+        }
+        return text[0].toUpperCase() + text.substring(1);
+      }
+
+      return pw.Container(
+        padding: pw.EdgeInsets.symmetric(horizontal: 24.0),
+        child: pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text('Sales',
+                    style: pw.TextStyle(
+                        fontSize: 12, fontWeight: pw.FontWeight.bold)),
+                pw.Text('Rooms: $roomSales', style: pw.TextStyle(fontSize: 12)),
+                pw.Text('Goods: $goodsSales',
+                    style: pw.TextStyle(fontSize: 12)),
+              ],
+            ),
+            pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text('Expenses: $expenses',
+                    style: pw.TextStyle(fontSize: 12)),
+                pw.Text('Net Total: $total', style: pw.TextStyle(fontSize: 12)),
+                // Add additional information if needed
+              ],
+            ),
+            pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text(
+                  'Prepared By: ${capitalizeFirstLetter(widget.preparedBy ?? '')}',
+                  style: pw.TextStyle(fontSize: 12),
+                ),
+                pw.Text(
+                  'Collected By: ${capitalizeFirstLetter(widget.collectedBy ?? '')}',
+                  style: pw.TextStyle(fontSize: 12),
+                ),
+                // Add additional information if needed
+              ],
+            ),
+          ],
+        ),
       );
     }
 
@@ -299,40 +385,8 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                     fontSize: 14,
                   ),
                 ),
-                pw.SizedBox(height: 5),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    // Create a Column for "Prepared By" information
-                    pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text(
-                          'Prepared By: ${widget.preparedBy ?? ''}',
-                          style: pw.TextStyle(
-                            fontSize: 12,
-                          ),
-                        ),
-                        // Add additional information if needed
-                      ],
-                    ),
-                    // Create a Column for "Collected By" information
-                    pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text(
-                          'Collected By: ${widget.collectedBy ?? ''}',
-                          style: pw.TextStyle(
-                            fontSize: 12,
-                          ),
-                        ),
-                        // Add additional information if needed
-                      ],
-                    ),
-                  ],
-                ),
-                pw.SizedBox(height: 5),
+
+                pw.SizedBox(height: 25),
                 pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -347,6 +401,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 pw.SizedBox(height: 10),
                 createExpensesTable(generateExpensesTableData()),
                 pw.SizedBox(height: 10),
+
                 createBottomRow(widget.remittance),
               ],
             ),
@@ -355,8 +410,10 @@ class _PrintRemittanceState extends State<PrintRemittance> {
       ),
     );
 
-    await Printing.layoutPdf(
-        onLayout: (PdfPageFormat format) async => pdf.save());
+    await Printing.sharePdf(
+        bytes: await pdf.save(),
+        filename:
+            "${widget.remittance.hotel} Remittance Report - $formattedDate.pdf");
 
     // You can save the PDF to a file, email it, or do other operations as needed
     // For simplicity, we are just printing the PDF as bytes
@@ -377,7 +434,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         ),
       ),
       child: Text(
-        'Print Remittance',
+        'Share Remittance',
         style: TextStyle(
           fontFamily: 'Plus Jakarta Sans',
           color: Colors.white,

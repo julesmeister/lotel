@@ -189,6 +189,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                         'deducted for some reason',
                                       )
                                     : 'sold',
+                                pending: false,
                               ),
                               ...mapToFirestore(
                                 {

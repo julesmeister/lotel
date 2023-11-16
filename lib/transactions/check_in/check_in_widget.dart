@@ -92,6 +92,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
           _model.startingNights = widget.bookingToExtend?.nights;
           _model.startingBeds = widget.bookingToExtend?.extraBeds;
           _model.paid = widget.bookingToExtend?.status == 'paid';
+          _model.pendings = widget.bookingToExtend!.pendings
+              .toList()
+              .cast<DocumentReference>();
         });
       } else {
         setState(() {
@@ -946,78 +949,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                         FFButtonWidget(
                           onPressed: () async {
                             var _shouldSetState = false;
-                            // Save Booking to Firestore
-
-                            var bookingsRecordReference =
-                                BookingsRecord.collection.doc();
-                            await bookingsRecordReference.set({
-                              ...createBookingsRecordData(
-                                nights: _model.nightsValue,
-                                details: _model.textController2.text,
-                                contact: _model.textController1.text,
-                                hotel: FFAppState().hotel,
-                                room: widget.ref,
-                                extraBeds: _model.bedsValue,
-                                guests: _model.guestsValue,
-                                total: valueOrDefault<double>(
-                                  functions.getTotalAmount(
-                                      _model.bedsValue!,
-                                      _model.nightsValue!,
-                                      _model.price,
-                                      FFAppState().bedPrice,
-                                      '-1',
-                                      0),
-                                  0.0,
-                                ),
-                                status: functions.paidOrPending(_model.paid),
-                                staff: currentUserReference,
-                                remitted: false,
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'dateIn': FieldValue.serverTimestamp(),
-                                  'pendings': widget.extend
-                                      ? widget.bookingToExtend?.pendings
-                                      : _model.pendings,
-                                },
-                              ),
-                            });
-                            _model.savedBooking =
-                                BookingsRecord.getDocumentFromData({
-                              ...createBookingsRecordData(
-                                nights: _model.nightsValue,
-                                details: _model.textController2.text,
-                                contact: _model.textController1.text,
-                                hotel: FFAppState().hotel,
-                                room: widget.ref,
-                                extraBeds: _model.bedsValue,
-                                guests: _model.guestsValue,
-                                total: valueOrDefault<double>(
-                                  functions.getTotalAmount(
-                                      _model.bedsValue!,
-                                      _model.nightsValue!,
-                                      _model.price,
-                                      FFAppState().bedPrice,
-                                      '-1',
-                                      0),
-                                  0.0,
-                                ),
-                                status: functions.paidOrPending(_model.paid),
-                                staff: currentUserReference,
-                                remitted: false,
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'dateIn': DateTime.now(),
-                                  'pendings': widget.extend
-                                      ? widget.bookingToExtend?.pendings
-                                      : _model.pendings,
-                                },
-                              ),
-                            }, bookingsRecordReference);
-                            _shouldSetState = true;
-                            if (_model.paid == true) {
-                              if (widget.extend) {
+                            if (widget.extend) {
+                              if (_model.paid) {
                                 if (functions.hasDifferencesInBookings(
                                     valueOrDefault<String>(
                                       _model.startingBeds,
@@ -1051,7 +984,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           )),
                                       type: 'book',
                                       hotel: FFAppState().hotel,
-                                      booking: _model.savedBooking?.reference,
+                                      booking:
+                                          widget.bookingToExtend?.reference,
                                       guests: functions
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
@@ -1091,23 +1025,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       },
                                     ),
                                   });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Updated Booking!',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                        ),
-                                      ),
-                                      duration: Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
                                 } else {
-                                  // update guest data history
+                                  // update guest data history only
 
                                   await HistoryRecord.createDoc(widget.ref!)
                                       .set({
@@ -1140,67 +1059,6 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   return;
                                 }
                               } else {
-                                // New Transaction
-
-                                await TransactionsRecord.collection.doc().set({
-                                  ...createTransactionsRecordData(
-                                    staff: currentUserReference,
-                                    total: functions.getTotalAmount(
-                                        _model.bedsValue!,
-                                        _model.nightsValue!,
-                                        _model.price,
-                                        FFAppState().bedPrice,
-                                        _model.startingBeds!,
-                                        _model.startingNights!),
-                                    type: 'book',
-                                    hotel: FFAppState().hotel,
-                                    booking: _model.savedBooking?.reference,
-                                    guests: functions
-                                        .stringToInt(_model.guestsValue),
-                                    room: widget.roomNo,
-                                    description:
-                                        'New checkin in room ${widget.roomNo?.toString()} for ${_model.nightsValue?.toString()} nights',
-                                    remitted: false,
-                                    pending: false,
-                                  ),
-                                  ...mapToFirestore(
-                                    {
-                                      'date': FieldValue.serverTimestamp(),
-                                    },
-                                  ),
-                                });
-                                // Check In To History
-
-                                await HistoryRecord.createDoc(widget.ref!).set({
-                                  ...createHistoryRecordData(
-                                    description:
-                                        '${_model.guestsValue} new guest/s have checked in!',
-                                    staff: currentUserReference,
-                                  ),
-                                  ...mapToFirestore(
-                                    {
-                                      'date': FieldValue.serverTimestamp(),
-                                    },
-                                  ),
-                                });
-                                // new guest
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'A new guest has checked in!',
-                                      style: TextStyle(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                      ),
-                                    ),
-                                    duration: Duration(milliseconds: 4000),
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context).secondary,
-                                  ),
-                                );
-                              }
-                            } else {
-                              if (widget.extend) {
                                 if (functions.getTotalAmount(
                                         _model.bedsValue!,
                                         _model.nightsValue!,
@@ -1211,9 +1069,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     0.0) {
                                   // New Pending Transaction
 
-                                  var transactionsRecordReference3 =
+                                  var transactionsRecordReference2 =
                                       TransactionsRecord.collection.doc();
-                                  await transactionsRecordReference3.set({
+                                  await transactionsRecordReference2.set({
                                     ...createTransactionsRecordData(
                                       staff: currentUserReference,
                                       total: functions.getTotalAmount(
@@ -1225,12 +1083,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           _model.startingNights!),
                                       type: 'book',
                                       hotel: FFAppState().hotel,
-                                      booking: _model.savedBooking?.reference,
+                                      booking:
+                                          widget.bookingToExtend?.reference,
                                       guests: functions
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
                                       description:
-                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} night/s extension',
+                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights) > 1 ? 'nights' : 'night'} extension',
                                       remitted: false,
                                       pending: true,
                                     ),
@@ -1253,12 +1112,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           _model.startingNights!),
                                       type: 'book',
                                       hotel: FFAppState().hotel,
-                                      booking: _model.savedBooking?.reference,
+                                      booking:
+                                          widget.bookingToExtend?.reference,
                                       guests: functions
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
                                       description:
-                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} night/s extension',
+                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights) > 1 ? 'nights' : 'night'} extension',
                                       remitted: false,
                                       pending: true,
                                     ),
@@ -1267,17 +1127,12 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         'date': DateTime.now(),
                                       },
                                     ),
-                                  }, transactionsRecordReference3);
+                                  }, transactionsRecordReference2);
                                   _shouldSetState = true;
                                   // add to pendings list
-
-                                  await _model.savedBooking!.reference.update({
-                                    ...mapToFirestore(
-                                      {
-                                        'pendings': FieldValue.arrayUnion(
-                                            [_model.newExtPending?.reference]),
-                                      },
-                                    ),
+                                  setState(() {
+                                    _model.addToPendings(
+                                        _model.newExtPending!.reference);
                                   });
                                   // add this change to history
 
@@ -1305,9 +1160,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       0.0) {
                                     // New Pending Transaction
 
-                                    var transactionsRecordReference4 =
+                                    var transactionsRecordReference3 =
                                         TransactionsRecord.collection.doc();
-                                    await transactionsRecordReference4.set({
+                                    await transactionsRecordReference3.set({
                                       ...createTransactionsRecordData(
                                         staff: currentUserReference,
                                         total: functions.getTotalAmount(
@@ -1319,12 +1174,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             _model.startingNights!),
                                         type: 'book',
                                         hotel: FFAppState().hotel,
-                                        booking: _model.savedBooking?.reference,
+                                        booking:
+                                            widget.bookingToExtend?.reference,
                                         guests: functions
                                             .stringToInt(_model.guestsValue),
                                         room: widget.roomNo,
                                         description:
-                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} night/s refund',
+                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(widget.bookingToExtend!.nights - _model.nightsValue!) > 1 ? 'nights' : 'night'} refund',
                                         remitted: false,
                                         pending: true,
                                       ),
@@ -1347,12 +1203,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             _model.startingNights!),
                                         type: 'book',
                                         hotel: FFAppState().hotel,
-                                        booking: _model.savedBooking?.reference,
+                                        booking:
+                                            widget.bookingToExtend?.reference,
                                         guests: functions
                                             .stringToInt(_model.guestsValue),
                                         room: widget.roomNo,
                                         description:
-                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} night/s refund',
+                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(widget.bookingToExtend!.nights - _model.nightsValue!) > 1 ? 'nights' : 'night'} refund',
                                         remitted: false,
                                         pending: true,
                                       ),
@@ -1361,19 +1218,12 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           'date': DateTime.now(),
                                         },
                                       ),
-                                    }, transactionsRecordReference4);
+                                    }, transactionsRecordReference3);
                                     _shouldSetState = true;
                                     // add to pendings list
-
-                                    await _model.savedBooking!.reference
-                                        .update({
-                                      ...mapToFirestore(
-                                        {
-                                          'pendings': FieldValue.arrayUnion([
-                                            _model.newRefundPending?.reference
-                                          ]),
-                                        },
-                                      ),
+                                    setState(() {
+                                      _model.addToPendings(
+                                          _model.newRefundPending!.reference);
                                     });
                                     // add this change to history
 
@@ -1410,6 +1260,162 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     return;
                                   }
                                 }
+                              }
+
+                              // update booking
+
+                              await widget.bookingToExtend!.reference.update({
+                                ...createBookingsRecordData(
+                                  nights: _model.nightsValue,
+                                  total: valueOrDefault<double>(
+                                    functions.getTotalAmount(
+                                        _model.bedsValue!,
+                                        _model.nightsValue!,
+                                        _model.price,
+                                        FFAppState().bedPrice,
+                                        '-1',
+                                        0),
+                                    0.0,
+                                  ),
+                                  extraBeds: _model.bedsValue,
+                                  status: functions.paidOrPending(_model.paid),
+                                  details: _model.textController2.text,
+                                  contact: _model.textController1.text,
+                                  staff: currentUserReference,
+                                  guests: _model.guestsValue,
+                                  room: widget.ref,
+                                ),
+                                ...mapToFirestore(
+                                  {
+                                    'pendings': _model.pendings,
+                                  },
+                                ),
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Updated Booking!',
+                                    style: TextStyle(
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                    ),
+                                  ),
+                                  duration: Duration(milliseconds: 4000),
+                                  backgroundColor:
+                                      FlutterFlowTheme.of(context).secondary,
+                                ),
+                              );
+                            } else {
+                              // Save Booking to Firestore
+
+                              var bookingsRecordReference =
+                                  BookingsRecord.collection.doc();
+                              await bookingsRecordReference.set({
+                                ...createBookingsRecordData(
+                                  nights: _model.nightsValue,
+                                  details: _model.textController2.text,
+                                  contact: _model.textController1.text,
+                                  hotel: FFAppState().hotel,
+                                  room: widget.ref,
+                                  extraBeds: _model.bedsValue,
+                                  guests: _model.guestsValue,
+                                  total: valueOrDefault<double>(
+                                    functions.getTotalAmount(
+                                        _model.bedsValue!,
+                                        _model.nightsValue!,
+                                        _model.price,
+                                        FFAppState().bedPrice,
+                                        '-1',
+                                        0),
+                                    0.0,
+                                  ),
+                                  status: functions.paidOrPending(_model.paid),
+                                  staff: currentUserReference,
+                                  remitted: false,
+                                ),
+                                ...mapToFirestore(
+                                  {
+                                    'dateIn': FieldValue.serverTimestamp(),
+                                    'pendings': _model.pendings,
+                                  },
+                                ),
+                              });
+                              _model.savedBooking =
+                                  BookingsRecord.getDocumentFromData({
+                                ...createBookingsRecordData(
+                                  nights: _model.nightsValue,
+                                  details: _model.textController2.text,
+                                  contact: _model.textController1.text,
+                                  hotel: FFAppState().hotel,
+                                  room: widget.ref,
+                                  extraBeds: _model.bedsValue,
+                                  guests: _model.guestsValue,
+                                  total: valueOrDefault<double>(
+                                    functions.getTotalAmount(
+                                        _model.bedsValue!,
+                                        _model.nightsValue!,
+                                        _model.price,
+                                        FFAppState().bedPrice,
+                                        '-1',
+                                        0),
+                                    0.0,
+                                  ),
+                                  status: functions.paidOrPending(_model.paid),
+                                  staff: currentUserReference,
+                                  remitted: false,
+                                ),
+                                ...mapToFirestore(
+                                  {
+                                    'dateIn': DateTime.now(),
+                                    'pendings': _model.pendings,
+                                  },
+                                ),
+                              }, bookingsRecordReference);
+                              _shouldSetState = true;
+                              if (_model.paid) {
+                                // New Transaction
+
+                                await TransactionsRecord.collection.doc().set({
+                                  ...createTransactionsRecordData(
+                                    staff: currentUserReference,
+                                    total: functions.getTotalAmount(
+                                        _model.bedsValue!,
+                                        _model.nightsValue!,
+                                        _model.price,
+                                        FFAppState().bedPrice,
+                                        _model.startingBeds!,
+                                        _model.startingNights!),
+                                    type: 'book',
+                                    hotel: FFAppState().hotel,
+                                    booking: _model.savedBooking?.reference,
+                                    guests: functions
+                                        .stringToInt(_model.guestsValue),
+                                    room: widget.roomNo,
+                                    description:
+                                        'New Checkin In Room ${widget.roomNo?.toString()} For ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}',
+                                    remitted: false,
+                                    pending: false,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
+                                // Check In To History
+
+                                await HistoryRecord.createDoc(widget.ref!).set({
+                                  ...createHistoryRecordData(
+                                    description:
+                                        '${_model.guestsValue} new guest/s have checked in!',
+                                    staff: currentUserReference,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
                               } else {
                                 // New Pending Transaction
 
@@ -1432,7 +1438,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} night/s',
+                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}',
                                     remitted: false,
                                     pending: true,
                                   ),
@@ -1460,7 +1466,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} night/s',
+                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}',
                                     remitted: false,
                                     pending: true,
                                   ),
@@ -1496,19 +1502,35 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   ),
                                 });
                               }
+
+                              // new guest
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'A new guest has checked in!',
+                                    style: TextStyle(
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                    ),
+                                  ),
+                                  duration: Duration(milliseconds: 4000),
+                                  backgroundColor:
+                                      FlutterFlowTheme.of(context).secondary,
+                                ),
+                              );
+                              // Update room display details
+
+                              await widget.ref!.update(createRoomsRecordData(
+                                vacant: false,
+                                guests: valueOrDefault<int>(
+                                  functions.stringToInt(_model.guestsValue),
+                                  1,
+                                ),
+                                currentBooking: _model.savedBooking?.reference,
+                              ));
                             }
 
                             context.safePop();
-                            // Update room display details
-
-                            await widget.ref!.update(createRoomsRecordData(
-                              vacant: false,
-                              guests: valueOrDefault<int>(
-                                functions.stringToInt(_model.guestsValue),
-                                1,
-                              ),
-                              currentBooking: _model.savedBooking?.reference,
-                            ));
                             if (_shouldSetState) setState(() {});
                           },
                           text: widget.extend == true ? 'Save' : 'Check In',

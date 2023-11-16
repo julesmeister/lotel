@@ -1,6 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/option_to_booking_transaction/option_to_booking_transaction_widget.dart';
+import '/components/option_to_transaction_only/option_to_transaction_only_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
@@ -11,6 +12,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -829,7 +831,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     Padding(
                                                                       padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
-                                                                          4.0,
+                                                                          10.0,
                                                                           0.0,
                                                                           0.0),
                                                                       child:
@@ -1047,458 +1049,113 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     (context, goodsIndex) {
                                                   final goodsItem =
                                                       goods[goodsIndex];
-                                                  return Container(
-                                                    width: double.infinity,
-                                                    constraints: BoxConstraints(
-                                                      maxWidth: 570.0,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color:
-                                                              Color(0x33000000),
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                        )
-                                                      ],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              0.0),
-                                                      border: Border.all(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .alternate,
+                                                  return InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onLongPress: () async {
+                                                      if (valueOrDefault(
+                                                              currentUserDocument
+                                                                  ?.role,
+                                                              '') ==
+                                                          'admin') {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return GestureDetector(
+                                                              onTap: () => _model
+                                                                      .unfocusNode
+                                                                      .canRequestFocus
+                                                                  ? FocusScope.of(
+                                                                          context)
+                                                                      .requestFocus(
+                                                                          _model
+                                                                              .unfocusNode)
+                                                                  : FocusScope.of(
+                                                                          context)
+                                                                      .unfocus(),
+                                                              child: Padding(
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
+                                                                child:
+                                                                    Container(
+                                                                  height: 180.0,
+                                                                  child:
+                                                                      OptionToTransactionOnlyWidget(
+                                                                    ref: goodsItem
+                                                                        .reference,
+                                                                    description:
+                                                                        goodsItem
+                                                                            .description,
+                                                                    price: goodsItem
+                                                                        .total,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            safeSetState(
+                                                                () {}));
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        maxWidth: 570.0,
                                                       ),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  16.0,
-                                                                  12.0,
-                                                                  16.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        12.0,
-                                                                        0.0),
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  RichText(
-                                                                    textScaleFactor:
-                                                                        MediaQuery.of(context)
-                                                                            .textScaleFactor,
-                                                                    text:
-                                                                        TextSpan(
-                                                                      children: [
-                                                                        TextSpan(
-                                                                          text:
-                                                                              'Items: ',
-                                                                          style:
-                                                                              TextStyle(),
-                                                                        ),
-                                                                        TextSpan(
-                                                                          text: goodsItem
-                                                                              .goods
-                                                                              .length
-                                                                              .toString(),
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).tertiary,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyLarge,
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      dateTimeFormat(
-                                                                          'h:mm a',
-                                                                          goodsItem
-                                                                              .date!),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelMedium,
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            12.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryBackground,
-                                                                        boxShadow: [
-                                                                          BoxShadow(
-                                                                            blurRadius:
-                                                                                1.0,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).alternate,
-                                                                            offset:
-                                                                                Offset(0.0, 0.0),
-                                                                          )
-                                                                        ],
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5.0),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).alternate,
-                                                                          width:
-                                                                              1.0,
-                                                                        ),
-                                                                      ),
-                                                                      alignment: AlignmentDirectional(
-                                                                          -1.00,
-                                                                          0.00),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0),
-                                                                        child:
-                                                                            Text(
-                                                                          functions.cartToTextSummary(goodsItem
-                                                                              .goods
-                                                                              .toList())!,
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelMedium,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Text(
-                                                                formatNumber(
-                                                                  goodsItem
-                                                                      .total,
-                                                                  formatType:
-                                                                      FormatType
-                                                                          .decimal,
-                                                                  decimalType:
-                                                                      DecimalType
-                                                                          .automatic,
-                                                                  currency:
-                                                                      'P ',
-                                                                ),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .headlineSmall
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Outfit',
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .success,
-                                                                    ),
-                                                              ),
-                                                              if (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin')
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          10.0),
-                                                                  child: Text(
-                                                                    goodsItem
-                                                                            .remitted
-                                                                        ? 'remitted'
-                                                                        : 'unremitted',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          color: goodsItem.remitted
-                                                                              ? FlutterFlowTheme.of(context).secondary
-                                                                              : FlutterFlowTheme.of(context).tertiary,
-                                                                          fontSize:
-                                                                              10.0,
-                                                                        ),
-                                                                  ),
-                                                                ),
-                                                              if (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin')
-                                                                InkWell(
-                                                                  splashColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  focusColor: Colors
-                                                                      .transparent,
-                                                                  hoverColor: Colors
-                                                                      .transparent,
-                                                                  highlightColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  onTap:
-                                                                      () async {
-                                                                    var confirmDialogResponse =
-                                                                        await showDialog<bool>(
-                                                                              context: context,
-                                                                              builder: (alertDialogContext) {
-                                                                                return AlertDialog(
-                                                                                  title: Text('Are you sure?'),
-                                                                                  content: Text('This transaction will be deleted.'),
-                                                                                  actions: [
-                                                                                    TextButton(
-                                                                                      onPressed: () => Navigator.pop(alertDialogContext, false),
-                                                                                      child: Text('Cancel'),
-                                                                                    ),
-                                                                                    TextButton(
-                                                                                      onPressed: () => Navigator.pop(alertDialogContext, true),
-                                                                                      child: Text('Confirm'),
-                                                                                    ),
-                                                                                  ],
-                                                                                );
-                                                                              },
-                                                                            ) ??
-                                                                            false;
-                                                                    if (confirmDialogResponse) {
-                                                                      if (goodsItem
-                                                                          .remitted) {
-                                                                        // decrease stats
-
-                                                                        await FFAppState()
-                                                                            .statsReference!
-                                                                            .update({
-                                                                          ...mapToFirestore(
-                                                                            {
-                                                                              'goodsIncome': FieldValue.increment(-(goodsItem.total)),
-                                                                            },
-                                                                          ),
-                                                                        });
-                                                                      }
-                                                                      // delete transactions
-                                                                      await goodsItem
-                                                                          .reference
-                                                                          .delete();
-                                                                      ScaffoldMessenger.of(
-                                                                              context)
-                                                                          .showSnackBar(
-                                                                        SnackBar(
-                                                                          content:
-                                                                              Text(
-                                                                            'Transaction is deleted!',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              color: FlutterFlowTheme.of(context).info,
-                                                                            ),
-                                                                          ),
-                                                                          duration:
-                                                                              Duration(milliseconds: 4000),
-                                                                          backgroundColor:
-                                                                              FlutterFlowTheme.of(context).error,
-                                                                        ),
-                                                                      );
-                                                                    }
-                                                                  },
-                                                                  child: Card(
-                                                                    clipBehavior:
-                                                                        Clip.antiAliasWithSaveLayer,
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryBackground,
-                                                                    elevation:
-                                                                        1.0,
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              40.0),
-                                                                    ),
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          4.0,
-                                                                          4.0,
-                                                                          4.0,
-                                                                          4.0),
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .delete_outlined,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryText,
-                                                                        size:
-                                                                            24.0,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                            ],
-                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryBackground,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Color(
+                                                                0x33000000),
+                                                            offset: Offset(
+                                                                0.0, 1.0),
+                                                          )
                                                         ],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(0.0),
+                                                        border: Border.all(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .alternate,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            },
-                                          ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 10.0, 0.0, 10.0),
-                                          child: Text(
-                                            'Expenses',
-                                            style: FlutterFlowTheme.of(context)
-                                                .labelMedium,
-                                          ),
-                                        ),
-                                        if (transactionsTransactionsRecordList
-                                                .where(
-                                                    (e) => e.type == 'expense')
-                                                .toList()
-                                                .length >
-                                            0)
-                                          Builder(
-                                            builder: (context) {
-                                              final expenses = functions
-                                                  .sortTransactionDescending(
-                                                      transactionsTransactionsRecordList
-                                                          .where((e) =>
-                                                              (e.type ==
-                                                                  'expense') &&
-                                                              (valueOrDefault(
-                                                                          currentUserDocument
-                                                                              ?.role,
-                                                                          '') ==
-                                                                      'admin'
-                                                                  ? true
-                                                                  : (e.remitted ==
-                                                                      false)))
-                                                          .toList())
-                                                  .toList();
-                                              return ListView.builder(
-                                                padding: EdgeInsets.zero,
-                                                primary: false,
-                                                shrinkWrap: true,
-                                                scrollDirection: Axis.vertical,
-                                                itemCount: expenses.length,
-                                                itemBuilder:
-                                                    (context, expensesIndex) {
-                                                  final expensesItem =
-                                                      expenses[expensesIndex];
-                                                  return Container(
-                                                    width: double.infinity,
-                                                    constraints: BoxConstraints(
-                                                      maxWidth: 570.0,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color:
-                                                              Color(0x33000000),
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                        )
-                                                      ],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              0.0),
-                                                      border: Border.all(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .alternate,
-                                                      ),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  16.0,
-                                                                  12.0,
-                                                                  16.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 5,
-                                                            child: Padding(
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    16.0,
+                                                                    12.0,
+                                                                    16.0,
+                                                                    12.0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
                                                               padding:
                                                                   EdgeInsetsDirectional
                                                                       .fromSTEB(
@@ -1528,92 +1185,92 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         children: [
                                                                           TextSpan(
                                                                             text:
-                                                                                functions.startBigLetter(expensesItem.description),
+                                                                                'Items: ',
                                                                             style:
                                                                                 TextStyle(),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                goodsItem.goods.length.toString(),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: FlutterFlowTheme.of(context).tertiary,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
                                                                           )
                                                                         ],
                                                                         style: FlutterFlowTheme.of(context)
-                                                                            .bodyLarge
-                                                                            .override(
-                                                                              fontFamily: 'Readex Pro',
-                                                                              color: FlutterFlowTheme.of(context).primaryText,
-                                                                              fontSize: 16.0,
-                                                                            ),
+                                                                            .bodyLarge,
                                                                       ),
                                                                     ),
                                                                     Padding(
                                                                       padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
-                                                                          4.0,
+                                                                          10.0,
                                                                           0.0,
                                                                           0.0),
                                                                       child:
                                                                           Text(
                                                                         dateTimeFormat(
                                                                             'h:mm a',
-                                                                            expensesItem.date!),
+                                                                            goodsItem.date!),
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .labelMedium,
                                                                       ),
                                                                     ),
-                                                                    if (expensesItem
-                                                                            .goods
-                                                                            .length >
-                                                                        0)
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            12.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        child:
-                                                                            Container(
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryBackground,
-                                                                            boxShadow: [
-                                                                              BoxShadow(
-                                                                                blurRadius: 1.0,
-                                                                                color: FlutterFlowTheme.of(context).alternate,
-                                                                                offset: Offset(0.0, 0.0),
-                                                                              )
-                                                                            ],
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(5.0),
-                                                                            border:
-                                                                                Border.all(
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          12.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Container(
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryBackground,
+                                                                          boxShadow: [
+                                                                            BoxShadow(
+                                                                              blurRadius: 1.0,
                                                                               color: FlutterFlowTheme.of(context).alternate,
-                                                                              width: 1.0,
-                                                                            ),
+                                                                              offset: Offset(0.0, 0.0),
+                                                                            )
+                                                                          ],
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(5.0),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).alternate,
+                                                                            width:
+                                                                                1.0,
                                                                           ),
-                                                                          alignment: AlignmentDirectional(
-                                                                              -1.00,
-                                                                              0.00),
+                                                                        ),
+                                                                        alignment: AlignmentDirectional(
+                                                                            -1.00,
+                                                                            0.00),
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              10.0,
+                                                                              10.0,
+                                                                              10.0,
+                                                                              10.0),
                                                                           child:
-                                                                              Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                10.0,
-                                                                                10.0,
-                                                                                10.0,
-                                                                                10.0),
-                                                                            child:
-                                                                                Text(
-                                                                              functions.cartToTextSummary(expensesItem.goods.toList())!,
-                                                                              style: FlutterFlowTheme.of(context).labelMedium,
-                                                                            ),
+                                                                              Text(
+                                                                            functions.cartToTextSummary(goodsItem.goods.toList())!,
+                                                                            style:
+                                                                                FlutterFlowTheme.of(context).labelMedium,
                                                                           ),
                                                                         ),
                                                                       ),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
                                                             ),
-                                                          ),
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: Column(
+                                                            Column(
                                                               mainAxisSize:
                                                                   MainAxisSize
                                                                       .max,
@@ -1623,7 +1280,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               children: [
                                                                 Text(
                                                                   formatNumber(
-                                                                    expensesItem
+                                                                    goodsItem
                                                                         .total,
                                                                     formatType:
                                                                         FormatType
@@ -1644,7 +1301,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         fontFamily:
                                                                             'Outfit',
                                                                         color: FlutterFlowTheme.of(context)
-                                                                            .error,
+                                                                            .success,
                                                                       ),
                                                                 ),
                                                                 if (valueOrDefault(
@@ -1660,7 +1317,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             0.0,
                                                                             10.0),
                                                                     child: Text(
-                                                                      expensesItem
+                                                                      goodsItem
                                                                               .remitted
                                                                           ? 'remitted'
                                                                           : 'unremitted',
@@ -1670,7 +1327,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           .override(
                                                                             fontFamily:
                                                                                 'Readex Pro',
-                                                                            color: expensesItem.remitted
+                                                                            color: goodsItem.remitted
                                                                                 ? FlutterFlowTheme.of(context).secondary
                                                                                 : FlutterFlowTheme.of(context).tertiary,
                                                                             fontSize:
@@ -1722,7 +1379,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           ) ??
                                                                           false;
                                                                       if (confirmDialogResponse) {
-                                                                        if (expensesItem
+                                                                        if (goodsItem
                                                                             .remitted) {
                                                                           // decrease stats
 
@@ -1731,13 +1388,79 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               .update({
                                                                             ...mapToFirestore(
                                                                               {
-                                                                                'expenses': FieldValue.increment(-(expensesItem.total)),
+                                                                                'goodsIncome': FieldValue.increment(-(goodsItem.total)),
                                                                               },
                                                                             ),
                                                                           });
                                                                         }
+                                                                        // reset loop counter
+                                                                        setState(
+                                                                            () {
+                                                                          _model.loopGoodsCounter =
+                                                                              0;
+                                                                        });
+                                                                        while (_model.loopGoodsCounter !=
+                                                                            goodsItem.goods.length) {
+                                                                          // good
+                                                                          _model.goodInAllGoods =
+                                                                              await queryGoodsRecordOnce(
+                                                                            queryBuilder: (goodsRecord) => goodsRecord
+                                                                                .where(
+                                                                                  'hotel',
+                                                                                  isEqualTo: FFAppState().hotel,
+                                                                                )
+                                                                                .where(
+                                                                                  'description',
+                                                                                  isEqualTo: goodsItem.goods[_model.loopGoodsCounter].description,
+                                                                                ),
+                                                                            singleRecord:
+                                                                                true,
+                                                                          ).then((s) => s.firstOrNull);
+                                                                          // create to inventory
+
+                                                                          await InventoriesRecord
+                                                                              .collection
+                                                                              .doc()
+                                                                              .set({
+                                                                            ...createInventoriesRecordData(
+                                                                              activity: 'restored',
+                                                                              hotel: FFAppState().hotel,
+                                                                              staff: currentUserReference,
+                                                                              operator: 'add',
+                                                                              remitted: false,
+                                                                              previousQuantity: _model.goodInAllGoods?.quantity,
+                                                                              quantityChange: goodsItem.goods[_model.loopGoodsCounter].quantity,
+                                                                              item: goodsItem.goods[_model.loopGoodsCounter].description,
+                                                                              previousPrice: _model.goodInExpenses?.price,
+                                                                              priceChange: _model.goodInExpenses?.price,
+                                                                            ),
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'date': FieldValue.serverTimestamp(),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                          // restore good quantity
+
+                                                                          await _model
+                                                                              .goodInAllGoods!
+                                                                              .reference
+                                                                              .update({
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'quantity': FieldValue.increment(goodsItem.goods[_model.loopGoodsCounter].quantity),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                          // increment loop
+                                                                          setState(
+                                                                              () {
+                                                                            _model.loopGoodsCounter =
+                                                                                _model.loopGoodsCounter + 1;
+                                                                          });
+                                                                        }
                                                                         // delete transactions
-                                                                        await expensesItem
+                                                                        await goodsItem
                                                                             .reference
                                                                             .delete();
                                                                         ScaffoldMessenger.of(context)
@@ -1757,6 +1480,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           ),
                                                                         );
                                                                       }
+
+                                                                      setState(
+                                                                          () {});
                                                                     },
                                                                     child: Card(
                                                                       clipBehavior:
@@ -1792,8 +1518,497 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   ),
                                                               ],
                                                             ),
-                                                          ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 10.0, 0.0, 10.0),
+                                          child: Text(
+                                            'Expenses',
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium,
+                                          ),
+                                        ),
+                                        if (transactionsTransactionsRecordList
+                                                .where(
+                                                    (e) => e.type == 'expense')
+                                                .toList()
+                                                .length >
+                                            0)
+                                          Builder(
+                                            builder: (context) {
+                                              final expenses = functions
+                                                  .sortTransactionDescending(
+                                                      transactionsTransactionsRecordList
+                                                          .where((e) =>
+                                                              (e.type ==
+                                                                  'expense') &&
+                                                              (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin'
+                                                                  ? true
+                                                                  : (e.remitted ==
+                                                                      false)))
+                                                          .toList())
+                                                  .toList();
+                                              return ListView.builder(
+                                                padding: EdgeInsets.zero,
+                                                primary: false,
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: expenses.length,
+                                                itemBuilder:
+                                                    (context, expensesIndex) {
+                                                  final expensesItem =
+                                                      expenses[expensesIndex];
+                                                  return InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onLongPress: () async {
+                                                      if (valueOrDefault(
+                                                              currentUserDocument
+                                                                  ?.role,
+                                                              '') ==
+                                                          'admin') {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return GestureDetector(
+                                                              onTap: () => _model
+                                                                      .unfocusNode
+                                                                      .canRequestFocus
+                                                                  ? FocusScope.of(
+                                                                          context)
+                                                                      .requestFocus(
+                                                                          _model
+                                                                              .unfocusNode)
+                                                                  : FocusScope.of(
+                                                                          context)
+                                                                      .unfocus(),
+                                                              child: Padding(
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
+                                                                child:
+                                                                    Container(
+                                                                  height: 180.0,
+                                                                  child:
+                                                                      OptionToTransactionOnlyWidget(
+                                                                    ref: expensesItem
+                                                                        .reference,
+                                                                    description:
+                                                                        expensesItem
+                                                                            .description,
+                                                                    price: expensesItem
+                                                                        .total,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            safeSetState(
+                                                                () {}));
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        maxWidth: 570.0,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryBackground,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Color(
+                                                                0x33000000),
+                                                            offset: Offset(
+                                                                0.0, 1.0),
+                                                          )
                                                         ],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(0.0),
+                                                        border: Border.all(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .alternate,
+                                                        ),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    16.0,
+                                                                    12.0,
+                                                                    16.0,
+                                                                    12.0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Expanded(
+                                                              flex: 5,
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            12.0,
+                                                                            0.0),
+                                                                child:
+                                                                    SingleChildScrollView(
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      RichText(
+                                                                        textScaleFactor:
+                                                                            MediaQuery.of(context).textScaleFactor,
+                                                                        text:
+                                                                            TextSpan(
+                                                                          children: [
+                                                                            TextSpan(
+                                                                              text: functions.startBigLetter(expensesItem.description),
+                                                                              style: TextStyle(),
+                                                                            )
+                                                                          ],
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyLarge
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                color: FlutterFlowTheme.of(context).primaryText,
+                                                                                fontSize: 16.0,
+                                                                              ),
+                                                                        ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        child:
+                                                                            Text(
+                                                                          dateTimeFormat(
+                                                                              'h:mm a',
+                                                                              expensesItem.date!),
+                                                                          style:
+                                                                              FlutterFlowTheme.of(context).labelMedium,
+                                                                        ),
+                                                                      ),
+                                                                      if (expensesItem
+                                                                              .goods
+                                                                              .length >
+                                                                          0)
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              0.0,
+                                                                              12.0,
+                                                                              0.0,
+                                                                              0.0),
+                                                                          child:
+                                                                              Container(
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                              boxShadow: [
+                                                                                BoxShadow(
+                                                                                  blurRadius: 1.0,
+                                                                                  color: FlutterFlowTheme.of(context).alternate,
+                                                                                  offset: Offset(0.0, 0.0),
+                                                                                )
+                                                                              ],
+                                                                              borderRadius: BorderRadius.circular(5.0),
+                                                                              border: Border.all(
+                                                                                color: FlutterFlowTheme.of(context).alternate,
+                                                                                width: 1.0,
+                                                                              ),
+                                                                            ),
+                                                                            alignment:
+                                                                                AlignmentDirectional(-1.00, 0.00),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                                                              child: Text(
+                                                                                functions.cartToTextSummary(expensesItem.goods.toList())!,
+                                                                                style: FlutterFlowTheme.of(context).labelMedium,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              flex: 2,
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  Text(
+                                                                    formatNumber(
+                                                                      expensesItem
+                                                                          .total,
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .decimal,
+                                                                      decimalType:
+                                                                          DecimalType
+                                                                              .automatic,
+                                                                      currency:
+                                                                          'P ',
+                                                                    ),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .end,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .headlineSmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Outfit',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).error,
+                                                                        ),
+                                                                  ),
+                                                                  if (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin')
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0),
+                                                                      child:
+                                                                          Text(
+                                                                        expensesItem.remitted
+                                                                            ? 'remitted'
+                                                                            : 'unremitted',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              color: expensesItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
+                                                                              fontSize: 10.0,
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                  if (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin')
+                                                                    InkWell(
+                                                                      splashColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      focusColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      hoverColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      highlightColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      onTap:
+                                                                          () async {
+                                                                        var confirmDialogResponse = await showDialog<bool>(
+                                                                              context: context,
+                                                                              builder: (alertDialogContext) {
+                                                                                return AlertDialog(
+                                                                                  title: Text('Are you sure?'),
+                                                                                  content: Text('This transaction will be deleted.'),
+                                                                                  actions: [
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                      child: Text('Cancel'),
+                                                                                    ),
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                      child: Text('Confirm'),
+                                                                                    ),
+                                                                                  ],
+                                                                                );
+                                                                              },
+                                                                            ) ??
+                                                                            false;
+                                                                        if (confirmDialogResponse) {
+                                                                          if (expensesItem
+                                                                              .remitted) {
+                                                                            // decrease stats
+
+                                                                            await FFAppState().statsReference!.update({
+                                                                              ...mapToFirestore(
+                                                                                {
+                                                                                  'expenses': FieldValue.increment(-(expensesItem.total)),
+                                                                                },
+                                                                              ),
+                                                                            });
+                                                                          }
+                                                                          if (expensesItem.goods.length >
+                                                                              0) {
+                                                                            // reset loop counter
+                                                                            setState(() {
+                                                                              _model.loopGoodsCounter = 0;
+                                                                            });
+                                                                            while (_model.loopGoodsCounter !=
+                                                                                expensesItem.goods.length) {
+                                                                              // good
+                                                                              _model.goodInAllExpenses = await queryGoodsRecordOnce(
+                                                                                queryBuilder: (goodsRecord) => goodsRecord
+                                                                                    .where(
+                                                                                      'hotel',
+                                                                                      isEqualTo: FFAppState().hotel,
+                                                                                    )
+                                                                                    .where(
+                                                                                      'description',
+                                                                                      isEqualTo: expensesItem.goods[_model.loopGoodsCounter].description,
+                                                                                    ),
+                                                                                singleRecord: true,
+                                                                              ).then((s) => s.firstOrNull);
+                                                                              // create to inventory
+
+                                                                              await InventoriesRecord.collection.doc().set({
+                                                                                ...createInventoriesRecordData(
+                                                                                  activity: 'restored',
+                                                                                  hotel: FFAppState().hotel,
+                                                                                  staff: currentUserReference,
+                                                                                  operator: 'add',
+                                                                                  remitted: false,
+                                                                                  previousQuantity: _model.goodInAllExpenses?.quantity,
+                                                                                  quantityChange: expensesItem.goods[_model.loopGoodsCounter].quantity,
+                                                                                  item: expensesItem.goods[_model.loopGoodsCounter].description,
+                                                                                  previousPrice: _model.goodInExpenses?.price,
+                                                                                  priceChange: _model.goodInExpenses?.price,
+                                                                                ),
+                                                                                ...mapToFirestore(
+                                                                                  {
+                                                                                    'date': FieldValue.serverTimestamp(),
+                                                                                  },
+                                                                                ),
+                                                                              });
+                                                                              // restore good quantity
+
+                                                                              await _model.goodInAllExpenses!.reference.update({
+                                                                                ...mapToFirestore(
+                                                                                  {
+                                                                                    'quantity': FieldValue.increment(expensesItem.goods[_model.loopGoodsCounter].quantity),
+                                                                                  },
+                                                                                ),
+                                                                              });
+                                                                              // increment loop
+                                                                              setState(() {
+                                                                                _model.loopGoodsCounter = _model.loopGoodsCounter + 1;
+                                                                              });
+                                                                            }
+                                                                          }
+                                                                          // delete transactions
+                                                                          await expensesItem
+                                                                              .reference
+                                                                              .delete();
+                                                                          ScaffoldMessenger.of(context)
+                                                                              .showSnackBar(
+                                                                            SnackBar(
+                                                                              content: Text(
+                                                                                'Transaction is deleted!',
+                                                                                style: TextStyle(
+                                                                                  color: FlutterFlowTheme.of(context).info,
+                                                                                ),
+                                                                              ),
+                                                                              duration: Duration(milliseconds: 4000),
+                                                                              backgroundColor: FlutterFlowTheme.of(context).error,
+                                                                            ),
+                                                                          );
+                                                                        }
+
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                      child:
+                                                                          Card(
+                                                                        clipBehavior:
+                                                                            Clip.antiAliasWithSaveLayer,
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .secondaryBackground,
+                                                                        elevation:
+                                                                            1.0,
+                                                                        shape:
+                                                                            RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(40.0),
+                                                                        ),
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              4.0,
+                                                                              4.0,
+                                                                              4.0,
+                                                                              4.0),
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.delete_outlined,
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).secondaryText,
+                                                                            size:
+                                                                                24.0,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   );
@@ -2191,7 +2406,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     Padding(
                                                                       padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
-                                                                          4.0,
+                                                                          10.0,
                                                                           0.0,
                                                                           0.0),
                                                                       child:
@@ -2570,248 +2785,477 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     (context, goodsIndex) {
                                                   final goodsItem =
                                                       goods[goodsIndex];
-                                                  return Container(
-                                                    width: double.infinity,
-                                                    constraints: BoxConstraints(
-                                                      maxWidth: 570.0,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color:
-                                                              Color(0x33000000),
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                        )
-                                                      ],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              0.0),
-                                                      border: Border.all(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .alternate,
-                                                      ),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  16.0,
-                                                                  12.0,
-                                                                  16.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        12.0,
-                                                                        0.0),
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  RichText(
-                                                                    textScaleFactor:
-                                                                        MediaQuery.of(context)
-                                                                            .textScaleFactor,
-                                                                    text:
-                                                                        TextSpan(
-                                                                      children: [
-                                                                        TextSpan(
-                                                                          text:
-                                                                              'Items: ',
-                                                                          style:
-                                                                              TextStyle(),
-                                                                        ),
-                                                                        TextSpan(
-                                                                          text: goodsItem
-                                                                              .goods
-                                                                              .length
-                                                                              .toString(),
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).tertiary,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyLarge,
-                                                                    ),
+                                                  return InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onLongPress: () async {
+                                                      if (valueOrDefault(
+                                                              currentUserDocument
+                                                                  ?.role,
+                                                              '') ==
+                                                          'admin') {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return GestureDetector(
+                                                              onTap: () => _model
+                                                                      .unfocusNode
+                                                                      .canRequestFocus
+                                                                  ? FocusScope.of(
+                                                                          context)
+                                                                      .requestFocus(
+                                                                          _model
+                                                                              .unfocusNode)
+                                                                  : FocusScope.of(
+                                                                          context)
+                                                                      .unfocus(),
+                                                              child: Padding(
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
+                                                                child:
+                                                                    Container(
+                                                                  height: 180.0,
+                                                                  child:
+                                                                      OptionToTransactionOnlyWidget(
+                                                                    ref: goodsItem
+                                                                        .reference,
+                                                                    description:
+                                                                        goodsItem
+                                                                            .description,
+                                                                    price: goodsItem
+                                                                        .total,
                                                                   ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      dateTimeFormat(
-                                                                          'h:mm a',
-                                                                          goodsItem
-                                                                              .date!),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelMedium,
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            12.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryBackground,
-                                                                        boxShadow: [
-                                                                          BoxShadow(
-                                                                            blurRadius:
-                                                                                1.0,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).alternate,
-                                                                            offset:
-                                                                                Offset(0.0, 0.0),
-                                                                          )
-                                                                        ],
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5.0),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).alternate,
-                                                                          width:
-                                                                              1.0,
-                                                                        ),
-                                                                      ),
-                                                                      alignment: AlignmentDirectional(
-                                                                          -1.00,
-                                                                          0.00),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0),
-                                                                        child:
-                                                                            Text(
-                                                                          functions.cartToTextSummary(goodsItem
-                                                                              .goods
-                                                                              .toList())!,
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelMedium,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Text(
-                                                                formatNumber(
-                                                                  goodsItem
-                                                                      .total,
-                                                                  formatType:
-                                                                      FormatType
-                                                                          .decimal,
-                                                                  decimalType:
-                                                                      DecimalType
-                                                                          .automatic,
-                                                                  currency:
-                                                                      'P ',
                                                                 ),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .headlineSmall
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Outfit',
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .success,
-                                                                    ),
                                                               ),
-                                                              if (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin')
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            safeSetState(
+                                                                () {}));
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        maxWidth: 570.0,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryBackground,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Color(
+                                                                0x33000000),
+                                                            offset: Offset(
+                                                                0.0, 1.0),
+                                                          )
+                                                        ],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(0.0),
+                                                        border: Border.all(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .alternate,
+                                                        ),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    16.0,
+                                                                    12.0,
+                                                                    16.0,
+                                                                    12.0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
+                                                                          12.0,
+                                                                          0.0),
+                                                              child:
+                                                                  SingleChildScrollView(
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    RichText(
+                                                                      textScaleFactor:
+                                                                          MediaQuery.of(context)
+                                                                              .textScaleFactor,
+                                                                      text:
+                                                                          TextSpan(
+                                                                        children: [
+                                                                          TextSpan(
+                                                                            text:
+                                                                                'Items: ',
+                                                                            style:
+                                                                                TextStyle(),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                goodsItem.goods.length.toString(),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: FlutterFlowTheme.of(context).tertiary,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyLarge,
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
-                                                                          10.0),
-                                                                  child: Text(
-                                                                    goodsItem
-                                                                            .remitted
-                                                                        ? 'remitted'
-                                                                        : 'unremitted',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          color: goodsItem.remitted
-                                                                              ? FlutterFlowTheme.of(context).secondary
-                                                                              : FlutterFlowTheme.of(context).tertiary,
-                                                                          fontSize:
-                                                                              10.0,
+                                                                          10.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Text(
+                                                                        dateTimeFormat(
+                                                                            'h:mm a',
+                                                                            goodsItem.date!),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelMedium,
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          12.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Container(
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryBackground,
+                                                                          boxShadow: [
+                                                                            BoxShadow(
+                                                                              blurRadius: 1.0,
+                                                                              color: FlutterFlowTheme.of(context).alternate,
+                                                                              offset: Offset(0.0, 0.0),
+                                                                            )
+                                                                          ],
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(5.0),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).alternate,
+                                                                            width:
+                                                                                1.0,
+                                                                          ),
                                                                         ),
-                                                                  ),
+                                                                        alignment: AlignmentDirectional(
+                                                                            -1.00,
+                                                                            0.00),
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              10.0,
+                                                                              10.0,
+                                                                              10.0,
+                                                                              10.0),
+                                                                          child:
+                                                                              Text(
+                                                                            functions.cartToTextSummary(goodsItem.goods.toList())!,
+                                                                            style:
+                                                                                FlutterFlowTheme.of(context).labelMedium,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                            ],
-                                                          ),
-                                                        ],
+                                                              ),
+                                                            ),
+                                                            Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                  formatNumber(
+                                                                    goodsItem
+                                                                        .total,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .decimal,
+                                                                    decimalType:
+                                                                        DecimalType
+                                                                            .automatic,
+                                                                    currency:
+                                                                        'P ',
+                                                                  ),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .end,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .headlineSmall
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Outfit',
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .success,
+                                                                      ),
+                                                                ),
+                                                                if (valueOrDefault(
+                                                                        currentUserDocument
+                                                                            ?.role,
+                                                                        '') ==
+                                                                    'admin')
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            10.0),
+                                                                    child: Text(
+                                                                      goodsItem
+                                                                              .remitted
+                                                                          ? 'remitted'
+                                                                          : 'unremitted',
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            color: goodsItem.remitted
+                                                                                ? FlutterFlowTheme.of(context).secondary
+                                                                                : FlutterFlowTheme.of(context).tertiary,
+                                                                            fontSize:
+                                                                                10.0,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                if (valueOrDefault(
+                                                                        currentUserDocument
+                                                                            ?.role,
+                                                                        '') ==
+                                                                    'admin')
+                                                                  InkWell(
+                                                                    splashColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    focusColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    hoverColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    highlightColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    onTap:
+                                                                        () async {
+                                                                      var confirmDialogResponse = await showDialog<
+                                                                              bool>(
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (alertDialogContext) {
+                                                                              return AlertDialog(
+                                                                                title: Text('Are you sure?'),
+                                                                                content: Text('This transaction will be deleted.'),
+                                                                                actions: [
+                                                                                  TextButton(
+                                                                                    onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                    child: Text('Cancel'),
+                                                                                  ),
+                                                                                  TextButton(
+                                                                                    onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                    child: Text('Confirm'),
+                                                                                  ),
+                                                                                ],
+                                                                              );
+                                                                            },
+                                                                          ) ??
+                                                                          false;
+                                                                      if (confirmDialogResponse) {
+                                                                        if (goodsItem
+                                                                            .remitted) {
+                                                                          // decrease stats
+
+                                                                          await FFAppState()
+                                                                              .statsReference!
+                                                                              .update({
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'goodsIncome': FieldValue.increment(-(goodsItem.total)),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                        }
+                                                                        // reset loop counter
+                                                                        setState(
+                                                                            () {
+                                                                          _model.loopGoodsCounter =
+                                                                              0;
+                                                                        });
+                                                                        while (_model.loopGoodsCounter !=
+                                                                            goodsItem.goods.length) {
+                                                                          // good
+                                                                          _model.goodInGoods =
+                                                                              await queryGoodsRecordOnce(
+                                                                            queryBuilder: (goodsRecord) => goodsRecord
+                                                                                .where(
+                                                                                  'hotel',
+                                                                                  isEqualTo: FFAppState().hotel,
+                                                                                )
+                                                                                .where(
+                                                                                  'description',
+                                                                                  isEqualTo: goodsItem.goods[_model.loopGoodsCounter].description,
+                                                                                ),
+                                                                            singleRecord:
+                                                                                true,
+                                                                          ).then((s) => s.firstOrNull);
+                                                                          // create to inventory
+
+                                                                          await InventoriesRecord
+                                                                              .collection
+                                                                              .doc()
+                                                                              .set({
+                                                                            ...createInventoriesRecordData(
+                                                                              activity: 'restored',
+                                                                              hotel: FFAppState().hotel,
+                                                                              staff: currentUserReference,
+                                                                              operator: 'add',
+                                                                              remitted: false,
+                                                                              previousQuantity: _model.goodInGoods?.quantity,
+                                                                              quantityChange: goodsItem.goods[_model.loopGoodsCounter].quantity,
+                                                                              item: goodsItem.goods[_model.loopGoodsCounter].description,
+                                                                              previousPrice: _model.goodInExpenses?.price,
+                                                                              priceChange: _model.goodInExpenses?.price,
+                                                                            ),
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'date': FieldValue.serverTimestamp(),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                          // restore good quantity
+
+                                                                          await _model
+                                                                              .goodInGoods!
+                                                                              .reference
+                                                                              .update({
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'quantity': FieldValue.increment(goodsItem.goods[_model.loopGoodsCounter].quantity),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                          // increment loop
+                                                                          setState(
+                                                                              () {
+                                                                            _model.loopGoodsCounter =
+                                                                                _model.loopGoodsCounter + 1;
+                                                                          });
+                                                                        }
+                                                                        // delete transactions
+                                                                        await goodsItem
+                                                                            .reference
+                                                                            .delete();
+                                                                        ScaffoldMessenger.of(context)
+                                                                            .showSnackBar(
+                                                                          SnackBar(
+                                                                            content:
+                                                                                Text(
+                                                                              'Transaction is deleted!',
+                                                                              style: TextStyle(
+                                                                                color: FlutterFlowTheme.of(context).info,
+                                                                              ),
+                                                                            ),
+                                                                            duration:
+                                                                                Duration(milliseconds: 4000),
+                                                                            backgroundColor:
+                                                                                FlutterFlowTheme.of(context).error,
+                                                                          ),
+                                                                        );
+                                                                      }
+
+                                                                      setState(
+                                                                          () {});
+                                                                    },
+                                                                    child: Card(
+                                                                      clipBehavior:
+                                                                          Clip.antiAliasWithSaveLayer,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryBackground,
+                                                                      elevation:
+                                                                          1.0,
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(40.0),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            4.0,
+                                                                            4.0,
+                                                                            4.0,
+                                                                            4.0),
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .delete_outlined,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                          size:
+                                                                              24.0,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   );
@@ -3039,291 +3483,473 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     (context, expenseIndex) {
                                                   final expenseItem =
                                                       expense[expenseIndex];
-                                                  return Container(
-                                                    width: double.infinity,
-                                                    constraints: BoxConstraints(
-                                                      maxWidth: 570.0,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color:
-                                                              Color(0x33000000),
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                        )
-                                                      ],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              0.0),
-                                                      border: Border.all(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .alternate,
+                                                  return InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onLongPress: () async {
+                                                      if (valueOrDefault(
+                                                              currentUserDocument
+                                                                  ?.role,
+                                                              '') ==
+                                                          'admin') {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return GestureDetector(
+                                                              onTap: () => _model
+                                                                      .unfocusNode
+                                                                      .canRequestFocus
+                                                                  ? FocusScope.of(
+                                                                          context)
+                                                                      .requestFocus(
+                                                                          _model
+                                                                              .unfocusNode)
+                                                                  : FocusScope.of(
+                                                                          context)
+                                                                      .unfocus(),
+                                                              child: Padding(
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
+                                                                child:
+                                                                    Container(
+                                                                  height: 180.0,
+                                                                  child:
+                                                                      OptionToTransactionOnlyWidget(
+                                                                    ref: expenseItem
+                                                                        .reference,
+                                                                    description:
+                                                                        expenseItem
+                                                                            .description,
+                                                                    price: expenseItem
+                                                                        .total,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            safeSetState(
+                                                                () {}));
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        maxWidth: 570.0,
                                                       ),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  16.0,
-                                                                  12.0,
-                                                                  16.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 5,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          12.0,
-                                                                          0.0),
-                                                              child:
-                                                                  SingleChildScrollView(
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    RichText(
-                                                                      textScaleFactor:
-                                                                          MediaQuery.of(context)
-                                                                              .textScaleFactor,
-                                                                      text:
-                                                                          TextSpan(
-                                                                        children: [
-                                                                          TextSpan(
-                                                                            text:
-                                                                                functions.startBigLetter(expenseItem.description),
-                                                                            style:
-                                                                                TextStyle(),
-                                                                          )
-                                                                        ],
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyLarge
-                                                                            .override(
-                                                                              fontFamily: 'Readex Pro',
-                                                                              color: FlutterFlowTheme.of(context).primaryText,
-                                                                              fontSize: 16.0,
-                                                                            ),
+                                                      decoration: BoxDecoration(
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryBackground,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Color(
+                                                                0x33000000),
+                                                            offset: Offset(
+                                                                0.0, 1.0),
+                                                          )
+                                                        ],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(0.0),
+                                                        border: Border.all(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .alternate,
+                                                        ),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    16.0,
+                                                                    12.0,
+                                                                    16.0,
+                                                                    12.0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Expanded(
+                                                              flex: 5,
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            12.0,
+                                                                            0.0),
+                                                                child:
+                                                                    SingleChildScrollView(
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      RichText(
+                                                                        textScaleFactor:
+                                                                            MediaQuery.of(context).textScaleFactor,
+                                                                        text:
+                                                                            TextSpan(
+                                                                          children: [
+                                                                            TextSpan(
+                                                                              text: functions.startBigLetter(expenseItem.description),
+                                                                              style: TextStyle(),
+                                                                            )
+                                                                          ],
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyLarge
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                color: FlutterFlowTheme.of(context).primaryText,
+                                                                                fontSize: 16.0,
+                                                                              ),
+                                                                        ),
+                                                                        maxLines:
+                                                                            5,
                                                                       ),
-                                                                      maxLines:
-                                                                          5,
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          4.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      child:
-                                                                          Text(
-                                                                        dateTimeFormat(
-                                                                            'h:mm a',
-                                                                            expenseItem.date!),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .labelMedium,
-                                                                      ),
-                                                                    ),
-                                                                    if (expenseItem
-                                                                            .goods
-                                                                            .length >
-                                                                        0)
                                                                       Padding(
                                                                         padding: EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
-                                                                            12.0,
+                                                                            10.0,
                                                                             0.0,
                                                                             0.0),
                                                                         child:
-                                                                            Container(
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryBackground,
-                                                                            boxShadow: [
-                                                                              BoxShadow(
-                                                                                blurRadius: 1.0,
-                                                                                color: FlutterFlowTheme.of(context).alternate,
-                                                                                offset: Offset(0.0, 0.0),
-                                                                              )
-                                                                            ],
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(5.0),
-                                                                            border:
-                                                                                Border.all(
-                                                                              color: FlutterFlowTheme.of(context).alternate,
-                                                                              width: 1.0,
-                                                                            ),
-                                                                          ),
-                                                                          alignment: AlignmentDirectional(
-                                                                              -1.00,
-                                                                              0.00),
+                                                                            Text(
+                                                                          dateTimeFormat(
+                                                                              'h:mm a',
+                                                                              expenseItem.date!),
+                                                                          style:
+                                                                              FlutterFlowTheme.of(context).labelMedium,
+                                                                        ),
+                                                                      ),
+                                                                      if (expenseItem
+                                                                              .goods
+                                                                              .length >
+                                                                          0)
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              0.0,
+                                                                              12.0,
+                                                                              0.0,
+                                                                              0.0),
                                                                           child:
-                                                                              Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                10.0,
-                                                                                10.0,
-                                                                                10.0,
-                                                                                10.0),
+                                                                              Container(
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                              boxShadow: [
+                                                                                BoxShadow(
+                                                                                  blurRadius: 1.0,
+                                                                                  color: FlutterFlowTheme.of(context).alternate,
+                                                                                  offset: Offset(0.0, 0.0),
+                                                                                )
+                                                                              ],
+                                                                              borderRadius: BorderRadius.circular(5.0),
+                                                                              border: Border.all(
+                                                                                color: FlutterFlowTheme.of(context).alternate,
+                                                                                width: 1.0,
+                                                                              ),
+                                                                            ),
+                                                                            alignment:
+                                                                                AlignmentDirectional(-1.00, 0.00),
                                                                             child:
-                                                                                Text(
-                                                                              functions.cartToTextSummary(expenseItem.goods.toList())!,
-                                                                              style: FlutterFlowTheme.of(context).labelMedium,
+                                                                                Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                                                              child: Text(
+                                                                                functions.cartToTextSummary(expenseItem.goods.toList())!,
+                                                                                style: FlutterFlowTheme.of(context).labelMedium,
+                                                                              ),
                                                                             ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                  ],
+                                                                    ],
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
-                                                          ),
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: FutureBuilder<
-                                                                UsersRecord>(
-                                                              future: UsersRecord
-                                                                  .getDocumentOnce(
-                                                                      expenseItem
-                                                                          .staff!),
-                                                              builder: (context,
-                                                                  snapshot) {
-                                                                // Customize what your widget looks like when it's loading.
-                                                                if (!snapshot
-                                                                    .hasData) {
-                                                                  return Center(
-                                                                    child:
-                                                                        SizedBox(
-                                                                      width:
-                                                                          50.0,
-                                                                      height:
-                                                                          50.0,
-                                                                      child:
-                                                                          CircularProgressIndicator(
-                                                                        valueColor:
-                                                                            AlwaysStoppedAnimation<Color>(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .primary,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                }
-                                                                final columnUsersRecord =
-                                                                    snapshot
-                                                                        .data!;
-                                                                return Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    Text(
-                                                                      formatNumber(
+                                                            Expanded(
+                                                              flex: 2,
+                                                              child: FutureBuilder<
+                                                                  UsersRecord>(
+                                                                future: UsersRecord
+                                                                    .getDocumentOnce(
                                                                         expenseItem
-                                                                            .total,
-                                                                        formatType:
-                                                                            FormatType.decimal,
-                                                                        decimalType:
-                                                                            DecimalType.automatic,
-                                                                        currency:
-                                                                            'P ',
-                                                                      ),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .end,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .headlineSmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Outfit',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).error,
-                                                                          ),
-                                                                    ),
-                                                                    if (valueOrDefault(
-                                                                            currentUserDocument?.role,
-                                                                            '') ==
-                                                                        'admin')
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            10.0),
+                                                                            .staff!),
+                                                                builder: (context,
+                                                                    snapshot) {
+                                                                  // Customize what your widget looks like when it's loading.
+                                                                  if (!snapshot
+                                                                      .hasData) {
+                                                                    return Center(
+                                                                      child:
+                                                                          SizedBox(
+                                                                        width:
+                                                                            50.0,
+                                                                        height:
+                                                                            50.0,
                                                                         child:
-                                                                            Text(
-                                                                          expenseItem.remitted
-                                                                              ? 'remitted'
-                                                                              : 'unremitted',
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .bodyMedium
-                                                                              .override(
-                                                                                fontFamily: 'Readex Pro',
-                                                                                color: expenseItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
-                                                                                fontSize: 10.0,
-                                                                              ),
+                                                                            CircularProgressIndicator(
+                                                                          valueColor:
+                                                                              AlwaysStoppedAnimation<Color>(
+                                                                            FlutterFlowTheme.of(context).primary,
+                                                                          ),
                                                                         ),
                                                                       ),
-                                                                    Text(
-                                                                      'Issued By',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryText,
-                                                                            fontSize:
-                                                                                12.0,
+                                                                    );
+                                                                  }
+                                                                  final columnUsersRecord =
+                                                                      snapshot
+                                                                          .data!;
+                                                                  return Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .end,
+                                                                    children: [
+                                                                      Text(
+                                                                        formatNumber(
+                                                                          expenseItem
+                                                                              .total,
+                                                                          formatType:
+                                                                              FormatType.decimal,
+                                                                          decimalType:
+                                                                              DecimalType.automatic,
+                                                                          currency:
+                                                                              'P ',
+                                                                        ),
+                                                                        textAlign:
+                                                                            TextAlign.end,
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .headlineSmall
+                                                                            .override(
+                                                                              fontFamily: 'Outfit',
+                                                                              color: FlutterFlowTheme.of(context).error,
+                                                                            ),
+                                                                      ),
+                                                                      if (valueOrDefault(
+                                                                              currentUserDocument?.role,
+                                                                              '') ==
+                                                                          'admin')
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              0.0,
+                                                                              0.0,
+                                                                              0.0,
+                                                                              10.0),
+                                                                          child:
+                                                                              Text(
+                                                                            expenseItem.remitted
+                                                                                ? 'remitted'
+                                                                                : 'unremitted',
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  color: expenseItem.remitted ? FlutterFlowTheme.of(context).secondary : FlutterFlowTheme.of(context).tertiary,
+                                                                                  fontSize: 10.0,
+                                                                                ),
                                                                           ),
-                                                                    ),
-                                                                    Text(
-                                                                      columnUsersRecord
-                                                                          .displayName,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            fontSize:
-                                                                                14.0,
+                                                                        ),
+                                                                      Text(
+                                                                        'Issued By',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                                                              fontSize: 12.0,
+                                                                            ),
+                                                                      ),
+                                                                      Text(
+                                                                        columnUsersRecord
+                                                                            .displayName,
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              fontSize: 14.0,
+                                                                            ),
+                                                                      ),
+                                                                      if (valueOrDefault(
+                                                                              currentUserDocument?.role,
+                                                                              '') ==
+                                                                          'admin')
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              0.0,
+                                                                              10.0,
+                                                                              0.0,
+                                                                              0.0),
+                                                                          child:
+                                                                              InkWell(
+                                                                            splashColor:
+                                                                                Colors.transparent,
+                                                                            focusColor:
+                                                                                Colors.transparent,
+                                                                            hoverColor:
+                                                                                Colors.transparent,
+                                                                            highlightColor:
+                                                                                Colors.transparent,
+                                                                            onTap:
+                                                                                () async {
+                                                                              var confirmDialogResponse = await showDialog<bool>(
+                                                                                    context: context,
+                                                                                    builder: (alertDialogContext) {
+                                                                                      return AlertDialog(
+                                                                                        title: Text('Are you sure?'),
+                                                                                        content: Text('This transaction will be deleted.'),
+                                                                                        actions: [
+                                                                                          TextButton(
+                                                                                            onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                            child: Text('Cancel'),
+                                                                                          ),
+                                                                                          TextButton(
+                                                                                            onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                            child: Text('Confirm'),
+                                                                                          ),
+                                                                                        ],
+                                                                                      );
+                                                                                    },
+                                                                                  ) ??
+                                                                                  false;
+                                                                              if (confirmDialogResponse) {
+                                                                                if (expenseItem.remitted) {
+                                                                                  // decrease stats
+
+                                                                                  await FFAppState().statsReference!.update({
+                                                                                    ...mapToFirestore(
+                                                                                      {
+                                                                                        'expenses': FieldValue.increment(-(expenseItem.total)),
+                                                                                      },
+                                                                                    ),
+                                                                                  });
+                                                                                }
+                                                                                if (expenseItem.goods.length > 0) {
+                                                                                  // reset loop counter
+                                                                                  setState(() {
+                                                                                    _model.loopGoodsCounter = 0;
+                                                                                  });
+                                                                                  while (_model.loopGoodsCounter != expenseItem.goods.length) {
+                                                                                    // good
+                                                                                    _model.goodInExpenses = await queryGoodsRecordOnce(
+                                                                                      queryBuilder: (goodsRecord) => goodsRecord
+                                                                                          .where(
+                                                                                            'hotel',
+                                                                                            isEqualTo: FFAppState().hotel,
+                                                                                          )
+                                                                                          .where(
+                                                                                            'description',
+                                                                                            isEqualTo: expenseItem.goods[_model.loopGoodsCounter].description,
+                                                                                          ),
+                                                                                      singleRecord: true,
+                                                                                    ).then((s) => s.firstOrNull);
+                                                                                    // create to inventory
+
+                                                                                    await InventoriesRecord.collection.doc().set({
+                                                                                      ...createInventoriesRecordData(
+                                                                                        activity: 'restored',
+                                                                                        hotel: FFAppState().hotel,
+                                                                                        staff: currentUserReference,
+                                                                                        operator: 'add',
+                                                                                        remitted: false,
+                                                                                        previousQuantity: _model.goodInExpenses?.quantity,
+                                                                                        quantityChange: expenseItem.goods[_model.loopGoodsCounter].quantity,
+                                                                                        item: expenseItem.goods[_model.loopGoodsCounter].description,
+                                                                                        previousPrice: _model.goodInExpenses?.price,
+                                                                                        priceChange: _model.goodInExpenses?.price,
+                                                                                      ),
+                                                                                      ...mapToFirestore(
+                                                                                        {
+                                                                                          'date': FieldValue.serverTimestamp(),
+                                                                                        },
+                                                                                      ),
+                                                                                    });
+                                                                                    // restore good quantity
+
+                                                                                    await _model.goodInExpenses!.reference.update({
+                                                                                      ...mapToFirestore(
+                                                                                        {
+                                                                                          'quantity': FieldValue.increment(expenseItem.goods[_model.loopGoodsCounter].quantity),
+                                                                                        },
+                                                                                      ),
+                                                                                    });
+                                                                                    // increment loop
+                                                                                    setState(() {
+                                                                                      _model.loopGoodsCounter = _model.loopGoodsCounter + 1;
+                                                                                    });
+                                                                                  }
+                                                                                }
+                                                                                // delete transactions
+                                                                                await expenseItem.reference.delete();
+                                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                                  SnackBar(
+                                                                                    content: Text(
+                                                                                      'Transaction is deleted!',
+                                                                                      style: TextStyle(
+                                                                                        color: FlutterFlowTheme.of(context).info,
+                                                                                      ),
+                                                                                    ),
+                                                                                    duration: Duration(milliseconds: 4000),
+                                                                                    backgroundColor: FlutterFlowTheme.of(context).error,
+                                                                                  ),
+                                                                                );
+                                                                              }
+
+                                                                              setState(() {});
+                                                                            },
+                                                                            child:
+                                                                                Card(
+                                                                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                                                                              color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                              elevation: 1.0,
+                                                                              shape: RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(40.0),
+                                                                              ),
+                                                                              child: Padding(
+                                                                                padding: EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+                                                                                child: Icon(
+                                                                                  Icons.delete_outlined,
+                                                                                  color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                  size: 24.0,
+                                                                                ),
+                                                                              ),
+                                                                            ),
                                                                           ),
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              },
+                                                                        ),
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   );

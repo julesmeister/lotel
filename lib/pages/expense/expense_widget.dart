@@ -3,10 +3,12 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -18,7 +20,18 @@ import 'expense_model.dart';
 export 'expense_model.dart';
 
 class ExpenseWidget extends StatefulWidget {
-  const ExpenseWidget({Key? key}) : super(key: key);
+  const ExpenseWidget({
+    Key? key,
+    bool? additional,
+    this.remittanceRef,
+    double? net,
+  })  : this.additional = additional ?? false,
+        this.net = net ?? 0.0,
+        super(key: key);
+
+  final bool additional;
+  final DocumentReference? remittanceRef;
+  final double net;
 
   @override
   _ExpenseWidgetState createState() => _ExpenseWidgetState();
@@ -103,6 +116,22 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
           automaticallyImplyLeading: false,
+          leading: Visibility(
+            visible: widget.additional,
+            child: FlutterFlowIconButton(
+              borderRadius: 20.0,
+              borderWidth: 1.0,
+              buttonSize: 40.0,
+              icon: Icon(
+                Icons.chevron_left,
+                color: FlutterFlowTheme.of(context).primaryText,
+                size: 24.0,
+              ),
+              onPressed: () async {
+                context.safePop();
+              },
+            ),
+          ),
           title: Text(
             'Expense',
             style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -385,6 +414,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                       child: AuthUserStreamWidget(
                         builder: (context) => FFButtonWidget(
                           onPressed: () async {
+                            var _shouldSetState = false;
                             if (_model.choicesValue == 'Cash Advance') {
                               if (_model.staffSelected != null) {
                                 // Cash Advance? Sure?
@@ -417,6 +447,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                         ) ??
                                         false;
                                 if (confirmDialogResponse) {
+                                  // cash advance
+
                                   await AdvancesRecord.createDoc(
                                           _model.staffSelected!)
                                       .set({
@@ -448,12 +480,15 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                     ),
                                   );
                                 } else {
+                                  if (_shouldSetState) setState(() {});
                                   return;
                                 }
 
                                 // Create transaction expense
 
-                                await TransactionsRecord.collection.doc().set({
+                                var transactionsRecordReference1 =
+                                    TransactionsRecord.collection.doc();
+                                await transactionsRecordReference1.set({
                                   ...createTransactionsRecordData(
                                     staff: currentUserReference,
                                     total: double.tryParse(
@@ -462,13 +497,38 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                     hotel: FFAppState().hotel,
                                     description:
                                         '${_model.selectedNameValue} claimed ${_model.descriptionController.text}',
-                                    remitted: false,
+                                    remitted: widget.additional ? true : false,
+                                    pending: false,
                                   ),
                                   ...mapToFirestore(
                                     {
                                       'date': FieldValue.serverTimestamp(),
                                     },
                                   ),
+                                });
+                                _model.newCA =
+                                    TransactionsRecord.getDocumentFromData({
+                                  ...createTransactionsRecordData(
+                                    staff: currentUserReference,
+                                    total: double.tryParse(
+                                        _model.amountController.text),
+                                    type: 'expense',
+                                    hotel: FFAppState().hotel,
+                                    description:
+                                        '${_model.selectedNameValue} claimed ${_model.descriptionController.text}',
+                                    remitted: widget.additional ? true : false,
+                                    pending: false,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': DateTime.now(),
+                                    },
+                                  ),
+                                }, transactionsRecordReference1);
+                                _shouldSetState = true;
+                                // CA to expenseRef
+                                setState(() {
+                                  _model.expenseRef = _model.newCA?.reference;
                                 });
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -485,6 +545,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                         FlutterFlowTheme.of(context).error,
                                   ),
                                 );
+                                if (_shouldSetState) setState(() {});
                                 return;
                               }
                             } else {
@@ -516,16 +577,19 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                               if (confirmDialogResponse) {
                                 // Create transaction expense
 
-                                await TransactionsRecord.collection.doc().set({
+                                var transactionsRecordReference2 =
+                                    TransactionsRecord.collection.doc();
+                                await transactionsRecordReference2.set({
                                   ...createTransactionsRecordData(
                                     staff: currentUserReference,
                                     total: double.tryParse(
                                         _model.amountController.text),
                                     type: 'expense',
                                     hotel: FFAppState().hotel,
-                                    description:
-                                        _model.descriptionController.text,
-                                    remitted: false,
+                                    description: functions.resetFont(
+                                        _model.descriptionController.text),
+                                    remitted: widget.additional ? true : false,
+                                    pending: false,
                                   ),
                                   ...mapToFirestore(
                                     {
@@ -533,6 +597,26 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                     },
                                   ),
                                 });
+                                _model.newExp =
+                                    TransactionsRecord.getDocumentFromData({
+                                  ...createTransactionsRecordData(
+                                    staff: currentUserReference,
+                                    total: double.tryParse(
+                                        _model.amountController.text),
+                                    type: 'expense',
+                                    hotel: FFAppState().hotel,
+                                    description: functions.resetFont(
+                                        _model.descriptionController.text),
+                                    remitted: widget.additional ? true : false,
+                                    pending: false,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': DateTime.now(),
+                                    },
+                                  ),
+                                }, transactionsRecordReference2);
+                                _shouldSetState = true;
                                 // Saved
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -548,11 +632,44 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
                                 );
+                                // exp to expenseRef
+                                setState(() {
+                                  _model.expenseRef = _model.newExp?.reference;
+                                });
                               } else {
+                                if (_shouldSetState) setState(() {});
                                 return;
                               }
                             }
 
+                            if (widget.additional) {
+                              // add expensRef to remittance
+
+                              await widget.remittanceRef!.update({
+                                ...mapToFirestore(
+                                  {
+                                    'expenses': FieldValue.increment(
+                                        double.parse(
+                                            _model.amountController.text)),
+                                    'transactions': FieldValue.arrayUnion(
+                                        [_model.expenseRef]),
+                                    'net': FieldValue.increment(-(double.parse(
+                                        _model.amountController.text))),
+                                  },
+                                ),
+                              });
+                              // update stats
+
+                              await FFAppState().statsReference!.update({
+                                ...mapToFirestore(
+                                  {
+                                    'expenses': FieldValue.increment(
+                                        double.parse(
+                                            _model.amountController.text)),
+                                  },
+                                ),
+                              });
+                            }
                             // Reset choice chips
                             setState(() {
                               _model.choicesValueController?.reset();
@@ -566,6 +683,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             setState(() {
                               _model.selectedNameValueController?.reset();
                             });
+                            if (_shouldSetState) setState(() {});
                           },
                           text: 'Submit Expense',
                           icon: Icon(

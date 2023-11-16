@@ -455,6 +455,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                 description: 'Change',
                                 hotel: FFAppState().hotel,
                                 remitted: false,
+                                pending: false,
                               ),
                               ...mapToFirestore(
                                 {

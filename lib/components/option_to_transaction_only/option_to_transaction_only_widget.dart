@@ -4,37 +4,33 @@ import '/components/transaction_edit/transaction_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'option_to_booking_transaction_model.dart';
-export 'option_to_booking_transaction_model.dart';
+import 'option_to_transaction_only_model.dart';
+export 'option_to_transaction_only_model.dart';
 
-class OptionToBookingTransactionWidget extends StatefulWidget {
-  const OptionToBookingTransactionWidget({
+class OptionToTransactionOnlyWidget extends StatefulWidget {
+  const OptionToTransactionOnlyWidget({
     Key? key,
     required this.ref,
-    required this.roomNo,
     required this.description,
     required this.price,
   }) : super(key: key);
 
   final DocumentReference? ref;
-  final int? roomNo;
   final String? description;
   final double? price;
 
   @override
-  _OptionToBookingTransactionWidgetState createState() =>
-      _OptionToBookingTransactionWidgetState();
+  _OptionToTransactionOnlyWidgetState createState() =>
+      _OptionToTransactionOnlyWidgetState();
 }
 
-class _OptionToBookingTransactionWidgetState
-    extends State<OptionToBookingTransactionWidget> {
-  late OptionToBookingTransactionModel _model;
+class _OptionToTransactionOnlyWidgetState
+    extends State<OptionToTransactionOnlyWidget> {
+  late OptionToTransactionOnlyModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -45,23 +41,7 @@ class _OptionToBookingTransactionWidgetState
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => OptionToBookingTransactionModel());
-
-    // On component load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.room = await queryRoomsRecordOnce(
-        queryBuilder: (roomsRecord) => roomsRecord
-            .where(
-              'hotel',
-              isEqualTo: FFAppState().hotel,
-            )
-            .where(
-              'number',
-              isEqualTo: widget.roomNo,
-            ),
-        singleRecord: true,
-      ).then((s) => s.firstOrNull);
-    });
+    _model = createModel(context, () => OptionToTransactionOnlyModel());
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -101,7 +81,7 @@ class _OptionToBookingTransactionWidgetState
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
-                  'Options For Room ${widget.roomNo?.toString()}',
+                  'Options For ${widget.description}',
                   textAlign: TextAlign.start,
                   style: FlutterFlowTheme.of(context).labelMedium,
                 ),
@@ -128,7 +108,6 @@ class _OptionToBookingTransactionWidgetState
                               ref: widget.ref!,
                               description: widget.description!,
                               price: widget.price!,
-                              roomRef: _model.room?.reference,
                             ),
                           ),
                         );
@@ -210,33 +189,6 @@ class _OptionToBookingTransactionWidgetState
                       // transaction action output
                       _model.trans =
                           await TransactionsRecord.getDocumentOnce(widget.ref!);
-                      // history taking
-
-                      await HistoryRecord.createDoc(_model.room!.reference)
-                          .set({
-                        ...createHistoryRecordData(
-                          description:
-                              'There was a mistake that caused admin to remove a transaction worth Php ${widget.price?.toString()}',
-                          staff: currentUserReference,
-                        ),
-                        ...mapToFirestore(
-                          {
-                            'date': FieldValue.serverTimestamp(),
-                          },
-                        ),
-                      });
-                      if (_model.trans!.remitted) {
-                        // decrease stats
-
-                        await FFAppState().statsReference!.update({
-                          ...mapToFirestore(
-                            {
-                              'roomsIncome':
-                                  FieldValue.increment(-(_model.trans!.total)),
-                            },
-                          ),
-                        });
-                      }
                       // delete transactions
                       await widget.ref!.delete();
                       ScaffoldMessenger.of(context).showSnackBar(

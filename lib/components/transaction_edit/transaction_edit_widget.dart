@@ -3,7 +3,6 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +17,7 @@ class TransactionEditWidget extends StatefulWidget {
     required this.ref,
     required this.description,
     required this.price,
-    required this.roomRef,
+    this.roomRef,
   }) : super(key: key);
 
   final DocumentReference? ref;
@@ -230,7 +229,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                             TextFormField(
                               controller: _model.priceController,
                               focusNode: _model.priceFocusNode,
-                              textCapitalization: TextCapitalization.words,
+                              textCapitalization: TextCapitalization.none,
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelStyle: FlutterFlowTheme.of(context)
@@ -291,13 +290,11 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                     fontSize: 28.0,
                                   ),
                               minLines: 1,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               validator: _model.priceControllerValidator
                                   .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
-                              ],
                             ),
                           ],
                         ),
@@ -333,25 +330,6 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                     total: double.tryParse(
                                         _model.priceController.text),
                                   ));
-                                  // add changes to history
-
-                                  await HistoryRecord.createDoc(widget.roomRef!)
-                                      .set({
-                                    ...createHistoryRecordData(
-                                      description:
-                                          functions.changesToBookingTransaction(
-                                              widget.description!,
-                                              _model.descController.text,
-                                              widget.price!.toString(),
-                                              _model.priceController.text),
-                                      staff: currentUserReference,
-                                    ),
-                                    ...mapToFirestore(
-                                      {
-                                        'date': FieldValue.serverTimestamp(),
-                                      },
-                                    ),
-                                  });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(

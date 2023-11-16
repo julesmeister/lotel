@@ -1201,22 +1201,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         future:
                                                             FFAppState().staffs(
                                                           requestFn: () =>
-                                                              queryUsersRecordCount(
+                                                              queryStaffsRecordCount(
                                                             queryBuilder:
-                                                                (usersRecord) =>
-                                                                    usersRecord
+                                                                (staffsRecord) =>
+                                                                    staffsRecord
                                                                         .where(
                                                                           'hotel',
                                                                           isEqualTo:
                                                                               FFAppState().hotel,
                                                                         )
                                                                         .where(
-                                                                          'role',
-                                                                          isEqualTo:
-                                                                              'staff',
-                                                                        )
-                                                                        .where(
-                                                                          'expired',
+                                                                          'fired',
                                                                           isEqualTo:
                                                                               false,
                                                                         ),

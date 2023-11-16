@@ -767,17 +767,103 @@ class _StatsWidgetState extends State<StatsWidget>
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 4.0, 4.0, 0.0),
-                                            child: Text(
-                                              formatNumber(
-                                                _model.expenses,
-                                                formatType: FormatType.decimal,
-                                                decimalType:
-                                                    DecimalType.automatic,
-                                                currency: 'P ',
+                                            child: InkWell(
+                                              splashColor: Colors.transparent,
+                                              focusColor: Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              onDoubleTap: () async {
+                                                var confirmDialogResponse =
+                                                    await showDialog<bool>(
+                                                          context: context,
+                                                          builder:
+                                                              (alertDialogContext) {
+                                                            return AlertDialog(
+                                                              title: Text(
+                                                                  'Update Stats'),
+                                                              content: Text(
+                                                                  'This will recalculate all transactions under expenses.'),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          alertDialogContext,
+                                                                          false),
+                                                                  child: Text(
+                                                                      'Cancel'),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          alertDialogContext,
+                                                                          true),
+                                                                  child: Text(
+                                                                      'Confirm'),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        ) ??
+                                                        false;
+                                                if (confirmDialogResponse) {
+                                                  _model.expenseTransactionsOnly =
+                                                      await queryTransactionsRecordOnce(
+                                                    queryBuilder:
+                                                        (transactionsRecord) =>
+                                                            transactionsRecord
+                                                                .where(
+                                                                  'hotel',
+                                                                  isEqualTo:
+                                                                      FFAppState()
+                                                                          .hotel,
+                                                                )
+                                                                .where(
+                                                                  'date',
+                                                                  isGreaterThan:
+                                                                      functions.startOfMonth(
+                                                                          _model
+                                                                              .month),
+                                                                )
+                                                                .where(
+                                                                  'type',
+                                                                  isEqualTo:
+                                                                      'expense',
+                                                                ),
+                                                  );
+                                                  // upate expense var
+                                                  setState(() {
+                                                    _model.expenses = functions
+                                                        .sumOfExpenses(_model
+                                                            .expenseTransactionsOnly!
+                                                            .toList());
+                                                  });
+                                                  // update stats expense
+
+                                                  await _model.statsRef!.update(
+                                                      createStatsRecordData(
+                                                    expenses: functions
+                                                        .sumOfExpenses(_model
+                                                            .expenseTransactionsOnly!
+                                                            .toList()),
+                                                  ));
+                                                }
+
+                                                setState(() {});
+                                              },
+                                              child: Text(
+                                                formatNumber(
+                                                  _model.expenses,
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.automatic,
+                                                  currency: 'P ',
+                                                ),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .displaySmall,
                                               ),
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .displaySmall,
                                             ),
                                           ),
                                         ],

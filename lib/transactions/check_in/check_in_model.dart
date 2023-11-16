@@ -60,11 +60,11 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
   String? guestsValue;
   FormFieldController<List<String>>? guestsValueController;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
-  BookingsRecord? savedBooking;
-  // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   TransactionsRecord? newExtPending;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   TransactionsRecord? newRefundPending;
+  // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
+  BookingsRecord? savedBooking;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   TransactionsRecord? newPending;
 

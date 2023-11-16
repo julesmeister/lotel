@@ -1,6 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/option_to_booking_transaction/option_to_booking_transaction_widget.dart';
+import '/components/option_to_transaction_only/option_to_transaction_only_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
@@ -14,6 +15,7 @@ import '/flutter_flow/request_manager.dart';
 import 'transactions_widget.dart' show TransactionsWidget;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -29,6 +31,8 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
 
   bool showDatePicker = false;
 
+  int loopGoodsCounter = 0;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -38,6 +42,15 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
   TabController? tabBarController;
   int get tabBarCurrentIndex =>
       tabBarController != null ? tabBarController!.index : 0;
+
+  // Stores action output result for [Firestore Query - Query a collection] action in Card widget.
+  GoodsRecord? goodInAllGoods;
+  // Stores action output result for [Firestore Query - Query a collection] action in Card widget.
+  GoodsRecord? goodInAllExpenses;
+  // Stores action output result for [Firestore Query - Query a collection] action in Card widget.
+  GoodsRecord? goodInGoods;
+  // Stores action output result for [Firestore Query - Query a collection] action in Card widget.
+  GoodsRecord? goodInExpenses;
 
   /// Query cache managers for this widget.
 

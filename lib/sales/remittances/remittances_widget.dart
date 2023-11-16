@@ -550,6 +550,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
                                             children: [
                                               Column(
                                                 mainAxisSize: MainAxisSize.max,
@@ -603,6 +605,50 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     ),
                                                 ],
                                               ),
+                                              if (valueOrDefault(
+                                                      currentUserDocument?.role,
+                                                      '') ==
+                                                  'admin')
+                                                AuthUserStreamWidget(
+                                                  builder: (context) =>
+                                                      FlutterFlowIconButton(
+                                                    borderRadius: 20.0,
+                                                    borderWidth: 1.0,
+                                                    buttonSize: 40.0,
+                                                    icon: Icon(
+                                                      Icons.add,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      size: 24.0,
+                                                    ),
+                                                    onPressed: () async {
+                                                      context.pushNamed(
+                                                        'Expense',
+                                                        queryParameters: {
+                                                          'additional':
+                                                              serializeParam(
+                                                            true,
+                                                            ParamType.bool,
+                                                          ),
+                                                          'remittanceRef':
+                                                              serializeParam(
+                                                            mainCardRemittancesRecord
+                                                                ?.reference,
+                                                            ParamType
+                                                                .DocumentReference,
+                                                          ),
+                                                          'net': serializeParam(
+                                                            mainCardRemittancesRecord
+                                                                ?.net,
+                                                            ParamType.double,
+                                                          ),
+                                                        }.withoutNulls,
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
                                             ],
                                           ),
                                         ),
@@ -854,169 +900,181 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                           ),
                                         ),
                                         if (_model.showLoadButton)
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 0.0, 16.0, 15.0),
-                                            child: FFButtonWidget(
-                                              onPressed: () async {
-                                                // reset values
-                                                setState(() {
-                                                  _model.showLoadButton = true;
-                                                  _model.showDownloadButton =
-                                                      false;
-                                                  _model.inventories = [];
-                                                  _model.bookings = [];
-                                                  _model.transactions = [];
-                                                  _model.rooms = [];
-                                                  _model.loopInvetoryCounter =
-                                                      0;
-                                                  _model.loopBookCounter = 0;
-                                                  _model.loopTransactionCounter =
-                                                      0;
-                                                });
-                                                // roomList
-                                                _model.roomInThisHotel =
-                                                    await queryRoomsRecordOnce(
-                                                  queryBuilder: (roomsRecord) =>
-                                                      roomsRecord.where(
-                                                    'hotel',
-                                                    isEqualTo:
-                                                        FFAppState().hotel,
-                                                  ),
-                                                );
-                                                // rooms to list
-                                                setState(() {
-                                                  _model.rooms = _model
-                                                      .roomInThisHotel!
-                                                      .toList()
-                                                      .cast<RoomsRecord>();
-                                                });
-                                                while (_model
-                                                        .loopInvetoryCounter !=
-                                                    mainCardRemittancesRecord
-                                                        ?.inventories?.length) {
-                                                  // read inventory
-                                                  _model.inventoryToList =
-                                                      await InventoriesRecord
-                                                          .getDocumentOnce(
-                                                              mainCardRemittancesRecord!
-                                                                      .inventories[
-                                                                  _model
-                                                                      .loopInvetoryCounter]);
-                                                  // increment loop
+                                          Align(
+                                            alignment: AlignmentDirectional(
+                                                0.00, 0.00),
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.0, 0.0, 16.0, 15.0),
+                                              child: FFButtonWidget(
+                                                onPressed: () async {
+                                                  // reset values
                                                   setState(() {
-                                                    _model.addToInventories(
-                                                        _model
-                                                            .inventoryToList!);
+                                                    _model.showLoadButton =
+                                                        true;
+                                                    _model.showDownloadButton =
+                                                        false;
+                                                    _model.inventories = [];
+                                                    _model.bookings = [];
+                                                    _model.transactions = [];
+                                                    _model.rooms = [];
                                                     _model.loopInvetoryCounter =
-                                                        _model.loopInvetoryCounter +
-                                                            1;
-                                                  });
-                                                }
-                                                while (_model.loopBookCounter !=
-                                                    mainCardRemittancesRecord
-                                                        ?.bookings?.length) {
-                                                  // read book
-                                                  _model.bookToList =
-                                                      await BookingsRecord
-                                                          .getDocumentOnce(
-                                                              mainCardRemittancesRecord!
-                                                                      .bookings[
-                                                                  _model
-                                                                      .loopBookCounter]);
-                                                  // increment loop
-                                                  setState(() {
-                                                    _model.loopBookCounter =
-                                                        _model.loopBookCounter +
-                                                            1;
-                                                    _model.addToBookings(
-                                                        _model.bookToList!);
-                                                  });
-                                                }
-                                                while (_model
-                                                        .loopTransactionCounter !=
-                                                    mainCardRemittancesRecord
-                                                        ?.transactions
-                                                        ?.length) {
-                                                  // read transactions
-                                                  _model.transactionToList =
-                                                      await TransactionsRecord
-                                                          .getDocumentOnce(
-                                                              mainCardRemittancesRecord!
-                                                                      .transactions[
-                                                                  _model
-                                                                      .loopTransactionCounter]);
-                                                  // increment loop
-                                                  setState(() {
+                                                        0;
+                                                    _model.loopBookCounter = 0;
                                                     _model.loopTransactionCounter =
-                                                        _model.loopTransactionCounter +
-                                                            1;
-                                                    _model.addToTransactions(
-                                                        _model
-                                                            .transactionToList!);
+                                                        0;
                                                   });
-                                                }
-                                                // preparedBy
-                                                _model.preparedBy =
-                                                    await UsersRecord
-                                                        .getDocumentOnce(
-                                                            mainCardRemittancesRecord!
-                                                                .preparedBy!);
-                                                if (mainCardRemittancesRecord
-                                                        ?.collectedBy !=
-                                                    null) {
-                                                  // collectedBy
-                                                  _model.collectedBy =
-                                                      await queryUsersRecordOnce(
+                                                  // roomList
+                                                  _model.roomInThisHotel =
+                                                      await queryRoomsRecordOnce(
                                                     queryBuilder:
-                                                        (usersRecord) =>
-                                                            usersRecord.where(
-                                                      'uid',
+                                                        (roomsRecord) =>
+                                                            roomsRecord.where(
+                                                      'hotel',
                                                       isEqualTo:
-                                                          mainCardRemittancesRecord
-                                                              ?.collectedBy?.id,
+                                                          FFAppState().hotel,
                                                     ),
-                                                    singleRecord: true,
-                                                  ).then((s) => s.firstOrNull);
-                                                }
-                                                setState(() {
-                                                  _model.showDownloadButton =
-                                                      true;
-                                                  _model.showLoadButton = false;
-                                                });
+                                                  );
+                                                  // rooms to list
+                                                  setState(() {
+                                                    _model.rooms = _model
+                                                        .roomInThisHotel!
+                                                        .toList()
+                                                        .cast<RoomsRecord>();
+                                                  });
+                                                  while (_model
+                                                          .loopInvetoryCounter !=
+                                                      mainCardRemittancesRecord
+                                                          ?.inventories
+                                                          ?.length) {
+                                                    // read inventory
+                                                    _model.inventoryToList =
+                                                        await InventoriesRecord
+                                                            .getDocumentOnce(
+                                                                mainCardRemittancesRecord!
+                                                                        .inventories[
+                                                                    _model
+                                                                        .loopInvetoryCounter]);
+                                                    // increment loop
+                                                    setState(() {
+                                                      _model.addToInventories(
+                                                          _model
+                                                              .inventoryToList!);
+                                                      _model.loopInvetoryCounter =
+                                                          _model.loopInvetoryCounter +
+                                                              1;
+                                                    });
+                                                  }
+                                                  while (_model
+                                                          .loopBookCounter !=
+                                                      mainCardRemittancesRecord
+                                                          ?.bookings?.length) {
+                                                    // read book
+                                                    _model.bookToList =
+                                                        await BookingsRecord
+                                                            .getDocumentOnce(
+                                                                mainCardRemittancesRecord!
+                                                                        .bookings[
+                                                                    _model
+                                                                        .loopBookCounter]);
+                                                    // increment loop
+                                                    setState(() {
+                                                      _model.loopBookCounter =
+                                                          _model.loopBookCounter +
+                                                              1;
+                                                      _model.addToBookings(
+                                                          _model.bookToList!);
+                                                    });
+                                                  }
+                                                  while (_model
+                                                          .loopTransactionCounter !=
+                                                      mainCardRemittancesRecord
+                                                          ?.transactions
+                                                          ?.length) {
+                                                    // read transactions
+                                                    _model.transactionToList =
+                                                        await TransactionsRecord
+                                                            .getDocumentOnce(
+                                                                mainCardRemittancesRecord!
+                                                                        .transactions[
+                                                                    _model
+                                                                        .loopTransactionCounter]);
+                                                    // increment loop
+                                                    setState(() {
+                                                      _model.loopTransactionCounter =
+                                                          _model.loopTransactionCounter +
+                                                              1;
+                                                      _model.addToTransactions(
+                                                          _model
+                                                              .transactionToList!);
+                                                    });
+                                                  }
+                                                  // preparedBy
+                                                  _model.preparedBy =
+                                                      await UsersRecord
+                                                          .getDocumentOnce(
+                                                              mainCardRemittancesRecord!
+                                                                  .preparedBy!);
+                                                  if (mainCardRemittancesRecord
+                                                          ?.collectedBy !=
+                                                      null) {
+                                                    // collectedBy
+                                                    _model.collectedBy =
+                                                        await queryUsersRecordOnce(
+                                                      queryBuilder:
+                                                          (usersRecord) =>
+                                                              usersRecord.where(
+                                                        'uid',
+                                                        isEqualTo:
+                                                            mainCardRemittancesRecord
+                                                                ?.collectedBy
+                                                                ?.id,
+                                                      ),
+                                                      singleRecord: true,
+                                                    ).then((s) =>
+                                                            s.firstOrNull);
+                                                  }
+                                                  setState(() {
+                                                    _model.showDownloadButton =
+                                                        true;
+                                                    _model.showLoadButton =
+                                                        false;
+                                                  });
 
-                                                setState(() {});
-                                              },
-                                              text: 'Load Printable PDF',
-                                              options: FFButtonOptions(
-                                                width: double.infinity,
-                                                height: 50.0,
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 0.0, 0.0, 0.0),
-                                                iconPadding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                textStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          color: Colors.white,
-                                                          fontSize: 16.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                elevation: 2.0,
-                                                borderSide: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1.0,
+                                                  setState(() {});
+                                                },
+                                                text: 'Load Shareable PDF',
+                                                options: FFButtonOptions(
+                                                  width: double.infinity,
+                                                  height: 50.0,
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 0.0, 0.0),
+                                                  iconPadding:
+                                                      EdgeInsetsDirectional
+                                                          .fromSTEB(0.0, 0.0,
+                                                              0.0, 0.0),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primary,
+                                                  textStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleSmall
+                                                          .override(
+                                                            fontFamily:
+                                                                'Plus Jakarta Sans',
+                                                            color: Colors.white,
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                  elevation: 2.0,
+                                                  borderSide: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 1.0,
+                                                  ),
                                                 ),
                                               ),
                                             ),
