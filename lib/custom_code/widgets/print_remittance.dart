@@ -322,7 +322,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         padding: pw.EdgeInsets.symmetric(horizontal: 24.0),
         child: pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          crossAxisAlignment: pw.CrossAxisAlignment.end,
           children: [
             pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,

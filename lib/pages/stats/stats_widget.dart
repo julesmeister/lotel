@@ -10,6 +10,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -549,6 +550,23 @@ class _StatsWidgetState extends State<StatsWidget>
                                           ),
                                         ],
                                       ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 5.0, 0.0, 0.0),
+                                        child: AutoSizeText(
+                                          'Daily Average: Php ${formatNumber(
+                                            functions.avgYData(_model
+                                                .roomLine!.yData
+                                                .toList()),
+                                            formatType: FormatType.decimal,
+                                            decimalType: DecimalType.automatic,
+                                          )}',
+                                          maxLines: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .labelMedium,
+                                          minFontSize: 10.0,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -706,6 +724,21 @@ class _StatsWidgetState extends State<StatsWidget>
                                             ),
                                           ),
                                         ],
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 5.0, 0.0, 0.0),
+                                        child: Text(
+                                          'Daily Average: Php ${formatNumber(
+                                            functions.avgYData(_model
+                                                .goodsLine!.yData
+                                                .toList()),
+                                            formatType: FormatType.decimal,
+                                            decimalType: DecimalType.automatic,
+                                          )}',
+                                          style: FlutterFlowTheme.of(context)
+                                              .labelMedium,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -1049,14 +1082,14 @@ class _StatsWidgetState extends State<StatsWidget>
                         xData: _model.roomLine!.xData,
                         yData: _model.roomLine!.yData,
                         settings: LineChartBarData(
-                          color: FlutterFlowTheme.of(context).primary,
+                          color: FlutterFlowTheme.of(context).warning,
                           barWidth: 2.0,
                           isCurved: true,
                           preventCurveOverShooting: true,
                           dotData: FlDotData(show: false),
                           belowBarData: BarAreaData(
                             show: true,
-                            color: Color(0x4C4B39EF),
+                            color: Color(0xFFFCF3D5),
                           ),
                         ),
                       ),

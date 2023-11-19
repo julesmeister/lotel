@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/change_remittance/change_remittance_widget.dart';
+import '/components/collect_remittance_user/collect_remittance_user_widget.dart';
 import '/components/last_remit_edit/last_remit_edit_widget.dart';
 import '/components/new_issue/new_issue_widget.dart';
 import '/components/option_to_issue/option_to_issue_widget.dart';
@@ -574,173 +575,218 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               homePageHotelSettingsRecord
                                                   ?.lastRemit)!))
                                     AuthUserStreamWidget(
-                                      builder: (context) => FFButtonWidget(
-                                        onPressed: () async {
-                                          var _shouldSetState = false;
-                                          if (FFAppState().role == 'admin') {
-                                            // Accept Remittance
-                                            var confirmDialogResponse =
-                                                await showDialog<bool>(
-                                                      context: context,
-                                                      builder:
-                                                          (alertDialogContext) {
-                                                        return AlertDialog(
-                                                          title: Text(
-                                                              'Accept Remittance'),
-                                                          content: Text(
-                                                              'Are you sure you want to accept this remittance?'),
-                                                          actions: [
-                                                            TextButton(
-                                                              onPressed: () =>
-                                                                  Navigator.pop(
-                                                                      alertDialogContext,
-                                                                      false),
-                                                              child: Text(
-                                                                  'Cancel'),
-                                                            ),
-                                                            TextButton(
-                                                              onPressed: () =>
-                                                                  Navigator.pop(
-                                                                      alertDialogContext,
-                                                                      true),
-                                                              child: Text(
-                                                                  'Confirm'),
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    ) ??
-                                                    false;
-                                            if (confirmDialogResponse) {
-                                              // unremitted
-                                              _model.unRemitted =
-                                                  await queryRemittancesRecordOnce(
-                                                queryBuilder:
-                                                    (remittancesRecord) =>
-                                                        remittancesRecord
-                                                            .where(
-                                                              'hotel',
-                                                              isEqualTo:
-                                                                  FFAppState()
-                                                                      .hotel,
-                                                            )
-                                                            .where(
-                                                              'collected',
-                                                              isEqualTo: false,
-                                                            ),
-                                                singleRecord: true,
-                                              ).then((s) => s.firstOrNull);
-                                              _shouldSetState = true;
-                                              // update collected by
-
-                                              await _model.unRemitted!.reference
-                                                  .update(
-                                                      createRemittancesRecordData(
-                                                collected: true,
-                                                collectedBy:
-                                                    currentUserReference,
-                                              ));
-                                            } else {
-                                              if (_shouldSetState)
-                                                setState(() {});
-                                              return;
-                                            }
-
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  'Remittance Collected',
-                                                  style: TextStyle(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryText,
+                                      builder: (context) => InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onLongPress: () async {
+                                          await showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            useSafeArea: true,
+                                            context: context,
+                                            builder: (context) {
+                                              return GestureDetector(
+                                                onTap: () => _model.unfocusNode
+                                                        .canRequestFocus
+                                                    ? FocusScope.of(context)
+                                                        .requestFocus(
+                                                            _model.unfocusNode)
+                                                    : FocusScope.of(context)
+                                                        .unfocus(),
+                                                child: Padding(
+                                                  padding:
+                                                      MediaQuery.viewInsetsOf(
+                                                          context),
+                                                  child: Container(
+                                                    height: MediaQuery.sizeOf(
+                                                                context)
+                                                            .height *
+                                                        0.9,
+                                                    child:
+                                                        CollectRemittanceUserWidget(),
                                                   ),
                                                 ),
-                                                duration: Duration(
-                                                    milliseconds: 4000),
-                                                backgroundColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondary,
-                                              ),
-                                            );
-                                          } else {
-                                            await showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              useSafeArea: true,
-                                              context: context,
-                                              builder: (context) {
-                                                return GestureDetector(
-                                                  onTap: () => _model
-                                                          .unfocusNode
-                                                          .canRequestFocus
-                                                      ? FocusScope.of(context)
-                                                          .requestFocus(_model
-                                                              .unfocusNode)
-                                                      : FocusScope.of(context)
-                                                          .unfocus(),
-                                                  child: Padding(
-                                                    padding:
-                                                        MediaQuery.viewInsetsOf(
-                                                            context),
-                                                    child:
-                                                        ChangeRemittanceWidget(),
-                                                  ),
-                                                );
-                                              },
-                                            ).then(
-                                                (value) => safeSetState(() {}));
-                                          }
-
-                                          // Update lastremit
-                                          setState(() {
-                                            FFAppState().lastRemit =
-                                                functions.today();
-                                          });
-                                          // Update hotel setting
-
-                                          await homePageHotelSettingsRecord!
-                                              .reference
-                                              .update(
-                                                  createHotelSettingsRecordData(
-                                            lastRemit: functions.today(),
-                                          ));
-                                          if (_shouldSetState) setState(() {});
+                                              );
+                                            },
+                                          ).then(
+                                              (value) => safeSetState(() {}));
                                         },
-                                        text: valueOrDefault(
-                                                    currentUserDocument?.role,
-                                                    '') ==
-                                                'admin'
-                                            ? 'Collect'
-                                            : 'Remit',
-                                        options: FFButtonOptions(
-                                          width: 110.0,
-                                          height: 40.0,
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 0.0),
-                                          iconPadding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 0.0),
-                                          color: Color(0xFF4B39EF),
-                                          textStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .override(
-                                                    fontFamily:
-                                                        'Plus Jakarta Sans',
-                                                    color: Colors.white,
-                                                    fontSize: 14.0,
-                                                    fontWeight: FontWeight.w500,
+                                        child: FFButtonWidget(
+                                          onPressed: () async {
+                                            var _shouldSetState = false;
+                                            if (FFAppState().role == 'admin') {
+                                              // Accept Remittance
+                                              var confirmDialogResponse =
+                                                  await showDialog<bool>(
+                                                        context: context,
+                                                        builder:
+                                                            (alertDialogContext) {
+                                                          return AlertDialog(
+                                                            title: Text(
+                                                                'Accept Remittance'),
+                                                            content: Text(
+                                                                'Are you sure you want to accept this remittance?'),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        alertDialogContext,
+                                                                        false),
+                                                                child: Text(
+                                                                    'Cancel'),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        alertDialogContext,
+                                                                        true),
+                                                                child: Text(
+                                                                    'Confirm'),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      ) ??
+                                                      false;
+                                              if (confirmDialogResponse) {
+                                                // unremitted
+                                                _model.unRemitted =
+                                                    await queryRemittancesRecordOnce(
+                                                  queryBuilder:
+                                                      (remittancesRecord) =>
+                                                          remittancesRecord
+                                                              .where(
+                                                                'hotel',
+                                                                isEqualTo:
+                                                                    FFAppState()
+                                                                        .hotel,
+                                                              )
+                                                              .where(
+                                                                'collected',
+                                                                isEqualTo:
+                                                                    false,
+                                                              ),
+                                                  singleRecord: true,
+                                                ).then((s) => s.firstOrNull);
+                                                _shouldSetState = true;
+                                                // update collected by
+
+                                                await _model
+                                                    .unRemitted!.reference
+                                                    .update(
+                                                        createRemittancesRecordData(
+                                                  collected: true,
+                                                  collectedBy:
+                                                      currentUserReference,
+                                                ));
+                                              } else {
+                                                if (_shouldSetState)
+                                                  setState(() {});
+                                                return;
+                                              }
+
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Remittance Collected',
+                                                    style: TextStyle(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                    ),
                                                   ),
-                                          borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                            width: 1.0,
+                                                  duration: Duration(
+                                                      milliseconds: 4000),
+                                                  backgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondary,
+                                                ),
+                                              );
+                                            } else {
+                                              await showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                useSafeArea: true,
+                                                context: context,
+                                                builder: (context) {
+                                                  return GestureDetector(
+                                                    onTap: () => _model
+                                                            .unfocusNode
+                                                            .canRequestFocus
+                                                        ? FocusScope.of(context)
+                                                            .requestFocus(_model
+                                                                .unfocusNode)
+                                                        : FocusScope.of(context)
+                                                            .unfocus(),
+                                                    child: Padding(
+                                                      padding: MediaQuery
+                                                          .viewInsetsOf(
+                                                              context),
+                                                      child:
+                                                          ChangeRemittanceWidget(),
+                                                    ),
+                                                  );
+                                                },
+                                              ).then((value) =>
+                                                  safeSetState(() {}));
+                                            }
+
+                                            // Update lastremit
+                                            setState(() {
+                                              FFAppState().lastRemit =
+                                                  functions.today();
+                                            });
+                                            // Update hotel setting
+
+                                            await homePageHotelSettingsRecord!
+                                                .reference
+                                                .update(
+                                                    createHotelSettingsRecordData(
+                                              lastRemit: functions.today(),
+                                            ));
+                                            if (_shouldSetState)
+                                              setState(() {});
+                                          },
+                                          text: valueOrDefault(
+                                                      currentUserDocument?.role,
+                                                      '') ==
+                                                  'admin'
+                                              ? 'Collect'
+                                              : 'Remit',
+                                          options: FFButtonOptions(
+                                            width: 110.0,
+                                            height: 40.0,
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            iconPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: Color(0xFF4B39EF),
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .override(
+                                                      fontFamily:
+                                                          'Plus Jakarta Sans',
+                                                      color: Colors.white,
+                                                      fontSize: 14.0,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                            borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
                                         ),
                                       ),
                                     ),

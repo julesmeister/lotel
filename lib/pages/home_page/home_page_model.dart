@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/change_remittance/change_remittance_widget.dart';
+import '/components/collect_remittance_user/collect_remittance_user_widget.dart';
 import '/components/last_remit_edit/last_remit_edit_widget.dart';
 import '/components/new_issue/new_issue_widget.dart';
 import '/components/option_to_issue/option_to_issue_widget.dart';

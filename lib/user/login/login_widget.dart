@@ -203,6 +203,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     () => setState(() {}),
                                   ),
                                   autofocus: true,
+                                  textCapitalization: TextCapitalization.words,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     labelText: 'Name of Staff',
@@ -247,6 +248,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       FlutterFlowTheme.of(context).bodyMedium,
                                   validator: _model.textControllerValidator
                                       .asValidator(context),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[a-zA-Z]'))
+                                  ],
                                 ),
                               ),
                               if (containerHotelSettingsRecord

@@ -917,6 +917,27 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
+                                              // stat exist firestore not local
+                                              _model.serenityStat =
+                                                  await queryStatsRecordOnce(
+                                                queryBuilder: (statsRecord) =>
+                                                    statsRecord
+                                                        .where(
+                                                          'hotel',
+                                                          isEqualTo: 'Serenity',
+                                                        )
+                                                        .where(
+                                                          'year',
+                                                          isEqualTo: functions
+                                                              .currentYear(),
+                                                        )
+                                                        .where(
+                                                          'month',
+                                                          isEqualTo: functions
+                                                              .currentMonth(),
+                                                        ),
+                                                singleRecord: true,
+                                              ).then((s) => s.firstOrNull);
                                               setState(() {
                                                 FFAppState().bedPrice =
                                                     statusToggleHotelSettingsRecordList
@@ -937,6 +958,9 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                                         .first
                                                         .lastRemit;
                                                 FFAppState().hotel = 'Serenity';
+                                                FFAppState().statsReference =
+                                                    _model.serenityStat
+                                                        ?.reference;
                                               });
                                               // clear rooms cache
                                               FFAppState().clearRoomsCache();
@@ -968,6 +992,8 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                                           .secondary,
                                                 ),
                                               );
+
+                                              setState(() {});
                                             },
                                             child: Container(
                                               width: 115.0,
@@ -1043,6 +1069,28 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
+                                              // stat exist firestore not local
+                                              _model.lifestyleStat =
+                                                  await queryStatsRecordOnce(
+                                                queryBuilder: (statsRecord) =>
+                                                    statsRecord
+                                                        .where(
+                                                          'hotel',
+                                                          isEqualTo:
+                                                              'My Lifestyle',
+                                                        )
+                                                        .where(
+                                                          'year',
+                                                          isEqualTo: functions
+                                                              .currentYear(),
+                                                        )
+                                                        .where(
+                                                          'month',
+                                                          isEqualTo: functions
+                                                              .currentMonth(),
+                                                        ),
+                                                singleRecord: true,
+                                              ).then((s) => s.firstOrNull);
                                               setState(() {
                                                 FFAppState().bedPrice =
                                                     statusToggleHotelSettingsRecordList
@@ -1062,6 +1110,9 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                                         .lastRemit;
                                                 FFAppState().hotel =
                                                     'My Lifestyle';
+                                                FFAppState().statsReference =
+                                                    _model.lifestyleStat
+                                                        ?.reference;
                                               });
                                               // clear rooms cache
                                               FFAppState().clearRoomsCache();
@@ -1091,6 +1142,8 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                                           .secondary,
                                                 ),
                                               );
+
+                                              setState(() {});
                                             },
                                             child: Container(
                                               width: 115.0,

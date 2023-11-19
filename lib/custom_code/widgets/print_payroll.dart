@@ -42,6 +42,14 @@ class PrintPayroll extends StatefulWidget {
 }
 
 class _PrintPayrollState extends State<PrintPayroll> {
+  String formattedDate = '';
+
+  @override
+  void initState() {
+    super.initState();
+    formattedDate = DateFormat('EEEE MMMM d y h:mm a').format(widget.date);
+  }
+
   Future<void> generatePdf() async {
     final pdf = pw.Document();
     // Header section
@@ -118,9 +126,10 @@ class _PrintPayrollState extends State<PrintPayroll> {
       ),
     );
 
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
+    await Printing.sharePdf(
+        bytes: await pdf.save(),
+        filename:
+            "${widget.hotel} ${widget.fortnight} Payroll - $formattedDate.pdf");
   }
 
   @override
@@ -138,7 +147,7 @@ class _PrintPayrollState extends State<PrintPayroll> {
         ),
       ),
       child: Text(
-        'Print Payroll',
+        'Share Payroll',
         style: TextStyle(
           fontFamily: 'Plus Jakarta Sans',
           color: Colors.white,

@@ -1331,19 +1331,23 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                     ),
                   ),
                   if (_model.existingPayroll?.status == 'settled')
-                    Container(
-                      width: double.infinity,
-                      height: 48.0,
-                      child: custom_widgets.PrintPayroll(
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
+                      child: Container(
                         width: double.infinity,
                         height: 48.0,
-                        hotel: FFAppState().hotel,
-                        salaries: _model.salaries,
-                        staffs: _model.staffs,
-                        total:
-                            functions.sumOfSalaries(_model.salaries.toList()),
-                        fortnight: _model.fortnight,
-                        date: _model.date!,
+                        child: custom_widgets.PrintPayroll(
+                          width: double.infinity,
+                          height: 48.0,
+                          hotel: FFAppState().hotel,
+                          salaries: _model.salaries,
+                          staffs: _model.staffs,
+                          total:
+                              functions.sumOfSalaries(_model.salaries.toList()),
+                          fortnight: _model.fortnight,
+                          date: _model.date!,
+                        ),
                       ),
                     ),
                   if (_model.existingPayroll?.status != 'settled')

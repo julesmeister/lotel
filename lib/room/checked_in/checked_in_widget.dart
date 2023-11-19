@@ -422,14 +422,17 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                             // read transaction
                                                             _model.transaction =
                                                                 await queryTransactionsRecordOnce(
-                                                              queryBuilder:
-                                                                  (transactionsRecord) =>
-                                                                      transactionsRecord
-                                                                          .where(
-                                                                'booking',
-                                                                isEqualTo: widget
-                                                                    .booking,
-                                                              ),
+                                                              queryBuilder: (transactionsRecord) =>
+                                                                  transactionsRecord
+                                                                      .where(
+                                                                        'booking',
+                                                                        isEqualTo:
+                                                                            widget.booking,
+                                                                      )
+                                                                      .orderBy(
+                                                                          'date',
+                                                                          descending:
+                                                                              true),
                                                               singleRecord:
                                                                   true,
                                                             ).then((s) => s
@@ -449,22 +452,52 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   .toList()
                                                                   .first
                                                                   .reference,
+                                                              total: choiceChipsRoomsRecordList
+                                                                      .where((e) =>
+                                                                          e.number ==
+                                                                          (int.parse(_model
+                                                                              .choiceChipsValue!)))
+                                                                      .toList()
+                                                                      .first
+                                                                      .price *
+                                                                  checkedInBookingsRecord
+                                                                      .nights,
                                                             ));
-                                                            if (checkedInBookingsRecord
-                                                                    .status ==
-                                                                'paid') {
-                                                              // change room of transaction
+                                                            // change room of transaction
 
-                                                              await _model
-                                                                  .transaction!
-                                                                  .reference
-                                                                  .update(
-                                                                      createTransactionsRecordData(
+                                                            await _model
+                                                                .transaction!
+                                                                .reference
+                                                                .update({
+                                                              ...createTransactionsRecordData(
                                                                 room: int.parse(
                                                                     _model
                                                                         .choiceChipsValue!),
-                                                              ));
-                                                            }
+                                                                description: functions.modifyTransactionRoomDescription(
+                                                                    _model
+                                                                        .transaction!
+                                                                        .description,
+                                                                    _model
+                                                                        .choiceChipsValue!,
+                                                                    widget
+                                                                        .roomNo!
+                                                                        .toString()),
+                                                                total: choiceChipsRoomsRecordList
+                                                                    .where((e) =>
+                                                                        e.number ==
+                                                                        (int.parse(
+                                                                            _model.choiceChipsValue!)))
+                                                                    .toList()
+                                                                    .first
+                                                                    .price,
+                                                              ),
+                                                              ...mapToFirestore(
+                                                                {
+                                                                  'date': FieldValue
+                                                                      .serverTimestamp(),
+                                                                },
+                                                              ),
+                                                            });
                                                             ScaffoldMessenger
                                                                     .of(context)
                                                                 .showSnackBar(
@@ -1216,7 +1249,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               'Extra Bed',
                                                               'Extend Hours',
                                                               'Senior Citizen Discount',
-                                                              'PWD Discount'
+                                                              'PWD Discount',
+                                                              'Change Room'
                                                             ],
                                                             onChanged: (val) =>
                                                                 setState(() =>

@@ -906,3 +906,34 @@ String resetFont(String text) {
     ),
   ).data!;
 }
+
+DateTime prevDate(DateTime date) {
+  // previous day of date
+  return date.subtract(Duration(days: 1));
+}
+
+DateTime nextDate(DateTime date) {
+  // next day of date
+  return date.add(Duration(days: 1));
+}
+
+String modifyTransactionRoomDescription(
+  String prevDesc,
+  String newRoom,
+  String oldRoom,
+) {
+  // change text inside prevDesc Room $oldRoom to Room $newRoom
+  return prevDesc.replaceAll('Room $oldRoom', 'Room $newRoom');
+}
+
+int avgYData(List<int> sales) {
+  // average of sales
+  if (sales.isEmpty) {
+    return 0;
+  }
+  int sum = 0;
+  for (int sale in sales) {
+    sum += sale;
+  }
+  return sum ~/ sales.length;
+}
