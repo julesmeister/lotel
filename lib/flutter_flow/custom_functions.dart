@@ -937,3 +937,28 @@ int avgYData(List<int> sales) {
   }
   return sum ~/ sales.length;
 }
+
+double totalOfSpaces(
+  List<SpacesRecord> spaces,
+  double withholdingTax,
+) {
+  // total of each space.amount + (space.amount * (withholdingTax/100))
+  double total = 0.0;
+  for (var space in spaces) {
+    total += space.amount + (space.amount * (withholdingTax / 100));
+  }
+  return total;
+}
+
+bool allRentCollected(List<SpacesRecord> spaces) {
+  if (spaces.isEmpty) {
+    return false;
+  }
+  // are all space.collected true?
+  for (var space in spaces) {
+    if (!space.collected) {
+      return false;
+    }
+  }
+  return true;
+}

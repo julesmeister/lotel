@@ -258,6 +258,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => RoomHistoryWidget(
             room: params.getParam('room', ParamType.Document),
           ),
+        ),
+        FFRoute(
+          name: 'Rents',
+          path: '/Rental',
+          builder: (context, params) => RentsWidget(),
+        ),
+        FFRoute(
+          name: 'NewEditRent',
+          path: '/newEditRent',
+          builder: (context, params) => NewEditRentWidget(
+            ref: params.getParam(
+                'ref', ParamType.DocumentReference, false, ['rentals']),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

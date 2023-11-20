@@ -112,6 +112,7 @@ class _StatsWidgetState extends State<StatsWidget>
           _model.rooms = _model.currentStat!.roomsIncome;
           _model.goods = _model.currentStat!.goodsIncome;
           _model.statsRef = _model.currentStat?.reference;
+          _model.rent = _model.currentStat!.rentIncome;
         });
       } else {
         // no data yet
@@ -255,6 +256,7 @@ class _StatsWidgetState extends State<StatsWidget>
                           _model.month = _model.foundMonthDoc!.month;
                           _model.goods = _model.foundMonthDoc!.goodsIncome;
                           _model.statsRef = _model.foundMonthDoc?.reference;
+                          _model.rent = _model.foundMonthDoc!.rentIncome;
                         });
                       } else {
                         // no data yet
@@ -350,6 +352,7 @@ class _StatsWidgetState extends State<StatsWidget>
                           _model.year = _model.foundYearDoc!.year;
                           _model.goods = _model.foundYearDoc!.goodsIncome;
                           _model.statsRef = _model.foundYearDoc?.reference;
+                          _model.rent = _model.foundYearDoc!.rentIncome;
                         });
                       } else {
                         // no data yet
@@ -807,6 +810,85 @@ class _StatsWidgetState extends State<StatsWidget>
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
+                                        'Rent Income',
+                                        style: FlutterFlowTheme.of(context)
+                                            .labelMedium,
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 4.0, 4.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  _model.rent,
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.automatic,
+                                                  currency: 'P ',
+                                                ),
+                                                '0',
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .displaySmall,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            0.0, 12.0, 0.0, 12.0),
+                        child: Container(
+                          height: 120.0,
+                          constraints: BoxConstraints(
+                            maxWidth: 270.0,
+                          ),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 16.0, 0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 16.0, 0.0),
+                                  child: Icon(
+                                    Icons.trending_up_rounded,
+                                    color:
+                                        FlutterFlowTheme.of(context).secondary,
+                                    size: 32.0,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
                                         'Expenses',
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium,
@@ -1057,7 +1139,8 @@ class _StatsWidgetState extends State<StatsWidget>
                                             child: Text(
                                               formatNumber(
                                                 _model.rooms +
-                                                    _model.goods -
+                                                    _model.goods +
+                                                    _model.rent -
                                                     _model.expenses -
                                                     _model.salaries,
                                                 formatType: FormatType.decimal,

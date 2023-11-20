@@ -534,7 +534,14 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               ChipData('0'),
                               ChipData('1'),
                               ChipData('2'),
-                              ChipData('3')
+                              ChipData('3'),
+                              ChipData('4'),
+                              ChipData('5'),
+                              ChipData('6'),
+                              ChipData('7'),
+                              ChipData('8'),
+                              ChipData('9'),
+                              ChipData('10')
                             ],
                             onChanged: (val) =>
                                 setState(() => _model.bedsValue = val?.first),

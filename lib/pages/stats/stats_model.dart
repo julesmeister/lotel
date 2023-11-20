@@ -58,6 +58,8 @@ class StatsModel extends FlutterFlowModel<StatsWidget> {
 
   DocumentReference? statsRef;
 
+  double rent = 0.0;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Firestore Query - Query a collection] action in Stats widget.

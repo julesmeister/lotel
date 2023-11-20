@@ -198,6 +198,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
               clearUnsetFields: false,
               create: true,
             ),
+            rentIncome: 0.0,
           ),
           ...mapToFirestore(
             {
@@ -230,6 +231,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
               clearUnsetFields: false,
               create: true,
             ),
+            rentIncome: 0.0,
           ),
           ...mapToFirestore(
             {
@@ -2568,6 +2570,70 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         },
                                       ),
                                     ),
+                                    if (valueOrDefault(
+                                            currentUserDocument?.role, '') ==
+                                        'admin')
+                                      Divider(
+                                        height: 4.0,
+                                        thickness: 2.0,
+                                        indent: 20.0,
+                                        endIndent: 20.0,
+                                        color: Color(0xFFE0E3E7),
+                                      ),
+                                    if (valueOrDefault(
+                                            currentUserDocument?.role, '') ==
+                                        'admin')
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            24.0, 24.0, 24.0, 24.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Rentals',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .displaySmall
+                                                  .override(
+                                                    fontFamily: 'Outfit',
+                                                    color: Color(0xFF14181B),
+                                                    fontSize: 36.0,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  FlutterFlowIconButton(
+                                                    borderColor:
+                                                        Color(0xFFF1F4F8),
+                                                    borderRadius: 30.0,
+                                                    borderWidth: 2.0,
+                                                    buttonSize: 44.0,
+                                                    icon: Icon(
+                                                      Icons
+                                                          .arrow_forward_rounded,
+                                                      color: Color(0xFF57636C),
+                                                      size: 24.0,
+                                                    ),
+                                                    onPressed: () async {
+                                                      context
+                                                          .pushNamed('Rents');
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     if (valueOrDefault(
                                             currentUserDocument?.role, '') ==
                                         'admin')
