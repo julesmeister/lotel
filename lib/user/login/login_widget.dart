@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -280,6 +281,18 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               if (user == null) {
                                                 return;
                                               }
+                                              // setting
+                                              _model.setting =
+                                                  await queryHotelSettingsRecordOnce(
+                                                queryBuilder:
+                                                    (hotelSettingsRecord) =>
+                                                        hotelSettingsRecord
+                                                            .where(
+                                                  'hotel',
+                                                  isEqualTo: FFAppState().hotel,
+                                                ),
+                                                singleRecord: true,
+                                              ).then((s) => s.firstOrNull);
                                               if (FFAppState().role == null ||
                                                   FFAppState().role == '') {
                                                 // Default Generic User And Name
@@ -298,6 +311,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 FFAppState().role = 'generic';
                                                 FFAppState().hotel =
                                                     _model.radioButtonValue!;
+                                                FFAppState().bedPrice =
+                                                    containerHotelSettingsRecord!
+                                                        .bedPrice;
                                               } else {
                                                 // Default Generic User Only
 
@@ -315,6 +331,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 // Set Hotel Only
                                                 FFAppState().hotel =
                                                     _model.radioButtonValue!;
+                                                FFAppState().bedPrice =
+                                                    containerHotelSettingsRecord!
+                                                        .bedPrice;
                                               }
 
                                               // Record Last Login
@@ -348,6 +367,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   ),
                                                 },
                                               );
+
+                                              setState(() {});
                                             },
                                       text: 'Enter',
                                       icon: FaIcon(

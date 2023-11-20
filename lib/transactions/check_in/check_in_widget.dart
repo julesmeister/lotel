@@ -501,50 +501,14 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   ),
                         ),
                         if (FFAppState().bedPrice != null)
-                          FutureBuilder<List<HotelSettingsRecord>>(
-                            future: queryHotelSettingsRecordOnce(
-                              queryBuilder: (hotelSettingsRecord) =>
-                                  hotelSettingsRecord.where(
-                                'hotel',
-                                isEqualTo: FFAppState().hotel,
-                              ),
-                              singleRecord: true,
+                          Text(
+                            formatNumber(
+                              FFAppState().bedPrice,
+                              formatType: FormatType.decimal,
+                              decimalType: DecimalType.automatic,
+                              currency: 'Php ',
                             ),
-                            builder: (context, snapshot) {
-                              // Customize what your widget looks like when it's loading.
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: SizedBox(
-                                    width: 50.0,
-                                    height: 50.0,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        FlutterFlowTheme.of(context).primary,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }
-                              List<HotelSettingsRecord>
-                                  textHotelSettingsRecordList = snapshot.data!;
-                              // Return an empty Container when the item does not exist.
-                              if (snapshot.data!.isEmpty) {
-                                return Container();
-                              }
-                              final textHotelSettingsRecord =
-                                  textHotelSettingsRecordList.isNotEmpty
-                                      ? textHotelSettingsRecordList.first
-                                      : null;
-                              return Text(
-                                formatNumber(
-                                  textHotelSettingsRecord!.bedPrice,
-                                  formatType: FormatType.decimal,
-                                  decimalType: DecimalType.automatic,
-                                  currency: 'P ',
-                                ),
-                                style: FlutterFlowTheme.of(context).bodyMedium,
-                              );
-                            },
+                            style: FlutterFlowTheme.of(context).bodyMedium,
                           ),
                       ],
                     ),

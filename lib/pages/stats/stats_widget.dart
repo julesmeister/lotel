@@ -532,7 +532,7 @@ class _StatsWidgetState extends State<StatsWidget>
 
                                                   setState(() {});
                                                 },
-                                                child: Text(
+                                                child: AutoSizeText(
                                                   formatNumber(
                                                     _model.rooms,
                                                     formatType:
@@ -541,9 +541,18 @@ class _StatsWidgetState extends State<StatsWidget>
                                                         DecimalType.automatic,
                                                     currency: 'P ',
                                                   ),
+                                                  maxLines: 1,
                                                   style: FlutterFlowTheme.of(
                                                           context)
-                                                      .displaySmall,
+                                                      .displaySmall
+                                                      .override(
+                                                        fontFamily: 'Outfit',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .warning,
+                                                      ),
+                                                  minFontSize: 30.0,
                                                 ),
                                               ),
                                             ),
@@ -707,7 +716,7 @@ class _StatsWidgetState extends State<StatsWidget>
 
                                                   setState(() {});
                                                 },
-                                                child: Text(
+                                                child: AutoSizeText(
                                                   formatNumber(
                                                     _model.goods,
                                                     formatType:
@@ -716,9 +725,18 @@ class _StatsWidgetState extends State<StatsWidget>
                                                         DecimalType.automatic,
                                                     currency: 'P ',
                                                   ),
+                                                  maxLines: 1,
                                                   style: FlutterFlowTheme.of(
                                                           context)
-                                                      .displaySmall,
+                                                      .displaySmall
+                                                      .override(
+                                                        fontFamily: 'Outfit',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondary,
+                                                      ),
+                                                  minFontSize: 30.0,
                                                 ),
                                               ),
                                             ),
@@ -1140,7 +1158,7 @@ class _StatsWidgetState extends State<StatsWidget>
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                         child: Icon(
                           Icons.radio_button_checked,
-                          color: FlutterFlowTheme.of(context).primary,
+                          color: FlutterFlowTheme.of(context).warning,
                           size: 16.0,
                         ),
                       ),
