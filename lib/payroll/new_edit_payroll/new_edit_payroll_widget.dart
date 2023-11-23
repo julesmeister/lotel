@@ -1,7 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/new_salary/new_salary_widget.dart';
-import '/components/salary_options/salary_options_widget.dart';
+import '/components/forms/new_salary/new_salary_widget.dart';
+import '/components/options/salary_options/salary_options_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';

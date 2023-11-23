@@ -1,11 +1,11 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
-import '/components/change_remittance/change_remittance_widget.dart';
 import '/components/collect_remittance_user/collect_remittance_user_widget.dart';
-import '/components/last_remit_edit/last_remit_edit_widget.dart';
-import '/components/new_issue/new_issue_widget.dart';
-import '/components/option_to_issue/option_to_issue_widget.dart';
+import '/components/forms/change_date/change_date_widget.dart';
+import '/components/forms/change_remittance/change_remittance_widget.dart';
+import '/components/forms/new_issue/new_issue_widget.dart';
+import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -103,6 +103,10 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
   LastLoginRecord? log;
   // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
+  HotelSettingsRecord? settingsRef;
+  // Stores action output result for [Backend Call - Read Document] action in HomePage widget.
+  HotelSettingsRecord? settings;
+  // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
   int? remittance;
   // Stores action output result for [Backend Call - Read Document] action in HomePage widget.
   StatsRecord? alreadyStats;
@@ -114,6 +118,12 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   StatsRecord? createStat;
   // Stores action output result for [Backend Call - Read Document] action in HomePage widget.
   HotelSettingsRecord? hotel;
+  // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
+  StatsRecord? serenityStat;
+  // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
+  StatsRecord? lifestyleStat;
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in Column widget.
+  DateTime? adjustedLastRemit;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   RemittancesRecord? unRemitted;
   // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
@@ -182,6 +192,22 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void clearHomeRemittanceCacheKey(String? uniqueKey) =>
       _homeRemittanceManager.clearRequest(uniqueKey);
 
+  final _hotelSettingsManager =
+      StreamRequestManager<List<HotelSettingsRecord>>();
+  Stream<List<HotelSettingsRecord>> hotelSettings({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Stream<List<HotelSettingsRecord>> Function() requestFn,
+  }) =>
+      _hotelSettingsManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearHotelSettingsCache() => _hotelSettingsManager.clear();
+  void clearHotelSettingsCacheKey(String? uniqueKey) =>
+      _hotelSettingsManager.clearRequest(uniqueKey);
+
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {}
@@ -198,6 +224,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     clearIssueHomeCache();
 
     clearHomeRemittanceCache();
+
+    clearHotelSettingsCache();
   }
 
   /// Action blocks are added here.

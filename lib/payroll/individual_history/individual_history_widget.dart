@@ -1,6 +1,6 @@
 import '/backend/backend.dart';
-import '/components/cash_advance_options/cash_advance_options_widget.dart';
-import '/components/salary_options/salary_options_widget.dart';
+import '/components/options/cash_advance_options/cash_advance_options_widget.dart';
+import '/components/options/salary_options/salary_options_widget.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';

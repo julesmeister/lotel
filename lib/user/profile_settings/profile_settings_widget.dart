@@ -1,7 +1,8 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
-import '/components/name_edit/name_edit_widget.dart';
+import '/components/forms/name_edit/name_edit_widget.dart';
+import '/components/options/option_to_logout/option_to_logout_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -73,29 +74,51 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
         actions: [
           Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 16.0, 0.0),
-            child: Container(
-              width: 44.0,
-              height: 44.0,
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).accent1,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: FlutterFlowTheme.of(context).primary,
-                  width: 2.0,
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(2.0, 2.0, 2.0, 2.0),
-                child: Container(
-                  width: 50.0,
-                  height: 50.0,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+            child: InkWell(
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () async {
+                await showModalBottomSheet(
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return Padding(
+                      padding: MediaQuery.viewInsetsOf(context),
+                      child: Container(
+                        height: 125.0,
+                        child: OptionToLogoutWidget(),
+                      ),
+                    );
+                  },
+                ).then((value) => safeSetState(() {}));
+              },
+              child: Container(
+                width: 44.0,
+                height: 44.0,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).accent1,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: FlutterFlowTheme.of(context).primary,
+                    width: 2.0,
                   ),
-                  child: Image.asset(
-                    'assets/images/10.png',
-                    fit: BoxFit.fitWidth,
+                ),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(2.0, 2.0, 2.0, 2.0),
+                  child: Container(
+                    width: 50.0,
+                    height: 50.0,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.asset(
+                      'assets/images/10.png',
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                 ),
               ),
@@ -376,21 +399,52 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                         children: [
                           Row(
                             mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Retrieve Correct Stats Reference',
+                                'Refresh Correct Stats Reference',
                                 style: FlutterFlowTheme.of(context).bodyLarge,
                               ),
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(1.00, 0.00),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 20.0,
-                                  ),
-                                ),
+                              StreamBuilder<UsersRecord>(
+                                stream: UsersRecord.getDocument(
+                                    currentUserReference!),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  final iconButtonUsersRecord = snapshot.data!;
+                                  return FlutterFlowIconButton(
+                                    borderColor:
+                                        FlutterFlowTheme.of(context).info,
+                                    borderRadius: 0.0,
+                                    borderWidth: 0.0,
+                                    buttonSize: 40.0,
+                                    fillColor:
+                                        FlutterFlowTheme.of(context).info,
+                                    icon: Icon(
+                                      Icons.refresh,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondary,
+                                      size: 24.0,
+                                    ),
+                                    onPressed: () {
+                                      print('IconButton pressed ...');
+                                    },
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -459,21 +513,52 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                         children: [
                           Row(
                             mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Retrieve Correct Bed Price',
+                                'Refresh Correct Bed Price',
                                 style: FlutterFlowTheme.of(context).bodyLarge,
                               ),
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(1.00, 0.00),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 20.0,
-                                  ),
-                                ),
+                              StreamBuilder<UsersRecord>(
+                                stream: UsersRecord.getDocument(
+                                    currentUserReference!),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  final iconButtonUsersRecord = snapshot.data!;
+                                  return FlutterFlowIconButton(
+                                    borderColor:
+                                        FlutterFlowTheme.of(context).info,
+                                    borderRadius: 0.0,
+                                    borderWidth: 0.0,
+                                    buttonSize: 40.0,
+                                    fillColor:
+                                        FlutterFlowTheme.of(context).info,
+                                    icon: Icon(
+                                      Icons.refresh,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondary,
+                                      size: 24.0,
+                                    ),
+                                    onPressed: () {
+                                      print('IconButton pressed ...');
+                                    },
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -941,364 +1026,6 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: AlignmentDirectional(0.00, -1.00),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 16.0, 16.0, 16.0),
-                            child: StreamBuilder<List<HotelSettingsRecord>>(
-                              stream: _model.admin(
-                                requestFn: () => queryHotelSettingsRecord(),
-                              ),
-                              builder: (context, snapshot) {
-                                // Customize what your widget looks like when it's loading.
-                                if (!snapshot.hasData) {
-                                  return Center(
-                                    child: SizedBox(
-                                      width: 50.0,
-                                      height: 50.0,
-                                      child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                          FlutterFlowTheme.of(context).primary,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                                List<HotelSettingsRecord>
-                                    statusToggleHotelSettingsRecordList =
-                                    snapshot.data!;
-                                return Container(
-                                  width: double.infinity,
-                                  height: 50.0,
-                                  constraints: BoxConstraints(
-                                    maxWidth: 500.0,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        4.0, 4.0, 4.0, 4.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              // stat exist firestore not local
-                                              _model.serenityStat =
-                                                  await queryStatsRecordOnce(
-                                                queryBuilder: (statsRecord) =>
-                                                    statsRecord
-                                                        .where(
-                                                          'hotel',
-                                                          isEqualTo: 'Serenity',
-                                                        )
-                                                        .where(
-                                                          'year',
-                                                          isEqualTo: functions
-                                                              .currentYear(),
-                                                        )
-                                                        .where(
-                                                          'month',
-                                                          isEqualTo: functions
-                                                              .currentMonth(),
-                                                        ),
-                                                singleRecord: true,
-                                              ).then((s) => s.firstOrNull);
-                                              setState(() {
-                                                FFAppState().bedPrice =
-                                                    statusToggleHotelSettingsRecordList
-                                                        .where((e) =>
-                                                            statusToggleHotelSettingsRecordList
-                                                                .first.hotel ==
-                                                            'Serenity')
-                                                        .toList()
-                                                        .first
-                                                        .bedPrice;
-                                                FFAppState().lastRemit =
-                                                    statusToggleHotelSettingsRecordList
-                                                        .where((e) =>
-                                                            statusToggleHotelSettingsRecordList
-                                                                .first.hotel ==
-                                                            'Serenity')
-                                                        .toList()
-                                                        .first
-                                                        .lastRemit;
-                                                FFAppState().hotel = 'Serenity';
-                                                FFAppState().statsReference =
-                                                    _model.serenityStat
-                                                        ?.reference;
-                                              });
-                                              // clear rooms cache
-                                              FFAppState().clearRoomsCache();
-                                              // clear checkincount
-                                              FFAppState()
-                                                  .clearCheckInCountCache();
-                                              // clear replenish count
-                                              FFAppState()
-                                                  .clearReplenishCountCache();
-                                              // clear staff count
-                                              FFAppState().clearStaffsCache();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    'You have switched to another hotel!',
-                                                    style: TextStyle(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                    ),
-                                                  ),
-                                                  duration: Duration(
-                                                      milliseconds: 4000),
-                                                  backgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondary,
-                                                ),
-                                              );
-
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                              width: 115.0,
-                                              height: 100.0,
-                                              decoration: BoxDecoration(
-                                                color: FFAppState().hotel ==
-                                                        'Serenity'
-                                                    ? FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryBackground
-                                                    : FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryBackground,
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                border: Border.all(
-                                                  color: valueOrDefault<Color>(
-                                                    FFAppState().hotel ==
-                                                            'Serenity'
-                                                        ? FlutterFlowTheme.of(
-                                                                context)
-                                                            .alternate
-                                                        : FlutterFlowTheme.of(
-                                                                context)
-                                                            .primaryBackground,
-                                                    FlutterFlowTheme.of(context)
-                                                        .alternate,
-                                                  ),
-                                                  width: 1.0,
-                                                ),
-                                              ),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons.local_hotel_outlined,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryText,
-                                                    size: 16.0,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(4.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      'Serenity',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                              ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              // stat exist firestore not local
-                                              _model.lifestyleStat =
-                                                  await queryStatsRecordOnce(
-                                                queryBuilder: (statsRecord) =>
-                                                    statsRecord
-                                                        .where(
-                                                          'hotel',
-                                                          isEqualTo:
-                                                              'My Lifestyle',
-                                                        )
-                                                        .where(
-                                                          'year',
-                                                          isEqualTo: functions
-                                                              .currentYear(),
-                                                        )
-                                                        .where(
-                                                          'month',
-                                                          isEqualTo: functions
-                                                              .currentMonth(),
-                                                        ),
-                                                singleRecord: true,
-                                              ).then((s) => s.firstOrNull);
-                                              setState(() {
-                                                FFAppState().bedPrice =
-                                                    statusToggleHotelSettingsRecordList
-                                                        .where((e) =>
-                                                            e.hotel ==
-                                                            'My Lifestyle')
-                                                        .toList()
-                                                        .first
-                                                        .bedPrice;
-                                                FFAppState().lastRemit =
-                                                    statusToggleHotelSettingsRecordList
-                                                        .where((e) =>
-                                                            e.hotel ==
-                                                            'My Lifestyle')
-                                                        .toList()
-                                                        .first
-                                                        .lastRemit;
-                                                FFAppState().hotel =
-                                                    'My Lifestyle';
-                                                FFAppState().statsReference =
-                                                    _model.lifestyleStat
-                                                        ?.reference;
-                                              });
-                                              // clear rooms cache
-                                              FFAppState().clearRoomsCache();
-                                              // clear checkincount
-                                              FFAppState()
-                                                  .clearCheckInCountCache();
-                                              // clear replenish count
-                                              FFAppState()
-                                                  .clearReplenishCountCache();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    'You have switched to another hotel!',
-                                                    style: TextStyle(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                    ),
-                                                  ),
-                                                  duration: Duration(
-                                                      milliseconds: 4000),
-                                                  backgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondary,
-                                                ),
-                                              );
-
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                              width: 115.0,
-                                              height: 100.0,
-                                              decoration: BoxDecoration(
-                                                color: FFAppState().hotel ==
-                                                        'My Lifestyle'
-                                                    ? FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryBackground
-                                                    : FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryBackground,
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                border: Border.all(
-                                                  color: FFAppState().hotel ==
-                                                          'My Lifestyle'
-                                                      ? FlutterFlowTheme.of(
-                                                              context)
-                                                          .alternate
-                                                      : FlutterFlowTheme.of(
-                                                              context)
-                                                          .primaryBackground,
-                                                  width: 1.0,
-                                                ),
-                                              ),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons.local_hotel_outlined,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryText,
-                                                    size: 16.0,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(4.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      'My Lifestyle',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                              ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
                       ],
                     );
                   },
@@ -1308,49 +1035,7 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
-                      child: FFButtonWidget(
-                        onPressed: () async {
-                          GoRouter.of(context).prepareAuthEvent();
-                          await authManager.signOut();
-                          GoRouter.of(context).clearRedirectLocation();
-
-                          if (Navigator.of(context).canPop()) {
-                            context.pop();
-                          }
-                          context.pushNamedAuth('Login', context.mounted);
-                        },
-                        text: 'Log Out',
-                        options: FFButtonOptions(
-                          width: 130.0,
-                          height: 50.0,
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          iconPadding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          textStyle: FlutterFlowTheme.of(context)
-                              .titleSmall
-                              .override(
-                                fontFamily: 'Readex Pro',
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                fontWeight: FontWeight.w500,
-                              ),
-                          elevation: 0.0,
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).alternate,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
-                    ),
-                  ],
+                  children: [],
                 ),
               ),
             ],

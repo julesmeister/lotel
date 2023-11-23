@@ -1,5 +1,5 @@
 import '/backend/backend.dart';
-import '/components/room_add_edit/room_add_edit_widget.dart';
+import '/components/forms/room_add_edit/room_add_edit_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';

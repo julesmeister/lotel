@@ -1,5 +1,5 @@
 import '/backend/backend.dart';
-import '/components/option_to_issue/option_to_issue_widget.dart';
+import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';

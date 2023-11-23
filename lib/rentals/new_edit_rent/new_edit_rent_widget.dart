@@ -1,7 +1,8 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/new_space/new_space_widget.dart';
-import '/components/space_options/space_options_widget.dart';
+import '/components/forms/change_date/change_date_widget.dart';
+import '/components/forms/new_space/new_space_widget.dart';
+import '/components/options/space_options/space_options_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -68,6 +69,10 @@ class _NewEditRentWidgetState extends State<NewEditRentWidget> {
             _model.existingRental?.wTax,
             0.0,
           );
+        });
+        setState(() {
+          _model.withHoldingTaxController?.text =
+              _model.existingRental!.wTax.toString();
         });
       } else {
         // new rent
@@ -169,16 +174,19 @@ class _NewEditRentWidgetState extends State<NewEditRentWidget> {
                               height: double.infinity,
                               child: NewSpaceWidget(
                                 rental: widget.ref!,
+                                wTax: _model.withholdingtax,
+                                edit: false,
                               ),
                             ),
                           ),
                         );
                       },
-                    ).then((value) => safeSetState(() => _model.space = value));
+                    ).then(
+                        (value) => safeSetState(() => _model.newspace = value));
 
-                    // add salary to list
+                    // add new space to list
                     setState(() {
-                      _model.addToSpaces(_model.space!);
+                      _model.addToSpaces(_model.newspace!);
                     });
 
                     setState(() {});
@@ -232,15 +240,64 @@ class _NewEditRentWidgetState extends State<NewEditRentWidget> {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            dateTimeFormat('EEEE MMM d y h:mm a', _model.date),
-                            style: FlutterFlowTheme.of(context)
-                                .labelLarge
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                ),
+                          InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              // open change date bottom sheet
+                              await showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                enableDrag: false,
+                                context: context,
+                                builder: (context) {
+                                  return GestureDetector(
+                                    onTap: () => _model
+                                            .unfocusNode.canRequestFocus
+                                        ? FocusScope.of(context)
+                                            .requestFocus(_model.unfocusNode)
+                                        : FocusScope.of(context).unfocus(),
+                                    child: Padding(
+                                      padding: MediaQuery.viewInsetsOf(context),
+                                      child: Container(
+                                        height: double.infinity,
+                                        child: ChangeDateWidget(
+                                          date: _model.date!,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ).then((value) => safeSetState(
+                                  () => _model.adjustedDate = value));
+
+                              if (_model.adjustedDate != null) {
+                                // change date of this rental
+
+                                await widget.ref!
+                                    .update(createRentalsRecordData(
+                                  date: _model.adjustedDate,
+                                ));
+                                // set date locally
+                                setState(() {
+                                  _model.date = _model.adjustedDate;
+                                });
+                              }
+
+                              setState(() {});
+                            },
+                            child: Text(
+                              dateTimeFormat('yMMMd', _model.date),
+                              style: FlutterFlowTheme.of(context)
+                                  .labelLarge
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
+                            ),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
@@ -559,6 +616,8 @@ class _NewEditRentWidgetState extends State<NewEditRentWidget> {
                                             child: NewSpaceWidget(
                                               rental: widget.ref!,
                                               space: spacesListItem,
+                                              wTax: _model.withholdingtax,
+                                              edit: true,
                                             ),
                                           ),
                                         ),
@@ -570,11 +629,10 @@ class _NewEditRentWidgetState extends State<NewEditRentWidget> {
                                   if (_model.updatedSpace?.reference != null) {
                                     // remove current from space list
                                     setState(() {
-                                      _model.removeFromSpaces(spacesListItem);
-                                    });
-                                    // add it back to list
-                                    setState(() {
-                                      _model.addToSpaces(_model.updatedSpace!);
+                                      _model.updateSpacesAtIndex(
+                                        spacesListIndex,
+                                        (_) => _model.updatedSpace!,
+                                      );
                                     });
                                   }
 
@@ -661,7 +719,7 @@ class _NewEditRentWidgetState extends State<NewEditRentWidget> {
                                                                   0.0,
                                                                   10.0),
                                                       child: Text(
-                                                        'Unit  ${spacesListItem.unit.toString()}',
+                                                        'Unit  ${spacesListItem.unit}',
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -832,6 +890,130 @@ class _NewEditRentWidgetState extends State<NewEditRentWidget> {
                                             ],
                                           ),
                                         ),
+                                        if (spacesListItem.collected)
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 5.0, 0.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Date',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                      ),
+                                                ),
+                                                InkWell(
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  focusColor:
+                                                      Colors.transparent,
+                                                  hoverColor:
+                                                      Colors.transparent,
+                                                  highlightColor:
+                                                      Colors.transparent,
+                                                  onTap: () async {
+                                                    await showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return GestureDetector(
+                                                          onTap: () => _model
+                                                                  .unfocusNode
+                                                                  .canRequestFocus
+                                                              ? FocusScope.of(
+                                                                      context)
+                                                                  .requestFocus(
+                                                                      _model
+                                                                          .unfocusNode)
+                                                              : FocusScope.of(
+                                                                      context)
+                                                                  .unfocus(),
+                                                          child: Padding(
+                                                            padding: MediaQuery
+                                                                .viewInsetsOf(
+                                                                    context),
+                                                            child: Container(
+                                                              height: double
+                                                                  .infinity,
+                                                              child:
+                                                                  ChangeDateWidget(
+                                                                date:
+                                                                    spacesListItem
+                                                                        .date!,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ).then((value) =>
+                                                        safeSetState(() => _model
+                                                                .adjustedCollectedDate =
+                                                            value));
+
+                                                    if (_model
+                                                            .adjustedCollectedDate !=
+                                                        null) {
+                                                      // adjust date
+
+                                                      await spacesListItem
+                                                          .reference
+                                                          .update(
+                                                              createSpacesRecordData(
+                                                        date: _model
+                                                            .adjustedCollectedDate,
+                                                      ));
+                                                      // get space again
+                                                      _model.adjustedSpace =
+                                                          await SpacesRecord
+                                                              .getDocumentOnce(
+                                                                  spacesListItem
+                                                                      .reference);
+                                                      // replace space
+                                                      setState(() {
+                                                        _model
+                                                            .updateSpacesAtIndex(
+                                                          spacesListIndex,
+                                                          (_) => _model
+                                                              .adjustedSpace!,
+                                                        );
+                                                      });
+                                                    }
+
+                                                    setState(() {});
+                                                  },
+                                                  child: Text(
+                                                    dateTimeFormat('d/M h:mm a',
+                                                        spacesListItem.date!),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -842,7 +1024,7 @@ class _NewEditRentWidgetState extends State<NewEditRentWidget> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                'Date',
+                                                'Balance',
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .bodyMedium
@@ -855,8 +1037,19 @@ class _NewEditRentWidgetState extends State<NewEditRentWidget> {
                                                     ),
                                               ),
                                               Text(
-                                                dateTimeFormat('d/M h:mm a',
-                                                    spacesListItem.date!),
+                                                formatNumber(
+                                                  spacesListItem.amount +
+                                                      (spacesListItem.amount *
+                                                          (_model.withholdingtax /
+                                                              100)) -
+                                                      spacesListItem
+                                                          .amountCollected,
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.automatic,
+                                                  currency: 'P ',
+                                                ),
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .bodyMedium

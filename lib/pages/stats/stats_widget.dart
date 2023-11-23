@@ -70,20 +70,16 @@ class _StatsWidgetState extends State<StatsWidget>
         queryBuilder: (statsRecord) => statsRecord
             .where(
               'month',
-              isEqualTo: _model.monthValue,
+              isEqualTo: functions.currentMonth(),
             )
             .where(
               'year',
-              isEqualTo: _model.yearValue,
-            )
-            .where(
-              'hotel',
-              isEqualTo: FFAppState().hotel,
+              isEqualTo: functions.currentYear(),
             ),
       );
       if (_model.initCount! > 0) {
         // get stats
-        _model.currentStat = await queryStatsRecordOnce(
+        _model.currentStats = await queryStatsRecordOnce(
           queryBuilder: (statsRecord) => statsRecord
               .where(
                 'month',
@@ -92,27 +88,88 @@ class _StatsWidgetState extends State<StatsWidget>
               .where(
                 'year',
                 isEqualTo: functions.currentYear(),
-              )
-              .where(
-                'hotel',
-                isEqualTo: FFAppState().hotel,
               ),
-          singleRecord: true,
-        ).then((s) => s.firstOrNull);
+        );
+        // initialize all stats
+        setState(() {
+          _model.stats = _model.currentStats!.toList().cast<StatsRecord>();
+        });
         // initialize all page vars
         setState(() {
           _model.month = functions.currentMonth();
           _model.year = functions.currentYear();
-          _model.expenses = _model.currentStat!.expenses;
-          _model.salaries = _model.currentStat!.salaries;
-          _model.roomUsage =
-              _model.currentStat!.roomUsage.toList().cast<RoomUsageStruct>();
-          _model.goodsLine = _model.currentStat?.goodsLine;
-          _model.roomLine = _model.currentStat?.roomLine;
-          _model.rooms = _model.currentStat!.roomsIncome;
-          _model.goods = _model.currentStat!.goodsIncome;
-          _model.statsRef = _model.currentStat?.reference;
-          _model.rent = _model.currentStat!.rentIncome;
+          _model.expenses = _model.stats
+                  .where((e) => e.hotel == 'Serenity')
+                  .toList()
+                  .first
+                  .expenses +
+              _model.stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .expenses;
+          _model.salaries = _model.stats
+                  .where((e) => e.hotel == 'Serenity')
+                  .toList()
+                  .first
+                  .salaries +
+              _model.stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .salaries;
+          _model.goodsLine = functions.mergedLine(
+              _model.stats
+                  .where((e) => e.hotel == 'Serenity')
+                  .toList()
+                  .first
+                  .goodsLine,
+              _model.stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .goodsLine);
+          _model.roomLine = functions.mergedLine(
+              _model.stats
+                  .where((e) => e.hotel == 'Serenity')
+                  .toList()
+                  .first
+                  .roomLine,
+              _model.stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .roomLine);
+          _model.rooms = _model.stats
+                  .where((e) => e.hotel == 'Serenity')
+                  .toList()
+                  .first
+                  .roomsIncome +
+              _model.stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .roomsIncome;
+          _model.goods = _model.stats
+                  .where((e) => e.hotel == 'Serenity')
+                  .toList()
+                  .first
+                  .goodsIncome +
+              _model.stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .goodsIncome;
+          _model.rent = _model.stats
+                  .where((e) => e.hotel == 'Serenity')
+                  .toList()
+                  .first
+                  .rentIncome +
+              _model.stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .rentIncome;
         });
       } else {
         // no data yet
@@ -201,6 +258,477 @@ class _StatsWidgetState extends State<StatsWidget>
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Expanded(
+                  child: Align(
+                    alignment: AlignmentDirectional(0.00, -1.00),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          16.0, 16.0, 16.0, 16.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 50.0,
+                        constraints: BoxConstraints(
+                          maxWidth: 500.0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(
+                            color: FlutterFlowTheme.of(context).alternate,
+                            width: 1.0,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              4.0, 4.0, 4.0, 4.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    // initialize all page vars
+                                    setState(() {
+                                      _model.month = functions.currentMonth();
+                                      _model.year = functions.currentYear();
+                                      _model.expenses = _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .expenses +
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .expenses;
+                                      _model.salaries = _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .salaries +
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .salaries;
+                                      _model.goodsLine = functions.mergedLine(
+                                          _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .goodsLine,
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .goodsLine);
+                                      _model.roomLine = functions.mergedLine(
+                                          _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .roomLine,
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .roomLine);
+                                      _model.rooms = _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .roomsIncome +
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .roomsIncome;
+                                      _model.goods = _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .goodsIncome +
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .goodsIncome;
+                                      _model.rent = _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .rentIncome +
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .rentIncome;
+                                      _model.hotel = 'All';
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 50.0,
+                                    height: 100.0,
+                                    decoration: BoxDecoration(
+                                      color: _model.hotel == 'All'
+                                          ? FlutterFlowTheme.of(context)
+                                              .secondaryBackground
+                                          : FlutterFlowTheme.of(context)
+                                              .primaryBackground,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(
+                                        color: valueOrDefault<Color>(
+                                          _model.hotel == 'All'
+                                              ? FlutterFlowTheme.of(context)
+                                                  .alternate
+                                              : FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
+                                          FlutterFlowTheme.of(context)
+                                              .alternate,
+                                        ),
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  4.0, 0.0, 0.0, 0.0),
+                                          child: Text(
+                                            'All',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    // initialize all page vars
+                                    setState(() {
+                                      _model.month = functions.currentMonth();
+                                      _model.year = functions.currentYear();
+                                      _model.expenses = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .expenses;
+                                      _model.salaries = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .salaries;
+                                      _model.roomUsage = functions
+                                          .extractRoomUsage(_model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first)
+                                          .toList()
+                                          .cast<RoomUsageStruct>();
+                                      _model.goodsLine = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .goodsLine;
+                                      _model.roomLine = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .roomLine;
+                                      _model.rooms = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .roomsIncome;
+                                      _model.goods = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .goodsIncome;
+                                      _model.statsRef = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .reference;
+                                      _model.rent = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .rentIncome;
+                                      _model.hotel = 'Serenity';
+                                      _model.net = _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .roomsIncome +
+                                          _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .goodsIncome +
+                                          _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .rentIncome -
+                                          _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .salaries -
+                                          _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .expenses;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 115.0,
+                                    height: 100.0,
+                                    decoration: BoxDecoration(
+                                      color: _model.hotel == 'Serenity'
+                                          ? FlutterFlowTheme.of(context)
+                                              .secondaryBackground
+                                          : FlutterFlowTheme.of(context)
+                                              .primaryBackground,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(
+                                        color: _model.hotel == 'Serenity'
+                                            ? FlutterFlowTheme.of(context)
+                                                .alternate
+                                            : FlutterFlowTheme.of(context)
+                                                .primaryBackground,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  4.0, 0.0, 0.0, 0.0),
+                                          child: Text(
+                                            'Serenity',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    // initialize all page vars
+                                    setState(() {
+                                      _model.month = functions.currentMonth();
+                                      _model.year = functions.currentYear();
+                                      _model.expenses = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .expenses;
+                                      _model.salaries = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .salaries;
+                                      _model.roomUsage = functions
+                                          .extractRoomUsage(_model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first)
+                                          .toList()
+                                          .cast<RoomUsageStruct>();
+                                      _model.goodsLine = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .goodsLine;
+                                      _model.roomLine = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .roomLine;
+                                      _model.rooms = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .roomsIncome;
+                                      _model.goods = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .goodsIncome;
+                                      _model.statsRef = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .reference;
+                                      _model.rent = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .rentIncome;
+                                      _model.net = _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .roomsIncome +
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .goodsIncome +
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .rentIncome -
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .salaries -
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .expenses;
+                                      _model.hotel = 'My Lifestyle';
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 115.0,
+                                    height: 100.0,
+                                    decoration: BoxDecoration(
+                                      color: _model.hotel == 'My Lifestyle'
+                                          ? FlutterFlowTheme.of(context)
+                                              .secondaryBackground
+                                          : FlutterFlowTheme.of(context)
+                                              .primaryBackground,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(
+                                        color: _model.hotel == 'My Lifestyle'
+                                            ? FlutterFlowTheme.of(context)
+                                                .alternate
+                                            : FlutterFlowTheme.of(context)
+                                                .primaryBackground,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  4.0, 0.0, 0.0, 0.0),
+                                          child: Text(
+                                            'My Lifestyle',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
                 if (functions.listOfMonths().length > 0)
                   FlutterFlowDropDown<String>(
                     controller: _model.monthValueController ??=
@@ -236,27 +764,91 @@ class _StatsWidgetState extends State<StatsWidget>
                               .where(
                                 'year',
                                 isEqualTo: _model.yearValue,
-                              )
-                              .where(
-                                'hotel',
-                                isEqualTo: FFAppState().hotel,
                               ),
-                          singleRecord: true,
-                        ).then((s) => s.firstOrNull);
-                        // set page vars
+                        );
+                        // initialize all stats
                         setState(() {
-                          _model.expenses = _model.foundMonthDoc!.expenses;
-                          _model.salaries = _model.foundMonthDoc!.salaries;
-                          _model.rooms = _model.foundMonthDoc!.roomsIncome;
-                          _model.goodsLine = _model.foundMonthDoc?.goodsLine;
-                          _model.roomLine = _model.foundMonthDoc?.roomLine;
-                          _model.roomUsage = _model.foundMonthDoc!.roomUsage
+                          _model.stats = _model.foundMonthDoc!
                               .toList()
-                              .cast<RoomUsageStruct>();
-                          _model.month = _model.foundMonthDoc!.month;
-                          _model.goods = _model.foundMonthDoc!.goodsIncome;
-                          _model.statsRef = _model.foundMonthDoc?.reference;
-                          _model.rent = _model.foundMonthDoc!.rentIncome;
+                              .cast<StatsRecord>();
+                        });
+                        // initialize all page vars
+                        setState(() {
+                          _model.month = functions.currentMonth();
+                          _model.year = functions.currentYear();
+                          _model.expenses = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .expenses +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .expenses;
+                          _model.salaries = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .salaries +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .salaries;
+                          _model.goodsLine = functions.mergedLine(
+                              _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .goodsLine,
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .goodsLine);
+                          _model.roomLine = functions.mergedLine(
+                              _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .roomLine,
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .roomLine);
+                          _model.rooms = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .roomsIncome +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .roomsIncome;
+                          _model.goods = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .goodsIncome +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .goodsIncome;
+                          _model.rent = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .rentIncome +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .rentIncome;
+                          _model.hotel = 'All';
                         });
                       } else {
                         // no data yet
@@ -332,27 +924,90 @@ class _StatsWidgetState extends State<StatsWidget>
                               .where(
                                 'year',
                                 isEqualTo: _model.yearValue,
-                              )
-                              .where(
-                                'hotel',
-                                isEqualTo: FFAppState().hotel,
                               ),
-                          singleRecord: true,
-                        ).then((s) => s.firstOrNull);
-                        // set page vars
+                        );
+                        // initialize all stats
                         setState(() {
-                          _model.expenses = _model.foundYearDoc!.expenses;
-                          _model.salaries = _model.foundYearDoc!.salaries;
-                          _model.rooms = _model.foundYearDoc!.roomsIncome;
-                          _model.roomUsage = _model.foundYearDoc!.roomUsage
-                              .toList()
-                              .cast<RoomUsageStruct>();
-                          _model.goodsLine = _model.foundYearDoc?.goodsLine;
-                          _model.roomLine = _model.foundYearDoc?.roomLine;
-                          _model.year = _model.foundYearDoc!.year;
-                          _model.goods = _model.foundYearDoc!.goodsIncome;
-                          _model.statsRef = _model.foundYearDoc?.reference;
-                          _model.rent = _model.foundYearDoc!.rentIncome;
+                          _model.stats =
+                              _model.foundYearDoc!.toList().cast<StatsRecord>();
+                        });
+                        // initialize all page vars
+                        setState(() {
+                          _model.month = functions.currentMonth();
+                          _model.year = functions.currentYear();
+                          _model.expenses = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .expenses +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .expenses;
+                          _model.salaries = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .salaries +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .salaries;
+                          _model.goodsLine = functions.mergedLine(
+                              _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .goodsLine,
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .goodsLine);
+                          _model.roomLine = functions.mergedLine(
+                              _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .roomLine,
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .roomLine);
+                          _model.rooms = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .roomsIncome +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .roomsIncome;
+                          _model.goods = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .goodsIncome +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .goodsIncome;
+                          _model.rent = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .rentIncome +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .rentIncome;
+                          _model.hotel = 'All';
                         });
                       } else {
                         // no data yet
@@ -462,78 +1117,96 @@ class _StatsWidgetState extends State<StatsWidget>
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onDoubleTap: () async {
-                                                  var confirmDialogResponse =
-                                                      await showDialog<bool>(
-                                                            context: context,
-                                                            builder:
-                                                                (alertDialogContext) {
-                                                              return AlertDialog(
-                                                                title: Text(
-                                                                    'Update Stats'),
-                                                                content: Text(
-                                                                    'This will recalculate all transactions under room bookings.'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            false),
-                                                                    child: Text(
-                                                                        'Cancel'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            true),
-                                                                    child: Text(
-                                                                        'Confirm'),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          ) ??
-                                                          false;
-                                                  if (confirmDialogResponse) {
-                                                    _model.bookingTransactionsOnly =
-                                                        await queryTransactionsRecordOnce(
-                                                      queryBuilder:
-                                                          (transactionsRecord) =>
-                                                              transactionsRecord
-                                                                  .where(
-                                                                    'hotel',
-                                                                    isEqualTo:
-                                                                        FFAppState()
-                                                                            .hotel,
-                                                                  )
-                                                                  .where(
-                                                                    'date',
-                                                                    isGreaterThan:
-                                                                        functions
-                                                                            .startOfMonth(_model.month),
-                                                                  )
-                                                                  .where(
-                                                                    'type',
-                                                                    isEqualTo:
-                                                                        'book',
-                                                                  ),
-                                                    );
-                                                    // upate rooms income var
-                                                    setState(() {
-                                                      _model.rooms = functions
-                                                          .sumOfRoomsIncome(_model
-                                                              .bookingTransactionsOnly!
-                                                              .toList());
-                                                    });
-                                                    // update stats room income
+                                                  var _shouldSetState = false;
+                                                  if (_model.hotel != 'All') {
+                                                    var confirmDialogResponse =
+                                                        await showDialog<bool>(
+                                                              context: context,
+                                                              builder:
+                                                                  (alertDialogContext) {
+                                                                return AlertDialog(
+                                                                  title: Text(
+                                                                      'Update Stats'),
+                                                                  content: Text(
+                                                                      'This will recalculate all transactions under room bookings.'),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                      onPressed: () => Navigator.pop(
+                                                                          alertDialogContext,
+                                                                          false),
+                                                                      child: Text(
+                                                                          'Cancel'),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed: () => Navigator.pop(
+                                                                          alertDialogContext,
+                                                                          true),
+                                                                      child: Text(
+                                                                          'Confirm'),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            ) ??
+                                                            false;
+                                                    if (confirmDialogResponse) {
+                                                      _model.bookingTransactionsOnly =
+                                                          await queryTransactionsRecordOnce(
+                                                        queryBuilder:
+                                                            (transactionsRecord) =>
+                                                                transactionsRecord
+                                                                    .where(
+                                                                      'hotel',
+                                                                      isEqualTo:
+                                                                          _model
+                                                                              .hotel,
+                                                                    )
+                                                                    .where(
+                                                                      'date',
+                                                                      isGreaterThan:
+                                                                          functions
+                                                                              .startOfMonth(_model.month),
+                                                                    )
+                                                                    .where(
+                                                                      'type',
+                                                                      isEqualTo:
+                                                                          'book',
+                                                                    )
+                                                                    .where(
+                                                                      'pending',
+                                                                      isEqualTo:
+                                                                          false,
+                                                                    )
+                                                                    .where(
+                                                                      'remitted',
+                                                                      isEqualTo:
+                                                                          true,
+                                                                    ),
+                                                      );
+                                                      _shouldSetState = true;
+                                                      // upate rooms income var
+                                                      setState(() {
+                                                        _model.rooms = functions
+                                                            .sumOfRoomsIncome(_model
+                                                                .bookingTransactionsOnly!
+                                                                .toList());
+                                                      });
+                                                      // update stats room income
 
-                                                    await _model.statsRef!.update(
-                                                        createStatsRecordData(
-                                                      roomsIncome: _model.rooms,
-                                                    ));
+                                                      await _model.statsRef!.update(
+                                                          createStatsRecordData(
+                                                        roomsIncome:
+                                                            _model.rooms,
+                                                      ));
+                                                    }
+                                                  } else {
+                                                    if (_shouldSetState)
+                                                      setState(() {});
+                                                    return;
                                                   }
 
-                                                  setState(() {});
+                                                  if (_shouldSetState)
+                                                    setState(() {});
                                                 },
                                                 child: AutoSizeText(
                                                   formatNumber(
@@ -646,78 +1319,86 @@ class _StatsWidgetState extends State<StatsWidget>
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onDoubleTap: () async {
-                                                  var confirmDialogResponse =
-                                                      await showDialog<bool>(
-                                                            context: context,
-                                                            builder:
-                                                                (alertDialogContext) {
-                                                              return AlertDialog(
-                                                                title: Text(
-                                                                    'Update Stats'),
-                                                                content: Text(
-                                                                    'This will recalculate all transactions under goods sold.'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            false),
-                                                                    child: Text(
-                                                                        'Cancel'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            true),
-                                                                    child: Text(
-                                                                        'Confirm'),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          ) ??
-                                                          false;
-                                                  if (confirmDialogResponse) {
-                                                    _model.goodsTransactionsOnly =
-                                                        await queryTransactionsRecordOnce(
-                                                      queryBuilder:
-                                                          (transactionsRecord) =>
-                                                              transactionsRecord
-                                                                  .where(
-                                                                    'hotel',
-                                                                    isEqualTo:
-                                                                        FFAppState()
-                                                                            .hotel,
-                                                                  )
-                                                                  .where(
-                                                                    'date',
-                                                                    isGreaterThan:
-                                                                        functions
-                                                                            .startOfMonth(_model.month),
-                                                                  )
-                                                                  .where(
-                                                                    'type',
-                                                                    isEqualTo:
-                                                                        'goods',
-                                                                  ),
-                                                    );
-                                                    // upate goods income var
-                                                    setState(() {
-                                                      _model.goods = functions
-                                                          .sumOfGoodsIncome(_model
-                                                              .goodsTransactionsOnly!
-                                                              .toList());
-                                                    });
-                                                    // update stats room income
+                                                  var _shouldSetState = false;
+                                                  if (_model.hotel != 'All') {
+                                                    var confirmDialogResponse =
+                                                        await showDialog<bool>(
+                                                              context: context,
+                                                              builder:
+                                                                  (alertDialogContext) {
+                                                                return AlertDialog(
+                                                                  title: Text(
+                                                                      'Update Stats'),
+                                                                  content: Text(
+                                                                      'This will recalculate all transactions under goods sold.'),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                      onPressed: () => Navigator.pop(
+                                                                          alertDialogContext,
+                                                                          false),
+                                                                      child: Text(
+                                                                          'Cancel'),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed: () => Navigator.pop(
+                                                                          alertDialogContext,
+                                                                          true),
+                                                                      child: Text(
+                                                                          'Confirm'),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            ) ??
+                                                            false;
+                                                    if (confirmDialogResponse) {
+                                                      _model.goodsTransactionsOnly =
+                                                          await queryTransactionsRecordOnce(
+                                                        queryBuilder:
+                                                            (transactionsRecord) =>
+                                                                transactionsRecord
+                                                                    .where(
+                                                                      'hotel',
+                                                                      isEqualTo:
+                                                                          _model
+                                                                              .hotel,
+                                                                    )
+                                                                    .where(
+                                                                      'date',
+                                                                      isGreaterThan:
+                                                                          functions
+                                                                              .startOfMonth(_model.month),
+                                                                    )
+                                                                    .where(
+                                                                      'type',
+                                                                      isEqualTo:
+                                                                          'goods',
+                                                                    ),
+                                                      );
+                                                      _shouldSetState = true;
+                                                      // upate goods income var
+                                                      setState(() {
+                                                        _model.goods = functions
+                                                            .sumOfGoodsIncome(_model
+                                                                .goodsTransactionsOnly!
+                                                                .toList());
+                                                      });
+                                                      // update stats room income
 
-                                                    await _model.statsRef!.update(
-                                                        createStatsRecordData(
-                                                      goodsIncome: _model.goods,
-                                                    ));
+                                                      await _model.statsRef!.update(
+                                                          createStatsRecordData(
+                                                        goodsIncome:
+                                                            _model.goods,
+                                                      ));
+                                                    }
+                                                  } else {
+                                                    if (_shouldSetState)
+                                                      setState(() {});
+                                                    return;
                                                   }
 
-                                                  setState(() {});
+                                                  if (_shouldSetState)
+                                                    setState(() {});
                                                 },
                                                 child: AutoSizeText(
                                                   formatNumber(
@@ -821,7 +1502,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 4.0, 4.0, 0.0),
-                                            child: Text(
+                                            child: AutoSizeText(
                                               valueOrDefault<String>(
                                                 formatNumber(
                                                   _model.rent,
@@ -833,9 +1514,11 @@ class _StatsWidgetState extends State<StatsWidget>
                                                 ),
                                                 '0',
                                               ),
+                                              maxLines: 1,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .displaySmall,
+                                              minFontSize: 30.0,
                                             ),
                                           ),
                                         ],
@@ -907,84 +1590,92 @@ class _StatsWidgetState extends State<StatsWidget>
                                               highlightColor:
                                                   Colors.transparent,
                                               onDoubleTap: () async {
-                                                var confirmDialogResponse =
-                                                    await showDialog<bool>(
-                                                          context: context,
-                                                          builder:
-                                                              (alertDialogContext) {
-                                                            return AlertDialog(
-                                                              title: Text(
-                                                                  'Update Stats'),
-                                                              content: Text(
-                                                                  'This will recalculate all transactions under expenses.'),
-                                                              actions: [
-                                                                TextButton(
-                                                                  onPressed: () =>
-                                                                      Navigator.pop(
-                                                                          alertDialogContext,
-                                                                          false),
-                                                                  child: Text(
-                                                                      'Cancel'),
-                                                                ),
-                                                                TextButton(
-                                                                  onPressed: () =>
-                                                                      Navigator.pop(
-                                                                          alertDialogContext,
-                                                                          true),
-                                                                  child: Text(
-                                                                      'Confirm'),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          },
-                                                        ) ??
-                                                        false;
-                                                if (confirmDialogResponse) {
-                                                  _model.expenseTransactionsOnly =
-                                                      await queryTransactionsRecordOnce(
-                                                    queryBuilder:
-                                                        (transactionsRecord) =>
-                                                            transactionsRecord
-                                                                .where(
-                                                                  'hotel',
-                                                                  isEqualTo:
-                                                                      FFAppState()
-                                                                          .hotel,
-                                                                )
-                                                                .where(
-                                                                  'date',
-                                                                  isGreaterThan:
-                                                                      functions.startOfMonth(
-                                                                          _model
-                                                                              .month),
-                                                                )
-                                                                .where(
-                                                                  'type',
-                                                                  isEqualTo:
-                                                                      'expense',
-                                                                ),
-                                                  );
-                                                  // upate expense var
-                                                  setState(() {
-                                                    _model.expenses = functions
-                                                        .sumOfExpenses(_model
-                                                            .expenseTransactionsOnly!
-                                                            .toList());
-                                                  });
-                                                  // update stats expense
+                                                var _shouldSetState = false;
+                                                if (_model.hotel != 'All') {
+                                                  var confirmDialogResponse =
+                                                      await showDialog<bool>(
+                                                            context: context,
+                                                            builder:
+                                                                (alertDialogContext) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    'Update Stats'),
+                                                                content: Text(
+                                                                    'This will recalculate all transactions under expenses.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            false),
+                                                                    child: Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            true),
+                                                                    child: Text(
+                                                                        'Confirm'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          ) ??
+                                                          false;
+                                                  if (confirmDialogResponse) {
+                                                    _model.expenseTransactionsOnly =
+                                                        await queryTransactionsRecordOnce(
+                                                      queryBuilder:
+                                                          (transactionsRecord) =>
+                                                              transactionsRecord
+                                                                  .where(
+                                                                    'hotel',
+                                                                    isEqualTo:
+                                                                        _model
+                                                                            .hotel,
+                                                                  )
+                                                                  .where(
+                                                                    'date',
+                                                                    isGreaterThan:
+                                                                        functions
+                                                                            .startOfMonth(_model.month),
+                                                                  )
+                                                                  .where(
+                                                                    'type',
+                                                                    isEqualTo:
+                                                                        'expense',
+                                                                  ),
+                                                    );
+                                                    _shouldSetState = true;
+                                                    // upate expense var
+                                                    setState(() {
+                                                      _model.expenses = functions
+                                                          .sumOfExpenses(_model
+                                                              .expenseTransactionsOnly!
+                                                              .toList());
+                                                    });
+                                                    // update stats expense
 
-                                                  await _model.statsRef!.update(
-                                                      createStatsRecordData(
-                                                    expenses: functions
-                                                        .sumOfExpenses(_model
-                                                            .expenseTransactionsOnly!
-                                                            .toList()),
-                                                  ));
+                                                    await _model.statsRef!.update(
+                                                        createStatsRecordData(
+                                                      expenses: functions
+                                                          .sumOfExpenses(_model
+                                                              .expenseTransactionsOnly!
+                                                              .toList()),
+                                                    ));
+                                                  }
+                                                } else {
+                                                  if (_shouldSetState)
+                                                    setState(() {});
+                                                  return;
                                                 }
 
-                                                setState(() {});
+                                                if (_shouldSetState)
+                                                  setState(() {});
                                               },
-                                              child: Text(
+                                              child: AutoSizeText(
                                                 formatNumber(
                                                   _model.expenses,
                                                   formatType:
@@ -993,9 +1684,11 @@ class _StatsWidgetState extends State<StatsWidget>
                                                       DecimalType.automatic,
                                                   currency: 'P ',
                                                 ),
+                                                maxLines: 1,
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .displaySmall,
+                                                minFontSize: 30.0,
                                               ),
                                             ),
                                           ),
@@ -1068,7 +1761,9 @@ class _StatsWidgetState extends State<StatsWidget>
                                                 decimalType:
                                                     DecimalType.automatic,
                                                 currency: 'P ',
-                                              ),
+                                              ).maybeHandleOverflow(
+                                                  maxChars: 30),
+                                              maxLines: 1,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .displaySmall,
@@ -1136,7 +1831,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 4.0, 4.0, 0.0),
-                                            child: Text(
+                                            child: AutoSizeText(
                                               formatNumber(
                                                 _model.rooms +
                                                     _model.goods +
@@ -1148,9 +1843,11 @@ class _StatsWidgetState extends State<StatsWidget>
                                                     DecimalType.automatic,
                                                 currency: 'P ',
                                               ),
+                                              maxLines: 1,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .displaySmall,
+                                              minFontSize: 30.0,
                                             ),
                                           ),
                                         ],
@@ -1272,148 +1969,164 @@ class _StatsWidgetState extends State<StatsWidget>
                 ],
               ),
             ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    'Room Usage',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).headlineMedium,
+            if (_model.hotel != 'All')
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
+                        child: Text(
+                          'Room Usage',
+                          textAlign: TextAlign.start,
+                          style: FlutterFlowTheme.of(context).headlineMedium,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            if (_model.roomUsage.length > 0)
-              Builder(
-                builder: (context) {
-                  final roomUsages = functions
-                      .highestRoomUtilityOrderUsage(_model.roomUsage.toList())
-                      .toList();
-                  return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    primary: false,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: roomUsages.length,
-                    itemBuilder: (context, roomUsagesIndex) {
-                      final roomUsagesItem = roomUsages[roomUsagesIndex];
-                      return Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 12.0, 12.0, 12.0),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 4.0,
-                                color: Color(0x34090F13),
-                                offset: Offset(0.0, 2.0),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 4.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: 50.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(0.0),
-                                      bottomRight: Radius.circular(0.0),
-                                      topLeft: Radius.circular(12.0),
-                                      topRight: Radius.circular(12.0),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12.0, 12.0, 12.0, 12.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: 36.0,
-                                          height: 36.0,
-                                          decoration: BoxDecoration(
-                                            color: Color(0x98FFFFFF),
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          alignment:
-                                              AlignmentDirectional(0.00, 0.00),
-                                          child: Icon(
-                                            Icons.meeting_room_rounded,
-                                            color: Colors.white,
-                                            size: 20.0,
+                  if (_model.roomUsage.length > 0)
+                    Builder(
+                      builder: (context) {
+                        final roomUsages = functions
+                            .highestRoomUtilityOrderUsage(
+                                _model.roomUsage.toList())
+                            .toList();
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          primary: false,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: roomUsages.length,
+                          itemBuilder: (context, roomUsagesIndex) {
+                            final roomUsagesItem = roomUsages[roomUsagesIndex];
+                            return Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 12.0, 12.0, 12.0),
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4.0,
+                                      color: Color(0x34090F13),
+                                      offset: Offset(0.0, 2.0),
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 4.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Container(
+                                        width: double.infinity,
+                                        height: 50.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primary,
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(0.0),
+                                            bottomRight: Radius.circular(0.0),
+                                            topLeft: Radius.circular(12.0),
+                                            topRight: Radius.circular(12.0),
                                           ),
                                         ),
-                                        Text(
-                                          roomUsagesItem.number.toString(),
-                                          style: FlutterFlowTheme.of(context)
-                                              .titleMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                color: Colors.white,
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.normal,
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12.0, 12.0, 12.0, 12.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                width: 36.0,
+                                                height: 36.0,
+                                                decoration: BoxDecoration(
+                                                  color: Color(0x98FFFFFF),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                ),
+                                                alignment: AlignmentDirectional(
+                                                    0.00, 0.00),
+                                                child: Icon(
+                                                  Icons.meeting_room_rounded,
+                                                  color: Colors.white,
+                                                  size: 20.0,
+                                                ),
                                               ),
+                                              Text(
+                                                roomUsagesItem.number
+                                                    .toString(),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          color: Colors.white,
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                ClipRRect(
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 30.0,
-                                    decoration: BoxDecoration(),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 0.0, 12.0, 0.0),
-                                      child: LinearPercentIndicator(
-                                        percent: valueOrDefault<double>(
-                                          functions.progressRoomUsage(
-                                              _model.roomUsage.toList(),
-                                              roomUsagesItem),
-                                          0.0,
-                                        ),
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                0.8,
-                                        lineHeight: 12.0,
-                                        animation: true,
-                                        animateFromLastPercent: true,
-                                        progressColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .accent4,
-                                        barRadius: Radius.circular(10.0),
-                                        padding: EdgeInsets.zero,
                                       ),
-                                    ),
+                                      ClipRRect(
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 30.0,
+                                          decoration: BoxDecoration(),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    12.0, 0.0, 12.0, 0.0),
+                                            child: LinearPercentIndicator(
+                                              percent: valueOrDefault<double>(
+                                                functions.progressRoomUsage(
+                                                    _model.roomUsage.toList(),
+                                                    roomUsagesItem),
+                                                0.0,
+                                              ),
+                                              width: MediaQuery.sizeOf(context)
+                                                      .width *
+                                                  0.8,
+                                              lineHeight: 12.0,
+                                              animation: true,
+                                              animateFromLastPercent: true,
+                                              progressColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .accent4,
+                                              barRadius: Radius.circular(10.0),
+                                              padding: EdgeInsets.zero,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ).animateOnPageLoad(
-                            animationsMap['containerOnPageLoadAnimation']!),
-                      );
-                    },
-                  );
-                },
+                              ).animateOnPageLoad(animationsMap[
+                                  'containerOnPageLoadAnimation']!),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                ],
               ),
           ],
         ),

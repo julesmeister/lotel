@@ -224,6 +224,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                         controller: _model.descriptionController,
                         focusNode: _model.descriptionFocusNode,
                         autofocus: true,
+                        textCapitalization: TextCapitalization.words,
                         obscureText: false,
                         decoration: InputDecoration(
                           labelStyle: FlutterFlowTheme.of(context).labelMedium,

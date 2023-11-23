@@ -1,6 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/option_to_rent/option_to_rent_widget.dart';
+import '/components/options/option_to_rent/option_to_rent_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -186,6 +186,7 @@ class _RentsWidgetState extends State<RentsWidget> {
                                 fortnight: functions.upOrdinal(
                                     _model.lastExistingRental!.fortnight),
                                 total: 0.0,
+                                wTax: _model.lastExistingRental?.wTax,
                               ),
                               ...mapToFirestore(
                                 {
@@ -201,6 +202,7 @@ class _RentsWidgetState extends State<RentsWidget> {
                                 fortnight: functions.upOrdinal(
                                     _model.lastExistingRental!.fortnight),
                                 total: 0.0,
+                                wTax: _model.lastExistingRental?.wTax,
                               ),
                               ...mapToFirestore(
                                 {
@@ -227,6 +229,7 @@ class _RentsWidgetState extends State<RentsWidget> {
                                       .sampleSpaces?[_model.loopSpacesCounter]
                                       ?.amount,
                                   collected: false,
+                                  amountCollected: 0.0,
                                 ),
                                 ...mapToFirestore(
                                   {
@@ -247,6 +250,7 @@ class _RentsWidgetState extends State<RentsWidget> {
                                       .sampleSpaces?[_model.loopSpacesCounter]
                                       ?.amount,
                                   collected: false,
+                                  amountCollected: 0.0,
                                 ),
                                 ...mapToFirestore(
                                   {
@@ -638,7 +642,7 @@ class _RentsWidgetState extends State<RentsWidget> {
                                                                             0.0),
                                                                 child: Text(
                                                                   dateTimeFormat(
-                                                                      'EEE MMM d y h:mm a',
+                                                                      'yMMMd',
                                                                       listViewRentalsRecord
                                                                           .date!),
                                                                   style: FlutterFlowTheme.of(
@@ -811,7 +815,7 @@ class _RentsWidgetState extends State<RentsWidget> {
                                                                             0.0),
                                                                 child:
                                                                     Container(
-                                                                  width: 91.0,
+                                                                  width: 110.0,
                                                                   height: 32.0,
                                                                   decoration:
                                                                       BoxDecoration(

@@ -905,6 +905,12 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     ParamType.DocumentReference,
                                                     true,
                                                   ),
+                                                  'remittanceRef':
+                                                      serializeParam(
+                                                    mainCardRemittancesRecord
+                                                        ?.reference,
+                                                    ParamType.DocumentReference,
+                                                  ),
                                                 }.withoutNulls,
                                               );
                                             },

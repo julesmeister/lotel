@@ -1,11 +1,11 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
-import '/components/change_remittance/change_remittance_widget.dart';
 import '/components/collect_remittance_user/collect_remittance_user_widget.dart';
-import '/components/last_remit_edit/last_remit_edit_widget.dart';
-import '/components/new_issue/new_issue_widget.dart';
-import '/components/option_to_issue/option_to_issue_widget.dart';
+import '/components/forms/change_date/change_date_widget.dart';
+import '/components/forms/change_remittance/change_remittance_widget.dart';
+import '/components/forms/new_issue/new_issue_widget.dart';
+import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -83,12 +83,37 @@ class _HomePageWidgetState extends State<HomePageWidget>
           },
         ),
       });
+      if (!(FFAppState().settingRef != null)) {
+        // hotel Settings
+        _model.settingsRef = await queryHotelSettingsRecordOnce(
+          queryBuilder: (hotelSettingsRecord) => hotelSettingsRecord.where(
+            'hotel',
+            isEqualTo: FFAppState().hotel,
+          ),
+          singleRecord: true,
+        ).then((s) => s.firstOrNull);
+        // set settingsRef
+        setState(() {
+          FFAppState().settingRef = _model.settingsRef?.reference;
+        });
+      }
       if (FFAppState().lastRemit == null) {
         // update last remit
         setState(() {
           FFAppState().lastRemit = functions.yesterdayDate();
         });
+      } else {
+        // check if last remit changed
+        _model.settings =
+            await HotelSettingsRecord.getDocumentOnce(FFAppState().settingRef!);
+        if (_model.settings?.lastRemit != FFAppState().lastRemit) {
+          // update last remit
+          setState(() {
+            FFAppState().lastRemit = _model.settings?.lastRemit;
+          });
+        }
       }
+
       if (valueOrDefault(currentUserDocument?.role, '') == 'admin') {
         // does a remittance exist?
         _model.remittance = await queryRemittancesRecordCount(
@@ -274,6 +299,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
     return StreamBuilder<List<HotelSettingsRecord>>(
       stream: FFAppState().hoteSettings(
+        uniqueQueryKey: FFAppState().hotel,
         requestFn: () => queryHotelSettingsRecord(
           queryBuilder: (hotelSettingsRecord) => hotelSettingsRecord.where(
             'hotel',
@@ -352,6 +378,421 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
+                        if (valueOrDefault(currentUserDocument?.role, '') ==
+                            'admin')
+                          Align(
+                            alignment: AlignmentDirectional(0.00, -1.00),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 16.0, 16.0, 0.0),
+                              child: AuthUserStreamWidget(
+                                builder: (context) =>
+                                    StreamBuilder<List<HotelSettingsRecord>>(
+                                  stream: _model.hotelSettings(
+                                    requestFn: () => queryHotelSettingsRecord(),
+                                  ),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    List<HotelSettingsRecord>
+                                        statusToggleHotelSettingsRecordList =
+                                        snapshot.data!;
+                                    return Container(
+                                      width: double.infinity,
+                                      height: 50.0,
+                                      constraints: BoxConstraints(
+                                        maxWidth: 500.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        border: Border.all(
+                                          color: FlutterFlowTheme.of(context)
+                                              .alternate,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            4.0, 4.0, 4.0, 4.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  // stat exist firestore not local
+                                                  _model.serenityStat =
+                                                      await queryStatsRecordOnce(
+                                                    queryBuilder:
+                                                        (statsRecord) =>
+                                                            statsRecord
+                                                                .where(
+                                                                  'hotel',
+                                                                  isEqualTo:
+                                                                      'Serenity',
+                                                                )
+                                                                .where(
+                                                                  'year',
+                                                                  isEqualTo:
+                                                                      functions
+                                                                          .currentYear(),
+                                                                )
+                                                                .where(
+                                                                  'month',
+                                                                  isEqualTo:
+                                                                      functions
+                                                                          .currentMonth(),
+                                                                ),
+                                                    singleRecord: true,
+                                                  ).then((s) => s.firstOrNull);
+                                                  setState(() {
+                                                    FFAppState().bedPrice =
+                                                        statusToggleHotelSettingsRecordList
+                                                            .where((e) =>
+                                                                statusToggleHotelSettingsRecordList
+                                                                    .first
+                                                                    .hotel ==
+                                                                'Serenity')
+                                                            .toList()
+                                                            .first
+                                                            .bedPrice;
+                                                    FFAppState().lastRemit =
+                                                        statusToggleHotelSettingsRecordList
+                                                            .where((e) =>
+                                                                statusToggleHotelSettingsRecordList
+                                                                    .first
+                                                                    .hotel ==
+                                                                'Serenity')
+                                                            .toList()
+                                                            .first
+                                                            .lastRemit;
+                                                    FFAppState().hotel =
+                                                        'Serenity';
+                                                    FFAppState()
+                                                            .statsReference =
+                                                        _model.serenityStat
+                                                            ?.reference;
+                                                    FFAppState().settingRef =
+                                                        statusToggleHotelSettingsRecordList
+                                                            .where((e) =>
+                                                                statusToggleHotelSettingsRecordList
+                                                                    .first
+                                                                    .hotel ==
+                                                                'Serenity')
+                                                            .toList()
+                                                            .first
+                                                            .reference;
+                                                  });
+                                                  // clear rooms cache
+                                                  FFAppState()
+                                                      .clearRoomsCache();
+                                                  // clear checkincount
+                                                  FFAppState()
+                                                      .clearCheckInCountCache();
+                                                  // clear replenish count
+                                                  FFAppState()
+                                                      .clearReplenishCountCache();
+                                                  // clear staff count
+                                                  FFAppState()
+                                                      .clearStaffsCache();
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'You have switched to another hotel!',
+                                                        style: TextStyle(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                        ),
+                                                      ),
+                                                      duration: Duration(
+                                                          milliseconds: 4000),
+                                                      backgroundColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondary,
+                                                    ),
+                                                  );
+
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                  width: 115.0,
+                                                  height: 100.0,
+                                                  decoration: BoxDecoration(
+                                                    color: FFAppState().hotel ==
+                                                            'Serenity'
+                                                        ? FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondaryBackground
+                                                        : FlutterFlowTheme.of(
+                                                                context)
+                                                            .primaryBackground,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                    border: Border.all(
+                                                      color:
+                                                          valueOrDefault<Color>(
+                                                        FFAppState().hotel ==
+                                                                'Serenity'
+                                                            ? FlutterFlowTheme
+                                                                    .of(context)
+                                                                .alternate
+                                                            : FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryBackground,
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .alternate,
+                                                      ),
+                                                      width: 1.0,
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .local_hotel_outlined,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        size: 16.0,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    4.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        child: Text(
+                                                          'Serenity',
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  // stat exist firestore not local
+                                                  _model.lifestyleStat =
+                                                      await queryStatsRecordOnce(
+                                                    queryBuilder:
+                                                        (statsRecord) =>
+                                                            statsRecord
+                                                                .where(
+                                                                  'hotel',
+                                                                  isEqualTo:
+                                                                      'My Lifestyle',
+                                                                )
+                                                                .where(
+                                                                  'year',
+                                                                  isEqualTo:
+                                                                      functions
+                                                                          .currentYear(),
+                                                                )
+                                                                .where(
+                                                                  'month',
+                                                                  isEqualTo:
+                                                                      functions
+                                                                          .currentMonth(),
+                                                                ),
+                                                    singleRecord: true,
+                                                  ).then((s) => s.firstOrNull);
+                                                  setState(() {
+                                                    FFAppState().bedPrice =
+                                                        statusToggleHotelSettingsRecordList
+                                                            .where((e) =>
+                                                                e.hotel ==
+                                                                'My Lifestyle')
+                                                            .toList()
+                                                            .first
+                                                            .bedPrice;
+                                                    FFAppState().lastRemit =
+                                                        statusToggleHotelSettingsRecordList
+                                                            .where((e) =>
+                                                                e.hotel ==
+                                                                'My Lifestyle')
+                                                            .toList()
+                                                            .first
+                                                            .lastRemit;
+                                                    FFAppState().hotel =
+                                                        'My Lifestyle';
+                                                    FFAppState()
+                                                            .statsReference =
+                                                        _model.lifestyleStat
+                                                            ?.reference;
+                                                    FFAppState().settingRef =
+                                                        statusToggleHotelSettingsRecordList
+                                                            .where((e) =>
+                                                                e.hotel ==
+                                                                'My Lifestyle')
+                                                            .toList()
+                                                            .first
+                                                            .reference;
+                                                  });
+                                                  // clear rooms cache
+                                                  FFAppState()
+                                                      .clearRoomsCache();
+                                                  // clear checkincount
+                                                  FFAppState()
+                                                      .clearCheckInCountCache();
+                                                  // clear replenish count
+                                                  FFAppState()
+                                                      .clearReplenishCountCache();
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'You have switched to another hotel!',
+                                                        style: TextStyle(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                        ),
+                                                      ),
+                                                      duration: Duration(
+                                                          milliseconds: 4000),
+                                                      backgroundColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondary,
+                                                    ),
+                                                  );
+
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                  width: 115.0,
+                                                  height: 100.0,
+                                                  decoration: BoxDecoration(
+                                                    color: FFAppState().hotel ==
+                                                            'My Lifestyle'
+                                                        ? FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondaryBackground
+                                                        : FlutterFlowTheme.of(
+                                                                context)
+                                                            .primaryBackground,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                    border: Border.all(
+                                                      color: FFAppState()
+                                                                  .hotel ==
+                                                              'My Lifestyle'
+                                                          ? FlutterFlowTheme.of(
+                                                                  context)
+                                                              .alternate
+                                                          : FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryBackground,
+                                                      width: 1.0,
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .local_hotel_outlined,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        size: 16.0,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    4.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        child: Text(
+                                                          'My Lifestyle',
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               24.0, 24.0, 24.0, 16.0),
@@ -381,6 +822,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       builder: (context) => StreamBuilder<
                                           List<TransactionsRecord>>(
                                         stream: _model.salesTotal(
+                                          uniqueQueryKey: FFAppState().hotel,
                                           requestFn: () =>
                                               queryTransactionsRecord(
                                             queryBuilder:
@@ -503,15 +945,58 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           context),
                                                   child: Container(
                                                     height: double.infinity,
-                                                    child:
-                                                        LastRemitEditWidget(),
+                                                    child: ChangeDateWidget(
+                                                      date: FFAppState()
+                                                          .lastRemit!,
+                                                    ),
                                                   ),
                                                 ),
                                               );
                                             },
-                                          ).then(
-                                              (value) => safeSetState(() {}));
+                                          ).then((value) => safeSetState(() =>
+                                              _model.adjustedLastRemit =
+                                                  value));
+
+                                          if (_model.adjustedLastRemit !=
+                                              null) {
+                                            // set local date
+                                            setState(() {});
+                                            // update hotel setting
+
+                                            await FFAppState()
+                                                .settingRef!
+                                                .update(
+                                                    createHotelSettingsRecordData(
+                                                  lastRemit:
+                                                      _model.adjustedLastRemit,
+                                                ));
+                                            // set appstate date
+                                            setState(() {
+                                              FFAppState().lastRemit =
+                                                  _model.adjustedLastRemit;
+                                            });
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Last remit date has been changed!',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                  ),
+                                                ),
+                                                duration: Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                              ),
+                                            );
+                                          }
                                         }
+
+                                        setState(() {});
                                       },
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
@@ -841,7 +1326,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       size: 24.0,
                                     ),
                                     onPressed: () async {
-                                      context.pushNamed('Stats');
+                                      context.pushNamed(
+                                        'Stats',
+                                        extra: <String, dynamic>{
+                                          kTransitionInfoKey: TransitionInfo(
+                                            hasTransition: true,
+                                            transitionType:
+                                                PageTransitionType.rightToLeft,
+                                          ),
+                                        },
+                                      );
                                     },
                                   ),
                                 ],
@@ -1134,6 +1628,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       FutureBuilder<int>(
                                                         future: _model
                                                             .totalTransactions(
+                                                          uniqueQueryKey:
+                                                              FFAppState()
+                                                                  .hotel,
                                                           requestFn: () =>
                                                               queryTransactionsRecordCount(
                                                             queryBuilder:
@@ -1248,6 +1745,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       FutureBuilder<int>(
                                                         future:
                                                             FFAppState().staffs(
+                                                          uniqueQueryKey:
+                                                              FFAppState()
+                                                                  .hotel,
                                                           requestFn: () =>
                                                               queryStaffsRecordCount(
                                                             queryBuilder:
@@ -1339,6 +1839,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               0.0, 4.0, 0.0, 12.0),
                           child: StreamBuilder<List<RoomsRecord>>(
                             stream: FFAppState().rooms(
+                              uniqueQueryKey: FFAppState().hotel,
                               requestFn: () => queryRoomsRecord(
                                 queryBuilder: (roomsRecord) => roomsRecord
                                     .where(
@@ -1760,6 +2261,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                               ParamType.bool,
                                                                             ),
                                                                           }.withoutNulls,
+                                                                          extra: <String,
+                                                                              dynamic>{
+                                                                            kTransitionInfoKey:
+                                                                                TransitionInfo(
+                                                                              hasTransition: true,
+                                                                              transitionType: PageTransitionType.rightToLeft,
+                                                                            ),
+                                                                          },
                                                                         );
                                                                       }
                                                                     } else {
@@ -1784,6 +2293,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                             ParamType.int,
                                                                           ),
                                                                         }.withoutNulls,
+                                                                        extra: <String,
+                                                                            dynamic>{
+                                                                          kTransitionInfoKey:
+                                                                              TransitionInfo(
+                                                                            hasTransition:
+                                                                                true,
+                                                                            transitionType:
+                                                                                PageTransitionType.rightToLeft,
+                                                                          ),
+                                                                        },
                                                                       );
                                                                     }
                                                                   },
@@ -2008,6 +2527,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   ),
                                   StreamBuilder<List<IssuesRecord>>(
                                     stream: _model.issueHome(
+                                      uniqueQueryKey: FFAppState().hotel,
                                       requestFn: () => queryIssuesRecord(
                                         queryBuilder: (issuesRecord) =>
                                             issuesRecord
@@ -2338,6 +2858,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       child: FutureBuilder<
                                           List<RemittancesRecord>>(
                                         future: _model.homeRemittance(
+                                          uniqueQueryKey: FFAppState().hotel,
                                           requestFn: () =>
                                               queryRemittancesRecordOnce(
                                             queryBuilder: (remittancesRecord) =>
@@ -2559,7 +3080,19 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       ),
                                                       onPressed: () async {
                                                         context.pushNamed(
-                                                            'remittances');
+                                                          'remittances',
+                                                          extra: <String,
+                                                              dynamic>{
+                                                            kTransitionInfoKey:
+                                                                TransitionInfo(
+                                                              hasTransition:
+                                                                  true,
+                                                              transitionType:
+                                                                  PageTransitionType
+                                                                      .rightToLeft,
+                                                            ),
+                                                          },
+                                                        );
                                                       },
                                                     ),
                                                   ],
@@ -2624,8 +3157,19 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       size: 24.0,
                                                     ),
                                                     onPressed: () async {
-                                                      context
-                                                          .pushNamed('Rents');
+                                                      context.pushNamed(
+                                                        'Rents',
+                                                        extra: <String,
+                                                            dynamic>{
+                                                          kTransitionInfoKey:
+                                                              TransitionInfo(
+                                                            hasTransition: true,
+                                                            transitionType:
+                                                                PageTransitionType
+                                                                    .rightToLeft,
+                                                          ),
+                                                        },
+                                                      );
                                                     },
                                                   ),
                                                 ],
@@ -2688,8 +3232,19 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       size: 24.0,
                                                     ),
                                                     onPressed: () async {
-                                                      context
-                                                          .pushNamed('Payroll');
+                                                      context.pushNamed(
+                                                        'Payroll',
+                                                        extra: <String,
+                                                            dynamic>{
+                                                          kTransitionInfoKey:
+                                                              TransitionInfo(
+                                                            hasTransition: true,
+                                                            transitionType:
+                                                                PageTransitionType
+                                                                    .rightToLeft,
+                                                          ),
+                                                        },
+                                                      );
                                                     },
                                                   ),
                                                 ],

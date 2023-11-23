@@ -60,26 +60,37 @@ class StatsModel extends FlutterFlowModel<StatsWidget> {
 
   double rent = 0.0;
 
+  String hotel = 'All';
+
+  List<StatsRecord> stats = [];
+  void addToStats(StatsRecord item) => stats.add(item);
+  void removeFromStats(StatsRecord item) => stats.remove(item);
+  void removeAtIndexFromStats(int index) => stats.removeAt(index);
+  void insertAtIndexInStats(int index, StatsRecord item) =>
+      stats.insert(index, item);
+  void updateStatsAtIndex(int index, Function(StatsRecord) updateFn) =>
+      stats[index] = updateFn(stats[index]);
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Firestore Query - Query a collection] action in Stats widget.
   int? initCount;
   // Stores action output result for [Firestore Query - Query a collection] action in Stats widget.
-  StatsRecord? currentStat;
+  List<StatsRecord>? currentStats;
   // State field(s) for month widget.
   String? monthValue;
   FormFieldController<String>? monthValueController;
   // Stores action output result for [Firestore Query - Query a collection] action in month widget.
   int? initStatsCountCopy;
   // Stores action output result for [Firestore Query - Query a collection] action in month widget.
-  StatsRecord? foundMonthDoc;
+  List<StatsRecord>? foundMonthDoc;
   // State field(s) for year widget.
   String? yearValue;
   FormFieldController<String>? yearValueController;
   // Stores action output result for [Firestore Query - Query a collection] action in year widget.
   int? initStatsCountCopyCopy;
   // Stores action output result for [Firestore Query - Query a collection] action in year widget.
-  StatsRecord? foundYearDoc;
+  List<StatsRecord>? foundYearDoc;
   // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
   List<TransactionsRecord>? bookingTransactionsOnly;
   // Stores action output result for [Firestore Query - Query a collection] action in Text widget.

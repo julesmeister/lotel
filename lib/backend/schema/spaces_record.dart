@@ -16,11 +16,6 @@ class SpacesRecord extends FirestoreRecord {
     _initializeFields();
   }
 
-  // "unit" field.
-  int? _unit;
-  int get unit => _unit ?? 0;
-  bool hasUnit() => _unit != null;
-
   // "owner" field.
   String? _owner;
   String get owner => _owner ?? '';
@@ -41,14 +36,25 @@ class SpacesRecord extends FirestoreRecord {
   bool get collected => _collected ?? false;
   bool hasCollected() => _collected != null;
 
+  // "unit" field.
+  String? _unit;
+  String get unit => _unit ?? '';
+  bool hasUnit() => _unit != null;
+
+  // "amountCollected" field.
+  double? _amountCollected;
+  double get amountCollected => _amountCollected ?? 0.0;
+  bool hasAmountCollected() => _amountCollected != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
-    _unit = castToType<int>(snapshotData['unit']);
     _owner = snapshotData['owner'] as String?;
     _date = snapshotData['date'] as DateTime?;
     _amount = castToType<double>(snapshotData['amount']);
     _collected = snapshotData['collected'] as bool?;
+    _unit = snapshotData['unit'] as String?;
+    _amountCollected = castToType<double>(snapshotData['amountCollected']);
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -90,19 +96,21 @@ class SpacesRecord extends FirestoreRecord {
 }
 
 Map<String, dynamic> createSpacesRecordData({
-  int? unit,
   String? owner,
   DateTime? date,
   double? amount,
   bool? collected,
+  String? unit,
+  double? amountCollected,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
-      'unit': unit,
       'owner': owner,
       'date': date,
       'amount': amount,
       'collected': collected,
+      'unit': unit,
+      'amountCollected': amountCollected,
     }.withoutNulls,
   );
 
@@ -114,16 +122,23 @@ class SpacesRecordDocumentEquality implements Equality<SpacesRecord> {
 
   @override
   bool equals(SpacesRecord? e1, SpacesRecord? e2) {
-    return e1?.unit == e2?.unit &&
-        e1?.owner == e2?.owner &&
+    return e1?.owner == e2?.owner &&
         e1?.date == e2?.date &&
         e1?.amount == e2?.amount &&
-        e1?.collected == e2?.collected;
+        e1?.collected == e2?.collected &&
+        e1?.unit == e2?.unit &&
+        e1?.amountCollected == e2?.amountCollected;
   }
 
   @override
-  int hash(SpacesRecord? e) => const ListEquality()
-      .hash([e?.unit, e?.owner, e?.date, e?.amount, e?.collected]);
+  int hash(SpacesRecord? e) => const ListEquality().hash([
+        e?.owner,
+        e?.date,
+        e?.amount,
+        e?.collected,
+        e?.unit,
+        e?.amountCollected
+      ]);
 
   @override
   bool isValidKey(Object? o) => o is SpacesRecord;

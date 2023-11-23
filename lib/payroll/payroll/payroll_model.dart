@@ -1,8 +1,8 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/option_to_duplicate_payroll/option_to_duplicate_payroll_widget.dart';
-import '/components/option_to_fire/option_to_fire_widget.dart';
-import '/components/staff_add_edit/staff_add_edit_widget.dart';
+import '/components/forms/staff_add_edit/staff_add_edit_widget.dart';
+import '/components/options/option_to_duplicate_payroll/option_to_duplicate_payroll_widget.dart';
+import '/components/options/option_to_fire_staff/option_to_fire_staff_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';

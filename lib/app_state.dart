@@ -49,6 +49,9 @@ class FFAppState extends ChangeNotifier {
         }
       }
     });
+    _safeInit(() {
+      _settingRef = prefs.getString('ff_settingRef')?.ref ?? _settingRef;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -107,6 +110,15 @@ class FFAppState extends ChangeNotifier {
   void updateCurrentStatsStruct(Function(CurrentStatsStruct) updateFn) {
     updateFn(_currentStats);
     prefs.setString('ff_currentStats', _currentStats.serialize());
+  }
+
+  DocumentReference? _settingRef;
+  DocumentReference? get settingRef => _settingRef;
+  set settingRef(DocumentReference? _value) {
+    _settingRef = _value;
+    _value != null
+        ? prefs.setString('ff_settingRef', _value.path)
+        : prefs.remove('ff_settingRef');
   }
 
   final _roomsManager = StreamRequestManager<List<RoomsRecord>>();

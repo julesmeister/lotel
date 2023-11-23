@@ -222,6 +222,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => RemittanceSpecificTransactionsWidget(
             transactions: params.getParam<DocumentReference>('transactions',
                 ParamType.DocumentReference, true, ['transactions']),
+            remittanceRef: params.getParam('remittanceRef',
+                ParamType.DocumentReference, false, ['remittances']),
           ),
         ),
         FFRoute(

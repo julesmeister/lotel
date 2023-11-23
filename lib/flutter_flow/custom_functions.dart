@@ -962,3 +962,45 @@ bool allRentCollected(List<SpacesRecord> spaces) {
   }
   return true;
 }
+
+LineGraphStruct mergedLine(
+  LineGraphStruct serenity,
+  LineGraphStruct myLifestyle,
+) {
+  // if the same xData [int], merge by adding the yData [int]
+  Map<int, int> mergedData = {};
+
+// Add serenity data to mergedData
+  for (int i = 0; i < serenity.xData.length; i++) {
+    int x = serenity.xData[i];
+    int y = serenity.yData[i];
+    mergedData[x] = y;
+  }
+
+// Add myLifestyle data to mergedData
+  for (int i = 0; i < myLifestyle.xData.length; i++) {
+    int x = myLifestyle.xData[i];
+    int y = myLifestyle.yData[i];
+    if (mergedData.containsKey(x)) {
+      mergedData[x] = (mergedData[x] ?? 0) + y;
+    } else {
+      mergedData[x] = y;
+    }
+  }
+
+// Convert mergedData to LineGraphStruct format
+  List<int> xData = [];
+  List<int> yData = [];
+  mergedData.forEach((x, y) {
+    xData.add(x);
+    yData.add(y);
+  });
+
+  return LineGraphStruct(xData: xData, yData: yData);
+}
+
+List<RoomUsageStruct> extractRoomUsage(StatsRecord stats) {
+  // extract roomUsage from  stats
+
+  return stats.roomUsage!;
+}

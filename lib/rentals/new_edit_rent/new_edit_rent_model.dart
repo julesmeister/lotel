@@ -1,7 +1,8 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/new_space/new_space_widget.dart';
-import '/components/space_options/space_options_widget.dart';
+import '/components/forms/change_date/change_date_widget.dart';
+import '/components/forms/new_space/new_space_widget.dart';
+import '/components/options/space_options/space_options_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -65,13 +66,19 @@ class NewEditRentModel extends FlutterFlowModel<NewEditRentWidget> {
   // Stores action output result for [Firestore Query - Query a collection] action in NewEditRent widget.
   List<SpacesRecord>? existingSpaces;
   // Stores action output result for [Bottom Sheet - NewSpace] action in IconButton widget.
-  SpacesRecord? space;
+  SpacesRecord? newspace;
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in Text widget.
+  DateTime? adjustedDate;
   // State field(s) for withHoldingTax widget.
   FocusNode? withHoldingTaxFocusNode;
   TextEditingController? withHoldingTaxController;
   String? Function(BuildContext, String?)? withHoldingTaxControllerValidator;
   // Stores action output result for [Bottom Sheet - NewSpace] action in listContainer widget.
   SpacesRecord? updatedSpace;
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in Text widget.
+  DateTime? adjustedCollectedDate;
+  // Stores action output result for [Backend Call - Read Document] action in Text widget.
+  SpacesRecord? adjustedSpace;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
   RentalsRecord? newRent;
 
