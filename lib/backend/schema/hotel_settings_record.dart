@@ -41,12 +41,18 @@ class HotelSettingsRecord extends FirestoreRecord {
   bool get remittable => _remittable ?? false;
   bool hasRemittable() => _remittable != null;
 
+  // "lateCheckoutFee" field.
+  double? _lateCheckoutFee;
+  double get lateCheckoutFee => _lateCheckoutFee ?? 0.0;
+  bool hasLateCheckoutFee() => _lateCheckoutFee != null;
+
   void _initializeFields() {
     _bedPrice = castToType<double>(snapshotData['bedPrice']);
     _hotel = snapshotData['hotel'] as String?;
     _lastRemit = snapshotData['lastRemit'] as DateTime?;
     _acceptNewStaff = snapshotData['acceptNewStaff'] as bool?;
     _remittable = snapshotData['remittable'] as bool?;
+    _lateCheckoutFee = castToType<double>(snapshotData['lateCheckoutFee']);
   }
 
   static CollectionReference get collection =>
@@ -89,6 +95,7 @@ Map<String, dynamic> createHotelSettingsRecordData({
   DateTime? lastRemit,
   bool? acceptNewStaff,
   bool? remittable,
+  double? lateCheckoutFee,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -97,6 +104,7 @@ Map<String, dynamic> createHotelSettingsRecordData({
       'lastRemit': lastRemit,
       'acceptNewStaff': acceptNewStaff,
       'remittable': remittable,
+      'lateCheckoutFee': lateCheckoutFee,
     }.withoutNulls,
   );
 
@@ -113,12 +121,19 @@ class HotelSettingsRecordDocumentEquality
         e1?.hotel == e2?.hotel &&
         e1?.lastRemit == e2?.lastRemit &&
         e1?.acceptNewStaff == e2?.acceptNewStaff &&
-        e1?.remittable == e2?.remittable;
+        e1?.remittable == e2?.remittable &&
+        e1?.lateCheckoutFee == e2?.lateCheckoutFee;
   }
 
   @override
-  int hash(HotelSettingsRecord? e) => const ListEquality().hash(
-      [e?.bedPrice, e?.hotel, e?.lastRemit, e?.acceptNewStaff, e?.remittable]);
+  int hash(HotelSettingsRecord? e) => const ListEquality().hash([
+        e?.bedPrice,
+        e?.hotel,
+        e?.lastRemit,
+        e?.acceptNewStaff,
+        e?.remittable,
+        e?.lateCheckoutFee
+      ]);
 
   @override
   bool isValidKey(Object? o) => o is HotelSettingsRecord;

@@ -39,6 +39,19 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
   void updatePendingsAtIndex(int index, Function(DocumentReference) updateFn) =>
       pendings[index] = updateFn(pendings[index]);
 
+  List<DocumentReference> transactions = [];
+  void addToTransactions(DocumentReference item) => transactions.add(item);
+  void removeFromTransactions(DocumentReference item) =>
+      transactions.remove(item);
+  void removeAtIndexFromTransactions(int index) => transactions.removeAt(index);
+  void insertAtIndexInTransactions(int index, DocumentReference item) =>
+      transactions.insert(index, item);
+  void updateTransactionsAtIndex(
+          int index, Function(DocumentReference) updateFn) =>
+      transactions[index] = updateFn(transactions[index]);
+
+  String ability = 'normal';
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Backend Call - Read Document] action in CheckIn widget.
@@ -59,12 +72,19 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
   // State field(s) for guests widget.
   String? guestsValue;
   FormFieldController<List<String>>? guestsValueController;
+  // State field(s) for hoursLateCheckout widget.
+  String? hoursLateCheckoutValue;
+  FormFieldController<List<String>>? hoursLateCheckoutValueController;
+  // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
+  TransactionsRecord? refundTrans;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   TransactionsRecord? newExtPending;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   TransactionsRecord? newRefundPending;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   BookingsRecord? savedBooking;
+  // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
+  TransactionsRecord? checkin1;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   TransactionsRecord? newPending;
 

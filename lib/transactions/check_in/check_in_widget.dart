@@ -95,6 +95,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
           _model.pendings = widget.bookingToExtend!.pendings
               .toList()
               .cast<DocumentReference>();
+          _model.transactions = widget.bookingToExtend!.transactions
+              .toList()
+              .cast<DocumentReference>();
         });
       } else {
         setState(() {
@@ -681,6 +684,123 @@ class _CheckInWidgetState extends State<CheckInWidget>
                   ),
                 ],
               ),
+              if (widget.extend)
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 24.0, 0.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Extend hours',
+                            style:
+                                FlutterFlowTheme.of(context).bodySmall.override(
+                                      fontFamily: 'Readex Pro',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          if (FFAppState().extPricePerHr != null)
+                            Text(
+                              formatNumber(
+                                FFAppState().extPricePerHr,
+                                formatType: FormatType.decimal,
+                                decimalType: DecimalType.automatic,
+                                currency: 'Php ',
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 12.0,
+                                  ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(24.0, 12.0, 16.0, 0.0),
+                      child: Wrap(
+                        spacing: 0.0,
+                        runSpacing: 0.0,
+                        alignment: WrapAlignment.start,
+                        crossAxisAlignment: WrapCrossAlignment.start,
+                        direction: Axis.horizontal,
+                        runAlignment: WrapAlignment.start,
+                        verticalDirection: VerticalDirection.down,
+                        clipBehavior: Clip.none,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 8.0, 0.0, 15.0),
+                            child: FlutterFlowChoiceChips(
+                              options: [
+                                ChipData('0'),
+                                ChipData('1'),
+                                ChipData('2'),
+                                ChipData('3'),
+                                ChipData('4'),
+                                ChipData('5')
+                              ],
+                              onChanged: (val) async {
+                                setState(() =>
+                                    _model.hoursLateCheckoutValue = val?.first);
+                                if (_model.paid == false) {
+                                  if (_model.hoursLateCheckoutValue != '0') {
+                                    // make status paid
+                                    setState(() {
+                                      _model.paid = true;
+                                    });
+                                  }
+                                }
+                              },
+                              selectedChipStyle: ChipStyle(
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).primary,
+                                textStyle:
+                                    FlutterFlowTheme.of(context).titleSmall,
+                                iconColor: Colors.white,
+                                iconSize: 18.0,
+                                labelPadding: EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 4.0, 12.0, 4.0),
+                                elevation: 2.0,
+                              ),
+                              unselectedChipStyle: ChipStyle(
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).alternate,
+                                textStyle:
+                                    FlutterFlowTheme.of(context).labelMedium,
+                                iconColor:
+                                    FlutterFlowTheme.of(context).primaryText,
+                                iconSize: 18.0,
+                                labelPadding: EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 4.0, 12.0, 4.0),
+                                elevation: 0.0,
+                              ),
+                              chipSpacing: 12.0,
+                              rowSpacing: 24.0,
+                              multiselect: false,
+                              initialized:
+                                  _model.hoursLateCheckoutValue != null,
+                              alignment: WrapAlignment.start,
+                              controller:
+                                  _model.hoursLateCheckoutValueController ??=
+                                      FormFieldController<List<String>>(
+                                ['0'],
+                              ),
+                              wrapped: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               Align(
                 alignment: AlignmentDirectional(0.00, -1.00),
                 child: Padding(
@@ -722,7 +842,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                 width: 115.0,
                                 height: 100.0,
                                 decoration: BoxDecoration(
-                                  color: _model.paid == true
+                                  color: _model.paid
                                       ? FlutterFlowTheme.of(context)
                                           .secondaryBackground
                                       : FlutterFlowTheme.of(context)
@@ -730,7 +850,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   borderRadius: BorderRadius.circular(10.0),
                                   border: Border.all(
                                     color: valueOrDefault<Color>(
-                                      _model.paid == true
+                                      _model.paid
                                           ? FlutterFlowTheme.of(context)
                                               .alternate
                                           : FlutterFlowTheme.of(context)
@@ -785,14 +905,14 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                 width: 115.0,
                                 height: 100.0,
                                 decoration: BoxDecoration(
-                                  color: _model.paid == false
+                                  color: !_model.paid
                                       ? FlutterFlowTheme.of(context)
                                           .secondaryBackground
                                       : FlutterFlowTheme.of(context)
                                           .primaryBackground,
                                   borderRadius: BorderRadius.circular(10.0),
                                   border: Border.all(
-                                    color: _model.paid == false
+                                    color: !_model.paid
                                         ? FlutterFlowTheme.of(context).alternate
                                         : FlutterFlowTheme.of(context)
                                             .primaryBackground,
@@ -814,6 +934,224 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           4.0, 0.0, 0.0, 0.0),
                                       child: Text(
                                         'Pending',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional(0.00, -1.00),
+                child: Padding(
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 50.0,
+                    constraints: BoxConstraints(
+                      maxWidth: 500.0,
+                    ),
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(
+                        color: FlutterFlowTheme.of(context).alternate,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                setState(() {
+                                  _model.ability = 'normal';
+                                  _model.price = widget.price!;
+                                });
+                              },
+                              child: Container(
+                                width: 115.0,
+                                height: 100.0,
+                                decoration: BoxDecoration(
+                                  color: _model.ability == 'normal'
+                                      ? FlutterFlowTheme.of(context)
+                                          .secondaryBackground
+                                      : FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: valueOrDefault<Color>(
+                                      _model.ability == 'normal'
+                                          ? FlutterFlowTheme.of(context)
+                                              .alternate
+                                          : FlutterFlowTheme.of(context)
+                                              .primaryBackground,
+                                      FlutterFlowTheme.of(context).alternate,
+                                    ),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.emoji_people_sharp,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      size: 16.0,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          4.0, 0.0, 0.0, 0.0),
+                                      child: Text(
+                                        'Normal',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                setState(() {
+                                  _model.ability = 'senior';
+                                  _model.price =
+                                      widget.price! - widget.price! * 0.2;
+                                });
+                              },
+                              child: Container(
+                                width: 115.0,
+                                height: 100.0,
+                                decoration: BoxDecoration(
+                                  color: _model.ability == 'senior'
+                                      ? FlutterFlowTheme.of(context)
+                                          .secondaryBackground
+                                      : FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: _model.ability == 'senior'
+                                        ? FlutterFlowTheme.of(context).alternate
+                                        : FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.wheelchair_pickup,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      size: 16.0,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          4.0, 0.0, 0.0, 0.0),
+                                      child: Text(
+                                        'Senior',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                setState(() {
+                                  _model.ability = 'pwd';
+                                  _model.price =
+                                      widget.price! - widget.price! * 0.2;
+                                });
+                              },
+                              child: Container(
+                                width: 115.0,
+                                height: 100.0,
+                                decoration: BoxDecoration(
+                                  color: _model.ability == 'pwd'
+                                      ? FlutterFlowTheme.of(context)
+                                          .secondaryBackground
+                                      : FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: _model.ability == 'pwd'
+                                        ? FlutterFlowTheme.of(context).alternate
+                                        : FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.personal_injury_outlined,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      size: 16.0,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          4.0, 0.0, 0.0, 0.0),
+                                      child: Text(
+                                        'PWD',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -889,7 +1227,16 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           0.0,
                                         ),
                                         '-1',
-                                        0),
+                                        0,
+                                        widget.extend
+                                            ? ((FFAppState().extPricePerHr ??
+                                                    0) *
+                                                double.parse(
+                                                    valueOrDefault<String>(
+                                                  _model.hoursLateCheckoutValue,
+                                                  '0',
+                                                )))
+                                            : 0.0),
                                     formatType: FormatType.decimal,
                                     decimalType: DecimalType.automatic,
                                     currency: 'P ',
@@ -935,9 +1282,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ))) {
                                   // Refund
 
-                                  await TransactionsRecord.collection
-                                      .doc()
-                                      .set({
+                                  var transactionsRecordReference1 =
+                                      TransactionsRecord.collection.doc();
+                                  await transactionsRecordReference1.set({
                                     ...createTransactionsRecordData(
                                       staff: currentUserReference,
                                       total: functions.getTotalAmount(
@@ -952,7 +1299,17 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           valueOrDefault<int>(
                                             _model.startingNights,
                                             0,
-                                          )),
+                                          ),
+                                          widget.extend
+                                              ? ((FFAppState().extPricePerHr ??
+                                                      0) *
+                                                  double.parse(
+                                                      valueOrDefault<String>(
+                                                    _model
+                                                        .hoursLateCheckoutValue,
+                                                    '0',
+                                                  )))
+                                              : 0.0),
                                       type: 'book',
                                       hotel: FFAppState().hotel,
                                       booking:
@@ -960,13 +1317,11 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       guests: functions
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
-                                      description: functions
-                                          .quantityDescriptionForBookings(
-                                              _model.startingBeds!,
-                                              _model.bedsValue!,
-                                              _model.startingNights,
-                                              _model.nightsValue,
-                                              widget.roomNo!),
+                                      description:
+                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)}${_model.hoursLateCheckoutValue != '0' ? ' with a late checkout charge fee of ${(widget.extend ? ((FFAppState().extPricePerHr ?? 0) * double.parse(valueOrDefault<String>(
+                                                _model.hoursLateCheckoutValue,
+                                                '0',
+                                              ))) : 0.0).toString()}' : ''}',
                                       remitted: false,
                                       pending: false,
                                     ),
@@ -976,18 +1331,67 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       },
                                     ),
                                   });
+                                  _model.refundTrans =
+                                      TransactionsRecord.getDocumentFromData({
+                                    ...createTransactionsRecordData(
+                                      staff: currentUserReference,
+                                      total: functions.getTotalAmount(
+                                          _model.bedsValue!,
+                                          _model.nightsValue!,
+                                          _model.price,
+                                          FFAppState().bedPrice,
+                                          valueOrDefault<String>(
+                                            _model.startingBeds,
+                                            '0',
+                                          ),
+                                          valueOrDefault<int>(
+                                            _model.startingNights,
+                                            0,
+                                          ),
+                                          widget.extend
+                                              ? ((FFAppState().extPricePerHr ??
+                                                      0) *
+                                                  double.parse(
+                                                      valueOrDefault<String>(
+                                                    _model
+                                                        .hoursLateCheckoutValue,
+                                                    '0',
+                                                  )))
+                                              : 0.0),
+                                      type: 'book',
+                                      hotel: FFAppState().hotel,
+                                      booking:
+                                          widget.bookingToExtend?.reference,
+                                      guests: functions
+                                          .stringToInt(_model.guestsValue),
+                                      room: widget.roomNo,
+                                      description:
+                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)}${_model.hoursLateCheckoutValue != '0' ? ' with a late checkout charge fee of ${(widget.extend ? ((FFAppState().extPricePerHr ?? 0) * double.parse(valueOrDefault<String>(
+                                                _model.hoursLateCheckoutValue,
+                                                '0',
+                                              ))) : 0.0).toString()}' : ''}',
+                                      remitted: false,
+                                      pending: false,
+                                    ),
+                                    ...mapToFirestore(
+                                      {
+                                        'date': DateTime.now(),
+                                      },
+                                    ),
+                                  }, transactionsRecordReference1);
+                                  _shouldSetState = true;
+                                  // add to trans list
+                                  setState(() {
+                                    _model.addToTransactions(
+                                        _model.refundTrans!.reference);
+                                  });
                                   // add this change to history
 
                                   await HistoryRecord.createDoc(widget.ref!)
                                       .set({
                                     ...createHistoryRecordData(
-                                      description: functions
-                                          .quantityDescriptionForBookings(
-                                              _model.startingBeds!,
-                                              _model.bedsValue!,
-                                              _model.startingNights,
-                                              _model.nightsValue,
-                                              widget.roomNo!),
+                                      description:
+                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                       staff: currentUserReference,
                                     ),
                                     ...mapToFirestore(
@@ -1036,7 +1440,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         _model.price,
                                         FFAppState().bedPrice,
                                         _model.startingBeds!,
-                                        _model.startingNights!)! >
+                                        _model.startingNights!,
+                                        FFAppState().extPricePerHr *
+                                            int.parse(_model
+                                                .hoursLateCheckoutValue!))! >
                                     0.0) {
                                   // New Pending Transaction
 
@@ -1051,7 +1458,17 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           _model.price,
                                           FFAppState().bedPrice,
                                           _model.startingBeds!,
-                                          _model.startingNights!),
+                                          _model.startingNights!,
+                                          widget.extend
+                                              ? ((FFAppState().extPricePerHr ??
+                                                      0) *
+                                                  double.parse(
+                                                      valueOrDefault<String>(
+                                                    _model
+                                                        .hoursLateCheckoutValue,
+                                                    '0',
+                                                  )))
+                                              : 0.0),
                                       type: 'book',
                                       hotel: FFAppState().hotel,
                                       booking:
@@ -1060,7 +1477,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
                                       description:
-                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights) > 1 ? 'nights' : 'night'} extension',
+                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights) > 1 ? 'nights' : 'night'} extension${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                       remitted: false,
                                       pending: true,
                                     ),
@@ -1080,7 +1497,17 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           _model.price,
                                           FFAppState().bedPrice,
                                           _model.startingBeds!,
-                                          _model.startingNights!),
+                                          _model.startingNights!,
+                                          widget.extend
+                                              ? ((FFAppState().extPricePerHr ??
+                                                      0) *
+                                                  double.parse(
+                                                      valueOrDefault<String>(
+                                                    _model
+                                                        .hoursLateCheckoutValue,
+                                                    '0',
+                                                  )))
+                                              : 0.0),
                                       type: 'book',
                                       hotel: FFAppState().hotel,
                                       booking:
@@ -1089,7 +1516,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
                                       description:
-                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights) > 1 ? 'nights' : 'night'} extension',
+                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights) > 1 ? 'nights' : 'night'} extension${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                       remitted: false,
                                       pending: true,
                                     ),
@@ -1111,7 +1538,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       .set({
                                     ...createHistoryRecordData(
                                       description:
-                                          'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} but pending',
+                                          'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
                                       staff: currentUserReference,
                                     ),
                                     ...mapToFirestore(
@@ -1127,7 +1554,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           _model.price,
                                           FFAppState().bedPrice,
                                           _model.startingBeds!,
-                                          _model.startingNights!)! <
+                                          _model.startingNights!,
+                                          FFAppState().extPricePerHr *
+                                              int.parse(_model
+                                                  .hoursLateCheckoutValue!))! <
                                       0.0) {
                                     // New Pending Transaction
 
@@ -1142,7 +1572,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             _model.price,
                                             FFAppState().bedPrice,
                                             _model.startingBeds!,
-                                            _model.startingNights!),
+                                            _model.startingNights!,
+                                            widget.extend
+                                                ? ((FFAppState()
+                                                            .extPricePerHr ??
+                                                        0) *
+                                                    double.parse(
+                                                        valueOrDefault<String>(
+                                                      _model
+                                                          .hoursLateCheckoutValue,
+                                                      '0',
+                                                    )))
+                                                : 0.0),
                                         type: 'book',
                                         hotel: FFAppState().hotel,
                                         booking:
@@ -1151,7 +1592,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             .stringToInt(_model.guestsValue),
                                         room: widget.roomNo,
                                         description:
-                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(widget.bookingToExtend!.nights - _model.nightsValue!) > 1 ? 'nights' : 'night'} refund',
+                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(widget.bookingToExtend!.nights - _model.nightsValue!) > 1 ? 'nights' : 'night'} refund${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                         remitted: false,
                                         pending: true,
                                       ),
@@ -1171,7 +1612,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             _model.price,
                                             FFAppState().bedPrice,
                                             _model.startingBeds!,
-                                            _model.startingNights!),
+                                            _model.startingNights!,
+                                            widget.extend
+                                                ? ((FFAppState()
+                                                            .extPricePerHr ??
+                                                        0) *
+                                                    double.parse(
+                                                        valueOrDefault<String>(
+                                                      _model
+                                                          .hoursLateCheckoutValue,
+                                                      '0',
+                                                    )))
+                                                : 0.0),
                                         type: 'book',
                                         hotel: FFAppState().hotel,
                                         booking:
@@ -1180,7 +1632,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             .stringToInt(_model.guestsValue),
                                         room: widget.roomNo,
                                         description:
-                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(widget.bookingToExtend!.nights - _model.nightsValue!) > 1 ? 'nights' : 'night'} refund',
+                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(widget.bookingToExtend!.nights - _model.nightsValue!) > 1 ? 'nights' : 'night'} refund${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                         remitted: false,
                                         pending: true,
                                       ),
@@ -1202,7 +1654,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .set({
                                       ...createHistoryRecordData(
                                         description:
-                                            'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} but pending',
+                                            'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
                                         staff: currentUserReference,
                                       ),
                                       ...mapToFirestore(
@@ -1245,7 +1697,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         _model.price,
                                         FFAppState().bedPrice,
                                         '-1',
-                                        0),
+                                        0,
+                                        FFAppState().extPricePerHr *
+                                            int.parse(_model
+                                                .hoursLateCheckoutValue!)),
                                     0.0,
                                   ),
                                   extraBeds: _model.bedsValue,
@@ -1259,6 +1714,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                 ...mapToFirestore(
                                   {
                                     'pendings': _model.pendings,
+                                    'transactions': _model.transactions,
                                   },
                                 ),
                               });
@@ -1297,7 +1753,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         _model.price,
                                         FFAppState().bedPrice,
                                         '-1',
-                                        0),
+                                        0,
+                                        0.0),
                                     0.0,
                                   ),
                                   status: functions.paidOrPending(_model.paid),
@@ -1308,6 +1765,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   {
                                     'dateIn': FieldValue.serverTimestamp(),
                                     'pendings': _model.pendings,
+                                    'transactions': _model.transactions,
                                   },
                                 ),
                               });
@@ -1328,7 +1786,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         _model.price,
                                         FFAppState().bedPrice,
                                         '-1',
-                                        0),
+                                        0,
+                                        0.0),
                                     0.0,
                                   ),
                                   status: functions.paidOrPending(_model.paid),
@@ -1339,6 +1798,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   {
                                     'dateIn': DateTime.now(),
                                     'pendings': _model.pendings,
+                                    'transactions': _model.transactions,
                                   },
                                 ),
                               }, bookingsRecordReference);
@@ -1346,7 +1806,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               if (_model.paid) {
                                 // New Transaction
 
-                                await TransactionsRecord.collection.doc().set({
+                                var transactionsRecordReference4 =
+                                    TransactionsRecord.collection.doc();
+                                await transactionsRecordReference4.set({
                                   ...createTransactionsRecordData(
                                     staff: currentUserReference,
                                     total: functions.getTotalAmount(
@@ -1355,7 +1817,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         _model.price,
                                         FFAppState().bedPrice,
                                         _model.startingBeds!,
-                                        _model.startingNights!),
+                                        _model.startingNights!,
+                                        0.0),
                                     type: 'book',
                                     hotel: FFAppState().hotel,
                                     booking: _model.savedBooking?.reference,
@@ -1363,7 +1826,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'New Checkin In Room ${widget.roomNo?.toString()} For ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}',
+                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
                                     remitted: false,
                                     pending: false,
                                   ),
@@ -1373,12 +1836,47 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     },
                                   ),
                                 });
+                                _model.checkin1 =
+                                    TransactionsRecord.getDocumentFromData({
+                                  ...createTransactionsRecordData(
+                                    staff: currentUserReference,
+                                    total: functions.getTotalAmount(
+                                        _model.bedsValue!,
+                                        _model.nightsValue!,
+                                        _model.price,
+                                        FFAppState().bedPrice,
+                                        _model.startingBeds!,
+                                        _model.startingNights!,
+                                        0.0),
+                                    type: 'book',
+                                    hotel: FFAppState().hotel,
+                                    booking: _model.savedBooking?.reference,
+                                    guests: functions
+                                        .stringToInt(_model.guestsValue),
+                                    room: widget.roomNo,
+                                    description:
+                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                    remitted: false,
+                                    pending: false,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': DateTime.now(),
+                                    },
+                                  ),
+                                }, transactionsRecordReference4);
+                                _shouldSetState = true;
+                                // add to trans list
+                                setState(() {
+                                  _model.addToTransactions(
+                                      _model.checkin1!.reference);
+                                });
                                 // Check In To History
 
                                 await HistoryRecord.createDoc(widget.ref!).set({
                                   ...createHistoryRecordData(
                                     description:
-                                        '${_model.guestsValue} new guest/s have checked in!',
+                                        '${_model.guestsValue} new ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}guest/s${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''} have checked in!',
                                     staff: currentUserReference,
                                   ),
                                   ...mapToFirestore(
@@ -1401,7 +1899,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         _model.price,
                                         FFAppState().bedPrice,
                                         _model.startingBeds!,
-                                        _model.startingNights!),
+                                        _model.startingNights!,
+                                        0.0),
                                     type: 'book',
                                     hotel: FFAppState().hotel,
                                     booking: _model.savedBooking?.reference,
@@ -1409,7 +1908,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}',
+                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
                                     remitted: false,
                                     pending: true,
                                   ),
@@ -1429,7 +1928,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         _model.price,
                                         FFAppState().bedPrice,
                                         _model.startingBeds!,
-                                        _model.startingNights!),
+                                        _model.startingNights!,
+                                        0.0),
                                     type: 'book',
                                     hotel: FFAppState().hotel,
                                     booking: _model.savedBooking?.reference,
@@ -1437,7 +1937,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}',
+                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
                                     remitted: false,
                                     pending: true,
                                   ),
@@ -1463,7 +1963,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                 await HistoryRecord.createDoc(widget.ref!).set({
                                   ...createHistoryRecordData(
                                     description:
-                                        'New checkin but pending payment.',
+                                        'New checkin ${_model.ability != 'normal' ? 'by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s ' : ''}but pending payment.',
                                     staff: currentUserReference,
                                   ),
                                   ...mapToFirestore(

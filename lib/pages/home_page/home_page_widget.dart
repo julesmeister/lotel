@@ -85,7 +85,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
       });
       if (!(FFAppState().settingRef != null)) {
         // hotel Settings
-        _model.settingsRef = await queryHotelSettingsRecordOnce(
+        _model.hotelSettingsHome = await queryHotelSettingsRecordOnce(
           queryBuilder: (hotelSettingsRecord) => hotelSettingsRecord.where(
             'hotel',
             isEqualTo: FFAppState().hotel,
@@ -94,7 +94,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
         ).then((s) => s.firstOrNull);
         // set settingsRef
         setState(() {
-          FFAppState().settingRef = _model.settingsRef?.reference;
+          FFAppState().settingRef = _model.hotelSettingsHome?.reference;
         });
       }
       if (FFAppState().lastRemit == null) {
@@ -506,6 +506,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             .toList()
                                                             .first
                                                             .reference;
+                                                    FFAppState().extPricePerHr =
+                                                        statusToggleHotelSettingsRecordList
+                                                            .where((e) =>
+                                                                statusToggleHotelSettingsRecordList
+                                                                    .first
+                                                                    .hotel ==
+                                                                'Serenity')
+                                                            .toList()
+                                                            .first
+                                                            .lateCheckoutFee;
                                                   });
                                                   // clear rooms cache
                                                   FFAppState()
@@ -681,6 +691,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             .toList()
                                                             .first
                                                             .reference;
+                                                    FFAppState().extPricePerHr =
+                                                        statusToggleHotelSettingsRecordList
+                                                            .where((e) =>
+                                                                e.hotel ==
+                                                                'My Lifestyle')
+                                                            .toList()
+                                                            .first
+                                                            .lateCheckoutFee;
                                                   });
                                                   // clear rooms cache
                                                   FFAppState()

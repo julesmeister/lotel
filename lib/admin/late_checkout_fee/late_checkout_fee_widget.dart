@@ -4,40 +4,34 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'edit_bed_price_model.dart';
-export 'edit_bed_price_model.dart';
+import 'late_checkout_fee_model.dart';
+export 'late_checkout_fee_model.dart';
 
-class EditBedPriceWidget extends StatefulWidget {
-  const EditBedPriceWidget({Key? key}) : super(key: key);
+class LateCheckoutFeeWidget extends StatefulWidget {
+  const LateCheckoutFeeWidget({Key? key}) : super(key: key);
 
   @override
-  _EditBedPriceWidgetState createState() => _EditBedPriceWidgetState();
+  _LateCheckoutFeeWidgetState createState() => _LateCheckoutFeeWidgetState();
 }
 
-class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
-  late EditBedPriceModel _model;
+class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
+  late LateCheckoutFeeModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => EditBedPriceModel());
+    _model = createModel(context, () => LateCheckoutFeeModel());
 
-    _model.textController ??= TextEditingController(
-        text: valueOrDefault<String>(
-      formatNumber(
-        FFAppState().bedPrice,
-        formatType: FormatType.decimal,
-        decimalType: DecimalType.automatic,
-      ),
-      '0',
-    ));
+    _model.textController ??=
+        TextEditingController(text: FFAppState().extPricePerHr.toString());
     _model.textFieldFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -89,11 +83,11 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
             ),
           );
         }
-        List<HotelSettingsRecord> editBedPriceHotelSettingsRecordList =
+        List<HotelSettingsRecord> lateCheckoutFeeHotelSettingsRecordList =
             snapshot.data!;
-        final editBedPriceHotelSettingsRecord =
-            editBedPriceHotelSettingsRecordList.isNotEmpty
-                ? editBedPriceHotelSettingsRecordList.first
+        final lateCheckoutFeeHotelSettingsRecord =
+            lateCheckoutFeeHotelSettingsRecordList.isNotEmpty
+                ? lateCheckoutFeeHotelSettingsRecordList.first
                 : null;
         return Scaffold(
           key: scaffoldKey,
@@ -115,7 +109,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
               },
             ),
             title: Text(
-              'Change Extra Bed Price',
+              'Change Late Check Out Fee',
               style: FlutterFlowTheme.of(context).titleSmall,
             ),
             actions: [
@@ -132,13 +126,13 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                 ),
                 onPressed: () async {
                   setState(() {
-                    FFAppState().bedPrice =
-                        editBedPriceHotelSettingsRecord!.bedPrice;
+                    FFAppState().extPricePerHr =
+                        lateCheckoutFeeHotelSettingsRecord!.lateCheckoutFee;
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        'Bed price has been refreshed!',
+                        'Refreshed the Late Checkout Fee!',
                         style: TextStyle(
                           color: FlutterFlowTheme.of(context).primaryText,
                         ),
@@ -231,7 +225,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                                                       .fromSTEB(
                                                           8.0, 0.0, 0.0, 0.0),
                                                   child: Text(
-                                                    'Extra Bed Cost',
+                                                    'Extension Rate Per Hour',
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .headlineSmall,
@@ -242,7 +236,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                                                       .fromSTEB(
                                                           8.0, 4.0, 12.0, 0.0),
                                                   child: Text(
-                                                    'How much would it cost for a guest to request each extra bed?',
+                                                    'How much would it cost for a guest to request extra hours after 12 noon?',
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .bodySmall
@@ -357,32 +351,36 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                         EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 16.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        if ((editBedPriceHotelSettingsRecord != null) == true) {
-                          await editBedPriceHotelSettingsRecord!.reference
+                        if ((lateCheckoutFeeHotelSettingsRecord != null) ==
+                            true) {
+                          await lateCheckoutFeeHotelSettingsRecord!.reference
                               .update(createHotelSettingsRecordData(
-                            bedPrice:
+                            lateCheckoutFee:
                                 double.tryParse(_model.textController.text),
                           ));
                         } else {
                           await HotelSettingsRecord.collection
                               .doc()
                               .set(createHotelSettingsRecordData(
-                                bedPrice: valueOrDefault<double>(
-                                  double.tryParse(_model.textController.text),
-                                  0.0,
-                                ),
+                                bedPrice: 200.0,
                                 hotel: FFAppState().hotel,
+                                lastRemit: functions.yesterdayDate(),
+                                acceptNewStaff: false,
+                                remittable: false,
+                                lateCheckoutFee:
+                                    lateCheckoutFeeHotelSettingsRecord
+                                        ?.lateCheckoutFee,
                               ));
                         }
 
                         setState(() {
-                          FFAppState().bedPrice =
+                          FFAppState().extPricePerHr =
                               double.parse(_model.textController.text);
                         });
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'Saved',
+                              'Saved!',
                               style: TextStyle(
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),

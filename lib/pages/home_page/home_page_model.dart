@@ -103,7 +103,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
   LastLoginRecord? log;
   // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
-  HotelSettingsRecord? settingsRef;
+  HotelSettingsRecord? hotelSettingsHome;
   // Stores action output result for [Backend Call - Read Document] action in HomePage widget.
   HotelSettingsRecord? settings;
   // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.

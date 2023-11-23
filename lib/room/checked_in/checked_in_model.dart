@@ -38,6 +38,17 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
 
   int loopPendingCounter = 0;
 
+  List<TransactionsRecord> transactions = [];
+  void addToTransactions(TransactionsRecord item) => transactions.add(item);
+  void removeFromTransactions(TransactionsRecord item) =>
+      transactions.remove(item);
+  void removeAtIndexFromTransactions(int index) => transactions.removeAt(index);
+  void insertAtIndexInTransactions(int index, TransactionsRecord item) =>
+      transactions.insert(index, item);
+  void updateTransactionsAtIndex(
+          int index, Function(TransactionsRecord) updateFn) =>
+      transactions[index] = updateFn(transactions[index]);
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -59,6 +70,8 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   String? Function(BuildContext, String?)? newPriceControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in saveChangedPrice widget.
   HotelSettingsRecord? hotelSetting;
+  // Stores action output result for [Backend Call - Create Document] action in saveChangedPrice widget.
+  TransactionsRecord? changePriceTrans;
   // Stores action output result for [Backend Call - Create Document] action in saveChangedPrice widget.
   TransactionsRecord? newPending;
 

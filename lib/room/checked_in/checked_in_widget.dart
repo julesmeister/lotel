@@ -997,6 +997,10 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                 FieldValue.arrayRemove([
                                                                               _model.pendingTrans?.reference
                                                                             ]),
+                                                                            'transactions':
+                                                                                FieldValue.arrayUnion([
+                                                                              _model.pendingTrans?.reference
+                                                                            ]),
                                                                           },
                                                                         ),
                                                                       });
@@ -1031,7 +1035,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .set({
                                                                       ...createHistoryRecordData(
                                                                         description:
-                                                                            'Guest/s have settled the amount of Php ${functions.getTotalAmount(checkedInBookingsRecord.extraBeds, checkedInBookingsRecord.nights, checkedInBookingsRecord.total, FFAppState().bedPrice, '-1', 0)?.toString()}',
+                                                                            'Guest/s have settled the amount of Php ${functions.getTotalAmount(checkedInBookingsRecord.extraBeds, checkedInBookingsRecord.nights, checkedInBookingsRecord.total, FFAppState().bedPrice, '-1', 0, 0.0).toString()}',
                                                                         staff:
                                                                             currentUserReference,
                                                                       ),
@@ -1241,15 +1245,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 FormFieldController<
                                                                     String>(
                                                               _model.priceChangedescriptionValue ??=
-                                                                  'Price Change',
+                                                                  'Discount',
                                                             ),
                                                             options: [
-                                                              'Price Change',
                                                               'Discount',
-                                                              'Extra Bed',
                                                               'Extend Hours',
-                                                              'Senior Citizen Discount',
-                                                              'PWD Discount',
                                                               'Change Room'
                                                             ],
                                                             onChanged: (val) =>
@@ -1503,9 +1503,10 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         'paid') {
                                                                       // new transaction
 
-                                                                      await TransactionsRecord
+                                                                      var transactionsRecordReference1 = TransactionsRecord
                                                                           .collection
-                                                                          .doc()
+                                                                          .doc();
+                                                                      await transactionsRecordReference1
                                                                           .set({
                                                                         ...createTransactionsRecordData(
                                                                           staff:
@@ -1535,6 +1536,53 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           {
                                                                             'date':
                                                                                 FieldValue.serverTimestamp(),
+                                                                          },
+                                                                        ),
+                                                                      });
+                                                                      _model.changePriceTrans =
+                                                                          TransactionsRecord
+                                                                              .getDocumentFromData({
+                                                                        ...createTransactionsRecordData(
+                                                                          staff:
+                                                                              currentUserReference,
+                                                                          total: functions.priceHasChanged(
+                                                                              checkedInBookingsRecord.total,
+                                                                              double.parse(_model.newPriceController.text)),
+                                                                          booking:
+                                                                              widget.booking,
+                                                                          hotel:
+                                                                              FFAppState().hotel,
+                                                                          type:
+                                                                              'book',
+                                                                          guests:
+                                                                              int.parse(checkedInBookingsRecord.guests),
+                                                                          room:
+                                                                              widget.roomNo,
+                                                                          description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
+                                                                              return (priceChange / bedPrice).toInt().abs().toString() + " ";
+                                                                            }(functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                          remitted:
+                                                                              false,
+                                                                          pending:
+                                                                              false,
+                                                                        ),
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'date':
+                                                                                DateTime.now(),
+                                                                          },
+                                                                        ),
+                                                                      }, transactionsRecordReference1);
+
+                                                                      await widget
+                                                                          .booking!
+                                                                          .update({
+                                                                        ...mapToFirestore(
+                                                                          {
+                                                                            'transactions':
+                                                                                FieldValue.arrayUnion([
+                                                                              _model.changePriceTrans?.reference
+                                                                            ]),
                                                                           },
                                                                         ),
                                                                       });

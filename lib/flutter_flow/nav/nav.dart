@@ -273,6 +273,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             ref: params.getParam(
                 'ref', ParamType.DocumentReference, false, ['rentals']),
           ),
+        ),
+        FFRoute(
+          name: 'LateCheckoutFee',
+          path: '/lateCheckoutFee',
+          builder: (context, params) => LateCheckoutFeeWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

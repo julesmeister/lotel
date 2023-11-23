@@ -52,6 +52,9 @@ class FFAppState extends ChangeNotifier {
     _safeInit(() {
       _settingRef = prefs.getString('ff_settingRef')?.ref ?? _settingRef;
     });
+    _safeInit(() {
+      _extPricePerHr = prefs.getDouble('ff_extPricePerHr') ?? _extPricePerHr;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -119,6 +122,13 @@ class FFAppState extends ChangeNotifier {
     _value != null
         ? prefs.setString('ff_settingRef', _value.path)
         : prefs.remove('ff_settingRef');
+  }
+
+  double _extPricePerHr = 0.0;
+  double get extPricePerHr => _extPricePerHr;
+  set extPricePerHr(double _value) {
+    _extPricePerHr = _value;
+    prefs.setDouble('ff_extPricePerHr', _value);
   }
 
   final _roomsManager = StreamRequestManager<List<RoomsRecord>>();

@@ -20,6 +20,7 @@ double? getTotalAmount(
   double bedPrice,
   String startingBeds,
   int startingNights,
+  double? lateCheckoutFee,
 ) {
   double totalAmount = 0.0;
 
@@ -38,6 +39,11 @@ double? getTotalAmount(
     totalAmount += nightDifference * roomPrice;
   } else {
     totalAmount += nights * roomPrice;
+  }
+
+  // Add late checkout fee if indicated
+  if (lateCheckoutFee != null) {
+    totalAmount += lateCheckoutFee;
   }
 
   return totalAmount;

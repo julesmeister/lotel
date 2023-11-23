@@ -135,6 +135,7 @@ class _RemittanceSpecificTransactionsWidgetState
         setState(() {
           _model.addToTransactions(_model.transactionToList!);
         });
+        // increment loop
         setState(() {
           _model.loopTransactionsCounter = _model.loopTransactionsCounter + 1;
         });
@@ -1032,38 +1033,6 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   ),
                                                             ),
                                                           ),
-                                                          Card(
-                                                            clipBehavior: Clip
-                                                                .antiAliasWithSaveLayer,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryBackground,
-                                                            elevation: 1.0,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          40.0),
-                                                            ),
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          4.0,
-                                                                          4.0,
-                                                                          4.0,
-                                                                          4.0),
-                                                              child: Icon(
-                                                                Icons
-                                                                    .keyboard_arrow_right_rounded,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryText,
-                                                                size: 24.0,
-                                                              ),
-                                                            ),
-                                                          ),
                                                         ],
                                                       ),
                                                     ],
@@ -1314,38 +1283,6 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                               context)
                                                                           .error,
                                                                     ),
-                                                              ),
-                                                            ),
-                                                            Card(
-                                                              clipBehavior: Clip
-                                                                  .antiAliasWithSaveLayer,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryBackground,
-                                                              elevation: 1.0,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            40.0),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0),
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .keyboard_arrow_right_rounded,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                                  size: 24.0,
-                                                                ),
                                                               ),
                                                             ),
                                                           ],
@@ -2225,38 +2162,6 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             context)
                                                                         .success,
                                                                   ),
-                                                            ),
-                                                          ),
-                                                          Card(
-                                                            clipBehavior: Clip
-                                                                .antiAliasWithSaveLayer,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryBackground,
-                                                            elevation: 1.0,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          40.0),
-                                                            ),
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          4.0,
-                                                                          4.0,
-                                                                          4.0,
-                                                                          4.0),
-                                                              child: Icon(
-                                                                Icons
-                                                                    .keyboard_arrow_right_rounded,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryText,
-                                                                size: 24.0,
-                                                              ),
                                                             ),
                                                           ),
                                                         ],
