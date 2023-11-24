@@ -301,38 +301,70 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                     fontFamily: 'Outfit',
                                     fontSize: 26.0,
                                   ),
-                              minFontSize: 22.0,
+                              minFontSize: 18.0,
                             ).animateOnPageLoad(
                                 animationsMap['textOnPageLoadAnimation']!),
                           ),
                           if (valueOrDefault(currentUserDocument?.role, '') ==
                               'admin')
+                            FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 20.0,
+                              borderWidth: 1.0,
+                              buttonSize: 40.0,
+                              icon: Icon(
+                                Icons.chevron_left,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 24.0,
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  _model.date =
+                                      functions.prevDate(_model.date!);
+                                });
+                              },
+                            ),
+                          if (valueOrDefault(currentUserDocument?.role, '') ==
+                              'admin')
                             Expanded(
                               flex: 1,
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 0.0, 0.0, 0.0),
-                                child: FlutterFlowIconButton(
-                                  borderColor:
-                                      FlutterFlowTheme.of(context).alternate,
-                                  borderRadius: 12.0,
-                                  borderWidth: 1.0,
-                                  buttonSize: 44.0,
-                                  icon: Icon(
-                                    Icons.calendar_month,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 24.0,
-                                  ),
-                                  onPressed: () async {
-                                    setState(() {
-                                      _model.showDatePicker =
-                                          !_model.showDatePicker;
-                                    });
-                                  },
-                                ).animateOnPageLoad(animationsMap[
-                                    'iconButtonOnPageLoadAnimation']!),
+                              child: FlutterFlowIconButton(
+                                borderRadius: 12.0,
+                                borderWidth: 1.0,
+                                buttonSize: 44.0,
+                                icon: Icon(
+                                  Icons.calendar_month,
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  size: 24.0,
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    _model.showDatePicker =
+                                        !_model.showDatePicker;
+                                  });
+                                },
+                              ).animateOnPageLoad(animationsMap[
+                                  'iconButtonOnPageLoadAnimation']!),
+                            ),
+                          if (valueOrDefault(currentUserDocument?.role, '') ==
+                              'admin')
+                            FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 20.0,
+                              borderWidth: 1.0,
+                              buttonSize: 40.0,
+                              icon: Icon(
+                                Icons.navigate_next,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 24.0,
                               ),
+                              onPressed: () async {
+                                setState(() {
+                                  _model.date =
+                                      functions.nextDate(_model.date!);
+                                });
+                              },
                             ),
                         ],
                       ),

@@ -98,6 +98,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
           _model.transactions = widget.bookingToExtend!.transactions
               .toList()
               .cast<DocumentReference>();
+          _model.ability = widget.bookingToExtend!.ability;
         });
       } else {
         setState(() {
@@ -1279,8 +1280,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     valueOrDefault<String>(
                                       _model.bedsValue,
                                       '0',
-                                    ))) {
-                                  // Refund
+                                    ),
+                                    _model.hoursLateCheckoutValue != '0')) {
+                                  // Refund or Extend or Late Checkout
 
                                   var transactionsRecordReference1 =
                                       TransactionsRecord.collection.doc();
@@ -1318,10 +1320,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
                                       description:
-                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)}${_model.hoursLateCheckoutValue != '0' ? ' with a late checkout charge fee of ${(widget.extend ? ((FFAppState().extPricePerHr ?? 0) * double.parse(valueOrDefault<String>(
-                                                _model.hoursLateCheckoutValue,
-                                                '0',
-                                              ))) : 0.0).toString()}' : ''}',
+                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}',
                                       remitted: false,
                                       pending: false,
                                     ),
@@ -1366,10 +1365,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
                                       description:
-                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)}${_model.hoursLateCheckoutValue != '0' ? ' with a late checkout charge fee of ${(widget.extend ? ((FFAppState().extPricePerHr ?? 0) * double.parse(valueOrDefault<String>(
-                                                _model.hoursLateCheckoutValue,
-                                                '0',
-                                              ))) : 0.0).toString()}' : ''}',
+                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}',
                                       remitted: false,
                                       pending: false,
                                     ),
@@ -1391,7 +1387,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       .set({
                                     ...createHistoryRecordData(
                                       description:
-                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                       staff: currentUserReference,
                                     ),
                                     ...mapToFirestore(
@@ -1538,7 +1534,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       .set({
                                     ...createHistoryRecordData(
                                       description:
-                                          'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                          'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
                                       staff: currentUserReference,
                                     ),
                                     ...mapToFirestore(
@@ -1654,7 +1650,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .set({
                                       ...createHistoryRecordData(
                                         description:
-                                            'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                            'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
                                         staff: currentUserReference,
                                       ),
                                       ...mapToFirestore(
@@ -1760,6 +1756,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   status: functions.paidOrPending(_model.paid),
                                   staff: currentUserReference,
                                   remitted: false,
+                                  ability: _model.ability,
                                 ),
                                 ...mapToFirestore(
                                   {
@@ -1793,6 +1790,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   status: functions.paidOrPending(_model.paid),
                                   staff: currentUserReference,
                                   remitted: false,
+                                  ability: _model.ability,
                                 ),
                                 ...mapToFirestore(
                                   {
@@ -1908,7 +1906,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                        'Room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
                                     remitted: false,
                                     pending: true,
                                   ),
@@ -1937,7 +1935,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                        'Room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
                                     remitted: false,
                                     pending: true,
                                   ),

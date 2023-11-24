@@ -146,7 +146,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                           textCapitalization: TextCapitalization.none,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelStyle: FlutterFlowTheme.of(context).bodyLarge,
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodyLarge.override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 36.0,
+                                    ),
                             hintText: 'How much?',
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelLarge
@@ -188,8 +192,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                             contentPadding: EdgeInsetsDirectional.fromSTEB(
                                 24.0, 24.0, 20.0, 24.0),
                           ),
-                          style: FlutterFlowTheme.of(context).bodyMedium,
-                          maxLines: 4,
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 36.0,
+                                  ),
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           cursorColor: FlutterFlowTheme.of(context).primary,
@@ -243,11 +250,9 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                             });
                             while (_model.loopTransactionsCounter !=
                                 _model.transactions?.length) {
-                              if (_model
-                                      .transactions?[
-                                          _model.loopTransactionsCounter]
-                                      ?.pending !=
-                                  true) {
+                              if (!_model
+                                  .transactions![_model.loopTransactionsCounter]
+                                  .pending) {
                                 // Add to TransactionToRemit
                                 setState(() {
                                   _model.addToTransactionsToRemit(
@@ -305,7 +310,23 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                     .update(createTransactionsRecordData(
                                   remitted: true,
                                 ));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Just be aware that are still pending transactions.',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).secondary,
+                                  ),
+                                );
                               }
+
                               // Increment Loop Counter
                               setState(() {
                                 _model.loopTransactionsCounter =

@@ -293,7 +293,10 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             ChipData('Food'),
                             ChipData('Pamasahe'),
                             ChipData('Dodong'),
-                            ChipData('Cash Advance')
+                            ChipData('Cash Advance'),
+                            ChipData('Materials'),
+                            ChipData('Salary'),
+                            ChipData('Refill Water')
                           ],
                           onChanged: (val) async {
                             setState(() => _model.choicesValue = val?.first);

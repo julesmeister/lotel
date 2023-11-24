@@ -142,9 +142,14 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                         child: TextFormField(
                           controller: _model.detailController,
                           focusNode: _model.detailFocusNode,
+                          textCapitalization: TextCapitalization.sentences,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelStyle: FlutterFlowTheme.of(context).bodySmall,
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodySmall.override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 20.0,
+                                    ),
                             hintText: 'Type your issue here',
                             hintStyle: FlutterFlowTheme.of(context)
                                 .bodyMedium
@@ -152,7 +157,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                   fontFamily: 'Lexend Deca',
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryText,
-                                  fontSize: 14.0,
+                                  fontSize: 20.0,
                                   fontWeight: FontWeight.normal,
                                 ),
                             enabledBorder: OutlineInputBorder(
@@ -190,7 +195,11 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                             contentPadding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 20.0, 24.0),
                           ),
-                          style: FlutterFlowTheme.of(context).bodyMedium,
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 20.0,
+                                  ),
                           maxLines: 10,
                           minLines: 6,
                           keyboardType: TextInputType.multiline,

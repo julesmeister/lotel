@@ -208,7 +208,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     8.0, 8.0, 8.0, 8.0),
                                             child: Icon(
-                                              Icons.phone_sharp,
+                                              Icons.bed_rounded,
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .info,

@@ -1,10 +1,10 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
-import '/components/collect_remittance_user/collect_remittance_user_widget.dart';
 import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/change_remittance/change_remittance_widget.dart';
 import '/components/forms/new_issue/new_issue_widget.dart';
+import '/components/options/collect_remittance_user/collect_remittance_user_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -83,6 +83,21 @@ class _HomePageWidgetState extends State<HomePageWidget>
           },
         ),
       });
+      if (FFAppState().extPricePerHr == null) {
+        // hotel Settings
+        _model.hotelSettingForLate = await queryHotelSettingsRecordOnce(
+          queryBuilder: (hotelSettingsRecord) => hotelSettingsRecord.where(
+            'hotel',
+            isEqualTo: FFAppState().hotel,
+          ),
+          singleRecord: true,
+        ).then((s) => s.firstOrNull);
+        // set extPricePerHr
+        setState(() {
+          FFAppState().extPricePerHr =
+              _model.hotelSettingForLate!.lateCheckoutFee;
+        });
+      }
       if (!(FFAppState().settingRef != null)) {
         // hotel Settings
         _model.hotelSettingsHome = await queryHotelSettingsRecordOnce(
@@ -2591,6 +2606,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             builder: (context) {
                                               final issuesList =
                                                   containerIssuesRecordList
+                                                      .where((e) =>
+                                                          e.status == 'pending')
                                                       .toList();
                                               return ListView.builder(
                                                 padding: EdgeInsets.zero,

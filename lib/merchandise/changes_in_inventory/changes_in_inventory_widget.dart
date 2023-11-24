@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
@@ -6,6 +7,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -176,35 +178,87 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
               ),
               title: Align(
                 alignment: AlignmentDirectional(-1.00, 0.00),
-                child: Text(
+                child: AutoSizeText(
                   'Changes in Inventory',
                   textAlign: TextAlign.start,
+                  maxLines: 1,
                   style: FlutterFlowTheme.of(context).headlineLarge.override(
                         fontFamily: 'Outfit',
                         fontSize: 24.0,
                         fontWeight: FontWeight.normal,
                       ),
+                  minFontSize: 22.0,
                 ),
               ),
               actions: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 12.0, 0.0),
-                  child: FlutterFlowIconButton(
-                    borderColor: FlutterFlowTheme.of(context).alternate,
-                    borderRadius: 12.0,
-                    borderWidth: 2.0,
-                    buttonSize: 40.0,
-                    fillColor: FlutterFlowTheme.of(context).info,
-                    icon: Icon(
-                      Icons.calendar_month_outlined,
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      size: 24.0,
+                Align(
+                  alignment: AlignmentDirectional(0.00, 0.00),
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        if (valueOrDefault(currentUserDocument?.role, '') ==
+                            'admin')
+                          AuthUserStreamWidget(
+                            builder: (context) => FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 20.0,
+                              borderWidth: 1.0,
+                              buttonSize: 40.0,
+                              icon: Icon(
+                                Icons.chevron_left,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 24.0,
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  _model.date =
+                                      functions.prevDate(_model.date!);
+                                });
+                              },
+                            ),
+                          ),
+                        FlutterFlowIconButton(
+                          borderRadius: 12.0,
+                          borderWidth: 2.0,
+                          buttonSize: 40.0,
+                          fillColor: FlutterFlowTheme.of(context).info,
+                          icon: Icon(
+                            Icons.calendar_month_outlined,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            setState(() {
+                              _model.showDatePicker = !_model.showDatePicker;
+                            });
+                          },
+                        ),
+                        if (valueOrDefault(currentUserDocument?.role, '') ==
+                            'admin')
+                          AuthUserStreamWidget(
+                            builder: (context) => FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 20.0,
+                              borderWidth: 1.0,
+                              buttonSize: 40.0,
+                              icon: Icon(
+                                Icons.navigate_next,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 24.0,
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  _model.date =
+                                      functions.nextDate(_model.date!);
+                                });
+                              },
+                            ),
+                          ),
+                      ],
                     ),
-                    onPressed: () async {
-                      setState(() {
-                        _model.showDatePicker = !_model.showDatePicker;
-                      });
-                    },
                   ),
                 ),
               ],

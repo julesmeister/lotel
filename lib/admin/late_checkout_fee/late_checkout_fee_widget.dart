@@ -202,7 +202,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     8.0, 8.0, 8.0, 8.0),
                                             child: Icon(
-                                              Icons.phone_sharp,
+                                              Icons.roundabout_left,
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .info,

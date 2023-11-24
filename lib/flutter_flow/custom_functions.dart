@@ -241,6 +241,7 @@ String quantityDescriptionForBookings(
   int? startingNights,
   int? currentNights,
   int room,
+  String lateCheckoutHours,
 ) {
   int bedsDifference =
       (int.tryParse(currentBeds) ?? 0) - (int.tryParse(startingBeds) ?? 0);
@@ -264,6 +265,11 @@ String quantityDescriptionForBookings(
         '$nightsDifference ${nightsDifference == 1 ? 'night' : 'nights'} $nightsAction');
   }
 
+  if (lateCheckoutHours != "0") {
+    descriptions.add(
+        'charged extra for checking out late for $lateCheckoutHours hours');
+  }
+
   return descriptions.isNotEmpty
       ? descriptions.join(' and ') + ' in room $room'
       : 'No changes';
@@ -274,12 +280,13 @@ bool hasDifferencesInBookings(
   int startingNights,
   int currentNights,
   String? currentBeds,
+  bool lateCheckout,
 ) {
   int bedsDifference =
       int.tryParse(currentBeds ?? '0')! - int.tryParse(startingBeds ?? '0')!;
   int nightsDifference = currentNights - startingNights;
 
-  return bedsDifference != 0 || nightsDifference != 0;
+  return bedsDifference != 0 || nightsDifference != 0 || lateCheckout;
 }
 
 int? prevOperatorChange(
