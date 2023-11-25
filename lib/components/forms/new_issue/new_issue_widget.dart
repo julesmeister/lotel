@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,15 @@ import 'new_issue_model.dart';
 export 'new_issue_model.dart';
 
 class NewIssueWidget extends StatefulWidget {
-  const NewIssueWidget({Key? key}) : super(key: key);
+  const NewIssueWidget({
+    Key? key,
+    bool? edit,
+    this.ref,
+  })  : this.edit = edit ?? false,
+        super(key: key);
+
+  final bool edit;
+  final DocumentReference? ref;
 
   @override
   _NewIssueWidgetState createState() => _NewIssueWidgetState();
@@ -31,6 +40,18 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => NewIssueModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (widget.edit) {
+        // editable issue
+        _model.issueToEdit = await IssuesRecord.getDocumentOnce(widget.ref!);
+        // set form with detail
+        setState(() {
+          _model.detailController?.text = _model.issueToEdit!.detail;
+        });
+      }
+    });
 
     _model.detailController ??= TextEditingController();
     _model.detailFocusNode ??= FocusNode();
@@ -120,7 +141,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'New Issue',
+                                widget.edit ? 'Edit Issue' : 'New Issue',
                                 style:
                                     FlutterFlowTheme.of(context).headlineSmall,
                               ),
@@ -232,35 +253,58 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await IssuesRecord.collection.doc().set({
-                                    ...createIssuesRecordData(
-                                      staff: currentUserReference,
+                                  if (widget.edit) {
+                                    await widget.ref!
+                                        .update(createIssuesRecordData(
                                       detail: _model.detailController.text,
-                                      status: 'pending',
-                                      hotel: FFAppState().hotel,
-                                    ),
-                                    ...mapToFirestore(
-                                      {
-                                        'date': FieldValue.serverTimestamp(),
-                                      },
-                                    ),
-                                  });
-                                  Navigator.pop(context);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'The issue has now been reported!',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
+                                    ));
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'The issue has now been updated!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
                                         ),
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
                                       ),
-                                      duration: Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    await IssuesRecord.collection.doc().set({
+                                      ...createIssuesRecordData(
+                                        staff: currentUserReference,
+                                        detail: _model.detailController.text,
+                                        status: 'pending',
+                                        hotel: FFAppState().hotel,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'The issue has now been reported!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
+                                        ),
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -270,7 +314,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
-                                        'Submit',
+                                        widget.edit ? 'Save' : 'Submit',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(

@@ -266,13 +266,21 @@ String quantityDescriptionForBookings(
   }
 
   if (lateCheckoutHours != "0") {
+    String pluralization = lateCheckoutHours == "1" ? 'hour' : 'hours';
+
     descriptions.add(
-        'charged extra for checking out late for $lateCheckoutHours hours');
+        'charged extra for checking out late for $lateCheckoutHours $pluralization');
   }
 
-  return descriptions.isNotEmpty
+  String finalDescription = descriptions.isNotEmpty
       ? descriptions.join(' and ') + ' in room $room'
       : 'No changes';
+
+  // Capitalize the first letter of the final description
+  finalDescription = finalDescription.substring(0, 1).toUpperCase() +
+      finalDescription.substring(1);
+
+  return finalDescription;
 }
 
 bool hasDifferencesInBookings(

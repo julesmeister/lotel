@@ -170,7 +170,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
           },
         ),
         title: Text(
-          widget.extend == false ? 'New Booking' : 'Extend Booking',
+          '${widget.extend == false ? 'New Booking' : 'Extend Booking'} In Room ${widget.roomNo?.toString()}',
           style: FlutterFlowTheme.of(context).titleSmall,
         ),
         actions: [],
@@ -1387,7 +1387,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       .set({
                                     ...createHistoryRecordData(
                                       description:
-                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                       staff: currentUserReference,
                                     ),
                                     ...mapToFirestore(
@@ -1429,113 +1429,26 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   if (_shouldSetState) setState(() {});
                                   return;
                                 }
-                              } else {
-                                if (functions.getTotalAmount(
-                                        _model.bedsValue!,
-                                        _model.nightsValue!,
-                                        _model.price,
-                                        FFAppState().bedPrice,
-                                        _model.startingBeds!,
-                                        _model.startingNights!,
-                                        FFAppState().extPricePerHr *
-                                            int.parse(_model
-                                                .hoursLateCheckoutValue!))! >
-                                    0.0) {
-                                  // New Pending Transaction
 
-                                  var transactionsRecordReference2 =
-                                      TransactionsRecord.collection.doc();
-                                  await transactionsRecordReference2.set({
-                                    ...createTransactionsRecordData(
-                                      staff: currentUserReference,
-                                      total: functions.getTotalAmount(
-                                          _model.bedsValue!,
-                                          _model.nightsValue!,
-                                          _model.price,
-                                          FFAppState().bedPrice,
-                                          _model.startingBeds!,
-                                          _model.startingNights!,
-                                          widget.extend
-                                              ? ((FFAppState().extPricePerHr ??
-                                                      0) *
-                                                  double.parse(
-                                                      valueOrDefault<String>(
-                                                    _model
-                                                        .hoursLateCheckoutValue,
-                                                    '0',
-                                                  )))
-                                              : 0.0),
-                                      type: 'book',
-                                      hotel: FFAppState().hotel,
-                                      booking:
-                                          widget.bookingToExtend?.reference,
-                                      guests: functions
-                                          .stringToInt(_model.guestsValue),
-                                      room: widget.roomNo,
-                                      description:
-                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights) > 1 ? 'nights' : 'night'} extension${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
-                                      remitted: false,
-                                      pending: true,
-                                    ),
-                                    ...mapToFirestore(
-                                      {
-                                        'date': FieldValue.serverTimestamp(),
-                                      },
-                                    ),
-                                  });
-                                  _model.newExtPending =
-                                      TransactionsRecord.getDocumentFromData({
-                                    ...createTransactionsRecordData(
-                                      staff: currentUserReference,
-                                      total: functions.getTotalAmount(
-                                          _model.bedsValue!,
-                                          _model.nightsValue!,
-                                          _model.price,
-                                          FFAppState().bedPrice,
-                                          _model.startingBeds!,
-                                          _model.startingNights!,
-                                          widget.extend
-                                              ? ((FFAppState().extPricePerHr ??
-                                                      0) *
-                                                  double.parse(
-                                                      valueOrDefault<String>(
-                                                    _model
-                                                        .hoursLateCheckoutValue,
-                                                    '0',
-                                                  )))
-                                              : 0.0),
-                                      type: 'book',
-                                      hotel: FFAppState().hotel,
-                                      booking:
-                                          widget.bookingToExtend?.reference,
-                                      guests: functions
-                                          .stringToInt(_model.guestsValue),
-                                      room: widget.roomNo,
-                                      description:
-                                          'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights) > 1 ? 'nights' : 'night'} extension${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
-                                      remitted: false,
-                                      pending: true,
-                                    ),
-                                    ...mapToFirestore(
-                                      {
-                                        'date': DateTime.now(),
-                                      },
-                                    ),
-                                  }, transactionsRecordReference2);
+                                while (_model.loopPendingTransactions !=
+                                    widget.bookingToExtend?.pendings?.length) {
+                                  // pendingTrans
+                                  _model.pendingTrans =
+                                      await TransactionsRecord.getDocumentOnce(
+                                          widget.bookingToExtend!.pendings[
+                                              _model.loopPendingTransactions]);
                                   _shouldSetState = true;
-                                  // add to pendings list
-                                  setState(() {
-                                    _model.addToPendings(
-                                        _model.newExtPending!.reference);
-                                  });
-                                  // add this change to history
+                                  // pay balance of this transaction
 
-                                  await HistoryRecord.createDoc(widget.ref!)
-                                      .set({
-                                    ...createHistoryRecordData(
-                                      description:
-                                          'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
-                                      staff: currentUserReference,
+                                  await widget.bookingToExtend!
+                                      .pendings[_model.loopPendingTransactions]
+                                      .update({
+                                    ...createTransactionsRecordData(
+                                      pending: false,
+                                      description: _model.pendingTrans!.total <
+                                              0.0
+                                          ? _model.pendingTrans?.description
+                                          : 'Guest paid the balance for ${_model.pendingTrans?.description}',
                                     ),
                                     ...mapToFirestore(
                                       {
@@ -1543,7 +1456,73 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       },
                                     ),
                                   });
-                                } else {
+                                  // remove trans from pending in booking
+
+                                  await widget.bookingToExtend!.reference
+                                      .update({
+                                    ...mapToFirestore(
+                                      {
+                                        'pendings': FieldValue.arrayRemove(
+                                            [_model.pendingTrans?.reference]),
+                                        'transactions': FieldValue.arrayUnion(
+                                            [_model.pendingTrans?.reference]),
+                                      },
+                                    ),
+                                  });
+                                  // increment loop
+                                  setState(() {
+                                    _model.loopPendingTransactions =
+                                        _model.loopPendingTransactions + 1;
+                                  });
+                                }
+                                // reset pending list
+                                setState(() {
+                                  _model.pendings = [];
+                                });
+                                // paid booking status
+
+                                await widget.bookingToExtend!.reference.update({
+                                  ...createBookingsRecordData(
+                                    status: 'paid',
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'pendings': _model.pendings,
+                                    },
+                                  ),
+                                });
+                              } else {
+                                // haven't paid balance
+                                var confirmDialogResponse =
+                                    await showDialog<bool>(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                  'Did the guest not pay balance yet?'),
+                                              content: Text(
+                                                  'Confirm to proceed even without paying the balance yet.'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          false),
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          true),
+                                                  child: Text('Confirm'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ) ??
+                                        false;
+                                if (confirmDialogResponse) {
                                   if (functions.getTotalAmount(
                                           _model.bedsValue!,
                                           _model.nightsValue!,
@@ -1553,7 +1532,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           _model.startingNights!,
                                           FFAppState().extPricePerHr *
                                               int.parse(_model
-                                                  .hoursLateCheckoutValue!))! <
+                                                  .hoursLateCheckoutValue!))! >
                                       0.0) {
                                     // New Pending Transaction
 
@@ -1588,7 +1567,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             .stringToInt(_model.guestsValue),
                                         room: widget.roomNo,
                                         description:
-                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(widget.bookingToExtend!.nights - _model.nightsValue!) > 1 ? 'nights' : 'night'} refund${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                            '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                         remitted: false,
                                         pending: true,
                                       ),
@@ -1598,7 +1577,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         },
                                       ),
                                     });
-                                    _model.newRefundPending =
+                                    _model.newExtPending =
                                         TransactionsRecord.getDocumentFromData({
                                       ...createTransactionsRecordData(
                                         staff: currentUserReference,
@@ -1628,7 +1607,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             .stringToInt(_model.guestsValue),
                                         room: widget.roomNo,
                                         description:
-                                            'room ${widget.roomNo?.toString()} ${(_model.nightsValue! - widget.bookingToExtend!.nights).toString()} ${(widget.bookingToExtend!.nights - _model.nightsValue!) > 1 ? 'nights' : 'night'} refund${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                            '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                         remitted: false,
                                         pending: true,
                                       ),
@@ -1642,7 +1621,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     // add to pendings list
                                     setState(() {
                                       _model.addToPendings(
-                                          _model.newRefundPending!.reference);
+                                          _model.newExtPending!.reference);
                                     });
                                     // add this change to history
 
@@ -1650,7 +1629,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .set({
                                       ...createHistoryRecordData(
                                         description:
-                                            'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                            'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                         staff: currentUserReference,
                                       ),
                                       ...mapToFirestore(
@@ -1660,24 +1639,153 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       ),
                                     });
                                   } else {
-                                    // nothing changed
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Nothing Changed!',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .info,
-                                          ),
+                                    if (functions.getTotalAmount(
+                                            _model.bedsValue!,
+                                            _model.nightsValue!,
+                                            _model.price,
+                                            FFAppState().bedPrice,
+                                            _model.startingBeds!,
+                                            _model.startingNights!,
+                                            FFAppState().extPricePerHr *
+                                                int.parse(_model
+                                                    .hoursLateCheckoutValue!))! <
+                                        0.0) {
+                                      // New Pending Transaction
+
+                                      var transactionsRecordReference4 =
+                                          TransactionsRecord.collection.doc();
+                                      await transactionsRecordReference4.set({
+                                        ...createTransactionsRecordData(
+                                          staff: currentUserReference,
+                                          total: functions.getTotalAmount(
+                                              _model.bedsValue!,
+                                              _model.nightsValue!,
+                                              _model.price,
+                                              FFAppState().bedPrice,
+                                              _model.startingBeds!,
+                                              _model.startingNights!,
+                                              widget.extend
+                                                  ? ((FFAppState()
+                                                              .extPricePerHr ??
+                                                          0) *
+                                                      double.parse(
+                                                          valueOrDefault<
+                                                              String>(
+                                                        _model
+                                                            .hoursLateCheckoutValue,
+                                                        '0',
+                                                      )))
+                                                  : 0.0),
+                                          type: 'book',
+                                          hotel: FFAppState().hotel,
+                                          booking:
+                                              widget.bookingToExtend?.reference,
+                                          guests: functions
+                                              .stringToInt(_model.guestsValue),
+                                          room: widget.roomNo,
+                                          description:
+                                              '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, '0')}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                          remitted: false,
+                                          pending: true,
                                         ),
-                                        duration: Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context).error,
-                                      ),
-                                    );
-                                    if (_shouldSetState) setState(() {});
-                                    return;
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                      _model.newRefundPending =
+                                          TransactionsRecord
+                                              .getDocumentFromData({
+                                        ...createTransactionsRecordData(
+                                          staff: currentUserReference,
+                                          total: functions.getTotalAmount(
+                                              _model.bedsValue!,
+                                              _model.nightsValue!,
+                                              _model.price,
+                                              FFAppState().bedPrice,
+                                              _model.startingBeds!,
+                                              _model.startingNights!,
+                                              widget.extend
+                                                  ? ((FFAppState()
+                                                              .extPricePerHr ??
+                                                          0) *
+                                                      double.parse(
+                                                          valueOrDefault<
+                                                              String>(
+                                                        _model
+                                                            .hoursLateCheckoutValue,
+                                                        '0',
+                                                      )))
+                                                  : 0.0),
+                                          type: 'book',
+                                          hotel: FFAppState().hotel,
+                                          booking:
+                                              widget.bookingToExtend?.reference,
+                                          guests: functions
+                                              .stringToInt(_model.guestsValue),
+                                          room: widget.roomNo,
+                                          description:
+                                              '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, '0')}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                          remitted: false,
+                                          pending: true,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date': DateTime.now(),
+                                          },
+                                        ),
+                                      }, transactionsRecordReference4);
+                                      _shouldSetState = true;
+                                      // add to pendings list
+                                      setState(() {
+                                        _model.addToPendings(
+                                            _model.newRefundPending!.reference);
+                                      });
+                                      // add this change to history
+
+                                      await HistoryRecord.createDoc(widget.ref!)
+                                          .set({
+                                        ...createHistoryRecordData(
+                                          description:
+                                              'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                          staff: currentUserReference,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                    } else {
+                                      // nothing changed
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Nothing Changed!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .info,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .error,
+                                        ),
+                                      );
+                                      if (_shouldSetState) setState(() {});
+                                      return;
+                                    }
                                   }
+                                } else {
+                                  if (_shouldSetState) setState(() {});
+                                  return;
                                 }
                               }
 
@@ -1804,9 +1912,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               if (_model.paid) {
                                 // New Transaction
 
-                                var transactionsRecordReference4 =
+                                var transactionsRecordReference5 =
                                     TransactionsRecord.collection.doc();
-                                await transactionsRecordReference4.set({
+                                await transactionsRecordReference5.set({
                                   ...createTransactionsRecordData(
                                     staff: currentUserReference,
                                     total: functions.getTotalAmount(
@@ -1824,7 +1932,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                     remitted: false,
                                     pending: false,
                                   ),
@@ -1853,7 +1961,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                     remitted: false,
                                     pending: false,
                                   ),
@@ -1862,7 +1970,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       'date': DateTime.now(),
                                     },
                                   ),
-                                }, transactionsRecordReference4);
+                                }, transactionsRecordReference5);
                                 _shouldSetState = true;
                                 // add to trans list
                                 setState(() {
@@ -1874,7 +1982,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                 await HistoryRecord.createDoc(widget.ref!).set({
                                   ...createHistoryRecordData(
                                     description:
-                                        '${_model.guestsValue} new ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}guest/s${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''} have checked in!',
+                                        '${_model.guestsValue} new ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}guest/s${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''} have checked in!',
                                     staff: currentUserReference,
                                   ),
                                   ...mapToFirestore(
@@ -1886,9 +1994,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               } else {
                                 // New Pending Transaction
 
-                                var transactionsRecordReference5 =
+                                var transactionsRecordReference6 =
                                     TransactionsRecord.collection.doc();
-                                await transactionsRecordReference5.set({
+                                await transactionsRecordReference6.set({
                                   ...createTransactionsRecordData(
                                     staff: currentUserReference,
                                     total: functions.getTotalAmount(
@@ -1906,7 +2014,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'Room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                        'Room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                     remitted: false,
                                     pending: true,
                                   ),
@@ -1935,7 +2043,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'Room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s' : ''}',
+                                        'Room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                     remitted: false,
                                     pending: true,
                                   ),
@@ -1944,7 +2052,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       'date': DateTime.now(),
                                     },
                                   ),
-                                }, transactionsRecordReference5);
+                                }, transactionsRecordReference6);
                                 _shouldSetState = true;
                                 // add to pendings list
 
@@ -1961,7 +2069,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                 await HistoryRecord.createDoc(widget.ref!).set({
                                   ...createHistoryRecordData(
                                     description:
-                                        'New checkin ${_model.ability != 'normal' ? 'by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed/s ' : ''}but pending payment.',
+                                        'New checkin ${_model.ability != 'normal' ? 'by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''} ' : ''}but pending payment.',
                                     staff: currentUserReference,
                                   ),
                                   ...mapToFirestore(

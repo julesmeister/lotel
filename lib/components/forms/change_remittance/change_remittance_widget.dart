@@ -103,218 +103,539 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                 ),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 60.0,
-                            height: 3.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).alternate,
-                              borderRadius: BorderRadius.circular(4.0),
+                  child: FutureBuilder<HotelSettingsRecord>(
+                    future: HotelSettingsRecord.getDocumentOnce(
+                        FFAppState().settingRef!),
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            width: 50.0,
+                            height: 50.0,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                FlutterFlowTheme.of(context).primary,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 0.0, 0.0),
-                        child: Text(
-                          'Change',
-                          style: FlutterFlowTheme.of(context).headlineSmall,
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 0.0, 0.0),
-                        child: Text(
-                          'This amount will carry over to the next remittance.',
-                          style: FlutterFlowTheme.of(context).labelMedium,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 0.0),
-                        child: TextFormField(
-                          controller: _model.changeExtraController,
-                          focusNode: _model.changeExtraFocusNode,
-                          textCapitalization: TextCapitalization.none,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelStyle:
-                                FlutterFlowTheme.of(context).bodyLarge.override(
+                        );
+                      }
+                      final columnHotelSettingsRecord = snapshot.data!;
+                      return Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 60.0,
+                                height: 3.0,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).alternate,
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 16.0, 0.0, 0.0),
+                            child: Text(
+                              'Change',
+                              style: FlutterFlowTheme.of(context).headlineSmall,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 4.0, 0.0, 0.0),
+                            child: Text(
+                              'This amount will carry over to the next remittance.',
+                              style: FlutterFlowTheme.of(context).labelMedium,
+                            ),
+                          ),
+                          if (columnHotelSettingsRecord
+                                  .failedToRemitTransactions.length >
+                              0)
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 16.0, 16.0, 20.0),
+                              child: FFButtonWidget(
+                                onPressed: () async {
+                                  while (_model.loopFailedTransactions !=
+                                      columnHotelSettingsRecord
+                                          .failedToRemitTransactions.length) {
+                                    // deremit transactions
+
+                                    await columnHotelSettingsRecord
+                                        .failedToRemitTransactions[
+                                            _model.loopFailedTransactions]
+                                        .update(createTransactionsRecordData(
+                                      remitted: false,
+                                    ));
+                                    // increment loop
+                                    setState(() {
+                                      _model.loopFailedTransactions =
+                                          _model.loopFailedTransactions + 1;
+                                    });
+                                  }
+                                  // clear failed transactions
+
+                                  await FFAppState().settingRef!.update({
+                                    ...mapToFirestore(
+                                      {
+                                        'failedToRemitTransactions':
+                                            FieldValue.delete(),
+                                      },
+                                    ),
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                text: 'Restore Transactions',
+                                options: FFButtonOptions(
+                                  width: double.infinity,
+                                  height: 50.0,
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 0.0),
+                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 0.0),
+                                  color: FlutterFlowTheme.of(context).error,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        color: Colors.white,
+                                      ),
+                                  elevation: 2.0,
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                              ),
+                            ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 16.0, 16.0, 0.0),
+                            child: TextFormField(
+                              controller: _model.changeExtraController,
+                              focusNode: _model.changeExtraFocusNode,
+                              textCapitalization: TextCapitalization.none,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 36.0,
                                     ),
-                            hintText: 'How much?',
-                            hintStyle: FlutterFlowTheme.of(context)
-                                .labelLarge
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  fontSize: 36.0,
+                                hintText: 'How much?',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .labelLarge
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 36.0,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        FlutterFlowTheme.of(context).alternate,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).alternate,
-                                width: 2.0,
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                filled: true,
+                                fillColor: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    24.0, 24.0, 20.0, 24.0),
                               ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primary,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                24.0, 24.0, 20.0, 24.0),
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 36.0,
                                   ),
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          cursorColor: FlutterFlowTheme.of(context).primary,
-                          validator: _model.changeExtraControllerValidator
-                              .asValidator(context),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp('[0-9]'))
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 20.0),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            // unremitted transactions
-                            _model.transactions =
-                                await queryTransactionsRecordOnce(
-                              queryBuilder: (transactionsRecord) =>
-                                  transactionsRecord
-                                      .where(
-                                        'remitted',
-                                        isEqualTo: false,
-                                      )
-                                      .where(
-                                        'hotel',
-                                        isEqualTo: FFAppState().hotel,
-                                      ),
-                            );
-                            // unremitted inventories of this hotel
-                            _model.inventoriesToRemitFirestore =
-                                await queryInventoriesRecordOnce(
-                              queryBuilder: (inventoriesRecord) =>
-                                  inventoriesRecord
-                                      .where(
-                                        'hotel',
-                                        isEqualTo: FFAppState().hotel,
-                                      )
-                                      .where(
-                                        'remitted',
-                                        isEqualTo: false,
-                                      ),
-                            );
-                            // reset loop variables
-                            setState(() {
-                              _model.loopTransactionsCounter = 0;
-                              _model.transactionsToRemit = [];
-                              _model.loopInventoryCounter = 0;
-                              _model.inventoriesToRemit = [];
-                              _model.bookingsToRemit = [];
-                            });
-                            while (_model.loopTransactionsCounter !=
-                                _model.transactions?.length) {
-                              if (!_model
-                                  .transactions![_model.loopTransactionsCounter]
-                                  .pending) {
-                                // Add to TransactionToRemit
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
+                              cursorColor: FlutterFlowTheme.of(context).primary,
+                              validator: _model.changeExtraControllerValidator
+                                  .asValidator(context),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp('[0-9]'))
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 16.0, 16.0, 20.0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                // unremitted transactions
+                                _model.transactions =
+                                    await queryTransactionsRecordOnce(
+                                  queryBuilder: (transactionsRecord) =>
+                                      transactionsRecord
+                                          .where(
+                                            'remitted',
+                                            isEqualTo: false,
+                                          )
+                                          .where(
+                                            'hotel',
+                                            isEqualTo: FFAppState().hotel,
+                                          ),
+                                );
+                                // unremitted inventories of this hotel
+                                _model.inventoriesToRemitFirestore =
+                                    await queryInventoriesRecordOnce(
+                                  queryBuilder: (inventoriesRecord) =>
+                                      inventoriesRecord
+                                          .where(
+                                            'hotel',
+                                            isEqualTo: FFAppState().hotel,
+                                          )
+                                          .where(
+                                            'remitted',
+                                            isEqualTo: false,
+                                          ),
+                                );
+                                // reset loop variables
                                 setState(() {
-                                  _model.addToTransactionsToRemit(
-                                      _model.transactions![
-                                          _model.loopTransactionsCounter]);
+                                  _model.loopTransactionsCounter = 0;
+                                  _model.transactionsToRemit = [];
+                                  _model.loopInventoryCounter = 0;
+                                  _model.inventoriesToRemit = [];
+                                  _model.bookingsToRemit = [];
                                 });
-                                if (_model
-                                        .transactions?[
-                                            _model.loopTransactionsCounter]
-                                        ?.type ==
-                                    'book') {
-                                  // book to remit add to queue
-                                  setState(() {
-                                    _model.addToBookingsToRemit(_model
-                                        .transactions![
-                                            _model.loopTransactionsCounter]
-                                        .booking!);
-                                  });
-                                  // booking
-                                  _model.booking =
-                                      await BookingsRecord.getDocumentOnce(
-                                          _model
-                                              .transactions![_model
-                                                  .loopTransactionsCounter]
-                                              .booking!);
-                                  // update use of room local
-                                  setState(() {
-                                    _model.updateRoomUsageAtIndex(
-                                      functions.indexOfRoomInRoomUsage(
-                                          _model.roomUsage.toList(),
-                                          _model
-                                              .transactions![_model
-                                                  .loopTransactionsCounter]
-                                              .room),
-                                      (e) => e
-                                        ..incrementUse(_model.booking!.nights),
-                                    );
-                                  });
-                                  // remitted book
-
-                                  await _model
+                                while (_model.loopTransactionsCounter !=
+                                    _model.transactions?.length) {
+                                  if (!_model
                                       .transactions![
                                           _model.loopTransactionsCounter]
-                                      .booking!
-                                      .update(createBookingsRecordData(
+                                      .pending) {
+                                    // Add to TransactionToRemit
+                                    setState(() {
+                                      _model.addToTransactionsToRemit(
+                                          _model.transactions![
+                                              _model.loopTransactionsCounter]);
+                                    });
+                                    if (_model
+                                            .transactions?[
+                                                _model.loopTransactionsCounter]
+                                            ?.type ==
+                                        'book') {
+                                      // book to remit add to queue
+                                      setState(() {
+                                        _model.addToBookingsToRemit(_model
+                                            .transactions![
+                                                _model.loopTransactionsCounter]
+                                            .booking!);
+                                      });
+                                      // booking
+                                      _model.booking =
+                                          await BookingsRecord.getDocumentOnce(
+                                              _model
+                                                  .transactions![_model
+                                                      .loopTransactionsCounter]
+                                                  .booking!);
+                                      // update use of room local
+                                      setState(() {
+                                        _model.updateRoomUsageAtIndex(
+                                          functions.indexOfRoomInRoomUsage(
+                                              _model.roomUsage.toList(),
+                                              _model
+                                                  .transactions![_model
+                                                      .loopTransactionsCounter]
+                                                  .room),
+                                          (e) => e
+                                            ..incrementUse(
+                                                _model.booking!.nights),
+                                        );
+                                      });
+                                      // remitted book
+
+                                      await _model
+                                          .transactions![
+                                              _model.loopTransactionsCounter]
+                                          .booking!
+                                          .update(createBookingsRecordData(
+                                        remitted: true,
+                                      ));
+                                    }
+                                    // remitted true including change transactions
+
+                                    await _model
+                                        .transactionsToRemit[
+                                            _model.loopTransactionsCounter]
+                                        .reference
+                                        .update(createTransactionsRecordData(
+                                      remitted: true,
+                                    ));
+                                    if (_model.loopTransactionsCounter == 0) {
+                                      // create field of failed
+
+                                      await FFAppState().settingRef!.update({
+                                        ...mapToFirestore(
+                                          {
+                                            'failedToRemitTransactions': _model
+                                                .failedToRemitTransactions,
+                                          },
+                                        ),
+                                      });
+                                    }
+                                    // append to failed list
+
+                                    await FFAppState().settingRef!.update({
+                                      ...mapToFirestore(
+                                        {
+                                          'failedToRemitTransactions':
+                                              FieldValue.arrayUnion([
+                                            _model
+                                                .transactionsToRemit[_model
+                                                    .loopTransactionsCounter]
+                                                .reference
+                                          ]),
+                                        },
+                                      ),
+                                    });
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Just be aware that are still pending transactions.',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
+                                        ),
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
+                                      ),
+                                    );
+                                  }
+
+                                  // Increment Loop Counter
+                                  setState(() {
+                                    _model.loopTransactionsCounter =
+                                        _model.loopTransactionsCounter + 1;
+                                  });
+                                }
+                                // update roomUsage firestore
+
+                                await FFAppState().statsReference!.update({
+                                  ...mapToFirestore(
+                                    {
+                                      'roomUsage':
+                                          getRoomUsageListFirestoreData(
+                                        _model.roomUsage,
+                                      ),
+                                    },
+                                  ),
+                                });
+                                while (_model.loopInventoryCounter !=
+                                    valueOrDefault<int>(
+                                      _model
+                                          .inventoriesToRemitFirestore?.length,
+                                      0,
+                                    )) {
+                                  // remit all inventory
+
+                                  await _model
+                                      .inventoriesToRemitFirestore![
+                                          _model.loopInventoryCounter]
+                                      .reference
+                                      .update(createInventoriesRecordData(
                                     remitted: true,
                                   ));
+                                  // inventories to list
+                                  setState(() {
+                                    _model.addToInventoriesToRemit(_model
+                                        .inventoriesToRemitFirestore![
+                                            _model.loopInventoryCounter]
+                                        .reference);
+                                  });
+                                  // increment counter only
+                                  setState(() {
+                                    _model.loopInventoryCounter =
+                                        _model.loopInventoryCounter + 1;
+                                  });
                                 }
-                                // remitted true including change transactions
+                                // update stats and graph
 
-                                await _model
-                                    .transactionsToRemit[
-                                        _model.loopTransactionsCounter]
-                                    .reference
-                                    .update(createTransactionsRecordData(
-                                  remitted: true,
-                                ));
-                              } else {
+                                await FFAppState().statsReference!.update({
+                                  ...createStatsRecordData(
+                                    roomLine: updateLineGraphStruct(
+                                      functions.newLineGraph(
+                                          functions.sumOfRoomsIncome(_model
+                                              .transactionsToRemit
+                                              .toList()),
+                                          _model.initStat!.roomLine),
+                                      clearUnsetFields: false,
+                                    ),
+                                    goodsLine: updateLineGraphStruct(
+                                      functions.newLineGraph(
+                                          functions.sumOfGoodsIncome(_model
+                                              .transactionsToRemit
+                                              .toList()),
+                                          _model.initStat!.goodsLine),
+                                      clearUnsetFields: false,
+                                    ),
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'roomsIncome': FieldValue.increment(
+                                          functions.sumOfRoomsIncome(_model
+                                              .transactionsToRemit
+                                              .toList())),
+                                      'goodsIncome': FieldValue.increment(
+                                          functions.sumOfGoodsIncome(_model
+                                              .transactionsToRemit
+                                              .toList())),
+                                      'expenses': FieldValue.increment(
+                                          functions.sumOfExpenses(_model
+                                              .transactionsToRemit
+                                              .toList())),
+                                    },
+                                  ),
+                                });
+                                // Create Remittance
+
+                                var remittancesRecordReference =
+                                    RemittancesRecord.collection.doc();
+                                await remittancesRecordReference.set({
+                                  ...createRemittancesRecordData(
+                                    collected: false,
+                                    preparedBy: currentUserReference,
+                                    hotel: FFAppState().hotel,
+                                    gross: functions.grossTransactions(
+                                        _model.transactionsToRemit.toList()),
+                                    net: functions.netOfTransactions(
+                                        _model.transactionsToRemit.toList()),
+                                    expenses: functions.sumOfExpenses(
+                                        _model.transactionsToRemit.toList()),
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                      'transactions': _model.transactionsToRemit
+                                          .map((e) => e.reference)
+                                          .toList(),
+                                      'bookings': _model.bookingsToRemit,
+                                      'inventories': _model.inventoriesToRemit,
+                                    },
+                                  ),
+                                });
+                                _model.newRemittanceCopyCopy =
+                                    RemittancesRecord.getDocumentFromData({
+                                  ...createRemittancesRecordData(
+                                    collected: false,
+                                    preparedBy: currentUserReference,
+                                    hotel: FFAppState().hotel,
+                                    gross: functions.grossTransactions(
+                                        _model.transactionsToRemit.toList()),
+                                    net: functions.netOfTransactions(
+                                        _model.transactionsToRemit.toList()),
+                                    expenses: functions.sumOfExpenses(
+                                        _model.transactionsToRemit.toList()),
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': DateTime.now(),
+                                      'transactions': _model.transactionsToRemit
+                                          .map((e) => e.reference)
+                                          .toList(),
+                                      'bookings': _model.bookingsToRemit,
+                                      'inventories': _model.inventoriesToRemit,
+                                    },
+                                  ),
+                                }, remittancesRecordReference);
+                                // delete all failed transactions incase remittance comes thru
+
+                                await FFAppState().settingRef!.update({
+                                  ...mapToFirestore(
+                                    {
+                                      'failedToRemitTransactions':
+                                          FieldValue.delete(),
+                                    },
+                                  ),
+                                });
+                                // Clear Lists To Remit
+                                setState(() {
+                                  _model.transactionsToRemit = [];
+                                  _model.inventoriesToRemit = [];
+                                  _model.bookingsToRemit = [];
+                                });
+                                // carryover change transaction
+
+                                await TransactionsRecord.collection.doc().set({
+                                  ...createTransactionsRecordData(
+                                    staff: currentUserReference,
+                                    total: _model.changeExtraController.text !=
+                                                null &&
+                                            _model.changeExtraController.text !=
+                                                ''
+                                        ? (-double.parse(
+                                            _model.changeExtraController.text))
+                                        : 0.0,
+                                    type: 'change',
+                                    description: 'Change',
+                                    hotel: FFAppState().hotel,
+                                    remitted: false,
+                                    pending: false,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
+                                // update last remit firestore
+
+                                await FFAppState().settingRef!.update({
+                                  ...mapToFirestore(
+                                    {
+                                      'lastRemit': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
+                                // last remit update
+                                setState(() {
+                                  FFAppState().lastRemit = functions.today();
+                                });
+                                Navigator.pop(context);
+                                // Remitted
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      'Just be aware that are still pending transactions.',
+                                      'Remitted. Awaiting for endorsement.',
                                       style: TextStyle(
                                         color: FlutterFlowTheme.of(context)
                                             .primaryText,
@@ -325,222 +646,36 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
                                 );
-                              }
 
-                              // Increment Loop Counter
-                              setState(() {
-                                _model.loopTransactionsCounter =
-                                    _model.loopTransactionsCounter + 1;
-                              });
-                            }
-                            // update roomUsage firestore
-
-                            await FFAppState().statsReference!.update({
-                              ...mapToFirestore(
-                                {
-                                  'roomUsage': getRoomUsageListFirestoreData(
-                                    _model.roomUsage,
-                                  ),
-                                },
-                              ),
-                            });
-                            while (_model.loopInventoryCounter !=
-                                valueOrDefault<int>(
-                                  _model.inventoriesToRemitFirestore?.length,
-                                  0,
-                                )) {
-                              // remit all inventory
-
-                              await _model
-                                  .inventoriesToRemitFirestore![
-                                      _model.loopInventoryCounter]
-                                  .reference
-                                  .update(createInventoriesRecordData(
-                                remitted: true,
-                              ));
-                              // inventories to list
-                              setState(() {
-                                _model.addToInventoriesToRemit(_model
-                                    .inventoriesToRemitFirestore![
-                                        _model.loopInventoryCounter]
-                                    .reference);
-                              });
-                              // increment counter only
-                              setState(() {
-                                _model.loopInventoryCounter =
-                                    _model.loopInventoryCounter + 1;
-                              });
-                            }
-                            // update stats and graph
-
-                            await FFAppState().statsReference!.update({
-                              ...createStatsRecordData(
-                                roomLine: updateLineGraphStruct(
-                                  functions.newLineGraph(
-                                      functions.sumOfRoomsIncome(
-                                          _model.transactionsToRemit.toList()),
-                                      _model.initStat!.roomLine),
-                                  clearUnsetFields: false,
+                                setState(() {});
+                              },
+                              text: 'Continue Remitting',
+                              options: FFButtonOptions(
+                                width: double.infinity,
+                                height: 50.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      color: Colors.white,
+                                    ),
+                                elevation: 2.0,
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
                                 ),
-                                goodsLine: updateLineGraphStruct(
-                                  functions.newLineGraph(
-                                      functions.sumOfGoodsIncome(
-                                          _model.transactionsToRemit.toList()),
-                                      _model.initStat!.goodsLine),
-                                  clearUnsetFields: false,
-                                ),
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                              ...mapToFirestore(
-                                {
-                                  'roomsIncome': FieldValue.increment(
-                                      functions.sumOfRoomsIncome(
-                                          _model.transactionsToRemit.toList())),
-                                  'goodsIncome': FieldValue.increment(
-                                      functions.sumOfGoodsIncome(
-                                          _model.transactionsToRemit.toList())),
-                                  'expenses': FieldValue.increment(
-                                      functions.sumOfExpenses(
-                                          _model.transactionsToRemit.toList())),
-                                },
-                              ),
-                            });
-                            // Create Remittance
-
-                            var remittancesRecordReference =
-                                RemittancesRecord.collection.doc();
-                            await remittancesRecordReference.set({
-                              ...createRemittancesRecordData(
-                                collected: false,
-                                preparedBy: currentUserReference,
-                                hotel: FFAppState().hotel,
-                                gross: functions.grossTransactions(
-                                    _model.transactionsToRemit.toList()),
-                                net: functions.netOfTransactions(
-                                    _model.transactionsToRemit.toList()),
-                                expenses: functions.sumOfExpenses(
-                                    _model.transactionsToRemit.toList()),
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'date': FieldValue.serverTimestamp(),
-                                  'transactions': _model.transactionsToRemit
-                                      .map((e) => e.reference)
-                                      .toList(),
-                                  'bookings': _model.bookingsToRemit,
-                                  'inventories': _model.inventoriesToRemit,
-                                },
-                              ),
-                            });
-                            _model.newRemittanceCopyCopy =
-                                RemittancesRecord.getDocumentFromData({
-                              ...createRemittancesRecordData(
-                                collected: false,
-                                preparedBy: currentUserReference,
-                                hotel: FFAppState().hotel,
-                                gross: functions.grossTransactions(
-                                    _model.transactionsToRemit.toList()),
-                                net: functions.netOfTransactions(
-                                    _model.transactionsToRemit.toList()),
-                                expenses: functions.sumOfExpenses(
-                                    _model.transactionsToRemit.toList()),
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'date': DateTime.now(),
-                                  'transactions': _model.transactionsToRemit
-                                      .map((e) => e.reference)
-                                      .toList(),
-                                  'bookings': _model.bookingsToRemit,
-                                  'inventories': _model.inventoriesToRemit,
-                                },
-                              ),
-                            }, remittancesRecordReference);
-                            // Clear Lists To Remit
-                            setState(() {
-                              _model.transactionsToRemit = [];
-                              _model.inventoriesToRemit = [];
-                              _model.bookingsToRemit = [];
-                            });
-                            // carryover change transaction
-
-                            await TransactionsRecord.collection.doc().set({
-                              ...createTransactionsRecordData(
-                                staff: currentUserReference,
-                                total: _model.changeExtraController.text !=
-                                            null &&
-                                        _model.changeExtraController.text != ''
-                                    ? (-double.parse(
-                                        _model.changeExtraController.text))
-                                    : 0.0,
-                                type: 'change',
-                                description: 'Change',
-                                hotel: FFAppState().hotel,
-                                remitted: false,
-                                pending: false,
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'date': FieldValue.serverTimestamp(),
-                                },
-                              ),
-                            });
-                            // update last remit firestore
-
-                            await FFAppState().settingRef!.update({
-                              ...mapToFirestore(
-                                {
-                                  'lastRemit': FieldValue.serverTimestamp(),
-                                },
-                              ),
-                            });
-                            // last remit update
-                            setState(() {
-                              FFAppState().lastRemit = functions.today();
-                            });
-                            Navigator.pop(context);
-                            // Remitted
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Remitted. Awaiting for endorsement.',
-                                  style: TextStyle(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                  ),
-                                ),
-                                duration: Duration(milliseconds: 4000),
-                                backgroundColor:
-                                    FlutterFlowTheme.of(context).secondary,
-                              ),
-                            );
-
-                            setState(() {});
-                          },
-                          text: 'Continue Remitting',
-                          options: FFButtonOptions(
-                            width: double.infinity,
-                            height: 50.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: FlutterFlowTheme.of(context).primary,
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                ),
-                            elevation: 2.0,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1.0,
                             ),
-                            borderRadius: BorderRadius.circular(12.0),
                           ),
-                        ),
-                      ),
-                    ],
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),

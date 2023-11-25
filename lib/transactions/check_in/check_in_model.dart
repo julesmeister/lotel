@@ -52,6 +52,8 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
 
   String ability = 'normal';
 
+  int loopPendingTransactions = 0;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Backend Call - Read Document] action in CheckIn widget.
@@ -77,6 +79,8 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
   FormFieldController<List<String>>? hoursLateCheckoutValueController;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   TransactionsRecord? refundTrans;
+  // Stores action output result for [Backend Call - Read Document] action in saveGuest widget.
+  TransactionsRecord? pendingTrans;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.
   TransactionsRecord? newExtPending;
   // Stores action output result for [Backend Call - Create Document] action in saveGuest widget.

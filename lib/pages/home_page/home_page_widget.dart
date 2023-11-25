@@ -2664,7 +2664,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                         context),
                                                                 child:
                                                                     Container(
-                                                                  height: 180.0,
+                                                                  height: 220.0,
                                                                   child:
                                                                       OptionToIssueWidget(
                                                                     ref: issuesListItem

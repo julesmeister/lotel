@@ -100,10 +100,15 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 : 'still occupied';
 
         entry.add(totalText);
+        Set<String> uniqueBookingReferences = Set<String>();
         entry.add(roomBookings.isNotEmpty
-            ? roomBookings
-                .fold(0, (sum, booking) => sum + booking.nights)
-                .toString()
+            ? roomBookings.fold(0, (sum, booking) {
+                if (!uniqueBookingReferences.contains(booking.reference.path)) {
+                  uniqueBookingReferences.add(booking.reference.path);
+                  return sum + booking.nights;
+                }
+                return sum;
+              }).toString()
             : '0');
 
         entries.add(entry);

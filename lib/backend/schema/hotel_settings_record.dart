@@ -46,6 +46,12 @@ class HotelSettingsRecord extends FirestoreRecord {
   double get lateCheckoutFee => _lateCheckoutFee ?? 0.0;
   bool hasLateCheckoutFee() => _lateCheckoutFee != null;
 
+  // "failedToRemitTransactions" field.
+  List<DocumentReference>? _failedToRemitTransactions;
+  List<DocumentReference> get failedToRemitTransactions =>
+      _failedToRemitTransactions ?? const [];
+  bool hasFailedToRemitTransactions() => _failedToRemitTransactions != null;
+
   void _initializeFields() {
     _bedPrice = castToType<double>(snapshotData['bedPrice']);
     _hotel = snapshotData['hotel'] as String?;
@@ -53,6 +59,8 @@ class HotelSettingsRecord extends FirestoreRecord {
     _acceptNewStaff = snapshotData['acceptNewStaff'] as bool?;
     _remittable = snapshotData['remittable'] as bool?;
     _lateCheckoutFee = castToType<double>(snapshotData['lateCheckoutFee']);
+    _failedToRemitTransactions =
+        getDataList(snapshotData['failedToRemitTransactions']);
   }
 
   static CollectionReference get collection =>
@@ -117,12 +125,15 @@ class HotelSettingsRecordDocumentEquality
 
   @override
   bool equals(HotelSettingsRecord? e1, HotelSettingsRecord? e2) {
+    const listEquality = ListEquality();
     return e1?.bedPrice == e2?.bedPrice &&
         e1?.hotel == e2?.hotel &&
         e1?.lastRemit == e2?.lastRemit &&
         e1?.acceptNewStaff == e2?.acceptNewStaff &&
         e1?.remittable == e2?.remittable &&
-        e1?.lateCheckoutFee == e2?.lateCheckoutFee;
+        e1?.lateCheckoutFee == e2?.lateCheckoutFee &&
+        listEquality.equals(
+            e1?.failedToRemitTransactions, e2?.failedToRemitTransactions);
   }
 
   @override
@@ -132,7 +143,8 @@ class HotelSettingsRecordDocumentEquality
         e?.lastRemit,
         e?.acceptNewStaff,
         e?.remittable,
-        e?.lateCheckoutFee
+        e?.lateCheckoutFee,
+        e?.failedToRemitTransactions
       ]);
 
   @override

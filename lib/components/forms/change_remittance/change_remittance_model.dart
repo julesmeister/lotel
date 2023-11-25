@@ -70,6 +70,23 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
   void updateRoomUsageAtIndex(int index, Function(RoomUsageStruct) updateFn) =>
       roomUsage[index] = updateFn(roomUsage[index]);
 
+  int loopFailedTransactions = 0;
+
+  List<DocumentReference> failedToRemitTransactions = [];
+  void addToFailedToRemitTransactions(DocumentReference item) =>
+      failedToRemitTransactions.add(item);
+  void removeFromFailedToRemitTransactions(DocumentReference item) =>
+      failedToRemitTransactions.remove(item);
+  void removeAtIndexFromFailedToRemitTransactions(int index) =>
+      failedToRemitTransactions.removeAt(index);
+  void insertAtIndexInFailedToRemitTransactions(
+          int index, DocumentReference item) =>
+      failedToRemitTransactions.insert(index, item);
+  void updateFailedToRemitTransactionsAtIndex(
+          int index, Function(DocumentReference) updateFn) =>
+      failedToRemitTransactions[index] =
+          updateFn(failedToRemitTransactions[index]);
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Read Document] action in ChangeRemittance widget.
