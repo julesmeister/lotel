@@ -36,11 +36,6 @@ class StaffsRecord extends FirestoreRecord {
   double get sssRate => _sssRate ?? 0.0;
   bool hasSssRate() => _sssRate != null;
 
-  // "salaries" field.
-  DocumentReference? _salaries;
-  DocumentReference? get salaries => _salaries;
-  bool hasSalaries() => _salaries != null;
-
   // "hotel" field.
   String? _hotel;
   String get hotel => _hotel ?? '';
@@ -56,7 +51,6 @@ class StaffsRecord extends FirestoreRecord {
     _weeklyRate = castToType<double>(snapshotData['weeklyRate']);
     _balance = castToType<double>(snapshotData['balance']);
     _sssRate = castToType<double>(snapshotData['sssRate']);
-    _salaries = snapshotData['salaries'] as DocumentReference?;
     _hotel = snapshotData['hotel'] as String?;
     _fired = snapshotData['fired'] as bool?;
   }
@@ -99,7 +93,6 @@ Map<String, dynamic> createStaffsRecordData({
   double? weeklyRate,
   double? balance,
   double? sssRate,
-  DocumentReference? salaries,
   String? hotel,
   bool? fired,
 }) {
@@ -109,7 +102,6 @@ Map<String, dynamic> createStaffsRecordData({
       'weeklyRate': weeklyRate,
       'balance': balance,
       'sssRate': sssRate,
-      'salaries': salaries,
       'hotel': hotel,
       'fired': fired,
     }.withoutNulls,
@@ -127,21 +119,13 @@ class StaffsRecordDocumentEquality implements Equality<StaffsRecord> {
         e1?.weeklyRate == e2?.weeklyRate &&
         e1?.balance == e2?.balance &&
         e1?.sssRate == e2?.sssRate &&
-        e1?.salaries == e2?.salaries &&
         e1?.hotel == e2?.hotel &&
         e1?.fired == e2?.fired;
   }
 
   @override
-  int hash(StaffsRecord? e) => const ListEquality().hash([
-        e?.name,
-        e?.weeklyRate,
-        e?.balance,
-        e?.sssRate,
-        e?.salaries,
-        e?.hotel,
-        e?.fired
-      ]);
+  int hash(StaffsRecord? e) => const ListEquality().hash(
+      [e?.name, e?.weeklyRate, e?.balance, e?.sssRate, e?.hotel, e?.fired]);
 
   @override
   bool isValidKey(Object? o) => o is StaffsRecord;

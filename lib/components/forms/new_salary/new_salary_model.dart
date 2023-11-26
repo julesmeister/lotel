@@ -38,17 +38,33 @@ class NewSalaryModel extends FlutterFlowModel<NewSalaryWidget> {
           int index, Function(AdvancesRecord) updateFn) =>
       cashAdvancesList[index] = updateFn(cashAdvancesList[index]);
 
+  List<AbsencesRecord> absencesList = [];
+  void addToAbsencesList(AbsencesRecord item) => absencesList.add(item);
+  void removeFromAbsencesList(AbsencesRecord item) => absencesList.remove(item);
+  void removeAtIndexFromAbsencesList(int index) => absencesList.removeAt(index);
+  void insertAtIndexInAbsencesList(int index, AbsencesRecord item) =>
+      absencesList.insert(index, item);
+  void updateAbsencesListAtIndex(
+          int index, Function(AbsencesRecord) updateFn) =>
+      absencesList[index] = updateFn(absencesList[index]);
+
+  int loopAbsencesCounter = 0;
+
+  double absencesTotal = 0.0;
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Firestore Query - Query a collection] action in NewSalary widget.
-  List<StaffsRecord>? staff;
+  List<AbsencesRecord>? occuringAbsences;
+  // Stores action output result for [Firestore Query - Query a collection] action in NewSalary widget.
+  List<StaffsRecord>? staffs;
   // State field(s) for DropDown widget.
   String? dropDownValue;
   FormFieldController<String>? dropDownValueController;
   // Stores action output result for [Firestore Query - Query a collection] action in DropDown widget.
-  int? cashAdvances;
+  List<AdvancesRecord>? cashAdvances;
   // Stores action output result for [Firestore Query - Query a collection] action in DropDown widget.
-  List<AdvancesRecord>? retrievedAdvances;
+  List<AbsencesRecord>? absences;
   // State field(s) for rate widget.
   FocusNode? rateFocusNode;
   TextEditingController? rateController;
@@ -61,10 +77,12 @@ class NewSalaryModel extends FlutterFlowModel<NewSalaryWidget> {
   FocusNode? caFocusNode;
   TextEditingController? caController;
   String? Function(BuildContext, String?)? caControllerValidator;
-  // State field(s) for cab widget.
-  FocusNode? cabFocusNode;
-  TextEditingController? cabController;
-  String? Function(BuildContext, String?)? cabControllerValidator;
+  // State field(s) for absences widget.
+  FocusNode? absencesFocusNode;
+  TextEditingController? absencesController;
+  String? Function(BuildContext, String?)? absencesControllerValidator;
+  // Stores action output result for [Backend Call - Read Document] action in Row widget.
+  SalariesRecord? updatedSalary;
   // Stores action output result for [Backend Call - Create Document] action in Row widget.
   SalariesRecord? newSalary;
 
@@ -82,8 +100,8 @@ class NewSalaryModel extends FlutterFlowModel<NewSalaryWidget> {
     caFocusNode?.dispose();
     caController?.dispose();
 
-    cabFocusNode?.dispose();
-    cabController?.dispose();
+    absencesFocusNode?.dispose();
+    absencesController?.dispose();
   }
 
   /// Action blocks are added here.

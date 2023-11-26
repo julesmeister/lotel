@@ -911,6 +911,12 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                         ?.reference,
                                                     ParamType.DocumentReference,
                                                   ),
+                                                  'absences': serializeParam(
+                                                    mainCardRemittancesRecord
+                                                        ?.absences,
+                                                    ParamType.DocumentReference,
+                                                    true,
+                                                  ),
                                                 }.withoutNulls,
                                               );
                                             },
@@ -1051,6 +1057,28 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                       _model.addToTransactions(
                                                           _model
                                                               .transactionToList!);
+                                                    });
+                                                  }
+                                                  while (_model
+                                                          .loopAbsencesCounter !=
+                                                      mainCardRemittancesRecord
+                                                          ?.absences?.length) {
+                                                    // read absence
+                                                    _model.absenceToList =
+                                                        await AbsencesRecord
+                                                            .getDocumentOnce(
+                                                                mainCardRemittancesRecord!
+                                                                        .absences[
+                                                                    _model
+                                                                        .loopAbsencesCounter]);
+                                                    // increment loop
+                                                    setState(() {
+                                                      _model.addToAbsences(
+                                                          _model
+                                                              .absenceToList!);
+                                                      _model.loopAbsencesCounter =
+                                                          _model.loopAbsencesCounter +
+                                                              1;
                                                     });
                                                   }
                                                   // preparedBy

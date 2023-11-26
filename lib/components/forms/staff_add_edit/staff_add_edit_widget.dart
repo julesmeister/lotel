@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -46,6 +47,24 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => StaffAddEditModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (widget.edit) {
+        // set name
+        setState(() {
+          _model.nameController?.text = widget.name!;
+        });
+        // set sss
+        setState(() {
+          _model.sssController?.text = widget.sss!.toString();
+        });
+        // set rate
+        setState(() {
+          _model.rateController?.text = widget.weeklyRate!.toString();
+        });
+      }
+    });
 
     _model.nameController ??=
         TextEditingController(text: widget.edit ? widget.name : '');

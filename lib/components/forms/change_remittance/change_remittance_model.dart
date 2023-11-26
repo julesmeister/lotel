@@ -87,6 +87,22 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
       failedToRemitTransactions[index] =
           updateFn(failedToRemitTransactions[index]);
 
+  int loopAbsencesCounter = 0;
+
+  List<AbsencesRecord> absencesToRemit = [];
+  void addToAbsencesToRemit(AbsencesRecord item) => absencesToRemit.add(item);
+  void removeFromAbsencesToRemit(AbsencesRecord item) =>
+      absencesToRemit.remove(item);
+  void removeAtIndexFromAbsencesToRemit(int index) =>
+      absencesToRemit.removeAt(index);
+  void insertAtIndexInAbsencesToRemit(int index, AbsencesRecord item) =>
+      absencesToRemit.insert(index, item);
+  void updateAbsencesToRemitAtIndex(
+          int index, Function(AbsencesRecord) updateFn) =>
+      absencesToRemit[index] = updateFn(absencesToRemit[index]);
+
+  bool isLoading = false;
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Read Document] action in ChangeRemittance widget.
@@ -101,6 +117,8 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
   List<InventoriesRecord>? inventoriesToRemitFirestore;
   // Stores action output result for [Backend Call - Read Document] action in Button widget.
   BookingsRecord? booking;
+  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
+  List<AbsencesRecord>? unremittedAbsences;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
   RemittancesRecord? newRemittanceCopyCopy;
 

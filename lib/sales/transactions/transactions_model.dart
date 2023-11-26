@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/change_date/change_date_widget.dart';
 import '/components/options/option_to_booking_transaction/option_to_booking_transaction_widget.dart';
 import '/components/options/option_to_transaction_only/option_to_transaction_only_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -22,6 +23,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
@@ -51,6 +53,15 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
   GoodsRecord? goodInGoods;
   // Stores action output result for [Firestore Query - Query a collection] action in Card widget.
   GoodsRecord? goodInExpenses;
+  // State field(s) for ListView widget.
+
+  PagingController<DocumentSnapshot?, AbsencesRecord>?
+      listViewPagingController7;
+  Query? listViewPagingQuery7;
+  List<StreamSubscription?> listViewStreamSubscriptions7 = [];
+
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in listContainer widget.
+  DateTime? adjustedDate;
 
   /// Query cache managers for this widget.
 
@@ -81,6 +92,8 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
   void dispose() {
     unfocusNode.dispose();
     tabBarController?.dispose();
+    listViewStreamSubscriptions7.forEach((s) => s?.cancel());
+    listViewPagingController7?.dispose();
 
     /// Dispose query cache managers for this widget.
 
@@ -90,4 +103,36 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
   /// Action blocks are added here.
 
   /// Additional helper methods are added here.
+
+  PagingController<DocumentSnapshot?, AbsencesRecord> setListViewController7(
+    Query query, {
+    DocumentReference<Object?>? parent,
+  }) {
+    listViewPagingController7 ??= _createListViewController7(query, parent);
+    if (listViewPagingQuery7 != query) {
+      listViewPagingQuery7 = query;
+      listViewPagingController7?.refresh();
+    }
+    return listViewPagingController7!;
+  }
+
+  PagingController<DocumentSnapshot?, AbsencesRecord>
+      _createListViewController7(
+    Query query,
+    DocumentReference<Object?>? parent,
+  ) {
+    final controller =
+        PagingController<DocumentSnapshot?, AbsencesRecord>(firstPageKey: null);
+    return controller
+      ..addPageRequestListener(
+        (nextPageMarker) => queryAbsencesRecordPage(
+          queryBuilder: (_) => listViewPagingQuery7 ??= query,
+          nextPageMarker: nextPageMarker,
+          streamSubscriptions: listViewStreamSubscriptions7,
+          controller: controller,
+          pageSize: 25,
+          isStream: true,
+        ),
+      );
+  }
 }

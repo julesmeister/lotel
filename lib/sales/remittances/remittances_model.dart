@@ -77,6 +77,17 @@ class RemittancesModel extends FlutterFlowModel<RemittancesWidget> {
   void updateRoomsAtIndex(int index, Function(RoomsRecord) updateFn) =>
       rooms[index] = updateFn(rooms[index]);
 
+  int loopAbsencesCounter = 0;
+
+  List<AbsencesRecord> absences = [];
+  void addToAbsences(AbsencesRecord item) => absences.add(item);
+  void removeFromAbsences(AbsencesRecord item) => absences.remove(item);
+  void removeAtIndexFromAbsences(int index) => absences.removeAt(index);
+  void insertAtIndexInAbsences(int index, AbsencesRecord item) =>
+      absences.insert(index, item);
+  void updateAbsencesAtIndex(int index, Function(AbsencesRecord) updateFn) =>
+      absences[index] = updateFn(absences[index]);
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -90,6 +101,8 @@ class RemittancesModel extends FlutterFlowModel<RemittancesWidget> {
   BookingsRecord? bookToList;
   // Stores action output result for [Backend Call - Read Document] action in Button widget.
   TransactionsRecord? transactionToList;
+  // Stores action output result for [Backend Call - Read Document] action in Button widget.
+  AbsencesRecord? absenceToList;
   // Stores action output result for [Backend Call - Read Document] action in Button widget.
   UsersRecord? preparedBy;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.

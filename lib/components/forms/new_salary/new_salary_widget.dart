@@ -20,15 +20,18 @@ class NewSalaryWidget extends StatefulWidget {
   const NewSalaryWidget({
     Key? key,
     required this.payrollRef,
-    required this.staffsForSelection,
+    this.staffsForSelection,
     this.salaryDoc,
     this.staffDoc,
-  }) : super(key: key);
+    bool? edit,
+  })  : this.edit = edit ?? false,
+        super(key: key);
 
   final DocumentReference? payrollRef;
   final List<StaffsRecord>? staffsForSelection;
   final SalariesRecord? salaryDoc;
   final StaffsRecord? staffDoc;
+  final bool edit;
 
   @override
   _NewSalaryWidgetState createState() => _NewSalaryWidgetState();
@@ -50,13 +53,48 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.staff = await queryStaffsRecordOnce(
-        queryBuilder: (staffsRecord) => staffsRecord.where(
-          'hotel',
-          isEqualTo: FFAppState().hotel,
-        ),
-      );
-      if (_model.edit) {
+      if (widget.edit) {
+        // set rate
+        setState(() {
+          _model.rateController?.text = widget.salaryDoc!.rate.toString();
+        });
+        // set sss
+        setState(() {
+          _model.sssController?.text = widget.salaryDoc!.sss.toString();
+        });
+        // set ca
+        setState(() {
+          _model.caController?.text = widget.salaryDoc!.cashAdvance.toString();
+        });
+        if (widget.salaryDoc?.absences != null) {
+          // set absences
+          setState(() {
+            _model.absencesController?.text =
+                widget.salaryDoc!.absences.toString();
+          });
+        } else {
+          // set to 0
+          setState(() {
+            _model.absencesController?.text = '0';
+          });
+        }
+
+        // absences
+        _model.occuringAbsences = await queryAbsencesRecordOnce(
+          parent: widget.staffDoc?.reference,
+        );
+        // add absences to list
+        setState(() {
+          _model.absencesList =
+              _model.occuringAbsences!.toList().cast<AbsencesRecord>();
+        });
+      } else {
+        _model.staffs = await queryStaffsRecordOnce(
+          queryBuilder: (staffsRecord) => staffsRecord.where(
+            'hotel',
+            isEqualTo: FFAppState().hotel,
+          ),
+        );
         setState(() {
           _model.selectedStaff = widget.staffDoc;
         });
@@ -75,9 +113,9 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
         text: _model.edit ? widget.salaryDoc?.cashAdvance?.toString() : '0');
     _model.caFocusNode ??= FocusNode();
 
-    _model.cabController ??= TextEditingController(
-        text: _model.edit ? widget.salaryDoc?.pendingCA?.toString() : '0');
-    _model.cabFocusNode ??= FocusNode();
+    _model.absencesController ??= TextEditingController(
+        text: _model.edit ? widget.salaryDoc?.absences?.toString() : '0');
+    _model.absencesFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -164,64 +202,60 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'New Salary',
+                                widget.edit ? 'Edit Salary' : 'New Salary',
                                 style:
                                     FlutterFlowTheme.of(context).headlineSmall,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 16.0, 0.0),
-                              child: FlutterFlowDropDown<String>(
-                                controller: _model.dropDownValueController ??=
-                                    FormFieldController<String>(null),
-                                options: widget.staffsForSelection!
-                                    .map((e) => e.name)
-                                    .toList(),
-                                onChanged: (val) async {
-                                  setState(() => _model.dropDownValue = val);
-                                  var _shouldSetState = false;
-                                  // reset values and set staff
-                                  setState(() {
-                                    _model.selectedStaff = widget
-                                        .staffsForSelection
-                                        ?.where((e) =>
-                                            e.name == _model.dropDownValue)
-                                        .toList()
-                                        ?.first;
-                                    _model.cashAdvanceTotal = 0.0;
-                                    _model.loopAdvancesCounter = 0;
-                                    _model.cashAdvancesList = [];
-                                  });
-                                  // set sss
-                                  setState(() {
-                                    _model.sssController?.text = widget
-                                        .staffsForSelection!
-                                        .where((e) =>
-                                            e.name == _model.dropDownValue)
-                                        .toList()
-                                        .first
-                                        .sssRate
-                                        .toString();
-                                  });
-                                  // set rate
-                                  setState(() {
-                                    _model.rateController?.text = widget
-                                        .staffsForSelection!
-                                        .where((e) =>
-                                            e.name == _model.dropDownValue)
-                                        .toList()
-                                        .first
-                                        .weeklyRate
-                                        .toString();
-                                  });
-                                  _model.cashAdvances =
-                                      await queryAdvancesRecordCount(
-                                    parent: _model.selectedStaff?.reference,
-                                  );
-                                  _shouldSetState = true;
-                                  if (_model.cashAdvances! > 0) {
-                                    _model.retrievedAdvances =
+                            if (!widget.edit)
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 16.0, 0.0),
+                                child: FlutterFlowDropDown<String>(
+                                  controller: _model.dropDownValueController ??=
+                                      FormFieldController<String>(null),
+                                  options: widget.staffsForSelection!
+                                      .map((e) => e.name)
+                                      .toList(),
+                                  onChanged: (val) async {
+                                    setState(() => _model.dropDownValue = val);
+                                    var _shouldSetState = false;
+                                    // reset values and set staff
+                                    setState(() {
+                                      _model.selectedStaff = widget
+                                          .staffsForSelection
+                                          ?.where((e) =>
+                                              e.name == _model.dropDownValue)
+                                          .toList()
+                                          ?.first;
+                                      _model.cashAdvanceTotal = 0.0;
+                                      _model.loopAdvancesCounter = 0;
+                                      _model.cashAdvancesList = [];
+                                    });
+                                    // set sss
+                                    setState(() {
+                                      _model.sssController?.text = widget
+                                          .staffsForSelection!
+                                          .where((e) =>
+                                              e.name == _model.dropDownValue)
+                                          .toList()
+                                          .first
+                                          .sssRate
+                                          .toString();
+                                    });
+                                    // set rate
+                                    setState(() {
+                                      _model.rateController?.text = widget
+                                          .staffsForSelection!
+                                          .where((e) =>
+                                              e.name == _model.dropDownValue)
+                                          .toList()
+                                          .first
+                                          .weeklyRate
+                                          .toString();
+                                    });
+                                    // advances
+                                    _model.cashAdvances =
                                         await queryAdvancesRecordOnce(
                                       parent: _model.selectedStaff?.reference,
                                       queryBuilder: (advancesRecord) =>
@@ -231,62 +265,101 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       ),
                                     );
                                     _shouldSetState = true;
-                                    while (_model.loopAdvancesCounter !=
-                                        _model.cashAdvances) {
-                                      // add ca to list
+                                    if (_model.cashAdvances!.length > 0) {
+                                      while (_model.loopAdvancesCounter !=
+                                          _model.cashAdvances?.length) {
+                                        // add ca to list
+                                        setState(() {
+                                          _model.cashAdvanceTotal =
+                                              _model.cashAdvanceTotal +
+                                                  _model
+                                                      .cashAdvances![_model
+                                                          .loopAdvancesCounter]
+                                                      .amount;
+                                          _model.addToCashAdvancesList(
+                                              _model.cashAdvances![
+                                                  _model.loopAdvancesCounter]);
+                                        });
+                                        // increment loop
+                                        setState(() {
+                                          _model.loopAdvancesCounter =
+                                              _model.loopAdvancesCounter + 1;
+                                        });
+                                      }
+                                      // set CAs
                                       setState(() {
-                                        _model.cashAdvanceTotal = _model
-                                                .cashAdvanceTotal +
-                                            _model
-                                                .retrievedAdvances![
-                                                    _model.loopAdvancesCounter]
-                                                .amount;
-                                        _model.addToCashAdvancesList(
-                                            _model.retrievedAdvances![
-                                                _model.loopAdvancesCounter]);
+                                        _model.caController?.text =
+                                            _model.cashAdvanceTotal.toString();
                                       });
-                                      // increment loop
+                                    } else {
+                                      if (_shouldSetState) setState(() {});
+                                      return;
+                                    }
+
+                                    // absences
+                                    _model.absences =
+                                        await queryAbsencesRecordOnce(
+                                      parent: _model.selectedStaff?.reference,
+                                      queryBuilder: (absencesRecord) =>
+                                          absencesRecord.where(
+                                        'settled',
+                                        isEqualTo: false,
+                                      ),
+                                    );
+                                    _shouldSetState = true;
+                                    if (_model.absences!.length > 0) {
+                                      while (_model.loopAdvancesCounter !=
+                                          _model.absences?.length) {
+                                        // add absences to list
+                                        setState(() {
+                                          _model.absencesTotal =
+                                              _model.absencesTotal +
+                                                  _model
+                                                      .absences![_model
+                                                          .loopAbsencesCounter]
+                                                      .amount;
+                                          _model.addToAbsencesList(
+                                              _model.absences![
+                                                  _model.loopAbsencesCounter]);
+                                        });
+                                        // increment loop
+                                        setState(() {
+                                          _model.loopAbsencesCounter =
+                                              _model.loopAbsencesCounter + 1;
+                                        });
+                                      }
+                                      // set absences in form
                                       setState(() {
-                                        _model.loopAdvancesCounter =
-                                            _model.loopAdvancesCounter + 1;
+                                        _model.absencesController?.text =
+                                            _model.absencesTotal.toString();
                                       });
                                     }
-                                    // set CAs
-                                    setState(() {
-                                      _model.caController?.text =
-                                          _model.cashAdvanceTotal.toString();
-                                    });
-                                  } else {
                                     if (_shouldSetState) setState(() {});
-                                    return;
-                                  }
-
-                                  if (_shouldSetState) setState(() {});
-                                },
-                                width: 160.0,
-                                height: 40.0,
-                                textStyle:
-                                    FlutterFlowTheme.of(context).bodyMedium,
-                                hintText: 'Select Name',
-                                icon: Icon(
-                                  Icons.keyboard_arrow_down_rounded,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  size: 15.0,
+                                  },
+                                  width: 160.0,
+                                  height: 40.0,
+                                  textStyle:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  hintText: 'Select Name',
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    size: 15.0,
+                                  ),
+                                  fillColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  elevation: 2.0,
+                                  borderColor: Color(0xFFE0E3E7),
+                                  borderWidth: 2.0,
+                                  borderRadius: 8.0,
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      12.0, 4.0, 12.0, 4.0),
+                                  hidesUnderline: true,
+                                  isSearchable: false,
+                                  isMultiSelect: false,
                                 ),
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                elevation: 2.0,
-                                borderColor: Color(0xFFE0E3E7),
-                                borderWidth: 2.0,
-                                borderRadius: 8.0,
-                                margin: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 4.0, 12.0, 4.0),
-                                hidesUnderline: true,
-                                isSearchable: false,
-                                isMultiSelect: false,
                               ),
-                            ),
                           ],
                         ),
                       ),
@@ -364,7 +437,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
+                                    RegExp('[a-zA-Z0-9]'))
                               ],
                             ),
                             TextFormField(
@@ -427,7 +500,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
+                                    RegExp('[a-zA-Z0-9]'))
                               ],
                             ),
                             TextFormField(
@@ -494,12 +567,12 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               ],
                             ),
                             TextFormField(
-                              controller: _model.cabController,
-                              focusNode: _model.cabFocusNode,
+                              controller: _model.absencesController,
+                              focusNode: _model.absencesFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: 'Cash Advance Balance',
-                                hintText: 'Cash Advance Balance',
+                                labelText: 'Absences',
+                                hintText: 'Absences',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -549,11 +622,11 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
-                              validator: _model.cabControllerValidator
+                              validator: _model.absencesControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
+                                    RegExp('[a-zA-Z0-9]'))
                               ],
                             ),
                           ],
@@ -566,7 +639,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
-                            8.0, 4.0, 16.0, 44.0),
+                            8.0, 4.0, 16.0, 16.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -597,7 +670,9 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                             double.parse(
                                                 _model.sssController.text) -
                                             double.parse(
-                                                _model.caController.text)),
+                                                _model.caController.text) -
+                                            double.parse(_model
+                                                .absencesController.text)),
                                         formatType: FormatType.decimal,
                                         decimalType: DecimalType.automatic,
                                         currency: 'P ',
@@ -622,75 +697,144 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     .secondaryBackground,
                               ),
                               child: Visibility(
-                                visible: _model.selectedStaff != null,
+                                visible: (_model.selectedStaff != null) ||
+                                    widget.edit,
                                 child: InkWell(
                                   splashColor: Colors.transparent,
                                   focusColor: Colors.transparent,
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    // create salary
+                                    if (widget.edit) {
+                                      // update values from form
 
-                                    var salariesRecordReference =
-                                        SalariesRecord.createDoc(
-                                            widget.payrollRef!);
-                                    await salariesRecordReference.set({
-                                      ...createSalariesRecordData(
-                                        sss: double.parse(
-                                            _model.sssController.text),
-                                        cashAdvance: double.parse(
-                                            _model.caController.text),
-                                        total: (double.parse(
-                                                _model.rateController.text) -
-                                            double.parse(
-                                                _model.sssController.text) -
-                                            double.parse(
-                                                _model.caController.text)),
-                                        pendingCA: double.parse(
-                                            _model.cabController.text),
-                                        staff: _model.selectedStaff?.reference,
-                                        rate: double.parse(
-                                            _model.rateController.text),
+                                      await widget.salaryDoc!.reference.update({
+                                        ...createSalariesRecordData(
+                                          sss: double.tryParse(
+                                              _model.sssController.text),
+                                          cashAdvance: double.tryParse(
+                                              _model.caController.text),
+                                          total: (double.parse(
+                                                  _model.rateController.text) -
+                                              double.parse(
+                                                  _model.sssController.text) -
+                                              double.parse(
+                                                  _model.caController.text) -
+                                              double.parse(_model
+                                                  .absencesController.text)),
+                                          rate: double.tryParse(
+                                              _model.rateController.text),
+                                          absences: double.tryParse(
+                                              _model.absencesController.text),
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'absencesRefs': _model.absencesList
+                                                .map((e) => e.reference)
+                                                .toList(),
+                                          },
+                                        ),
+                                      });
+                                      // read updated salary
+                                      _model.updatedSalary =
+                                          await SalariesRecord.getDocumentOnce(
+                                              widget.salaryDoc!.reference);
+                                      // return salary
+                                      Navigator.pop(
+                                          context, _model.updatedSalary);
+                                    } else {
+                                      // create salary
+
+                                      var salariesRecordReference2 =
+                                          SalariesRecord.createDoc(
+                                              widget.payrollRef!);
+                                      await salariesRecordReference2.set({
+                                        ...createSalariesRecordData(
+                                          sss: double.parse(
+                                              _model.sssController.text),
+                                          cashAdvance: double.parse(
+                                              _model.caController.text),
+                                          total: (double.parse(
+                                                  _model.rateController.text) -
+                                              double.parse(
+                                                  _model.sssController.text) -
+                                              double.parse(
+                                                  _model.caController.text) -
+                                              double.parse(_model
+                                                  .absencesController.text)),
+                                          staff:
+                                              _model.selectedStaff?.reference,
+                                          rate: double.parse(
+                                              _model.rateController.text),
+                                          absences: double.parse(
+                                              _model.absencesController.text),
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                            'caRefs': _model.cashAdvancesList
+                                                .map((e) => e.reference)
+                                                .toList(),
+                                            'absencesRefs': _model.absencesList
+                                                .map((e) => e.reference)
+                                                .toList(),
+                                          },
+                                        ),
+                                      });
+                                      _model.newSalary =
+                                          SalariesRecord.getDocumentFromData({
+                                        ...createSalariesRecordData(
+                                          sss: double.parse(
+                                              _model.sssController.text),
+                                          cashAdvance: double.parse(
+                                              _model.caController.text),
+                                          total: (double.parse(
+                                                  _model.rateController.text) -
+                                              double.parse(
+                                                  _model.sssController.text) -
+                                              double.parse(
+                                                  _model.caController.text) -
+                                              double.parse(_model
+                                                  .absencesController.text)),
+                                          staff:
+                                              _model.selectedStaff?.reference,
+                                          rate: double.parse(
+                                              _model.rateController.text),
+                                          absences: double.parse(
+                                              _model.absencesController.text),
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date': DateTime.now(),
+                                            'caRefs': _model.cashAdvancesList
+                                                .map((e) => e.reference)
+                                                .toList(),
+                                            'absencesRefs': _model.absencesList
+                                                .map((e) => e.reference)
+                                                .toList(),
+                                          },
+                                        ),
+                                      }, salariesRecordReference2);
+                                      // return salary
+                                      Navigator.pop(context, _model.newSalary);
+                                    }
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Saved!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
+                                        ),
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
                                       ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': FieldValue.serverTimestamp(),
-                                          'caRefs': _model.cashAdvancesList
-                                              .map((e) => e.reference)
-                                              .toList(),
-                                        },
-                                      ),
-                                    });
-                                    _model.newSalary =
-                                        SalariesRecord.getDocumentFromData({
-                                      ...createSalariesRecordData(
-                                        sss: double.parse(
-                                            _model.sssController.text),
-                                        cashAdvance: double.parse(
-                                            _model.caController.text),
-                                        total: (double.parse(
-                                                _model.rateController.text) -
-                                            double.parse(
-                                                _model.sssController.text) -
-                                            double.parse(
-                                                _model.caController.text)),
-                                        pendingCA: double.parse(
-                                            _model.cabController.text),
-                                        staff: _model.selectedStaff?.reference,
-                                        rate: double.parse(
-                                            _model.rateController.text),
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': DateTime.now(),
-                                          'caRefs': _model.cashAdvancesList
-                                              .map((e) => e.reference)
-                                              .toList(),
-                                        },
-                                      ),
-                                    }, salariesRecordReference);
-                                    // return salary
-                                    Navigator.pop(context, _model.newSalary);
+                                    );
 
                                     setState(() {});
                                   },

@@ -56,6 +56,16 @@ class SalariesRecord extends FirestoreRecord {
   List<DocumentReference> get caRefs => _caRefs ?? const [];
   bool hasCaRefs() => _caRefs != null;
 
+  // "absences" field.
+  double? _absences;
+  double get absences => _absences ?? 0.0;
+  bool hasAbsences() => _absences != null;
+
+  // "absencesRefs" field.
+  List<DocumentReference>? _absencesRefs;
+  List<DocumentReference> get absencesRefs => _absencesRefs ?? const [];
+  bool hasAbsencesRefs() => _absencesRefs != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
@@ -67,6 +77,8 @@ class SalariesRecord extends FirestoreRecord {
     _rate = castToType<double>(snapshotData['rate']);
     _date = snapshotData['date'] as DateTime?;
     _caRefs = getDataList(snapshotData['caRefs']);
+    _absences = castToType<double>(snapshotData['absences']);
+    _absencesRefs = getDataList(snapshotData['absencesRefs']);
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -116,6 +128,7 @@ Map<String, dynamic> createSalariesRecordData({
   DocumentReference? staff,
   double? rate,
   DateTime? date,
+  double? absences,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -126,6 +139,7 @@ Map<String, dynamic> createSalariesRecordData({
       'staff': staff,
       'rate': rate,
       'date': date,
+      'absences': absences,
     }.withoutNulls,
   );
 
@@ -145,7 +159,9 @@ class SalariesRecordDocumentEquality implements Equality<SalariesRecord> {
         e1?.staff == e2?.staff &&
         e1?.rate == e2?.rate &&
         e1?.date == e2?.date &&
-        listEquality.equals(e1?.caRefs, e2?.caRefs);
+        listEquality.equals(e1?.caRefs, e2?.caRefs) &&
+        e1?.absences == e2?.absences &&
+        listEquality.equals(e1?.absencesRefs, e2?.absencesRefs);
   }
 
   @override
@@ -157,7 +173,9 @@ class SalariesRecordDocumentEquality implements Equality<SalariesRecord> {
         e?.staff,
         e?.rate,
         e?.date,
-        e?.caRefs
+        e?.caRefs,
+        e?.absences,
+        e?.absencesRefs
       ]);
 
   @override

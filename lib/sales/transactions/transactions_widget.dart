@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/change_date/change_date_widget.dart';
 import '/components/options/option_to_booking_transaction/option_to_booking_transaction_widget.dart';
 import '/components/options/option_to_transaction_only/option_to_transaction_only_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -19,6 +20,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'transactions_model.dart';
 export 'transactions_model.dart';
@@ -173,7 +175,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
 
     _model.tabBarController = TabController(
       vsync: this,
-      length: 4,
+      length: 5,
       initialIndex: 0,
     )..addListener(() => setState(() {}));
     setupAnimations(
@@ -421,6 +423,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                 elevation: 0.0,
                                 labelPadding: EdgeInsetsDirectional.fromSTEB(
                                     20.0, 0.0, 20.0, 0.0),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 16.0, 0.0),
                                 tabs: [
                                   Tab(
                                     text: 'All',
@@ -433,6 +437,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                   ),
                                   Tab(
                                     text: 'Expenses',
+                                  ),
+                                  Tab(
+                                    text: 'Absences',
                                   ),
                                 ],
                                 controller: _model.tabBarController,
@@ -3990,6 +3997,524 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                             },
                                           ),
                                       ].addToEnd(SizedBox(height: 20.0)),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 20.0, 0.0, 0.0),
+                                    child: PagedListView<
+                                        DocumentSnapshot<Object?>?,
+                                        AbsencesRecord>(
+                                      pagingController:
+                                          _model.setListViewController7(
+                                        AbsencesRecord.collection()
+                                            .where(
+                                              'hotel',
+                                              isEqualTo: FFAppState().hotel,
+                                            )
+                                            .where(
+                                              'remitted',
+                                              isEqualTo: false,
+                                            ),
+                                      ),
+                                      padding: EdgeInsets.fromLTRB(
+                                        0,
+                                        0.0,
+                                        0,
+                                        0,
+                                      ),
+                                      primary: false,
+                                      shrinkWrap: true,
+                                      reverse: false,
+                                      scrollDirection: Axis.vertical,
+                                      builderDelegate:
+                                          PagedChildBuilderDelegate<
+                                              AbsencesRecord>(
+                                        // Customize what your widget looks like when it's loading the first page.
+                                        firstPageProgressIndicatorBuilder:
+                                            (_) => Center(
+                                          child: SizedBox(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        // Customize what your widget looks like when it's loading another page.
+                                        newPageProgressIndicatorBuilder: (_) =>
+                                            Center(
+                                          child: SizedBox(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        itemBuilder:
+                                            (context, _, listViewIndex) {
+                                          final listViewAbsencesRecord = _model
+                                              .listViewPagingController7!
+                                              .itemList![listViewIndex];
+                                          return InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onLongPress: () async {
+                                              if (valueOrDefault(
+                                                      currentUserDocument?.role,
+                                                      '') ==
+                                                  'admin') {
+                                                // change date of absence
+                                                await showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return GestureDetector(
+                                                      onTap: () => _model
+                                                              .unfocusNode
+                                                              .canRequestFocus
+                                                          ? FocusScope.of(
+                                                                  context)
+                                                              .requestFocus(_model
+                                                                  .unfocusNode)
+                                                          : FocusScope.of(
+                                                                  context)
+                                                              .unfocus(),
+                                                      child: Padding(
+                                                        padding: MediaQuery
+                                                            .viewInsetsOf(
+                                                                context),
+                                                        child: Container(
+                                                          height:
+                                                              double.infinity,
+                                                          child:
+                                                              ChangeDateWidget(
+                                                            date:
+                                                                listViewAbsencesRecord
+                                                                    .date!,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ).then((value) => safeSetState(
+                                                    () => _model.adjustedDate =
+                                                        value));
+
+                                                if (_model.adjustedDate !=
+                                                    null) {
+                                                  // update adjustedDate
+
+                                                  await listViewAbsencesRecord
+                                                      .reference
+                                                      .update(
+                                                          createAbsencesRecordData(
+                                                    date: _model.adjustedDate,
+                                                  ));
+                                                }
+                                              }
+
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              constraints: BoxConstraints(
+                                                maxWidth: 570.0,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryBackground,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Color(0x33000000),
+                                                    offset: Offset(0.0, 1.0),
+                                                  )
+                                                ],
+                                                borderRadius:
+                                                    BorderRadius.circular(0.0),
+                                                border: Border.all(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .alternate,
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        16.0, 12.0, 16.0, 12.0),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 5,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    12.0,
+                                                                    0.0),
+                                                        child: StreamBuilder<
+                                                            StaffsRecord>(
+                                                          stream: StaffsRecord
+                                                              .getDocument(
+                                                                  listViewAbsencesRecord
+                                                                      .parentReference),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            // Customize what your widget looks like when it's loading.
+                                                            if (!snapshot
+                                                                .hasData) {
+                                                              return Center(
+                                                                child: SizedBox(
+                                                                  width: 50.0,
+                                                                  height: 50.0,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    valueColor:
+                                                                        AlwaysStoppedAnimation<
+                                                                            Color>(
+                                                                      FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primary,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }
+                                                            final columnStaffsRecord =
+                                                                snapshot.data!;
+                                                            return SingleChildScrollView(
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  RichText(
+                                                                    textScaleFactor:
+                                                                        MediaQuery.of(context)
+                                                                            .textScaleFactor,
+                                                                    text:
+                                                                        TextSpan(
+                                                                      children: [
+                                                                        TextSpan(
+                                                                          text:
+                                                                              functions.startBigLetter(columnStaffsRecord.name),
+                                                                          style:
+                                                                              TextStyle(),
+                                                                        )
+                                                                      ],
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyLarge
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).primaryText,
+                                                                            fontSize:
+                                                                                16.0,
+                                                                          ),
+                                                                    ),
+                                                                    maxLines: 5,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                    child: Text(
+                                                                      dateTimeFormat(
+                                                                          'MMMMEEEEd',
+                                                                          listViewAbsencesRecord
+                                                                              .date!),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .labelMedium,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: FutureBuilder<
+                                                          UsersRecord>(
+                                                        future: UsersRecord
+                                                            .getDocumentOnce(
+                                                                listViewAbsencesRecord
+                                                                    .encodedBy!),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          // Customize what your widget looks like when it's loading.
+                                                          if (!snapshot
+                                                              .hasData) {
+                                                            return Center(
+                                                              child: SizedBox(
+                                                                width: 50.0,
+                                                                height: 50.0,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  valueColor:
+                                                                      AlwaysStoppedAnimation<
+                                                                          Color>(
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          final columnUsersRecord =
+                                                              snapshot.data!;
+                                                          return Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Text(
+                                                                formatNumber(
+                                                                  listViewAbsencesRecord
+                                                                      .amount,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineSmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .error,
+                                                                    ),
+                                                              ),
+                                                              if (valueOrDefault(
+                                                                      currentUserDocument
+                                                                          ?.role,
+                                                                      '') ==
+                                                                  'admin')
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0),
+                                                                  child: Text(
+                                                                    listViewAbsencesRecord
+                                                                            .remitted
+                                                                        ? 'remitted'
+                                                                        : 'unremitted',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          color: listViewAbsencesRecord.remitted
+                                                                              ? FlutterFlowTheme.of(context).secondary
+                                                                              : FlutterFlowTheme.of(context).tertiary,
+                                                                          fontSize:
+                                                                              10.0,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                              Text(
+                                                                'Encoded By',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryText,
+                                                                      fontSize:
+                                                                          12.0,
+                                                                    ),
+                                                              ),
+                                                              Text(
+                                                                columnUsersRecord
+                                                                    .displayName,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      fontSize:
+                                                                          14.0,
+                                                                    ),
+                                                              ),
+                                                              if (valueOrDefault(
+                                                                      currentUserDocument
+                                                                          ?.role,
+                                                                      '') ==
+                                                                  'admin')
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          10.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child:
+                                                                      InkWell(
+                                                                    splashColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    focusColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    hoverColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    highlightColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    onTap:
+                                                                        () async {
+                                                                      var confirmDialogResponse = await showDialog<
+                                                                              bool>(
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (alertDialogContext) {
+                                                                              return AlertDialog(
+                                                                                title: Text('Are you sure?'),
+                                                                                content: Text('This absent will be deleted.'),
+                                                                                actions: [
+                                                                                  TextButton(
+                                                                                    onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                    child: Text('Cancel'),
+                                                                                  ),
+                                                                                  TextButton(
+                                                                                    onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                    child: Text('Confirm'),
+                                                                                  ),
+                                                                                ],
+                                                                              );
+                                                                            },
+                                                                          ) ??
+                                                                          false;
+                                                                      if (confirmDialogResponse) {
+                                                                        // delete absent
+                                                                        await listViewAbsencesRecord
+                                                                            .reference
+                                                                            .delete();
+                                                                        ScaffoldMessenger.of(context)
+                                                                            .showSnackBar(
+                                                                          SnackBar(
+                                                                            content:
+                                                                                Text(
+                                                                              'Absent is deleted!',
+                                                                              style: TextStyle(
+                                                                                color: FlutterFlowTheme.of(context).info,
+                                                                              ),
+                                                                            ),
+                                                                            duration:
+                                                                                Duration(milliseconds: 4000),
+                                                                            backgroundColor:
+                                                                                FlutterFlowTheme.of(context).error,
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    child: Card(
+                                                                      clipBehavior:
+                                                                          Clip.antiAliasWithSaveLayer,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryBackground,
+                                                                      elevation:
+                                                                          1.0,
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(40.0),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            4.0,
+                                                                            4.0,
+                                                                            4.0,
+                                                                            4.0),
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .delete_outlined,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                          size:
+                                                                              24.0,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],

@@ -146,5 +146,17 @@ service cloud.firestore {
       allow read: if true;
     }
 
+
+    match /staffs/{parent}/absences/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/absences/{document} {
+      allow read: if true;
+    }
+
   }
 }

@@ -23,6 +23,8 @@ class RentsModel extends FlutterFlowModel<RentsWidget> {
 
   double cashAdvanceHolder = 0.0;
 
+  bool isLoading = false;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

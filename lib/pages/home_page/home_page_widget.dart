@@ -97,7 +97,24 @@ class _HomePageWidgetState extends State<HomePageWidget>
           FFAppState().extPricePerHr =
               _model.hotelSettingForLate!.lateCheckoutFee;
         });
+      } else {
+        if (FFAppState().extPricePerHr == 0.0) {
+          // hotel Settings
+          _model.hotelSettingForLates = await queryHotelSettingsRecordOnce(
+            queryBuilder: (hotelSettingsRecord) => hotelSettingsRecord.where(
+              'hotel',
+              isEqualTo: FFAppState().hotel,
+            ),
+            singleRecord: true,
+          ).then((s) => s.firstOrNull);
+          // set extPricePerHr
+          setState(() {
+            FFAppState().extPricePerHr =
+                _model.hotelSettingForLates!.lateCheckoutFee;
+          });
+        }
       }
+
       if (!(FFAppState().settingRef != null)) {
         // hotel Settings
         _model.hotelSettingsHome = await queryHotelSettingsRecordOnce(
@@ -1257,19 +1274,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   safeSetState(() {}));
                                             }
 
-                                            // Update lastremit
-                                            setState(() {
-                                              FFAppState().lastRemit =
-                                                  functions.today();
-                                            });
-                                            // Update hotel setting
-
-                                            await homePageHotelSettingsRecord!
-                                                .reference
-                                                .update(
-                                                    createHotelSettingsRecordData(
-                                              lastRemit: functions.today(),
-                                            ));
                                             if (_shouldSetState)
                                               setState(() {});
                                           },

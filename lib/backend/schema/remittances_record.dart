@@ -71,6 +71,11 @@ class RemittancesRecord extends FirestoreRecord {
   List<DocumentReference> get inventories => _inventories ?? const [];
   bool hasInventories() => _inventories != null;
 
+  // "absences" field.
+  List<DocumentReference>? _absences;
+  List<DocumentReference> get absences => _absences ?? const [];
+  bool hasAbsences() => _absences != null;
+
   void _initializeFields() {
     _date = snapshotData['date'] as DateTime?;
     _transactions = getDataList(snapshotData['transactions']);
@@ -83,6 +88,7 @@ class RemittancesRecord extends FirestoreRecord {
     _collected = snapshotData['collected'] as bool?;
     _bookings = getDataList(snapshotData['bookings']);
     _inventories = getDataList(snapshotData['inventories']);
+    _absences = getDataList(snapshotData['absences']);
   }
 
   static CollectionReference get collection =>
@@ -161,7 +167,8 @@ class RemittancesRecordDocumentEquality implements Equality<RemittancesRecord> {
         e1?.net == e2?.net &&
         e1?.collected == e2?.collected &&
         listEquality.equals(e1?.bookings, e2?.bookings) &&
-        listEquality.equals(e1?.inventories, e2?.inventories);
+        listEquality.equals(e1?.inventories, e2?.inventories) &&
+        listEquality.equals(e1?.absences, e2?.absences);
   }
 
   @override
@@ -176,7 +183,8 @@ class RemittancesRecordDocumentEquality implements Equality<RemittancesRecord> {
         e?.net,
         e?.collected,
         e?.bookings,
-        e?.inventories
+        e?.inventories,
+        e?.absences
       ]);
 
   @override

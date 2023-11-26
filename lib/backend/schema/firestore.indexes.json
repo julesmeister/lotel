@@ -237,8 +237,28 @@
   ],
   "fieldOverrides": [
     {
+      "collectionGroup": "absences",
+      "fieldPath": "hotel",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
       "collectionGroup": "salaries",
       "fieldPath": "staff",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "absences",
+      "fieldPath": "remitted",
       "indexes": [
         {
           "order": "ASCENDING",

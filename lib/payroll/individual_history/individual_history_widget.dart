@@ -1,4 +1,6 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/change_date/change_date_widget.dart';
 import '/components/options/cash_advance_options/cash_advance_options_widget.dart';
 import '/components/options/salary_options/salary_options_widget.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
@@ -6,6 +8,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,7 +43,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
 
     _model.tabBarController = TabController(
       vsync: this,
-      length: 2,
+      length: 3,
       initialIndex: 0,
     )..addListener(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -150,6 +153,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                             alignment: Alignment(0.0, 0),
                             child: FlutterFlowButtonTabBar(
                               useToggleButtonStyle: true,
+                              isScrollable: true,
                               labelStyle:
                                   FlutterFlowTheme.of(context).labelMedium,
                               unselectedLabelStyle: TextStyle(),
@@ -176,6 +180,9 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                 ),
                                 Tab(
                                   text: 'Cash Advances',
+                                ),
+                                Tab(
+                                  text: 'Absences',
                                 ),
                               ],
                               controller: _model.tabBarController,
@@ -654,41 +661,71 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                           15.0,
                                                                           0.0,
                                                                           0.0),
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
+                                                              child: StreamBuilder<
+                                                                  UsersRecord>(
+                                                                stream: UsersRecord
+                                                                    .getDocument(
+                                                                        listViewAdvancesRecord
+                                                                            .requestedBy!),
+                                                                builder: (context,
+                                                                    snapshot) {
+                                                                  // Customize what your widget looks like when it's loading.
+                                                                  if (!snapshot
+                                                                      .hasData) {
+                                                                    return Center(
+                                                                      child:
+                                                                          SizedBox(
+                                                                        width:
+                                                                            50.0,
+                                                                        height:
+                                                                            50.0,
+                                                                        child:
+                                                                            CircularProgressIndicator(
+                                                                          valueColor:
+                                                                              AlwaysStoppedAnimation<Color>(
+                                                                            FlutterFlowTheme.of(context).primary,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                  final columnUsersRecord =
+                                                                      snapshot
+                                                                          .data!;
+                                                                  return Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             4.0,
                                                                             0.0,
                                                                             5.0),
-                                                                    child: Text(
-                                                                      'Date Issued',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelSmall,
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                    dateTimeFormat(
-                                                                        'MMM d y h:mm a',
-                                                                        listViewAdvancesRecord
-                                                                            .date!),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyLarge,
-                                                                  ),
-                                                                ],
+                                                                        child:
+                                                                            Text(
+                                                                          'Issued by ${columnUsersRecord.displayName} on ',
+                                                                          style:
+                                                                              FlutterFlowTheme.of(context).labelSmall,
+                                                                        ),
+                                                                      ),
+                                                                      Text(
+                                                                        dateTimeFormat(
+                                                                            'MMM d y h:mm a',
+                                                                            listViewAdvancesRecord.date!),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyLarge,
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                },
                                                               ),
                                                             ),
                                                             Padding(
@@ -798,6 +835,381 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                       ),
                                     ),
                                   ],
+                                ),
+                                PagedListView<DocumentSnapshot<Object?>?,
+                                    AbsencesRecord>(
+                                  pagingController:
+                                      _model.setListViewController3(
+                                          AbsencesRecord.collection(
+                                                  widget.staff?.reference)
+                                              .orderBy('date',
+                                                  descending: true),
+                                          parent: widget.staff?.reference),
+                                  padding: EdgeInsets.fromLTRB(
+                                    0,
+                                    10.0,
+                                    0,
+                                    0,
+                                  ),
+                                  shrinkWrap: true,
+                                  reverse: false,
+                                  scrollDirection: Axis.vertical,
+                                  builderDelegate:
+                                      PagedChildBuilderDelegate<AbsencesRecord>(
+                                    // Customize what your widget looks like when it's loading the first page.
+                                    firstPageProgressIndicatorBuilder: (_) =>
+                                        Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // Customize what your widget looks like when it's loading another page.
+                                    newPageProgressIndicatorBuilder: (_) =>
+                                        Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    itemBuilder: (context, _, listViewIndex) {
+                                      final listViewAbsencesRecord = _model
+                                          .listViewPagingController3!
+                                          .itemList![listViewIndex];
+                                      return Container(
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                          borderRadius:
+                                              BorderRadius.circular(0.0),
+                                        ),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  30.0, 0.0, 25.0, 0.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 0.0, 12.0, 0.0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: 16.0,
+                                                      height: 16.0,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .alternate,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: 2.0,
+                                                      height: 80.0,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .alternate,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  12.0,
+                                                                  15.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: StreamBuilder<
+                                                          UsersRecord>(
+                                                        stream: UsersRecord
+                                                            .getDocument(
+                                                                listViewAbsencesRecord
+                                                                    .encodedBy!),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          // Customize what your widget looks like when it's loading.
+                                                          if (!snapshot
+                                                              .hasData) {
+                                                            return Center(
+                                                              child: SizedBox(
+                                                                width: 50.0,
+                                                                height: 50.0,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  valueColor:
+                                                                      AlwaysStoppedAnimation<
+                                                                          Color>(
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          final columnUsersRecord =
+                                                              snapshot.data!;
+                                                          return InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              await showModalBottomSheet(
+                                                                isScrollControlled:
+                                                                    true,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return GestureDetector(
+                                                                    onTap: () => _model
+                                                                            .unfocusNode
+                                                                            .canRequestFocus
+                                                                        ? FocusScope.of(context).requestFocus(_model
+                                                                            .unfocusNode)
+                                                                        : FocusScope.of(context)
+                                                                            .unfocus(),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: MediaQuery
+                                                                          .viewInsetsOf(
+                                                                              context),
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            double.infinity,
+                                                                        child:
+                                                                            ChangeDateWidget(
+                                                                          date:
+                                                                              listViewAbsencesRecord.date!,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ).then((value) =>
+                                                                  safeSetState(() =>
+                                                                      _model.adjustedDate =
+                                                                          value));
+
+                                                              await listViewAbsencesRecord
+                                                                  .reference
+                                                                  .update(
+                                                                      createAbsencesRecordData(
+                                                                date: _model
+                                                                    .adjustedDate,
+                                                              ));
+
+                                                              setState(() {});
+                                                            },
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          4.0,
+                                                                          0.0,
+                                                                          5.0),
+                                                                  child: Text(
+                                                                    'Reported by ${columnUsersRecord.displayName} on',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelSmall,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  dateTimeFormat(
+                                                                      'MMM d y h:mm a',
+                                                                      listViewAbsencesRecord
+                                                                          .date!),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyLarge,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  15.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Text(
+                                                            formatNumber(
+                                                              listViewAbsencesRecord
+                                                                  .amount,
+                                                              formatType:
+                                                                  FormatType
+                                                                      .decimal,
+                                                              decimalType:
+                                                                  DecimalType
+                                                                      .automatic,
+                                                              currency: 'P ',
+                                                            ),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyLarge,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0.0,
+                                                                        8.0,
+                                                                        0.0,
+                                                                        0.0),
+                                                            child: Container(
+                                                              width: 91.0,
+                                                              height: 32.0,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: listViewAbsencesRecord
+                                                                            .settled ==
+                                                                        false
+                                                                    ? FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .accent3
+                                                                    : FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .accent2,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5.0),
+                                                                border:
+                                                                    Border.all(
+                                                                  color: listViewAbsencesRecord
+                                                                              .settled ==
+                                                                          false
+                                                                      ? FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .error
+                                                                      : FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
+                                                                  width: 1.0,
+                                                                ),
+                                                              ),
+                                                              child: Align(
+                                                                alignment:
+                                                                    AlignmentDirectional(
+                                                                        0.00,
+                                                                        0.00),
+                                                                child: Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          8.0,
+                                                                          0.0,
+                                                                          8.0,
+                                                                          0.0),
+                                                                  child: Text(
+                                                                    listViewAbsencesRecord
+                                                                            .settled
+                                                                        ? 'settled'
+                                                                        : 'pending',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          color: listViewAbsencesRecord.settled == false
+                                                                              ? FlutterFlowTheme.of(context).error
+                                                                              : FlutterFlowTheme.of(context).secondary,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),

@@ -585,55 +585,78 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   if (widget.edit == false) {
-                                    // create goods
+                                    if (widget.category != null &&
+                                        widget.category != '') {
+                                      // create goods
 
-                                    var goodsRecordReference =
-                                        GoodsRecord.collection.doc();
-                                    await goodsRecordReference
-                                        .set(createGoodsRecordData(
-                                      price: double.tryParse(
-                                          _model.priceController.text),
-                                      hotel: FFAppState().hotel,
-                                      quantity: int.tryParse(
-                                          _model.quantityController.text),
-                                      description: _model.descController.text,
-                                      category: _model.categoryController.text,
-                                      replenish: false,
-                                    ));
-                                    _model.createPayload =
-                                        GoodsRecord.getDocumentFromData(
-                                            createGoodsRecordData(
-                                              price: double.tryParse(
-                                                  _model.priceController.text),
-                                              hotel: FFAppState().hotel,
-                                              quantity: int.tryParse(_model
-                                                  .quantityController.text),
-                                              description:
-                                                  _model.descController.text,
-                                              category: _model
-                                                  .categoryController.text,
-                                              replenish: false,
+                                      var goodsRecordReference =
+                                          GoodsRecord.collection.doc();
+                                      await goodsRecordReference
+                                          .set(createGoodsRecordData(
+                                        price: double.tryParse(
+                                            _model.priceController.text),
+                                        hotel: FFAppState().hotel,
+                                        quantity: int.tryParse(
+                                            _model.quantityController.text),
+                                        description: _model.descController.text,
+                                        category:
+                                            _model.categoryController.text,
+                                        replenish: false,
+                                      ));
+                                      _model.createPayload =
+                                          GoodsRecord.getDocumentFromData(
+                                              createGoodsRecordData(
+                                                price: double.tryParse(_model
+                                                    .priceController.text),
+                                                hotel: FFAppState().hotel,
+                                                quantity: int.tryParse(_model
+                                                    .quantityController.text),
+                                                description:
+                                                    _model.descController.text,
+                                                category: _model
+                                                    .categoryController.text,
+                                                replenish: false,
+                                              ),
+                                              goodsRecordReference);
+                                      // create inventory
+
+                                      await InventoriesRecord.collection
+                                          .doc()
+                                          .set(createInventoriesRecordData(
+                                            date: functions.today(),
+                                            activity: 'added new item',
+                                            hotel: FFAppState().hotel,
+                                            staff: currentUserReference,
+                                            quantityChange: int.tryParse(
+                                                _model.quantityController.text),
+                                            previousQuantity: 0,
+                                            item: _model.descController.text,
+                                            operator: 'add',
+                                            previousPrice: widget.price,
+                                            priceChange: double.tryParse(
+                                                _model.priceController.text),
+                                            remitted: false,
+                                          ));
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'You need to enter category first!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .info,
                                             ),
-                                            goodsRecordReference);
-                                    // create inventory
-
-                                    await InventoriesRecord.collection
-                                        .doc()
-                                        .set(createInventoriesRecordData(
-                                          date: functions.today(),
-                                          activity: 'added new item',
-                                          hotel: FFAppState().hotel,
-                                          staff: currentUserReference,
-                                          quantityChange: int.tryParse(
-                                              _model.quantityController.text),
-                                          previousQuantity: 0,
-                                          item: _model.descController.text,
-                                          operator: 'add',
-                                          previousPrice: widget.price,
-                                          priceChange: double.tryParse(
-                                              _model.priceController.text),
-                                          remitted: false,
-                                        ));
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .error,
+                                        ),
+                                      );
+                                    }
                                   } else {
                                     // update goods
 
@@ -673,7 +696,6 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   }
 
                                   Navigator.pop(context);
-                                  setState(() {});
 
                                   setState(() {});
                                 },

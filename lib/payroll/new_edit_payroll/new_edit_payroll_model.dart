@@ -73,6 +73,20 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
 
   SalariesRecord? tempSalary;
 
+  int loopAbsencesCounter = 0;
+
+  List<AbsencesRecord> absencesToSettle = [];
+  void addToAbsencesToSettle(AbsencesRecord item) => absencesToSettle.add(item);
+  void removeFromAbsencesToSettle(AbsencesRecord item) =>
+      absencesToSettle.remove(item);
+  void removeAtIndexFromAbsencesToSettle(int index) =>
+      absencesToSettle.removeAt(index);
+  void insertAtIndexInAbsencesToSettle(int index, AbsencesRecord item) =>
+      absencesToSettle.insert(index, item);
+  void updateAbsencesToSettleAtIndex(
+          int index, Function(AbsencesRecord) updateFn) =>
+      absencesToSettle[index] = updateFn(absencesToSettle[index]);
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -94,10 +108,14 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
   String? Function(BuildContext, String?)? newSSSControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
   List<SalariesRecord>? updatedSalaries;
+  // Stores action output result for [Bottom Sheet - NewSalary] action in listContainer widget.
+  SalariesRecord? updatedSalary;
   // Stores action output result for [Backend Call - Read Document] action in Button widget.
   StaffsRecord? staff;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   List<AdvancesRecord>? unsettledCashAdvance;
+  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
+  List<AbsencesRecord>? absences;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
   PayrollsRecord? newPayroll;
 

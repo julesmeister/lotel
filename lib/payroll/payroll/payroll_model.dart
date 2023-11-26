@@ -2,7 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/staff_add_edit/staff_add_edit_widget.dart';
 import '/components/options/option_to_duplicate_payroll/option_to_duplicate_payroll_widget.dart';
-import '/components/options/option_to_fire_staff/option_to_fire_staff_widget.dart';
+import '/components/options/option_to_staff/option_to_staff_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -30,6 +30,17 @@ class PayrollModel extends FlutterFlowModel<PayrollWidget> {
   int loopAdvancesCounter = 0;
 
   double cashAdvanceHolder = 0.0;
+
+  List<AbsencesRecord> absences = [];
+  void addToAbsences(AbsencesRecord item) => absences.add(item);
+  void removeFromAbsences(AbsencesRecord item) => absences.remove(item);
+  void removeAtIndexFromAbsences(int index) => absences.removeAt(index);
+  void insertAtIndexInAbsences(int index, AbsencesRecord item) =>
+      absences.insert(index, item);
+  void updateAbsencesAtIndex(int index, Function(AbsencesRecord) updateFn) =>
+      absences[index] = updateFn(absences[index]);
+
+  bool isLoading = false;
 
   ///  State fields for stateful widgets in this page.
 
@@ -61,6 +72,8 @@ class PayrollModel extends FlutterFlowModel<PayrollWidget> {
   SalariesRecord? newSalary;
   // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
   List<AdvancesRecord>? unSettledCashAdvances;
+  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
+  List<AbsencesRecord>? absencesRaw;
 
   /// Initialization and disposal methods.
 

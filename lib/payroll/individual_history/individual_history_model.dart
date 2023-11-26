@@ -1,4 +1,6 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/change_date/change_date_widget.dart';
 import '/components/options/cash_advance_options/cash_advance_options_widget.dart';
 import '/components/options/salary_options/salary_options_widget.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
@@ -7,6 +9,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'individual_history_widget.dart' show IndividualHistoryWidget;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,6 +37,15 @@ class IndividualHistoryModel extends FlutterFlowModel<IndividualHistoryWidget> {
       listViewPagingController2;
   Query? listViewPagingQuery2;
 
+  // State field(s) for ListView widget.
+
+  PagingController<DocumentSnapshot?, AbsencesRecord>?
+      listViewPagingController3;
+  Query? listViewPagingQuery3;
+
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in Column widget.
+  DateTime? adjustedDate;
+
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {}
@@ -45,6 +57,8 @@ class IndividualHistoryModel extends FlutterFlowModel<IndividualHistoryWidget> {
     listViewPagingController1?.dispose();
 
     listViewPagingController2?.dispose();
+
+    listViewPagingController3?.dispose();
   }
 
   /// Action blocks are added here.
@@ -106,6 +120,38 @@ class IndividualHistoryModel extends FlutterFlowModel<IndividualHistoryWidget> {
         (nextPageMarker) => queryAdvancesRecordPage(
           parent: parent,
           queryBuilder: (_) => listViewPagingQuery2 ??= query,
+          nextPageMarker: nextPageMarker,
+          controller: controller,
+          pageSize: 25,
+          isStream: false,
+        ),
+      );
+  }
+
+  PagingController<DocumentSnapshot?, AbsencesRecord> setListViewController3(
+    Query query, {
+    DocumentReference<Object?>? parent,
+  }) {
+    listViewPagingController3 ??= _createListViewController3(query, parent);
+    if (listViewPagingQuery3 != query) {
+      listViewPagingQuery3 = query;
+      listViewPagingController3?.refresh();
+    }
+    return listViewPagingController3!;
+  }
+
+  PagingController<DocumentSnapshot?, AbsencesRecord>
+      _createListViewController3(
+    Query query,
+    DocumentReference<Object?>? parent,
+  ) {
+    final controller =
+        PagingController<DocumentSnapshot?, AbsencesRecord>(firstPageKey: null);
+    return controller
+      ..addPageRequestListener(
+        (nextPageMarker) => queryAbsencesRecordPage(
+          parent: parent,
+          queryBuilder: (_) => listViewPagingQuery3 ??= query,
           nextPageMarker: nextPageMarker,
           controller: controller,
           pageSize: 25,

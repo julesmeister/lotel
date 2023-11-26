@@ -366,7 +366,7 @@ class _NewSpaceWidgetState extends State<NewSpaceWidget> {
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
+                                    RegExp('[a-zA-Z0-9]'))
                               ],
                             ),
                             if (!valueOrDefault<bool>(
@@ -435,7 +435,7 @@ class _NewSpaceWidgetState extends State<NewSpaceWidget> {
                                     .asValidator(context),
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
-                                      RegExp('[0-9]'))
+                                      RegExp('[a-zA-Z0-9]'))
                                 ],
                               ),
                           ],

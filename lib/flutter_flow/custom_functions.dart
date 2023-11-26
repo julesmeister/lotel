@@ -1025,3 +1025,30 @@ List<RoomUsageStruct> extractRoomUsage(StatsRecord stats) {
 
   return stats.roomUsage!;
 }
+
+bool findTextsInString(
+  String? source,
+  String textsToFind,
+) {
+  // if either any of these texts possibly separated by comma is equal the source
+  if (source == null) {
+    return false;
+  }
+  final List<String> texts = textsToFind.split(',');
+  for (final text in texts) {
+    if (source.contains(text.trim())) {
+      return true;
+    }
+  }
+  return false;
+}
+
+double calculateAbsencesTotal(List<AbsencesRecord> absences) {
+  double totalAmount = 0.0;
+  for (var absent in absences) {
+    if (!absent.settled) {
+      totalAmount += absent.amount;
+    }
+  }
+  return totalAmount;
+}

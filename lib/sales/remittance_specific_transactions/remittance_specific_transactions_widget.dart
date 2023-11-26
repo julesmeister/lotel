@@ -24,10 +24,12 @@ class RemittanceSpecificTransactionsWidget extends StatefulWidget {
     Key? key,
     required this.transactions,
     required this.remittanceRef,
+    this.absences,
   }) : super(key: key);
 
   final List<DocumentReference>? transactions;
   final DocumentReference? remittanceRef;
+  final List<DocumentReference>? absences;
 
   @override
   _RemittanceSpecificTransactionsWidgetState createState() =>
@@ -140,11 +142,24 @@ class _RemittanceSpecificTransactionsWidgetState
           _model.loopTransactionsCounter = _model.loopTransactionsCounter + 1;
         });
       }
+      while (_model.loopAbsencesCounter != widget.absences?.length) {
+        // read absence
+        _model.absenceToList = await AbsencesRecord.getDocumentOnce(
+            widget.absences![_model.loopAbsencesCounter]);
+        // add to list
+        setState(() {
+          _model.addToAbsencesDocs(_model.absenceToList!);
+        });
+        // increment loop
+        setState(() {
+          _model.loopAbsencesCounter = _model.loopAbsencesCounter + 1;
+        });
+      }
     });
 
     _model.tabBarController = TabController(
       vsync: this,
-      length: 4,
+      length: 5,
       initialIndex: 0,
     )..addListener(() => setState(() {}));
     setupAnimations(
@@ -250,6 +265,8 @@ class _RemittanceSpecificTransactionsWidgetState
                             elevation: 0.0,
                             labelPadding: EdgeInsetsDirectional.fromSTEB(
                                 20.0, 0.0, 20.0, 0.0),
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 16.0, 0.0),
                             tabs: [
                               Tab(
                                 text: 'All',
@@ -262,6 +279,9 @@ class _RemittanceSpecificTransactionsWidgetState
                               ),
                               Tab(
                                 text: 'Expenses',
+                              ),
+                              Tab(
+                                text: 'Absences',
                               ),
                             ],
                             controller: _model.tabBarController,
@@ -2638,6 +2658,267 @@ class _RemittanceSpecificTransactionsWidgetState
                                         },
                                       ),
                                   ].addToEnd(SizedBox(height: 20.0)),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 20.0, 0.0, 0.0),
+                                child: Builder(
+                                  builder: (context) {
+                                    final absences =
+                                        _model.absencesDocs.toList();
+                                    return ListView.builder(
+                                      padding: EdgeInsets.fromLTRB(
+                                        0,
+                                        0.0,
+                                        0,
+                                        0,
+                                      ),
+                                      primary: false,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: absences.length,
+                                      itemBuilder: (context, absencesIndex) {
+                                        final absencesItem =
+                                            absences[absencesIndex];
+                                        return Container(
+                                          width: double.infinity,
+                                          constraints: BoxConstraints(
+                                            maxWidth: 570.0,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(0x33000000),
+                                                offset: Offset(0.0, 1.0),
+                                              )
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(0.0),
+                                            border: Border.all(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .alternate,
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16.0, 12.0, 16.0, 12.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                  flex: 5,
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 0.0,
+                                                                12.0, 0.0),
+                                                    child: StreamBuilder<
+                                                        StaffsRecord>(
+                                                      stream: StaffsRecord
+                                                          .getDocument(absencesItem
+                                                              .parentReference),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        // Customize what your widget looks like when it's loading.
+                                                        if (!snapshot.hasData) {
+                                                          return Center(
+                                                            child: SizedBox(
+                                                              width: 50.0,
+                                                              height: 50.0,
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                valueColor:
+                                                                    AlwaysStoppedAnimation<
+                                                                        Color>(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                        final columnStaffsRecord =
+                                                            snapshot.data!;
+                                                        return SingleChildScrollView(
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              RichText(
+                                                                textScaleFactor:
+                                                                    MediaQuery.of(
+                                                                            context)
+                                                                        .textScaleFactor,
+                                                                text: TextSpan(
+                                                                  children: [
+                                                                    TextSpan(
+                                                                      text: functions
+                                                                          .startBigLetter(
+                                                                              columnStaffsRecord.name),
+                                                                      style:
+                                                                          TextStyle(),
+                                                                    )
+                                                                  ],
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryText,
+                                                                        fontSize:
+                                                                            16.0,
+                                                                      ),
+                                                                ),
+                                                                maxLines: 5,
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                child: Text(
+                                                                  dateTimeFormat(
+                                                                      'MMMMEEEEd',
+                                                                      absencesItem
+                                                                          .date!),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelMedium,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: FutureBuilder<
+                                                      UsersRecord>(
+                                                    future: UsersRecord
+                                                        .getDocumentOnce(
+                                                            absencesItem
+                                                                .encodedBy!),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      // Customize what your widget looks like when it's loading.
+                                                      if (!snapshot.hasData) {
+                                                        return Center(
+                                                          child: SizedBox(
+                                                            width: 50.0,
+                                                            height: 50.0,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              valueColor:
+                                                                  AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primary,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                      final columnUsersRecord =
+                                                          snapshot.data!;
+                                                      return Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Text(
+                                                            formatNumber(
+                                                              absencesItem
+                                                                  .amount,
+                                                              formatType:
+                                                                  FormatType
+                                                                      .decimal,
+                                                              decimalType:
+                                                                  DecimalType
+                                                                      .automatic,
+                                                              currency: 'P ',
+                                                            ),
+                                                            textAlign:
+                                                                TextAlign.end,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .headlineSmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .error,
+                                                                ),
+                                                          ),
+                                                          Text(
+                                                            'Encoded By',
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                                  fontSize:
+                                                                      12.0,
+                                                                ),
+                                                          ),
+                                                          Text(
+                                                            columnUsersRecord
+                                                                .displayName,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  fontSize:
+                                                                      14.0,
+                                                                ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
                                 ),
                               ),
                             ],

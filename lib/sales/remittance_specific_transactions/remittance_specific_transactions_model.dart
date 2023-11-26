@@ -36,11 +36,25 @@ class RemittanceSpecificTransactionsModel
           int index, Function(TransactionsRecord) updateFn) =>
       transactions[index] = updateFn(transactions[index]);
 
+  int loopAbsencesCounter = 0;
+
+  List<AbsencesRecord> absencesDocs = [];
+  void addToAbsencesDocs(AbsencesRecord item) => absencesDocs.add(item);
+  void removeFromAbsencesDocs(AbsencesRecord item) => absencesDocs.remove(item);
+  void removeAtIndexFromAbsencesDocs(int index) => absencesDocs.removeAt(index);
+  void insertAtIndexInAbsencesDocs(int index, AbsencesRecord item) =>
+      absencesDocs.insert(index, item);
+  void updateAbsencesDocsAtIndex(
+          int index, Function(AbsencesRecord) updateFn) =>
+      absencesDocs[index] = updateFn(absencesDocs[index]);
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - Read Document] action in remittanceSpecificTransactions widget.
   TransactionsRecord? transactionToList;
+  // Stores action output result for [Backend Call - Read Document] action in remittanceSpecificTransactions widget.
+  AbsencesRecord? absenceToList;
   // State field(s) for TabBar widget.
   TabController? tabBarController;
   int get tabBarCurrentIndex =>

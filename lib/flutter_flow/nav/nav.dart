@@ -224,6 +224,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 ParamType.DocumentReference, true, ['transactions']),
             remittanceRef: params.getParam('remittanceRef',
                 ParamType.DocumentReference, false, ['remittances']),
+            absences: params.getParam<DocumentReference>('absences',
+                ParamType.DocumentReference, true, ['staffs', 'absences']),
           ),
         ),
         FFRoute(

@@ -824,6 +824,53 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     focusColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      // edit the salary
+                                      await showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) {
+                                          return GestureDetector(
+                                            onTap: () => _model
+                                                    .unfocusNode.canRequestFocus
+                                                ? FocusScope.of(context)
+                                                    .requestFocus(
+                                                        _model.unfocusNode)
+                                                : FocusScope.of(context)
+                                                    .unfocus(),
+                                            child: Padding(
+                                              padding: MediaQuery.viewInsetsOf(
+                                                  context),
+                                              child: Container(
+                                                height: double.infinity,
+                                                child: NewSalaryWidget(
+                                                  edit: true,
+                                                  staffDoc:
+                                                      listContainerStaffsRecord,
+                                                  salaryDoc: salariesListItem,
+                                                  payrollRef: widget.ref!,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ).then((value) => safeSetState(
+                                          () => _model.updatedSalary = value));
+
+                                      if (_model.updatedSalary?.reference !=
+                                          null) {
+                                        // update the salary in list
+                                        setState(() {
+                                          _model.updateSalariesAtIndex(
+                                            salariesListIndex,
+                                            (_) => _model.updatedSalary!,
+                                          );
+                                        });
+                                      }
+
+                                      setState(() {});
+                                    },
                                     onLongPress: () async {
                                       await showModalBottomSheet(
                                         isScrollControlled: true,
@@ -1093,7 +1140,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    'Cash Advance Balance',
+                                                    'Absences',
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .bodyMedium
@@ -1107,8 +1154,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                   ),
                                                   Text(
                                                     formatNumber(
-                                                      salariesListItem
-                                                          .pendingCA,
+                                                      salariesListItem.absences,
                                                       formatType:
                                                           FormatType.decimal,
                                                       decimalType:
@@ -1235,6 +1281,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     // reset ca counter loop
                                     setState(() {
                                       _model.loopCACounterUnsettle = 0;
+                                      _model.loopAbsencesCounter = 0;
                                     });
                                     while (_model.loopCACounterUnsettle !=
                                         _model
@@ -1254,6 +1301,27 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       setState(() {
                                         _model.loopCACounterUnsettle =
                                             _model.loopCACounterUnsettle + 1;
+                                      });
+                                    }
+                                    while (_model.loopAbsencesCounter !=
+                                        _model
+                                            .salaries[
+                                                _model.loopSalariesCounter]
+                                            .absencesRefs
+                                            .length) {
+                                      // unsettle absences  again
+
+                                      await _model
+                                          .salaries[_model.loopSalariesCounter]
+                                          .absencesRefs[
+                                              _model.loopAbsencesCounter]
+                                          .update(createAbsencesRecordData(
+                                        settled: false,
+                                      ));
+                                      // increment loop absence  counter
+                                      setState(() {
+                                        _model.loopAbsencesCounter =
+                                            _model.loopAbsencesCounter + 1;
                                       });
                                     }
                                     // delete each salary
@@ -1410,6 +1478,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   // reset ca loop counter
                                   setState(() {
                                     _model.loopAdvancesCounter = 0;
+                                    _model.loopAbsencesCounter = 0;
                                   });
                                   while (_model.loopAdvancesCounter !=
                                       _model.unsettledCashAdvance?.length) {
@@ -1426,6 +1495,35 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     setState(() {
                                       _model.loopAdvancesCounter =
                                           _model.loopAdvancesCounter + 1;
+                                    });
+                                  }
+                                  // list of absences
+                                  _model.absences =
+                                      await queryAbsencesRecordOnce(
+                                    parent: _model.staff?.reference,
+                                  );
+                                  // absences to local
+                                  setState(() {
+                                    _model.absencesToSettle = _model.absences!
+                                        .where((e) => !e.settled)
+                                        .toList()
+                                        .cast<AbsencesRecord>();
+                                  });
+                                  while (_model.loopAbsencesCounter !=
+                                      _model.absencesToSettle.length) {
+                                    // settle the absence
+
+                                    await _model
+                                        .absencesToSettle[
+                                            _model.loopAbsencesCounter]
+                                        .reference
+                                        .update(createAbsencesRecordData(
+                                      settled: true,
+                                    ));
+                                    // increment loop
+                                    setState(() {
+                                      _model.loopAbsencesCounter =
+                                          _model.loopAbsencesCounter + 1;
                                     });
                                   }
                                   // increment loopSalaries
