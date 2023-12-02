@@ -60,8 +60,29 @@ class _PrintPayrollState extends State<PrintPayroll> {
   Future<void> generatePdf() async {
     final pdf = pw.Document();
     // Header section
+
     final payrollReportTitle =
         '${widget.fortnight} ${widget.hotel} Payroll Report';
+    final headerSection = pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          payrollReportTitle,
+          style: pw.TextStyle(
+            fontSize: 18,
+            fontWeight: pw.FontWeight.bold,
+          ),
+        ),
+        pw.SizedBox(
+            height: 8), // Add some vertical spacing between the title and date
+        pw.Text(
+          'Date: $formattedDate',
+          style: pw.TextStyle(
+            fontSize: 14,
+          ),
+        ),
+      ],
+    );
     final totalAmount = formatCurrency(widget.total);
 
     // Salaries table
@@ -100,15 +121,12 @@ class _PrintPayrollState extends State<PrintPayroll> {
         margin: pw.EdgeInsets.only(left: 16.0, right: 16.0, top: 10.0),
         build: (pw.Context context) {
           return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            mainAxisAlignment:
+                pw.MainAxisAlignment.start, // Align everything to the left
             children: [
-              pw.Text(
-                payrollReportTitle,
-                style: pw.TextStyle(
-                  fontSize: 18,
-                  fontWeight: pw.FontWeight.bold,
-                ),
-              ),
-
+              pw.SizedBox(height: 60),
+              headerSection,
               pw.SizedBox(height: 20),
               // Salaries table
               pw.Table.fromTextArray(
@@ -123,11 +141,25 @@ class _PrintPayrollState extends State<PrintPayroll> {
                     pw.EdgeInsets.symmetric(vertical: 5, horizontal: 8),
               ),
               pw.SizedBox(height: 10),
-              pw.Text(
-                'Total Amount: $totalAmount',
-                style: pw.TextStyle(
-                  fontSize: 14,
-                ),
+              // Wrap the "Total Amount" text with a Row for alignment control
+              pw.Row(
+                mainAxisAlignment:
+                    pw.MainAxisAlignment.end, // Align to the right
+                children: [
+                  pw.Text(
+                    'Total Amount:',
+                    style: pw.TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                  pw.SizedBox(width: 8), // Add spacing between text and amount
+                  pw.Text(
+                    totalAmount,
+                    style: pw.TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
               ),
             ],
           );

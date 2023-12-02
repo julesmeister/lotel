@@ -76,6 +76,11 @@ class TransactionsRecord extends FirestoreRecord {
   bool get pending => _pending ?? false;
   bool hasPending() => _pending != null;
 
+  // "inventories" field.
+  List<DocumentReference>? _inventories;
+  List<DocumentReference> get inventories => _inventories ?? const [];
+  bool hasInventories() => _inventories != null;
+
   void _initializeFields() {
     _date = snapshotData['date'] as DateTime?;
     _staff = snapshotData['staff'] as DocumentReference?;
@@ -92,6 +97,7 @@ class TransactionsRecord extends FirestoreRecord {
     _description = snapshotData['description'] as String?;
     _remitted = snapshotData['remitted'] as bool?;
     _pending = snapshotData['pending'] as bool?;
+    _inventories = getDataList(snapshotData['inventories']);
   }
 
   static CollectionReference get collection =>
@@ -178,7 +184,8 @@ class TransactionsRecordDocumentEquality
         e1?.room == e2?.room &&
         e1?.description == e2?.description &&
         e1?.remitted == e2?.remitted &&
-        e1?.pending == e2?.pending;
+        e1?.pending == e2?.pending &&
+        listEquality.equals(e1?.inventories, e2?.inventories);
   }
 
   @override
@@ -194,7 +201,8 @@ class TransactionsRecordDocumentEquality
         e?.room,
         e?.description,
         e?.remitted,
-        e?.pending
+        e?.pending,
+        e?.inventories
       ]);
 
   @override

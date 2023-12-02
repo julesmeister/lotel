@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/change_remittance/change_remittance_widget.dart';
+import '/components/forms/new_grocery/new_grocery_widget.dart';
 import '/components/forms/new_issue/new_issue_widget.dart';
 import '/components/options/collect_remittance_user/collect_remittance_user_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
@@ -43,8 +44,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void updateTransactionsToRemitAtIndex(
           int index, Function(TransactionsRecord) updateFn) =>
       transactionsToRemit[index] = updateFn(transactionsToRemit[index]);
-
-  int remittanceCount = 0;
 
   int loopInventoryCounter = 0;
 
@@ -96,6 +95,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void updateRoomUsagesAtIndex(int index, Function(RoomUsageStruct) updateFn) =>
       roomUsages[index] = updateFn(roomUsages[index]);
 
+  bool showRemitController = false;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -110,8 +111,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   HotelSettingsRecord? hotelSettingsHome;
   // Stores action output result for [Backend Call - Read Document] action in HomePage widget.
   HotelSettingsRecord? settings;
-  // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
-  int? remittance;
   // Stores action output result for [Backend Call - Read Document] action in HomePage widget.
   StatsRecord? alreadyStats;
   // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
@@ -126,6 +125,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   StatsRecord? serenityStat;
   // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
   StatsRecord? lifestyleStat;
+  // State field(s) for allowRemittanceToBeSeen widget.
+  bool? allowRemittanceToBeSeenValue;
   // Stores action output result for [Bottom Sheet - ChangeDate] action in Column widget.
   DateTime? adjustedLastRemit;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.

@@ -579,315 +579,376 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                     Column(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  24.0, 25.0, 24.0, 25.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
+                                        Stack(
+                                          children: [
+                                            if (!_model.isLoading)
                                               Column(
                                                 mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    'Expenses',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                        ),
-                                                  ),
-                                                  if (mainCardRemittancesRecord
-                                                          ?.hasExpenses() ??
-                                                      true)
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  5.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        formatNumber(
-                                                          mainCardRemittancesRecord!
-                                                              .expenses,
-                                                          formatType: FormatType
-                                                              .decimal,
-                                                          decimalType:
-                                                              DecimalType
-                                                                  .automatic,
-                                                          currency: 'P ',
-                                                        ),
-                                                        style: FlutterFlowTheme
-                                                                .of(context)
-                                                            .bodyMedium
-                                                            .override(
-                                                              fontFamily:
-                                                                  'Readex Pro',
-                                                              fontSize: 20.0,
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                24.0,
+                                                                25.0,
+                                                                24.0,
+                                                                25.0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              'Expenses',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                  ),
                                                             ),
-                                                      ),
+                                                            if (mainCardRemittancesRecord
+                                                                    ?.hasExpenses() ??
+                                                                true)
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            5.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                child: Text(
+                                                                  formatNumber(
+                                                                    mainCardRemittancesRecord!
+                                                                        .expenses,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .decimal,
+                                                                    decimalType:
+                                                                        DecimalType
+                                                                            .automatic,
+                                                                    currency:
+                                                                        'P ',
+                                                                  ),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        fontSize:
+                                                                            20.0,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          AuthUserStreamWidget(
+                                                            builder: (context) =>
+                                                                FlutterFlowIconButton(
+                                                              borderRadius:
+                                                                  20.0,
+                                                              borderWidth: 1.0,
+                                                              buttonSize: 40.0,
+                                                              icon: Icon(
+                                                                Icons.add,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                size: 24.0,
+                                                              ),
+                                                              onPressed:
+                                                                  () async {
+                                                                context
+                                                                    .pushNamed(
+                                                                  'Expense',
+                                                                  queryParameters:
+                                                                      {
+                                                                    'additional':
+                                                                        serializeParam(
+                                                                      true,
+                                                                      ParamType
+                                                                          .bool,
+                                                                    ),
+                                                                    'remittanceRef':
+                                                                        serializeParam(
+                                                                      mainCardRemittancesRecord
+                                                                          ?.reference,
+                                                                      ParamType
+                                                                          .DocumentReference,
+                                                                    ),
+                                                                    'net':
+                                                                        serializeParam(
+                                                                      mainCardRemittancesRecord
+                                                                          ?.net,
+                                                                      ParamType
+                                                                          .double,
+                                                                    ),
+                                                                  }.withoutNulls,
+                                                                );
+                                                              },
+                                                            ),
+                                                          ),
+                                                      ],
                                                     ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(24.0, 0.0,
+                                                                24.0, 25.0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              'Sales',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                  ),
+                                                            ),
+                                                            if (mainCardRemittancesRecord
+                                                                    ?.hasGross() ??
+                                                                true)
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            5.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                child: Text(
+                                                                  formatNumber(
+                                                                    mainCardRemittancesRecord!
+                                                                        .gross,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .decimal,
+                                                                    decimalType:
+                                                                        DecimalType
+                                                                            .automatic,
+                                                                    currency:
+                                                                        'P ',
+                                                                  ),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        fontSize:
+                                                                            20.0,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(24.0, 0.0,
+                                                                24.0, 25.0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              'Prepared By',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                  ),
+                                                            ),
+                                                            if (mainCardRemittancesRecord
+                                                                    ?.hasPreparedBy() ??
+                                                                true)
+                                                              StreamBuilder<
+                                                                  UsersRecord>(
+                                                                stream: UsersRecord
+                                                                    .getDocument(
+                                                                        mainCardRemittancesRecord!
+                                                                            .preparedBy!),
+                                                                builder: (context,
+                                                                    snapshot) {
+                                                                  // Customize what your widget looks like when it's loading.
+                                                                  if (!snapshot
+                                                                      .hasData) {
+                                                                    return Center(
+                                                                      child:
+                                                                          SizedBox(
+                                                                        width:
+                                                                            50.0,
+                                                                        height:
+                                                                            50.0,
+                                                                        child:
+                                                                            CircularProgressIndicator(
+                                                                          valueColor:
+                                                                              AlwaysStoppedAnimation<Color>(
+                                                                            FlutterFlowTheme.of(context).primary,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                  final textUsersRecord =
+                                                                      snapshot
+                                                                          .data!;
+                                                                  return Text(
+                                                                    textUsersRecord
+                                                                        .displayName,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium,
+                                                                  );
+                                                                },
+                                                              ),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Text(
+                                                              'Collected By',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                  ),
+                                                            ),
+                                                            if (mainCardRemittancesRecord
+                                                                    ?.hasCollectedBy() ??
+                                                                true)
+                                                              StreamBuilder<
+                                                                  UsersRecord>(
+                                                                stream: UsersRecord
+                                                                    .getDocument(
+                                                                        mainCardRemittancesRecord!
+                                                                            .collectedBy!),
+                                                                builder: (context,
+                                                                    snapshot) {
+                                                                  // Customize what your widget looks like when it's loading.
+                                                                  if (!snapshot
+                                                                      .hasData) {
+                                                                    return Center(
+                                                                      child:
+                                                                          SizedBox(
+                                                                        width:
+                                                                            50.0,
+                                                                        height:
+                                                                            50.0,
+                                                                        child:
+                                                                            CircularProgressIndicator(
+                                                                          valueColor:
+                                                                              AlwaysStoppedAnimation<Color>(
+                                                                            FlutterFlowTheme.of(context).primary,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                  final textUsersRecord =
+                                                                      snapshot
+                                                                          .data!;
+                                                                  return Text(
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                      textUsersRecord
+                                                                          .displayName,
+                                                                      'Not yet collected',
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium,
+                                                                  );
+                                                                },
+                                                              ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
-                                              if (valueOrDefault(
-                                                      currentUserDocument?.role,
-                                                      '') ==
-                                                  'admin')
-                                                AuthUserStreamWidget(
-                                                  builder: (context) =>
-                                                      FlutterFlowIconButton(
-                                                    borderRadius: 20.0,
-                                                    borderWidth: 1.0,
-                                                    buttonSize: 40.0,
-                                                    icon: Icon(
-                                                      Icons.add,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                      size: 24.0,
-                                                    ),
-                                                    onPressed: () async {
-                                                      context.pushNamed(
-                                                        'Expense',
-                                                        queryParameters: {
-                                                          'additional':
-                                                              serializeParam(
-                                                            true,
-                                                            ParamType.bool,
-                                                          ),
-                                                          'remittanceRef':
-                                                              serializeParam(
-                                                            mainCardRemittancesRecord
-                                                                ?.reference,
-                                                            ParamType
-                                                                .DocumentReference,
-                                                          ),
-                                                          'net': serializeParam(
-                                                            mainCardRemittancesRecord
-                                                                ?.net,
-                                                            ParamType.double,
-                                                          ),
-                                                        }.withoutNulls,
-                                                      );
-                                                    },
-                                                  ),
+                                            if (_model.isLoading)
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                child: Image.asset(
+                                                  'assets/images/giphy.gif',
+                                                  width: double.infinity,
+                                                  height: 219.0,
+                                                  fit: BoxFit.cover,
                                                 ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  24.0, 0.0, 24.0, 25.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'Sales',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                        ),
-                                                  ),
-                                                  if (mainCardRemittancesRecord
-                                                          ?.hasGross() ??
-                                                      true)
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  5.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        formatNumber(
-                                                          mainCardRemittancesRecord!
-                                                              .gross,
-                                                          formatType: FormatType
-                                                              .decimal,
-                                                          decimalType:
-                                                              DecimalType
-                                                                  .automatic,
-                                                          currency: 'P ',
-                                                        ),
-                                                        style: FlutterFlowTheme
-                                                                .of(context)
-                                                            .bodyMedium
-                                                            .override(
-                                                              fontFamily:
-                                                                  'Readex Pro',
-                                                              fontSize: 20.0,
-                                                            ),
-                                                      ),
-                                                    ),
-                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  24.0, 0.0, 24.0, 25.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'Prepared By',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                        ),
-                                                  ),
-                                                  if (mainCardRemittancesRecord
-                                                          ?.hasPreparedBy() ??
-                                                      true)
-                                                    StreamBuilder<UsersRecord>(
-                                                      stream: UsersRecord
-                                                          .getDocument(
-                                                              mainCardRemittancesRecord!
-                                                                  .preparedBy!),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        // Customize what your widget looks like when it's loading.
-                                                        if (!snapshot.hasData) {
-                                                          return Center(
-                                                            child: SizedBox(
-                                                              width: 50.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                        Color>(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primary,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        final textUsersRecord =
-                                                            snapshot.data!;
-                                                        return Text(
-                                                          textUsersRecord
-                                                              .displayName,
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium,
-                                                        );
-                                                      },
-                                                    ),
-                                                ],
-                                              ),
-                                              Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    'Collected By',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                        ),
-                                                  ),
-                                                  if (mainCardRemittancesRecord
-                                                          ?.hasCollectedBy() ??
-                                                      true)
-                                                    StreamBuilder<UsersRecord>(
-                                                      stream: UsersRecord
-                                                          .getDocument(
-                                                              mainCardRemittancesRecord!
-                                                                  .collectedBy!),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        // Customize what your widget looks like when it's loading.
-                                                        if (!snapshot.hasData) {
-                                                          return Center(
-                                                            child: SizedBox(
-                                                              width: 50.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                        Color>(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primary,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        final textUsersRecord =
-                                                            snapshot.data!;
-                                                        return Text(
-                                                          valueOrDefault<
-                                                              String>(
-                                                            textUsersRecord
-                                                                .displayName,
-                                                            'Not yet collected',
-                                                          ),
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium,
-                                                        );
-                                                      },
-                                                    ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                                          ],
                                         ),
                                         Padding(
                                           padding:
@@ -973,6 +1034,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     _model.loopBookCounter = 0;
                                                     _model.loopTransactionCounter =
                                                         0;
+                                                    _model.isLoading = true;
                                                   });
                                                   // roomList
                                                   _model.roomInThisHotel =
@@ -1111,6 +1173,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                         true;
                                                     _model.showLoadButton =
                                                         false;
+                                                    _model.isLoading = false;
                                                   });
 
                                                   setState(() {});

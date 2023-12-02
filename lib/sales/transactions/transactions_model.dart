@@ -16,7 +16,6 @@ import '/flutter_flow/request_manager.dart';
 import 'transactions_widget.dart' show TransactionsWidget;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -45,14 +44,6 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
   int get tabBarCurrentIndex =>
       tabBarController != null ? tabBarController!.index : 0;
 
-  // Stores action output result for [Firestore Query - Query a collection] action in Card widget.
-  GoodsRecord? goodInAllGoods;
-  // Stores action output result for [Firestore Query - Query a collection] action in Card widget.
-  GoodsRecord? goodInAllExpenses;
-  // Stores action output result for [Firestore Query - Query a collection] action in Card widget.
-  GoodsRecord? goodInGoods;
-  // Stores action output result for [Firestore Query - Query a collection] action in Card widget.
-  GoodsRecord? goodInExpenses;
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, AbsencesRecord>?

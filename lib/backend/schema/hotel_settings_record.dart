@@ -52,6 +52,11 @@ class HotelSettingsRecord extends FirestoreRecord {
       _failedToRemitTransactions ?? const [];
   bool hasFailedToRemitTransactions() => _failedToRemitTransactions != null;
 
+  // "collectable" field.
+  bool? _collectable;
+  bool get collectable => _collectable ?? false;
+  bool hasCollectable() => _collectable != null;
+
   void _initializeFields() {
     _bedPrice = castToType<double>(snapshotData['bedPrice']);
     _hotel = snapshotData['hotel'] as String?;
@@ -61,6 +66,7 @@ class HotelSettingsRecord extends FirestoreRecord {
     _lateCheckoutFee = castToType<double>(snapshotData['lateCheckoutFee']);
     _failedToRemitTransactions =
         getDataList(snapshotData['failedToRemitTransactions']);
+    _collectable = snapshotData['collectable'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -104,6 +110,7 @@ Map<String, dynamic> createHotelSettingsRecordData({
   bool? acceptNewStaff,
   bool? remittable,
   double? lateCheckoutFee,
+  bool? collectable,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -113,6 +120,7 @@ Map<String, dynamic> createHotelSettingsRecordData({
       'acceptNewStaff': acceptNewStaff,
       'remittable': remittable,
       'lateCheckoutFee': lateCheckoutFee,
+      'collectable': collectable,
     }.withoutNulls,
   );
 
@@ -133,7 +141,8 @@ class HotelSettingsRecordDocumentEquality
         e1?.remittable == e2?.remittable &&
         e1?.lateCheckoutFee == e2?.lateCheckoutFee &&
         listEquality.equals(
-            e1?.failedToRemitTransactions, e2?.failedToRemitTransactions);
+            e1?.failedToRemitTransactions, e2?.failedToRemitTransactions) &&
+        e1?.collectable == e2?.collectable;
   }
 
   @override
@@ -144,7 +153,8 @@ class HotelSettingsRecordDocumentEquality
         e?.acceptNewStaff,
         e?.remittable,
         e?.lateCheckoutFee,
-        e?.failedToRemitTransactions
+        e?.failedToRemitTransactions,
+        e?.collectable
       ]);
 
   @override

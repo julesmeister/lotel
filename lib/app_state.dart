@@ -192,21 +192,6 @@ class FFAppState extends ChangeNotifier {
   void clearReplenishCountCacheKey(String? uniqueKey) =>
       _replenishCountManager.clearRequest(uniqueKey);
 
-  final _issuedManager = FutureRequestManager<int>();
-  Future<int> issued({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Future<int> Function() requestFn,
-  }) =>
-      _issuedManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearIssuedCache() => _issuedManager.clear();
-  void clearIssuedCacheKey(String? uniqueKey) =>
-      _issuedManager.clearRequest(uniqueKey);
-
   final _staffsManager = FutureRequestManager<int>();
   Future<int> staffs({
     String? uniqueQueryKey,

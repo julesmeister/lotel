@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -25,6 +26,19 @@ class CheckOutModel extends FlutterFlowModel<CheckOutWidget> {
 
   String whichExpense = 'consumedBy';
 
+  bool isLoading = false;
+
+  List<DocumentReference> inventories = [];
+  void addToInventories(DocumentReference item) => inventories.add(item);
+  void removeFromInventories(DocumentReference item) =>
+      inventories.remove(item);
+  void removeAtIndexFromInventories(int index) => inventories.removeAt(index);
+  void insertAtIndexInInventories(int index, DocumentReference item) =>
+      inventories.insert(index, item);
+  void updateInventoriesAtIndex(
+          int index, Function(DocumentReference) updateFn) =>
+      inventories[index] = updateFn(inventories[index]);
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -38,6 +52,10 @@ class CheckOutModel extends FlutterFlowModel<CheckOutWidget> {
   FocusNode? priceFocusNode2;
   TextEditingController? priceController2;
   String? Function(BuildContext, String?)? priceController2Validator;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  TransactionsRecord? newTransaction;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  InventoriesRecord? newInventory;
 
   /// Initialization and disposal methods.
 

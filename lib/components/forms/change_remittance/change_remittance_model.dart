@@ -70,7 +70,7 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
   void updateRoomUsageAtIndex(int index, Function(RoomUsageStruct) updateFn) =>
       roomUsage[index] = updateFn(roomUsage[index]);
 
-  int loopFailedTransactions = 0;
+  int loopFailedCounter = 0;
 
   List<DocumentReference> failedToRemitTransactions = [];
   void addToFailedToRemitTransactions(DocumentReference item) =>
@@ -102,6 +102,20 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
       absencesToRemit[index] = updateFn(absencesToRemit[index]);
 
   bool isLoading = false;
+
+  List<DocumentReference> failedToRemitBookings = [];
+  void addToFailedToRemitBookings(DocumentReference item) =>
+      failedToRemitBookings.add(item);
+  void removeFromFailedToRemitBookings(DocumentReference item) =>
+      failedToRemitBookings.remove(item);
+  void removeAtIndexFromFailedToRemitBookings(int index) =>
+      failedToRemitBookings.removeAt(index);
+  void insertAtIndexInFailedToRemitBookings(
+          int index, DocumentReference item) =>
+      failedToRemitBookings.insert(index, item);
+  void updateFailedToRemitBookingsAtIndex(
+          int index, Function(DocumentReference) updateFn) =>
+      failedToRemitBookings[index] = updateFn(failedToRemitBookings[index]);
 
   ///  State fields for stateful widgets in this component.
 

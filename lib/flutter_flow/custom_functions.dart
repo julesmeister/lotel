@@ -897,11 +897,12 @@ double updateSalaryTotal(
   double oldSSS,
   double? newSSS,
   double ca,
+  double absences,
 ) {
   final rate = rateSet ? newRate! : oldRate;
-  final sss = sssSet ? newSSS! : oldSSS;
+  final sss = oldSSS == 0 ? 0 : (sssSet ? newSSS! : oldSSS);
 
-  final total = rate - sss - ca;
+  final total = rate - sss - ca - absences;
   return total;
 }
 
@@ -1051,4 +1052,42 @@ double calculateAbsencesTotal(List<AbsencesRecord> absences) {
     }
   }
   return totalAmount;
+}
+
+String activityOfInventory(
+  double prevPrice,
+  double currentPrice,
+  int prevQuantity,
+  int currentQuantity,
+  String prevDescription,
+  String currentDescription,
+  String prevCategory,
+  String currentCategory,
+) {
+  // if any of the prev and current are changed, return what type of activity
+  List<String> activities = [];
+
+  if (prevPrice < currentPrice) {
+    activities.add('increased price');
+  } else if (prevPrice > currentPrice) {
+    activities.add('decreased price');
+  }
+
+  if (prevCategory != currentCategory) {
+    activities.add('revised category');
+  }
+
+  if (prevQuantity < currentQuantity) {
+    activities.add(prevQuantity == 0 ? 'replenished' : 'added more');
+  } else if (prevQuantity > currentQuantity) {
+    activities.add('removed some');
+  }
+
+  if (prevDescription != currentDescription) {
+    activities.add('revised description');
+  }
+
+  return activities.isNotEmpty
+      ? activities.join(' and ')
+      : 'nothing was changed';
 }

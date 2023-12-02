@@ -832,12 +832,12 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                     FlutterFlowTheme.of(context).secondaryText,
                               ),
                               child: CheckboxListTile(
-                                value: _model.checkboxListTileValue1 ??=
+                                value: _model.checkboxListTileValue ??=
                                     adminAreaHotelSettingsRecord!
                                         .acceptNewStaff,
                                 onChanged: (newValue) async {
-                                  setState(() => _model.checkboxListTileValue1 =
-                                      newValue!);
+                                  setState(() =>
+                                      _model.checkboxListTileValue = newValue!);
                                   if (newValue!) {
                                     await adminAreaHotelSettingsRecord!
                                         .reference
@@ -854,70 +854,6 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                 },
                                 title: Text(
                                   'Allow New Staff Signup',
-                                  style: FlutterFlowTheme.of(context).bodyLarge,
-                                ),
-                                tileColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                activeColor:
-                                    FlutterFlowTheme.of(context).primary,
-                                checkColor: FlutterFlowTheme.of(context).info,
-                                dense: false,
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 1.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 50.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 0.0,
-                                  color: FlutterFlowTheme.of(context).alternate,
-                                  offset: Offset(0.0, 1.0),
-                                )
-                              ],
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Theme(
-                              data: ThemeData(
-                                checkboxTheme: CheckboxThemeData(
-                                  visualDensity: VisualDensity.compact,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                unselectedWidgetColor:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                              ),
-                              child: CheckboxListTile(
-                                value: _model.checkboxListTileValue2 ??=
-                                    adminAreaHotelSettingsRecord!.remittable,
-                                onChanged: (newValue) async {
-                                  setState(() => _model.checkboxListTileValue2 =
-                                      newValue!);
-                                  if (newValue!) {
-                                    await adminAreaHotelSettingsRecord!
-                                        .reference
-                                        .update(createHotelSettingsRecordData(
-                                      remittable: true,
-                                    ));
-                                  } else {
-                                    await adminAreaHotelSettingsRecord!
-                                        .reference
-                                        .update(createHotelSettingsRecordData(
-                                      remittable: false,
-                                    ));
-                                  }
-                                },
-                                title: Text(
-                                  'Allow Submitting of Remittance',
                                   style: FlutterFlowTheme.of(context).bodyLarge,
                                 ),
                                 tileColor: FlutterFlowTheme.of(context)

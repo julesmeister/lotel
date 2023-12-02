@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/change_remittance/change_remittance_widget.dart';
+import '/components/forms/new_grocery/new_grocery_widget.dart';
 import '/components/forms/new_issue/new_issue_widget.dart';
 import '/components/options/collect_remittance_user/collect_remittance_user_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
@@ -146,24 +147,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
         }
       }
 
-      if (valueOrDefault(currentUserDocument?.role, '') == 'admin') {
-        // does a remittance exist?
-        _model.remittance = await queryRemittancesRecordCount(
-          queryBuilder: (remittancesRecord) => remittancesRecord
-              .where(
-                'collected',
-                isEqualTo: false,
-              )
-              .where(
-                'hotel',
-                isEqualTo: FFAppState().hotel,
-              ),
-        );
-        // enable remit button visibility
-        setState(() {
-          _model.remittanceCount = _model.remittance!;
-        });
-      } else {
+      if (valueOrDefault(currentUserDocument?.role, '') != 'admin') {
         if (valueOrDefault<bool>(currentUserDocument?.expired, false)) {
           GoRouter.of(context).prepareAuthEvent();
           await authManager.signOut();
@@ -174,7 +158,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
           return;
         }
       }
-
       if (FFAppState().statsReference != null) {
         // if this stat is correct
         _model.alreadyStats =
@@ -256,6 +239,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
               create: true,
             ),
             rentIncome: 0.0,
+            groceryExpenses: 0.0,
           ),
           ...mapToFirestore(
             {
@@ -289,6 +273,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
               create: true,
             ),
             rentIncome: 0.0,
+            groceryExpenses: 0.0,
           ),
           ...mapToFirestore(
             {
@@ -843,6 +828,251 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               ),
                             ),
                           ),
+                        if (valueOrDefault(currentUserDocument?.role, '') ==
+                            'admin')
+                          Align(
+                            alignment: AlignmentDirectional(0.00, -1.00),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 10.0, 16.0, 0.0),
+                              child: AuthUserStreamWidget(
+                                builder: (context) =>
+                                    StreamBuilder<List<HotelSettingsRecord>>(
+                                  stream: _model.hotelSettings(
+                                    requestFn: () => queryHotelSettingsRecord(),
+                                  ),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    List<HotelSettingsRecord>
+                                        remitbuttoncontrolHotelSettingsRecordList =
+                                        snapshot.data!;
+                                    return Container(
+                                      width: double.infinity,
+                                      constraints: BoxConstraints(
+                                        maxWidth: 500.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        border: Border.all(
+                                          color: FlutterFlowTheme.of(context)
+                                              .alternate,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 5.0, 0.0, 5.0),
+                                            child: InkWell(
+                                              splashColor: Colors.transparent,
+                                              focusColor: Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              onTap: () async {
+                                                setState(() {
+                                                  _model.showRemitController =
+                                                      !_model
+                                                          .showRemitController;
+                                                });
+                                              },
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(10.0, 0.0,
+                                                                0.0, 0.0),
+                                                    child: Text(
+                                                      'Front Desk Remit Button',
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                                fontSize: 10.0,
+                                                              ),
+                                                    ),
+                                                  ),
+                                                  if (_model
+                                                      .showRemitController)
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  0.0,
+                                                                  5.0,
+                                                                  0.0),
+                                                      child: Icon(
+                                                        Icons
+                                                            .keyboard_arrow_down_outlined,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        size: 14.0,
+                                                      ),
+                                                    ),
+                                                  if (!_model
+                                                      .showRemitController)
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  0.0,
+                                                                  5.0,
+                                                                  0.0),
+                                                      child: Icon(
+                                                        Icons.chevron_left,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        size: 14.0,
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          if (_model.showRemitController)
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 5.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  10.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: Text(
+                                                        'Allow Front Desk To See Remit Button',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyMedium,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Align(
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                              1.00, 0.00),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    10.0,
+                                                                    0.0),
+                                                        child: Switch.adaptive(
+                                                          value: _model
+                                                                  .allowRemittanceToBeSeenValue ??=
+                                                              homePageHotelSettingsRecord!
+                                                                  .remittable,
+                                                          onChanged:
+                                                              (newValue) async {
+                                                            setState(() => _model
+                                                                    .allowRemittanceToBeSeenValue =
+                                                                newValue!);
+                                                            if (newValue!) {
+                                                              // remittable
+
+                                                              await homePageHotelSettingsRecord!
+                                                                  .reference
+                                                                  .update(
+                                                                      createHotelSettingsRecordData(
+                                                                remittable:
+                                                                    true,
+                                                              ));
+                                                            } else {
+                                                              // unremittable
+
+                                                              await homePageHotelSettingsRecord!
+                                                                  .reference
+                                                                  .update(
+                                                                      createHotelSettingsRecordData(
+                                                                remittable:
+                                                                    false,
+                                                              ));
+                                                            }
+                                                          },
+                                                          activeColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primaryText,
+                                                          activeTrackColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .secondaryText,
+                                                          inactiveTrackColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .error,
+                                                          inactiveThumbColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .secondaryText,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               24.0, 24.0, 24.0, 16.0),
@@ -1102,15 +1332,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ),
                                     ),
                                   ),
-                                  if (valueOrDefault(
-                                              currentUserDocument?.role, '') ==
-                                          'admin'
-                                      ? (_model.remittanceCount > 0)
-                                      : (homePageHotelSettingsRecord!
-                                              .remittable &&
-                                          functions.moreThan12Hrs(
-                                              homePageHotelSettingsRecord
-                                                  ?.lastRemit)!))
+                                  if ((valueOrDefault(currentUserDocument?.role,
+                                                  '') ==
+                                              'admin'
+                                          ? homePageHotelSettingsRecord
+                                              ?.collectable
+                                          : homePageHotelSettingsRecord
+                                              ?.remittable) ??
+                                      true)
                                     AuthUserStreamWidget(
                                       builder: (context) => InkWell(
                                         splashColor: Colors.transparent,
@@ -1218,6 +1447,25 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   collectedBy:
                                                       currentUserReference,
                                                 ));
+                                                // not collectable anymore
+
+                                                await FFAppState()
+                                                    .settingRef!
+                                                    .update(
+                                                        createHotelSettingsRecordData(
+                                                      collectable: false,
+                                                      remittable: false,
+                                                    ));
+                                                // hide remit controller
+                                                setState(() {
+                                                  _model.showRemitController =
+                                                      false;
+                                                });
+                                                // toggle off remit controller
+                                                setState(() {
+                                                  _model.allowRemittanceToBeSeenValue =
+                                                      false;
+                                                });
                                               } else {
                                                 if (_shouldSetState)
                                                   setState(() {});
@@ -2420,39 +2668,46 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             },
                           ),
                         ),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                          ),
-                          child: FutureBuilder<int>(
-                            future: FFAppState().issued(
-                              requestFn: () => queryIssuesRecordCount(
-                                queryBuilder: (issuesRecord) =>
-                                    issuesRecord.where(
-                                  'hotel',
-                                  isEqualTo: FFAppState().hotel,
-                                ),
-                              ),
+                        StreamBuilder<List<IssuesRecord>>(
+                          stream: _model.issueHome(
+                            uniqueQueryKey: FFAppState().hotel,
+                            requestFn: () => queryIssuesRecord(
+                              queryBuilder: (issuesRecord) => issuesRecord
+                                  .where(
+                                    'hotel',
+                                    isEqualTo: FFAppState().hotel,
+                                  )
+                                  .where(
+                                    'status',
+                                    isEqualTo: 'pending',
+                                  ),
+                              limit: 10,
                             ),
-                            builder: (context, snapshot) {
-                              // Customize what your widget looks like when it's loading.
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: SizedBox(
-                                    width: 50.0,
-                                    height: 50.0,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        FlutterFlowTheme.of(context).primary,
-                                      ),
+                          ),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 50.0,
+                                  height: 50.0,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      FlutterFlowTheme.of(context).primary,
                                     ),
                                   ),
-                                );
-                              }
-                              int columnCount = snapshot.data!;
-                              return Column(
+                                ),
+                              );
+                            }
+                            List<IssuesRecord> issuedBoxIssuesRecordList =
+                                snapshot.data!;
+                            return Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                              ),
+                              child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Padding(
@@ -2562,318 +2817,279 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ],
                                     ),
                                   ),
-                                  StreamBuilder<List<IssuesRecord>>(
-                                    stream: _model.issueHome(
-                                      uniqueQueryKey: FFAppState().hotel,
-                                      requestFn: () => queryIssuesRecord(
-                                        queryBuilder: (issuesRecord) =>
-                                            issuesRecord
-                                                .where(
-                                                  'hotel',
-                                                  isEqualTo: FFAppState().hotel,
-                                                )
-                                                .orderBy('date',
-                                                    descending: true),
-                                        limit: 10,
+                                  if (issuedBoxIssuesRecordList.length > 0)
+                                    Container(
+                                      width: double.infinity,
+                                      height: 130.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
                                       ),
-                                    ),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 50.0,
-                                            height: 50.0,
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                FlutterFlowTheme.of(context)
-                                                    .primary,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      List<IssuesRecord>
-                                          containerIssuesRecordList =
-                                          snapshot.data!;
-                                      return Container(
-                                        width: double.infinity,
-                                        height: 130.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                        child: Visibility(
-                                          visible: columnCount > 0,
-                                          child: Builder(
-                                            builder: (context) {
-                                              final issuesList =
-                                                  containerIssuesRecordList
-                                                      .where((e) =>
-                                                          e.status == 'pending')
-                                                      .toList();
-                                              return ListView.builder(
-                                                padding: EdgeInsets.zero,
-                                                shrinkWrap: true,
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: issuesList.length,
-                                                itemBuilder:
-                                                    (context, issuesListIndex) {
-                                                  final issuesListItem =
-                                                      issuesList[
-                                                          issuesListIndex];
-                                                  return Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                16.0,
-                                                                12.0,
-                                                                16.0,
-                                                                16.0),
-                                                    child: InkWell(
-                                                      splashColor:
+                                      child: Builder(
+                                        builder: (context) {
+                                          final issuesList =
+                                              issuedBoxIssuesRecordList
+                                                  .sortedList((e) => e.date!)
+                                                  .toList();
+                                          return ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: issuesList.length,
+                                            itemBuilder:
+                                                (context, issuesListIndex) {
+                                              final issuesListItem =
+                                                  issuesList[issuesListIndex];
+                                              return Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        16.0, 12.0, 16.0, 16.0),
+                                                child: InkWell(
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  focusColor:
+                                                      Colors.transparent,
+                                                  hoverColor:
+                                                      Colors.transparent,
+                                                  highlightColor:
+                                                      Colors.transparent,
+                                                  onTap: () async {
+                                                    await showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      backgroundColor:
                                                           Colors.transparent,
-                                                      focusColor:
-                                                          Colors.transparent,
-                                                      hoverColor:
-                                                          Colors.transparent,
-                                                      highlightColor:
-                                                          Colors.transparent,
-                                                      onTap: () async {
-                                                        await showModalBottomSheet(
-                                                          isScrollControlled:
-                                                              true,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
-                                                                          context)
-                                                                      .unfocus(),
-                                                              child: Padding(
-                                                                padding: MediaQuery
-                                                                    .viewInsetsOf(
-                                                                        context),
-                                                                child:
-                                                                    Container(
-                                                                  height: 220.0,
-                                                                  child:
-                                                                      OptionToIssueWidget(
-                                                                    ref: issuesListItem
-                                                                        .reference,
-                                                                  ),
-                                                                ),
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return GestureDetector(
+                                                          onTap: () => _model
+                                                                  .unfocusNode
+                                                                  .canRequestFocus
+                                                              ? FocusScope.of(
+                                                                      context)
+                                                                  .requestFocus(
+                                                                      _model
+                                                                          .unfocusNode)
+                                                              : FocusScope.of(
+                                                                      context)
+                                                                  .unfocus(),
+                                                          child: Padding(
+                                                            padding: MediaQuery
+                                                                .viewInsetsOf(
+                                                                    context),
+                                                            child: Container(
+                                                              height: 220.0,
+                                                              child:
+                                                                  OptionToIssueWidget(
+                                                                ref: issuesListItem
+                                                                    .reference,
                                                               ),
-                                                            );
-                                                          },
-                                                        ).then((value) =>
-                                                            safeSetState(
-                                                                () {}));
+                                                            ),
+                                                          ),
+                                                        );
                                                       },
-                                                      child: Container(
-                                                        width: 342.0,
-                                                        height: 100.0,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              blurRadius: 12.0,
-                                                              color: Color(
-                                                                  0x34000000),
-                                                              offset: Offset(
-                                                                  -2.0, 5.0),
-                                                            )
-                                                          ],
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                        ),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      8.0,
-                                                                      8.0,
-                                                                      12.0,
-                                                                      8.0),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              Container(
-                                                                width: 4.0,
-                                                                height: double
-                                                                    .infinity,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: issuesListItem
-                                                                              .status ==
-                                                                          'pending'
-                                                                      ? FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .error
-                                                                      : FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondary,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              4.0),
-                                                                ),
-                                                              ),
-                                                              Expanded(
-                                                                child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                    ).then((value) =>
+                                                        safeSetState(() {}));
+                                                  },
+                                                  child: Container(
+                                                    width: 342.0,
+                                                    height: 100.0,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          blurRadius: 12.0,
+                                                          color:
+                                                              Color(0x34000000),
+                                                          offset:
+                                                              Offset(-2.0, 5.0),
+                                                        )
+                                                      ],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  8.0,
+                                                                  8.0,
+                                                                  12.0,
+                                                                  8.0),
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          Container(
+                                                            width: 4.0,
+                                                            height:
+                                                                double.infinity,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: issuesListItem.status ==
+                                                                      'pending'
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .error
+                                                                  : FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondary,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          4.0),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           12.0,
                                                                           0.0,
                                                                           0.0,
                                                                           0.0),
-                                                                  child: Column(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                        issuesListItem
-                                                                            .status,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .override(
-                                                                              fontFamily: 'Plus Jakarta Sans',
-                                                                              color: issuesListItem.status == 'pending' ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
-                                                                              fontSize: 14.0,
-                                                                              fontWeight: FontWeight.w500,
-                                                                            ),
-                                                                      ),
-                                                                      Flexible(
-                                                                        child:
-                                                                            Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              0.0,
-                                                                              3.0,
-                                                                              0.0,
-                                                                              0.0),
-                                                                          child:
-                                                                              StreamBuilder<UsersRecord>(
-                                                                            stream:
-                                                                                UsersRecord.getDocument(issuesListItem.staff!),
-                                                                            builder:
-                                                                                (context, snapshot) {
-                                                                              // Customize what your widget looks like when it's loading.
-                                                                              if (!snapshot.hasData) {
-                                                                                return Center(
-                                                                                  child: SizedBox(
-                                                                                    width: 50.0,
-                                                                                    height: 50.0,
-                                                                                    child: CircularProgressIndicator(
-                                                                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                                                                        FlutterFlowTheme.of(context).primary,
-                                                                                      ),
-                                                                                    ),
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    issuesListItem
+                                                                        .status,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Plus Jakarta Sans',
+                                                                          color: issuesListItem.status == 'pending'
+                                                                              ? FlutterFlowTheme.of(context).error
+                                                                              : FlutterFlowTheme.of(context).secondary,
+                                                                          fontSize:
+                                                                              14.0,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                  ),
+                                                                  Flexible(
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          3.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child: StreamBuilder<
+                                                                          UsersRecord>(
+                                                                        stream:
+                                                                            UsersRecord.getDocument(issuesListItem.staff!),
+                                                                        builder:
+                                                                            (context,
+                                                                                snapshot) {
+                                                                          // Customize what your widget looks like when it's loading.
+                                                                          if (!snapshot
+                                                                              .hasData) {
+                                                                            return Center(
+                                                                              child: SizedBox(
+                                                                                width: 50.0,
+                                                                                height: 50.0,
+                                                                                child: CircularProgressIndicator(
+                                                                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                    FlutterFlowTheme.of(context).primary,
                                                                                   ),
-                                                                                );
-                                                                              }
-                                                                              final richTextUsersRecord = snapshot.data!;
-                                                                              return RichText(
-                                                                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                                                                                text: TextSpan(
-                                                                                  children: [
-                                                                                    TextSpan(
-                                                                                      text: 'Reported by ',
-                                                                                      style: FlutterFlowTheme.of(context).labelMedium.override(
-                                                                                            fontFamily: 'Plus Jakarta Sans',
-                                                                                          ),
-                                                                                    ),
-                                                                                    TextSpan(
-                                                                                      text: richTextUsersRecord.displayName,
-                                                                                      style: TextStyle(),
-                                                                                    ),
-                                                                                    TextSpan(
-                                                                                      text: ' on ',
-                                                                                      style: TextStyle(),
-                                                                                    ),
-                                                                                    TextSpan(
-                                                                                      text: dateTimeFormat('MMM d h:mm a', issuesListItem.date!),
-                                                                                      style: TextStyle(),
-                                                                                    )
-                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            );
+                                                                          }
+                                                                          final richTextUsersRecord =
+                                                                              snapshot.data!;
+                                                                          return RichText(
+                                                                            textScaleFactor:
+                                                                                MediaQuery.of(context).textScaleFactor,
+                                                                            text:
+                                                                                TextSpan(
+                                                                              children: [
+                                                                                TextSpan(
+                                                                                  text: 'Reported by ',
                                                                                   style: FlutterFlowTheme.of(context).labelMedium.override(
                                                                                         fontFamily: 'Plus Jakarta Sans',
-                                                                                        color: Color(0xFF57636C),
-                                                                                        fontWeight: FontWeight.w500,
                                                                                       ),
                                                                                 ),
-                                                                              );
-                                                                            },
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      Flexible(
-                                                                        child:
-                                                                            Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              0.0,
-                                                                              4.0,
-                                                                              0.0,
-                                                                              0.0),
-                                                                          child:
-                                                                              AutoSizeText(
-                                                                            issuesListItem.detail,
-                                                                            style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                  fontFamily: 'Outfit',
-                                                                                  color: Color(0xFF14181B),
-                                                                                  fontSize: 24.0,
-                                                                                  fontWeight: FontWeight.w500,
+                                                                                TextSpan(
+                                                                                  text: richTextUsersRecord.displayName,
+                                                                                  style: TextStyle(),
                                                                                 ),
-                                                                            minFontSize:
-                                                                                12.0,
-                                                                          ),
-                                                                        ),
+                                                                                TextSpan(
+                                                                                  text: ' on ',
+                                                                                  style: TextStyle(),
+                                                                                ),
+                                                                                TextSpan(
+                                                                                  text: dateTimeFormat('MMM d h:mm a', issuesListItem.date!),
+                                                                                  style: TextStyle(),
+                                                                                )
+                                                                              ],
+                                                                              style: FlutterFlowTheme.of(context).labelMedium.override(
+                                                                                    fontFamily: 'Plus Jakarta Sans',
+                                                                                    color: Color(0xFF57636C),
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                  ),
+                                                                            ),
+                                                                          );
+                                                                        },
                                                                       ),
-                                                                    ],
+                                                                    ),
                                                                   ),
-                                                                ),
+                                                                  Flexible(
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          4.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          AutoSizeText(
+                                                                        issuesListItem
+                                                                            .detail,
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .headlineSmall
+                                                                            .override(
+                                                                              fontFamily: 'Outfit',
+                                                                              color: Color(0xFF14181B),
+                                                                              fontSize: 24.0,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                        minFontSize:
+                                                                            12.0,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
-                                                            ],
+                                                            ),
                                                           ),
-                                                        ),
+                                                        ],
                                                       ),
                                                     ),
-                                                  );
-                                                },
+                                                  ),
+                                                ),
                                               );
                                             },
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                 ],
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
                         Container(
                           width: double.infinity,
@@ -3142,6 +3358,272 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         },
                                       ),
                                     ),
+                                    if (valueOrDefault(
+                                            currentUserDocument?.role, '') ==
+                                        'admin')
+                                      Divider(
+                                        height: 4.0,
+                                        thickness: 2.0,
+                                        indent: 20.0,
+                                        endIndent: 20.0,
+                                        color: Color(0xFFE0E3E7),
+                                      ),
+                                    if (valueOrDefault(
+                                            currentUserDocument?.role, '') ==
+                                        'admin')
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            24.0, 24.0, 24.0, 16.0),
+                                        child: FutureBuilder<List<StatsRecord>>(
+                                          future: queryStatsRecordOnce(
+                                            queryBuilder: (statsRecord) =>
+                                                statsRecord
+                                                    .where(
+                                                      'hotel',
+                                                      isEqualTo:
+                                                          FFAppState().hotel,
+                                                    )
+                                                    .where(
+                                                      'year',
+                                                      isEqualTo: functions
+                                                          .currentYear(),
+                                                    )
+                                                    .where(
+                                                      'month',
+                                                      isEqualTo: functions
+                                                          .currentMonth(),
+                                                    ),
+                                            singleRecord: true,
+                                          ),
+                                          builder: (context, snapshot) {
+                                            // Customize what your widget looks like when it's loading.
+                                            if (!snapshot.hasData) {
+                                              return Center(
+                                                child: SizedBox(
+                                                  width: 50.0,
+                                                  height: 50.0,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .primary,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                            List<StatsRecord>
+                                                topTitleStatsRecordList =
+                                                snapshot.data!;
+                                            // Return an empty Container when the item does not exist.
+                                            if (snapshot.data!.isEmpty) {
+                                              return Container();
+                                            }
+                                            final topTitleStatsRecord =
+                                                topTitleStatsRecordList
+                                                        .isNotEmpty
+                                                    ? topTitleStatsRecordList
+                                                        .first
+                                                    : null;
+                                            return Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  10.0),
+                                                      child: Text(
+                                                        valueOrDefault<String>(
+                                                          formatNumber(
+                                                            topTitleStatsRecord
+                                                                ?.groceryExpenses,
+                                                            formatType:
+                                                                FormatType
+                                                                    .decimal,
+                                                            decimalType:
+                                                                DecimalType
+                                                                    .automatic,
+                                                            currency: 'P ',
+                                                          ),
+                                                          '0',
+                                                        ),
+                                                        style: FlutterFlowTheme
+                                                                .of(context)
+                                                            .displaySmall
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Outfit',
+                                                              color: Color(
+                                                                  0xFF14181B),
+                                                              fontSize: 36.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        FutureBuilder<
+                                                            List<
+                                                                TransactionsRecord>>(
+                                                          future:
+                                                              queryTransactionsRecordOnce(
+                                                            queryBuilder:
+                                                                (transactionsRecord) =>
+                                                                    transactionsRecord
+                                                                        .where(
+                                                                          'hotel',
+                                                                          isEqualTo:
+                                                                              FFAppState().hotel,
+                                                                        )
+                                                                        .where(
+                                                                          'remitted',
+                                                                          isEqualTo:
+                                                                              false,
+                                                                        )
+                                                                        .where(
+                                                                          'type',
+                                                                          isEqualTo:
+                                                                              'change',
+                                                                        ),
+                                                            singleRecord: true,
+                                                          ),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            // Customize what your widget looks like when it's loading.
+                                                            if (!snapshot
+                                                                .hasData) {
+                                                              return Center(
+                                                                child: SizedBox(
+                                                                  width: 50.0,
+                                                                  height: 50.0,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    valueColor:
+                                                                        AlwaysStoppedAnimation<
+                                                                            Color>(
+                                                                      FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primary,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }
+                                                            List<TransactionsRecord>
+                                                                textTransactionsRecordList =
+                                                                snapshot.data!;
+                                                            // Return an empty Container when the item does not exist.
+                                                            if (snapshot.data!
+                                                                .isEmpty) {
+                                                              return Container();
+                                                            }
+                                                            final textTransactionsRecord =
+                                                                textTransactionsRecordList
+                                                                        .isNotEmpty
+                                                                    ? textTransactionsRecordList
+                                                                        .first
+                                                                    : null;
+                                                            return Text(
+                                                              'Amount spent for groceries this month',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .labelSmall,
+                                                            );
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      FlutterFlowIconButton(
+                                                        borderColor:
+                                                            Color(0xFFF1F4F8),
+                                                        borderRadius: 30.0,
+                                                        borderWidth: 2.0,
+                                                        buttonSize: 44.0,
+                                                        icon: Icon(
+                                                          Icons.add,
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                          size: 24.0,
+                                                        ),
+                                                        onPressed: () async {
+                                                          await showModalBottomSheet(
+                                                            isScrollControlled:
+                                                                true,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return GestureDetector(
+                                                                onTap: () => _model
+                                                                        .unfocusNode
+                                                                        .canRequestFocus
+                                                                    ? FocusScope.of(
+                                                                            context)
+                                                                        .requestFocus(_model
+                                                                            .unfocusNode)
+                                                                    : FocusScope.of(
+                                                                            context)
+                                                                        .unfocus(),
+                                                                child: Padding(
+                                                                  padding: MediaQuery
+                                                                      .viewInsetsOf(
+                                                                          context),
+                                                                  child:
+                                                                      Container(
+                                                                    height: double
+                                                                        .infinity,
+                                                                    child:
+                                                                        NewGroceryWidget(),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ).then((value) =>
+                                                              safeSetState(
+                                                                  () {}));
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
                                     if (valueOrDefault(
                                             currentUserDocument?.role, '') ==
                                         'admin')

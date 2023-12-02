@@ -33,20 +33,6 @@
       ]
     },
     {
-      "collectionGroup": "issues",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "hotel",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "date",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
       "collectionGroup": "remittances",
       "queryScope": "COLLECTION",
       "fields": [
@@ -154,6 +140,20 @@
       "fields": [
         {
           "fieldPath": "staff",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "issues",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hotel",
           "order": "ASCENDING"
         },
         {

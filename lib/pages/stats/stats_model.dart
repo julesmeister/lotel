@@ -9,6 +9,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'stats_widget.dart' show StatsWidget;
 import 'package:auto_size_text/auto_size_text.dart';
@@ -70,6 +71,8 @@ class StatsModel extends FlutterFlowModel<StatsWidget> {
       stats.insert(index, item);
   void updateStatsAtIndex(int index, Function(StatsRecord) updateFn) =>
       stats[index] = updateFn(stats[index]);
+
+  double groceryExpenses = 0.0;
 
   ///  State fields for stateful widgets in this page.
 

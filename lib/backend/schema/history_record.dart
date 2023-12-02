@@ -31,12 +31,18 @@ class HistoryRecord extends FirestoreRecord {
   DocumentReference? get staff => _staff;
   bool hasStaff() => _staff != null;
 
+  // "booking" field.
+  DocumentReference? _booking;
+  DocumentReference? get booking => _booking;
+  bool hasBooking() => _booking != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
     _date = snapshotData['date'] as DateTime?;
     _description = snapshotData['description'] as String?;
     _staff = snapshotData['staff'] as DocumentReference?;
+    _booking = snapshotData['booking'] as DocumentReference?;
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -82,12 +88,14 @@ Map<String, dynamic> createHistoryRecordData({
   DateTime? date,
   String? description,
   DocumentReference? staff,
+  DocumentReference? booking,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'date': date,
       'description': description,
       'staff': staff,
+      'booking': booking,
     }.withoutNulls,
   );
 
@@ -101,12 +109,13 @@ class HistoryRecordDocumentEquality implements Equality<HistoryRecord> {
   bool equals(HistoryRecord? e1, HistoryRecord? e2) {
     return e1?.date == e2?.date &&
         e1?.description == e2?.description &&
-        e1?.staff == e2?.staff;
+        e1?.staff == e2?.staff &&
+        e1?.booking == e2?.booking;
   }
 
   @override
-  int hash(HistoryRecord? e) =>
-      const ListEquality().hash([e?.date, e?.description, e?.staff]);
+  int hash(HistoryRecord? e) => const ListEquality()
+      .hash([e?.date, e?.description, e?.staff, e?.booking]);
 
   @override
   bool isValidKey(Object? o) => o is HistoryRecord;

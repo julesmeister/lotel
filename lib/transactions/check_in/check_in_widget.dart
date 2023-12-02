@@ -88,7 +88,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
         _model.room = await RoomsRecord.getDocumentOnce(widget.ref!);
         // set price, nights, beds, paid
         setState(() {
-          _model.price = _model.room!.price;
+          _model.price = valueOrDefault<double>(
+            (widget.bookingToExtend?.ability == 'senior') ||
+                    (widget.bookingToExtend?.ability == 'pwd')
+                ? (_model.room!.price - _model.room!.price * 0.2)
+                : _model.room?.price,
+            0.0,
+          );
           _model.startingNights = widget.bookingToExtend?.nights;
           _model.startingBeds = widget.bookingToExtend?.extraBeds;
           _model.paid = widget.bookingToExtend?.status == 'paid';
@@ -112,13 +118,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
       }
     });
 
-    _model.textController1 ??= TextEditingController(
+    _model.contactFieldController ??= TextEditingController(
         text: widget.extend == true ? widget.bookingToExtend?.contact : '');
-    _model.textFieldFocusNode1 ??= FocusNode();
+    _model.contactFieldFocusNode ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController(
+    _model.detailsFieldController ??= TextEditingController(
         text: widget.extend == true ? widget.bookingToExtend?.details : '');
-    _model.textFieldFocusNode2 ??= FocusNode();
+    _model.detailsFieldFocusNode ??= FocusNode();
 
     setupAnimations(
       animationsMap.values.where((anim) =>
@@ -250,13 +256,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             Text(
-                                              valueOrDefault<String>(
-                                                widget.extend == true
-                                                    ? _model.room?.price
-                                                        ?.toString()
-                                                    : widget.price?.toString(),
-                                                '0',
-                                              ),
+                                              _model.price.toString(),
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleLarge,
@@ -357,8 +357,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 16.0, 0.0, 0.0),
                             child: TextFormField(
-                              controller: _model.textController1,
-                              focusNode: _model.textFieldFocusNode1,
+                              controller: _model.contactFieldController,
+                              focusNode: _model.contactFieldFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelText: 'Contact',
@@ -407,7 +407,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryText,
                                   ),
-                              validator: _model.textController1Validator
+                              validator: _model.contactFieldControllerValidator
                                   .asValidator(context),
                             ),
                           ),
@@ -422,8 +422,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 16.0, 0.0, 0.0),
                             child: TextFormField(
-                              controller: _model.textController2,
-                              focusNode: _model.textFieldFocusNode2,
+                              controller: _model.detailsFieldController,
+                              focusNode: _model.detailsFieldFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelText: 'ID',
@@ -475,7 +475,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               maxLines: null,
                               minLines: 3,
                               keyboardType: TextInputType.multiline,
-                              validator: _model.textController2Validator
+                              validator: _model.detailsFieldControllerValidator
                                   .asValidator(context),
                             ),
                           ),
@@ -956,224 +956,227 @@ class _CheckInWidgetState extends State<CheckInWidget>
                   ),
                 ),
               ),
-              Align(
-                alignment: AlignmentDirectional(0.00, -1.00),
-                child: Padding(
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
-                  child: Container(
-                    width: double.infinity,
-                    height: 50.0,
-                    constraints: BoxConstraints(
-                      maxWidth: 500.0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).primaryBackground,
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(
-                        color: FlutterFlowTheme.of(context).alternate,
-                        width: 1.0,
+              if (!widget.extend)
+                Align(
+                  alignment: AlignmentDirectional(0.00, -1.00),
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 50.0,
+                      constraints: BoxConstraints(
+                        maxWidth: 500.0,
                       ),
-                    ),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                setState(() {
-                                  _model.ability = 'normal';
-                                  _model.price = widget.price!;
-                                });
-                              },
-                              child: Container(
-                                width: 115.0,
-                                height: 100.0,
-                                decoration: BoxDecoration(
-                                  color: _model.ability == 'normal'
-                                      ? FlutterFlowTheme.of(context)
-                                          .secondaryBackground
-                                      : FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    color: valueOrDefault<Color>(
-                                      _model.ability == 'normal'
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        borderRadius: BorderRadius.circular(12.0),
+                        border: Border.all(
+                          color: FlutterFlowTheme.of(context).alternate,
+                          width: 1.0,
+                        ),
+                      ),
+                      child: Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  setState(() {
+                                    _model.ability = 'normal';
+                                    _model.price = widget.price!;
+                                  });
+                                },
+                                child: Container(
+                                  width: 115.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                    color: _model.ability == 'normal'
+                                        ? FlutterFlowTheme.of(context)
+                                            .secondaryBackground
+                                        : FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: valueOrDefault<Color>(
+                                        _model.ability == 'normal'
+                                            ? FlutterFlowTheme.of(context)
+                                                .alternate
+                                            : FlutterFlowTheme.of(context)
+                                                .primaryBackground,
+                                        FlutterFlowTheme.of(context).alternate,
+                                      ),
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.emoji_people_sharp,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        size: 16.0,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            4.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          'Normal',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  setState(() {
+                                    _model.ability = 'senior';
+                                    _model.price =
+                                        widget.price! - widget.price! * 0.2;
+                                  });
+                                },
+                                child: Container(
+                                  width: 115.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                    color: _model.ability == 'senior'
+                                        ? FlutterFlowTheme.of(context)
+                                            .secondaryBackground
+                                        : FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: _model.ability == 'senior'
                                           ? FlutterFlowTheme.of(context)
                                               .alternate
                                           : FlutterFlowTheme.of(context)
                                               .primaryBackground,
-                                      FlutterFlowTheme.of(context).alternate,
+                                      width: 1.0,
                                     ),
-                                    width: 1.0,
                                   ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.emoji_people_sharp,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      size: 16.0,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          4.0, 0.0, 0.0, 0.0),
-                                      child: Text(
-                                        'Normal',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                            ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.wheelchair_pickup,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        size: 16.0,
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            4.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          'Senior',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                setState(() {
-                                  _model.ability = 'senior';
-                                  _model.price =
-                                      widget.price! - widget.price! * 0.2;
-                                });
-                              },
-                              child: Container(
-                                width: 115.0,
-                                height: 100.0,
-                                decoration: BoxDecoration(
-                                  color: _model.ability == 'senior'
-                                      ? FlutterFlowTheme.of(context)
-                                          .secondaryBackground
-                                      : FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    color: _model.ability == 'senior'
-                                        ? FlutterFlowTheme.of(context).alternate
-                                        : FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.wheelchair_pickup,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      size: 16.0,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          4.0, 0.0, 0.0, 0.0),
-                                      child: Text(
-                                        'Senior',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                setState(() {
-                                  _model.ability = 'pwd';
-                                  _model.price =
-                                      widget.price! - widget.price! * 0.2;
-                                });
-                              },
-                              child: Container(
-                                width: 115.0,
-                                height: 100.0,
-                                decoration: BoxDecoration(
-                                  color: _model.ability == 'pwd'
-                                      ? FlutterFlowTheme.of(context)
-                                          .secondaryBackground
-                                      : FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
+                            Expanded(
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  setState(() {
+                                    _model.ability = 'pwd';
+                                    _model.price =
+                                        widget.price! - widget.price! * 0.2;
+                                  });
+                                },
+                                child: Container(
+                                  width: 115.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
                                     color: _model.ability == 'pwd'
-                                        ? FlutterFlowTheme.of(context).alternate
+                                        ? FlutterFlowTheme.of(context)
+                                            .secondaryBackground
                                         : FlutterFlowTheme.of(context)
                                             .primaryBackground,
-                                    width: 1.0,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: _model.ability == 'pwd'
+                                          ? FlutterFlowTheme.of(context)
+                                              .alternate
+                                          : FlutterFlowTheme.of(context)
+                                              .primaryBackground,
+                                      width: 1.0,
+                                    ),
                                   ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.personal_injury_outlined,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      size: 16.0,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          4.0, 0.0, 0.0, 0.0),
-                                      child: Text(
-                                        'PWD',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                            ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.personal_injury_outlined,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        size: 16.0,
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            4.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          'PWD',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
                 child: Container(
@@ -1320,7 +1323,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
                                       description:
-                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}',
+                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                       remitted: false,
                                       pending: false,
                                     ),
@@ -1365,7 +1368,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           .stringToInt(_model.guestsValue),
                                       room: widget.roomNo,
                                       description:
-                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}',
+                                          '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                       remitted: false,
                                       pending: false,
                                     ),
@@ -1412,18 +1415,27 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       },
                                     ),
                                   });
+                                  // update details and contact
+
+                                  await widget.bookingToExtend!.reference
+                                      .update(createBookingsRecordData(
+                                    details: _model.detailsFieldController.text,
+                                    contact: _model.contactFieldController.text,
+                                  ));
+                                  // updated
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'There were no changes',
+                                        'Updated guest details!',
                                         style: TextStyle(
                                           color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
+                                              .primaryText,
                                         ),
                                       ),
                                       duration: Duration(milliseconds: 4000),
                                       backgroundColor:
-                                          FlutterFlowTheme.of(context).error,
+                                          FlutterFlowTheme.of(context)
+                                              .secondary,
                                     ),
                                   );
                                   if (_shouldSetState) setState(() {});
@@ -1809,8 +1821,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   ),
                                   extraBeds: _model.bedsValue,
                                   status: functions.paidOrPending(_model.paid),
-                                  details: _model.textController2.text,
-                                  contact: _model.textController1.text,
+                                  details: _model.detailsFieldController.text,
+                                  contact: _model.contactFieldController.text,
                                   staff: currentUserReference,
                                   guests: _model.guestsValue,
                                   room: widget.ref,
@@ -1844,8 +1856,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               await bookingsRecordReference.set({
                                 ...createBookingsRecordData(
                                   nights: _model.nightsValue,
-                                  details: _model.textController2.text,
-                                  contact: _model.textController1.text,
+                                  details: _model.detailsFieldController.text,
+                                  contact: _model.contactFieldController.text,
                                   hotel: FFAppState().hotel,
                                   room: widget.ref,
                                   extraBeds: _model.bedsValue,
@@ -1863,7 +1875,6 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   ),
                                   status: functions.paidOrPending(_model.paid),
                                   staff: currentUserReference,
-                                  remitted: false,
                                   ability: _model.ability,
                                 ),
                                 ...mapToFirestore(
@@ -1878,8 +1889,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   BookingsRecord.getDocumentFromData({
                                 ...createBookingsRecordData(
                                   nights: _model.nightsValue,
-                                  details: _model.textController2.text,
-                                  contact: _model.textController1.text,
+                                  details: _model.detailsFieldController.text,
+                                  contact: _model.contactFieldController.text,
                                   hotel: FFAppState().hotel,
                                   room: widget.ref,
                                   extraBeds: _model.bedsValue,
@@ -1897,7 +1908,6 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   ),
                                   status: functions.paidOrPending(_model.paid),
                                   staff: currentUserReference,
-                                  remitted: false,
                                   ability: _model.ability,
                                 ),
                                 ...mapToFirestore(
@@ -1932,7 +1942,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                     remitted: false,
                                     pending: false,
                                   ),
@@ -1961,7 +1971,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'Nights' : 'Night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                        'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                     remitted: false,
                                     pending: false,
                                   ),
@@ -1982,8 +1992,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                 await HistoryRecord.createDoc(widget.ref!).set({
                                   ...createHistoryRecordData(
                                     description:
-                                        '${_model.guestsValue} new ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}guest/s${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''} have checked in!',
+                                        '${_model.guestsValue} new ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}guest${functions.stringToInt(_model.guestsValue)! > 1 ? 's' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''} have checked in!',
                                     staff: currentUserReference,
+                                    booking: _model.savedBooking?.reference,
                                   ),
                                   ...mapToFirestore(
                                     {
@@ -2014,7 +2025,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'Room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                     remitted: false,
                                     pending: true,
                                   ),
@@ -2043,7 +2054,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .stringToInt(_model.guestsValue),
                                     room: widget.roomNo,
                                     description:
-                                        'Room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                        'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                     remitted: false,
                                     pending: true,
                                   ),
@@ -2071,6 +2082,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     description:
                                         'New checkin ${_model.ability != 'normal' ? 'by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''} ' : ''}but pending payment.',
                                     staff: currentUserReference,
+                                    booking: _model.savedBooking?.reference,
                                   ),
                                   ...mapToFirestore(
                                     {

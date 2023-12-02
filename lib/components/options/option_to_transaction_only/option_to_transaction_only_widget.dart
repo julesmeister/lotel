@@ -4,6 +4,7 @@ import '/components/forms/transaction_edit/transaction_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -187,8 +188,54 @@ class _OptionToTransactionOnlyWidgetState
                         false;
                     if (confirmDialogResponse) {
                       // transaction action output
-                      _model.trans =
+                      _model.transaction =
                           await TransactionsRecord.getDocumentOnce(widget.ref!);
+                      if ((_model.transaction!.inventories.length > 0) &&
+                          (_model.transaction?.type != 'book')) {
+                        while (_model.loopInvetoryCounter !=
+                            valueOrDefault<int>(
+                              _model.transaction?.inventories?.length,
+                              0,
+                            )) {
+                          // inventory
+                          _model.inventory =
+                              await InventoriesRecord.getDocumentOnce(_model
+                                  .transaction!
+                                  .inventories[_model.loopInvetoryCounter]);
+                          // item
+                          _model.item = await queryGoodsRecordOnce(
+                            queryBuilder: (goodsRecord) => goodsRecord
+                                .where(
+                                  'description',
+                                  isEqualTo: _model.inventory?.item,
+                                )
+                                .where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                ),
+                            singleRecord: true,
+                          ).then((s) => s.firstOrNull);
+                          // reverse quantity sold
+
+                          await _model.item!.reference.update({
+                            ...mapToFirestore(
+                              {
+                                'quantity': FieldValue.increment(
+                                    _model.inventory!.quantityChange),
+                              },
+                            ),
+                          });
+                          // delete inventory also
+                          await _model.transaction!
+                              .inventories[_model.loopInvetoryCounter]
+                              .delete();
+                          // increment loop
+                          setState(() {
+                            _model.loopInvetoryCounter =
+                                _model.loopInvetoryCounter + 1;
+                          });
+                        }
+                      }
                       // delete transactions
                       await widget.ref!.delete();
                       ScaffoldMessenger.of(context).showSnackBar(

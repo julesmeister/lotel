@@ -160,7 +160,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                             TextFormField(
                               controller: _model.descController,
                               focusNode: _model.descFocusNode,
-                              textCapitalization: TextCapitalization.words,
+                              textCapitalization: TextCapitalization.sentences,
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelStyle: FlutterFlowTheme.of(context)

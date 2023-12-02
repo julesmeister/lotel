@@ -164,103 +164,148 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                             );
                           }
                           final containerUsersRecord = snapshot.data!;
-                          return Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 0.0,
-                                  color: FlutterFlowTheme.of(context).alternate,
-                                  offset: Offset(0.0, 1.0),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(0.0),
-                              border: Border.all(
-                                color: FlutterFlowTheme.of(context).alternate,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 10.0, 16.0, 0.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Align(
-                                      alignment:
-                                          AlignmentDirectional(-1.00, -1.00),
-                                      child: AnimatedContainer(
-                                        duration: Duration(milliseconds: 150),
-                                        curve: Curves.easeInOut,
-                                        width: 36.0,
-                                        height: 36.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .accent1,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primary,
-                                            width: 2.0,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  2.0, 2.0, 2.0, 2.0),
-                                          child: Icon(
-                                            Icons.pending_actions,
-                                            color: FlutterFlowTheme.of(context)
-                                                .primary,
-                                            size: 20.0,
-                                          ),
-                                        ),
+                          return InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              if (listViewHistoryRecord.booking != null) {
+                                context.pushNamed(
+                                  'CheckedIn',
+                                  queryParameters: {
+                                    'ref': serializeParam(
+                                      widget.room?.reference,
+                                      ParamType.DocumentReference,
+                                    ),
+                                    'booking': serializeParam(
+                                      listViewHistoryRecord.booking,
+                                      ParamType.DocumentReference,
+                                    ),
+                                    'roomNo': serializeParam(
+                                      widget.room?.number,
+                                      ParamType.int,
+                                    ),
+                                  }.withoutNulls,
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Booking not found!',
+                                      style: TextStyle(
+                                        color:
+                                            FlutterFlowTheme.of(context).info,
                                       ),
                                     ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).error,
                                   ),
-                                  Expanded(
-                                    flex: 7,
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          15.0, 0.0, 0.0, 0.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 0.0, 5.0),
-                                            child: Text(
-                                              listViewHistoryRecord.description,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyLarge,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 4.0, 0.0, 15.0),
-                                            child: Text(
-                                              'Issued by ${containerUsersRecord.displayName} on ${dateTimeFormat('EEE MMMM d y h:mm a', listViewHistoryRecord.date)}',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelSmall,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                );
+                              }
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 0.0,
+                                    color:
+                                        FlutterFlowTheme.of(context).alternate,
+                                    offset: Offset(0.0, 1.0),
+                                  )
                                 ],
+                                borderRadius: BorderRadius.circular(0.0),
+                                border: Border.all(
+                                  color: FlutterFlowTheme.of(context).alternate,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 10.0, 16.0, 0.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Align(
+                                        alignment:
+                                            AlignmentDirectional(-1.00, -1.00),
+                                        child: AnimatedContainer(
+                                          duration: Duration(milliseconds: 150),
+                                          curve: Curves.easeInOut,
+                                          width: 36.0,
+                                          height: 36.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .accent1,
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              width: 2.0,
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 2.0, 2.0, 2.0),
+                                            child: Icon(
+                                              Icons.pending_actions,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              size: 20.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 7,
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            15.0, 0.0, 0.0, 0.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 5.0),
+                                              child: Text(
+                                                listViewHistoryRecord
+                                                    .description,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyLarge,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      0.0, 4.0, 0.0, 15.0),
+                                              child: Text(
+                                                'Issued by ${containerUsersRecord.displayName} on ${dateTimeFormat('EEE MMMM d y h:mm a', listViewHistoryRecord.date)}',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelSmall,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );

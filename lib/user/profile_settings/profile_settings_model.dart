@@ -23,9 +23,7 @@ class ProfileSettingsModel extends FlutterFlowModel<ProfileSettingsWidget> {
   // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
   List<StatsRecord>? fireStat;
   // State field(s) for CheckboxListTile widget.
-  bool? checkboxListTileValue1;
-  // State field(s) for CheckboxListTile widget.
-  bool? checkboxListTileValue2;
+  bool? checkboxListTileValue;
 
   /// Initialization and disposal methods.
 

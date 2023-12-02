@@ -76,11 +76,6 @@ class BookingsRecord extends FirestoreRecord {
   DocumentReference? get staff => _staff;
   bool hasStaff() => _staff != null;
 
-  // "remitted" field.
-  bool? _remitted;
-  bool get remitted => _remitted ?? false;
-  bool hasRemitted() => _remitted != null;
-
   // "pendings" field.
   List<DocumentReference>? _pendings;
   List<DocumentReference> get pendings => _pendings ?? const [];
@@ -109,7 +104,6 @@ class BookingsRecord extends FirestoreRecord {
     _guests = snapshotData['guests'] as String?;
     _status = snapshotData['status'] as String?;
     _staff = snapshotData['staff'] as DocumentReference?;
-    _remitted = snapshotData['remitted'] as bool?;
     _pendings = getDataList(snapshotData['pendings']);
     _transactions = getDataList(snapshotData['transactions']);
     _ability = snapshotData['ability'] as String?;
@@ -162,7 +156,6 @@ Map<String, dynamic> createBookingsRecordData({
   String? guests,
   String? status,
   DocumentReference? staff,
-  bool? remitted,
   String? ability,
 }) {
   final firestoreData = mapToFirestore(
@@ -179,7 +172,6 @@ Map<String, dynamic> createBookingsRecordData({
       'guests': guests,
       'status': status,
       'staff': staff,
-      'remitted': remitted,
       'ability': ability,
     }.withoutNulls,
   );
@@ -205,7 +197,6 @@ class BookingsRecordDocumentEquality implements Equality<BookingsRecord> {
         e1?.guests == e2?.guests &&
         e1?.status == e2?.status &&
         e1?.staff == e2?.staff &&
-        e1?.remitted == e2?.remitted &&
         listEquality.equals(e1?.pendings, e2?.pendings) &&
         listEquality.equals(e1?.transactions, e2?.transactions) &&
         e1?.ability == e2?.ability;
@@ -225,7 +216,6 @@ class BookingsRecordDocumentEquality implements Equality<BookingsRecord> {
         e?.guests,
         e?.status,
         e?.staff,
-        e?.remitted,
         e?.pendings,
         e?.transactions,
         e?.ability

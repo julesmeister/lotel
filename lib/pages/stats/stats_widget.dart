@@ -9,6 +9,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -170,6 +171,16 @@ class _StatsWidgetState extends State<StatsWidget>
                   .toList()
                   .first
                   .rentIncome;
+          _model.groceryExpenses = _model.stats
+                  .where((e) => e.hotel == 'Serenity')
+                  .toList()
+                  .first
+                  .groceryExpenses +
+              _model.stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .groceryExpenses;
         });
       } else {
         // no data yet
@@ -383,6 +394,18 @@ class _StatsWidgetState extends State<StatsWidget>
                                               .first
                                               .rentIncome;
                                       _model.hotel = 'All';
+                                      _model.groceryExpenses = _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .groceryExpenses +
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .groceryExpenses;
                                     });
                                   },
                                   child: Container(
@@ -524,6 +547,11 @@ class _StatsWidgetState extends State<StatsWidget>
                                               .toList()
                                               .first
                                               .expenses;
+                                      _model.groceryExpenses = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .groceryExpenses;
                                     });
                                   },
                                   child: Container(
@@ -669,6 +697,12 @@ class _StatsWidgetState extends State<StatsWidget>
                                               .first
                                               .expenses;
                                       _model.hotel = 'My Lifestyle';
+                                      _model.groceryExpenses = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .groceryExpenses;
                                     });
                                   },
                                   child: Container(
@@ -849,6 +883,16 @@ class _StatsWidgetState extends State<StatsWidget>
                                   .first
                                   .rentIncome;
                           _model.hotel = 'All';
+                          _model.groceryExpenses = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .groceryExpenses +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .groceryExpenses;
                         });
                       } else {
                         // no data yet
@@ -1008,6 +1052,16 @@ class _StatsWidgetState extends State<StatsWidget>
                                   .first
                                   .rentIncome;
                           _model.hotel = 'All';
+                          _model.groceryExpenses = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .groceryExpenses +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .groceryExpenses;
                         });
                       } else {
                         // no data yet
@@ -1967,6 +2021,56 @@ class _StatsWidgetState extends State<StatsWidget>
                     ],
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        child: Text(
+                          'Grocery Profitability',
+                          style:
+                              FlutterFlowTheme.of(context).titleLarge.override(
+                                    fontFamily: 'Outfit',
+                                    color: Color(0xFF14181B),
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional(0.00, 0.00),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 10.0),
+                          child: Container(
+                            width: double.infinity,
+                            height: 400.0,
+                            child: custom_widgets.GroceryProfitability(
+                              width: double.infinity,
+                              height: 400.0,
+                              grocery: _model.groceryExpenses,
+                              revenue: _model.goods,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             if (_model.hotel != 'All')

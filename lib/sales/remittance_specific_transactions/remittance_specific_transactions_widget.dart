@@ -739,7 +739,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                       ),
                                                                       'roomNo':
                                                                           serializeParam(
-                                                                        0,
+                                                                        bookingsItem
+                                                                            .room,
                                                                         ParamType
                                                                             .int,
                                                                       ),
@@ -2589,7 +2590,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           0.0,
                                                                           0.0,
                                                                           0.0,
-                                                                          25.0),
+                                                                          10.0),
                                                                   child: Text(
                                                                     formatNumber(
                                                                       goodsItem

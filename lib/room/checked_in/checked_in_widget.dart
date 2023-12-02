@@ -232,40 +232,45 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     .of(context)
                                                                 .bodyMedium,
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        5.0,
-                                                                        0.0,
-                                                                        0.0,
-                                                                        0.0),
-                                                            child: InkWell(
-                                                              splashColor: Colors
-                                                                  .transparent,
-                                                              focusColor: Colors
-                                                                  .transparent,
-                                                              hoverColor: Colors
-                                                                  .transparent,
-                                                              highlightColor:
-                                                                  Colors
-                                                                      .transparent,
-                                                              onTap: () async {
-                                                                setState(() {
-                                                                  _model.showMoveRoom =
-                                                                      !_model
-                                                                          .showMoveRoom;
-                                                                });
-                                                              },
-                                                              child: Icon(
-                                                                Icons.move_down,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryText,
-                                                                size: 14.0,
+                                                          if (checkedInBookingsRecord
+                                                                  .status !=
+                                                              'out')
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          5.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                              child: InkWell(
+                                                                splashColor: Colors
+                                                                    .transparent,
+                                                                focusColor: Colors
+                                                                    .transparent,
+                                                                hoverColor: Colors
+                                                                    .transparent,
+                                                                highlightColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                onTap:
+                                                                    () async {
+                                                                  setState(() {
+                                                                    _model.showMoveRoom =
+                                                                        !_model
+                                                                            .showMoveRoom;
+                                                                  });
+                                                                },
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .move_down,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                                  size: 14.0,
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
                                                         ],
                                                       ),
                                                     ],
@@ -349,6 +354,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     'Guest is moving out of this room and into room ${_model.choiceChipsValue}',
                                                                 staff:
                                                                     currentUserReference,
+                                                                booking: widget
+                                                                    .booking,
                                                               ),
                                                               ...mapToFirestore(
                                                                 {
@@ -370,9 +377,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .set({
                                                               ...createHistoryRecordData(
                                                                 description:
-                                                                    'Guest/s have transferred in from room ${widget.roomNo?.toString()}',
+                                                                    'Guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} have transferred in from room ${widget.roomNo?.toString()}',
                                                                 staff:
                                                                     currentUserReference,
+                                                                booking: widget
+                                                                    .booking,
                                                               ),
                                                               ...mapToFirestore(
                                                                 {
@@ -787,9 +796,10 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      if (checkedInBookingsRecord
-                                                              .status !=
-                                                          'out')
+                                                      if ((checkedInBookingsRecord
+                                                                  .status !=
+                                                              'out') &&
+                                                          (widget.ref != null))
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
@@ -1035,9 +1045,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .set({
                                                                       ...createHistoryRecordData(
                                                                         description:
-                                                                            'Guest/s have settled the amount of Php ${functions.getTotalAmount(checkedInBookingsRecord.extraBeds, checkedInBookingsRecord.nights, checkedInBookingsRecord.total, FFAppState().bedPrice, '-1', 0, 0.0).toString()}',
+                                                                            'Guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} have settled the amount of Php ${functions.getTotalAmount(checkedInBookingsRecord.extraBeds, checkedInBookingsRecord.nights, checkedInBookingsRecord.total, FFAppState().bedPrice, '-1', 0, 0.0).toString()}',
                                                                         staff:
                                                                             currentUserReference,
+                                                                        booking:
+                                                                            widget.booking,
                                                                       ),
                                                                       ...mapToFirestore(
                                                                         {
@@ -1116,9 +1128,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .set({
                                                                       ...createHistoryRecordData(
                                                                         description:
-                                                                            '${checkedInBookingsRecord.guests} guest/s in room ${widget.roomNo?.toString()} have checked out.',
+                                                                            '${checkedInBookingsRecord.guests} guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} in room ${widget.roomNo?.toString()} have checked out.',
                                                                         staff:
                                                                             currentUserReference,
+                                                                        booking:
+                                                                            widget.booking,
                                                                       ),
                                                                       ...mapToFirestore(
                                                                         {
@@ -1481,8 +1495,6 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       total: double.tryParse(_model
                                                                           .newPriceController
                                                                           .text),
-                                                                      remitted:
-                                                                          false,
                                                                     ));
                                                                     // hotel settings
                                                                     _model.hotelSetting =
@@ -1596,6 +1608,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${_model.newPriceController.text}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)).toString()}.',
                                                                           staff:
                                                                               currentUserReference,
+                                                                          booking:
+                                                                              widget.booking,
                                                                         ),
                                                                         ...mapToFirestore(
                                                                           {
@@ -1701,6 +1715,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${_model.newPriceController.text}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)).toString()}. But payment is pending.',
                                                                           staff:
                                                                               currentUserReference,
+                                                                          booking:
+                                                                              widget.booking,
                                                                         ),
                                                                         ...mapToFirestore(
                                                                           {

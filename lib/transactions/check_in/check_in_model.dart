@@ -60,14 +60,14 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
   RoomsRecord? room;
   // State field(s) for nights widget.
   int? nightsValue;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode1;
-  TextEditingController? textController1;
-  String? Function(BuildContext, String?)? textController1Validator;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode2;
-  TextEditingController? textController2;
-  String? Function(BuildContext, String?)? textController2Validator;
+  // State field(s) for ContactField widget.
+  FocusNode? contactFieldFocusNode;
+  TextEditingController? contactFieldController;
+  String? Function(BuildContext, String?)? contactFieldControllerValidator;
+  // State field(s) for DetailsField widget.
+  FocusNode? detailsFieldFocusNode;
+  TextEditingController? detailsFieldController;
+  String? Function(BuildContext, String?)? detailsFieldControllerValidator;
   // State field(s) for beds widget.
   String? bedsValue;
   FormFieldController<List<String>>? bedsValueController;
@@ -97,11 +97,11 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
   void initState(BuildContext context) {}
 
   void dispose() {
-    textFieldFocusNode1?.dispose();
-    textController1?.dispose();
+    contactFieldFocusNode?.dispose();
+    contactFieldController?.dispose();
 
-    textFieldFocusNode2?.dispose();
-    textController2?.dispose();
+    detailsFieldFocusNode?.dispose();
+    detailsFieldController?.dispose();
   }
 
   /// Action blocks are added here.

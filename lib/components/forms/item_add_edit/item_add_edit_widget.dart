@@ -585,8 +585,9 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   if (widget.edit == false) {
-                                    if (widget.category != null &&
-                                        widget.category != '') {
+                                    if (_model.categoryController.text !=
+                                            null &&
+                                        _model.categoryController.text != '') {
                                       // create goods
 
                                       var goodsRecordReference =
@@ -637,6 +638,24 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                                 _model.priceController.text),
                                             remitted: false,
                                           ));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            '${_model.descController.text} has been added!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -675,7 +694,21 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                         .doc()
                                         .set(createInventoriesRecordData(
                                           date: functions.today(),
-                                          activity: _model.whyController.text,
+                                          activity: _model.whyController.text ==
+                                                  ''
+                                              ? functions.activityOfInventory(
+                                                  widget.price!,
+                                                  double.parse(_model
+                                                      .priceController.text),
+                                                  widget.quantity!,
+                                                  int.parse(_model
+                                                      .quantityController.text),
+                                                  widget.desc!,
+                                                  _model.descController.text,
+                                                  widget.category!,
+                                                  _model
+                                                      .categoryController.text)
+                                              : _model.whyController.text,
                                           hotel: FFAppState().hotel,
                                           staff: currentUserReference,
                                           quantityChange: functions.stringToInt(
@@ -693,6 +726,21 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                               _model.priceController.text),
                                           remitted: false,
                                         ));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          '${_model.descController.text} has been updated!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
+                                        ),
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
+                                      ),
+                                    );
                                   }
 
                                   Navigator.pop(context);

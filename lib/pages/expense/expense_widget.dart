@@ -116,22 +116,6 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
           automaticallyImplyLeading: false,
-          leading: Visibility(
-            visible: widget.additional,
-            child: FlutterFlowIconButton(
-              borderRadius: 20.0,
-              borderWidth: 1.0,
-              buttonSize: 40.0,
-              icon: Icon(
-                Icons.chevron_left,
-                color: FlutterFlowTheme.of(context).primaryText,
-                size: 24.0,
-              ),
-              onPressed: () async {
-                context.safePop();
-              },
-            ),
-          ),
           title: Text(
             'Expense',
             style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -139,7 +123,48 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                   fontSize: 26.0,
                 ),
           ),
-          actions: [],
+          actions: [
+            Visibility(
+              visible: widget.additional,
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 15.0, 0.0),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    context.safePop();
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      FlutterFlowIconButton(
+                        borderRadius: 20.0,
+                        borderWidth: 1.0,
+                        buttonSize: 40.0,
+                        icon: Icon(
+                          Icons.cancel_outlined,
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          size: 24.0,
+                        ),
+                        onPressed: () {
+                          print('IconButton pressed ...');
+                        },
+                      ),
+                      Text(
+                        'Cancel',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              fontSize: 20.0,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
           centerTitle: false,
           elevation: 0.0,
         ),

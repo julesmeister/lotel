@@ -88,6 +88,8 @@ class RemittancesModel extends FlutterFlowModel<RemittancesWidget> {
   void updateAbsencesAtIndex(int index, Function(AbsencesRecord) updateFn) =>
       absences[index] = updateFn(absences[index]);
 
+  bool isLoading = false;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

@@ -8,6 +8,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -217,80 +218,91 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Total',
-                            style: FlutterFlowTheme.of(context).labelLarge,
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 4.0, 0.0, 0.0),
-                            child: Text(
-                              formatNumber(
-                                functions
-                                    .sumOfSalaries(_model.salaries.toList()),
-                                formatType: FormatType.decimal,
-                                decimalType: DecimalType.automatic,
-                                currency: 'P ',
-                              ),
-                              style:
-                                  FlutterFlowTheme.of(context).headlineMedium,
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Total',
+                              style: FlutterFlowTheme.of(context).labelLarge,
                             ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            dateTimeFormat('EEEE MMM d y h:mm a', _model.date),
-                            style: FlutterFlowTheme.of(context)
-                                .labelLarge
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 4.0, 0.0, 0.0),
+                              child: AutoSizeText(
+                                formatNumber(
+                                  functions
+                                      .sumOfSalaries(_model.salaries.toList()),
+                                  formatType: FormatType.decimal,
+                                  decimalType: DecimalType.automatic,
+                                  currency: 'P ',
                                 ),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              if (_model.settled == false)
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 10.0, 0.0, 0.0),
-                                  child: InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      setState(() {
-                                        _model.showChangeRate =
-                                            !_model.showChangeRate;
-                                      });
-                                    },
-                                    child: Text(
-                                      'Change Rate',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primary,
-                                          ),
+                                maxLines: 1,
+                                style:
+                                    FlutterFlowTheme.of(context).headlineMedium,
+                                minFontSize: 22.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 6,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            AutoSizeText(
+                              dateTimeFormat('EEE M d y h:mm a', _model.date),
+                              maxLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .labelLarge
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
+                              minFontSize: 12.0,
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                if (_model.settled == false)
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 10.0, 0.0, 0.0),
+                                    child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        setState(() {
+                                          _model.showChangeRate =
+                                              !_model.showChangeRate;
+                                        });
+                                      },
+                                      child: Text(
+                                        'Change Rate',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                            ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -344,13 +356,11 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 ),
                               ),
                               style: FlutterFlowTheme.of(context).bodyMedium,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               validator: _model.newRateControllerValidator
                                   .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
-                              ],
                             ),
                           ),
                         ),
@@ -400,13 +410,11 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 ),
                               ),
                               style: FlutterFlowTheme.of(context).bodyMedium,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               validator: _model.newSSSControllerValidator
                                   .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
-                              ],
                             ),
                           ),
                         ),
@@ -502,7 +510,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                           _model.newSSSController.text),
                                       _model
                                           .salaries[_model.loopSalariesCounter]
-                                          .cashAdvance),
+                                          .cashAdvance,
+                                      _model
+                                          .salaries[_model.loopSalariesCounter]
+                                          .absences),
                                 ));
                                 // increment loop
                                 setState(() {

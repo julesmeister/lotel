@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -127,6 +128,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                     onPressed: widget.cart?.length == 0
                         ? null
                         : () async {
+                            var _shouldSetState = false;
                             if (_model.expense) {
                               if ((_model.whichExpense == 'consumedBy') &&
                                   (_model.priceController1.text == null ||
@@ -146,9 +148,14 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
                                 );
+                                if (_shouldSetState) setState(() {});
                                 return;
                               }
                             }
+                            // loading
+                            setState(() {
+                              _model.isLoading = true;
+                            });
                             while (_model.loopCounter !=
                                 valueOrDefault<int>(
                                   widget.cart?.length,
@@ -169,7 +176,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                             }
                             // New Transaction
 
-                            await TransactionsRecord.collection.doc().set({
+                            var transactionsRecordReference =
+                                TransactionsRecord.collection.doc();
+                            await transactionsRecordReference.set({
                               ...createTransactionsRecordData(
                                 staff: currentUserReference,
                                 total: _model.expense
@@ -201,56 +210,152 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                 },
                               ),
                             });
+                            _model.newTransaction =
+                                TransactionsRecord.getDocumentFromData({
+                              ...createTransactionsRecordData(
+                                staff: currentUserReference,
+                                total: _model.expense
+                                    ? (functions
+                                        .totalOfCart(widget.cart?.toList())!)
+                                    : functions
+                                        .totalOfCart(widget.cart?.toList()),
+                                hotel: FFAppState().hotel,
+                                type: _model.expense ? 'expense' : 'goods',
+                                remitted: false,
+                                description: _model.expense
+                                    ? valueOrDefault<String>(
+                                        functions.descriptionOfExpense(
+                                            _model.whichExpense,
+                                            _model.priceController1.text,
+                                            _model.priceController2.text),
+                                        'deducted for some reason',
+                                      )
+                                    : 'sold',
+                                pending: false,
+                              ),
+                              ...mapToFirestore(
+                                {
+                                  'date': DateTime.now(),
+                                  'goods': getCartGoodsListFirestoreData(
+                                    functions
+                                        .summarizeCart(widget.cart?.toList()),
+                                  ),
+                                },
+                              ),
+                            }, transactionsRecordReference);
+                            _shouldSetState = true;
                             while (_model.loopGoodsCounter !=
                                 functions
                                     .summarizeCart(widget.cart?.toList())
                                     ?.length) {
                               // create inventory
 
-                              await InventoriesRecord.collection
-                                  .doc()
+                              var inventoriesRecordReference =
+                                  InventoriesRecord.collection.doc();
+                              await inventoriesRecordReference
                                   .set(createInventoriesRecordData(
-                                    date: functions.today(),
-                                    activity: _model.expense
-                                        ? valueOrDefault<String>(
-                                            functions.descriptionOfExpense(
-                                                _model.whichExpense,
-                                                _model.priceController1.text,
-                                                _model.priceController2.text),
-                                            'deducted for some reason',
-                                          )
-                                        : 'sold',
-                                    hotel: FFAppState().hotel,
-                                    staff: currentUserReference,
-                                    quantityChange: (functions.summarizeCart(
-                                                widget.cart?.toList())?[
-                                            _model.loopGoodsCounter])
-                                        ?.quantity,
-                                    previousQuantity: (functions.summarizeCart(
-                                                widget.cart?.toList())?[
-                                            _model.loopGoodsCounter])
-                                        ?.previousQuantity,
-                                    item: (functions.summarizeCart(
-                                                widget.cart?.toList())?[
-                                            _model.loopGoodsCounter])
-                                        ?.description,
-                                    operator: 'minus',
-                                    previousPrice: (functions.summarizeCart(
-                                                widget.cart?.toList())?[
-                                            _model.loopGoodsCounter])
-                                        ?.price,
-                                    priceChange: (functions.summarizeCart(
-                                                widget.cart?.toList())?[
-                                            _model.loopGoodsCounter])
-                                        ?.price,
-                                    remitted: false,
-                                  ));
+                                date: functions.today(),
+                                activity: _model.expense
+                                    ? valueOrDefault<String>(
+                                        functions.descriptionOfExpense(
+                                            _model.whichExpense,
+                                            _model.priceController1.text,
+                                            _model.priceController2.text),
+                                        'deducted for some reason',
+                                      )
+                                    : 'sold',
+                                hotel: FFAppState().hotel,
+                                staff: currentUserReference,
+                                quantityChange: (functions.summarizeCart(widget
+                                        .cart
+                                        ?.toList())?[_model.loopGoodsCounter])
+                                    ?.quantity,
+                                previousQuantity: (functions.summarizeCart(
+                                            widget.cart?.toList())?[
+                                        _model.loopGoodsCounter])
+                                    ?.previousQuantity,
+                                item: (functions.summarizeCart(widget.cart
+                                        ?.toList())?[_model.loopGoodsCounter])
+                                    ?.description,
+                                operator: 'minus',
+                                previousPrice: (functions.summarizeCart(widget
+                                        .cart
+                                        ?.toList())?[_model.loopGoodsCounter])
+                                    ?.price,
+                                priceChange: (functions.summarizeCart(widget
+                                        .cart
+                                        ?.toList())?[_model.loopGoodsCounter])
+                                    ?.price,
+                                remitted: false,
+                              ));
+                              _model.newInventory =
+                                  InventoriesRecord.getDocumentFromData(
+                                      createInventoriesRecordData(
+                                        date: functions.today(),
+                                        activity: _model.expense
+                                            ? valueOrDefault<String>(
+                                                functions.descriptionOfExpense(
+                                                    _model.whichExpense,
+                                                    _model
+                                                        .priceController1.text,
+                                                    _model
+                                                        .priceController2.text),
+                                                'deducted for some reason',
+                                              )
+                                            : 'sold',
+                                        hotel: FFAppState().hotel,
+                                        staff: currentUserReference,
+                                        quantityChange:
+                                            (functions.summarizeCart(
+                                                        widget.cart?.toList())?[
+                                                    _model.loopGoodsCounter])
+                                                ?.quantity,
+                                        previousQuantity:
+                                            (functions.summarizeCart(
+                                                        widget.cart?.toList())?[
+                                                    _model.loopGoodsCounter])
+                                                ?.previousQuantity,
+                                        item: (functions.summarizeCart(
+                                                    widget.cart?.toList())?[
+                                                _model.loopGoodsCounter])
+                                            ?.description,
+                                        operator: 'minus',
+                                        previousPrice: (functions.summarizeCart(
+                                                    widget.cart?.toList())?[
+                                                _model.loopGoodsCounter])
+                                            ?.price,
+                                        priceChange: (functions.summarizeCart(
+                                                    widget.cart?.toList())?[
+                                                _model.loopGoodsCounter])
+                                            ?.price,
+                                        remitted: false,
+                                      ),
+                                      inventoriesRecordReference);
+                              _shouldSetState = true;
+                              // collect inventories to list
+                              setState(() {
+                                _model.addToInventories(
+                                    _model.newInventory!.reference);
+                              });
                               // Increment loopGoodsCounter
                               setState(() {
                                 _model.loopGoodsCounter =
                                     _model.loopGoodsCounter + 1;
                               });
                             }
+                            // add inventories to transaction
+
+                            await _model.newTransaction!.reference.update({
+                              ...mapToFirestore(
+                                {
+                                  'inventories': _model.inventories,
+                                },
+                              ),
+                            });
+                            // finish loading
+                            setState(() {
+                              _model.isLoading = false;
+                            });
                             if (Navigator.of(context).canPop()) {
                               context.pop();
                             }
@@ -279,6 +384,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                     FlutterFlowTheme.of(context).secondary,
                               ),
                             );
+                            if (_shouldSetState) setState(() {});
                           },
                   ),
                 ),
@@ -303,103 +409,148 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                     style: FlutterFlowTheme.of(context).labelMedium,
                   ),
                 ),
-                Builder(
-                  builder: (context) {
-                    final cartGoods = functions
-                            .summarizeCart(widget.cart?.toList())
-                            ?.toList() ??
-                        [];
-                    return ListView.builder(
-                      padding: EdgeInsets.zero,
-                      primary: false,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: cartGoods.length,
-                      itemBuilder: (context, cartGoodsIndex) {
-                        final cartGoodsItem = cartGoods[cartGoodsIndex];
-                        return Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 1.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 60.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                  offset: Offset(0.0, 1.0),
-                                )
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 5.0, 16.0, 5.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        cartGoodsItem.description,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyLarge,
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 0.0),
-                                            child: Text(
-                                              'x ',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 0.0),
-                                            child: Text(
-                                              cartGoodsItem.quantity.toString(),
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                Stack(
+                  children: [
+                    if (!_model.isLoading)
+                      Builder(
+                        builder: (context) {
+                          final cartGoods = functions
+                                  .summarizeCart(widget.cart?.toList())
+                                  ?.toList() ??
+                              [];
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            primary: false,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: cartGoods.length,
+                            itemBuilder: (context, cartGoodsIndex) {
+                              final cartGoodsItem = cartGoods[cartGoodsIndex];
+                              return Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 1.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 60.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                        offset: Offset(0.0, 1.0),
+                                      )
                                     ],
                                   ),
-                                  Text(
-                                    formatNumber(
-                                      cartGoodsItem.price,
-                                      formatType: FormatType.decimal,
-                                      decimalType: DecimalType.automatic,
-                                      currency: 'P ',
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 5.0, 16.0, 5.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              cartGoodsItem.description,
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyLarge,
+                                            ),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 5.0, 0.0, 0.0),
+                                                  child: Text(
+                                                    'x ',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .labelMedium,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 5.0, 0.0, 0.0),
+                                                  child: Text(
+                                                    cartGoodsItem.quantity
+                                                        .toString(),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .labelMedium,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          formatNumber(
+                                            cartGoodsItem.price,
+                                            formatType: FormatType.decimal,
+                                            decimalType: DecimalType.automatic,
+                                            currency: 'P ',
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .titleLarge,
+                                        ),
+                                      ],
                                     ),
-                                    style:
-                                        FlutterFlowTheme.of(context).titleLarge,
                                   ),
-                                ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    if (_model.isLoading)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).info,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 20.0, 16.0, 0.0),
+                              child: Text(
+                                'Please don\'t touch anything while transaction is being completed.',
+                                textAlign: TextAlign.center,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 24.0,
+                                    ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  },
+                            Align(
+                              alignment: AlignmentDirectional(0.00, -2.13),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.asset(
+                                  'assets/images/giphy.gif',
+                                  width: double.infinity,
+                                  height: 159.0,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 0.0),
