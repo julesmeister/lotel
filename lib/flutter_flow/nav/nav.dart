@@ -264,22 +264,29 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: 'Rents',
-          path: '/Rental',
-          builder: (context, params) => RentsWidget(),
-        ),
-        FFRoute(
-          name: 'NewEditRent',
-          path: '/newEditRent',
-          builder: (context, params) => NewEditRentWidget(
-            ref: params.getParam(
-                'ref', ParamType.DocumentReference, false, ['rentals']),
-          ),
-        ),
-        FFRoute(
           name: 'LateCheckoutFee',
           path: '/lateCheckoutFee',
           builder: (context, params) => LateCheckoutFeeWidget(),
+        ),
+        FFRoute(
+          name: 'groceryList',
+          path: '/groceryList',
+          builder: (context, params) => GroceryListWidget(),
+        ),
+        FFRoute(
+          name: 'BillForm',
+          path: '/billForm',
+          builder: (context, params) => BillFormWidget(
+            additional: params.getParam('additional', ParamType.bool),
+            remittanceRef: params.getParam('remittanceRef',
+                ParamType.DocumentReference, false, ['remittances']),
+            net: params.getParam('net', ParamType.double),
+          ),
+        ),
+        FFRoute(
+          name: 'billsList',
+          path: '/billsList',
+          builder: (context, params) => BillsListWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

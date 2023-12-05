@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,12 @@ import 'name_edit_model.dart';
 export 'name_edit_model.dart';
 
 class NameEditWidget extends StatefulWidget {
-  const NameEditWidget({Key? key}) : super(key: key);
+  const NameEditWidget({
+    Key? key,
+    this.ref,
+  }) : super(key: key);
+
+  final DocumentReference? ref;
 
   @override
   _NameEditWidgetState createState() => _NameEditWidgetState();
@@ -32,8 +38,19 @@ class _NameEditWidgetState extends State<NameEditWidget> {
     super.initState();
     _model = createModel(context, () => NameEditModel());
 
-    _model.nameController ??=
-        TextEditingController(text: currentUserDisplayName);
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.userToEdit = await UsersRecord.getDocumentOnce(
+          widget.ref != null ? widget.ref! : currentUserReference!);
+      setState(() {
+        _model.user = _model.userToEdit;
+      });
+      setState(() {
+        _model.nameController?.text = _model.userToEdit!.displayName;
+      });
+    });
+
+    _model.nameController ??= TextEditingController();
     _model.nameFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -140,75 +157,71 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
-                        child: AuthUserStreamWidget(
-                          builder: (context) => TextFormField(
-                            controller: _model.nameController,
-                            focusNode: _model.nameFocusNode,
-                            textCapitalization: TextCapitalization.words,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              labelStyle: FlutterFlowTheme.of(context)
-                                  .bodySmall
-                                  .override(
+                        child: TextFormField(
+                          controller: _model.nameController,
+                          focusNode: _model.nameFocusNode,
+                          textCapitalization: TextCapitalization.words,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodySmall.override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 28.0,
+                                    ),
+                            hintText: 'Enter new name here',
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  fontSize: 28.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                            filled: true,
+                            fillColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 24.0, 20.0, 24.0),
+                          ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 28.0,
                                   ),
-                              hintText: 'Change your name',
-                              hintStyle: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    fontSize: 28.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                              filled: true,
-                              fillColor: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 24.0, 20.0, 24.0),
-                            ),
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  fontSize: 28.0,
-                                ),
-                            maxLines: 28,
-                            minLines: 1,
-                            validator: _model.nameControllerValidator
-                                .asValidator(context),
-                          ),
+                          maxLines: 28,
+                          minLines: 1,
+                          validator: _model.nameControllerValidator
+                              .asValidator(context),
                         ),
                       ),
                       Divider(
@@ -236,14 +249,14 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await currentUserReference!
+                                  await _model.user!.reference
                                       .update(createUsersRecordData(
                                     displayName: _model.nameController.text,
                                   ));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'Your name is now updated',
+                                        'The name is now updated',
                                         style: TextStyle(
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,

@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/name_edit/name_edit_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -138,6 +139,48 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
+                    if (_model.selectedUsers.length == 1)
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30.0,
+                          borderWidth: 1.0,
+                          buttonSize: 44.0,
+                          fillColor: FlutterFlowTheme.of(context).info,
+                          icon: Icon(
+                            Icons.edit_outlined,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () =>
+                                      _model.unfocusNode.canRequestFocus
+                                          ? FocusScope.of(context)
+                                              .requestFocus(_model.unfocusNode)
+                                          : FocusScope.of(context).unfocus(),
+                                  child: Padding(
+                                    padding: MediaQuery.viewInsetsOf(context),
+                                    child: Container(
+                                      height: double.infinity,
+                                      child: NameEditWidget(
+                                        ref: _model.selectedUsers.first,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ).then((value) => safeSetState(() {}));
+                          },
+                        ),
+                      ),
                     Padding(
                       padding:
                           EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
@@ -295,248 +338,240 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                               ),
                             ),
                           if (columnCount > 0)
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 12.0, 0.0, 0.0),
-                                child: Builder(
-                                  builder: (context) {
-                                    final recent = manageRolesUsersRecordList
-                                        .where((e) =>
-                                            e.createdTime! >
-                                            functions
-                                                .startOfDay(functions.today()!))
-                                        .toList();
-                                    if (recent.isEmpty) {
-                                      return Center(
-                                        child: Image.asset(
-                                          'assets/images/ae8ac2fa217d23aadcc913989fcc34a2.jpg',
-                                        ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 12.0, 0.0, 0.0),
+                              child: Builder(
+                                builder: (context) {
+                                  final recent = manageRolesUsersRecordList
+                                      .where((e) =>
+                                          e.createdTime! >
+                                          functions
+                                              .startOfDay(functions.today()!))
+                                      .toList();
+                                  if (recent.isEmpty) {
+                                    return Center(
+                                      child: Image.asset(
+                                        'assets/images/ae8ac2fa217d23aadcc913989fcc34a2.jpg',
+                                      ),
+                                    );
+                                  }
+                                  return RefreshIndicator(
+                                    onRefresh: () async {
+                                      await queryUsersRecordOnce(
+                                        queryBuilder: (usersRecord) =>
+                                            usersRecord.orderBy('role'),
                                       );
-                                    }
-                                    return RefreshIndicator(
-                                      onRefresh: () async {
-                                        await queryUsersRecordOnce(
-                                          queryBuilder: (usersRecord) =>
-                                              usersRecord.orderBy('role'),
-                                        );
-                                      },
-                                      child: ListView.builder(
-                                        padding: EdgeInsets.zero,
-                                        primary: false,
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: recent.length,
-                                        itemBuilder: (context, recentIndex) {
-                                          final recentItem =
-                                              recent[recentIndex];
-                                          return Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 0.0, 16.0, 8.0),
-                                            child: Container(
-                                              width: 100.0,
-                                              height: 70.0,
-                                              decoration: BoxDecoration(
+                                    },
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      primary: false,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: recent.length,
+                                      itemBuilder: (context, recentIndex) {
+                                        final recentItem = recent[recentIndex];
+                                        return Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 0.0, 16.0, 8.0),
+                                          child: Container(
+                                            width: 100.0,
+                                            height: 70.0,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                              border: Border.all(
                                                 color:
                                                     FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                                border: Border.all(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .alternate,
-                                                  width: 1.0,
-                                                ),
+                                                        .alternate,
+                                                width: 1.0,
                                               ),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Card(
-                                                      clipBehavior: Clip
-                                                          .antiAliasWithSaveLayer,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                      elevation: 0.0,
-                                                      shape:
-                                                          RoundedRectangleBorder(
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          8.0, 0.0, 0.0, 0.0),
+                                                  child: Card(
+                                                    clipBehavior: Clip
+                                                        .antiAliasWithSaveLayer,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primary,
+                                                    elevation: 0.0,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.0),
+                                                    ),
+                                                    child: Container(
+                                                      width: 44.0,
+                                                      height: 44.0,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primary,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: ClipRRect(
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(50.0),
-                                                      ),
-                                                      child: Container(
-                                                        width: 44.0,
-                                                        height: 44.0,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primary,
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                          child: Image.asset(
-                                                            'assets/images/x7hc1_7.png',
-                                                            width: 300.0,
-                                                            height: 200.0,
-                                                            fit: BoxFit.cover,
-                                                          ),
+                                                                .circular(8.0),
+                                                        child: Image.asset(
+                                                          'assets/images/x7hc1_7.png',
+                                                          width: 300.0,
+                                                          height: 200.0,
+                                                          fit: BoxFit.cover,
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                  Expanded(
-                                                    child: StreamBuilder<
-                                                        List<LastLoginRecord>>(
-                                                      stream:
-                                                          queryLastLoginRecord(
-                                                        parent: recentItem
-                                                            .reference,
-                                                        singleRecord: true,
-                                                      ),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        // Customize what your widget looks like when it's loading.
-                                                        if (!snapshot.hasData) {
-                                                          return Center(
-                                                            child: SizedBox(
-                                                              width: 50.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                        Color>(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primary,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        List<LastLoginRecord>
-                                                            checkboxListTileLastLoginRecordList =
-                                                            snapshot.data!;
-                                                        // Return an empty Container when the item does not exist.
-                                                        if (snapshot
-                                                            .data!.isEmpty) {
-                                                          return Container();
-                                                        }
-                                                        final checkboxListTileLastLoginRecord =
-                                                            checkboxListTileLastLoginRecordList
-                                                                    .isNotEmpty
-                                                                ? checkboxListTileLastLoginRecordList
-                                                                    .first
-                                                                : null;
-                                                        return Theme(
-                                                          data: ThemeData(
-                                                            unselectedWidgetColor:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryText,
-                                                          ),
-                                                          child:
-                                                              CheckboxListTile(
-                                                            value: _model
-                                                                    .checkboxListTileValueMap1[
-                                                                recentItem] ??= false,
-                                                            onChanged:
-                                                                (newValue) async {
-                                                              setState(() =>
-                                                                  _model.checkboxListTileValueMap1[
-                                                                          recentItem] =
-                                                                      newValue!);
-                                                              if (newValue!) {
-                                                                _model.addToSelectedUsers(
-                                                                    recentItem
-                                                                        .reference);
-                                                              } else {
-                                                                _model.removeFromSelectedUsers(
-                                                                    recentItem
-                                                                        .reference);
-                                                              }
-                                                            },
-                                                            title: Text(
-                                                              recentItem
-                                                                  .displayName,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyLarge
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    lineHeight:
-                                                                        2.0,
-                                                                  ),
-                                                            ),
-                                                            subtitle: Text(
-                                                              '${recentItem.role} last login: ${dateTimeFormat('jm', checkboxListTileLastLoginRecord?.datetime)}',
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodySmall
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .success,
-                                                                  ),
-                                                            ),
-                                                            tileColor: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryBackground,
-                                                            activeColor:
+                                                ),
+                                                Expanded(
+                                                  child: StreamBuilder<
+                                                      List<LastLoginRecord>>(
+                                                    stream:
+                                                        queryLastLoginRecord(
+                                                      parent:
+                                                          recentItem.reference,
+                                                      singleRecord: true,
+                                                    ),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      // Customize what your widget looks like when it's loading.
+                                                      if (!snapshot.hasData) {
+                                                        return Center(
+                                                          child: SizedBox(
+                                                            width: 50.0,
+                                                            height: 50.0,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              valueColor:
+                                                                  AlwaysStoppedAnimation<
+                                                                      Color>(
                                                                 FlutterFlowTheme.of(
                                                                         context)
                                                                     .primary,
-                                                            checkColor:
-                                                                Colors.white,
-                                                            dense: false,
-                                                            controlAffinity:
-                                                                ListTileControlAffinity
-                                                                    .trailing,
-                                                            contentPadding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        8.0,
-                                                                        0.0,
-                                                                        8.0,
-                                                                        0.0),
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
+                                                              ),
                                                             ),
                                                           ),
                                                         );
-                                                      },
-                                                    ),
+                                                      }
+                                                      List<LastLoginRecord>
+                                                          checkboxListTileLastLoginRecordList =
+                                                          snapshot.data!;
+                                                      // Return an empty Container when the item does not exist.
+                                                      if (snapshot
+                                                          .data!.isEmpty) {
+                                                        return Container();
+                                                      }
+                                                      final checkboxListTileLastLoginRecord =
+                                                          checkboxListTileLastLoginRecordList
+                                                                  .isNotEmpty
+                                                              ? checkboxListTileLastLoginRecordList
+                                                                  .first
+                                                              : null;
+                                                      return Theme(
+                                                        data: ThemeData(
+                                                          unselectedWidgetColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .secondaryText,
+                                                        ),
+                                                        child: CheckboxListTile(
+                                                          value: _model
+                                                                  .checkboxListTileValueMap1[
+                                                              recentItem] ??= false,
+                                                          onChanged:
+                                                              (newValue) async {
+                                                            setState(() => _model
+                                                                        .checkboxListTileValueMap1[
+                                                                    recentItem] =
+                                                                newValue!);
+                                                            if (newValue!) {
+                                                              _model.addToSelectedUsers(
+                                                                  recentItem
+                                                                      .reference);
+                                                            } else {
+                                                              _model.removeFromSelectedUsers(
+                                                                  recentItem
+                                                                      .reference);
+                                                            }
+                                                          },
+                                                          title: Text(
+                                                            recentItem
+                                                                .displayName,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyLarge
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  lineHeight:
+                                                                      2.0,
+                                                                ),
+                                                          ),
+                                                          subtitle: Text(
+                                                            '${recentItem.role} last login: ${dateTimeFormat('jm', checkboxListTileLastLoginRecord?.datetime)}',
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodySmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .success,
+                                                                ),
+                                                          ),
+                                                          tileColor: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryBackground,
+                                                          activeColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                          checkColor:
+                                                              Colors.white,
+                                                          dense: false,
+                                                          controlAffinity:
+                                                              ListTileControlAffinity
+                                                                  .trailing,
+                                                          contentPadding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      8.0,
+                                                                      0.0,
+                                                                      8.0,
+                                                                      0.0),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           if (columnCount > 0)

@@ -161,16 +161,6 @@ class _StatsWidgetState extends State<StatsWidget>
                   .toList()
                   .first
                   .goodsIncome;
-          _model.rent = _model.stats
-                  .where((e) => e.hotel == 'Serenity')
-                  .toList()
-                  .first
-                  .rentIncome +
-              _model.stats
-                  .where((e) => e.hotel == 'My Lifestyle')
-                  .toList()
-                  .first
-                  .rentIncome;
           _model.groceryExpenses = _model.stats
                   .where((e) => e.hotel == 'Serenity')
                   .toList()
@@ -181,6 +171,16 @@ class _StatsWidgetState extends State<StatsWidget>
                   .toList()
                   .first
                   .groceryExpenses;
+          _model.bills = _model.stats
+                  .where((e) => e.hotel == 'Serenity')
+                  .toList()
+                  .first
+                  .bills +
+              _model.stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .bills;
         });
       } else {
         // no data yet
@@ -257,7 +257,29 @@ class _StatsWidgetState extends State<StatsWidget>
                 fontSize: 22.0,
               ),
         ),
-        actions: [],
+        actions: [
+          Visibility(
+            visible: _model.hotel != 'All',
+            child: Align(
+              alignment: AlignmentDirectional(0.00, 0.00),
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                child: Container(
+                  width: 30.0,
+                  height: 30.0,
+                  child: custom_widgets.ShareStats(
+                    width: 30.0,
+                    height: 30.0,
+                    stats: _model.stats
+                        .where((e) => e.hotel == _model.hotel)
+                        .toList()
+                        .first,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
         centerTitle: false,
         elevation: 0.0,
       ),
@@ -273,8 +295,8 @@ class _StatsWidgetState extends State<StatsWidget>
                   child: Align(
                     alignment: AlignmentDirectional(0.00, -1.00),
                     child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                          16.0, 16.0, 16.0, 16.0),
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
                       child: Container(
                         width: double.infinity,
                         height: 50.0,
@@ -381,18 +403,6 @@ class _StatsWidgetState extends State<StatsWidget>
                                               .toList()
                                               .first
                                               .goodsIncome;
-                                      _model.rent = _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .rentIncome +
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .rentIncome;
                                       _model.hotel = 'All';
                                       _model.groceryExpenses = _model.stats
                                               .where(
@@ -406,6 +416,18 @@ class _StatsWidgetState extends State<StatsWidget>
                                               .toList()
                                               .first
                                               .groceryExpenses;
+                                      _model.bills = _model.stats
+                                              .where(
+                                                  (e) => e.hotel == 'Serenity')
+                                              .toList()
+                                              .first
+                                              .bills +
+                                          _model.stats
+                                              .where((e) =>
+                                                  e.hotel == 'My Lifestyle')
+                                              .toList()
+                                              .first
+                                              .bills;
                                     });
                                   },
                                   child: Container(
@@ -511,11 +533,6 @@ class _StatsWidgetState extends State<StatsWidget>
                                           .toList()
                                           .first
                                           .reference;
-                                      _model.rent = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .rentIncome;
                                       _model.hotel = 'Serenity';
                                       _model.net = _model.stats
                                               .where(
@@ -528,13 +545,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                   (e) => e.hotel == 'Serenity')
                                               .toList()
                                               .first
-                                              .goodsIncome +
-                                          _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .rentIncome -
+                                              .goodsIncome -
                                           _model.stats
                                               .where(
                                                   (e) => e.hotel == 'Serenity')
@@ -552,6 +563,11 @@ class _StatsWidgetState extends State<StatsWidget>
                                           .toList()
                                           .first
                                           .groceryExpenses;
+                                      _model.bills = _model.stats
+                                          .where((e) => e.hotel == 'Serenity')
+                                          .toList()
+                                          .first
+                                          .bills;
                                     });
                                   },
                                   child: Container(
@@ -660,12 +676,6 @@ class _StatsWidgetState extends State<StatsWidget>
                                           .toList()
                                           .first
                                           .reference;
-                                      _model.rent = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .rentIncome;
                                       _model.net = _model.stats
                                               .where((e) =>
                                                   e.hotel == 'My Lifestyle')
@@ -677,13 +687,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                   e.hotel == 'My Lifestyle')
                                               .toList()
                                               .first
-                                              .goodsIncome +
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .rentIncome -
+                                              .goodsIncome -
                                           _model.stats
                                               .where((e) =>
                                                   e.hotel == 'My Lifestyle')
@@ -703,6 +707,12 @@ class _StatsWidgetState extends State<StatsWidget>
                                           .toList()
                                           .first
                                           .groceryExpenses;
+                                      _model.bills = _model.stats
+                                          .where(
+                                              (e) => e.hotel == 'My Lifestyle')
+                                          .toList()
+                                          .first
+                                          .bills;
                                     });
                                   },
                                   child: Container(
@@ -872,16 +882,6 @@ class _StatsWidgetState extends State<StatsWidget>
                                   .toList()
                                   .first
                                   .goodsIncome;
-                          _model.rent = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .rentIncome +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .rentIncome;
                           _model.hotel = 'All';
                           _model.groceryExpenses = _model.stats
                                   .where((e) => e.hotel == 'Serenity')
@@ -893,7 +893,30 @@ class _StatsWidgetState extends State<StatsWidget>
                                   .toList()
                                   .first
                                   .groceryExpenses;
+                          _model.bills = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .bills +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .bills;
                         });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Showing stats of ${_model.monthValue} ${_model.yearValue}',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            duration: Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
+                          ),
+                        );
                       } else {
                         // no data yet
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -1041,16 +1064,6 @@ class _StatsWidgetState extends State<StatsWidget>
                                   .toList()
                                   .first
                                   .goodsIncome;
-                          _model.rent = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .rentIncome +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .rentIncome;
                           _model.hotel = 'All';
                           _model.groceryExpenses = _model.stats
                                   .where((e) => e.hotel == 'Serenity')
@@ -1062,7 +1075,30 @@ class _StatsWidgetState extends State<StatsWidget>
                                   .toList()
                                   .first
                                   .groceryExpenses;
+                          _model.bills = _model.stats
+                                  .where((e) => e.hotel == 'Serenity')
+                                  .toList()
+                                  .first
+                                  .bills +
+                              _model.stats
+                                  .where((e) => e.hotel == 'My Lifestyle')
+                                  .toList()
+                                  .first
+                                  .bills;
                         });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Showing stats of ${_model.month} ${_model.year}',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            duration: Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
+                          ),
+                        );
                       } else {
                         // no data yet
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -1545,87 +1581,6 @@ class _StatsWidgetState extends State<StatsWidget>
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Rent Income',
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelMedium,
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 4.0, 4.0, 0.0),
-                                            child: AutoSizeText(
-                                              valueOrDefault<String>(
-                                                formatNumber(
-                                                  _model.rent,
-                                                  formatType:
-                                                      FormatType.decimal,
-                                                  decimalType:
-                                                      DecimalType.automatic,
-                                                  currency: 'P ',
-                                                ),
-                                                '0',
-                                              ),
-                                              maxLines: 1,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .displaySmall,
-                                              minFontSize: 30.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 12.0, 0.0, 12.0),
-                        child: Container(
-                          height: 120.0,
-                          constraints: BoxConstraints(
-                            maxWidth: 270.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: FlutterFlowTheme.of(context).alternate,
-                              width: 1.0,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 0.0, 16.0, 0.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
                                         'Expenses',
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium,
@@ -1874,6 +1829,83 @@ class _StatsWidgetState extends State<StatsWidget>
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
+                                        'Bills',
+                                        style: FlutterFlowTheme.of(context)
+                                            .labelMedium,
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 4.0, 4.0, 0.0),
+                                            child: Text(
+                                              formatNumber(
+                                                _model.salaries,
+                                                formatType: FormatType.decimal,
+                                                decimalType:
+                                                    DecimalType.automatic,
+                                                currency: 'P ',
+                                              ).maybeHandleOverflow(
+                                                  maxChars: 30),
+                                              maxLines: 1,
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .displaySmall,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            0.0, 12.0, 0.0, 12.0),
+                        child: Container(
+                          height: 120.0,
+                          constraints: BoxConstraints(
+                            maxWidth: 290.0,
+                          ),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 16.0, 0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 16.0, 0.0),
+                                  child: Icon(
+                                    Icons.trending_up_rounded,
+                                    color:
+                                        FlutterFlowTheme.of(context).secondary,
+                                    size: 32.0,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
                                         'Net',
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium,
@@ -1888,10 +1920,10 @@ class _StatsWidgetState extends State<StatsWidget>
                                             child: AutoSizeText(
                                               formatNumber(
                                                 _model.rooms +
-                                                    _model.goods +
-                                                    _model.rent -
+                                                    _model.goods -
                                                     _model.expenses -
-                                                    _model.salaries,
+                                                    _model.salaries -
+                                                    _model.bills,
                                                 formatType: FormatType.decimal,
                                                 decimalType:
                                                     DecimalType.automatic,

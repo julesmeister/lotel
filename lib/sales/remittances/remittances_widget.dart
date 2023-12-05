@@ -944,7 +944,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                 child: Image.asset(
                                                   'assets/images/giphy.gif',
                                                   width: double.infinity,
-                                                  height: 219.0,
+                                                  height: 232.0,
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),

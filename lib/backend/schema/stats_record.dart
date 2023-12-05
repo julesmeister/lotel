@@ -71,15 +71,15 @@ class StatsRecord extends FirestoreRecord {
   LineGraphStruct get goodsLine => _goodsLine ?? LineGraphStruct();
   bool hasGoodsLine() => _goodsLine != null;
 
-  // "rentIncome" field.
-  double? _rentIncome;
-  double get rentIncome => _rentIncome ?? 0.0;
-  bool hasRentIncome() => _rentIncome != null;
-
   // "groceryExpenses" field.
   double? _groceryExpenses;
   double get groceryExpenses => _groceryExpenses ?? 0.0;
   bool hasGroceryExpenses() => _groceryExpenses != null;
+
+  // "bills" field.
+  double? _bills;
+  double get bills => _bills ?? 0.0;
+  bool hasBills() => _bills != null;
 
   void _initializeFields() {
     _hotel = snapshotData['hotel'] as String?;
@@ -96,8 +96,8 @@ class StatsRecord extends FirestoreRecord {
     );
     _roomLine = LineGraphStruct.maybeFromMap(snapshotData['roomLine']);
     _goodsLine = LineGraphStruct.maybeFromMap(snapshotData['goodsLine']);
-    _rentIncome = castToType<double>(snapshotData['rentIncome']);
     _groceryExpenses = castToType<double>(snapshotData['groceryExpenses']);
+    _bills = castToType<double>(snapshotData['bills']);
   }
 
   static CollectionReference get collection =>
@@ -144,8 +144,8 @@ Map<String, dynamic> createStatsRecordData({
   double? salaries,
   LineGraphStruct? roomLine,
   LineGraphStruct? goodsLine,
-  double? rentIncome,
   double? groceryExpenses,
+  double? bills,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -159,8 +159,8 @@ Map<String, dynamic> createStatsRecordData({
       'salaries': salaries,
       'roomLine': LineGraphStruct().toMap(),
       'goodsLine': LineGraphStruct().toMap(),
-      'rentIncome': rentIncome,
       'groceryExpenses': groceryExpenses,
+      'bills': bills,
     }.withoutNulls,
   );
 
@@ -190,8 +190,8 @@ class StatsRecordDocumentEquality implements Equality<StatsRecord> {
         listEquality.equals(e1?.roomUsage, e2?.roomUsage) &&
         e1?.roomLine == e2?.roomLine &&
         e1?.goodsLine == e2?.goodsLine &&
-        e1?.rentIncome == e2?.rentIncome &&
-        e1?.groceryExpenses == e2?.groceryExpenses;
+        e1?.groceryExpenses == e2?.groceryExpenses &&
+        e1?.bills == e2?.bills;
   }
 
   @override
@@ -207,8 +207,8 @@ class StatsRecordDocumentEquality implements Equality<StatsRecord> {
         e?.roomUsage,
         e?.roomLine,
         e?.goodsLine,
-        e?.rentIncome,
-        e?.groceryExpenses
+        e?.groceryExpenses,
+        e?.bills
       ]);
 
   @override

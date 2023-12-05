@@ -612,7 +612,18 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        context.pushNamed('ManageRoles');
+                                        context.pushNamed(
+                                          'ManageRoles',
+                                          extra: <String, dynamic>{
+                                            kTransitionInfoKey: TransitionInfo(
+                                              hasTransition: true,
+                                              transitionType: PageTransitionType
+                                                  .rightToLeft,
+                                              duration:
+                                                  Duration(milliseconds: 500),
+                                            ),
+                                          },
+                                        );
                                       },
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,

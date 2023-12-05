@@ -206,6 +206,21 @@ class FFAppState extends ChangeNotifier {
   void clearStaffsCache() => _staffsManager.clear();
   void clearStaffsCacheKey(String? uniqueKey) =>
       _staffsManager.clearRequest(uniqueKey);
+
+  final _groceryHomeManager = FutureRequestManager<List<StatsRecord>>();
+  Future<List<StatsRecord>> groceryHome({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<List<StatsRecord>> Function() requestFn,
+  }) =>
+      _groceryHomeManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearGroceryHomeCache() => _groceryHomeManager.clear();
+  void clearGroceryHomeCacheKey(String? uniqueKey) =>
+      _groceryHomeManager.clearRequest(uniqueKey);
 }
 
 LatLng? _latLngFromString(String? val) {

@@ -74,6 +74,8 @@ class StatsModel extends FlutterFlowModel<StatsWidget> {
 
   double groceryExpenses = 0.0;
 
+  double bills = 0.0;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Firestore Query - Query a collection] action in Stats widget.

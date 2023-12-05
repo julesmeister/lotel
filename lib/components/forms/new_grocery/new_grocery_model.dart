@@ -13,6 +13,10 @@ import 'package:provider/provider.dart';
 class NewGroceryModel extends FlutterFlowModel<NewGroceryWidget> {
   ///  State fields for stateful widgets in this component.
 
+  // State field(s) for remark widget.
+  FocusNode? remarkFocusNode;
+  TextEditingController? remarkController;
+  String? Function(BuildContext, String?)? remarkControllerValidator;
   // State field(s) for amount widget.
   FocusNode? amountFocusNode;
   TextEditingController? amountController;
@@ -23,6 +27,9 @@ class NewGroceryModel extends FlutterFlowModel<NewGroceryWidget> {
   void initState(BuildContext context) {}
 
   void dispose() {
+    remarkFocusNode?.dispose();
+    remarkController?.dispose();
+
     amountFocusNode?.dispose();
     amountController?.dispose();
   }

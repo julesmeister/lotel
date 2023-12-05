@@ -80,7 +80,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
           return Scaffold(
-            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            backgroundColor: FlutterFlowTheme.of(context).info,
             body: Center(
               child: SizedBox(
                 width: 50.0,
@@ -101,9 +101,9 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
               : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
-            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            backgroundColor: FlutterFlowTheme.of(context).info,
             appBar: AppBar(
-              backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+              backgroundColor: FlutterFlowTheme.of(context).info,
               automaticallyImplyLeading: false,
               leading: FlutterFlowIconButton(
                 borderRadius: 20.0,
@@ -137,9 +137,9 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 0.0, 0.0),
                     child: Text(
-                      'Below is the summary of the staff\'s salary history.',
+                      'Below is the summary of ${widget.staff?.name}\'s salary history.',
                       style: FlutterFlowTheme.of(context).labelMedium,
                     ),
                   ),
@@ -322,7 +322,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                   child: Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
-                                                            .fromSTEB(30.0, 0.0,
+                                                            .fromSTEB(20.0, 0.0,
                                                                 25.0, 0.0),
                                                     child: Row(
                                                       mainAxisSize:
@@ -331,42 +331,39 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      0.0,
-                                                                      0.0,
-                                                                      12.0,
-                                                                      0.0),
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
+                                                        Container(
+                                                          width: 24.0,
+                                                          child: Stack(
+                                                            alignment:
+                                                                AlignmentDirectional(
+                                                                    0.0, 0.0),
                                                             children: [
-                                                              Container(
-                                                                width: 16.0,
-                                                                height: 16.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .alternate,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                width: 2.0,
-                                                                height: 50.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .alternate,
+                                                              Align(
+                                                                alignment:
+                                                                    AlignmentDirectional(
+                                                                        0.00,
+                                                                        -1.00),
+                                                                child: Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          30.0),
+                                                                  child:
+                                                                      Container(
+                                                                    width: 12.0,
+                                                                    height:
+                                                                        12.0,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primary,
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
                                                               Row(
@@ -376,13 +373,21 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
                                                                         .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
                                                                 children: [
-                                                                  VerticalDivider(
-                                                                    thickness:
-                                                                        2.0,
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primary,
+                                                                  SizedBox(
+                                                                    height:
+                                                                        55.0,
+                                                                    child:
+                                                                        VerticalDivider(
+                                                                      thickness:
+                                                                          2.0,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primary,
+                                                                    ),
                                                                   ),
                                                                 ],
                                                               ),
@@ -394,8 +399,8 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                             padding:
                                                                 EdgeInsetsDirectional
                                                                     .fromSTEB(
+                                                                        10.0,
                                                                         5.0,
-                                                                        15.0,
                                                                         0.0,
                                                                         0.0),
                                                             child: Column(
@@ -417,7 +422,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                           0.0,
                                                                           3.0),
                                                                   child: Text(
-                                                                    'Date Issued',
+                                                                    'Date Settled',
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
                                                                         .labelSmall,
@@ -594,7 +599,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                 child: Padding(
                                                   padding: EdgeInsetsDirectional
                                                       .fromSTEB(
-                                                          30.0, 0.0, 25.0, 0.0),
+                                                          20.0, 0.0, 25.0, 0.0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -602,42 +607,64 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    0.0,
-                                                                    12.0,
-                                                                    0.0),
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
+                                                      Container(
+                                                        width: 24.0,
+                                                        child: Stack(
+                                                          alignment:
+                                                              AlignmentDirectional(
+                                                                  0.0, 0.0),
                                                           children: [
-                                                            Container(
-                                                              width: 16.0,
-                                                              height: 16.0,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .alternate,
-                                                                shape: BoxShape
-                                                                    .circle,
+                                                            Align(
+                                                              alignment:
+                                                                  AlignmentDirectional(
+                                                                      0.00,
+                                                                      -1.00),
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            60.0),
+                                                                child:
+                                                                    Container(
+                                                                  width: 12.0,
+                                                                  height: 12.0,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ),
-                                                            Container(
-                                                              width: 2.0,
-                                                              height: 80.0,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .alternate,
-                                                              ),
+                                                            Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                SizedBox(
+                                                                  height: 75.0,
+                                                                  child:
+                                                                      VerticalDivider(
+                                                                    thickness:
+                                                                        2.0,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ],
                                                         ),
@@ -651,14 +678,14 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                   .spaceBetween,
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
-                                                                  .center,
+                                                                  .start,
                                                           children: [
                                                             Padding(
                                                               padding:
                                                                   EdgeInsetsDirectional
                                                                       .fromSTEB(
-                                                                          12.0,
-                                                                          15.0,
+                                                                          10.0,
+                                                                          0.0,
                                                                           0.0,
                                                                           0.0),
                                                               child: StreamBuilder<
@@ -706,7 +733,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                       Padding(
                                                                         padding: EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
-                                                                            4.0,
+                                                                            0.0,
                                                                             0.0,
                                                                             5.0),
                                                                         child:
@@ -728,99 +755,96 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                 },
                                                               ),
                                                             ),
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
+                                                            Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                  formatNumber(
+                                                                    listViewAdvancesRecord
+                                                                        .amount,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .decimal,
+                                                                    decimalType:
+                                                                        DecimalType
+                                                                            .automatic,
+                                                                    currency:
+                                                                        'P ',
+                                                                  ),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyLarge,
+                                                                ),
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
-                                                                          15.0,
+                                                                          8.0,
                                                                           0.0,
                                                                           0.0),
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Text(
-                                                                    formatNumber(
-                                                                      listViewAdvancesRecord
-                                                                          .amount,
-                                                                      formatType:
-                                                                          FormatType
-                                                                              .decimal,
-                                                                      decimalType:
-                                                                          DecimalType
-                                                                              .automatic,
-                                                                      currency:
-                                                                          'P ',
-                                                                    ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyLarge,
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            8.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child:
-                                                                        Container(
-                                                                      width:
-                                                                          91.0,
-                                                                      height:
-                                                                          32.0,
-                                                                      decoration:
-                                                                          BoxDecoration(
+                                                                  child:
+                                                                      Container(
+                                                                    width: 91.0,
+                                                                    height:
+                                                                        32.0,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: listViewAdvancesRecord.settled ==
+                                                                              false
+                                                                          ? FlutterFlowTheme.of(context)
+                                                                              .accent3
+                                                                          : FlutterFlowTheme.of(context)
+                                                                              .accent2,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5.0),
+                                                                      border:
+                                                                          Border
+                                                                              .all(
                                                                         color: listViewAdvancesRecord.settled ==
                                                                                 false
-                                                                            ? FlutterFlowTheme.of(context).accent3
-                                                                            : FlutterFlowTheme.of(context).accent2,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5.0),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color: listViewAdvancesRecord.settled == false
-                                                                              ? FlutterFlowTheme.of(context).error
-                                                                              : FlutterFlowTheme.of(context).secondary,
-                                                                          width:
-                                                                              1.0,
-                                                                        ),
+                                                                            ? FlutterFlowTheme.of(context).error
+                                                                            : FlutterFlowTheme.of(context).secondary,
+                                                                        width:
+                                                                            1.0,
                                                                       ),
+                                                                    ),
+                                                                    child:
+                                                                        Align(
+                                                                      alignment: AlignmentDirectional(
+                                                                          0.00,
+                                                                          0.00),
                                                                       child:
-                                                                          Align(
-                                                                        alignment: AlignmentDirectional(
-                                                                            0.00,
-                                                                            0.00),
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            8.0,
+                                                                            0.0,
+                                                                            8.0,
+                                                                            0.0),
                                                                         child:
-                                                                            Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              8.0,
-                                                                              0.0,
-                                                                              8.0,
-                                                                              0.0),
-                                                                          child:
-                                                                              Text(
-                                                                            listViewAdvancesRecord.settled
-                                                                                ? 'settled'
-                                                                                : 'pending',
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                  fontFamily: 'Readex Pro',
-                                                                                  color: listViewAdvancesRecord.settled == false ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
-                                                                                ),
-                                                                          ),
+                                                                            Text(
+                                                                          listViewAdvancesRecord.settled
+                                                                              ? 'settled'
+                                                                              : 'pending',
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                color: listViewAdvancesRecord.settled == false ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
+                                                                              ),
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ],
                                                         ),
@@ -902,46 +926,12 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                         child: Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
-                                                  30.0, 0.0, 25.0, 0.0),
+                                                  20.0, 0.0, 25.0, 0.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 0.0, 12.0, 0.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      width: 16.0,
-                                                      height: 16.0,
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .alternate,
-                                                        shape: BoxShape.circle,
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      width: 2.0,
-                                                      height: 80.0,
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .alternate,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
                                               Expanded(
                                                 child: Row(
                                                   mainAxisSize:
@@ -950,14 +940,75 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                      CrossAxisAlignment.start,
                                                   children: [
+                                                    Container(
+                                                      width: 24.0,
+                                                      child: Stack(
+                                                        alignment:
+                                                            AlignmentDirectional(
+                                                                0.0, 0.0),
+                                                        children: [
+                                                          Align(
+                                                            alignment:
+                                                                AlignmentDirectional(
+                                                                    0.00,
+                                                                    -1.50),
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          60.0),
+                                                              child: Container(
+                                                                width: 12.0,
+                                                                height: 12.0,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SizedBox(
+                                                                height: 75.0,
+                                                                child:
+                                                                    VerticalDivider(
+                                                                  thickness:
+                                                                      2.0,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
                                                     Padding(
                                                       padding:
                                                           EdgeInsetsDirectional
                                                               .fromSTEB(
-                                                                  12.0,
-                                                                  15.0,
+                                                                  10.0,
+                                                                  0.0,
                                                                   0.0,
                                                                   0.0),
                                                       child: StreamBuilder<
@@ -1067,7 +1118,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
-                                                                          4.0,
+                                                                          0.0,
                                                                           0.0,
                                                                           5.0),
                                                                   child: Text(
@@ -1092,114 +1143,107 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                         },
                                                       ),
                                                     ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  15.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Text(
-                                                            formatNumber(
-                                                              listViewAbsencesRecord
-                                                                  .amount,
-                                                              formatType:
-                                                                  FormatType
-                                                                      .decimal,
-                                                              decimalType:
-                                                                  DecimalType
-                                                                      .automatic,
-                                                              currency: 'P ',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyLarge,
+                                                    Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          formatNumber(
+                                                            listViewAbsencesRecord
+                                                                .amount,
+                                                            formatType:
+                                                                FormatType
+                                                                    .decimal,
+                                                            decimalType:
+                                                                DecimalType
+                                                                    .automatic,
+                                                            currency: 'P ',
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        8.0,
-                                                                        0.0,
-                                                                        0.0),
-                                                            child: Container(
-                                                              width: 91.0,
-                                                              height: 32.0,
-                                                              decoration:
-                                                                  BoxDecoration(
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyLarge,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      8.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: Container(
+                                                            width: 91.0,
+                                                            height: 32.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: listViewAbsencesRecord
+                                                                          .settled ==
+                                                                      false
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .accent3
+                                                                  : FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .accent2,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                              border:
+                                                                  Border.all(
                                                                 color: listViewAbsencesRecord
                                                                             .settled ==
                                                                         false
                                                                     ? FlutterFlowTheme.of(
                                                                             context)
-                                                                        .accent3
+                                                                        .error
                                                                     : FlutterFlowTheme.of(
                                                                             context)
-                                                                        .accent2,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0),
-                                                                border:
-                                                                    Border.all(
-                                                                  color: listViewAbsencesRecord
-                                                                              .settled ==
-                                                                          false
-                                                                      ? FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .error
-                                                                      : FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondary,
-                                                                  width: 1.0,
-                                                                ),
+                                                                        .secondary,
+                                                                width: 1.0,
                                                               ),
-                                                              child: Align(
-                                                                alignment:
-                                                                    AlignmentDirectional(
-                                                                        0.00,
-                                                                        0.00),
-                                                                child: Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          8.0,
-                                                                          0.0,
-                                                                          8.0,
-                                                                          0.0),
-                                                                  child: Text(
-                                                                    listViewAbsencesRecord
-                                                                            .settled
-                                                                        ? 'settled'
-                                                                        : 'pending',
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          color: listViewAbsencesRecord.settled == false
-                                                                              ? FlutterFlowTheme.of(context).error
-                                                                              : FlutterFlowTheme.of(context).secondary,
-                                                                        ),
-                                                                  ),
+                                                            ),
+                                                            child: Align(
+                                                              alignment:
+                                                                  AlignmentDirectional(
+                                                                      0.00,
+                                                                      0.00),
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            8.0,
+                                                                            0.0,
+                                                                            8.0,
+                                                                            0.0),
+                                                                child: Text(
+                                                                  listViewAbsencesRecord
+                                                                          .settled
+                                                                      ? 'settled'
+                                                                      : 'pending',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        color: listViewAbsencesRecord.settled ==
+                                                                                false
+                                                                            ? FlutterFlowTheme.of(context).error
+                                                                            : FlutterFlowTheme.of(context).secondary,
+                                                                      ),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),

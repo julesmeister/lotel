@@ -133,6 +133,10 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   RemittancesRecord? unRemitted;
   // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
   int? historyCount;
+  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
+  int? countGroceries;
+  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
+  int? countBills;
 
   /// Query cache managers for this widget.
 

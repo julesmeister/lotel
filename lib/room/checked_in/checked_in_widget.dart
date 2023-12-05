@@ -222,19 +222,22 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                             MainAxisSize.max,
                                                         children: [
                                                           Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              widget.roomNo
-                                                                  ?.toString(),
-                                                              '0',
-                                                            ),
+                                                            (int room) {
+                                                              return "Room $room";
+                                                            }(valueOrDefault<
+                                                                int>(
+                                                              widget.roomNo,
+                                                              0,
+                                                            )),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
                                                                 .bodyMedium,
                                                           ),
-                                                          if (checkedInBookingsRecord
-                                                                  .status !=
-                                                              'out')
+                                                          if (!((checkedInBookingsRecord
+                                                                      .status ==
+                                                                  'out') ||
+                                                              (widget.ref ==
+                                                                  null)))
                                                             Padding(
                                                               padding:
                                                                   EdgeInsetsDirectional
@@ -629,8 +632,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .labelMedium,
                                                       ),
                                                       Text(
-                                                        checkedInBookingsRecord
-                                                            .extraBeds,
+                                                        (String extraBeds) {
+                                                          return extraBeds ==
+                                                                  "0"
+                                                              ? "There are no extra beds"
+                                                              : "There's $extraBeds extra bed${extraBeds != "1" ? 's' : ''}";
+                                                        }(checkedInBookingsRecord
+                                                            .extraBeds),
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -665,8 +673,51 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 ),
                                                       ),
                                                       Text(
-                                                        checkedInBookingsRecord
-                                                            .guests,
+                                                        (String guests) {
+                                                          return '$guests guest${guests != "1" ? 's' : ''}';
+                                                        }(checkedInBookingsRecord
+                                                            .guests),
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyMedium,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 8.0, 0.0, 0.0),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        'Ability',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                ),
+                                                      ),
+                                                      Text(
+                                                        (String ability) {
+                                                          return ability ==
+                                                                  "normal"
+                                                              ? "No disability"
+                                                              : "${ability[0].toUpperCase()}${ability.substring(1)}";
+                                                        }(checkedInBookingsRecord
+                                                            .ability),
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -701,9 +752,10 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 ),
                                                       ),
                                                       Text(
-                                                        checkedInBookingsRecord
-                                                            .nights
-                                                            .toString(),
+                                                        (int nights) {
+                                                          return '$nights night${nights != 1 ? 's' : ''} stay';
+                                                        }(checkedInBookingsRecord
+                                                            .nights),
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -738,8 +790,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 ),
                                                       ),
                                                       Text(
-                                                        checkedInBookingsRecord
-                                                            .status,
+                                                        (String status) {
+                                                          return status[0]
+                                                                  .toUpperCase() +
+                                                              status
+                                                                  .substring(1);
+                                                        }(checkedInBookingsRecord
+                                                            .status),
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -1045,7 +1102,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .set({
                                                                       ...createHistoryRecordData(
                                                                         description:
-                                                                            'Guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} have settled the amount of Php ${functions.getTotalAmount(checkedInBookingsRecord.extraBeds, checkedInBookingsRecord.nights, checkedInBookingsRecord.total, FFAppState().bedPrice, '-1', 0, 0.0).toString()}',
+                                                                            'Guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's have' : 'has'} settled balance.',
                                                                         staff:
                                                                             currentUserReference,
                                                                         booking:

@@ -1992,7 +1992,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                 await HistoryRecord.createDoc(widget.ref!).set({
                                   ...createHistoryRecordData(
                                     description:
-                                        '${_model.guestsValue} new ${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}guest${functions.stringToInt(_model.guestsValue)! > 1 ? 's' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''} have checked in!',
+                                        '${_model.guestsValue} new${_model.ability != 'normal' ? ' ${_model.ability}' : ''} guest${functions.stringToInt(_model.guestsValue)! > 1 ? 's' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''} have checked in!',
                                     staff: currentUserReference,
                                     booking: _model.savedBooking?.reference,
                                   ),
@@ -2080,7 +2080,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                 await HistoryRecord.createDoc(widget.ref!).set({
                                   ...createHistoryRecordData(
                                     description:
-                                        'New checkin ${_model.ability != 'normal' ? 'by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''} ' : ''}but pending payment.',
+                                        'New check in ${_model.ability != 'normal' ? 'by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''} ' : ''}but pending payment.',
                                     staff: currentUserReference,
                                     booking: _model.savedBooking?.reference,
                                   ),

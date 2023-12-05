@@ -271,31 +271,42 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                if (_model.settled == false)
+                                if (_model.existingPayroll?.status != 'settled')
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 10.0, 0.0, 0.0),
-                                    child: InkWell(
-                                      splashColor: Colors.transparent,
-                                      focusColor: Colors.transparent,
-                                      hoverColor: Colors.transparent,
-                                      highlightColor: Colors.transparent,
-                                      onTap: () async {
+                                        0.0, 5.0, 0.0, 0.0),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
                                         setState(() {
                                           _model.showChangeRate =
                                               !_model.showChangeRate;
                                         });
                                       },
-                                      child: Text(
-                                        'Change Rate',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
+                                      text: 'Change Rate',
+                                      options: FFButtonOptions(
+                                        height: 30.0,
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            24.0, 0.0, 24.0, 0.0),
+                                        iconPadding:
+                                            EdgeInsetsDirectional.fromSTEB(
+                                                0.0, 0.0, 0.0, 0.0),
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .titleSmall
                                             .override(
                                               fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
+                                              color: Colors.white,
+                                              fontSize: 10.0,
+                                              fontWeight: FontWeight.normal,
                                             ),
+                                        elevation: 3.0,
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                       ),
                                     ),
                                   ),
@@ -423,7 +434,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                           borderWidth: 1.0,
                           buttonSize: 40.0,
                           icon: Icon(
-                            Icons.currency_exchange,
+                            Icons.published_with_changes,
                             color: FlutterFlowTheme.of(context).primaryText,
                             size: 24.0,
                           ),

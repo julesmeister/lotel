@@ -238,7 +238,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
               clearUnsetFields: false,
               create: true,
             ),
-            rentIncome: 0.0,
             groceryExpenses: 0.0,
           ),
           ...mapToFirestore(
@@ -272,7 +271,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
               clearUnsetFields: false,
               create: true,
             ),
-            rentIncome: 0.0,
             groceryExpenses: 0.0,
           ),
           ...mapToFirestore(
@@ -546,6 +544,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   // clear staff count
                                                   FFAppState()
                                                       .clearStaffsCache();
+                                                  FFAppState()
+                                                      .clearGroceryHomeCache();
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                     SnackBar(
@@ -726,6 +726,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   // clear replenish count
                                                   FFAppState()
                                                       .clearReplenishCountCache();
+                                                  FFAppState()
+                                                      .clearGroceryHomeCache();
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                     SnackBar(
@@ -3162,6 +3164,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   : null;
                                           return Row(
                                             mainAxisSize: MainAxisSize.max,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Column(
                                                 mainAxisSize: MainAxisSize.max,
@@ -3320,35 +3324,59 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.end,
                                                   children: [
-                                                    FlutterFlowIconButton(
-                                                      borderColor:
-                                                          Color(0xFFF1F4F8),
-                                                      borderRadius: 30.0,
-                                                      borderWidth: 2.0,
-                                                      buttonSize: 44.0,
-                                                      icon: Icon(
-                                                        Icons
-                                                            .arrow_forward_rounded,
-                                                        color:
-                                                            Color(0xFF57636C),
-                                                        size: 24.0,
+                                                    Text(
+                                                      'View All',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Plus Jakarta Sans',
+                                                            color: Color(
+                                                                0xFF57636C),
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  15.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child:
+                                                          FlutterFlowIconButton(
+                                                        borderColor:
+                                                            Color(0xFFF1F4F8),
+                                                        borderRadius: 30.0,
+                                                        borderWidth: 2.0,
+                                                        buttonSize: 44.0,
+                                                        icon: Icon(
+                                                          Icons
+                                                              .arrow_forward_rounded,
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                          size: 24.0,
+                                                        ),
+                                                        onPressed: () async {
+                                                          context.pushNamed(
+                                                            'remittances',
+                                                            extra: <String,
+                                                                dynamic>{
+                                                              kTransitionInfoKey:
+                                                                  TransitionInfo(
+                                                                hasTransition:
+                                                                    true,
+                                                                transitionType:
+                                                                    PageTransitionType
+                                                                        .rightToLeft,
+                                                              ),
+                                                            },
+                                                          );
+                                                        },
                                                       ),
-                                                      onPressed: () async {
-                                                        context.pushNamed(
-                                                          'remittances',
-                                                          extra: <String,
-                                                              dynamic>{
-                                                            kTransitionInfoKey:
-                                                                TransitionInfo(
-                                                              hasTransition:
-                                                                  true,
-                                                              transitionType:
-                                                                  PageTransitionType
-                                                                      .rightToLeft,
-                                                            ),
-                                                          },
-                                                        );
-                                                      },
                                                     ),
                                                   ],
                                                 ),
@@ -3375,25 +3403,28 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             24.0, 24.0, 24.0, 16.0),
                                         child: FutureBuilder<List<StatsRecord>>(
-                                          future: queryStatsRecordOnce(
-                                            queryBuilder: (statsRecord) =>
-                                                statsRecord
-                                                    .where(
-                                                      'hotel',
-                                                      isEqualTo:
-                                                          FFAppState().hotel,
-                                                    )
-                                                    .where(
-                                                      'year',
-                                                      isEqualTo: functions
-                                                          .currentYear(),
-                                                    )
-                                                    .where(
-                                                      'month',
-                                                      isEqualTo: functions
-                                                          .currentMonth(),
-                                                    ),
-                                            singleRecord: true,
+                                          future: FFAppState().groceryHome(
+                                            requestFn: () =>
+                                                queryStatsRecordOnce(
+                                              queryBuilder: (statsRecord) =>
+                                                  statsRecord
+                                                      .where(
+                                                        'hotel',
+                                                        isEqualTo:
+                                                            FFAppState().hotel,
+                                                      )
+                                                      .where(
+                                                        'year',
+                                                        isEqualTo: functions
+                                                            .currentYear(),
+                                                      )
+                                                      .where(
+                                                        'month',
+                                                        isEqualTo: functions
+                                                            .currentMonth(),
+                                                      ),
+                                              singleRecord: true,
+                                            ),
                                           ),
                                           builder: (context, snapshot) {
                                             // Customize what your widget looks like when it's loading.
@@ -3565,56 +3596,137 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment.end,
                                                     children: [
-                                                      FlutterFlowIconButton(
-                                                        borderColor:
-                                                            Color(0xFFF1F4F8),
-                                                        borderRadius: 30.0,
-                                                        borderWidth: 2.0,
-                                                        buttonSize: 44.0,
-                                                        icon: Icon(
-                                                          Icons.add,
-                                                          color:
-                                                              Color(0xFF57636C),
-                                                          size: 24.0,
-                                                        ),
-                                                        onPressed: () async {
-                                                          await showModalBottomSheet(
-                                                            isScrollControlled:
-                                                                true,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return GestureDetector(
-                                                                onTap: () => _model
-                                                                        .unfocusNode
-                                                                        .canRequestFocus
-                                                                    ? FocusScope.of(
-                                                                            context)
-                                                                        .requestFocus(_model
-                                                                            .unfocusNode)
-                                                                    : FocusScope.of(
-                                                                            context)
-                                                                        .unfocus(),
-                                                                child: Padding(
-                                                                  padding: MediaQuery
-                                                                      .viewInsetsOf(
-                                                                          context),
-                                                                  child:
-                                                                      Container(
-                                                                    height: double
-                                                                        .infinity,
-                                                                    child:
-                                                                        NewGroceryWidget(),
+                                                      Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0.0,
+                                                                        0.0,
+                                                                        5.0,
+                                                                        0.0),
+                                                            child:
+                                                                FlutterFlowIconButton(
+                                                              borderColor: Color(
+                                                                  0xFFF1F4F8),
+                                                              borderRadius:
+                                                                  30.0,
+                                                              borderWidth: 2.0,
+                                                              buttonSize: 44.0,
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .featured_play_list_outlined,
+                                                                color: Color(
+                                                                    0xFF57636C),
+                                                                size: 24.0,
+                                                              ),
+                                                              onPressed:
+                                                                  () async {
+                                                                // count
+                                                                _model.countGroceries =
+                                                                    await queryGroceriesRecordCount(
+                                                                  queryBuilder:
+                                                                      (groceriesRecord) =>
+                                                                          groceriesRecord
+                                                                              .where(
+                                                                    'hotel',
+                                                                    isEqualTo:
+                                                                        FFAppState()
+                                                                            .hotel,
                                                                   ),
-                                                                ),
-                                                              );
+                                                                );
+                                                                if (_model
+                                                                        .countGroceries! >
+                                                                    0) {
+                                                                  context.pushNamed(
+                                                                      'groceryList');
+                                                                } else {
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .showSnackBar(
+                                                                    SnackBar(
+                                                                      content:
+                                                                          Text(
+                                                                        'There are no groceries yet!',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).info,
+                                                                        ),
+                                                                      ),
+                                                                      duration: Duration(
+                                                                          milliseconds:
+                                                                              4000),
+                                                                      backgroundColor:
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .error,
+                                                                    ),
+                                                                  );
+                                                                }
+
+                                                                setState(() {});
+                                                              },
+                                                            ),
+                                                          ),
+                                                          FlutterFlowIconButton(
+                                                            borderColor: Color(
+                                                                0xFFF1F4F8),
+                                                            borderRadius: 30.0,
+                                                            borderWidth: 2.0,
+                                                            buttonSize: 44.0,
+                                                            icon: Icon(
+                                                              Icons.add,
+                                                              color: Color(
+                                                                  0xFF57636C),
+                                                              size: 24.0,
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              await showModalBottomSheet(
+                                                                isScrollControlled:
+                                                                    true,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return GestureDetector(
+                                                                    onTap: () => _model
+                                                                            .unfocusNode
+                                                                            .canRequestFocus
+                                                                        ? FocusScope.of(context).requestFocus(_model
+                                                                            .unfocusNode)
+                                                                        : FocusScope.of(context)
+                                                                            .unfocus(),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: MediaQuery
+                                                                          .viewInsetsOf(
+                                                                              context),
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            double.infinity,
+                                                                        child:
+                                                                            NewGroceryWidget(),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ).then((value) =>
+                                                                  safeSetState(
+                                                                      () {}));
                                                             },
-                                                          ).then((value) =>
-                                                              safeSetState(
-                                                                  () {}));
-                                                        },
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
@@ -3625,8 +3737,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                       ),
                                     if (valueOrDefault(
-                                            currentUserDocument?.role, '') ==
-                                        'admin')
+                                            currentUserDocument?.role, '') !=
+                                        'generic')
                                       Divider(
                                         height: 4.0,
                                         thickness: 2.0,
@@ -3635,18 +3747,18 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         color: Color(0xFFE0E3E7),
                                       ),
                                     if (valueOrDefault(
-                                            currentUserDocument?.role, '') ==
-                                        'admin')
+                                            currentUserDocument?.role, '') !=
+                                        'generic')
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             24.0, 24.0, 24.0, 24.0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.end,
                                           children: [
                                             Text(
-                                              'Rentals',
+                                              'Bills',
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .displaySmall
@@ -3665,33 +3777,101 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.end,
                                                 children: [
-                                                  FlutterFlowIconButton(
-                                                    borderColor:
-                                                        Color(0xFFF1F4F8),
-                                                    borderRadius: 30.0,
-                                                    borderWidth: 2.0,
-                                                    buttonSize: 44.0,
-                                                    icon: Icon(
-                                                      Icons
-                                                          .arrow_forward_rounded,
-                                                      color: Color(0xFF57636C),
-                                                      size: 24.0,
-                                                    ),
-                                                    onPressed: () async {
-                                                      context.pushNamed(
-                                                        'Rents',
-                                                        extra: <String,
-                                                            dynamic>{
-                                                          kTransitionInfoKey:
-                                                              TransitionInfo(
-                                                            hasTransition: true,
-                                                            transitionType:
-                                                                PageTransitionType
-                                                                    .rightToLeft,
+                                                  Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    5.0,
+                                                                    0.0),
+                                                        child:
+                                                            FlutterFlowIconButton(
+                                                          borderColor:
+                                                              Color(0xFFF1F4F8),
+                                                          borderRadius: 30.0,
+                                                          borderWidth: 2.0,
+                                                          buttonSize: 44.0,
+                                                          icon: Icon(
+                                                            Icons
+                                                                .featured_play_list_outlined,
+                                                            color: Color(
+                                                                0xFF57636C),
+                                                            size: 24.0,
                                                           ),
+                                                          onPressed: () async {
+                                                            _model.countBills =
+                                                                await queryBillsRecordCount(
+                                                              queryBuilder:
+                                                                  (billsRecord) =>
+                                                                      billsRecord
+                                                                          .where(
+                                                                'hotel',
+                                                                isEqualTo:
+                                                                    FFAppState()
+                                                                        .hotel,
+                                                              ),
+                                                            );
+                                                            if (_model
+                                                                    .countBills! >
+                                                                0) {
+                                                              context.pushNamed(
+                                                                  'billsList');
+                                                            } else {
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                SnackBar(
+                                                                  content: Text(
+                                                                    'There are no bills yet!',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .info,
+                                                                    ),
+                                                                  ),
+                                                                  duration: Duration(
+                                                                      milliseconds:
+                                                                          4000),
+                                                                  backgroundColor:
+                                                                      FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .error,
+                                                                ),
+                                                              );
+                                                            }
+
+                                                            setState(() {});
+                                                          },
+                                                        ),
+                                                      ),
+                                                      FlutterFlowIconButton(
+                                                        borderColor:
+                                                            Color(0xFFF1F4F8),
+                                                        borderRadius: 30.0,
+                                                        borderWidth: 2.0,
+                                                        buttonSize: 44.0,
+                                                        icon: Icon(
+                                                          Icons.add,
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                          size: 24.0,
+                                                        ),
+                                                        onPressed: () async {
+                                                          context.pushNamed(
+                                                              'BillForm');
                                                         },
-                                                      );
-                                                    },
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),

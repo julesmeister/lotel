@@ -128,25 +128,6 @@ service cloud.firestore {
     }
 
 
-    match /rentals/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if false;
-      allow delete: if false;
-    }
-
-    match /rentals/{parent}/spaces/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if false;
-      allow delete: if false;
-    }
-
-    match /{path=**}/spaces/{document} {
-      allow read: if true;
-    }
-
-
     match /staffs/{parent}/absences/{document} {
       allow create: if true;
       allow read: if true;
@@ -158,5 +139,19 @@ service cloud.firestore {
       allow read: if true;
     }
 
+
+    match /groceries/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /bills/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
   }
 }

@@ -709,7 +709,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         color: bookingsItem.total <
                                                                                 0.0
                                                                             ? FlutterFlowTheme.of(context).error
-                                                                            : FlutterFlowTheme.of(context).success,
+                                                                            : FlutterFlowTheme.of(context).primaryText,
                                                                       ),
                                                                 ),
                                                               ),
@@ -906,23 +906,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                 text: TextSpan(
                                                                   children: [
                                                                     TextSpan(
-                                                                      text:
-                                                                          'Items: ',
+                                                                      text: functions.howManyItems(goodsItem
+                                                                          .goods
+                                                                          .toList()),
                                                                       style:
                                                                           TextStyle(),
-                                                                    ),
-                                                                    TextSpan(
-                                                                      text: goodsItem
-                                                                          .goods
-                                                                          .length
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .tertiary,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
                                                                     )
                                                                   ],
                                                                   style: FlutterFlowTheme.of(
@@ -938,14 +926,44 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             4.0,
                                                                             0.0,
                                                                             0.0),
-                                                                child: Text(
-                                                                  dateTimeFormat(
-                                                                      'MMM d y h:mm a',
-                                                                      goodsItem
-                                                                          .date!),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium,
+                                                                child: StreamBuilder<
+                                                                    UsersRecord>(
+                                                                  stream: UsersRecord
+                                                                      .getDocument(
+                                                                          goodsItem
+                                                                              .staff!),
+                                                                  builder: (context,
+                                                                      snapshot) {
+                                                                    // Customize what your widget looks like when it's loading.
+                                                                    if (!snapshot
+                                                                        .hasData) {
+                                                                      return Center(
+                                                                        child:
+                                                                            SizedBox(
+                                                                          width:
+                                                                              50.0,
+                                                                          height:
+                                                                              50.0,
+                                                                          child:
+                                                                              CircularProgressIndicator(
+                                                                            valueColor:
+                                                                                AlwaysStoppedAnimation<Color>(
+                                                                              FlutterFlowTheme.of(context).primary,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                    final textUsersRecord =
+                                                                        snapshot
+                                                                            .data!;
+                                                                    return Text(
+                                                                      'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .labelMedium,
+                                                                    );
+                                                                  },
                                                                 ),
                                                               ),
                                                               Padding(
@@ -953,7 +971,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
-                                                                            12.0,
+                                                                            5.0,
                                                                             0.0,
                                                                             0.0),
                                                                 child:
@@ -963,17 +981,6 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     color: FlutterFlowTheme.of(
                                                                             context)
                                                                         .secondaryBackground,
-                                                                    boxShadow: [
-                                                                      BoxShadow(
-                                                                        blurRadius:
-                                                                            1.0,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .alternate,
-                                                                        offset: Offset(
-                                                                            0.0,
-                                                                            0.0),
-                                                                      )
-                                                                    ],
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             5.0),
@@ -982,7 +989,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             .all(
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .alternate,
+                                                                          .info,
                                                                       width:
                                                                           1.0,
                                                                     ),
@@ -991,22 +998,41 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                       AlignmentDirectional(
                                                                           -1.00,
                                                                           0.00),
-                                                                  child:
+                                                                  child: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Container(
+                                                                        width:
+                                                                            4.0,
+                                                                        height: (20 *
+                                                                                goodsItem.goods.length)
+                                                                            .toDouble(),
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              Color(0xFF4B39EF),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(4.0),
+                                                                        ),
+                                                                      ),
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
                                                                             10.0,
                                                                             10.0,
                                                                             10.0,
                                                                             10.0),
-                                                                    child: Text(
-                                                                      functions.cartToTextSummary(goodsItem
-                                                                          .goods
-                                                                          .toList())!,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelMedium,
-                                                                    ),
+                                                                        child:
+                                                                            Text(
+                                                                          functions.cartToTextSummary(goodsItem
+                                                                              .goods
+                                                                              .toList())!,
+                                                                          style:
+                                                                              FlutterFlowTheme.of(context).labelMedium,
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                 ),
                                                               ),
@@ -1050,7 +1076,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         'Outfit',
                                                                     color: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .success,
+                                                                        .primaryText,
                                                                   ),
                                                             ),
                                                           ),
@@ -1080,7 +1106,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                         0)
                                       Builder(
                                         builder: (context) {
-                                          final goods = _model.transactions
+                                          final expenses = _model.transactions
                                               .where((e) => e.type == 'expense')
                                               .toList();
                                           return ListView.builder(
@@ -1088,10 +1114,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                             primary: false,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
-                                            itemCount: goods.length,
-                                            itemBuilder: (context, goodsIndex) {
-                                              final goodsItem =
-                                                  goods[goodsIndex];
+                                            itemCount: expenses.length,
+                                            itemBuilder:
+                                                (context, expensesIndex) {
+                                              final expensesItem =
+                                                  expenses[expensesIndex];
                                               return Container(
                                                 width: double.infinity,
                                                 constraints: BoxConstraints(
@@ -1163,7 +1190,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     children: [
                                                                       TextSpan(
                                                                         text: functions
-                                                                            .startBigLetter(goodsItem.description),
+                                                                            .startBigLetter(expensesItem.description),
                                                                         style:
                                                                             TextStyle(),
                                                                       )
@@ -1188,17 +1215,45 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           4.0,
                                                                           0.0,
                                                                           0.0),
-                                                                  child: Text(
-                                                                    dateTimeFormat(
-                                                                        'MMM d y h:mm a',
-                                                                        goodsItem
-                                                                            .date!),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .labelMedium,
+                                                                  child: StreamBuilder<
+                                                                      UsersRecord>(
+                                                                    stream: UsersRecord.getDocument(
+                                                                        expensesItem
+                                                                            .staff!),
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      // Customize what your widget looks like when it's loading.
+                                                                      if (!snapshot
+                                                                          .hasData) {
+                                                                        return Center(
+                                                                          child:
+                                                                              SizedBox(
+                                                                            width:
+                                                                                50.0,
+                                                                            height:
+                                                                                50.0,
+                                                                            child:
+                                                                                CircularProgressIndicator(
+                                                                              valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                FlutterFlowTheme.of(context).primary,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                      final textUsersRecord =
+                                                                          snapshot
+                                                                              .data!;
+                                                                      return Text(
+                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', expensesItem.date)}',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelMedium,
+                                                                      );
+                                                                    },
                                                                   ),
                                                                 ),
-                                                                if (goodsItem
+                                                                if (expensesItem
                                                                         .goods
                                                                         .length >
                                                                     0)
@@ -1206,7 +1261,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
-                                                                            12.0,
+                                                                            5.0,
                                                                             0.0,
                                                                             0.0),
                                                                     child:
@@ -1215,22 +1270,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           BoxDecoration(
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .secondaryBackground,
-                                                                        boxShadow: [
-                                                                          BoxShadow(
-                                                                            blurRadius:
-                                                                                1.0,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).alternate,
-                                                                            offset:
-                                                                                Offset(0.0, 0.0),
-                                                                          )
-                                                                        ],
                                                                         borderRadius:
                                                                             BorderRadius.circular(5.0),
                                                                         border:
                                                                             Border.all(
                                                                           color:
-                                                                              FlutterFlowTheme.of(context).alternate,
+                                                                              FlutterFlowTheme.of(context).info,
                                                                           width:
                                                                               1.0,
                                                                         ),
@@ -1239,20 +1284,34 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           -1.00,
                                                                           0.00),
                                                                       child:
+                                                                          Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Container(
+                                                                            width:
+                                                                                4.0,
+                                                                            height:
+                                                                                (20 * expensesItem.goods.length).toDouble(),
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: Color(0xFF4B39EF),
+                                                                              borderRadius: BorderRadius.circular(4.0),
+                                                                            ),
+                                                                          ),
                                                                           Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0),
-                                                                        child:
-                                                                            Text(
-                                                                          functions.cartToTextSummary(goodsItem
-                                                                              .goods
-                                                                              .toList())!,
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelMedium,
-                                                                        ),
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                10.0,
+                                                                                10.0,
+                                                                                10.0,
+                                                                                10.0),
+                                                                            child:
+                                                                                Text(
+                                                                              functions.cartToTextSummary(expensesItem.goods.toList())!,
+                                                                              style: FlutterFlowTheme.of(context).labelMedium,
+                                                                            ),
+                                                                          ),
+                                                                        ],
                                                                       ),
                                                                     ),
                                                                   ),
@@ -1280,7 +1339,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           20.0),
                                                               child: Text(
                                                                 formatNumber(
-                                                                  goodsItem
+                                                                  expensesItem
                                                                       .total,
                                                                   formatType:
                                                                       FormatType
@@ -1702,7 +1761,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         color: bookingsItem.total <
                                                                                 0.0
                                                                             ? FlutterFlowTheme.of(context).error
-                                                                            : FlutterFlowTheme.of(context).success,
+                                                                            : FlutterFlowTheme.of(context).primaryText,
                                                                       ),
                                                                 ),
                                                               ),
@@ -2037,23 +2096,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                 text: TextSpan(
                                                                   children: [
                                                                     TextSpan(
-                                                                      text:
-                                                                          'Items: ',
+                                                                      text: functions.howManyItems(goodsItem
+                                                                          .goods
+                                                                          .toList()),
                                                                       style:
                                                                           TextStyle(),
-                                                                    ),
-                                                                    TextSpan(
-                                                                      text: goodsItem
-                                                                          .goods
-                                                                          .length
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .tertiary,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
                                                                     )
                                                                   ],
                                                                   style: FlutterFlowTheme.of(
@@ -2069,14 +2116,44 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             4.0,
                                                                             0.0,
                                                                             0.0),
-                                                                child: Text(
-                                                                  dateTimeFormat(
-                                                                      'MMM d y h:mm a',
-                                                                      goodsItem
-                                                                          .date!),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium,
+                                                                child: StreamBuilder<
+                                                                    UsersRecord>(
+                                                                  stream: UsersRecord
+                                                                      .getDocument(
+                                                                          goodsItem
+                                                                              .staff!),
+                                                                  builder: (context,
+                                                                      snapshot) {
+                                                                    // Customize what your widget looks like when it's loading.
+                                                                    if (!snapshot
+                                                                        .hasData) {
+                                                                      return Center(
+                                                                        child:
+                                                                            SizedBox(
+                                                                          width:
+                                                                              50.0,
+                                                                          height:
+                                                                              50.0,
+                                                                          child:
+                                                                              CircularProgressIndicator(
+                                                                            valueColor:
+                                                                                AlwaysStoppedAnimation<Color>(
+                                                                              FlutterFlowTheme.of(context).primary,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                    final textUsersRecord =
+                                                                        snapshot
+                                                                            .data!;
+                                                                    return Text(
+                                                                      'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .labelMedium,
+                                                                    );
+                                                                  },
                                                                 ),
                                                               ),
                                                               Padding(
@@ -2084,7 +2161,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
-                                                                            12.0,
+                                                                            5.0,
                                                                             0.0,
                                                                             0.0),
                                                                 child:
@@ -2094,17 +2171,6 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     color: FlutterFlowTheme.of(
                                                                             context)
                                                                         .secondaryBackground,
-                                                                    boxShadow: [
-                                                                      BoxShadow(
-                                                                        blurRadius:
-                                                                            1.0,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .alternate,
-                                                                        offset: Offset(
-                                                                            0.0,
-                                                                            0.0),
-                                                                      )
-                                                                    ],
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             5.0),
@@ -2113,7 +2179,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             .all(
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .alternate,
+                                                                          .info,
                                                                       width:
                                                                           1.0,
                                                                     ),
@@ -2122,22 +2188,41 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                       AlignmentDirectional(
                                                                           -1.00,
                                                                           0.00),
-                                                                  child:
+                                                                  child: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Container(
+                                                                        width:
+                                                                            4.0,
+                                                                        height: (20 *
+                                                                                goodsItem.goods.length)
+                                                                            .toDouble(),
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              Color(0xFF4B39EF),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(4.0),
+                                                                        ),
+                                                                      ),
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
                                                                             10.0,
                                                                             10.0,
                                                                             10.0,
                                                                             10.0),
-                                                                    child: Text(
-                                                                      functions.cartToTextSummary(goodsItem
-                                                                          .goods
-                                                                          .toList())!,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelMedium,
-                                                                    ),
+                                                                        child:
+                                                                            Text(
+                                                                          functions.cartToTextSummary(goodsItem
+                                                                              .goods
+                                                                              .toList())!,
+                                                                          style:
+                                                                              FlutterFlowTheme.of(context).labelMedium,
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                 ),
                                                               ),
@@ -2181,7 +2266,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         'Outfit',
                                                                     color: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .success,
+                                                                        .primaryText,
                                                                   ),
                                                             ),
                                                           ),
@@ -2471,14 +2556,42 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           4.0,
                                                                           0.0,
                                                                           0.0),
-                                                                  child: Text(
-                                                                    dateTimeFormat(
-                                                                        'MMM d y h:mm a',
+                                                                  child: FutureBuilder<
+                                                                      UsersRecord>(
+                                                                    future: UsersRecord.getDocumentOnce(
                                                                         goodsItem
-                                                                            .date!),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .labelMedium,
+                                                                            .staff!),
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      // Customize what your widget looks like when it's loading.
+                                                                      if (!snapshot
+                                                                          .hasData) {
+                                                                        return Center(
+                                                                          child:
+                                                                              SizedBox(
+                                                                            width:
+                                                                                50.0,
+                                                                            height:
+                                                                                50.0,
+                                                                            child:
+                                                                                CircularProgressIndicator(
+                                                                              valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                FlutterFlowTheme.of(context).primary,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                      final textUsersRecord =
+                                                                          snapshot
+                                                                              .data!;
+                                                                      return Text(
+                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelMedium,
+                                                                      );
+                                                                    },
                                                                   ),
                                                                 ),
                                                                 if (goodsItem
@@ -2489,7 +2602,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
-                                                                            12.0,
+                                                                            5.0,
                                                                             0.0,
                                                                             0.0),
                                                                     child:
@@ -2498,22 +2611,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           BoxDecoration(
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .secondaryBackground,
-                                                                        boxShadow: [
-                                                                          BoxShadow(
-                                                                            blurRadius:
-                                                                                1.0,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).alternate,
-                                                                            offset:
-                                                                                Offset(0.0, 0.0),
-                                                                          )
-                                                                        ],
                                                                         borderRadius:
                                                                             BorderRadius.circular(5.0),
                                                                         border:
                                                                             Border.all(
                                                                           color:
-                                                                              FlutterFlowTheme.of(context).alternate,
+                                                                              FlutterFlowTheme.of(context).info,
                                                                           width:
                                                                               1.0,
                                                                         ),
@@ -2522,20 +2625,34 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           -1.00,
                                                                           0.00),
                                                                       child:
+                                                                          Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Container(
+                                                                            width:
+                                                                                4.0,
+                                                                            height:
+                                                                                (20 * goodsItem.goods.length).toDouble(),
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: Color(0xFF4B39EF),
+                                                                              borderRadius: BorderRadius.circular(4.0),
+                                                                            ),
+                                                                          ),
                                                                           Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0),
-                                                                        child:
-                                                                            Text(
-                                                                          functions.cartToTextSummary(goodsItem
-                                                                              .goods
-                                                                              .toList())!,
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelMedium,
-                                                                        ),
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                10.0,
+                                                                                10.0,
+                                                                                10.0,
+                                                                                10.0),
+                                                                            child:
+                                                                                Text(
+                                                                              functions.cartToTextSummary(goodsItem.goods.toList())!,
+                                                                              style: FlutterFlowTheme.of(context).labelMedium,
+                                                                            ),
+                                                                          ),
+                                                                        ],
                                                                       ),
                                                                     ),
                                                                   ),
@@ -2546,108 +2663,50 @@ class _RemittanceSpecificTransactionsWidgetState
                                                       ),
                                                       Expanded(
                                                         flex: 2,
-                                                        child: FutureBuilder<
-                                                            UsersRecord>(
-                                                          future: UsersRecord
-                                                              .getDocumentOnce(
-                                                                  goodsItem
-                                                                      .staff!),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            // Customize what your widget looks like when it's loading.
-                                                            if (!snapshot
-                                                                .hasData) {
-                                                              return Center(
-                                                                child: SizedBox(
-                                                                  width: 50.0,
-                                                                  height: 50.0,
-                                                                  child:
-                                                                      CircularProgressIndicator(
-                                                                    valueColor:
-                                                                        AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .primary,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            }
-                                                            final staffUsersRecord =
-                                                                snapshot.data!;
-                                                            return Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
                                                                           0.0,
                                                                           10.0),
-                                                                  child: Text(
-                                                                    formatNumber(
-                                                                      goodsItem
-                                                                          .total,
-                                                                      formatType:
-                                                                          FormatType
-                                                                              .decimal,
-                                                                      decimalType:
-                                                                          DecimalType
-                                                                              .automatic,
-                                                                      currency:
-                                                                          'P ',
+                                                              child: Text(
+                                                                formatNumber(
+                                                                  goodsItem
+                                                                      .total,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineSmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .error,
                                                                     ),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .end,
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .headlineSmall
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).error,
-                                                                        ),
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  'Issued By',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Readex Pro',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryText,
-                                                                        fontSize:
-                                                                            12.0,
-                                                                      ),
-                                                                ),
-                                                                Text(
-                                                                  staffUsersRecord
-                                                                      .displayName,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Readex Pro',
-                                                                        fontSize:
-                                                                            14.0,
-                                                                      ),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          },
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
                                                     ],
@@ -2800,14 +2859,44 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             10.0,
                                                                             0.0,
                                                                             0.0),
-                                                                child: Text(
-                                                                  dateTimeFormat(
-                                                                      'MMMMEEEEd',
-                                                                      absencesItem
-                                                                          .date!),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium,
+                                                                child: FutureBuilder<
+                                                                    UsersRecord>(
+                                                                  future: UsersRecord
+                                                                      .getDocumentOnce(
+                                                                          absencesItem
+                                                                              .encodedBy!),
+                                                                  builder: (context,
+                                                                      snapshot) {
+                                                                    // Customize what your widget looks like when it's loading.
+                                                                    if (!snapshot
+                                                                        .hasData) {
+                                                                      return Center(
+                                                                        child:
+                                                                            SizedBox(
+                                                                          width:
+                                                                              50.0,
+                                                                          height:
+                                                                              50.0,
+                                                                          child:
+                                                                              CircularProgressIndicator(
+                                                                            valueColor:
+                                                                                AlwaysStoppedAnimation<Color>(
+                                                                              FlutterFlowTheme.of(context).primary,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                    final textUsersRecord =
+                                                                        snapshot
+                                                                            .data!;
+                                                                    return Text(
+                                                                      'Encoded by ${textUsersRecord.displayName} on ${dateTimeFormat('MMMMEEEEd', absencesItem.date)}',
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .labelMedium,
+                                                                    );
+                                                                  },
                                                                 ),
                                                               ),
                                                             ],
@@ -2819,58 +2908,27 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 ),
                                                 Expanded(
                                                   flex: 2,
-                                                  child: FutureBuilder<
-                                                      UsersRecord>(
-                                                    future: UsersRecord
-                                                        .getDocumentOnce(
-                                                            absencesItem
-                                                                .encodedBy!),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      // Customize what your widget looks like when it's loading.
-                                                      if (!snapshot.hasData) {
-                                                        return Center(
-                                                          child: SizedBox(
-                                                            width: 50.0,
-                                                            height: 50.0,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              valueColor:
-                                                                  AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }
-                                                      final columnUsersRecord =
-                                                          snapshot.data!;
-                                                      return Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Text(
-                                                            formatNumber(
-                                                              absencesItem
-                                                                  .amount,
-                                                              formatType:
-                                                                  FormatType
-                                                                      .decimal,
-                                                              decimalType:
-                                                                  DecimalType
-                                                                      .automatic,
-                                                              currency: 'P ',
-                                                            ),
-                                                            textAlign:
-                                                                TextAlign.end,
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        formatNumber(
+                                                          absencesItem.amount,
+                                                          formatType: FormatType
+                                                              .decimal,
+                                                          decimalType:
+                                                              DecimalType
+                                                                  .automatic,
+                                                          currency: 'P ',
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.end,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
                                                                 .headlineSmall
                                                                 .override(
                                                                   fontFamily:
@@ -2879,38 +2937,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           context)
                                                                       .error,
                                                                 ),
-                                                          ),
-                                                          Text(
-                                                            'Encoded By',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                                  fontSize:
-                                                                      12.0,
-                                                                ),
-                                                          ),
-                                                          Text(
-                                                            columnUsersRecord
-                                                                .displayName,
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  fontSize:
-                                                                      14.0,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ],

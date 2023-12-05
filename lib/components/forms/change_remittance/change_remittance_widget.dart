@@ -456,9 +456,8 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                     _model
                                                                         .loopTransactionsCounter]
                                                                 .room),
-                                                        (e) => e
-                                                          ..incrementUse(_model
-                                                              .booking!.nights),
+                                                        (e) =>
+                                                            e..incrementUse(1),
                                                       );
                                                     });
                                                   }

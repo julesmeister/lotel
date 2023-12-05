@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/components/forms/transaction_edit/transaction_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -210,6 +211,20 @@ class _OptionToBookingTransactionWidgetState
                       // transaction action output
                       _model.trans =
                           await TransactionsRecord.getDocumentOnce(widget.ref!);
+                      if (functions.findTextsInString(
+                          widget.description, 'checkin')) {
+                        if (!_model.room!.vacant) {
+                          // update room vacancy and guests
+
+                          await _model.room!.reference
+                              .update(createRoomsRecordData(
+                            vacant: true,
+                            guests: 0,
+                          ));
+                        }
+                        // delete booking
+                        await _model.trans!.booking!.delete();
+                      }
                       // history taking
 
                       await HistoryRecord.createDoc(_model.room!.reference)
@@ -239,6 +254,7 @@ class _OptionToBookingTransactionWidgetState
                       }
                       // delete transactions
                       await widget.ref!.delete();
+                      // transaction deleted
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(

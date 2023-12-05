@@ -32,6 +32,9 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
     super.initState();
     _model = createModel(context, () => NewGroceryModel());
 
+    _model.remarkController ??= TextEditingController();
+    _model.remarkFocusNode ??= FocusNode();
+
     _model.amountController ??= TextEditingController();
     _model.amountFocusNode ??= FocusNode();
 
@@ -139,73 +142,149 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
-                        child: TextFormField(
-                          controller: _model.amountController,
-                          focusNode: _model.amountFocusNode,
-                          textCapitalization: TextCapitalization.none,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelStyle:
-                                FlutterFlowTheme.of(context).bodySmall.override(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            TextFormField(
+                              controller: _model.remarkController,
+                              focusNode: _model.remarkFocusNode,
+                              textCapitalization: TextCapitalization.sentences,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 28.0,
                                     ),
-                            hintText: 'Enter an amount',
-                            hintStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Lexend Deca',
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  fontSize: 28.0,
-                                  fontWeight: FontWeight.normal,
+                                hintText: 'Remark (Optional)',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      fontSize: 28.0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
                                 ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context)
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                filled: true,
+                                fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                width: 1.0,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 24.0, 20.0, 24.0),
                               ),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 24.0, 20.0, 24.0),
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 28.0,
                                   ),
-                          maxLines: 28,
-                          minLines: 1,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          validator: _model.amountControllerValidator
-                              .asValidator(context),
+                              maxLines: 28,
+                              minLines: 1,
+                              validator: _model.remarkControllerValidator
+                                  .asValidator(context),
+                            ),
+                            TextFormField(
+                              controller: _model.amountController,
+                              focusNode: _model.amountFocusNode,
+                              textCapitalization: TextCapitalization.none,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 28.0,
+                                    ),
+                                hintText: 'Enter an amount',
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      fontSize: 28.0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                filled: true,
+                                fillColor: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 24.0, 20.0, 24.0),
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
+                                  ),
+                              maxLines: 28,
+                              minLines: 1,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
+                              validator: _model.amountControllerValidator
+                                  .asValidator(context),
+                            ),
+                          ],
                         ),
                       ),
                       Divider(
@@ -233,65 +312,107 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  var confirmDialogResponse =
-                                      await showDialog<bool>(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    'Have you really spent for grocery?'),
-                                                content: Text(
-                                                    'You are recording an amount of Php ${_model.amountController.text}.'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext,
-                                                            false),
-                                                    child: Text('Cancel'),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext,
-                                                            true),
-                                                    child: Text('Confirm'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          ) ??
-                                          false;
-                                  if (confirmDialogResponse) {
-                                    // increment grocery expense
+                                  if (_model.amountController.text != null &&
+                                      _model.amountController.text != '') {
+                                    var confirmDialogResponse =
+                                        await showDialog<bool>(
+                                              context: context,
+                                              builder: (alertDialogContext) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      'Have you really spent for grocery?'),
+                                                  content: Text(
+                                                      'You are recording an amount of Php ${_model.amountController.text}.'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              false),
+                                                      child: Text('Cancel'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              true),
+                                                      child: Text('Confirm'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ) ??
+                                            false;
+                                    if (confirmDialogResponse) {
+                                      await GroceriesRecord.collection
+                                          .doc()
+                                          .set({
+                                        ...createGroceriesRecordData(
+                                          hotel: FFAppState().hotel,
+                                          recordedBy: currentUserReference,
+                                          amount: double.tryParse(
+                                              _model.amountController.text),
+                                          remark: _model.remarkController.text,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                      // increment grocery expense
 
-                                    await FFAppState().statsReference!.update({
-                                      ...mapToFirestore(
-                                        {
-                                          'groceryExpenses':
-                                              FieldValue.increment(double.parse(
-                                                  _model
-                                                      .amountController.text)),
-                                        },
-                                      ),
-                                    });
+                                      await FFAppState()
+                                          .statsReference!
+                                          .update({
+                                        ...mapToFirestore(
+                                          {
+                                            'groceryExpenses':
+                                                FieldValue.increment(
+                                                    double.parse(_model
+                                                        .amountController
+                                                        .text)),
+                                          },
+                                        ),
+                                      });
+                                      FFAppState().clearGroceryHomeCache();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'You have recorded a spending in grocery.',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                    }
+                                    Navigator.pop(context);
+                                  } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'You have recorded a spending in grocery.',
+                                          'Please enter an amount!',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryText,
+                                                .info,
                                           ),
                                         ),
                                         duration: Duration(milliseconds: 4000),
                                         backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
+                                            FlutterFlowTheme.of(context).error,
                                       ),
                                     );
                                   }
-                                  Navigator.pop(context);
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
