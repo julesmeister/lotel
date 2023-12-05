@@ -270,10 +270,10 @@ class _StatsWidgetState extends State<StatsWidget>
                   child: custom_widgets.ShareStats(
                     width: 30.0,
                     height: 30.0,
-                    stats: _model.stats
-                        .where((e) => e.hotel == _model.hotel)
-                        .toList()
-                        .first,
+                    stats: _model.stats[_model.hotel == 'All'
+                        ? 0
+                        : functions.indexOfStatsFromHotel(
+                            _model.stats.toList(), _model.hotel)],
                   ),
                 ),
               ),

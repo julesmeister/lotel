@@ -1074,3 +1074,16 @@ String howManyItems(List<CartGoodsStruct> goods) {
   String pluralSuffix = sum == 1 ? " item" : " items";
   return "$sum$pluralSuffix sold";
 }
+
+int indexOfStatsFromHotel(
+  List<StatsRecord> stats,
+  String hotel,
+) {
+  // which stats contain hotel
+  for (int i = 0; i < stats.length; i++) {
+    if (stats[i].hotel == hotel) {
+      return i;
+    }
+  }
+  return -1;
+}
