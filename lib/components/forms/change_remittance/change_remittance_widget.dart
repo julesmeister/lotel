@@ -8,6 +8,7 @@ import 'dart:ui';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -271,10 +272,18 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               _model.changeExtraController,
                                           focusNode:
                                               _model.changeExtraFocusNode,
+                                          onChanged: (_) =>
+                                              EasyDebounce.debounce(
+                                            '_model.changeExtraController',
+                                            Duration(milliseconds: 2000),
+                                            () => setState(() {}),
+                                          ),
+                                          autofocus: true,
                                           textCapitalization:
                                               TextCapitalization.none,
                                           obscureText: false,
                                           decoration: InputDecoration(
+                                            labelText: 'Amount',
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyLarge
@@ -282,7 +291,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       fontFamily: 'Readex Pro',
                                                       fontSize: 36.0,
                                                     ),
-                                            hintText: 'How much?',
+                                            hintText: 'Remittance',
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .labelLarge
@@ -290,47 +299,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       fontFamily: 'Readex Pro',
                                                       fontSize: 36.0,
                                                     ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .alternate,
-                                                width: 2.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                width: 2.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .error,
-                                                width: 2.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
+                                            enabledBorder: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
                                             focusedErrorBorder:
-                                                OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .error,
-                                                width: 2.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
+                                                InputBorder.none,
                                             filled: true,
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
@@ -338,6 +311,24 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             contentPadding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 24.0, 20.0, 24.0),
+                                            suffixIcon: _model
+                                                    .changeExtraController!
+                                                    .text
+                                                    .isNotEmpty
+                                                ? InkWell(
+                                                    onTap: () async {
+                                                      _model
+                                                          .changeExtraController
+                                                          ?.clear();
+                                                      setState(() {});
+                                                    },
+                                                    child: Icon(
+                                                      Icons.clear,
+                                                      color: Color(0xFF757575),
+                                                      size: 22.0,
+                                                    ),
+                                                  )
+                                                : null,
                                           ),
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
@@ -383,8 +374,20 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                             isEqualTo:
                                                                 FFAppState()
                                                                     .hotel,
+                                                          )
+                                                          .where(
+                                                            'pending',
+                                                            isEqualTo: false,
                                                           ),
                                             );
+                                            // all Unremitted Transactions
+                                            setState(() {
+                                              _model.allUnremittedTransactions =
+                                                  _model.transactions!
+                                                      .toList()
+                                                      .cast<
+                                                          TransactionsRecord>();
+                                            });
                                             if (_model.transactions?.length !=
                                                 0) {
                                               // unremitted inventories of this hotel
@@ -415,80 +418,62 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               });
                                               while (_model
                                                       .loopTransactionsCounter !=
-                                                  _model.transactions?.length) {
-                                                if (!_model
-                                                    .transactions![_model
-                                                        .loopTransactionsCounter]
-                                                    .pending) {
-                                                  // Add to TransactionToRemit
-                                                  setState(() {
-                                                    _model.addToTransactionsToRemit(
-                                                        _model.transactions![_model
-                                                            .loopTransactionsCounter]);
-                                                  });
-                                                  if (_model
-                                                          .transactions?[_model
-                                                              .loopTransactionsCounter]
-                                                          ?.type ==
-                                                      'book') {
-                                                    // book to remit add to queue
-                                                    setState(() {
-                                                      _model.addToBookingsToRemit(_model
-                                                          .transactions![_model
-                                                              .loopTransactionsCounter]
-                                                          .booking!);
-                                                    });
-                                                    // booking
-                                                    _model.booking = await BookingsRecord
-                                                        .getDocumentOnce(_model
-                                                            .transactions![_model
-                                                                .loopTransactionsCounter]
-                                                            .booking!);
-                                                    // update use of room local
-                                                    setState(() {
-                                                      _model
-                                                          .updateRoomUsageAtIndex(
-                                                        functions.indexOfRoomInRoomUsage(
-                                                            _model.roomUsage
-                                                                .toList(),
+                                                  _model
+                                                      .allUnremittedTransactions
+                                                      .length) {
+                                                // Add to TransactionToRemit
+                                                setState(() {
+                                                  _model.addToTransactionsToRemit(
+                                                      _model.allUnremittedTransactions[
+                                                          _model
+                                                              .loopTransactionsCounter]);
+                                                });
+                                                if (_model
+                                                        .allUnremittedTransactions[
                                                             _model
-                                                                .transactions![
-                                                                    _model
-                                                                        .loopTransactionsCounter]
-                                                                .room),
-                                                        (e) =>
-                                                            e..incrementUse(1),
-                                                      );
-                                                    });
-                                                  }
-                                                  if (_model
-                                                          .loopTransactionsCounter ==
-                                                      0) {
-                                                    // create field of failed
+                                                                .loopTransactionsCounter]
+                                                        .type ==
+                                                    'book') {
+                                                  // book to remit add to queue
+                                                  setState(() {
+                                                    _model.addToBookingsToRemit(_model
+                                                        .allUnremittedTransactions[
+                                                            _model
+                                                                .loopTransactionsCounter]
+                                                        .booking!);
+                                                  });
+                                                  // update use of room local
+                                                  setState(() {
+                                                    _model
+                                                        .updateRoomUsageAtIndex(
+                                                      functions.indexOfRoomInRoomUsage(
+                                                          _model.roomUsage
+                                                              .toList(),
+                                                          _model
+                                                              .allUnremittedTransactions[
+                                                                  _model
+                                                                      .loopTransactionsCounter]
+                                                              .room),
+                                                      (e) => e..incrementUse(1),
+                                                    );
+                                                  });
+                                                  // what's happening
+                                                  setState(() {
+                                                    _model.happening =
+                                                        'Remitting room ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].room.toString()}\'s transaction';
+                                                  });
+                                                } else {
+                                                  // what's happening
+                                                  setState(() {
+                                                    _model.happening =
+                                                        'Remitting ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].type}';
+                                                  });
+                                                }
 
-                                                    await FFAppState()
-                                                        .settingRef!
-                                                        .update({
-                                                      ...mapToFirestore(
-                                                        {
-                                                          'failedToRemitTransactions':
-                                                              _model
-                                                                  .failedToRemitTransactions,
-                                                        },
-                                                      ),
-                                                    });
-                                                  }
-                                                  // remitted true including change transactions
-
-                                                  await _model
-                                                      .transactionsToRemit[_model
-                                                          .loopTransactionsCounter]
-                                                      .reference
-                                                      .update(
-                                                          createTransactionsRecordData(
-                                                    remitted: true,
-                                                  ));
-                                                  // append to failed list
+                                                if (_model
+                                                        .loopTransactionsCounter ==
+                                                    0) {
+                                                  // create field of failed
 
                                                   await FFAppState()
                                                       .settingRef!
@@ -496,40 +481,42 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     ...mapToFirestore(
                                                       {
                                                         'failedToRemitTransactions':
-                                                            FieldValue
-                                                                .arrayUnion([
-                                                          _model
-                                                              .transactionsToRemit[
-                                                                  _model
-                                                                      .loopTransactionsCounter]
-                                                              .reference
-                                                        ]),
+                                                            _model
+                                                                .failedToRemitTransactions,
                                                       },
                                                     ),
                                                   });
-                                                } else {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        'Just be aware that are still pending transactions.',
-                                                        style: TextStyle(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                        ),
-                                                      ),
-                                                      duration: Duration(
-                                                          milliseconds: 4000),
-                                                      backgroundColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondary,
-                                                    ),
-                                                  );
                                                 }
+                                                // remitted true including change transactions
 
-                                                // Increment Loop Counter
+                                                await _model
+                                                    .transactionsToRemit[_model
+                                                        .loopTransactionsCounter]
+                                                    .reference
+                                                    .update(
+                                                        createTransactionsRecordData(
+                                                  remitted: true,
+                                                ));
+                                                // append to failed list
+
+                                                await FFAppState()
+                                                    .settingRef!
+                                                    .update({
+                                                  ...mapToFirestore(
+                                                    {
+                                                      'failedToRemitTransactions':
+                                                          FieldValue
+                                                              .arrayUnion([
+                                                        _model
+                                                            .transactionsToRemit[
+                                                                _model
+                                                                    .loopTransactionsCounter]
+                                                            .reference
+                                                      ]),
+                                                    },
+                                                  ),
+                                                });
+                                                // increment loop
                                                 setState(() {
                                                   _model.loopTransactionsCounter =
                                                       _model.loopTransactionsCounter +
@@ -567,6 +554,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                       .hotel,
                                                             ),
                                               );
+                                              // what's happening
+                                              setState(() {
+                                                _model.happening =
+                                                    'Remitting absences if any';
+                                              });
                                               while (
                                                   _model.loopAbsencesCounter !=
                                                       _model.unremittedAbsences
@@ -595,6 +587,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                           1;
                                                 });
                                               }
+                                              // what's happening
+                                              setState(() {
+                                                _model.happening =
+                                                    'Remitting inventories';
+                                              });
                                               while (
                                                   _model.loopInventoryCounter !=
                                                       valueOrDefault<int>(
@@ -629,6 +626,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                           1;
                                                 });
                                               }
+                                              // what's happening
+                                              setState(() {
+                                                _model.happening =
+                                                    'Updating stats';
+                                              });
                                               // update stats and graph
 
                                               await FFAppState()
@@ -677,6 +679,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                 .toList())),
                                                   },
                                                 ),
+                                              });
+                                              // what's happening
+                                              setState(() {
+                                                _model.happening =
+                                                    'Finishing remittance!';
                                               });
                                               // Create Remittance
 
@@ -941,6 +948,15 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                 fontFamily: 'Readex Pro',
                                                 fontSize: 24.0,
                                               ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 20.0, 0.0, 0.0),
+                                        child: Text(
+                                          _model.happening,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium,
                                         ),
                                       ),
                                       Align(

@@ -198,166 +198,175 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                widget.edit ? 'Edit Salary' : 'New Salary',
-                                style:
-                                    FlutterFlowTheme.of(context).headlineSmall,
+                            Expanded(
+                              flex: 6,
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 0.0, 0.0),
+                                child: Text(
+                                  widget.edit ? 'Edit Salary' : 'New Salary',
+                                  style: FlutterFlowTheme.of(context)
+                                      .headlineSmall,
+                                ),
                               ),
                             ),
                             if (!widget.edit)
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 16.0, 0.0),
-                                child: FlutterFlowDropDown<String>(
-                                  controller: _model.dropDownValueController ??=
-                                      FormFieldController<String>(null),
-                                  options: widget.staffsForSelection!
-                                      .map((e) => e.name)
-                                      .toList(),
-                                  onChanged: (val) async {
-                                    setState(() => _model.dropDownValue = val);
-                                    var _shouldSetState = false;
-                                    // reset values and set staff
-                                    setState(() {
-                                      _model.selectedStaff = widget
-                                          .staffsForSelection
-                                          ?.where((e) =>
-                                              e.name == _model.dropDownValue)
-                                          .toList()
-                                          ?.first;
-                                      _model.cashAdvanceTotal = 0.0;
-                                      _model.loopAdvancesCounter = 0;
-                                      _model.cashAdvancesList = [];
-                                    });
-                                    // set sss
-                                    setState(() {
-                                      _model.sssController?.text = widget
-                                          .staffsForSelection!
-                                          .where((e) =>
-                                              e.name == _model.dropDownValue)
-                                          .toList()
-                                          .first
-                                          .sssRate
-                                          .toString();
-                                    });
-                                    // set rate
-                                    setState(() {
-                                      _model.rateController?.text = widget
-                                          .staffsForSelection!
-                                          .where((e) =>
-                                              e.name == _model.dropDownValue)
-                                          .toList()
-                                          .first
-                                          .weeklyRate
-                                          .toString();
-                                    });
-                                    // advances
-                                    _model.cashAdvances =
-                                        await queryAdvancesRecordOnce(
-                                      parent: _model.selectedStaff?.reference,
-                                      queryBuilder: (advancesRecord) =>
-                                          advancesRecord.where(
-                                        'settled',
-                                        isEqualTo: false,
-                                      ),
-                                    );
-                                    _shouldSetState = true;
-                                    if (_model.cashAdvances!.length > 0) {
-                                      while (_model.loopAdvancesCounter !=
-                                          _model.cashAdvances?.length) {
-                                        // add ca to list
-                                        setState(() {
-                                          _model.cashAdvanceTotal =
-                                              _model.cashAdvanceTotal +
-                                                  _model
-                                                      .cashAdvances![_model
-                                                          .loopAdvancesCounter]
-                                                      .amount;
-                                          _model.addToCashAdvancesList(
-                                              _model.cashAdvances![
-                                                  _model.loopAdvancesCounter]);
-                                        });
-                                        // increment loop
-                                        setState(() {
-                                          _model.loopAdvancesCounter =
-                                              _model.loopAdvancesCounter + 1;
-                                        });
-                                      }
-                                      // set CAs
+                              Expanded(
+                                flex: 4,
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 16.0, 0.0),
+                                  child: FlutterFlowDropDown<String>(
+                                    controller:
+                                        _model.dropDownValueController ??=
+                                            FormFieldController<String>(null),
+                                    options: widget.staffsForSelection!
+                                        .map((e) => e.name)
+                                        .toList(),
+                                    onChanged: (val) async {
+                                      setState(
+                                          () => _model.dropDownValue = val);
+                                      var _shouldSetState = false;
+                                      // reset values and set staff
                                       setState(() {
-                                        _model.caController?.text =
-                                            _model.cashAdvanceTotal.toString();
+                                        _model.selectedStaff = widget
+                                            .staffsForSelection
+                                            ?.where((e) =>
+                                                e.name == _model.dropDownValue)
+                                            .toList()
+                                            ?.first;
+                                        _model.cashAdvanceTotal = 0.0;
+                                        _model.loopAdvancesCounter = 0;
+                                        _model.cashAdvancesList = [];
                                       });
-                                    } else {
-                                      if (_shouldSetState) setState(() {});
-                                      return;
-                                    }
+                                      // set sss
+                                      setState(() {
+                                        _model.sssController?.text = widget
+                                            .staffsForSelection!
+                                            .where((e) =>
+                                                e.name == _model.dropDownValue)
+                                            .toList()
+                                            .first
+                                            .sssRate
+                                            .toString();
+                                      });
+                                      // set rate
+                                      setState(() {
+                                        _model.rateController?.text = widget
+                                            .staffsForSelection!
+                                            .where((e) =>
+                                                e.name == _model.dropDownValue)
+                                            .toList()
+                                            .first
+                                            .weeklyRate
+                                            .toString();
+                                      });
+                                      // advances
+                                      _model.cashAdvances =
+                                          await queryAdvancesRecordOnce(
+                                        parent: _model.selectedStaff?.reference,
+                                        queryBuilder: (advancesRecord) =>
+                                            advancesRecord.where(
+                                          'settled',
+                                          isEqualTo: false,
+                                        ),
+                                      );
+                                      _shouldSetState = true;
+                                      if (_model.cashAdvances!.length > 0) {
+                                        while (_model.loopAdvancesCounter !=
+                                            _model.cashAdvances?.length) {
+                                          // add ca to list
+                                          setState(() {
+                                            _model.cashAdvanceTotal = _model
+                                                    .cashAdvanceTotal +
+                                                _model
+                                                    .cashAdvances![_model
+                                                        .loopAdvancesCounter]
+                                                    .amount;
+                                            _model.addToCashAdvancesList(_model
+                                                    .cashAdvances![
+                                                _model.loopAdvancesCounter]);
+                                          });
+                                          // increment loop
+                                          setState(() {
+                                            _model.loopAdvancesCounter =
+                                                _model.loopAdvancesCounter + 1;
+                                          });
+                                        }
+                                        // set CAs
+                                        setState(() {
+                                          _model.caController?.text = _model
+                                              .cashAdvanceTotal
+                                              .toString();
+                                        });
+                                      } else {
+                                        if (_shouldSetState) setState(() {});
+                                        return;
+                                      }
 
-                                    // absences
-                                    _model.absences =
-                                        await queryAbsencesRecordOnce(
-                                      parent: _model.selectedStaff?.reference,
-                                      queryBuilder: (absencesRecord) =>
-                                          absencesRecord.where(
-                                        'settled',
-                                        isEqualTo: false,
-                                      ),
-                                    );
-                                    _shouldSetState = true;
-                                    if (_model.absences!.length > 0) {
-                                      while (_model.loopAdvancesCounter !=
-                                          _model.absences?.length) {
-                                        // add absences to list
+                                      // absences
+                                      _model.absences =
+                                          await queryAbsencesRecordOnce(
+                                        parent: _model.selectedStaff?.reference,
+                                        queryBuilder: (absencesRecord) =>
+                                            absencesRecord.where(
+                                          'settled',
+                                          isEqualTo: false,
+                                        ),
+                                      );
+                                      _shouldSetState = true;
+                                      if (_model.absences!.length > 0) {
+                                        while (_model.loopAdvancesCounter !=
+                                            _model.absences?.length) {
+                                          // add absences to list
+                                          setState(() {
+                                            _model.absencesTotal = _model
+                                                    .absencesTotal +
+                                                _model
+                                                    .absences![_model
+                                                        .loopAbsencesCounter]
+                                                    .amount;
+                                            _model.addToAbsencesList(_model
+                                                    .absences![
+                                                _model.loopAbsencesCounter]);
+                                          });
+                                          // increment loop
+                                          setState(() {
+                                            _model.loopAbsencesCounter =
+                                                _model.loopAbsencesCounter + 1;
+                                          });
+                                        }
+                                        // set absences in form
                                         setState(() {
-                                          _model.absencesTotal =
-                                              _model.absencesTotal +
-                                                  _model
-                                                      .absences![_model
-                                                          .loopAbsencesCounter]
-                                                      .amount;
-                                          _model.addToAbsencesList(
-                                              _model.absences![
-                                                  _model.loopAbsencesCounter]);
-                                        });
-                                        // increment loop
-                                        setState(() {
-                                          _model.loopAbsencesCounter =
-                                              _model.loopAbsencesCounter + 1;
+                                          _model.absencesController?.text =
+                                              _model.absencesTotal.toString();
                                         });
                                       }
-                                      // set absences in form
-                                      setState(() {
-                                        _model.absencesController?.text =
-                                            _model.absencesTotal.toString();
-                                      });
-                                    }
-                                    if (_shouldSetState) setState(() {});
-                                  },
-                                  width: 160.0,
-                                  height: 40.0,
-                                  textStyle:
-                                      FlutterFlowTheme.of(context).bodyMedium,
-                                  hintText: 'Select Name',
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_rounded,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 15.0,
+                                      if (_shouldSetState) setState(() {});
+                                    },
+                                    width: 160.0,
+                                    height: 40.0,
+                                    textStyle:
+                                        FlutterFlowTheme.of(context).bodyMedium,
+                                    hintText: 'Select Name',
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      size: 15.0,
+                                    ),
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    elevation: 2.0,
+                                    borderColor: Color(0xFFE0E3E7),
+                                    borderWidth: 2.0,
+                                    borderRadius: 8.0,
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        12.0, 4.0, 12.0, 4.0),
+                                    hidesUnderline: true,
+                                    isSearchable: false,
+                                    isMultiSelect: false,
                                   ),
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  elevation: 2.0,
-                                  borderColor: Color(0xFFE0E3E7),
-                                  borderWidth: 2.0,
-                                  borderRadius: 8.0,
-                                  margin: EdgeInsetsDirectional.fromSTEB(
-                                      12.0, 4.0, 12.0, 4.0),
-                                  hidesUnderline: true,
-                                  isSearchable: false,
-                                  isMultiSelect: false,
                                 ),
                               ),
                           ],
@@ -393,35 +402,10 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.normal,
                                     ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                focusedErrorBorder: InputBorder.none,
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
@@ -456,35 +440,10 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.normal,
                                     ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                focusedErrorBorder: InputBorder.none,
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
@@ -519,35 +478,10 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.normal,
                                     ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                focusedErrorBorder: InputBorder.none,
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
@@ -582,35 +516,10 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.normal,
                                     ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                focusedErrorBorder: InputBorder.none,
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,

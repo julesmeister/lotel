@@ -91,6 +91,11 @@ class BookingsRecord extends FirestoreRecord {
   String get ability => _ability ?? '';
   bool hasAbility() => _ability != null;
 
+  // "promo" field.
+  String? _promo;
+  String get promo => _promo ?? '';
+  bool hasPromo() => _promo != null;
+
   void _initializeFields() {
     _nights = castToType<int>(snapshotData['nights']);
     _total = castToType<double>(snapshotData['total']);
@@ -107,6 +112,7 @@ class BookingsRecord extends FirestoreRecord {
     _pendings = getDataList(snapshotData['pendings']);
     _transactions = getDataList(snapshotData['transactions']);
     _ability = snapshotData['ability'] as String?;
+    _promo = snapshotData['promo'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -157,6 +163,7 @@ Map<String, dynamic> createBookingsRecordData({
   String? status,
   DocumentReference? staff,
   String? ability,
+  String? promo,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -173,6 +180,7 @@ Map<String, dynamic> createBookingsRecordData({
       'status': status,
       'staff': staff,
       'ability': ability,
+      'promo': promo,
     }.withoutNulls,
   );
 
@@ -199,7 +207,8 @@ class BookingsRecordDocumentEquality implements Equality<BookingsRecord> {
         e1?.staff == e2?.staff &&
         listEquality.equals(e1?.pendings, e2?.pendings) &&
         listEquality.equals(e1?.transactions, e2?.transactions) &&
-        e1?.ability == e2?.ability;
+        e1?.ability == e2?.ability &&
+        e1?.promo == e2?.promo;
   }
 
   @override
@@ -218,7 +227,8 @@ class BookingsRecordDocumentEquality implements Equality<BookingsRecord> {
         e?.staff,
         e?.pendings,
         e?.transactions,
-        e?.ability
+        e?.ability,
+        e?.promo
       ]);
 
   @override

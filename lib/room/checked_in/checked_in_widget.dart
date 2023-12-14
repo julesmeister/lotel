@@ -776,6 +776,49 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                             .spaceBetween,
                                                     children: [
                                                       Text(
+                                                        'Promo',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                ),
+                                                      ),
+                                                      Text(
+                                                        checkedInBookingsRecord
+                                                                        .promo !=
+                                                                    null &&
+                                                                checkedInBookingsRecord
+                                                                        .promo !=
+                                                                    ''
+                                                            ? checkedInBookingsRecord
+                                                                .promo
+                                                            : 'No Promo',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyMedium,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 8.0, 0.0, 0.0),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
                                                         'Status',
                                                         style:
                                                             FlutterFlowTheme.of(
@@ -791,10 +834,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                       ),
                                                       Text(
                                                         (String status) {
-                                                          return status[0]
-                                                                  .toUpperCase() +
-                                                              status
-                                                                  .substring(1);
+                                                          return status == "out"
+                                                              ? "Checked Out"
+                                                              : status[0]
+                                                                      .toUpperCase() +
+                                                                  status
+                                                                      .substring(
+                                                                          1);
                                                         }(checkedInBookingsRecord
                                                             .status),
                                                         style:

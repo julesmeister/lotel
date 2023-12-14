@@ -144,6 +144,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             extend: params.getParam('extend', ParamType.bool),
             bookingToExtend:
                 params.getParam('bookingToExtend', ParamType.Document),
+            promoOn: params.getParam('promoOn', ParamType.bool),
+            promoDetail: params.getParam('promoDetail', ParamType.String),
+            promoDiscount: params.getParam('promoDiscount', ParamType.double),
           ),
         ),
         FFRoute(

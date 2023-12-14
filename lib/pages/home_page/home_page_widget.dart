@@ -5,6 +5,7 @@ import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/change_remittance/change_remittance_widget.dart';
 import '/components/forms/new_grocery/new_grocery_widget.dart';
 import '/components/forms/new_issue/new_issue_widget.dart';
+import '/components/forms/promo/promo_widget.dart';
 import '/components/options/collect_remittance_user/collect_remittance_user_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -2185,17 +2186,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 ),
                                           ),
                                         ),
-                                        if (valueOrDefault(
-                                                currentUserDocument?.role,
-                                                '') ==
-                                            'admin')
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 12.0, 0.0, 0.0),
-                                            child: AuthUserStreamWidget(
-                                              builder: (context) =>
-                                                  FlutterFlowIconButton(
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      0.0, 12.0, 0.0, 0.0),
+                                              child: FlutterFlowIconButton(
                                                 borderColor:
                                                     FlutterFlowTheme.of(context)
                                                         .primary,
@@ -2206,16 +2204,82 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     FlutterFlowTheme.of(context)
                                                         .accent1,
                                                 icon: Icon(
-                                                  Icons.edit_note_rounded,
+                                                  Icons.discount_outlined,
                                                   color: Colors.white,
                                                   size: 24.0,
                                                 ),
                                                 onPressed: () async {
-                                                  context.pushNamed('RoomList');
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return GestureDetector(
+                                                        onTap: () => _model
+                                                                .unfocusNode
+                                                                .canRequestFocus
+                                                            ? FocusScope.of(
+                                                                    context)
+                                                                .requestFocus(_model
+                                                                    .unfocusNode)
+                                                            : FocusScope.of(
+                                                                    context)
+                                                                .unfocus(),
+                                                        child: Padding(
+                                                          padding: MediaQuery
+                                                              .viewInsetsOf(
+                                                                  context),
+                                                          child: Container(
+                                                            height:
+                                                                double.infinity,
+                                                            child:
+                                                                PromoWidget(),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      safeSetState(() {}));
                                                 },
                                               ),
                                             ),
-                                          ),
+                                            if (valueOrDefault(
+                                                    currentUserDocument?.role,
+                                                    '') ==
+                                                'admin')
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 12.0, 0.0, 0.0),
+                                                child: AuthUserStreamWidget(
+                                                  builder: (context) =>
+                                                      FlutterFlowIconButton(
+                                                    borderColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary,
+                                                    borderRadius: 20.0,
+                                                    borderWidth: 1.0,
+                                                    buttonSize: 40.0,
+                                                    fillColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .accent1,
+                                                    icon: Icon(
+                                                      Icons.edit_note_rounded,
+                                                      color: Colors.white,
+                                                      size: 24.0,
+                                                    ),
+                                                    onPressed: () async {
+                                                      context.pushNamed(
+                                                          'RoomList');
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                     Expanded(
@@ -2336,10 +2400,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             mainAxisSize:
                                                                 MainAxisSize
                                                                     .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
                                                             children: [
                                                               Expanded(
+                                                                flex: 5,
                                                                 child: Text(
-                                                                  'Room',
+                                                                  'Room  ${roomsItem.number.toString()}',
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
                                                                       .bodyLarge
@@ -2356,81 +2424,34 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 ),
                                                               ),
                                                               Expanded(
+                                                                flex: 5,
                                                                 child: Text(
-                                                                  roomsItem
-                                                                      .number
-                                                                      .toString(),
+                                                                  valueOrDefault<
+                                                                      String>(
+                                                                    functions.numOfGuests(
+                                                                        roomsItem
+                                                                            .guests
+                                                                            .toString()),
+                                                                    '0',
+                                                                  ),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .end,
+                                                                  maxLines: 1,
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyLarge
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
                                                                             'Plus Jakarta Sans',
                                                                         color: Color(
                                                                             0xFF14181B),
                                                                         fontSize:
-                                                                            16.0,
+                                                                            14.0,
                                                                         fontWeight:
                                                                             FontWeight.w500,
                                                                       ),
                                                                 ),
-                                                              ),
-                                                              Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      roomsItem
-                                                                          .guests
-                                                                          .toString(),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Plus Jakarta Sans',
-                                                                            color:
-                                                                                Color(0xFF14181B),
-                                                                            fontSize:
-                                                                                14.0,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      'Guests',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Plus Jakarta Sans',
-                                                                            color:
-                                                                                Color(0xFF14181B),
-                                                                            fontSize:
-                                                                                14.0,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                                ],
                                                               ),
                                                             ],
                                                           ),
@@ -2453,78 +2474,135 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   CrossAxisAlignment
                                                                       .end,
                                                               children: [
-                                                                Text(
-                                                                  formatNumber(
-                                                                    roomsItem
-                                                                        .price,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .decimal,
-                                                                    decimalType:
-                                                                        DecimalType
-                                                                            .automatic,
-                                                                    currency:
-                                                                        'P ',
-                                                                  ),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .displaySmall
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Outfit',
-                                                                        color: Color(
-                                                                            0xFF14181B),
-                                                                        fontSize:
-                                                                            36.0,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                      ),
-                                                                ),
-                                                                FlutterFlowIconButton(
-                                                                  borderColor:
-                                                                      Color(
-                                                                          0xFFF1F4F8),
-                                                                  borderRadius:
-                                                                      30.0,
-                                                                  borderWidth:
-                                                                      2.0,
-                                                                  buttonSize:
-                                                                      44.0,
-                                                                  icon: Icon(
-                                                                    Icons
-                                                                        .arrow_forward_rounded,
-                                                                    color: Color(
-                                                                        0xFF57636C),
-                                                                    size: 24.0,
-                                                                  ),
-                                                                  onPressed:
-                                                                      () async {
-                                                                    if (roomsItem
-                                                                            .vacant ==
-                                                                        true) {
-                                                                      if (FFAppState()
-                                                                              .bedPrice ==
-                                                                          null) {
-                                                                        ScaffoldMessenger.of(context)
-                                                                            .showSnackBar(
-                                                                          SnackBar(
-                                                                            content:
-                                                                                Text(
-                                                                              'Extra bed price has not yet been set',
-                                                                              style: TextStyle(
-                                                                                color: FlutterFlowTheme.of(context).primaryText,
-                                                                              ),
-                                                                            ),
-                                                                            duration:
-                                                                                Duration(milliseconds: 4000),
-                                                                            backgroundColor:
-                                                                                FlutterFlowTheme.of(context).secondary,
+                                                                Expanded(
+                                                                  flex: 8,
+                                                                  child: Text(
+                                                                    homePageHotelSettingsRecord!
+                                                                            .promoOn
+                                                                        ? formatNumber(
+                                                                            roomsItem.price -
+                                                                                (roomsItem.price * homePageHotelSettingsRecord!.promoPercent / 100),
+                                                                            formatType:
+                                                                                FormatType.decimal,
+                                                                            decimalType:
+                                                                                DecimalType.automatic,
+                                                                            currency:
+                                                                                'P ',
+                                                                          )
+                                                                        : formatNumber(
+                                                                            roomsItem.price,
+                                                                            formatType:
+                                                                                FormatType.decimal,
+                                                                            decimalType:
+                                                                                DecimalType.automatic,
+                                                                            currency:
+                                                                                'P ',
                                                                           ),
-                                                                        );
+                                                                    maxLines: 1,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .displaySmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Outfit',
+                                                                          color:
+                                                                              Color(0xFF14181B),
+                                                                          fontSize:
+                                                                              36.0,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child:
+                                                                      FlutterFlowIconButton(
+                                                                    borderColor:
+                                                                        Color(
+                                                                            0xFFF1F4F8),
+                                                                    borderRadius:
+                                                                        30.0,
+                                                                    borderWidth:
+                                                                        2.0,
+                                                                    buttonSize:
+                                                                        44.0,
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .arrow_forward_rounded,
+                                                                      color: Color(
+                                                                          0xFF57636C),
+                                                                      size:
+                                                                          24.0,
+                                                                    ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      if (roomsItem
+                                                                              .vacant ==
+                                                                          true) {
+                                                                        if (FFAppState().bedPrice ==
+                                                                            null) {
+                                                                          ScaffoldMessenger.of(context)
+                                                                              .showSnackBar(
+                                                                            SnackBar(
+                                                                              content: Text(
+                                                                                'Extra bed price has not yet been set',
+                                                                                style: TextStyle(
+                                                                                  color: FlutterFlowTheme.of(context).primaryText,
+                                                                                ),
+                                                                              ),
+                                                                              duration: Duration(milliseconds: 4000),
+                                                                              backgroundColor: FlutterFlowTheme.of(context).secondary,
+                                                                            ),
+                                                                          );
+                                                                        } else {
+                                                                          context
+                                                                              .pushNamed(
+                                                                            'CheckIn',
+                                                                            queryParameters:
+                                                                                {
+                                                                              'ref': serializeParam(
+                                                                                roomsItem.reference,
+                                                                                ParamType.DocumentReference,
+                                                                              ),
+                                                                              'price': serializeParam(
+                                                                                homePageHotelSettingsRecord!.promoOn ? (roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord!.promoPercent / 100)) : roomsItem.price,
+                                                                                ParamType.double,
+                                                                              ),
+                                                                              'roomNo': serializeParam(
+                                                                                roomsItem.number,
+                                                                                ParamType.int,
+                                                                              ),
+                                                                              'extend': serializeParam(
+                                                                                false,
+                                                                                ParamType.bool,
+                                                                              ),
+                                                                              'promoOn': serializeParam(
+                                                                                homePageHotelSettingsRecord?.promoOn,
+                                                                                ParamType.bool,
+                                                                              ),
+                                                                              'promoDetail': serializeParam(
+                                                                                homePageHotelSettingsRecord?.promoDetail,
+                                                                                ParamType.String,
+                                                                              ),
+                                                                              'promoDiscount': serializeParam(
+                                                                                homePageHotelSettingsRecord?.promoPercent,
+                                                                                ParamType.double,
+                                                                              ),
+                                                                            }.withoutNulls,
+                                                                            extra: <String,
+                                                                                dynamic>{
+                                                                              kTransitionInfoKey: TransitionInfo(
+                                                                                hasTransition: true,
+                                                                                transitionType: PageTransitionType.rightToLeft,
+                                                                              ),
+                                                                            },
+                                                                          );
+                                                                        }
                                                                       } else {
                                                                         context
                                                                             .pushNamed(
-                                                                          'CheckIn',
+                                                                          'CheckedIn',
                                                                           queryParameters:
                                                                               {
                                                                             'ref':
@@ -2532,20 +2610,15 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                               roomsItem.reference,
                                                                               ParamType.DocumentReference,
                                                                             ),
-                                                                            'price':
+                                                                            'booking':
                                                                                 serializeParam(
-                                                                              roomsItem.price,
-                                                                              ParamType.double,
+                                                                              roomsItem.currentBooking,
+                                                                              ParamType.DocumentReference,
                                                                             ),
                                                                             'roomNo':
                                                                                 serializeParam(
                                                                               roomsItem.number,
                                                                               ParamType.int,
-                                                                            ),
-                                                                            'extend':
-                                                                                serializeParam(
-                                                                              false,
-                                                                              ParamType.bool,
                                                                             ),
                                                                           }.withoutNulls,
                                                                           extra: <String,
@@ -2558,41 +2631,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           },
                                                                         );
                                                                       }
-                                                                    } else {
-                                                                      context
-                                                                          .pushNamed(
-                                                                        'CheckedIn',
-                                                                        queryParameters:
-                                                                            {
-                                                                          'ref':
-                                                                              serializeParam(
-                                                                            roomsItem.reference,
-                                                                            ParamType.DocumentReference,
-                                                                          ),
-                                                                          'booking':
-                                                                              serializeParam(
-                                                                            roomsItem.currentBooking,
-                                                                            ParamType.DocumentReference,
-                                                                          ),
-                                                                          'roomNo':
-                                                                              serializeParam(
-                                                                            roomsItem.number,
-                                                                            ParamType.int,
-                                                                          ),
-                                                                        }.withoutNulls,
-                                                                        extra: <String,
-                                                                            dynamic>{
-                                                                          kTransitionInfoKey:
-                                                                              TransitionInfo(
-                                                                            hasTransition:
-                                                                                true,
-                                                                            transitionType:
-                                                                                PageTransitionType.rightToLeft,
-                                                                          ),
-                                                                        },
-                                                                      );
-                                                                    }
-                                                                  },
+                                                                    },
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),
@@ -2610,44 +2650,51 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   MainAxisSize
                                                                       .max,
                                                               children: [
-                                                                Icon(
-                                                                  Icons
-                                                                      .meeting_room_outlined,
-                                                                  color: roomsItem
-                                                                              .vacant ==
-                                                                          true
-                                                                      ? FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondary
-                                                                      : Color(
-                                                                          0xFFFF5963),
-                                                                  size: 24.0,
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          10.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child: Text(
-                                                                    roomsItem.vacant ==
+                                                                Expanded(
+                                                                  flex: 1,
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .meeting_room_outlined,
+                                                                    color: roomsItem.vacant ==
                                                                             true
-                                                                        ? 'Vacant'
-                                                                        : 'Occupied',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Plus Jakarta Sans',
-                                                                          color:
-                                                                              Color(0xFF14181B),
-                                                                          fontSize:
-                                                                              14.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
+                                                                        ? FlutterFlowTheme.of(context)
+                                                                            .secondary
+                                                                        : Color(
+                                                                            0xFFFF5963),
+                                                                    size: 24.0,
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 6,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                    child: Text(
+                                                                      roomsItem.vacant ==
+                                                                              true
+                                                                          ? 'Vacant'
+                                                                          : 'Occupied',
+                                                                      maxLines:
+                                                                          1,
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Plus Jakarta Sans',
+                                                                            color:
+                                                                                Color(0xFF14181B),
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ],

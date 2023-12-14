@@ -1087,3 +1087,15 @@ int indexOfStatsFromHotel(
   }
   return -1;
 }
+
+String? numOfGuests(String guests) {
+  // if guests is 0, return No Guests, if 1,1 Guest, if 2 or many, $guests Guests
+  int numGuests = int.tryParse(guests) ?? 0;
+  if (numGuests == 0) {
+    return 'No Guests';
+  } else if (numGuests == 1) {
+    return '1 Guest';
+  } else {
+    return '$numGuests Guests';
+  }
+}

@@ -405,83 +405,101 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                       ),
                                     ),
                                     Expanded(
-                                      child: Theme(
-                                        data: ThemeData(
-                                          unselectedWidgetColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondaryText,
-                                        ),
-                                        child: CheckboxListTile(
-                                          value: _model
-                                                  .checkboxListTileValueMap1[
-                                              allRoomsRoomsRecord] ??= false,
-                                          onChanged: (newValue) async {
-                                            setState(() =>
-                                                _model.checkboxListTileValueMap1[
-                                                        allRoomsRoomsRecord] =
-                                                    newValue!);
-                                            if (newValue!) {
-                                              setState(() {
-                                                _model.addToSelectedRooms(
-                                                    allRoomsRoomsRecord
-                                                        .reference);
-                                              });
-                                            } else {
-                                              setState(() {
-                                                _model.removeFromSelectedRooms(
-                                                    allRoomsRoomsRecord
-                                                        .reference);
-                                              });
-                                            }
-                                          },
-                                          title: Text(
-                                            formatNumber(
-                                              allRoomsRoomsRecord.price,
-                                              formatType: FormatType.decimal,
-                                              decimalType:
-                                                  DecimalType.periodDecimal,
-                                              currency: 'P ',
-                                            ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyLarge
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  lineHeight: 2.0,
-                                                ),
-                                          ),
-                                          subtitle: Text(
-                                            formatNumber(
-                                              allRoomsRoomsRecord.capacity,
-                                              formatType: FormatType.decimal,
-                                              decimalType:
-                                                  DecimalType.periodDecimal,
-                                              currency: 'Capacity: ',
-                                            ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodySmall
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondary,
-                                                ),
-                                          ),
-                                          tileColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondaryBackground,
-                                          activeColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                          checkColor: Colors.white,
-                                          dense: false,
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                          contentPadding:
+                                      child: Align(
+                                        alignment:
+                                            AlignmentDirectional(0.00, -1.00),
+                                        child: Padding(
+                                          padding:
                                               EdgeInsetsDirectional.fromSTEB(
-                                                  8.0, 0.0, 8.0, 0.0),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
+                                                  10.0, 0.0, 0.0, 0.0),
+                                          child: Theme(
+                                            data: ThemeData(
+                                              unselectedWidgetColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryText,
+                                            ),
+                                            child: CheckboxListTile(
+                                              value: _model
+                                                      .checkboxListTileValueMap1[
+                                                  allRoomsRoomsRecord] ??= false,
+                                              onChanged: (newValue) async {
+                                                setState(() =>
+                                                    _model.checkboxListTileValueMap1[
+                                                            allRoomsRoomsRecord] =
+                                                        newValue!);
+                                                if (newValue!) {
+                                                  setState(() {
+                                                    _model.addToSelectedRooms(
+                                                        allRoomsRoomsRecord
+                                                            .reference);
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    _model
+                                                        .removeFromSelectedRooms(
+                                                            allRoomsRoomsRecord
+                                                                .reference);
+                                                  });
+                                                }
+                                              },
+                                              title: Text(
+                                                formatNumber(
+                                                  allRoomsRoomsRecord.price,
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.periodDecimal,
+                                                  currency: 'P ',
+                                                ),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyLarge
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          lineHeight: 2.0,
+                                                        ),
+                                              ),
+                                              subtitle: Text(
+                                                formatNumber(
+                                                  allRoomsRoomsRecord.capacity,
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.periodDecimal,
+                                                  currency: 'Capacity: ',
+                                                ),
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondary,
+                                                    ),
+                                              ),
+                                              tileColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              activeColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              checkColor: Colors.white,
+                                              dense: false,
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .trailing,
+                                              contentPadding:
+                                                  EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          8.0, 0.0, 8.0, 0.0),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),

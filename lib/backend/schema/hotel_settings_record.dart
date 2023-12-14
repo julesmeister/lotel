@@ -57,6 +57,21 @@ class HotelSettingsRecord extends FirestoreRecord {
   bool get collectable => _collectable ?? false;
   bool hasCollectable() => _collectable != null;
 
+  // "promoOn" field.
+  bool? _promoOn;
+  bool get promoOn => _promoOn ?? false;
+  bool hasPromoOn() => _promoOn != null;
+
+  // "promoDetail" field.
+  String? _promoDetail;
+  String get promoDetail => _promoDetail ?? '';
+  bool hasPromoDetail() => _promoDetail != null;
+
+  // "promoPercent" field.
+  double? _promoPercent;
+  double get promoPercent => _promoPercent ?? 0.0;
+  bool hasPromoPercent() => _promoPercent != null;
+
   void _initializeFields() {
     _bedPrice = castToType<double>(snapshotData['bedPrice']);
     _hotel = snapshotData['hotel'] as String?;
@@ -67,6 +82,9 @@ class HotelSettingsRecord extends FirestoreRecord {
     _failedToRemitTransactions =
         getDataList(snapshotData['failedToRemitTransactions']);
     _collectable = snapshotData['collectable'] as bool?;
+    _promoOn = snapshotData['promoOn'] as bool?;
+    _promoDetail = snapshotData['promoDetail'] as String?;
+    _promoPercent = castToType<double>(snapshotData['promoPercent']);
   }
 
   static CollectionReference get collection =>
@@ -111,6 +129,9 @@ Map<String, dynamic> createHotelSettingsRecordData({
   bool? remittable,
   double? lateCheckoutFee,
   bool? collectable,
+  bool? promoOn,
+  String? promoDetail,
+  double? promoPercent,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -121,6 +142,9 @@ Map<String, dynamic> createHotelSettingsRecordData({
       'remittable': remittable,
       'lateCheckoutFee': lateCheckoutFee,
       'collectable': collectable,
+      'promoOn': promoOn,
+      'promoDetail': promoDetail,
+      'promoPercent': promoPercent,
     }.withoutNulls,
   );
 
@@ -142,7 +166,10 @@ class HotelSettingsRecordDocumentEquality
         e1?.lateCheckoutFee == e2?.lateCheckoutFee &&
         listEquality.equals(
             e1?.failedToRemitTransactions, e2?.failedToRemitTransactions) &&
-        e1?.collectable == e2?.collectable;
+        e1?.collectable == e2?.collectable &&
+        e1?.promoOn == e2?.promoOn &&
+        e1?.promoDetail == e2?.promoDetail &&
+        e1?.promoPercent == e2?.promoPercent;
   }
 
   @override
@@ -154,7 +181,10 @@ class HotelSettingsRecordDocumentEquality
         e?.remittable,
         e?.lateCheckoutFee,
         e?.failedToRemitTransactions,
-        e?.collectable
+        e?.collectable,
+        e?.promoOn,
+        e?.promoDetail,
+        e?.promoPercent
       ]);
 
   @override

@@ -9,6 +9,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'change_remittance_widget.dart' show ChangeRemittanceWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -117,6 +118,23 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
           int index, Function(DocumentReference) updateFn) =>
       failedToRemitBookings[index] = updateFn(failedToRemitBookings[index]);
 
+  List<TransactionsRecord> allUnremittedTransactions = [];
+  void addToAllUnremittedTransactions(TransactionsRecord item) =>
+      allUnremittedTransactions.add(item);
+  void removeFromAllUnremittedTransactions(TransactionsRecord item) =>
+      allUnremittedTransactions.remove(item);
+  void removeAtIndexFromAllUnremittedTransactions(int index) =>
+      allUnremittedTransactions.removeAt(index);
+  void insertAtIndexInAllUnremittedTransactions(
+          int index, TransactionsRecord item) =>
+      allUnremittedTransactions.insert(index, item);
+  void updateAllUnremittedTransactionsAtIndex(
+          int index, Function(TransactionsRecord) updateFn) =>
+      allUnremittedTransactions[index] =
+          updateFn(allUnremittedTransactions[index]);
+
+  String happening = 'Neutral';
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Read Document] action in ChangeRemittance widget.
@@ -129,8 +147,6 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
   List<TransactionsRecord>? transactions;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   List<InventoriesRecord>? inventoriesToRemitFirestore;
-  // Stores action output result for [Backend Call - Read Document] action in Button widget.
-  BookingsRecord? booking;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   List<AbsencesRecord>? unremittedAbsences;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.

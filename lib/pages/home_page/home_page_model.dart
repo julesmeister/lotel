@@ -5,6 +5,7 @@ import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/change_remittance/change_remittance_widget.dart';
 import '/components/forms/new_grocery/new_grocery_widget.dart';
 import '/components/forms/new_issue/new_issue_widget.dart';
+import '/components/forms/promo/promo_widget.dart';
 import '/components/options/collect_remittance_user/collect_remittance_user_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
