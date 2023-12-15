@@ -177,7 +177,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                 },
               ),
               title: Align(
-                alignment: AlignmentDirectional(-1.00, 0.00),
+                alignment: AlignmentDirectional(-1.0, 0.0),
                 child: AutoSizeText(
                   'Changes in Inventory',
                   textAlign: TextAlign.start,
@@ -192,7 +192,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
               ),
               actions: [
                 Align(
-                  alignment: AlignmentDirectional(0.00, 0.00),
+                  alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
@@ -268,7 +268,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
             body: SafeArea(
               top: true,
               child: Align(
-                alignment: AlignmentDirectional(0.00, 0.00),
+                alignment: AlignmentDirectional(0.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -354,7 +354,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                             children: [
                                               Align(
                                                 alignment: AlignmentDirectional(
-                                                    0.00, -0.70),
+                                                    0.0, -0.7),
                                                 child: Container(
                                                   width: 12.0,
                                                   height: 12.0,

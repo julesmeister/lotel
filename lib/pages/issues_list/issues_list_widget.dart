@@ -98,7 +98,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
             children: [
               Expanded(
                 child: Align(
-                  alignment: AlignmentDirectional(0.00, -1.00),
+                  alignment: AlignmentDirectional(0.0, -1.0),
                   child: Container(
                     width: double.infinity,
                     constraints: BoxConstraints(
@@ -180,7 +180,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
                                             child: Container(
-                                              height: 180.0,
+                                              height: 220.0,
                                               child: OptionToIssueWidget(
                                                 ref: listViewIssuesRecord
                                                     .reference,
@@ -215,7 +215,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                         children: [
                                           Align(
                                             alignment: AlignmentDirectional(
-                                                -1.00, -1.00),
+                                                -1.0, -1.0),
                                             child: AnimatedContainer(
                                               duration:
                                                   Duration(milliseconds: 150),
@@ -245,9 +245,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                 ),
                                               ),
                                               child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        2.0, 2.0, 2.0, 2.0),
+                                                padding: EdgeInsets.all(2.0),
                                                 child: Icon(
                                                   Icons.build_circle_outlined,
                                                   color: listViewIssuesRecord
@@ -405,12 +403,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                     ),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
+                                                          EdgeInsets.all(12.0),
                                                       child: Column(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -418,21 +411,12 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        4.0,
-                                                                        0.0,
-                                                                        0.0),
-                                                            child: Text(
-                                                              listViewIssuesRecord
-                                                                  .detail,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyLarge,
-                                                            ),
+                                                          Text(
+                                                            listViewIssuesRecord
+                                                                .detail,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyLarge,
                                                           ),
                                                         ],
                                                       ),
@@ -441,7 +425,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                   Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 4.0,
+                                                            .fromSTEB(0.0, 8.0,
                                                                 0.0, 0.0),
                                                     child: Text(
                                                       dateTimeFormat(

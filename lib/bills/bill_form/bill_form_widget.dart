@@ -461,8 +461,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                           options: FFButtonOptions(
                             width: double.infinity,
                             height: 54.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
+                            padding: EdgeInsets.all(0.0),
                             iconPadding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
                             color: FlutterFlowTheme.of(context).primary,

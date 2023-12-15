@@ -234,7 +234,7 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                       flex: 1,
                                       child: Align(
                                         alignment:
-                                            AlignmentDirectional(-1.00, -1.00),
+                                            AlignmentDirectional(-1.0, -1.0),
                                         child: AnimatedContainer(
                                           duration: Duration(milliseconds: 150),
                                           curve: Curves.easeInOut,
@@ -252,9 +252,7 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                             ),
                                           ),
                                           child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    2.0, 2.0, 2.0, 2.0),
+                                            padding: EdgeInsets.all(2.0),
                                             child: Icon(
                                               Icons.pending_actions,
                                               color:

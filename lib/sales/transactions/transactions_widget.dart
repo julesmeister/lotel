@@ -264,7 +264,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                 backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
                 automaticallyImplyLeading: false,
                 title: Align(
-                  alignment: AlignmentDirectional(-1.00, 0.00),
+                  alignment: AlignmentDirectional(-1.0, 0.0),
                   child: Text(
                     'Transactions',
                     textAlign: TextAlign.start,
@@ -503,13 +503,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                         ),
                                                       ),
                                                       child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    12.0,
-                                                                    12.0,
-                                                                    12.0,
-                                                                    12.0),
+                                                        padding: EdgeInsets.all(
+                                                            12.0),
                                                         child: Row(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
@@ -531,8 +526,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               ),
                                                               alignment:
                                                                   AlignmentDirectional(
-                                                                      0.00,
-                                                                      0.00),
+                                                                      0.0, 0.0),
                                                               child: Icon(
                                                                 Icons
                                                                     .money_off_sharp,
@@ -585,12 +579,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
+                                                          EdgeInsets.all(12.0),
                                                       child: Row(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -1012,11 +1001,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         ),
                                                                         child:
                                                                             Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              4.0,
-                                                                              4.0,
-                                                                              4.0,
-                                                                              4.0),
+                                                                          padding:
+                                                                              EdgeInsets.all(4.0),
                                                                           child:
                                                                               Icon(
                                                                             Icons.keyboard_arrow_right_rounded,
@@ -1316,8 +1302,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           ),
                                                                         ),
                                                                         alignment: AlignmentDirectional(
-                                                                            -1.00,
-                                                                            0.00),
+                                                                            -1.0,
+                                                                            0.0),
                                                                         child:
                                                                             Row(
                                                                           mainAxisSize:
@@ -1332,7 +1318,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                             ),
                                                                             Padding(
-                                                                              padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                                                              padding: EdgeInsets.all(10.0),
                                                                               child: Text(
                                                                                 functions.cartToTextSummary(goodsItem.goods.toList())!,
                                                                                 style: FlutterFlowTheme.of(context).labelMedium,
@@ -1657,7 +1643,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                             ),
                                                                             alignment:
-                                                                                AlignmentDirectional(-1.00, 0.00),
+                                                                                AlignmentDirectional(-1.0, 0.0),
                                                                             child:
                                                                                 Row(
                                                                               mainAxisSize: MainAxisSize.max,
@@ -1671,7 +1657,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                                   ),
                                                                                 ),
                                                                                 Padding(
-                                                                                  padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                                                                  padding: EdgeInsets.all(10.0),
                                                                                   child: Text(
                                                                                     functions.cartToTextSummary(expensesItem.goods.toList())!,
                                                                                     style: FlutterFlowTheme.of(context).labelMedium,
@@ -1792,13 +1778,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                         ),
                                                       ),
                                                       child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    12.0,
-                                                                    12.0,
-                                                                    12.0,
-                                                                    12.0),
+                                                        padding: EdgeInsets.all(
+                                                            12.0),
                                                         child: Row(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
@@ -1820,8 +1801,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               ),
                                                               alignment:
                                                                   AlignmentDirectional(
-                                                                      0.00,
-                                                                      0.00),
+                                                                      0.0, 0.0),
                                                               child: Icon(
                                                                 Icons
                                                                     .money_off_sharp,
@@ -1874,12 +1854,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
+                                                          EdgeInsets.all(12.0),
                                                       child: Row(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -2265,11 +2240,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         ),
                                                                         child:
                                                                             Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              4.0,
-                                                                              4.0,
-                                                                              4.0,
-                                                                              4.0),
+                                                                          padding:
+                                                                              EdgeInsets.all(4.0),
                                                                           child:
                                                                               Icon(
                                                                             Icons.keyboard_arrow_right_rounded,
@@ -2352,13 +2324,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                         ),
                                                       ),
                                                       child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    12.0,
-                                                                    12.0,
-                                                                    12.0,
-                                                                    12.0),
+                                                        padding: EdgeInsets.all(
+                                                            12.0),
                                                         child: Row(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
@@ -2380,8 +2347,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               ),
                                                               alignment:
                                                                   AlignmentDirectional(
-                                                                      0.00,
-                                                                      0.00),
+                                                                      0.0, 0.0),
                                                               child: Icon(
                                                                 Icons
                                                                     .money_off_sharp,
@@ -2428,12 +2394,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
+                                                          EdgeInsets.all(12.0),
                                                       child: Row(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -2730,8 +2691,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           ),
                                                                         ),
                                                                         alignment: AlignmentDirectional(
-                                                                            -1.00,
-                                                                            0.00),
+                                                                            -1.0,
+                                                                            0.0),
                                                                         child:
                                                                             Row(
                                                                           mainAxisSize:
@@ -2746,7 +2707,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                             ),
                                                                             Padding(
-                                                                              padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                                                              padding: EdgeInsets.all(10.0),
                                                                               child: Text(
                                                                                 functions.cartToTextSummary(goodsItem.goods.toList())!,
                                                                                 style: FlutterFlowTheme.of(context).labelMedium,
@@ -2863,13 +2824,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                         ),
                                                       ),
                                                       child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    12.0,
-                                                                    12.0,
-                                                                    12.0,
-                                                                    12.0),
+                                                        padding: EdgeInsets.all(
+                                                            12.0),
                                                         child: Row(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
@@ -2891,8 +2847,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               ),
                                                               alignment:
                                                                   AlignmentDirectional(
-                                                                      0.00,
-                                                                      0.00),
+                                                                      0.0, 0.0),
                                                               child: Icon(
                                                                 Icons
                                                                     .money_off_sharp,
@@ -2939,12 +2894,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
+                                                          EdgeInsets.all(12.0),
                                                       child: Row(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -3249,7 +3199,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                             ),
                                                                             alignment:
-                                                                                AlignmentDirectional(-1.00, 0.00),
+                                                                                AlignmentDirectional(-1.0, 0.0),
                                                                             child:
                                                                                 Row(
                                                                               mainAxisSize: MainAxisSize.max,
@@ -3263,7 +3213,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                                   ),
                                                                                 ),
                                                                                 Padding(
-                                                                                  padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                                                                  padding: EdgeInsets.all(10.0),
                                                                                   child: Text(
                                                                                     functions.cartToTextSummary(expenseItem.goods.toList())!,
                                                                                     style: FlutterFlowTheme.of(context).labelMedium,
@@ -3805,11 +3755,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       ),
                                                                       child:
                                                                           Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0),
+                                                                        padding:
+                                                                            EdgeInsets.all(4.0),
                                                                         child:
                                                                             Icon(
                                                                           Icons

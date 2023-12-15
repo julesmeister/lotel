@@ -217,7 +217,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               children: [
                                 if (widget.promoOn)
                                   Align(
-                                    alignment: AlignmentDirectional(0.00, 0.00),
+                                    alignment: AlignmentDirectional(0.0, 0.0),
                                     child: Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           16.0, 24.0, 16.0, 0.0),
@@ -239,9 +239,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               BorderRadius.circular(8.0),
                                         ),
                                         child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  12.0, 12.0, 12.0, 12.0),
+                                          padding: EdgeInsets.all(12.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
@@ -263,12 +261,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     ),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  8.0,
-                                                                  8.0,
-                                                                  8.0,
-                                                                  8.0),
+                                                          EdgeInsets.all(8.0),
                                                       child: Icon(
                                                         Icons.discount_outlined,
                                                         color:
@@ -346,7 +339,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ),
                                   ),
                                 Align(
-                                  alignment: AlignmentDirectional(0.00, 0.00),
+                                  alignment: AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 24.0, 16.0, 24.0),
@@ -367,8 +360,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             BorderRadius.circular(8.0),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12.0, 12.0, 12.0, 12.0),
+                                        padding: EdgeInsets.all(12.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
@@ -391,9 +383,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 8.0,
-                                                                8.0, 8.0),
+                                                        EdgeInsets.all(8.0),
                                                     child: FaIcon(
                                                       FontAwesomeIcons.bed,
                                                       color:
@@ -1023,10 +1013,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                         ],
                       ),
                     Align(
-                      alignment: AlignmentDirectional(0.00, -1.00),
+                      alignment: AlignmentDirectional(0.0, -1.0),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 16.0),
+                        padding: EdgeInsets.all(16.0),
                         child: Container(
                           width: double.infinity,
                           height: 50.0,
@@ -1043,8 +1032,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             ),
                           ),
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                4.0, 4.0, 4.0, 4.0),
+                            padding: EdgeInsets.all(4.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -1189,7 +1177,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                     ),
                     if (!widget.extend)
                       Align(
-                        alignment: AlignmentDirectional(0.00, -1.00),
+                        alignment: AlignmentDirectional(0.0, -1.0),
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 16.0, 16.0),
@@ -1209,8 +1197,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  4.0, 4.0, 4.0, 4.0),
+                              padding: EdgeInsets.all(4.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,

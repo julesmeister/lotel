@@ -142,8 +142,7 @@ class _MartWidgetState extends State<MartWidget> {
                         shape: badges.BadgeShape.circle,
                         badgeColor: FlutterFlowTheme.of(context).primary,
                         elevation: 4.0,
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 8.0, 8.0),
+                        padding: EdgeInsets.all(8.0),
                         position: badges.BadgePosition.topEnd(),
                         animationType: badges.BadgeAnimationType.scale,
                         toAnimate: true,
@@ -200,7 +199,7 @@ class _MartWidgetState extends State<MartWidget> {
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(0.00, -1.00),
+                      alignment: AlignmentDirectional(0.0, -1.0),
                       child: Container(
                         width: double.infinity,
                         constraints: BoxConstraints(
@@ -424,7 +423,7 @@ class _MartWidgetState extends State<MartWidget> {
                                         .primaryBackground,
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
-                                  alignment: AlignmentDirectional(-1.00, 0.00),
+                                  alignment: AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 0.0, 0.0),
@@ -434,8 +433,8 @@ class _MartWidgetState extends State<MartWidget> {
                                         Expanded(
                                           flex: 4,
                                           child: Align(
-                                            alignment: AlignmentDirectional(
-                                                -1.00, 0.00),
+                                            alignment:
+                                                AlignmentDirectional(-1.0, 0.0),
                                             child: Text(
                                               'Item',
                                               style:
@@ -447,8 +446,8 @@ class _MartWidgetState extends State<MartWidget> {
                                         Expanded(
                                           flex: 3,
                                           child: Align(
-                                            alignment: AlignmentDirectional(
-                                                -1.00, 0.00),
+                                            alignment:
+                                                AlignmentDirectional(-1.0, 0.0),
                                             child: Padding(
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
@@ -476,7 +475,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                 Align(
                                                   alignment:
                                                       AlignmentDirectional(
-                                                          1.00, 0.00),
+                                                          1.0, 0.0),
                                                   child: Text(
                                                     'Availability',
                                                     style: FlutterFlowTheme.of(
@@ -551,7 +550,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                       Align(
                                                         alignment:
                                                             AlignmentDirectional(
-                                                                -1.00, 0.00),
+                                                                -1.0, 0.0),
                                                         child: Text(
                                                           goodsListItem
                                                               .description,
@@ -563,7 +562,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                       Align(
                                                         alignment:
                                                             AlignmentDirectional(
-                                                                -1.00, 0.00),
+                                                                -1.0, 0.0),
                                                         child: Text(
                                                           formatNumber(
                                                             goodsListItem.price,
@@ -786,7 +785,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                           child: Align(
                                                             alignment:
                                                                 AlignmentDirectional(
-                                                                    0.00, 0.00),
+                                                                    0.0, 0.0),
                                                             child: Padding(
                                                               padding:
                                                                   EdgeInsetsDirectional

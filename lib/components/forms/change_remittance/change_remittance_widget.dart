@@ -79,7 +79,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
           decoration: BoxDecoration(
             color: FlutterFlowTheme.of(context).accent4,
           ),
-          alignment: AlignmentDirectional(0.00, 1.00),
+          alignment: AlignmentDirectional(0.0, 1.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -961,7 +961,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                       ),
                                       Align(
                                         alignment:
-                                            AlignmentDirectional(0.00, -2.13),
+                                            AlignmentDirectional(0.0, -2.13),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8.0),

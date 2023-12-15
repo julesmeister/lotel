@@ -397,7 +397,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         if (valueOrDefault(currentUserDocument?.role, '') ==
                             'admin')
                           Align(
-                            alignment: AlignmentDirectional(0.00, -1.00),
+                            alignment: AlignmentDirectional(0.0, -1.0),
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 16.0, 16.0, 0.0),
@@ -445,8 +445,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            4.0, 4.0, 4.0, 4.0),
+                                        padding: EdgeInsets.all(4.0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
@@ -834,7 +833,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         if (valueOrDefault(currentUserDocument?.role, '') ==
                             'admin')
                           Align(
-                            alignment: AlignmentDirectional(0.00, -1.00),
+                            alignment: AlignmentDirectional(0.0, -1.0),
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 10.0, 16.0, 0.0),
@@ -1004,7 +1003,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     child: Align(
                                                       alignment:
                                                           AlignmentDirectional(
-                                                              1.00, 0.00),
+                                                              1.0, 0.0),
                                                       child: Padding(
                                                         padding:
                                                             EdgeInsetsDirectional
@@ -1593,7 +1592,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       children: [
                                         Align(
                                           alignment:
-                                              AlignmentDirectional(0.00, 0.00),
+                                              AlignmentDirectional(0.0, 0.0),
                                           child: Text(
                                             'Stats',
                                             style: FlutterFlowTheme.of(context)
@@ -1679,9 +1678,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(12.0, 12.0,
-                                                          12.0, 12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -1791,12 +1788,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                12.0,
-                                                                12.0,
-                                                                12.0,
-                                                                12.0),
+                                                        EdgeInsets.all(12.0),
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.max,
@@ -1903,9 +1895,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(12.0, 12.0,
-                                                          12.0, 12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -2020,9 +2010,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(12.0, 12.0,
-                                                          12.0, 12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -2383,12 +2371,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     ),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0,
-                                                                  12.0),
+                                                          EdgeInsets.all(12.0),
                                                       child: Column(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -2472,11 +2455,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       .spaceBetween,
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
-                                                                      .end,
+                                                                      .center,
                                                               children: [
                                                                 Expanded(
                                                                   flex: 8,
-                                                                  child: Text(
+                                                                  child:
+                                                                      AutoSizeText(
                                                                     homePageHotelSettingsRecord!
                                                                             .promoOn
                                                                         ? formatNumber(
@@ -2512,6 +2496,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           fontWeight:
                                                                               FontWeight.w600,
                                                                         ),
+                                                                    minFontSize:
+                                                                        30.0,
                                                                   ),
                                                                 ),
                                                                 Expanded(
@@ -3797,8 +3783,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             currentUserDocument?.role, '') !=
                                         'generic')
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            24.0, 24.0, 24.0, 24.0),
+                                        padding: EdgeInsets.all(24.0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           crossAxisAlignment:

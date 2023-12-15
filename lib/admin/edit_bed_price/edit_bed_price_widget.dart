@@ -186,8 +186,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 12.0, 12.0, 12.0),
+                                padding: EdgeInsets.all(12.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
@@ -204,9 +203,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                                                 BorderRadius.circular(8.0),
                                           ),
                                           child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    8.0, 8.0, 8.0, 8.0),
+                                            padding: EdgeInsets.all(8.0),
                                             child: Icon(
                                               Icons.bed_rounded,
                                               color:

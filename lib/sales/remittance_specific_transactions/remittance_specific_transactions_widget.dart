@@ -216,7 +216,7 @@ class _RemittanceSpecificTransactionsWidgetState
             },
           ),
           title: Align(
-            alignment: AlignmentDirectional(-1.00, 0.00),
+            alignment: AlignmentDirectional(-1.0, 0.0),
             child: Text(
               'Transactions',
               textAlign: TextAlign.start,
@@ -337,9 +337,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(12.0, 12.0,
-                                                          12.0, 12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -361,7 +359,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         ),
                                                         alignment:
                                                             AlignmentDirectional(
-                                                                0.00, 0.00),
+                                                                0.0, 0.0),
                                                         child: Icon(
                                                           Icons.money_off_sharp,
                                                           color: Colors.white,
@@ -401,9 +399,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        12.0, 12.0, 12.0, 12.0),
+                                                padding: EdgeInsets.all(12.0),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -773,11 +769,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   ),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0,
+                                                                    padding:
+                                                                        EdgeInsets.all(
                                                                             4.0),
                                                                     child: Icon(
                                                                       Icons
@@ -877,210 +870,209 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    0.0,
-                                                                    12.0,
-                                                                    0.0),
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              RichText(
-                                                                textScaleFactor:
-                                                                    MediaQuery.of(
+                                                      Expanded(
+                                                        flex: 5,
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      0.0,
+                                                                      12.0,
+                                                                      0.0),
+                                                          child:
+                                                              SingleChildScrollView(
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                RichText(
+                                                                  textScaleFactor:
+                                                                      MediaQuery.of(
+                                                                              context)
+                                                                          .textScaleFactor,
+                                                                  text:
+                                                                      TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text: functions.howManyItems(goodsItem
+                                                                            .goods
+                                                                            .toList()),
+                                                                        style:
+                                                                            TextStyle(),
+                                                                      )
+                                                                    ],
+                                                                    style: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .textScaleFactor,
-                                                                text: TextSpan(
-                                                                  children: [
-                                                                    TextSpan(
-                                                                      text: functions.howManyItems(goodsItem
-                                                                          .goods
-                                                                          .toList()),
-                                                                      style:
-                                                                          TextStyle(),
-                                                                    )
-                                                                  ],
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyLarge,
+                                                                        .bodyLarge,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                child: StreamBuilder<
-                                                                    UsersRecord>(
-                                                                  stream: UsersRecord
-                                                                      .getDocument(
-                                                                          goodsItem
-                                                                              .staff!),
-                                                                  builder: (context,
-                                                                      snapshot) {
-                                                                    // Customize what your widget looks like when it's loading.
-                                                                    if (!snapshot
-                                                                        .hasData) {
-                                                                      return Center(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              50.0,
-                                                                          height:
-                                                                              50.0,
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          4.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child: StreamBuilder<
+                                                                      UsersRecord>(
+                                                                    stream: UsersRecord.getDocument(
+                                                                        goodsItem
+                                                                            .staff!),
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      // Customize what your widget looks like when it's loading.
+                                                                      if (!snapshot
+                                                                          .hasData) {
+                                                                        return Center(
                                                                           child:
-                                                                              CircularProgressIndicator(
-                                                                            valueColor:
-                                                                                AlwaysStoppedAnimation<Color>(
-                                                                              FlutterFlowTheme.of(context).primary,
+                                                                              SizedBox(
+                                                                            width:
+                                                                                50.0,
+                                                                            height:
+                                                                                50.0,
+                                                                            child:
+                                                                                CircularProgressIndicator(
+                                                                              valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                FlutterFlowTheme.of(context).primary,
+                                                                              ),
                                                                             ),
                                                                           ),
-                                                                        ),
+                                                                        );
+                                                                      }
+                                                                      final textUsersRecord =
+                                                                          snapshot
+                                                                              .data!;
+                                                                      return Text(
+                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelMedium,
                                                                       );
-                                                                    }
-                                                                    final textUsersRecord =
-                                                                        snapshot
-                                                                            .data!;
-                                                                    return Text(
-                                                                      'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelMedium,
-                                                                    );
-                                                                  },
+                                                                    },
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            5.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                child:
-                                                                    Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryBackground,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5.0),
-                                                                    border:
-                                                                        Border
-                                                                            .all(
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          5.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child:
+                                                                      Container(
+                                                                    decoration:
+                                                                        BoxDecoration(
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .info,
-                                                                      width:
-                                                                          1.0,
+                                                                          .secondaryBackground,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5.0),
+                                                                      border:
+                                                                          Border
+                                                                              .all(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .info,
+                                                                        width:
+                                                                            1.0,
+                                                                      ),
+                                                                    ),
+                                                                    alignment:
+                                                                        AlignmentDirectional(
+                                                                            -1.0,
+                                                                            0.0),
+                                                                    child: Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      children: [
+                                                                        Container(
+                                                                          width:
+                                                                              4.0,
+                                                                          height:
+                                                                              (20 * goodsItem.goods.length).toDouble(),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                Color(0xFF4B39EF),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(4.0),
+                                                                          ),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(10.0),
+                                                                          child:
+                                                                              Text(
+                                                                            functions.cartToTextSummary(goodsItem.goods.toList())!,
+                                                                            style:
+                                                                                FlutterFlowTheme.of(context).labelMedium,
+                                                                          ),
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ),
-                                                                  alignment:
-                                                                      AlignmentDirectional(
-                                                                          -1.00,
-                                                                          0.00),
-                                                                  child: Row(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    children: [
-                                                                      Container(
-                                                                        width:
-                                                                            4.0,
-                                                                        height: (20 *
-                                                                                goodsItem.goods.length)
-                                                                            .toDouble(),
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              Color(0xFF4B39EF),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(4.0),
-                                                                        ),
-                                                                      ),
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0),
-                                                                        child:
-                                                                            Text(
-                                                                          functions.cartToTextSummary(goodsItem
-                                                                              .goods
-                                                                              .toList())!,
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelMedium,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                      Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        0.0,
-                                                                        20.0),
-                                                            child: Text(
-                                                              formatNumber(
-                                                                goodsItem.total,
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                                currency: 'P ',
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          20.0),
+                                                              child: Text(
+                                                                formatNumber(
+                                                                  goodsItem
+                                                                      .total,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineSmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                    ),
                                                               ),
-                                                              textAlign:
-                                                                  TextAlign.end,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .headlineSmall
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Outfit',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primaryText,
-                                                                  ),
                                                             ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -1280,9 +1272,10 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                               1.0,
                                                                         ),
                                                                       ),
-                                                                      alignment: AlignmentDirectional(
-                                                                          -1.00,
-                                                                          0.00),
+                                                                      alignment:
+                                                                          AlignmentDirectional(
+                                                                              -1.0,
+                                                                              0.0),
                                                                       child:
                                                                           Row(
                                                                         mainAxisSize:
@@ -1300,11 +1293,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             ),
                                                                           ),
                                                                           Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                10.0,
-                                                                                10.0,
-                                                                                10.0,
-                                                                                10.0),
+                                                                            padding:
+                                                                                EdgeInsets.all(10.0),
                                                                             child:
                                                                                 Text(
                                                                               functions.cartToTextSummary(expensesItem.goods.toList())!,
@@ -1425,9 +1415,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(12.0, 12.0,
-                                                          12.0, 12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -1449,7 +1437,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         ),
                                                         alignment:
                                                             AlignmentDirectional(
-                                                                0.00, 0.00),
+                                                                0.0, 0.0),
                                                         child: Icon(
                                                           Icons.money_off_sharp,
                                                           color: Colors.white,
@@ -1489,9 +1477,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        12.0, 12.0, 12.0, 12.0),
+                                                padding: EdgeInsets.all(12.0),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -1824,11 +1810,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   ),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0,
+                                                                    padding:
+                                                                        EdgeInsets.all(
                                                                             4.0),
                                                                     child: Icon(
                                                                       Icons
@@ -1903,9 +1886,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(12.0, 12.0,
-                                                          12.0, 12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -1927,7 +1908,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         ),
                                                         alignment:
                                                             AlignmentDirectional(
-                                                                0.00, 0.00),
+                                                                0.0, 0.0),
                                                         child: Icon(
                                                           Icons.money_off_sharp,
                                                           color: Colors.white,
@@ -1966,9 +1947,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        12.0, 12.0, 12.0, 12.0),
+                                                padding: EdgeInsets.all(12.0),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -2067,210 +2046,209 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    0.0,
-                                                                    12.0,
-                                                                    0.0),
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              RichText(
-                                                                textScaleFactor:
-                                                                    MediaQuery.of(
+                                                      Expanded(
+                                                        flex: 5,
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      0.0,
+                                                                      12.0,
+                                                                      0.0),
+                                                          child:
+                                                              SingleChildScrollView(
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                RichText(
+                                                                  textScaleFactor:
+                                                                      MediaQuery.of(
+                                                                              context)
+                                                                          .textScaleFactor,
+                                                                  text:
+                                                                      TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text: functions.howManyItems(goodsItem
+                                                                            .goods
+                                                                            .toList()),
+                                                                        style:
+                                                                            TextStyle(),
+                                                                      )
+                                                                    ],
+                                                                    style: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .textScaleFactor,
-                                                                text: TextSpan(
-                                                                  children: [
-                                                                    TextSpan(
-                                                                      text: functions.howManyItems(goodsItem
-                                                                          .goods
-                                                                          .toList()),
-                                                                      style:
-                                                                          TextStyle(),
-                                                                    )
-                                                                  ],
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyLarge,
+                                                                        .bodyLarge,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                child: StreamBuilder<
-                                                                    UsersRecord>(
-                                                                  stream: UsersRecord
-                                                                      .getDocument(
-                                                                          goodsItem
-                                                                              .staff!),
-                                                                  builder: (context,
-                                                                      snapshot) {
-                                                                    // Customize what your widget looks like when it's loading.
-                                                                    if (!snapshot
-                                                                        .hasData) {
-                                                                      return Center(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              50.0,
-                                                                          height:
-                                                                              50.0,
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          4.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child: StreamBuilder<
+                                                                      UsersRecord>(
+                                                                    stream: UsersRecord.getDocument(
+                                                                        goodsItem
+                                                                            .staff!),
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      // Customize what your widget looks like when it's loading.
+                                                                      if (!snapshot
+                                                                          .hasData) {
+                                                                        return Center(
                                                                           child:
-                                                                              CircularProgressIndicator(
-                                                                            valueColor:
-                                                                                AlwaysStoppedAnimation<Color>(
-                                                                              FlutterFlowTheme.of(context).primary,
+                                                                              SizedBox(
+                                                                            width:
+                                                                                50.0,
+                                                                            height:
+                                                                                50.0,
+                                                                            child:
+                                                                                CircularProgressIndicator(
+                                                                              valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                FlutterFlowTheme.of(context).primary,
+                                                                              ),
                                                                             ),
                                                                           ),
-                                                                        ),
+                                                                        );
+                                                                      }
+                                                                      final textUsersRecord =
+                                                                          snapshot
+                                                                              .data!;
+                                                                      return Text(
+                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelMedium,
                                                                       );
-                                                                    }
-                                                                    final textUsersRecord =
-                                                                        snapshot
-                                                                            .data!;
-                                                                    return Text(
-                                                                      'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelMedium,
-                                                                    );
-                                                                  },
+                                                                    },
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            5.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                child:
-                                                                    Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryBackground,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5.0),
-                                                                    border:
-                                                                        Border
-                                                                            .all(
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          5.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child:
+                                                                      Container(
+                                                                    decoration:
+                                                                        BoxDecoration(
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .info,
-                                                                      width:
-                                                                          1.0,
+                                                                          .secondaryBackground,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5.0),
+                                                                      border:
+                                                                          Border
+                                                                              .all(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .info,
+                                                                        width:
+                                                                            1.0,
+                                                                      ),
+                                                                    ),
+                                                                    alignment:
+                                                                        AlignmentDirectional(
+                                                                            -1.0,
+                                                                            0.0),
+                                                                    child: Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      children: [
+                                                                        Container(
+                                                                          width:
+                                                                              4.0,
+                                                                          height:
+                                                                              (20 * goodsItem.goods.length).toDouble(),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                Color(0xFF4B39EF),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(4.0),
+                                                                          ),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(10.0),
+                                                                          child:
+                                                                              Text(
+                                                                            functions.cartToTextSummary(goodsItem.goods.toList())!,
+                                                                            style:
+                                                                                FlutterFlowTheme.of(context).labelMedium,
+                                                                          ),
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ),
-                                                                  alignment:
-                                                                      AlignmentDirectional(
-                                                                          -1.00,
-                                                                          0.00),
-                                                                  child: Row(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    children: [
-                                                                      Container(
-                                                                        width:
-                                                                            4.0,
-                                                                        height: (20 *
-                                                                                goodsItem.goods.length)
-                                                                            .toDouble(),
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              Color(0xFF4B39EF),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(4.0),
-                                                                        ),
-                                                                      ),
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0,
-                                                                            10.0),
-                                                                        child:
-                                                                            Text(
-                                                                          functions.cartToTextSummary(goodsItem
-                                                                              .goods
-                                                                              .toList())!,
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelMedium,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                      Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        0.0,
-                                                                        20.0),
-                                                            child: Text(
-                                                              formatNumber(
-                                                                goodsItem.total,
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                                currency: 'P ',
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          20.0),
+                                                              child: Text(
+                                                                formatNumber(
+                                                                  goodsItem
+                                                                      .total,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineSmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                    ),
                                                               ),
-                                                              textAlign:
-                                                                  TextAlign.end,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .headlineSmall
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Outfit',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primaryText,
-                                                                  ),
                                                             ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -2329,9 +2307,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(12.0, 12.0,
-                                                          12.0, 12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -2353,7 +2329,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         ),
                                                         alignment:
                                                             AlignmentDirectional(
-                                                                0.00, 0.00),
+                                                                0.0, 0.0),
                                                         child: Icon(
                                                           Icons.money_off_sharp,
                                                           color: Colors.white,
@@ -2392,9 +2368,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        12.0, 12.0, 12.0, 12.0),
+                                                padding: EdgeInsets.all(12.0),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -2621,9 +2595,10 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                               1.0,
                                                                         ),
                                                                       ),
-                                                                      alignment: AlignmentDirectional(
-                                                                          -1.00,
-                                                                          0.00),
+                                                                      alignment:
+                                                                          AlignmentDirectional(
+                                                                              -1.0,
+                                                                              0.0),
                                                                       child:
                                                                           Row(
                                                                         mainAxisSize:
@@ -2641,11 +2616,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             ),
                                                                           ),
                                                                           Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                10.0,
-                                                                                10.0,
-                                                                                10.0,
-                                                                                10.0),
+                                                                            padding:
+                                                                                EdgeInsets.all(10.0),
                                                                             child:
                                                                                 Text(
                                                                               functions.cartToTextSummary(goodsItem.goods.toList())!,

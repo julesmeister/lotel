@@ -450,7 +450,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                     children: [
                       Expanded(
                         child: Align(
-                          alignment: AlignmentDirectional(0.00, -1.00),
+                          alignment: AlignmentDirectional(0.0, -1.0),
                           child: Container(
                             width: double.infinity,
                             constraints: BoxConstraints(
@@ -650,12 +650,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                           ),
                                                           child: Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        10.0,
-                                                                        10.0,
-                                                                        10.0,
-                                                                        10.0),
+                                                                EdgeInsets.all(
+                                                                    10.0),
                                                             child: Row(
                                                               mainAxisSize:
                                                                   MainAxisSize
@@ -1237,9 +1233,10 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                     ),
                                                                     child:
                                                                         Align(
-                                                                      alignment: AlignmentDirectional(
-                                                                          0.00,
-                                                                          0.00),
+                                                                      alignment:
+                                                                          AlignmentDirectional(
+                                                                              0.0,
+                                                                              0.0),
                                                                       child:
                                                                           Padding(
                                                                         padding: EdgeInsetsDirectional.fromSTEB(
@@ -1295,9 +1292,10 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                     ),
                                                                     child:
                                                                         Align(
-                                                                      alignment: AlignmentDirectional(
-                                                                          0.00,
-                                                                          0.00),
+                                                                      alignment:
+                                                                          AlignmentDirectional(
+                                                                              0.0,
+                                                                              0.0),
                                                                       child:
                                                                           Padding(
                                                                         padding: EdgeInsetsDirectional.fromSTEB(
@@ -1390,8 +1388,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                       child:
                                                                           Align(
                                                                         alignment: AlignmentDirectional(
-                                                                            0.00,
-                                                                            0.00),
+                                                                            0.0,
+                                                                            0.0),
                                                                         child:
                                                                             Padding(
                                                                           padding: EdgeInsetsDirectional.fromSTEB(

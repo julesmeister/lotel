@@ -107,7 +107,7 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(2.0, 2.0, 2.0, 2.0),
+                  padding: EdgeInsets.all(2.0),
                   child: Container(
                     width: 50.0,
                     height: 50.0,
@@ -289,7 +289,7 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                               ),
                               Expanded(
                                 child: Align(
-                                  alignment: AlignmentDirectional(1.00, 0.00),
+                                  alignment: AlignmentDirectional(1.0, 0.0),
                                   child: Icon(
                                     Icons.arrow_forward_ios,
                                     color: FlutterFlowTheme.of(context)
@@ -566,7 +566,7 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                                 child: Align(
                                                   alignment:
                                                       AlignmentDirectional(
-                                                          1.00, 0.00),
+                                                          1.0, 0.0),
                                                   child: Icon(
                                                     Icons.arrow_forward_ios,
                                                     color: FlutterFlowTheme.of(
@@ -650,7 +650,7 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                                 child: Align(
                                                   alignment:
                                                       AlignmentDirectional(
-                                                          1.00, 0.00),
+                                                          1.0, 0.0),
                                                   child: Icon(
                                                     Icons.arrow_forward_ios,
                                                     color: FlutterFlowTheme.of(
@@ -723,8 +723,8 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                         ),
                                         Expanded(
                                           child: Align(
-                                            alignment: AlignmentDirectional(
-                                                1.00, 0.00),
+                                            alignment:
+                                                AlignmentDirectional(1.0, 0.0),
                                             child: Icon(
                                               Icons.arrow_forward_ios,
                                               color:
@@ -795,8 +795,8 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                         ),
                                         Expanded(
                                           child: Align(
-                                            alignment: AlignmentDirectional(
-                                                1.00, 0.00),
+                                            alignment:
+                                                AlignmentDirectional(1.0, 0.0),
                                             child: Icon(
                                               Icons.arrow_forward_ios,
                                               color:

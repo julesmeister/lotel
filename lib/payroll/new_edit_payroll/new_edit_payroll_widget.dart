@@ -636,7 +636,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                   ),
                   if (_model.existingPayroll?.status != 'settled')
                     Align(
-                      alignment: AlignmentDirectional(0.00, -1.00),
+                      alignment: AlignmentDirectional(0.0, -1.0),
                       child: Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
@@ -656,8 +656,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                             ),
                           ),
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                4.0, 4.0, 4.0, 4.0),
+                            padding: EdgeInsets.all(4.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -939,8 +938,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            10.0, 10.0, 10.0, 10.0),
+                                        padding: EdgeInsets.all(10.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
@@ -1396,8 +1394,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               ),
                               options: FFButtonOptions(
                                 height: 48.0,
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 0.0),
+                                padding: EdgeInsets.all(0.0),
                                 iconPadding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 0.0),
                                 color: FlutterFlowTheme.of(context).error,
@@ -1442,7 +1439,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                     ),
                   if (_model.existingPayroll?.status != 'settled')
                     Align(
-                      alignment: AlignmentDirectional(0.00, 1.00),
+                      alignment: AlignmentDirectional(0.0, 1.0),
                       child: Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
@@ -1642,8 +1639,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                             height: 50.0,
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsets.all(0.0),
                             color: FlutterFlowTheme.of(context).primary,
                             textStyle: FlutterFlowTheme.of(context)
                                 .titleMedium

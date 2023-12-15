@@ -10,7 +10,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'check_out_model.dart';
@@ -120,8 +119,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                     buttonSize: 40.0,
                     fillColor: FlutterFlowTheme.of(context).primaryBackground,
                     disabledIconColor: Color(0xFFDADBDC),
-                    icon: FaIcon(
-                      FontAwesomeIcons.amazonPay,
+                    icon: Icon(
+                      Icons.check,
                       color: FlutterFlowTheme.of(context).primaryText,
                       size: 24.0,
                     ),
@@ -536,7 +535,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                               ),
                             ),
                             Align(
-                              alignment: AlignmentDirectional(0.00, -2.13),
+                              alignment: AlignmentDirectional(0.0, -2.13),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Image.asset(
@@ -690,10 +689,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                 ),
                 if (_model.expense)
                   Align(
-                    alignment: AlignmentDirectional(0.00, -1.00),
+                    alignment: AlignmentDirectional(0.0, -1.0),
                     child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                          16.0, 16.0, 16.0, 16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Container(
                         width: double.infinity,
                         height: 50.0,
@@ -709,8 +707,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              4.0, 4.0, 4.0, 4.0),
+                          padding: EdgeInsets.all(4.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,

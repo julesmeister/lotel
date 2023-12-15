@@ -77,14 +77,14 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
         color: Color(0xB20B191E),
       ),
       child: Align(
-        alignment: AlignmentDirectional(0.00, 1.00),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: AlignmentDirectional(1.00, 0.00),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
@@ -154,55 +154,96 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        child: TextFormField(
-                          controller: _model.detailController,
-                          focusNode: _model.detailFocusNode,
-                          textCapitalization: TextCapitalization.sentences,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'What issue is there to solve?',
-                            labelStyle:
-                                FlutterFlowTheme.of(context).bodySmall.override(
+                      Stack(
+                        children: [
+                          if (!_model.isLoading)
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                              ),
+                              child: TextFormField(
+                                controller: _model.detailController,
+                                focusNode: _model.detailFocusNode,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  labelText: 'What issue is there to solve?',
+                                  labelStyle: FlutterFlowTheme.of(context)
+                                      .bodySmall
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        fontSize: 20.0,
+                                      ),
+                                  hintText: 'Type your issue here',
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Lexend Deca',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  focusedErrorBorder: InputBorder.none,
+                                  filled: true,
+                                  fillColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  contentPadding:
+                                      EdgeInsetsDirectional.fromSTEB(
+                                          16.0, 24.0, 20.0, 24.0),
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 20.0,
                                     ),
-                            hintText: 'Type your issue here',
-                            hintStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Lexend Deca',
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none,
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 24.0, 20.0, 24.0),
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Readex Pro',
-                                    fontSize: 20.0,
+                                maxLines: 10,
+                                minLines: 6,
+                                keyboardType: TextInputType.multiline,
+                                validator: _model.detailControllerValidator
+                                    .asValidator(context),
+                              ),
+                            ),
+                          if (_model.isLoading)
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      16.0, 20.0, 16.0, 0.0),
+                                  child: Text(
+                                    'Please don\'t touch anything while issue is being recorded.',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          fontSize: 24.0,
+                                        ),
                                   ),
-                          maxLines: 10,
-                          minLines: 6,
-                          keyboardType: TextInputType.multiline,
-                          validator: _model.detailControllerValidator
-                              .asValidator(context),
-                        ),
+                                ),
+                                Align(
+                                  alignment: AlignmentDirectional(0.0, -2.13),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Image.asset(
+                                      'assets/images/giphy.gif',
+                                      width: double.infinity,
+                                      height: 159.0,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
                       ),
                       Divider(
                         height: 4.0,
@@ -210,8 +251,8 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            8.0, 4.0, 16.0, 44.0),
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(8.0, 4.0, 16.0, 5.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -229,6 +270,10 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
+                                  // isLoading
+                                  setState(() {
+                                    _model.isLoading = true;
+                                  });
                                   if (widget.edit) {
                                     await widget.ref!
                                         .update(createIssuesRecordData(
@@ -281,6 +326,11 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                       ),
                                     );
                                   }
+
+                                  // unLoad
+                                  setState(() {
+                                    _model.isLoading = false;
+                                  });
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

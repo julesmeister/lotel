@@ -200,7 +200,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(0.00, -1.00),
+                      alignment: AlignmentDirectional(0.0, -1.0),
                       child: Container(
                         width: double.infinity,
                         constraints: BoxConstraints(
@@ -424,7 +424,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                         .primaryBackground,
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
-                                  alignment: AlignmentDirectional(-1.00, 0.00),
+                                  alignment: AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 0.0, 0.0),
@@ -434,8 +434,8 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                         Expanded(
                                           flex: 4,
                                           child: Align(
-                                            alignment: AlignmentDirectional(
-                                                -1.00, 0.00),
+                                            alignment:
+                                                AlignmentDirectional(-1.0, 0.0),
                                             child: Text(
                                               'Item',
                                               style:
@@ -447,8 +447,8 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                         Expanded(
                                           flex: 3,
                                           child: Align(
-                                            alignment: AlignmentDirectional(
-                                                -1.00, 0.00),
+                                            alignment:
+                                                AlignmentDirectional(-1.0, 0.0),
                                             child: Padding(
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
@@ -476,7 +476,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                 Align(
                                                   alignment:
                                                       AlignmentDirectional(
-                                                          1.00, 0.00),
+                                                          1.0, 0.0),
                                                   child: Text(
                                                     'Availability',
                                                     style: FlutterFlowTheme.of(
@@ -553,7 +553,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                       Align(
                                                         alignment:
                                                             AlignmentDirectional(
-                                                                -1.00, 0.00),
+                                                                -1.0, 0.0),
                                                         child: Text(
                                                           inventoryGoodsItem
                                                               .description,
@@ -565,7 +565,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                       Align(
                                                         alignment:
                                                             AlignmentDirectional(
-                                                                -1.00, 0.00),
+                                                                -1.0, 0.0),
                                                         child: Text(
                                                           formatNumber(
                                                             inventoryGoodsItem
@@ -879,7 +879,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                           child: Align(
                                                             alignment:
                                                                 AlignmentDirectional(
-                                                                    0.00, 0.00),
+                                                                    0.0, 0.0),
                                                             child: Padding(
                                                               padding:
                                                                   EdgeInsetsDirectional

@@ -945,7 +945,7 @@ String modifyTransactionRoomDescription(
   String oldRoom,
 ) {
   // change text inside prevDesc Room $oldRoom to Room $newRoom
-  return prevDesc.replaceAll('Room $oldRoom', 'Room $newRoom');
+  return prevDesc.replaceAll('room $oldRoom', 'room $newRoom');
 }
 
 int avgYData(List<int> sales) {

@@ -181,50 +181,51 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                           },
                         ),
                       ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
-                      child: FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30.0,
-                        borderWidth: 1.0,
-                        buttonSize: 44.0,
-                        fillColor: FlutterFlowTheme.of(context).info,
-                        icon: Icon(
-                          Icons.delete_outlined,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          size: 24.0,
-                        ),
-                        onPressed: () async {
-                          while (_model.loopCounter !=
-                              valueOrDefault<int>(
-                                _model.selectedUsers.length,
-                                0,
-                              )) {
-                            await _model.selectedUsers[_model.loopCounter]
-                                .delete();
-                            setState(() {
-                              _model.loopCounter = _model.loopCounter + 1;
-                            });
-                          }
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'User has been deleted',
-                                style: TextStyle(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
+                    if (_model.selectedUsers.length >= 1)
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30.0,
+                          borderWidth: 1.0,
+                          buttonSize: 44.0,
+                          fillColor: FlutterFlowTheme.of(context).info,
+                          icon: Icon(
+                            Icons.delete_outlined,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            while (_model.loopCounter !=
+                                valueOrDefault<int>(
+                                  _model.selectedUsers.length,
+                                  0,
+                                )) {
+                              await _model.selectedUsers[_model.loopCounter]
+                                  .delete();
+                              setState(() {
+                                _model.loopCounter = _model.loopCounter + 1;
+                              });
+                            }
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'User has been deleted',
+                                  style: TextStyle(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
                                 ),
+                                duration: Duration(milliseconds: 4000),
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).secondary,
                               ),
-                              duration: Duration(milliseconds: 4000),
-                              backgroundColor:
-                                  FlutterFlowTheme.of(context).secondary,
-                            ),
-                          );
-                          context.safePop();
-                        },
+                            );
+                            context.safePop();
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ],
@@ -234,7 +235,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
             body: Stack(
               children: [
                 Align(
-                  alignment: AlignmentDirectional(0.00, 0.00),
+                  alignment: AlignmentDirectional(0.0, 0.0),
                   child: FutureBuilder<int>(
                     future: queryUsersRecordCount(
                       queryBuilder: (usersRecord) => usersRecord
@@ -364,7 +365,12 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       );
                                     },
                                     child: ListView.builder(
-                                      padding: EdgeInsets.zero,
+                                      padding: EdgeInsets.fromLTRB(
+                                        0,
+                                        0,
+                                        0,
+                                        10.0,
+                                      ),
                                       primary: false,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
@@ -626,7 +632,12 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       );
                                     },
                                     child: ListView.builder(
-                                      padding: EdgeInsets.zero,
+                                      padding: EdgeInsets.fromLTRB(
+                                        0,
+                                        0,
+                                        0,
+                                        10.0,
+                                      ),
                                       primary: false,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
@@ -839,7 +850,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                           ),
                           if (_model.selectedUsers.length > 0)
                             Align(
-                              alignment: AlignmentDirectional(0.00, 1.00),
+                              alignment: AlignmentDirectional(0.0, 1.0),
                               child: Container(
                                 width: double.infinity,
                                 height: 140.0,
@@ -855,7 +866,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                     end: AlignmentDirectional(0, 1.0),
                                   ),
                                 ),
-                                alignment: AlignmentDirectional(0.00, 0.00),
+                                alignment: AlignmentDirectional(0.0, 0.0),
                                 child: FlutterFlowDropDown<String>(
                                   controller:
                                       _model.selectedRoleValueController ??=

@@ -247,7 +247,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                 },
               ),
               title: Align(
-                alignment: AlignmentDirectional(-1.00, 0.00),
+                alignment: AlignmentDirectional(-1.0, 0.0),
                 child: Text(
                   'Remittance',
                   textAlign: TextAlign.start,
@@ -456,8 +456,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          24.0, 24.0, 24.0, 24.0),
+                                      padding: EdgeInsets.all(24.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
@@ -1011,8 +1010,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                         ),
                                         if (_model.showLoadButton)
                                           Align(
-                                            alignment: AlignmentDirectional(
-                                                0.00, 0.00),
+                                            alignment:
+                                                AlignmentDirectional(0.0, 0.0),
                                             child: Padding(
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(

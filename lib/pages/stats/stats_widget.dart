@@ -261,7 +261,7 @@ class _StatsWidgetState extends State<StatsWidget>
           Visibility(
             visible: _model.hotel != 'All',
             child: Align(
-              alignment: AlignmentDirectional(0.00, 0.00),
+              alignment: AlignmentDirectional(0.0, 0.0),
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                 child: Container(
@@ -293,7 +293,7 @@ class _StatsWidgetState extends State<StatsWidget>
               children: [
                 Expanded(
                   child: Align(
-                    alignment: AlignmentDirectional(0.00, -1.00),
+                    alignment: AlignmentDirectional(0.0, -1.0),
                     child: Padding(
                       padding:
                           EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
@@ -312,8 +312,7 @@ class _StatsWidgetState extends State<StatsWidget>
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              4.0, 4.0, 4.0, 4.0),
+                          padding: EdgeInsets.all(4.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -1140,7 +1139,7 @@ class _StatsWidgetState extends State<StatsWidget>
               ],
             ),
             Align(
-              alignment: AlignmentDirectional(-1.00, 0.00),
+              alignment: AlignmentDirectional(-1.0, 0.0),
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 4.0),
                 child: SingleChildScrollView(
@@ -1842,7 +1841,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                     0.0, 4.0, 4.0, 0.0),
                                             child: Text(
                                               formatNumber(
-                                                _model.salaries,
+                                                _model.bills,
                                                 formatType: FormatType.decimal,
                                                 decimalType:
                                                     DecimalType.automatic,
@@ -1956,7 +1955,7 @@ class _StatsWidgetState extends State<StatsWidget>
             ),
             if (_model.roomLine!.hasXData() && _model.roomLine!.hasYData())
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                padding: EdgeInsets.all(16.0),
                 child: Container(
                   width: double.infinity,
                   height: 200.0,
@@ -2001,11 +2000,32 @@ class _StatsWidgetState extends State<StatsWidget>
                     axisBounds: AxisBounds(),
                     xAxisLabelInfo: AxisLabelInfo(
                       title: 'Last 30 Days',
-                      titleTextStyle: FlutterFlowTheme.of(context).bodyMedium,
+                      titleTextStyle:
+                          FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Outfit',
+                                fontSize: 14.0,
+                              ),
+                      showLabels: true,
+                      labelTextStyle: TextStyle(
+                        fontSize: 8.0,
+                      ),
+                      labelInterval: 1.0,
+                      labelFormatter: LabelFormatter(
+                        numberFormat: (val) => formatNumber(
+                          val,
+                          formatType: FormatType.custom,
+                          format: '#',
+                          locale: '',
+                        ),
+                      ),
                     ),
                     yAxisLabelInfo: AxisLabelInfo(
                       title: 'Check Ins',
-                      titleTextStyle: FlutterFlowTheme.of(context).bodyMedium,
+                      titleTextStyle:
+                          FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Outfit',
+                                fontSize: 14.0,
+                              ),
                     ),
                   ),
                 ),
@@ -2064,7 +2084,7 @@ class _StatsWidgetState extends State<StatsWidget>
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+                  padding: EdgeInsets.all(4.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -2084,7 +2104,7 @@ class _StatsWidgetState extends State<StatsWidget>
                         ),
                       ),
                       Align(
-                        alignment: AlignmentDirectional(0.00, 0.00),
+                        alignment: AlignmentDirectional(0.0, 0.0),
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 10.0),
@@ -2174,9 +2194,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                           ),
                                         ),
                                         child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  12.0, 12.0, 12.0, 12.0),
+                                          padding: EdgeInsets.all(12.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
@@ -2192,7 +2210,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                           12.0),
                                                 ),
                                                 alignment: AlignmentDirectional(
-                                                    0.00, 0.00),
+                                                    0.0, 0.0),
                                                 child: Icon(
                                                   Icons.meeting_room_rounded,
                                                   color: Colors.white,

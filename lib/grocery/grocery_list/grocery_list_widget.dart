@@ -101,7 +101,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget> {
             children: [
               Expanded(
                 child: Align(
-                  alignment: AlignmentDirectional(0.00, -1.00),
+                  alignment: AlignmentDirectional(0.0, -1.0),
                   child: Container(
                     width: double.infinity,
                     constraints: BoxConstraints(
@@ -218,7 +218,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget> {
                                         children: [
                                           Align(
                                             alignment: AlignmentDirectional(
-                                                -1.00, -1.00),
+                                                -1.0, -1.0),
                                             child: AnimatedContainer(
                                               duration:
                                                   Duration(milliseconds: 150),
@@ -238,9 +238,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget> {
                                                 ),
                                               ),
                                               child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        2.0, 2.0, 2.0, 2.0),
+                                                padding: EdgeInsets.all(2.0),
                                                 child: Icon(
                                                   Icons
                                                       .local_grocery_store_outlined,
