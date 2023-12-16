@@ -272,11 +272,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => LateCheckoutFeeWidget(),
         ),
         FFRoute(
-          name: 'groceryList',
-          path: '/groceryList',
-          builder: (context, params) => GroceryListWidget(),
-        ),
-        FFRoute(
           name: 'BillForm',
           path: '/billForm',
           builder: (context, params) => BillFormWidget(
@@ -290,6 +285,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'billsList',
           path: '/billsList',
           builder: (context, params) => BillsListWidget(),
+        ),
+        FFRoute(
+          name: 'groceryList',
+          path: '/groceryList',
+          builder: (context, params) => GroceryListWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

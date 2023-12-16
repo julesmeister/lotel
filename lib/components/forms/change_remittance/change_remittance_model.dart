@@ -149,6 +149,10 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
   List<InventoriesRecord>? inventoriesToRemitFirestore;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   List<AbsencesRecord>? unremittedAbsences;
+  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
+  int? countGrr;
+  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
+  GoodsRevenueRatioRecord? lastGrr;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
   RemittancesRecord? newRemittanceCopyCopy;
 

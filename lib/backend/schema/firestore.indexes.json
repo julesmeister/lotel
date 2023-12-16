@@ -163,6 +163,20 @@
       ]
     },
     {
+      "collectionGroup": "bills",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hotel",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "groceries",
       "queryScope": "COLLECTION",
       "fields": [
@@ -177,7 +191,7 @@
       ]
     },
     {
-      "collectionGroup": "bills",
+      "collectionGroup": "goods_revenue_ratio",
       "queryScope": "COLLECTION",
       "fields": [
         {

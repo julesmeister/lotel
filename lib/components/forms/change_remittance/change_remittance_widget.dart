@@ -629,6 +629,60 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               // what's happening
                                               setState(() {
                                                 _model.happening =
+                                                    'Updating grocery stats';
+                                              });
+                                              // count grr
+                                              _model.countGrr =
+                                                  await queryGoodsRevenueRatioRecordCount(
+                                                queryBuilder:
+                                                    (goodsRevenueRatioRecord) =>
+                                                        goodsRevenueRatioRecord
+                                                            .where(
+                                                              'hotel',
+                                                              isEqualTo:
+                                                                  FFAppState()
+                                                                      .hotel,
+                                                            )
+                                                            .orderBy('date',
+                                                                descending:
+                                                                    true),
+                                              );
+                                              if (_model.countGrr! > 0) {
+                                                // last grr
+                                                _model.lastGrr =
+                                                    await queryGoodsRevenueRatioRecordOnce(
+                                                  queryBuilder:
+                                                      (goodsRevenueRatioRecord) =>
+                                                          goodsRevenueRatioRecord
+                                                              .where(
+                                                                'hotel',
+                                                                isEqualTo:
+                                                                    FFAppState()
+                                                                        .hotel,
+                                                              )
+                                                              .orderBy('date',
+                                                                  descending:
+                                                                      true),
+                                                  singleRecord: true,
+                                                ).then((s) => s.firstOrNull);
+                                                // increment grr revenue
+
+                                                await _model.lastGrr!.reference
+                                                    .update({
+                                                  ...mapToFirestore(
+                                                    {
+                                                      'revenue': FieldValue
+                                                          .increment(functions
+                                                              .sumOfGoodsIncome(_model
+                                                                  .transactionsToRemit
+                                                                  .toList())),
+                                                    },
+                                                  ),
+                                                });
+                                              }
+                                              // what's happening
+                                              setState(() {
+                                                _model.happening =
                                                     'Updating stats';
                                               });
                                               // update stats and graph

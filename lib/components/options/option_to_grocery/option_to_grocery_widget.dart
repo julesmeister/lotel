@@ -87,18 +87,61 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    _model.grocery =
-                        await GroceriesRecord.getDocumentOnce(widget.ref!);
-                    // reduce from stat
+                    var confirmDialogResponse = await showDialog<bool>(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: Text('Starting Point'),
+                              content: Text(
+                                  'Are you sure you want to start counting the revenue hereon?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, false),
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, true),
+                                  child: Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          },
+                        ) ??
+                        false;
+                    if (confirmDialogResponse) {
+                      // get grocery
+                      _model.groceryToTrack =
+                          await GroceriesRecord.getDocumentOnce(widget.ref!);
+                      // create grr
 
-                    await FFAppState().statsReference!.update({
-                      ...mapToFirestore(
-                        {
-                          'groceryExpenses':
-                              FieldValue.increment(-(_model.grocery!.amount)),
-                        },
-                      ),
-                    });
+                      await GoodsRevenueRatioRecord.collection.doc().set({
+                        ...createGoodsRevenueRatioRecordData(
+                          grocery: _model.groceryToTrack?.amount,
+                          revenue: 0.0,
+                          hotel: FFAppState().hotel,
+                        ),
+                        ...mapToFirestore(
+                          {
+                            'date': FieldValue.serverTimestamp(),
+                          },
+                        ),
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'The sales will restart tracking from this day forward.',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).primaryText,
+                            ),
+                          ),
+                          duration: Duration(milliseconds: 4000),
+                          backgroundColor:
+                              FlutterFlowTheme.of(context).secondary,
+                        ),
+                      );
+                    }
                     Navigator.pop(context);
 
                     setState(() {});
@@ -118,8 +161,84 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
-                              Icons.remove,
+                              Icons.start,
                               color: FlutterFlowTheme.of(context).primaryText,
+                              size: 20.0,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                'Starting point',
+                                style: FlutterFlowTheme.of(context).bodyMedium,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    _model.grocery =
+                        await GroceriesRecord.getDocumentOnce(widget.ref!);
+                    // reduce from stat
+
+                    await FFAppState().statsReference!.update({
+                      ...mapToFirestore(
+                        {
+                          'groceryExpenses':
+                              FieldValue.increment(-(_model.grocery!.amount)),
+                        },
+                      ),
+                    });
+                    await widget.ref!.delete();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Grocery is removed!',
+                          style: TextStyle(
+                            color: FlutterFlowTheme.of(context).info,
+                          ),
+                        ),
+                        duration: Duration(milliseconds: 4000),
+                        backgroundColor: FlutterFlowTheme.of(context).error,
+                      ),
+                    );
+                    // clear groceryHome
+                    FFAppState().clearGroceryHomeCache();
+                    Navigator.pop(context);
+                    context.safePop();
+
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                12.0, 0.0, 0.0, 0.0),
+                            child: Icon(
+                              Icons.remove,
+                              color: FlutterFlowTheme.of(context).error,
                               size: 20.0,
                             ),
                           ),

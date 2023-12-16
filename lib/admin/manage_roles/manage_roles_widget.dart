@@ -369,7 +369,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                         0,
                                         0,
                                         0,
-                                        10.0,
+                                        5.0,
                                       ),
                                       primary: false,
                                       shrinkWrap: true,
@@ -442,132 +442,149 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                   ),
                                                 ),
                                                 Expanded(
-                                                  child: StreamBuilder<
-                                                      List<LastLoginRecord>>(
-                                                    stream:
-                                                        queryLastLoginRecord(
-                                                      parent:
-                                                          recentItem.reference,
-                                                      singleRecord: true,
-                                                    ),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      // Customize what your widget looks like when it's loading.
-                                                      if (!snapshot.hasData) {
-                                                        return Center(
-                                                          child: SizedBox(
-                                                            width: 50.0,
-                                                            height: 50.0,
+                                                  child: Align(
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                            0.0, -1.0),
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  10.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: StreamBuilder<
+                                                          List<
+                                                              LastLoginRecord>>(
+                                                        stream:
+                                                            queryLastLoginRecord(
+                                                          parent: recentItem
+                                                              .reference,
+                                                          singleRecord: true,
+                                                        ),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          // Customize what your widget looks like when it's loading.
+                                                          if (!snapshot
+                                                              .hasData) {
+                                                            return Center(
+                                                              child: SizedBox(
+                                                                width: 50.0,
+                                                                height: 50.0,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  valueColor:
+                                                                      AlwaysStoppedAnimation<
+                                                                          Color>(
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          List<LastLoginRecord>
+                                                              checkboxListTileLastLoginRecordList =
+                                                              snapshot.data!;
+                                                          // Return an empty Container when the item does not exist.
+                                                          if (snapshot
+                                                              .data!.isEmpty) {
+                                                            return Container();
+                                                          }
+                                                          final checkboxListTileLastLoginRecord =
+                                                              checkboxListTileLastLoginRecordList
+                                                                      .isNotEmpty
+                                                                  ? checkboxListTileLastLoginRecordList
+                                                                      .first
+                                                                  : null;
+                                                          return Theme(
+                                                            data: ThemeData(
+                                                              unselectedWidgetColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                            ),
                                                             child:
-                                                                CircularProgressIndicator(
-                                                              valueColor:
-                                                                  AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                FlutterFlowTheme.of(
+                                                                CheckboxListTile(
+                                                              value: _model
+                                                                      .checkboxListTileValueMap1[
+                                                                  recentItem] ??= false,
+                                                              onChanged:
+                                                                  (newValue) async {
+                                                                setState(() =>
+                                                                    _model.checkboxListTileValueMap1[
+                                                                            recentItem] =
+                                                                        newValue!);
+                                                                if (newValue!) {
+                                                                  _model.addToSelectedUsers(
+                                                                      recentItem
+                                                                          .reference);
+                                                                } else {
+                                                                  _model.removeFromSelectedUsers(
+                                                                      recentItem
+                                                                          .reference);
+                                                                }
+                                                              },
+                                                              title: Text(
+                                                                recentItem
+                                                                    .displayName,
+                                                                style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .primary,
+                                                                    .bodyLarge
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      lineHeight:
+                                                                          2.0,
+                                                                    ),
+                                                              ),
+                                                              subtitle: Text(
+                                                                '${recentItem.role} last login: ${dateTimeFormat('jm', checkboxListTileLastLoginRecord?.datetime)}',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodySmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .success,
+                                                                    ),
+                                                              ),
+                                                              tileColor: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondaryBackground,
+                                                              activeColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                              checkColor:
+                                                                  Colors.white,
+                                                              dense: false,
+                                                              controlAffinity:
+                                                                  ListTileControlAffinity
+                                                                      .trailing,
+                                                              contentPadding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          8.0,
+                                                                          0.0,
+                                                                          8.0,
+                                                                          0.0),
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8.0),
                                                               ),
                                                             ),
-                                                          ),
-                                                        );
-                                                      }
-                                                      List<LastLoginRecord>
-                                                          checkboxListTileLastLoginRecordList =
-                                                          snapshot.data!;
-                                                      // Return an empty Container when the item does not exist.
-                                                      if (snapshot
-                                                          .data!.isEmpty) {
-                                                        return Container();
-                                                      }
-                                                      final checkboxListTileLastLoginRecord =
-                                                          checkboxListTileLastLoginRecordList
-                                                                  .isNotEmpty
-                                                              ? checkboxListTileLastLoginRecordList
-                                                                  .first
-                                                              : null;
-                                                      return Theme(
-                                                        data: ThemeData(
-                                                          unselectedWidgetColor:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .secondaryText,
-                                                        ),
-                                                        child: CheckboxListTile(
-                                                          value: _model
-                                                                  .checkboxListTileValueMap1[
-                                                              recentItem] ??= false,
-                                                          onChanged:
-                                                              (newValue) async {
-                                                            setState(() => _model
-                                                                        .checkboxListTileValueMap1[
-                                                                    recentItem] =
-                                                                newValue!);
-                                                            if (newValue!) {
-                                                              _model.addToSelectedUsers(
-                                                                  recentItem
-                                                                      .reference);
-                                                            } else {
-                                                              _model.removeFromSelectedUsers(
-                                                                  recentItem
-                                                                      .reference);
-                                                            }
-                                                          },
-                                                          title: Text(
-                                                            recentItem
-                                                                .displayName,
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyLarge
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  lineHeight:
-                                                                      2.0,
-                                                                ),
-                                                          ),
-                                                          subtitle: Text(
-                                                            '${recentItem.role} last login: ${dateTimeFormat('jm', checkboxListTileLastLoginRecord?.datetime)}',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .success,
-                                                                ),
-                                                          ),
-                                                          tileColor: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryBackground,
-                                                          activeColor:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .primary,
-                                                          checkColor:
-                                                              Colors.white,
-                                                          dense: false,
-                                                          controlAffinity:
-                                                              ListTileControlAffinity
-                                                                  .trailing,
-                                                          contentPadding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      8.0,
-                                                                      0.0,
-                                                                      8.0,
-                                                                      0.0),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8.0),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -636,7 +653,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                         0,
                                         0,
                                         0,
-                                        10.0,
+                                        5.0,
                                       ),
                                       primary: false,
                                       shrinkWrap: true,

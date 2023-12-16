@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -252,148 +253,304 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Container(
-                              width: 250.0,
-                              height: 44.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  if (_model.amountController.text != null &&
-                                      _model.amountController.text != '') {
-                                    var confirmDialogResponse =
-                                        await showDialog<bool>(
-                                              context: context,
-                                              builder: (alertDialogContext) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      'Have you really spent for grocery?'),
-                                                  content: Text(
-                                                      'You are recording an amount of Php ${_model.amountController.text}.'),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              alertDialogContext,
-                                                              false),
-                                                      child: Text('Cancel'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              alertDialogContext,
-                                                              true),
-                                                      child: Text('Confirm'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            ) ??
-                                            false;
-                                    if (confirmDialogResponse) {
-                                      await GroceriesRecord.collection
-                                          .doc()
-                                          .set({
-                                        ...createGroceriesRecordData(
-                                          hotel: FFAppState().hotel,
-                                          recordedBy: currentUserReference,
-                                          amount: double.tryParse(
-                                              _model.amountController.text),
-                                          remark: _model.remarkController.text,
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'date':
-                                                FieldValue.serverTimestamp(),
-                                          },
-                                        ),
-                                      });
-                                      // increment grocery expense
-
-                                      await FFAppState()
-                                          .statsReference!
-                                          .update({
-                                        ...mapToFirestore(
-                                          {
-                                            'groceryExpenses':
-                                                FieldValue.increment(
-                                                    double.parse(_model
-                                                        .amountController
-                                                        .text)),
-                                          },
-                                        ),
-                                      });
-                                      FFAppState().clearGroceryHomeCache();
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'You have recorded a spending in grocery.',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                            ),
-                                          ),
-                                          duration:
-                                              Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                      );
-                                    }
-                                    Navigator.pop(context);
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Please enter an amount!',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .info,
-                                          ),
-                                        ),
-                                        duration: Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context).error,
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
+                            Expanded(
+                              flex: 5,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Expanded(
+                                    flex: 4,
+                                    child: Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 12.0, 0.0),
+                                          10.0, 0.0, 0.0, 0.0),
                                       child: Text(
-                                        'Add to Grocery Grand Total',
+                                        'Start Counting Revenue',
+                                        textAlign: TextAlign.start,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
                                               fontFamily: 'Readex Pro',
                                               color:
                                                   FlutterFlowTheme.of(context)
-                                                      .secondary,
+                                                      .primary,
                                               fontWeight: FontWeight.w500,
                                             ),
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.send_rounded,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondary,
-                                      size: 28.0,
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Align(
+                                      alignment:
+                                          AlignmentDirectional(-1.0, 0.0),
+                                      child: Switch.adaptive(
+                                        value: _model.switchValue ??= false,
+                                        onChanged: (newValue) async {
+                                          setState(() =>
+                                              _model.switchValue = newValue!);
+                                          if (newValue!) {
+                                            // on
+                                            setState(() {
+                                              _model.startCountingRevenue =
+                                                  true;
+                                            });
+                                          } else {
+                                            // off
+                                            setState(() {
+                                              _model.startCountingRevenue =
+                                                  false;
+                                            });
+                                          }
+                                        },
+                                        activeColor:
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                        activeTrackColor:
+                                            FlutterFlowTheme.of(context)
+                                                .accent1,
+                                        inactiveTrackColor:
+                                            FlutterFlowTheme.of(context)
+                                                .alternate,
+                                        inactiveThumbColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                      ),
                                     ),
-                                  ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                width: 250.0,
+                                height: 44.0,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                ),
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    if (_model.amountController.text != null &&
+                                        _model.amountController.text != '') {
+                                      var confirmDialogResponse =
+                                          await showDialog<bool>(
+                                                context: context,
+                                                builder: (alertDialogContext) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                        'Have you really spent for grocery?'),
+                                                    content: Text(
+                                                        'You are recording an amount of Php ${_model.amountController.text}.'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext,
+                                                                false),
+                                                        child: Text('Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext,
+                                                                true),
+                                                        child: Text('Confirm'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ) ??
+                                              false;
+                                      if (confirmDialogResponse) {
+                                        await GroceriesRecord.collection
+                                            .doc()
+                                            .set({
+                                          ...createGroceriesRecordData(
+                                            hotel: FFAppState().hotel,
+                                            recordedBy: currentUserReference,
+                                            amount: double.tryParse(
+                                                _model.amountController.text),
+                                            remark:
+                                                _model.remarkController.text,
+                                          ),
+                                          ...mapToFirestore(
+                                            {
+                                              'date':
+                                                  FieldValue.serverTimestamp(),
+                                            },
+                                          ),
+                                        });
+                                        if (_model.startCountingRevenue) {
+                                          // create goods revenue ratio
+
+                                          await GoodsRevenueRatioRecord
+                                              .collection
+                                              .doc()
+                                              .set({
+                                            ...createGoodsRevenueRatioRecordData(
+                                              grocery: double.tryParse(
+                                                  _model.amountController.text),
+                                              revenue: 0.0,
+                                              hotel: FFAppState().hotel,
+                                            ),
+                                            ...mapToFirestore(
+                                              {
+                                                'date': FieldValue
+                                                    .serverTimestamp(),
+                                              },
+                                            ),
+                                          });
+                                        } else {
+                                          // count grr
+                                          _model.countGrr =
+                                              await queryGoodsRevenueRatioRecordCount(
+                                            queryBuilder:
+                                                (goodsRevenueRatioRecord) =>
+                                                    goodsRevenueRatioRecord
+                                                        .where(
+                                                          'hotel',
+                                                          isEqualTo:
+                                                              FFAppState()
+                                                                  .hotel,
+                                                        )
+                                                        .orderBy('date',
+                                                            descending: true),
+                                          );
+                                          if (_model.countGrr! > 0) {
+                                            // last grr
+                                            _model.lastGrr =
+                                                await queryGoodsRevenueRatioRecordOnce(
+                                              queryBuilder:
+                                                  (goodsRevenueRatioRecord) =>
+                                                      goodsRevenueRatioRecord
+                                                          .where(
+                                                            'hotel',
+                                                            isEqualTo:
+                                                                FFAppState()
+                                                                    .hotel,
+                                                          )
+                                                          .orderBy('date',
+                                                              descending: true),
+                                              singleRecord: true,
+                                            ).then((s) => s.firstOrNull);
+                                            // increment grocery
+
+                                            await _model.lastGrr!.reference
+                                                .update({
+                                              ...mapToFirestore(
+                                                {
+                                                  'grocery':
+                                                      FieldValue.increment(
+                                                          double.parse(_model
+                                                              .amountController
+                                                              .text)),
+                                                },
+                                              ),
+                                            });
+                                          }
+                                        }
+
+                                        // increment grocery expense
+
+                                        await FFAppState()
+                                            .statsReference!
+                                            .update({
+                                          ...mapToFirestore(
+                                            {
+                                              'groceryExpenses':
+                                                  FieldValue.increment(
+                                                      double.parse(_model
+                                                          .amountController
+                                                          .text)),
+                                            },
+                                          ),
+                                        });
+                                        // clear groceryHome
+                                        FFAppState().clearGroceryHomeCache();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'You have recorded a spending in grocery.',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                            ),
+                                            duration:
+                                                Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondary,
+                                          ),
+                                        );
+                                      }
+                                      Navigator.pop(context);
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Please enter an amount!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .info,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .error,
+                                        ),
+                                      );
+                                    }
+
+                                    setState(() {});
+                                  },
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Expanded(
+                                        flex: 5,
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 5.0, 0.0),
+                                          child: Text(
+                                            'Add to Grocery Grand Total',
+                                            textAlign: TextAlign.end,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondary,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Icon(
+                                          Icons.send_rounded,
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondary,
+                                          size: 28.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

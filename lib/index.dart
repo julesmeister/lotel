@@ -30,6 +30,6 @@ export '/pages/stats/stats_widget.dart' show StatsWidget;
 export '/room/room_history/room_history_widget.dart' show RoomHistoryWidget;
 export '/admin/late_checkout_fee/late_checkout_fee_widget.dart'
     show LateCheckoutFeeWidget;
-export '/grocery/grocery_list/grocery_list_widget.dart' show GroceryListWidget;
 export '/bills/bill_form/bill_form_widget.dart' show BillFormWidget;
 export '/bills/bills_list/bills_list_widget.dart' show BillsListWidget;
+export '/grocery/grocery_list/grocery_list_widget.dart' show GroceryListWidget;
