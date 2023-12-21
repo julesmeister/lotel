@@ -36,8 +36,9 @@ class LineGraphStruct extends FFFirebaseStruct {
         yData: getDataList(data['yData']),
       );
 
-  static LineGraphStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic> ? LineGraphStruct.fromMap(data) : null;
+  static LineGraphStruct? maybeFromMap(dynamic data) => data is Map
+      ? LineGraphStruct.fromMap(data.cast<String, dynamic>())
+      : null;
 
   Map<String, dynamic> toMap() => {
         'xData': _xData,

@@ -158,7 +158,6 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         }
       }
 
-      // Add the "Starting Quantity" and "Remaining Quantity" columns
       goodsData.forEach((description, data) {
         final startingQuantity = widget.inventories
                 ?.where((inventory) => inventory.item == description)
@@ -166,6 +165,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 .reduce(
                     (value, element) => value > element ? value : element) ??
             0;
+
         final remainingQuantity = startingQuantity - (data['quantity'] ?? 0);
         double price = data['price'] ?? 0.0;
 
@@ -181,6 +181,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
           remainingQuantity.toInt().toString(),
           formattedPrice,
         ];
+
         entries.add(entry);
       });
 

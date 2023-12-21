@@ -679,6 +679,48 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     },
                                                   ),
                                                 });
+                                                if (_model.lastGrr
+                                                        ?.daysToBreakEven ==
+                                                    0) {
+                                                  if (functions.add(
+                                                          _model
+                                                              .lastGrr!.revenue,
+                                                          valueOrDefault<
+                                                              double>(
+                                                            functions.sumOfGoodsIncome(
+                                                                _model
+                                                                    .transactionsToRemit
+                                                                    .toList()),
+                                                            0.0,
+                                                          )) >
+                                                      _model.lastGrr!.grocery) {
+                                                    // set daysToBreakeven
+
+                                                    await _model
+                                                        .lastGrr!.reference
+                                                        .update(
+                                                            createGoodsRevenueRatioRecordData(
+                                                      daysToBreakEven: _model
+                                                              .lastGrr!
+                                                              .daysPassed +
+                                                          1,
+                                                    ));
+                                                  } else {
+                                                    // increment daysPassed
+
+                                                    await _model
+                                                        .lastGrr!.reference
+                                                        .update({
+                                                      ...mapToFirestore(
+                                                        {
+                                                          'daysPassed':
+                                                              FieldValue
+                                                                  .increment(1),
+                                                        },
+                                                      ),
+                                                    });
+                                                  }
+                                                }
                                               }
                                               // what's happening
                                               setState(() {

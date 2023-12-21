@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -93,7 +94,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                             return AlertDialog(
                               title: Text('Starting Point'),
                               content: Text(
-                                  'Are you sure you want to start counting the revenue hereon?'),
+                                  'Are you sure you want to track revenue from this point forward?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
@@ -121,6 +122,11 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                           grocery: _model.groceryToTrack?.amount,
                           revenue: 0.0,
                           hotel: FFAppState().hotel,
+                          daysToBreakEven: 0,
+                          daysPassed: valueOrDefault<int>(
+                            functions.daysFrom(_model.groceryToTrack!.date!),
+                            0,
+                          ),
                         ),
                         ...mapToFirestore(
                           {
@@ -171,7 +177,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'Starting point',
+                                'Mark as starting point',
                                 style: FlutterFlowTheme.of(context).bodyMedium,
                               ),
                             ),

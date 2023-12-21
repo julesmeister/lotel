@@ -397,6 +397,8 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                                   _model.amountController.text),
                                               revenue: 0.0,
                                               hotel: FFAppState().hotel,
+                                              daysToBreakEven: 0,
+                                              daysPassed: 0,
                                             ),
                                             ...mapToFirestore(
                                               {
@@ -452,6 +454,22 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                                 },
                                               ),
                                             });
+                                            if (_model.lastGrr!.revenue <=
+                                                valueOrDefault<double>(
+                                                  _model.lastGrr!.grocery +
+                                                      double.parse(_model
+                                                          .amountController
+                                                          .text),
+                                                  0.0,
+                                                )) {
+                                              // reset daysToBreakEven
+
+                                              await _model.lastGrr!.reference
+                                                  .update(
+                                                      createGoodsRevenueRatioRecordData(
+                                                daysToBreakEven: 0,
+                                              ));
+                                            }
                                           }
                                         }
 

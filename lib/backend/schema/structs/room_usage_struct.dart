@@ -36,8 +36,9 @@ class RoomUsageStruct extends FFFirebaseStruct {
         use: castToType<int>(data['use']),
       );
 
-  static RoomUsageStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic> ? RoomUsageStruct.fromMap(data) : null;
+  static RoomUsageStruct? maybeFromMap(dynamic data) => data is Map
+      ? RoomUsageStruct.fromMap(data.cast<String, dynamic>())
+      : null;
 
   Map<String, dynamic> toMap() => {
         'number': _number,

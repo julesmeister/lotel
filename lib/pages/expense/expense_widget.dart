@@ -10,6 +10,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -128,39 +129,23 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
               visible: widget.additional,
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 15.0, 0.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.safePop();
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      FlutterFlowIconButton(
-                        borderRadius: 20.0,
-                        borderWidth: 1.0,
-                        buttonSize: 40.0,
-                        icon: Icon(
-                          Icons.cancel_outlined,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          size: 24.0,
-                        ),
-                        onPressed: () {
-                          print('IconButton pressed ...');
-                        },
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    FlutterFlowIconButton(
+                      borderRadius: 20.0,
+                      borderWidth: 1.0,
+                      buttonSize: 40.0,
+                      icon: Icon(
+                        Icons.keyboard_arrow_down_sharp,
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        size: 24.0,
                       ),
-                      Text(
-                        'Cancel',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              fontSize: 20.0,
-                            ),
-                      ),
-                    ],
-                  ),
+                      onPressed: () async {
+                        context.safePop();
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -248,7 +233,6 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                       TextFormField(
                         controller: _model.descriptionController,
                         focusNode: _model.descriptionFocusNode,
-                        autofocus: true,
                         textCapitalization: TextCapitalization.words,
                         obscureText: false,
                         decoration: InputDecoration(
@@ -322,7 +306,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             ChipData('Materials'),
                             ChipData('Salary'),
                             ChipData('Refill Water'),
-                            ChipData('Absent')
+                            ChipData('Absent'),
+                            ChipData('Softdrinks')
                           ],
                           onChanged: (val) async {
                             setState(() => _model.choicesValue = val?.first);
@@ -799,6 +784,98 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                           _model.expenseRef =
                                               _model.newExp?.reference;
                                         });
+                                        if (functions.findTextsInString(
+                                            _model.choicesValue,
+                                            'Softdrinks')) {
+                                          // also creating grocery
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Also creating grocery!',
+                                                style: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                ),
+                                              ),
+                                              duration:
+                                                  Duration(milliseconds: 4000),
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                            ),
+                                          );
+                                          // create grocery
+
+                                          await GroceriesRecord.collection
+                                              .doc()
+                                              .set({
+                                            ...createGroceriesRecordData(
+                                              hotel: FFAppState().hotel,
+                                              recordedBy: currentUserReference,
+                                              amount: double.tryParse(
+                                                  _model.amountController.text),
+                                              remark: _model
+                                                  .descriptionController.text,
+                                            ),
+                                            ...mapToFirestore(
+                                              {
+                                                'date': FieldValue
+                                                    .serverTimestamp(),
+                                              },
+                                            ),
+                                          });
+                                          // count grr
+                                          _model.countGrr =
+                                              await queryGoodsRevenueRatioRecordCount(
+                                            queryBuilder:
+                                                (goodsRevenueRatioRecord) =>
+                                                    goodsRevenueRatioRecord
+                                                        .where(
+                                                          'hotel',
+                                                          isEqualTo:
+                                                              FFAppState()
+                                                                  .hotel,
+                                                        )
+                                                        .orderBy('date',
+                                                            descending: true),
+                                          );
+                                          _shouldSetState = true;
+                                          if (_model.countGrr! > 0) {
+                                            // last grr
+                                            _model.lastGrr =
+                                                await queryGoodsRevenueRatioRecordOnce(
+                                              queryBuilder:
+                                                  (goodsRevenueRatioRecord) =>
+                                                      goodsRevenueRatioRecord
+                                                          .where(
+                                                            'hotel',
+                                                            isEqualTo:
+                                                                FFAppState()
+                                                                    .hotel,
+                                                          )
+                                                          .orderBy('date',
+                                                              descending: true),
+                                              singleRecord: true,
+                                            ).then((s) => s.firstOrNull);
+                                            _shouldSetState = true;
+                                            // increment grocery
+
+                                            await _model.lastGrr!.reference
+                                                .update({
+                                              ...mapToFirestore(
+                                                {
+                                                  'grocery':
+                                                      FieldValue.increment(
+                                                          double.parse(_model
+                                                              .amountController
+                                                              .text)),
+                                                },
+                                              ),
+                                            });
+                                          }
+                                        }
                                       } else {
                                         if (_shouldSetState) setState(() {});
                                         return;
@@ -874,6 +951,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                               width: 1.0,
                             ),
                             borderRadius: BorderRadius.circular(12.0),
+                            disabledColor: Color(0xFFDDE0E3),
+                            disabledTextColor: Color(0xFF12151C),
                           ),
                         ),
                       ),

@@ -56,8 +56,9 @@ class CartGoodsStruct extends FFFirebaseStruct {
         previousQuantity: castToType<int>(data['previousQuantity']),
       );
 
-  static CartGoodsStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic> ? CartGoodsStruct.fromMap(data) : null;
+  static CartGoodsStruct? maybeFromMap(dynamic data) => data is Map
+      ? CartGoodsStruct.fromMap(data.cast<String, dynamic>())
+      : null;
 
   Map<String, dynamic> toMap() => {
         'description': _description,

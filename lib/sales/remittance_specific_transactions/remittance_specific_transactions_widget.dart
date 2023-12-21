@@ -1777,7 +1777,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                       ),
                                                                       'roomNo':
                                                                           serializeParam(
-                                                                        0,
+                                                                        bookingsItem
+                                                                            .room,
                                                                         ParamType
                                                                             .int,
                                                                       ),

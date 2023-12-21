@@ -747,7 +747,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     Container(
-                                                                  height: 180.0,
+                                                                  height: 315.0,
                                                                   child:
                                                                       OptionToBookingTransactionWidget(
                                                                     ref: bookingsItem
@@ -760,6 +760,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             .description,
                                                                     price: bookingsItem
                                                                         .total,
+                                                                    booking:
+                                                                        bookingsItem
+                                                                            .booking,
                                                                   ),
                                                                 ),
                                                               ),
@@ -1981,7 +1984,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     Container(
-                                                                  height: 180.0,
+                                                                  height: 315.0,
                                                                   child:
                                                                       OptionToBookingTransactionWidget(
                                                                     ref: bookingsOnlyItem
@@ -1994,6 +1997,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             .description,
                                                                     price: bookingsOnlyItem
                                                                         .total,
+                                                                    booking:
+                                                                        bookingsOnlyItem
+                                                                            .booking,
                                                                   ),
                                                                 ),
                                                               ),

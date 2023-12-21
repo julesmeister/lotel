@@ -365,7 +365,13 @@ String descriptionOfExpense(
 ) {
   switch (whichExpense) {
     case 'consumedBy':
-      return 'consumed by ${consumedBy ?? "unknown"}';
+      return 'consumed by ' +
+          (consumedBy != null
+              ? consumedBy
+                  .split(' ')
+                  .map((word) => word[0].toUpperCase() + word.substring(1))
+                  .join(' ')
+              : "Unknown");
     case 'spoilage':
       return 'spoiled';
     case 'other':
@@ -1098,4 +1104,19 @@ String? numOfGuests(String guests) {
   } else {
     return '$numGuests Guests';
   }
+}
+
+double add(
+  double xx,
+  double yy,
+) {
+  // add xx and yy
+  return xx + yy;
+}
+
+int daysFrom(DateTime date) {
+  // how many days it has been since
+  final now = DateTime.now();
+  final difference = now.difference(date);
+  return difference.inDays;
 }

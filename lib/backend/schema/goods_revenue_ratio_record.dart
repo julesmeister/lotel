@@ -36,11 +36,23 @@ class GoodsRevenueRatioRecord extends FirestoreRecord {
   String get hotel => _hotel ?? '';
   bool hasHotel() => _hotel != null;
 
+  // "daysToBreakEven" field.
+  int? _daysToBreakEven;
+  int get daysToBreakEven => _daysToBreakEven ?? 0;
+  bool hasDaysToBreakEven() => _daysToBreakEven != null;
+
+  // "daysPassed" field.
+  int? _daysPassed;
+  int get daysPassed => _daysPassed ?? 0;
+  bool hasDaysPassed() => _daysPassed != null;
+
   void _initializeFields() {
     _date = snapshotData['date'] as DateTime?;
     _grocery = castToType<double>(snapshotData['grocery']);
     _revenue = castToType<double>(snapshotData['revenue']);
     _hotel = snapshotData['hotel'] as String?;
+    _daysToBreakEven = castToType<int>(snapshotData['daysToBreakEven']);
+    _daysPassed = castToType<int>(snapshotData['daysPassed']);
   }
 
   static CollectionReference get collection =>
@@ -83,6 +95,8 @@ Map<String, dynamic> createGoodsRevenueRatioRecordData({
   double? grocery,
   double? revenue,
   String? hotel,
+  int? daysToBreakEven,
+  int? daysPassed,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -90,6 +104,8 @@ Map<String, dynamic> createGoodsRevenueRatioRecordData({
       'grocery': grocery,
       'revenue': revenue,
       'hotel': hotel,
+      'daysToBreakEven': daysToBreakEven,
+      'daysPassed': daysPassed,
     }.withoutNulls,
   );
 
@@ -105,12 +121,20 @@ class GoodsRevenueRatioRecordDocumentEquality
     return e1?.date == e2?.date &&
         e1?.grocery == e2?.grocery &&
         e1?.revenue == e2?.revenue &&
-        e1?.hotel == e2?.hotel;
+        e1?.hotel == e2?.hotel &&
+        e1?.daysToBreakEven == e2?.daysToBreakEven &&
+        e1?.daysPassed == e2?.daysPassed;
   }
 
   @override
-  int hash(GoodsRevenueRatioRecord? e) =>
-      const ListEquality().hash([e?.date, e?.grocery, e?.revenue, e?.hotel]);
+  int hash(GoodsRevenueRatioRecord? e) => const ListEquality().hash([
+        e?.date,
+        e?.grocery,
+        e?.revenue,
+        e?.hotel,
+        e?.daysToBreakEven,
+        e?.daysPassed
+      ]);
 
   @override
   bool isValidKey(Object? o) => o is GoodsRevenueRatioRecord;

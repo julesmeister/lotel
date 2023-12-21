@@ -200,7 +200,12 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                           )
                                           .orderBy('date', descending: true),
                                     ),
-                                    padding: EdgeInsets.zero,
+                                    padding: EdgeInsets.fromLTRB(
+                                      0,
+                                      10.0,
+                                      0,
+                                      0,
+                                    ),
                                     primary: false,
                                     shrinkWrap: true,
                                     reverse: false,
@@ -674,7 +679,12 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                           )
                                           .orderBy('date', descending: true),
                                     ),
-                                    padding: EdgeInsets.zero,
+                                    padding: EdgeInsets.fromLTRB(
+                                      0,
+                                      10.0,
+                                      0,
+                                      0,
+                                    ),
                                     primary: false,
                                     shrinkWrap: true,
                                     reverse: false,
@@ -740,7 +750,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 CircularPercentIndicator(
                                                   percent: functions.netCircleDecimal(
@@ -748,7 +758,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           .revenue,
                                                       listViewGoodsRevenueRatioRecord
                                                           .grocery),
-                                                  radius: 50.0,
+                                                  radius: 36.5,
                                                   lineWidth: 8.0,
                                                   animation: true,
                                                   animateFromLastPercent: true,
@@ -771,7 +781,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           fontFamily: 'Outfit',
                                                           color:
                                                               Color(0xFF14181B),
-                                                          fontSize: 22.0,
+                                                          fontSize: 14.0,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -782,8 +792,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                   child: Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
-                                                            .fromSTEB(30.0, 0.0,
-                                                                0.0, 0.0),
+                                                            .fromSTEB(25.0, 0.0,
+                                                                5.0, 0.0),
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.max,
@@ -791,6 +801,111 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           CrossAxisAlignment
                                                               .end,
                                                       children: [
+                                                        Align(
+                                                          alignment:
+                                                              AlignmentDirectional(
+                                                                  0.0, 0.0),
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0.0,
+                                                                        0.0,
+                                                                        0.0,
+                                                                        5.0),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          1.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child:
+                                                                      Container(
+                                                                    width: 12.0,
+                                                                    height:
+                                                                        12.0,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .tertiary,
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                    child: Text(
+                                                                      'Grocery',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .start,
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyLarge
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child: Text(
+                                                                    '${formatNumber(
+                                                                      listViewGoodsRevenueRatioRecord
+                                                                          .grocery,
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .decimal,
+                                                                      decimalType:
+                                                                          DecimalType
+                                                                              .automatic,
+                                                                      currency:
+                                                                          'P ',
+                                                                    )}',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .end,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
                                                         Padding(
                                                           padding:
                                                               EdgeInsetsDirectional
@@ -807,24 +922,60 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                 MainAxisAlignment
                                                                     .spaceBetween,
                                                             children: [
-                                                              Container(
-                                                                width: 12.0,
-                                                                height: 12.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .tertiary,
-                                                                  shape: BoxShape
-                                                                      .circle,
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            1.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                child:
+                                                                    Container(
+                                                                  width: 12.0,
+                                                                  height: 12.0,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                flex: 3,
+                                                                child: Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          10.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child: Text(
+                                                                    'Revenue',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                  ),
                                                                 ),
                                                               ),
                                                               Expanded(
                                                                 flex: 3,
                                                                 child: Text(
-                                                                  'Grocery: ${formatNumber(
+                                                                  '${formatNumber(
                                                                     listViewGoodsRevenueRatioRecord
-                                                                        .grocery,
+                                                                        .revenue,
                                                                     formatType:
                                                                         FormatType
                                                                             .decimal,
@@ -851,6 +1002,96 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                             ],
                                                           ),
                                                         ),
+                                                        if (listViewGoodsRevenueRatioRecord
+                                                                .daysToBreakEven >
+                                                            0)
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0.0,
+                                                                        0.0,
+                                                                        0.0,
+                                                                        5.0),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          1.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child:
+                                                                      Container(
+                                                                    width: 12.0,
+                                                                    height:
+                                                                        12.0,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                    child: Text(
+                                                                      'Breakeven',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .start,
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyLarge
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child: Text(
+                                                                    '${listViewGoodsRevenueRatioRecord.daysToBreakEven.toString()} days',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .end,
+                                                                    maxLines: 1,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
                                                         Padding(
                                                           padding:
                                                               EdgeInsetsDirectional
@@ -867,36 +1108,75 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                 MainAxisAlignment
                                                                     .spaceBetween,
                                                             children: [
-                                                              Container(
-                                                                width: 12.0,
-                                                                height: 12.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primary,
-                                                                  shape: BoxShape
-                                                                      .circle,
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            1.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                child:
+                                                                    Container(
+                                                                  width: 12.0,
+                                                                  height: 12.0,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .warning,
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                flex: 3,
+                                                                child: Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          10.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child: Text(
+                                                                    'Gain',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                  ),
                                                                 ),
                                                               ),
                                                               Expanded(
                                                                 flex: 3,
                                                                 child: Text(
-                                                                  'Revenue: ${formatNumber(
-                                                                    listViewGoodsRevenueRatioRecord
-                                                                        .revenue,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .decimal,
-                                                                    decimalType:
-                                                                        DecimalType
-                                                                            .automatic,
-                                                                    currency:
-                                                                        'P ',
-                                                                  )}',
+                                                                  (double grocery,
+                                                                          double
+                                                                              revenue) {
+                                                                    return grocery +
+                                                                                revenue ==
+                                                                            0
+                                                                        ? "0"
+                                                                        : (revenue / (grocery + revenue) * 100 - 50).round().toString() +
+                                                                            "%";
+                                                                  }(
+                                                                      listViewGoodsRevenueRatioRecord
+                                                                          .grocery,
+                                                                      listViewGoodsRevenueRatioRecord
+                                                                          .revenue),
                                                                   textAlign:
                                                                       TextAlign
                                                                           .end,
+                                                                  maxLines: 1,
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
                                                                       .bodyLarge
@@ -980,6 +1260,10 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                         createGoodsRevenueRatioRecordData(
                                                                   date: _model
                                                                       .adjustedDateRatio,
+                                                                  daysPassed: functions
+                                                                      .daysFrom(
+                                                                          _model
+                                                                              .adjustedDateRatio!),
                                                                 ));
                                                                 ScaffoldMessenger.of(
                                                                         context)
@@ -1007,7 +1291,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                               setState(() {});
                                                             },
                                                             child: AutoSizeText(
-                                                              'Started at ${dateTimeFormat('EEE MMM d y h:mm a', listViewGoodsRevenueRatioRecord.date)}',
+                                                              'Grocery bought since ${dateTimeFormat('yMMMd', listViewGoodsRevenueRatioRecord.date)}',
                                                               textAlign:
                                                                   TextAlign.end,
                                                               maxLines: 1,

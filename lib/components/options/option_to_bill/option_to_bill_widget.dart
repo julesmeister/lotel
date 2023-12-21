@@ -131,7 +131,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.remove,
-                              color: FlutterFlowTheme.of(context).primaryText,
+                              color: FlutterFlowTheme.of(context).error,
                               size: 20.0,
                             ),
                           ),

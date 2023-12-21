@@ -166,6 +166,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                               child: TextFormField(
                                 controller: _model.detailController,
                                 focusNode: _model.detailFocusNode,
+                                autofocus: true,
                                 textCapitalization:
                                     TextCapitalization.sentences,
                                 obscureText: false,

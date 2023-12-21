@@ -35,7 +35,7 @@ class _ShareStatsState extends State<ShareStats> {
     final pdf = pw.Document();
 
     final headerText =
-        'Brief Summary of ${widget.stats.month} ${widget.stats.year}';
+        'Brief Summary of ${widget.stats.hotel} in ${widget.stats.month} ${widget.stats.year}';
     final headerSection = pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [

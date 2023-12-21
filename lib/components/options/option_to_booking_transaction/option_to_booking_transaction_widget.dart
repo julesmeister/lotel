@@ -21,12 +21,14 @@ class OptionToBookingTransactionWidget extends StatefulWidget {
     required this.roomNo,
     required this.description,
     required this.price,
+    this.booking,
   }) : super(key: key);
 
   final DocumentReference? ref;
   final int? roomNo;
   final String? description;
   final double? price;
+  final DocumentReference? booking;
 
   @override
   _OptionToBookingTransactionWidgetState createState() =>
@@ -50,6 +52,7 @@ class _OptionToBookingTransactionWidgetState
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // room
       _model.room = await queryRoomsRecordOnce(
         queryBuilder: (roomsRecord) => roomsRecord
             .where(
@@ -62,6 +65,8 @@ class _OptionToBookingTransactionWidgetState
             ),
         singleRecord: true,
       ).then((s) => s.firstOrNull);
+      _model.settings =
+          await HotelSettingsRecord.getDocumentOnce(FFAppState().settingRef!);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -183,14 +188,330 @@ class _OptionToBookingTransactionWidgetState
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
+                    var confirmDialogResponse = await showDialog<bool>(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: Text('Converting Guest to Senior Citizen'),
+                              content: Text('Are you sure about this?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, false),
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, true),
+                                  child: Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          },
+                        ) ??
+                        false;
+                    if (confirmDialogResponse) {
+                      // read booking
+                      _model.booking =
+                          await BookingsRecord.getDocumentOnce(widget.booking!);
+                      if (_model.booking?.ability == 'normal') {
+                        // make senior in booking
+
+                        await widget.booking!.update(createBookingsRecordData(
+                          ability: 'senior',
+                          total: (double total, bool promoOn) {
+                            return total - (total * (promoOn ? 0.1 : 0.2));
+                          }(_model.booking!.total, _model.settings!.promoOn),
+                        ));
+                        // read Transaction again
+                        _model.readTrans =
+                            await TransactionsRecord.getDocumentOnce(
+                                widget.ref!);
+                        // create new transaction
+
+                        await TransactionsRecord.collection.doc().set({
+                          ...createTransactionsRecordData(
+                            description:
+                                'Guest from room ${widget.roomNo?.toString()} is now categorized as senior citizen. Hereby granting a discount.',
+                            staff: currentUserReference,
+                            total: (double total, bool promoOn) {
+                              return -(total * (promoOn ? 0.1 : 0.2));
+                            }(widget.price!, _model.settings!.promoOn),
+                            booking: widget.booking,
+                            type: 'book',
+                            pending: _model.readTrans?.pending,
+                            remitted: false,
+                            hotel: FFAppState().hotel,
+                            guests: int.tryParse(_model.booking!.guests),
+                            room: widget.roomNo,
+                          ),
+                          ...mapToFirestore(
+                            {
+                              'date': FieldValue.serverTimestamp(),
+                            },
+                          ),
+                        });
+                        // create history
+
+                        await HistoryRecord.createDoc(_model.booking!.room!)
+                            .set({
+                          ...createHistoryRecordData(
+                            description:
+                                'Guest from room ${widget.roomNo?.toString()} is now categorized as senior citizen. Hereby granting a discount.',
+                            staff: currentUserReference,
+                            booking: widget.booking,
+                          ),
+                          ...mapToFirestore(
+                            {
+                              'date': FieldValue.serverTimestamp(),
+                            },
+                          ),
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Guest has been categorized as senior citizen.',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            duration: Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
+                          ),
+                        );
+                      } else {
+                        // no further discount
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'There is no further discount we can provide.',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).info,
+                              ),
+                            ),
+                            duration: Duration(milliseconds: 4000),
+                            backgroundColor: FlutterFlowTheme.of(context).error,
+                          ),
+                        );
+                      }
+                    }
+                    // close
+                    Navigator.pop(context);
+
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                12.0, 0.0, 0.0, 0.0),
+                            child: Icon(
+                              Icons.transform,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 20.0,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                'Convert To Senior',
+                                style: FlutterFlowTheme.of(context).bodyMedium,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    var confirmDialogResponse = await showDialog<bool>(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: Text('Categorizing Guest to PWD'),
+                              content: Text('Are you sure about this?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, false),
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, true),
+                                  child: Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          },
+                        ) ??
+                        false;
+                    if (confirmDialogResponse) {
+                      // read booking
+                      _model.bookingPWD =
+                          await BookingsRecord.getDocumentOnce(widget.booking!);
+                      if (_model.booking?.ability == 'normal') {
+                        // make pwd in booking
+
+                        await _model.bookingPWD!.reference
+                            .update(createBookingsRecordData(
+                          ability: 'pwd',
+                          total: (double total, bool promoOn) {
+                            return total - (total * (promoOn ? 0.1 : 0.2));
+                          }(_model.bookingPWD!.total, _model.settings!.promoOn),
+                        ));
+                        // read Transaction again
+                        _model.readTransPWD =
+                            await TransactionsRecord.getDocumentOnce(
+                                widget.ref!);
+                        // create new transaction
+
+                        await TransactionsRecord.collection.doc().set({
+                          ...createTransactionsRecordData(
+                            description:
+                                'Guest from room ${widget.roomNo?.toString()} is now categorized as PWD. Hereby granting a discount.',
+                            staff: currentUserReference,
+                            total: (double total, bool promoOn) {
+                              return -(total * (promoOn ? 0.1 : 0.2));
+                            }(_model.readTransPWD!.total,
+                                _model.settings!.promoOn),
+                            booking: _model.bookingPWD?.reference,
+                            type: 'book',
+                            pending: _model.readTransPWD?.pending,
+                            remitted: false,
+                            hotel: FFAppState().hotel,
+                            guests: int.tryParse(_model.bookingPWD!.guests),
+                            room: widget.roomNo,
+                          ),
+                          ...mapToFirestore(
+                            {
+                              'date': FieldValue.serverTimestamp(),
+                            },
+                          ),
+                        });
+                        // create history
+
+                        await HistoryRecord.createDoc(_model.booking!.room!)
+                            .set({
+                          ...createHistoryRecordData(
+                            description:
+                                'Guest from room ${widget.roomNo?.toString()} is now categorized as PWD. Hereby granting a discount.',
+                            staff: currentUserReference,
+                            booking: widget.booking,
+                          ),
+                          ...mapToFirestore(
+                            {
+                              'date': FieldValue.serverTimestamp(),
+                            },
+                          ),
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Guest has been categorized as PWD.',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            duration: Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
+                          ),
+                        );
+                      } else {
+                        // no further discount
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'There is no further discount we can provide.',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).info,
+                              ),
+                            ),
+                            duration: Duration(milliseconds: 4000),
+                            backgroundColor: FlutterFlowTheme.of(context).error,
+                          ),
+                        );
+                      }
+                    }
+                    // close
+                    Navigator.pop(context);
+
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                12.0, 0.0, 0.0, 0.0),
+                            child: Icon(
+                              Icons.transform_sharp,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 20.0,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                'Convert to PWD',
+                                style: FlutterFlowTheme.of(context).bodyMedium,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
                     // delete transaction?
                     var confirmDialogResponse = await showDialog<bool>(
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
                               title: Text('Are you sure?'),
-                              content:
-                                  Text('This transaction will be deleted.'),
+                              content: Text(
+                                  'This transaction will be deleted. If this is a new checkin, the booking will also be deleted.'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
@@ -288,7 +609,7 @@ class _OptionToBookingTransactionWidgetState
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.delete_outlined,
-                              color: FlutterFlowTheme.of(context).primaryText,
+                              color: FlutterFlowTheme.of(context).error,
                               size: 20.0,
                             ),
                           ),
@@ -298,6 +619,124 @@ class _OptionToBookingTransactionWidgetState
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete Transaction',
+                                style: FlutterFlowTheme.of(context).bodyMedium,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    // delete transaction?
+                    var confirmDialogResponse = await showDialog<bool>(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: Text('Are you sure?'),
+                              content: Text('This duplicate will be removed.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, false),
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, true),
+                                  child: Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          },
+                        ) ??
+                        false;
+                    if (confirmDialogResponse) {
+                      // transaction action output
+                      _model.duplicateTrans =
+                          await TransactionsRecord.getDocumentOnce(widget.ref!);
+                      // history taking
+
+                      await HistoryRecord.createDoc(_model.room!.reference)
+                          .set({
+                        ...createHistoryRecordData(
+                          description:
+                              'There was a duplicate that caused admin to remove a transaction worth Php ${widget.price?.toString()}',
+                          staff: currentUserReference,
+                        ),
+                        ...mapToFirestore(
+                          {
+                            'date': FieldValue.serverTimestamp(),
+                          },
+                        ),
+                      });
+                      if (_model.duplicateTrans!.remitted) {
+                        // decrease stats
+
+                        await FFAppState().statsReference!.update({
+                          ...mapToFirestore(
+                            {
+                              'roomsIncome': FieldValue.increment(
+                                  -(_model.duplicateTrans!.total)),
+                            },
+                          ),
+                        });
+                      }
+                      // delete transactions
+                      await _model.duplicateTrans!.reference.delete();
+                      // transaction deleted
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Duplicate removed!',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).info,
+                            ),
+                          ),
+                          duration: Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
+                    }
+                    Navigator.pop(context);
+
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                12.0, 0.0, 0.0, 0.0),
+                            child: Icon(
+                              Icons.remove_outlined,
+                              color: FlutterFlowTheme.of(context).error,
+                              size: 20.0,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                'Remove duplicate',
                                 style: FlutterFlowTheme.of(context).bodyMedium,
                               ),
                             ),

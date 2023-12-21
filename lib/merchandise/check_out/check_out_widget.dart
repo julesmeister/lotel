@@ -1,6 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_autocomplete_options_list.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -46,7 +47,6 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
     });
 
     _model.priceController1 ??= TextEditingController();
-    _model.priceFocusNode1 ??= FocusNode();
 
     _model.priceController2 ??= TextEditingController();
     _model.priceFocusNode2 ??= FocusNode();
@@ -602,15 +602,23 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 5.0, 0.0, 0.0),
                                     child: Text(
-                                      dateTimeFormat(
-                                          'MMMM EEEE d h:mm a',
-                                          dateTimeFromSecondsSinceEpoch(
-                                              valueOrDefault<int>(
-                                            functions
-                                                .today()
-                                                ?.secondsSinceEpoch,
-                                            0,
-                                          ))),
+                                      valueOrDefault<int>(
+                                                widget.cart?.length,
+                                                0,
+                                              ) >
+                                              0
+                                          ? (valueOrDefault<int>(
+                                                    widget.cart?.length,
+                                                    0,
+                                                  ) ==
+                                                  1
+                                              ? '1 item in the basket'
+                                              : '${valueOrDefault<String>(
+                                                  widget.cart?.length
+                                                      ?.toString(),
+                                                  '0',
+                                                )} items in the basket')
+                                          : 'No items in the basket',
                                       style: FlutterFlowTheme.of(context)
                                           .labelMedium,
                                     ),
@@ -652,36 +660,40 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                             )
                           ],
                         ),
-                        child: SwitchListTile.adaptive(
-                          value: _model.switchListTileValue ??= _model.expense,
-                          onChanged: (newValue) async {
-                            setState(
-                                () => _model.switchListTileValue = newValue!);
-                            if (newValue!) {
-                              setState(() {
-                                _model.expense = true;
-                              });
-                            } else {
-                              setState(() {
-                                _model.expense = false;
-                              });
-                            }
-                          },
-                          title: Text(
-                            'Expense',
-                            style: FlutterFlowTheme.of(context).bodyLarge,
+                        child: Align(
+                          alignment: AlignmentDirectional(0.0, -1.0),
+                          child: SwitchListTile.adaptive(
+                            value: _model.switchListTileValue ??=
+                                _model.expense,
+                            onChanged: (newValue) async {
+                              setState(
+                                  () => _model.switchListTileValue = newValue!);
+                              if (newValue!) {
+                                setState(() {
+                                  _model.expense = true;
+                                });
+                              } else {
+                                setState(() {
+                                  _model.expense = false;
+                                });
+                              }
+                            },
+                            title: Text(
+                              'Expense',
+                              style: FlutterFlowTheme.of(context).bodyLarge,
+                            ),
+                            subtitle: Text(
+                              'Is this an expense?',
+                              style: FlutterFlowTheme.of(context).labelMedium,
+                            ),
+                            tileColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            activeColor: FlutterFlowTheme.of(context).primary,
+                            activeTrackColor:
+                                FlutterFlowTheme.of(context).accent1,
+                            dense: true,
+                            controlAffinity: ListTileControlAffinity.trailing,
                           ),
-                          subtitle: Text(
-                            'Is this an expense?',
-                            style: FlutterFlowTheme.of(context).labelMedium,
-                          ),
-                          tileColor:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          activeColor: FlutterFlowTheme.of(context).primary,
-                          activeTrackColor:
-                              FlutterFlowTheme.of(context).accent1,
-                          dense: false,
-                          controlAffinity: ListTileControlAffinity.trailing,
                         ),
                       ),
                     ),
@@ -903,55 +915,101 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                   Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
-                    child: TextFormField(
-                      controller: _model.priceController1,
-                      focusNode: _model.priceFocusNode1,
-                      textCapitalization: TextCapitalization.words,
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        labelText: 'Who consumed?',
-                        labelStyle: FlutterFlowTheme.of(context).labelMedium,
-                        hintStyle: FlutterFlowTheme.of(context).labelMedium,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).alternate,
-                            width: 2.0,
+                    child: Autocomplete<String>(
+                      initialValue: TextEditingValue(),
+                      optionsBuilder: (textEditingValue) {
+                        if (textEditingValue.text == '') {
+                          return const Iterable<String>.empty();
+                        }
+                        return ['Dodong', 'Niko', 'Guard'].where((option) {
+                          final lowercaseOption = option.toLowerCase();
+                          return lowercaseOption
+                              .contains(textEditingValue.text.toLowerCase());
+                        });
+                      },
+                      optionsViewBuilder: (context, onSelected, options) {
+                        return AutocompleteOptionsList(
+                          textFieldKey: _model.priceKey1,
+                          textController: _model.priceController1!,
+                          options: options.toList(),
+                          onSelected: onSelected,
+                          textStyle: FlutterFlowTheme.of(context).bodyMedium,
+                          textHighlightStyle: TextStyle(),
+                          elevation: 4.0,
+                          optionBackgroundColor:
+                              FlutterFlowTheme.of(context).primaryBackground,
+                          optionHighlightColor:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          maxHeight: 200.0,
+                        );
+                      },
+                      onSelected: (String selection) {
+                        setState(() => _model.priceSelectedOption1 = selection);
+                        FocusScope.of(context).unfocus();
+                      },
+                      fieldViewBuilder: (
+                        context,
+                        textEditingController,
+                        focusNode,
+                        onEditingComplete,
+                      ) {
+                        _model.priceFocusNode1 = focusNode;
+
+                        _model.priceController1 = textEditingController;
+                        return TextFormField(
+                          key: _model.priceKey1,
+                          controller: textEditingController,
+                          focusNode: focusNode,
+                          onEditingComplete: onEditingComplete,
+                          textCapitalization: TextCapitalization.words,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'Who consumed?',
+                            labelStyle:
+                                FlutterFlowTheme.of(context).labelMedium,
+                            hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).alternate,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).primary,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            filled: true,
+                            fillColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                20.0, 24.0, 0.0, 24.0),
+                            prefixIcon: Icon(
+                              Icons.emoji_people_sharp,
+                            ),
                           ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).primary,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).error,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).error,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        filled: true,
-                        fillColor:
-                            FlutterFlowTheme.of(context).secondaryBackground,
-                        contentPadding: EdgeInsetsDirectional.fromSTEB(
-                            20.0, 24.0, 0.0, 24.0),
-                        prefixIcon: Icon(
-                          Icons.emoji_people_sharp,
-                        ),
-                      ),
-                      style: FlutterFlowTheme.of(context).bodyMedium,
-                      validator:
-                          _model.priceController1Validator.asValidator(context),
+                          style: FlutterFlowTheme.of(context).bodyMedium,
+                          validator: _model.priceController1Validator
+                              .asValidator(context),
+                        );
+                      },
                     ),
                   ),
                 if ((_model.whichExpense == 'other') && _model.expense)

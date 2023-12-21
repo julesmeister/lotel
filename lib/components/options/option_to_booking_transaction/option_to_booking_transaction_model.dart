@@ -20,8 +20,20 @@ class OptionToBookingTransactionModel
 
   // Stores action output result for [Firestore Query - Query a collection] action in OptionToBookingTransaction widget.
   RoomsRecord? room;
+  // Stores action output result for [Backend Call - Read Document] action in OptionToBookingTransaction widget.
+  HotelSettingsRecord? settings;
+  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
+  BookingsRecord? booking;
+  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
+  TransactionsRecord? readTrans;
+  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
+  BookingsRecord? bookingPWD;
+  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
+  TransactionsRecord? readTransPWD;
   // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
   TransactionsRecord? trans;
+  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
+  TransactionsRecord? duplicateTrans;
 
   /// Initialization and disposal methods.
 

@@ -13,6 +13,7 @@ import '/flutter_flow/request_manager.dart';
 
 import 'expense_widget.dart' show ExpenseWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -48,6 +49,10 @@ class ExpenseModel extends FlutterFlowModel<ExpenseWidget> {
   TransactionsRecord? newCA;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
   TransactionsRecord? newExp;
+  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
+  int? countGrr;
+  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
+  GoodsRevenueRatioRecord? lastGrr;
 
   /// Query cache managers for this widget.
 

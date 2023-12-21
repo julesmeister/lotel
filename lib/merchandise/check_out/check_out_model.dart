@@ -1,6 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_autocomplete_options_list.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -44,8 +45,10 @@ class CheckOutModel extends FlutterFlowModel<CheckOutWidget> {
   // State field(s) for SwitchListTile widget.
   bool? switchListTileValue;
   // State field(s) for price widget.
+  final priceKey1 = GlobalKey();
   FocusNode? priceFocusNode1;
   TextEditingController? priceController1;
+  String? priceSelectedOption1;
   String? Function(BuildContext, String?)? priceController1Validator;
   // State field(s) for price widget.
   FocusNode? priceFocusNode2;
@@ -63,7 +66,6 @@ class CheckOutModel extends FlutterFlowModel<CheckOutWidget> {
   void dispose() {
     unfocusNode.dispose();
     priceFocusNode1?.dispose();
-    priceController1?.dispose();
 
     priceFocusNode2?.dispose();
     priceController2?.dispose();

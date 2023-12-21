@@ -35,8 +35,9 @@ class CurrentStatsStruct extends FFFirebaseStruct {
         month: data['month'] as String?,
       );
 
-  static CurrentStatsStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic> ? CurrentStatsStruct.fromMap(data) : null;
+  static CurrentStatsStruct? maybeFromMap(dynamic data) => data is Map
+      ? CurrentStatsStruct.fromMap(data.cast<String, dynamic>())
+      : null;
 
   Map<String, dynamic> toMap() => {
         'year': _year,
