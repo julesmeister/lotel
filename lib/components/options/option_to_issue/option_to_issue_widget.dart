@@ -251,9 +251,16 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                         ) ??
                         false;
                     if (confirmDialogResponse) {
-                      await widget.ref!.update(createIssuesRecordData(
-                        status: 'fixed',
-                      ));
+                      await widget.ref!.update({
+                        ...createIssuesRecordData(
+                          status: 'fixed',
+                        ),
+                        ...mapToFirestore(
+                          {
+                            'dateFixed': FieldValue.serverTimestamp(),
+                          },
+                        ),
+                      });
                       Navigator.pop(context);
                     } else {
                       return;

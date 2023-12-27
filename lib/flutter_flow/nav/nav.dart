@@ -290,6 +290,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'groceryList',
           path: '/groceryList',
           builder: (context, params) => GroceryListWidget(),
+        ),
+        FFRoute(
+          name: 'Pendings',
+          path: '/pendings',
+          builder: (context, params) => PendingsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

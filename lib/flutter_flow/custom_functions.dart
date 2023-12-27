@@ -756,9 +756,16 @@ LineGraphStruct newLineGraph(
   final updatedXData = List<int>.from(lineGraph.xData);
   final updatedYData = List<int>.from(lineGraph.yData);
 
-  // Add the new data points
-  updatedXData.add(day);
-  updatedYData.add(income.toInt());
+  int index = updatedXData.indexOf(day);
+
+  if (index != -1 && index < updatedYData.length) {
+    // Day already exists, increment the income in the corresponding element of updatedYData
+    updatedYData[index] += income.toInt();
+  } else {
+    // Day doesn't exist, add the new data points
+    updatedXData.add(day);
+    updatedYData.add(income.toInt());
+  }
 
   return LineGraphStruct(
     xData: updatedXData,
@@ -954,16 +961,58 @@ String modifyTransactionRoomDescription(
   return prevDesc.replaceAll('room $oldRoom', 'room $newRoom');
 }
 
-int avgYData(List<int> sales) {
-  // average of sales
+double avgYData(List<int> sales) {
   if (sales.isEmpty) {
-    return 0;
+    return 0.0;
   }
-  int sum = 0;
+
+  int partitionCount = ((sales.length - 1) / 3).ceil();
+  sales.sort();
+
+  // Determine partition ranges
+  int minValue = sales.first;
+  int maxValue = sales.last;
+  int rangeSize = ((maxValue - minValue) / partitionCount).ceil();
+
+  // Create partitions
+  List<List<int>> partitions = List.generate(
+    partitionCount,
+    (index) {
+      int start = minValue + index * rangeSize;
+      int end = index == partitionCount - 1 ? maxValue : start + rangeSize - 1;
+      return [start, end];
+    },
+  );
+
+  // Assign sales values to partitions
+  List<int> partitionCounts = List.filled(partitionCount, 0);
+
   for (int sale in sales) {
-    sum += sale;
+    for (int i = 0; i < partitionCount; i++) {
+      if (sale >= partitions[i][0] && sale <= partitions[i][1]) {
+        partitionCounts[i]++;
+        break;
+      }
+    }
   }
-  return sum ~/ sales.length;
+
+  // Find the partition with the most sales
+  int maxPartitionIndex =
+      partitionCounts.indexOf(partitionCounts.reduce((a, b) => a > b ? a : b));
+
+  // Filter sales values in the winning partition
+  List<int> winningPartitionSales = sales
+      .where((sale) =>
+          sale >= partitions[maxPartitionIndex][0] &&
+          sale <= partitions[maxPartitionIndex][1])
+      .toList();
+
+  // Calculate the average of the winning partition
+  double averageWinningPartition =
+      winningPartitionSales.reduce((a, b) => a + b) /
+          winningPartitionSales.length;
+
+  return averageWinningPartition;
 }
 
 LineGraphStruct mergedLine(
@@ -1119,4 +1168,21 @@ int daysFrom(DateTime date) {
   final now = DateTime.now();
   final difference = now.difference(date);
   return difference.inDays;
+}
+
+String daysOfIssue(
+  DateTime date,
+  DateTime? dateFixed,
+) {
+  // days from date if dateFixed is set, then days from date to dateFixed
+  if (dateFixed != null) {
+    final days = dateFixed.difference(date).inDays;
+    final suffix = days.abs() == 1 ? ' day' : ' days';
+    return 'Solved in $days${suffix}';
+  } else {
+    final now = DateTime.now();
+    final days = now.difference(date).inDays;
+    final suffix = days.abs() == 1 ? ' day' : ' days';
+    return '${days.abs()}$suffix ${days > 0 ? "ago" : "from now"}';
+  }
 }

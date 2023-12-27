@@ -131,6 +131,41 @@ class FFAppState extends ChangeNotifier {
     prefs.setDouble('ff_extPricePerHr', _value);
   }
 
+  int _loopCounter = 0;
+  int get loopCounter => _loopCounter;
+  set loopCounter(int _value) {
+    _loopCounter = _value;
+  }
+
+  List<RoomUsageStruct> _roomUsages = [];
+  List<RoomUsageStruct> get roomUsages => _roomUsages;
+  set roomUsages(List<RoomUsageStruct> _value) {
+    _roomUsages = _value;
+  }
+
+  void addToRoomUsages(RoomUsageStruct _value) {
+    _roomUsages.add(_value);
+  }
+
+  void removeFromRoomUsages(RoomUsageStruct _value) {
+    _roomUsages.remove(_value);
+  }
+
+  void removeAtIndexFromRoomUsages(int _index) {
+    _roomUsages.removeAt(_index);
+  }
+
+  void updateRoomUsagesAtIndex(
+    int _index,
+    RoomUsageStruct Function(RoomUsageStruct) updateFn,
+  ) {
+    _roomUsages[_index] = updateFn(_roomUsages[_index]);
+  }
+
+  void insertAtIndexInRoomUsages(int _index, RoomUsageStruct _value) {
+    _roomUsages.insert(_index, _value);
+  }
+
   final _roomsManager = StreamRequestManager<List<RoomsRecord>>();
   Stream<List<RoomsRecord>> rooms({
     String? uniqueQueryKey,
@@ -207,11 +242,12 @@ class FFAppState extends ChangeNotifier {
   void clearStaffsCacheKey(String? uniqueKey) =>
       _staffsManager.clearRequest(uniqueKey);
 
-  final _groceryHomeManager = FutureRequestManager<List<StatsRecord>>();
-  Future<List<StatsRecord>> groceryHome({
+  final _groceryHomeManager =
+      FutureRequestManager<List<GoodsRevenueRatioRecord>>();
+  Future<List<GoodsRevenueRatioRecord>> groceryHome({
     String? uniqueQueryKey,
     bool? overrideCache,
-    required Future<List<StatsRecord>> Function() requestFn,
+    required Future<List<GoodsRevenueRatioRecord>> Function() requestFn,
   }) =>
       _groceryHomeManager.performRequest(
         uniqueQueryKey: uniqueQueryKey,
@@ -221,6 +257,21 @@ class FFAppState extends ChangeNotifier {
   void clearGroceryHomeCache() => _groceryHomeManager.clear();
   void clearGroceryHomeCacheKey(String? uniqueKey) =>
       _groceryHomeManager.clearRequest(uniqueKey);
+
+  final _statsSettingsManager = FutureRequestManager<StatsRecord>();
+  Future<StatsRecord> statsSettings({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<StatsRecord> Function() requestFn,
+  }) =>
+      _statsSettingsManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearStatsSettingsCache() => _statsSettingsManager.clear();
+  void clearStatsSettingsCacheKey(String? uniqueKey) =>
+      _statsSettingsManager.clearRequest(uniqueKey);
 }
 
 LatLng? _latLngFromString(String? val) {

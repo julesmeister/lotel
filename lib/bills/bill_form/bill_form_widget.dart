@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -337,122 +338,108 @@ class _BillFormWidgetState extends State<BillFormWidget>
                           EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 12.0),
                       child: AuthUserStreamWidget(
                         builder: (context) => FFButtonWidget(
-                          onPressed: _model.amountController.text == null ||
-                                  _model.amountController.text == ''
-                              ? null
-                              : () async {
-                                  if ((_model.amountController.text != null &&
-                                          _model.amountController.text != '') &&
-                                      (_model.descriptionController.text !=
-                                              null &&
-                                          _model.descriptionController.text !=
-                                              '')) {
-                                    var confirmDialogResponse =
-                                        await showDialog<bool>(
-                                              context: context,
-                                              builder: (alertDialogContext) {
-                                                return AlertDialog(
-                                                  title: Text('Are you sure?'),
-                                                  content: Text(
-                                                      'This bill will be recorded for future reference.'),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              alertDialogContext,
-                                                              false),
-                                                      child: Text('Cancel'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              alertDialogContext,
-                                                              true),
-                                                      child: Text('Confirm'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            ) ??
-                                            false;
-                                    if (confirmDialogResponse) {
-                                      // bill creation
+                          onPressed: () async {
+                            if ((_model.amountController.text != null &&
+                                    _model.amountController.text != '') &&
+                                (_model.descriptionController.text != null &&
+                                    _model.descriptionController.text != '') &&
+                                (functions.stringToInt(
+                                        _model.amountController.text)! >
+                                    0)) {
+                              var confirmDialogResponse =
+                                  await showDialog<bool>(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: Text('Are you sure?'),
+                                            content: Text(
+                                                'This bill will be recorded for future reference.'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, false),
+                                                child: Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, true),
+                                                child: Text('Confirm'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ) ??
+                                      false;
+                              if (confirmDialogResponse) {
+                                // bill creation
 
-                                      await BillsRecord.collection.doc().set({
-                                        ...createBillsRecordData(
-                                          description:
-                                              _model.descriptionController.text,
-                                          amount: double.tryParse(
-                                              _model.amountController.text),
-                                          hotel: FFAppState().hotel,
-                                          staff: currentUserReference,
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'date':
-                                                FieldValue.serverTimestamp(),
-                                          },
-                                        ),
-                                      });
-                                      // update bills stats
+                                await BillsRecord.collection.doc().set({
+                                  ...createBillsRecordData(
+                                    description:
+                                        _model.descriptionController.text,
+                                    amount: double.tryParse(
+                                        _model.amountController.text),
+                                    hotel: FFAppState().hotel,
+                                    staff: currentUserReference,
+                                  ),
+                                  ...mapToFirestore(
+                                    {
+                                      'date': FieldValue.serverTimestamp(),
+                                    },
+                                  ),
+                                });
+                                // update bills stats
 
-                                      await FFAppState()
-                                          .statsReference!
-                                          .update({
-                                        ...mapToFirestore(
-                                          {
-                                            'bills': FieldValue.increment(
-                                                double.parse(_model
-                                                    .amountController.text)),
-                                          },
-                                        ),
-                                      });
-                                      // bill recorded
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            '${_model.descriptionController.text} bill with an amount of ${_model.amountController.text} has been recorded!',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                            ),
-                                          ),
-                                          duration:
-                                              Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                      );
-                                      // Reset choice chips
-                                      setState(() {
-                                        _model.choicesValueController?.reset();
-                                      });
-                                      // Reset amount/description
-                                      setState(() {
-                                        _model.amountController?.clear();
-                                        _model.descriptionController?.clear();
-                                      });
-                                    }
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'There are some missing fields!',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .info,
-                                          ),
-                                        ),
-                                        duration: Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context).error,
+                                await FFAppState().statsReference!.update({
+                                  ...mapToFirestore(
+                                    {
+                                      'bills': FieldValue.increment(
+                                          double.parse(
+                                              _model.amountController.text)),
+                                    },
+                                  ),
+                                });
+                                // bill recorded
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      '${_model.descriptionController.text} bill with an amount of ${_model.amountController.text} has been recorded!',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
                                       ),
-                                    );
-                                  }
-                                },
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).secondary,
+                                  ),
+                                );
+                                // Reset choice chips
+                                setState(() {
+                                  _model.choicesValueController?.reset();
+                                });
+                                // Reset amount/description
+                                setState(() {
+                                  _model.amountController?.clear();
+                                  _model.descriptionController?.clear();
+                                });
+                              }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'There are some missing fields or amount cannot be just zero!',
+                                    style: TextStyle(
+                                      color: FlutterFlowTheme.of(context).info,
+                                    ),
+                                  ),
+                                  duration: Duration(milliseconds: 4000),
+                                  backgroundColor:
+                                      FlutterFlowTheme.of(context).error,
+                                ),
+                              );
+                            }
+                          },
                           text: 'Submit Bill',
                           icon: Icon(
                             Icons.receipt_long,

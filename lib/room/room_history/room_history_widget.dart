@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/components/options/option_to_history/option_to_history_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -204,6 +205,31 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                   ),
                                 );
                               }
+                            },
+                            onLongPress: () async {
+                              await showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (context) {
+                                  return GestureDetector(
+                                    onTap: () => _model
+                                            .unfocusNode.canRequestFocus
+                                        ? FocusScope.of(context)
+                                            .requestFocus(_model.unfocusNode)
+                                        : FocusScope.of(context).unfocus(),
+                                    child: Padding(
+                                      padding: MediaQuery.viewInsetsOf(context),
+                                      child: Container(
+                                        height: 175.0,
+                                        child: OptionToHistoryWidget(
+                                          history: listViewHistoryRecord,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ).then((value) => safeSetState(() {}));
                             },
                             child: Container(
                               width: double.infinity,

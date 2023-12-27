@@ -1,10 +1,14 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/change_date/change_date_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'issues_list_widget.dart' show IssuesListWidget;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +25,9 @@ class IssuesListModel extends FlutterFlowModel<IssuesListWidget> {
   PagingController<DocumentSnapshot?, IssuesRecord>? listViewPagingController;
   Query? listViewPagingQuery;
   List<StreamSubscription?> listViewStreamSubscriptions = [];
+
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in RichText widget.
+  DateTime? adjustedFixDate;
 
   /// Initialization and disposal methods.
 

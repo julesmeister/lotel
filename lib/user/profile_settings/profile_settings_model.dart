@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'profile_settings_widget.dart' show ProfileSettingsWidget;
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,8 +21,10 @@ import 'package:provider/provider.dart';
 class ProfileSettingsModel extends FlutterFlowModel<ProfileSettingsWidget> {
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
+  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
   List<StatsRecord>? fireStat;
+  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
+  int? countUncollected;
   // State field(s) for CheckboxListTile widget.
   bool? checkboxListTileValue;
 

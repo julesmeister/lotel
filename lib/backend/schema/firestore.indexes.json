@@ -47,6 +47,20 @@
       ]
     },
     {
+      "collectionGroup": "goods_revenue_ratio",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hotel",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "users",
       "queryScope": "COLLECTION",
       "fields": [
@@ -178,20 +192,6 @@
     },
     {
       "collectionGroup": "groceries",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "hotel",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "date",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "goods_revenue_ratio",
       "queryScope": "COLLECTION",
       "fields": [
         {

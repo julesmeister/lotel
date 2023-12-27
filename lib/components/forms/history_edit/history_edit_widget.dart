@@ -8,29 +8,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'transaction_edit_model.dart';
-export 'transaction_edit_model.dart';
+import 'history_edit_model.dart';
+export 'history_edit_model.dart';
 
-class TransactionEditWidget extends StatefulWidget {
-  const TransactionEditWidget({
+class HistoryEditWidget extends StatefulWidget {
+  const HistoryEditWidget({
     Key? key,
-    required this.ref,
-    required this.description,
-    required this.price,
-    this.roomRef,
+    required this.history,
   }) : super(key: key);
 
-  final DocumentReference? ref;
-  final String? description;
-  final double? price;
-  final DocumentReference? roomRef;
+  final HistoryRecord? history;
 
   @override
-  _TransactionEditWidgetState createState() => _TransactionEditWidgetState();
+  _HistoryEditWidgetState createState() => _HistoryEditWidgetState();
 }
 
-class _TransactionEditWidgetState extends State<TransactionEditWidget> {
-  late TransactionEditModel _model;
+class _HistoryEditWidgetState extends State<HistoryEditWidget> {
+  late HistoryEditModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -41,14 +35,11 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => TransactionEditModel());
+    _model = createModel(context, () => HistoryEditModel());
 
-    _model.descController ??= TextEditingController(text: widget.description);
-    _model.descFocusNode ??= FocusNode();
-
-    _model.priceController ??=
-        TextEditingController(text: widget.price?.toString());
-    _model.priceFocusNode ??= FocusNode();
+    _model.detailsController ??=
+        TextEditingController(text: widget.history?.description);
+    _model.detailsFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -135,7 +126,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'Edit Transaction',
+                                'Edit History',
                                 style:
                                     FlutterFlowTheme.of(context).headlineSmall,
                               ),
@@ -154,101 +145,47 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            TextFormField(
-                              controller: _model.descController,
-                              focusNode: _model.descFocusNode,
-                              textCapitalization: TextCapitalization.sentences,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                labelText: 'Description',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .bodySmall
-                                    .override(
+                        child: TextFormField(
+                          controller: _model.detailsController,
+                          focusNode: _model.detailsFocusNode,
+                          textCapitalization: TextCapitalization.sentences,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'Details',
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodySmall.override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 28.0,
                                     ),
-                                hintText:
-                                    'Change the description of the transaction',
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontSize: 28.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                focusedErrorBorder: InputBorder.none,
-                                filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 24.0, 20.0, 24.0),
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
+                            hintText: 'Details',
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  fontSize: 28.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                            filled: true,
+                            fillColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 24.0, 20.0, 24.0),
+                          ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 28.0,
                                   ),
-                              maxLines: 28,
-                              minLines: 1,
-                              validator: _model.descControllerValidator
-                                  .asValidator(context),
-                            ),
-                            TextFormField(
-                              controller: _model.priceController,
-                              focusNode: _model.priceFocusNode,
-                              textCapitalization: TextCapitalization.none,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                labelText: 'Price',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .bodySmall
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      fontSize: 28.0,
-                                    ),
-                                hintText: 'Price',
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontSize: 28.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                focusedErrorBorder: InputBorder.none,
-                                filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 24.0, 20.0, 24.0),
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    fontSize: 28.0,
-                                  ),
-                              minLines: 1,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                              validator: _model.priceControllerValidator
-                                  .asValidator(context),
-                            ),
-                          ],
+                          maxLines: 28,
+                          minLines: 1,
+                          validator: _model.detailsControllerValidator
+                              .asValidator(context),
                         ),
                       ),
                       Divider(
@@ -261,8 +198,83 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            if (valueOrDefault(currentUserDocument?.role, '') ==
+                                'admin')
+                              AuthUserStreamWidget(
+                                builder: (context) => FlutterFlowIconButton(
+                                  borderRadius: 20.0,
+                                  borderWidth: 1.0,
+                                  buttonSize: 40.0,
+                                  icon: Icon(
+                                    Icons.delete_outline,
+                                    color: FlutterFlowTheme.of(context).error,
+                                    size: 24.0,
+                                  ),
+                                  onPressed: () async {
+                                    var confirmDialogResponse =
+                                        await showDialog<bool>(
+                                              context: context,
+                                              builder: (alertDialogContext) {
+                                                return AlertDialog(
+                                                  title: Text('Delete History'),
+                                                  content: Text(
+                                                      'Are you certain you want to delete this?'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              false),
+                                                      child: Text('Cancel'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              true),
+                                                      child: Text('Confirm'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ) ??
+                                            false;
+                                    if (confirmDialogResponse) {
+                                      await widget.history!.reference.delete();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'History deleted!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                ),
+                              ),
+                            if (valueOrDefault(currentUserDocument?.role, '') !=
+                                'admin')
+                              AuthUserStreamWidget(
+                                builder: (context) => Icon(
+                                  Icons.settings_outlined,
+                                  color: FlutterFlowTheme.of(context).info,
+                                  size: 24.0,
+                                ),
+                              ),
                             Container(
                               width: 150.0,
                               height: 44.0,
@@ -276,16 +288,14 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await widget.ref!
-                                      .update(createTransactionsRecordData(
-                                    description: _model.descController.text,
-                                    total: double.tryParse(
-                                        _model.priceController.text),
+                                  await widget.history!.reference
+                                      .update(createHistoryRecordData(
+                                    description: _model.detailsController.text,
                                   ));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'Transaction description now updated!',
+                                        'History has been updated',
                                         style: TextStyle(
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,

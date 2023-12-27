@@ -162,6 +162,150 @@ class _OptionToTransactionOnlyWidgetState
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
+                    // read transaction
+                    _model.transactionToMark =
+                        await TransactionsRecord.getDocumentOnce(widget.ref!);
+                    if (_model.transactionToMark?.type == 'expense') {
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: Text('Mark as Grocery'),
+                                content:
+                                    Text('This will be recorded as grocery.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        // create grocery
+
+                        await GroceriesRecord.collection.doc().set({
+                          ...createGroceriesRecordData(
+                            hotel: FFAppState().hotel,
+                            recordedBy: currentUserReference,
+                            amount: _model.transactionToMark?.total,
+                            remark: _model.transactionToMark?.description,
+                          ),
+                          ...mapToFirestore(
+                            {
+                              'date': FieldValue.serverTimestamp(),
+                            },
+                          ),
+                        });
+                        // count grr
+                        _model.countGrr =
+                            await queryGoodsRevenueRatioRecordCount(
+                          queryBuilder: (goodsRevenueRatioRecord) =>
+                              goodsRevenueRatioRecord
+                                  .where(
+                                    'hotel',
+                                    isEqualTo: FFAppState().hotel,
+                                  )
+                                  .orderBy('date', descending: true),
+                        );
+                        if (_model.countGrr! > 0) {
+                          // last grr
+                          _model.lastGrr =
+                              await queryGoodsRevenueRatioRecordOnce(
+                            queryBuilder: (goodsRevenueRatioRecord) =>
+                                goodsRevenueRatioRecord
+                                    .where(
+                                      'hotel',
+                                      isEqualTo: FFAppState().hotel,
+                                    )
+                                    .orderBy('date', descending: true),
+                            singleRecord: true,
+                          ).then((s) => s.firstOrNull);
+                          // increment grocery
+
+                          await _model.lastGrr!.reference.update({
+                            ...mapToFirestore(
+                              {
+                                'grocery': FieldValue.increment(
+                                    _model.transactionToMark!.total),
+                              },
+                            ),
+                          });
+                          FFAppState().clearGroceryHomeCache();
+                        }
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Only expenses can be marked sa grocery!',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).info,
+                            ),
+                          ),
+                          duration: Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
+                    }
+
+                    // close
+                    Navigator.pop(context);
+
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                12.0, 0.0, 0.0, 0.0),
+                            child: Icon(
+                              Icons.auto_awesome_motion_outlined,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 20.0,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                'Mark as Grocery',
+                                style: FlutterFlowTheme.of(context).bodyMedium,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
                     // delete transaction?
                     var confirmDialogResponse = await showDialog<bool>(
                           context: context,

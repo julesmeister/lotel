@@ -315,6 +315,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 FFAppState().extPricePerHr =
                                                     _model.setting!
                                                         .lateCheckoutFee;
+                                                FFAppState().settingRef =
+                                                    _model.setting?.reference;
                                               } else {
                                                 // Default Generic User Only
 
@@ -338,6 +340,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 FFAppState().extPricePerHr =
                                                     containerHotelSettingsRecord!
                                                         .lateCheckoutFee;
+                                                FFAppState().settingRef =
+                                                    _model.setting?.reference;
                                               }
 
                                               // Record Last Login

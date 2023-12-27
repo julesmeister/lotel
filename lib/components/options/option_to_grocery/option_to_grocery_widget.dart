@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -115,6 +116,39 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                       // get grocery
                       _model.groceryToTrack =
                           await GroceriesRecord.getDocumentOnce(widget.ref!);
+                      // count grr
+                      _model.countGrr = await queryGoodsRevenueRatioRecordCount(
+                        queryBuilder: (goodsRevenueRatioRecord) =>
+                            goodsRevenueRatioRecord
+                                .where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                )
+                                .orderBy('date', descending: true),
+                      );
+                      if (_model.countGrr! > 0) {
+                        // last grr
+                        _model.lastGrr = await queryGoodsRevenueRatioRecordOnce(
+                          queryBuilder: (goodsRevenueRatioRecord) =>
+                              goodsRevenueRatioRecord
+                                  .where(
+                                    'hotel',
+                                    isEqualTo: FFAppState().hotel,
+                                  )
+                                  .orderBy('date', descending: true),
+                          singleRecord: true,
+                        ).then((s) => s.firstOrNull);
+                        // decrement grocery
+
+                        await _model.lastGrr!.reference.update({
+                          ...mapToFirestore(
+                            {
+                              'grocery': FieldValue.increment(
+                                  -(_model.groceryToTrack!.amount)),
+                            },
+                          ),
+                        });
+                      }
                       // create grr
 
                       await GoodsRevenueRatioRecord.collection.doc().set({
@@ -208,6 +242,43 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                         },
                       ),
                     });
+                    // count grr
+                    _model.countGrrr = await queryGoodsRevenueRatioRecordCount(
+                      queryBuilder: (goodsRevenueRatioRecord) =>
+                          goodsRevenueRatioRecord
+                              .where(
+                                'hotel',
+                                isEqualTo: FFAppState().hotel,
+                              )
+                              .orderBy('date', descending: true),
+                    );
+                    if (_model.countGrrr! > 0) {
+                      // last grr
+                      _model.lastGrrr = await queryGoodsRevenueRatioRecordOnce(
+                        queryBuilder: (goodsRevenueRatioRecord) =>
+                            goodsRevenueRatioRecord
+                                .where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                )
+                                .orderBy('date', descending: true),
+                        singleRecord: true,
+                      ).then((s) => s.firstOrNull);
+                      if (_model.grocery?.amount == _model.lastGrrr?.grocery) {
+                        // delete lastGrrr
+                        await _model.lastGrrr!.reference.delete();
+                      } else {
+                        if (_model.grocery!.amount < _model.lastGrrr!.grocery) {
+                          // decrement grocery in lastGrrr
+
+                          await _model.lastGrrr!.reference
+                              .update(createGoodsRevenueRatioRecordData(
+                            grocery: _model.lastGrrr!.grocery -
+                                _model.grocery!.amount,
+                          ));
+                        }
+                      }
+                    }
                     await widget.ref!.delete();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

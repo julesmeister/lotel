@@ -1,22 +1,21 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/forms/bill_edit/bill_edit_widget.dart';
+import '/components/forms/history_edit/history_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'option_to_bill_widget.dart' show OptionToBillWidget;
+import '/flutter_flow/custom_functions.dart' as functions;
+import 'option_to_history_widget.dart' show OptionToHistoryWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class OptionToBillModel extends FlutterFlowModel<OptionToBillWidget> {
+class OptionToHistoryModel extends FlutterFlowModel<OptionToHistoryWidget> {
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Read Document] action in changeDetails widget.
-  BillsRecord? billToChange;
-  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
-  BillsRecord? bill;
+  BookingsRecord? book;
 
   /// Initialization and disposal methods.
 

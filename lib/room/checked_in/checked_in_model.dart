@@ -8,6 +8,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/request_manager.dart';
 
@@ -59,8 +60,6 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   TransactionsRecord? transaction;
   // Stores action output result for [Bottom Sheet - OptionToBooking] action in Button widget.
   bool? toChangePrice;
-  // Stores action output result for [Backend Call - Read Document] action in Button widget.
-  TransactionsRecord? pendingTrans;
   // State field(s) for priceChangedescription widget.
   String? priceChangedescriptionValue;
   FormFieldController<String>? priceChangedescriptionValueController;

@@ -8,6 +8,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -377,7 +378,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .set({
                                                               ...createHistoryRecordData(
                                                                 description:
-                                                                    'Guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} have transferred in from room ${widget.roomNo?.toString()}',
+                                                                    'Guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} transferred in from room ${widget.roomNo?.toString()}.',
                                                                 staff:
                                                                     currentUserReference,
                                                                 booking: widget
@@ -1032,8 +1033,6 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 FFButtonWidget(
                                                               onPressed:
                                                                   () async {
-                                                                var _shouldSetState =
-                                                                    false;
                                                                 if (checkedInBookingsRecord
                                                                         .status ==
                                                                     'pending') {
@@ -1063,101 +1062,14 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           ) ??
                                                                           false;
                                                                   if (confirmDialogResponse) {
-                                                                    while (_model
-                                                                            .loopPendingCounter !=
-                                                                        checkedInBookingsRecord
-                                                                            .pendings
-                                                                            .length) {
-                                                                      // pendingTrans
-                                                                      _model
-                                                                          .pendingTrans = await TransactionsRecord.getDocumentOnce(checkedInBookingsRecord
-                                                                              .pendings[
-                                                                          _model
-                                                                              .loopPendingCounter]);
-                                                                      _shouldSetState =
-                                                                          true;
-                                                                      // pay balance of this transaction
-
-                                                                      await checkedInBookingsRecord
-                                                                          .pendings[
-                                                                              _model.loopPendingCounter]
-                                                                          .update({
-                                                                        ...createTransactionsRecordData(
-                                                                          pending:
-                                                                              false,
-                                                                          description: _model.pendingTrans!.total < 0.0
-                                                                              ? _model.pendingTrans?.description
-                                                                              : 'Guest paid the balance for ${_model.pendingTrans?.description}',
-                                                                        ),
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'date':
-                                                                                FieldValue.serverTimestamp(),
-                                                                          },
-                                                                        ),
-                                                                      });
-                                                                      // remove trans from pending in booking
-
-                                                                      await widget
-                                                                          .booking!
-                                                                          .update({
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'pendings':
-                                                                                FieldValue.arrayRemove([
-                                                                              _model.pendingTrans?.reference
-                                                                            ]),
-                                                                            'transactions':
-                                                                                FieldValue.arrayUnion([
-                                                                              _model.pendingTrans?.reference
-                                                                            ]),
-                                                                          },
-                                                                        ),
-                                                                      });
-                                                                      // increment loop
-                                                                      setState(
-                                                                          () {
-                                                                        _model.loopPendingCounter =
-                                                                            _model.loopPendingCounter +
-                                                                                1;
-                                                                      });
-                                                                    }
-                                                                    // paid booking status
-
-                                                                    await widget
-                                                                        .booking!
-                                                                        .update({
-                                                                      ...createBookingsRecordData(
-                                                                        status:
-                                                                            'paid',
-                                                                      ),
-                                                                      ...mapToFirestore(
-                                                                        {
-                                                                          'pendings':
-                                                                              _model.pendings,
-                                                                        },
-                                                                      ),
-                                                                    });
-                                                                    // add paid amount to history
-
-                                                                    await HistoryRecord.createDoc(
-                                                                            checkedInBookingsRecord.room!)
-                                                                        .set({
-                                                                      ...createHistoryRecordData(
-                                                                        description:
-                                                                            'Guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's have' : 'has'} settled balance.',
-                                                                        staff:
-                                                                            currentUserReference,
-                                                                        booking:
-                                                                            widget.booking,
-                                                                      ),
-                                                                      ...mapToFirestore(
-                                                                        {
-                                                                          'date':
-                                                                              FieldValue.serverTimestamp(),
-                                                                        },
-                                                                      ),
-                                                                    });
+                                                                    await action_blocks
+                                                                        .payBalanceOfPending(
+                                                                      context,
+                                                                      booking:
+                                                                          checkedInBookingsRecord,
+                                                                    );
+                                                                    setState(
+                                                                        () {});
                                                                     // Paid Balance
                                                                     ScaffoldMessenger.of(
                                                                             context)
@@ -1165,7 +1077,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       SnackBar(
                                                                         content:
                                                                             Text(
-                                                                          'Guest has finally paid balance',
+                                                                          'Guest has finally paid balance!',
                                                                           style:
                                                                               TextStyle(
                                                                             color:
@@ -1179,9 +1091,6 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       ),
                                                                     );
                                                                   } else {
-                                                                    if (_shouldSetState)
-                                                                      setState(
-                                                                          () {});
                                                                     return;
                                                                   }
                                                                 } else {
@@ -1280,16 +1189,9 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     context
                                                                         .safePop();
                                                                   } else {
-                                                                    if (_shouldSetState)
-                                                                      setState(
-                                                                          () {});
                                                                     return;
                                                                   }
                                                                 }
-
-                                                                if (_shouldSetState)
-                                                                  setState(
-                                                                      () {});
                                                               },
                                                               text: checkedInBookingsRecord
                                                                           .status ==

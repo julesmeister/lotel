@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -308,148 +309,171 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    var _shouldSetState = false;
-                    // stat exist firestore not local
-                    _model.fireStat = await queryStatsRecordOnce(
-                      queryBuilder: (statsRecord) => statsRecord
-                          .where(
-                            'hotel',
-                            isEqualTo: FFAppState().hotel,
-                          )
-                          .where(
-                            'year',
-                            isEqualTo: functions.currentYear(),
-                          )
-                          .where(
-                            'month',
-                            isEqualTo: functions.currentMonth(),
-                          ),
-                    );
-                    _shouldSetState = true;
-                    if (_model.fireStat!.length > 0) {
-                      // save new ref stat
-                      setState(() {
-                        FFAppState().statsReference =
-                            _model.fireStat?.first?.reference;
-                        FFAppState().currentStats =
-                            functions.currentMonthYear()!;
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'New stats reference has been saved! ${_model.fireStat?.first?.reference.id}',
-                            style: TextStyle(
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                          ),
-                          duration: Duration(milliseconds: 4000),
-                          backgroundColor:
-                              FlutterFlowTheme.of(context).secondary,
-                        ),
-                      );
-                      if (_shouldSetState) setState(() {});
-                      return;
-                    } else {
-                      // clear stats reference
-                      setState(() {
-                        FFAppState().statsReference = null;
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'No existing stats in firestore!',
-                            style: TextStyle(
-                              color: FlutterFlowTheme.of(context).info,
-                            ),
-                          ),
-                          duration: Duration(milliseconds: 4000),
-                          backgroundColor: Color(0xFFFF5963),
-                        ),
-                      );
-                    }
-
-                    if (_shouldSetState) setState(() {});
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 70.0,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 0.0,
-                          color: FlutterFlowTheme.of(context).alternate,
-                          offset: Offset(0.0, 1.0),
-                        )
-                      ],
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Refresh Correct Stats Reference',
-                                style: FlutterFlowTheme.of(context).bodyLarge,
+                child: Container(
+                  width: double.infinity,
+                  height: 70.0,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 0.0,
+                        color: FlutterFlowTheme.of(context).alternate,
+                        offset: Offset(0.0, 1.0),
+                      )
+                    ],
+                    shape: BoxShape.rectangle,
+                  ),
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FutureBuilder<StatsRecord>(
+                              future: FFAppState().statsSettings(
+                                requestFn: () => StatsRecord.getDocumentOnce(
+                                    FFAppState().statsReference!),
                               ),
-                              StreamBuilder<UsersRecord>(
-                                stream: UsersRecord.getDocument(
-                                    currentUserReference!),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 50.0,
-                                        height: 50.0,
-                                        child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                          ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 50.0,
+                                      height: 50.0,
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          FlutterFlowTheme.of(context).primary,
                                         ),
                                       ),
-                                    );
-                                  }
-                                  final iconButtonUsersRecord = snapshot.data!;
-                                  return FlutterFlowIconButton(
-                                    borderColor:
-                                        FlutterFlowTheme.of(context).info,
-                                    borderRadius: 0.0,
-                                    borderWidth: 0.0,
-                                    buttonSize: 40.0,
-                                    fillColor:
-                                        FlutterFlowTheme.of(context).info,
-                                    icon: Icon(
-                                      Icons.refresh,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondary,
-                                      size: 24.0,
                                     ),
-                                    onPressed: () {
-                                      print('IconButton pressed ...');
-                                    },
                                   );
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                                }
+                                final textStatsRecord = snapshot.data!;
+                                return Text(
+                                  '${textStatsRecord.hotel} - ${textStatsRecord.month}\'s Stats',
+                                  style: FlutterFlowTheme.of(context).bodyLarge,
+                                );
+                              },
+                            ),
+                            StreamBuilder<UsersRecord>(
+                              stream: UsersRecord.getDocument(
+                                  currentUserReference!),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 50.0,
+                                      height: 50.0,
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          FlutterFlowTheme.of(context).primary,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                final iconButtonUsersRecord = snapshot.data!;
+                                return FlutterFlowIconButton(
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).info,
+                                  borderRadius: 0.0,
+                                  borderWidth: 0.0,
+                                  buttonSize: 40.0,
+                                  fillColor: FlutterFlowTheme.of(context).info,
+                                  icon: Icon(
+                                    Icons.refresh,
+                                    color:
+                                        FlutterFlowTheme.of(context).secondary,
+                                    size: 24.0,
+                                  ),
+                                  onPressed: () async {
+                                    var _shouldSetState = false;
+                                    // stat exist firestore not local
+                                    _model.fireStat =
+                                        await queryStatsRecordOnce(
+                                      queryBuilder: (statsRecord) => statsRecord
+                                          .where(
+                                            'hotel',
+                                            isEqualTo: FFAppState().hotel,
+                                          )
+                                          .where(
+                                            'year',
+                                            isEqualTo: functions.currentYear(),
+                                          )
+                                          .where(
+                                            'month',
+                                            isEqualTo: functions.currentMonth(),
+                                          ),
+                                    );
+                                    _shouldSetState = true;
+                                    if (_model.fireStat!.length > 0) {
+                                      // save new ref stat
+                                      setState(() {
+                                        FFAppState().statsReference =
+                                            _model.fireStat?.first?.reference;
+                                        FFAppState().currentStats =
+                                            functions.currentMonthYear()!;
+                                      });
+                                      // clear statsSettings
+                                      FFAppState().clearStatsSettingsCache();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Stats reference has been updated! ${_model.fireStat?.first?.reference.id}',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                      if (_shouldSetState) setState(() {});
+                                      return;
+                                    } else {
+                                      await action_blocks
+                                          .createNewStats(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'A new stat has been created!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor: Color(0xFF5AD789),
+                                        ),
+                                      );
+                                    }
+
+                                    if (_shouldSetState) setState(() {});
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -810,6 +834,173 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                                     ),
                                   ],
                                 ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 1.0),
+                          child: Container(
+                            width: double.infinity,
+                            height: 70.0,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 0.0,
+                                  color: FlutterFlowTheme.of(context).alternate,
+                                  offset: Offset(0.0, 1.0),
+                                )
+                              ],
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 0.0, 16.0, 0.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Refresh Collectable',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyLarge,
+                                      ),
+                                      StreamBuilder<UsersRecord>(
+                                        stream: UsersRecord.getDocument(
+                                            currentUserReference!),
+                                        builder: (context, snapshot) {
+                                          // Customize what your widget looks like when it's loading.
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 50.0,
+                                                height: 50.0,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          final iconButtonUsersRecord =
+                                              snapshot.data!;
+                                          return FlutterFlowIconButton(
+                                            borderColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .info,
+                                            borderRadius: 0.0,
+                                            borderWidth: 0.0,
+                                            buttonSize: 40.0,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .info,
+                                            icon: Icon(
+                                              Icons.refresh,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              size: 24.0,
+                                            ),
+                                            onPressed: () async {
+                                              // uncollected remittances
+                                              _model.countUncollected =
+                                                  await queryRemittancesRecordCount(
+                                                queryBuilder:
+                                                    (remittancesRecord) =>
+                                                        remittancesRecord
+                                                            .where(
+                                                              'collected',
+                                                              isEqualTo: false,
+                                                            )
+                                                            .where(
+                                                              'hotel',
+                                                              isEqualTo:
+                                                                  FFAppState()
+                                                                      .hotel,
+                                                            ),
+                                              );
+                                              if (_model.countUncollected! >
+                                                  0) {
+                                                // collectable True
+
+                                                await adminAreaHotelSettingsRecord!
+                                                    .reference
+                                                    .update(
+                                                        createHotelSettingsRecordData(
+                                                  collectable: true,
+                                                ));
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'There\'s an uncollected remittance.',
+                                                      style: TextStyle(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                      ),
+                                                    ),
+                                                    duration: Duration(
+                                                        milliseconds: 4000),
+                                                    backgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondary,
+                                                  ),
+                                                );
+                                              } else {
+                                                // collectable False
+
+                                                await adminAreaHotelSettingsRecord!
+                                                    .reference
+                                                    .update(
+                                                        createHotelSettingsRecordData(
+                                                  collectable: false,
+                                                ));
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'There\'s no uncollected remittance.',
+                                                      style: TextStyle(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .info,
+                                                      ),
+                                                    ),
+                                                    duration: Duration(
+                                                        milliseconds: 4000),
+                                                    backgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .error,
+                                                  ),
+                                                );
+                                              }
+
+                                              setState(() {});
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           ),

@@ -20,6 +20,12 @@ class OptionToTransactionOnlyModel
 
   ///  State fields for stateful widgets in this component.
 
+  // Stores action output result for [Backend Call - Read Document] action in changeDetails widget.
+  TransactionsRecord? transactionToMark;
+  // Stores action output result for [Firestore Query - Query a collection] action in changeDetails widget.
+  int? countGrr;
+  // Stores action output result for [Firestore Query - Query a collection] action in changeDetails widget.
+  GoodsRevenueRatioRecord? lastGrr;
   // Stores action output result for [Backend Call - Read Document] action in delete widget.
   TransactionsRecord? transaction;
   // Stores action output result for [Backend Call - Read Document] action in delete widget.

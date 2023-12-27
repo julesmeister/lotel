@@ -13,6 +13,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/request_manager.dart';
 
@@ -74,8 +75,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
           int index, Function(DocumentReference) updateFn) =>
       bookingsToRemit[index] = updateFn(bookingsToRemit[index]);
 
-  int loopRoomCounter = 0;
-
   List<DocumentReference> roomsToRemit = [];
   void addToRoomsToRemit(DocumentReference item) => roomsToRemit.add(item);
   void removeFromRoomsToRemit(DocumentReference item) =>
@@ -86,15 +85,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void updateRoomsToRemitAtIndex(
           int index, Function(DocumentReference) updateFn) =>
       roomsToRemit[index] = updateFn(roomsToRemit[index]);
-
-  List<RoomUsageStruct> roomUsages = [];
-  void addToRoomUsages(RoomUsageStruct item) => roomUsages.add(item);
-  void removeFromRoomUsages(RoomUsageStruct item) => roomUsages.remove(item);
-  void removeAtIndexFromRoomUsages(int index) => roomUsages.removeAt(index);
-  void insertAtIndexInRoomUsages(int index, RoomUsageStruct item) =>
-      roomUsages.insert(index, item);
-  void updateRoomUsagesAtIndex(int index, Function(RoomUsageStruct) updateFn) =>
-      roomUsages[index] = updateFn(roomUsages[index]);
 
   bool showRemitController = false;
 
@@ -116,10 +106,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   StatsRecord? alreadyStats;
   // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
   List<StatsRecord>? fireStat;
-  // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
-  List<RoomsRecord>? roomsFire;
-  // Stores action output result for [Backend Call - Create Document] action in HomePage widget.
-  StatsRecord? createStat;
   // Stores action output result for [Backend Call - Read Document] action in HomePage widget.
   HotelSettingsRecord? hotel;
   // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
@@ -218,6 +204,21 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void clearHotelSettingsCacheKey(String? uniqueKey) =>
       _hotelSettingsManager.clearRequest(uniqueKey);
 
+  final _pendingCountsManager = FutureRequestManager<int>();
+  Future<int> pendingCounts({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<int> Function() requestFn,
+  }) =>
+      _pendingCountsManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearPendingCountsCache() => _pendingCountsManager.clear();
+  void clearPendingCountsCacheKey(String? uniqueKey) =>
+      _pendingCountsManager.clearRequest(uniqueKey);
+
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {}
@@ -236,6 +237,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     clearHomeRemittanceCache();
 
     clearHotelSettingsCache();
+
+    clearPendingCountsCache();
   }
 
   /// Action blocks are added here.

@@ -41,12 +41,18 @@ class IssuesRecord extends FirestoreRecord {
   DocumentReference? get staff => _staff;
   bool hasStaff() => _staff != null;
 
+  // "dateFixed" field.
+  DateTime? _dateFixed;
+  DateTime? get dateFixed => _dateFixed;
+  bool hasDateFixed() => _dateFixed != null;
+
   void _initializeFields() {
     _date = snapshotData['date'] as DateTime?;
     _detail = snapshotData['detail'] as String?;
     _status = snapshotData['status'] as String?;
     _hotel = snapshotData['hotel'] as String?;
     _staff = snapshotData['staff'] as DocumentReference?;
+    _dateFixed = snapshotData['dateFixed'] as DateTime?;
   }
 
   static CollectionReference get collection =>
@@ -88,6 +94,7 @@ Map<String, dynamic> createIssuesRecordData({
   String? status,
   String? hotel,
   DocumentReference? staff,
+  DateTime? dateFixed,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -96,6 +103,7 @@ Map<String, dynamic> createIssuesRecordData({
       'status': status,
       'hotel': hotel,
       'staff': staff,
+      'dateFixed': dateFixed,
     }.withoutNulls,
   );
 
@@ -111,12 +119,13 @@ class IssuesRecordDocumentEquality implements Equality<IssuesRecord> {
         e1?.detail == e2?.detail &&
         e1?.status == e2?.status &&
         e1?.hotel == e2?.hotel &&
-        e1?.staff == e2?.staff;
+        e1?.staff == e2?.staff &&
+        e1?.dateFixed == e2?.dateFixed;
   }
 
   @override
   int hash(IssuesRecord? e) => const ListEquality()
-      .hash([e?.date, e?.detail, e?.status, e?.hotel, e?.staff]);
+      .hash([e?.date, e?.detail, e?.status, e?.hotel, e?.staff, e?.dateFixed]);
 
   @override
   bool isValidKey(Object? o) => o is IssuesRecord;

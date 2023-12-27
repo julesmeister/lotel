@@ -1252,7 +1252,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                                     )
                                                                     .where(
                                                                       'date',
-                                                                      isGreaterThan:
+                                                                      isGreaterThanOrEqualTo:
                                                                           functions
                                                                               .startOfMonth(_model.month),
                                                                     )
@@ -1328,12 +1328,13 @@ class _StatsWidgetState extends State<StatsWidget>
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0.0, 5.0, 0.0, 0.0),
                                         child: AutoSizeText(
-                                          'Daily Average: Php ${formatNumber(
+                                          'Daily Average: ${formatNumber(
                                             functions.avgYData(_model
                                                 .roomLine!.yData
                                                 .toList()),
                                             formatType: FormatType.decimal,
                                             decimalType: DecimalType.automatic,
+                                            currency: 'P ',
                                           )}',
                                           maxLines: 1,
                                           style: FlutterFlowTheme.of(context)
@@ -1454,7 +1455,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                                     )
                                                                     .where(
                                                                       'date',
-                                                                      isGreaterThan:
+                                                                      isGreaterThanOrEqualTo:
                                                                           functions
                                                                               .startOfMonth(_model.month),
                                                                     )
@@ -1519,16 +1520,19 @@ class _StatsWidgetState extends State<StatsWidget>
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0.0, 5.0, 0.0, 0.0),
-                                        child: Text(
-                                          'Daily Average: Php ${formatNumber(
+                                        child: AutoSizeText(
+                                          'Daily Average: ${formatNumber(
                                             functions.avgYData(_model
                                                 .goodsLine!.yData
                                                 .toList()),
                                             formatType: FormatType.decimal,
                                             decimalType: DecimalType.automatic,
+                                            currency: 'P ',
                                           )}',
+                                          maxLines: 1,
                                           style: FlutterFlowTheme.of(context)
                                               .labelMedium,
+                                          minFontSize: 10.0,
                                         ),
                                       ),
                                     ],
@@ -1646,7 +1650,7 @@ class _StatsWidgetState extends State<StatsWidget>
                                                                   )
                                                                   .where(
                                                                     'date',
-                                                                    isGreaterThan:
+                                                                    isGreaterThanOrEqualTo:
                                                                         functions
                                                                             .startOfMonth(_model.month),
                                                                   )

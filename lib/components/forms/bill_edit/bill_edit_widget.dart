@@ -8,29 +8,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'transaction_edit_model.dart';
-export 'transaction_edit_model.dart';
+import 'bill_edit_model.dart';
+export 'bill_edit_model.dart';
 
-class TransactionEditWidget extends StatefulWidget {
-  const TransactionEditWidget({
+class BillEditWidget extends StatefulWidget {
+  const BillEditWidget({
     Key? key,
     required this.ref,
     required this.description,
-    required this.price,
-    this.roomRef,
+    required this.amount,
   }) : super(key: key);
 
   final DocumentReference? ref;
   final String? description;
-  final double? price;
-  final DocumentReference? roomRef;
+  final double? amount;
 
   @override
-  _TransactionEditWidgetState createState() => _TransactionEditWidgetState();
+  _BillEditWidgetState createState() => _BillEditWidgetState();
 }
 
-class _TransactionEditWidgetState extends State<TransactionEditWidget> {
-  late TransactionEditModel _model;
+class _BillEditWidgetState extends State<BillEditWidget> {
+  late BillEditModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -41,14 +39,14 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => TransactionEditModel());
+    _model = createModel(context, () => BillEditModel());
 
     _model.descController ??= TextEditingController(text: widget.description);
     _model.descFocusNode ??= FocusNode();
 
-    _model.priceController ??=
-        TextEditingController(text: widget.price?.toString());
-    _model.priceFocusNode ??= FocusNode();
+    _model.amountController ??=
+        TextEditingController(text: widget.amount?.toString());
+    _model.amountFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -135,7 +133,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'Edit Transaction',
+                                'Edit Bill',
                                 style:
                                     FlutterFlowTheme.of(context).headlineSmall,
                               ),
@@ -203,19 +201,19 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                   .asValidator(context),
                             ),
                             TextFormField(
-                              controller: _model.priceController,
-                              focusNode: _model.priceFocusNode,
+                              controller: _model.amountController,
+                              focusNode: _model.amountFocusNode,
                               textCapitalization: TextCapitalization.none,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: 'Price',
+                                labelText: 'Amount',
                                 labelStyle: FlutterFlowTheme.of(context)
                                     .bodySmall
                                     .override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 28.0,
                                     ),
-                                hintText: 'Price',
+                                hintText: 'Amount',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -245,7 +243,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
-                              validator: _model.priceControllerValidator
+                              validator: _model.amountControllerValidator
                                   .asValidator(context),
                             ),
                           ],
@@ -276,16 +274,34 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
+                                  if (widget.amount !=
+                                      (double.parse(
+                                          _model.amountController.text))) {
+                                    // update bill stat
+
+                                    await FFAppState().statsReference!.update({
+                                      ...mapToFirestore(
+                                        {
+                                          'bills': FieldValue.increment(
+                                              double.parse(_model
+                                                      .amountController.text) -
+                                                  widget.amount!),
+                                        },
+                                      ),
+                                    });
+                                  }
+                                  // update bill
+
                                   await widget.ref!
-                                      .update(createTransactionsRecordData(
+                                      .update(createBillsRecordData(
                                     description: _model.descController.text,
-                                    total: double.tryParse(
-                                        _model.priceController.text),
+                                    amount: double.tryParse(
+                                        _model.amountController.text),
                                   ));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'Transaction description now updated!',
+                                        'Bill is now updated!',
                                         style: TextStyle(
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,

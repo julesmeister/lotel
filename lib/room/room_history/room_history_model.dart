@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/components/options/option_to_history/option_to_history_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -18,6 +19,7 @@ class RoomHistoryModel extends FlutterFlowModel<RoomHistoryWidget> {
 
   PagingController<DocumentSnapshot?, HistoryRecord>? listViewPagingController;
   Query? listViewPagingQuery;
+  List<StreamSubscription?> listViewStreamSubscriptions = [];
 
   /// Initialization and disposal methods.
 
@@ -25,7 +27,7 @@ class RoomHistoryModel extends FlutterFlowModel<RoomHistoryWidget> {
 
   void dispose() {
     unfocusNode.dispose();
-
+    listViewStreamSubscriptions.forEach((s) => s?.cancel());
     listViewPagingController?.dispose();
   }
 
@@ -57,9 +59,10 @@ class RoomHistoryModel extends FlutterFlowModel<RoomHistoryWidget> {
           parent: parent,
           queryBuilder: (_) => listViewPagingQuery ??= query,
           nextPageMarker: nextPageMarker,
+          streamSubscriptions: listViewStreamSubscriptions,
           controller: controller,
           pageSize: 25,
-          isStream: false,
+          isStream: true,
         ),
       );
   }

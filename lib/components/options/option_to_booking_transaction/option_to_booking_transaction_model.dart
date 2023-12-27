@@ -23,6 +23,10 @@ class OptionToBookingTransactionModel
   // Stores action output result for [Backend Call - Read Document] action in OptionToBookingTransaction widget.
   HotelSettingsRecord? settings;
   // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
+  BookingsRecord? bookingNorm;
+  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
+  TransactionsRecord? readTransNorm;
+  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
   BookingsRecord? booking;
   // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
   TransactionsRecord? readTrans;

@@ -28,9 +28,9 @@ dependencies:
   auto_size_text: 3.0.0
   badges: 2.0.2
   cached_network_image: 3.2.1
-  cloud_firestore: 4.13.5
-  cloud_firestore_platform_interface: 6.0.9
-  cloud_firestore_web: 3.8.9
+  cloud_firestore: 4.13.1
+  cloud_firestore_platform_interface: 6.0.5
+  cloud_firestore_web: 3.8.5
   dropdown_button2: 2.3.9
   easy_debounce: 2.0.1
   firebase_auth: 4.15.2

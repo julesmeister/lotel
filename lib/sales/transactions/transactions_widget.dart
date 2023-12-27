@@ -747,7 +747,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     Container(
-                                                                  height: 315.0,
+                                                                  height: 410.0,
                                                                   child:
                                                                       OptionToBookingTransactionWidget(
                                                                     ref: bookingsItem
@@ -1124,7 +1124,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     Container(
-                                                                  height: 180.0,
+                                                                  height: 218.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
                                                                     ref: goodsItem
@@ -1465,7 +1465,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     Container(
-                                                                  height: 180.0,
+                                                                  height: 235.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
                                                                     ref: expensesItem
@@ -1984,7 +1984,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     Container(
-                                                                  height: 315.0,
+                                                                  height: 410.0,
                                                                   child:
                                                                       OptionToBookingTransactionWidget(
                                                                     ref: bookingsOnlyItem
@@ -2516,7 +2516,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     Container(
-                                                                  height: 180.0,
+                                                                  height: 218.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
                                                                     ref: goodsItem
@@ -3022,7 +3022,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     Container(
-                                                                  height: 180.0,
+                                                                  height: 235.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
                                                                     ref: expenseItem

@@ -33,3 +33,4 @@ export '/admin/late_checkout_fee/late_checkout_fee_widget.dart'
 export '/bills/bill_form/bill_form_widget.dart' show BillFormWidget;
 export '/bills/bills_list/bills_list_widget.dart' show BillsListWidget;
 export '/grocery/grocery_list/grocery_list_widget.dart' show GroceryListWidget;
+export '/room/pendings/pendings_widget.dart' show PendingsWidget;
