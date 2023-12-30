@@ -166,3 +166,5 @@ Future payBalanceOfPending(
     ),
   });
 }
+
+Future clearCacheDashboard(BuildContext context) async {}

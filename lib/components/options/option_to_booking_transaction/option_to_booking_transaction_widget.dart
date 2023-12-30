@@ -135,6 +135,7 @@ class _OptionToBookingTransactionWidgetState
                               description: widget.description!,
                               price: widget.price!,
                               roomRef: _model.room?.reference,
+                              bookingRef: widget.booking,
                             ),
                           ),
                         );
@@ -804,7 +805,18 @@ class _OptionToBookingTransactionWidgetState
                         }
                         // delete booking
                         await _model.trans!.booking!.delete();
+                      } else {
+                        // decrement booking total
+
+                        await widget.booking!.update({
+                          ...mapToFirestore(
+                            {
+                              'total': FieldValue.increment(-(widget.price!)),
+                            },
+                          ),
+                        });
                       }
+
                       // history taking
 
                       await HistoryRecord.createDoc(_model.room!.reference)
@@ -952,6 +964,11 @@ class _OptionToBookingTransactionWidgetState
                       }
                       // delete transactions
                       await _model.duplicateTrans!.reference.delete();
+                      // decrement book total
+
+                      await widget.booking!.update(createBookingsRecordData(
+                        total: widget.price,
+                      ));
                       // transaction deleted
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

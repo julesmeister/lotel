@@ -614,14 +614,14 @@ class _MartWidgetState extends State<MartWidget> {
                                                                 .primaryText,
                                                         size: 24.0,
                                                       ),
-                                                      onPressed: _model.cart
+                                                      onPressed: (_model.cart
                                                                   .where((e) =>
                                                                       e.category ==
                                                                       goodsListItem
                                                                           .category)
                                                                   .toList()
                                                                   .length ==
-                                                              0
+                                                              0)
                                                           ? null
                                                           : () async {
                                                               setState(() {
@@ -651,7 +651,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                                 .primaryText,
                                                         size: 24.0,
                                                       ),
-                                                      onPressed: _model.cart
+                                                      onPressed: (_model.cart
                                                                   .where((e) =>
                                                                       e.description ==
                                                                       goodsListItem
@@ -659,7 +659,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                                   .toList()
                                                                   .length ==
                                                               goodsListItem
-                                                                  .quantity
+                                                                  .quantity)
                                                           ? null
                                                           : () async {
                                                               setState(() {

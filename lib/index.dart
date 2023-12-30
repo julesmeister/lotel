@@ -26,7 +26,7 @@ export '/payroll/individual_history/individual_history_widget.dart'
     show IndividualHistoryWidget;
 export '/pages/issues_list/issues_list_widget.dart' show IssuesListWidget;
 export '/pages/replenish/replenish_widget.dart' show ReplenishWidget;
-export '/pages/stats/stats_widget.dart' show StatsWidget;
+export '/pages/metrics/metrics_widget.dart' show MetricsWidget;
 export '/room/room_history/room_history_widget.dart' show RoomHistoryWidget;
 export '/admin/late_checkout_fee/late_checkout_fee_widget.dart'
     show LateCheckoutFeeWidget;

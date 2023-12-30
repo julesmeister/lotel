@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/options/prepared_remittance_user/prepared_remittance_user_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -149,9 +150,19 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (_model.date == null) {
+        // latest remittance
+        _model.latestRemittance = await queryRemittancesRecordOnce(
+          queryBuilder: (remittancesRecord) => remittancesRecord
+              .where(
+                'hotel',
+                isEqualTo: FFAppState().hotel,
+              )
+              .orderBy('date', descending: true),
+          singleRecord: true,
+        ).then((s) => s.firstOrNull);
         // today
         setState(() {
-          _model.date = functions.today();
+          _model.date = functions.startOfDay(_model.latestRemittance!.date!);
         });
       } else {
         return;
@@ -273,6 +284,11 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                       onPressed: () async {
                         setState(() {
                           _model.date = functions.prevDate(_model.date!);
+                          _model.showLoadButton = true;
+                          _model.showDownloadButton = false;
+                          _model.inventories = [];
+                          _model.bookings = [];
+                          _model.transactions = [];
                         });
                       },
                     ),
@@ -289,6 +305,11 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                       onPressed: () async {
                         setState(() {
                           _model.date = functions.nextDate(_model.date!);
+                          _model.showLoadButton = true;
+                          _model.showDownloadButton = false;
+                          _model.inventories = [];
+                          _model.bookings = [];
+                          _model.transactions = [];
                         });
                       },
                     ),
@@ -797,139 +818,252 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              'Prepared By',
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                  ),
-                                                            ),
-                                                            if (mainCardRemittancesRecord
-                                                                    ?.hasPreparedBy() ??
-                                                                true)
-                                                              StreamBuilder<
-                                                                  UsersRecord>(
-                                                                stream: UsersRecord
-                                                                    .getDocument(
-                                                                        mainCardRemittancesRecord!
-                                                                            .preparedBy!),
-                                                                builder: (context,
-                                                                    snapshot) {
-                                                                  // Customize what your widget looks like when it's loading.
-                                                                  if (!snapshot
-                                                                      .hasData) {
-                                                                    return Center(
+                                                        InkWell(
+                                                          splashColor: Colors
+                                                              .transparent,
+                                                          focusColor: Colors
+                                                              .transparent,
+                                                          hoverColor: Colors
+                                                              .transparent,
+                                                          highlightColor: Colors
+                                                              .transparent,
+                                                          onTap: () async {
+                                                            await showModalBottomSheet(
+                                                              isScrollControlled:
+                                                                  true,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return GestureDetector(
+                                                                  onTap: () => _model
+                                                                          .unfocusNode
+                                                                          .canRequestFocus
+                                                                      ? FocusScope.of(
+                                                                              context)
+                                                                          .requestFocus(_model
+                                                                              .unfocusNode)
+                                                                      : FocusScope.of(
+                                                                              context)
+                                                                          .unfocus(),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: MediaQuery
+                                                                        .viewInsetsOf(
+                                                                            context),
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          300.0,
                                                                       child:
-                                                                          SizedBox(
-                                                                        width:
-                                                                            50.0,
-                                                                        height:
-                                                                            50.0,
-                                                                        child:
-                                                                            CircularProgressIndicator(
-                                                                          valueColor:
-                                                                              AlwaysStoppedAnimation<Color>(
-                                                                            FlutterFlowTheme.of(context).primary,
-                                                                          ),
-                                                                        ),
+                                                                          PreparedRemittanceUserWidget(
+                                                                        remittance:
+                                                                            mainCardRemittancesRecord!.reference,
+                                                                        preparedBy:
+                                                                            true,
                                                                       ),
-                                                                    );
-                                                                  }
-                                                                  final textUsersRecord =
-                                                                      snapshot
-                                                                          .data!;
-                                                                  return Text(
-                                                                    textUsersRecord
-                                                                        .displayName,
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium,
-                                                                  );
-                                                                },
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ).then((value) =>
+                                                                safeSetState(
+                                                                    () {}));
+                                                          },
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                'Prepared By',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryText,
+                                                                    ),
                                                               ),
-                                                          ],
-                                                        ),
-                                                        Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Text(
-                                                              'Collected By',
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                  ),
-                                                            ),
-                                                            if (mainCardRemittancesRecord
-                                                                    ?.hasCollectedBy() ??
-                                                                true)
-                                                              StreamBuilder<
-                                                                  UsersRecord>(
-                                                                stream: UsersRecord
-                                                                    .getDocument(
-                                                                        mainCardRemittancesRecord!
-                                                                            .collectedBy!),
-                                                                builder: (context,
-                                                                    snapshot) {
-                                                                  // Customize what your widget looks like when it's loading.
-                                                                  if (!snapshot
-                                                                      .hasData) {
-                                                                    return Center(
-                                                                      child:
-                                                                          SizedBox(
-                                                                        width:
-                                                                            50.0,
-                                                                        height:
-                                                                            50.0,
+                                                              if (mainCardRemittancesRecord
+                                                                      ?.hasPreparedBy() ??
+                                                                  true)
+                                                                StreamBuilder<
+                                                                    UsersRecord>(
+                                                                  stream: UsersRecord
+                                                                      .getDocument(
+                                                                          mainCardRemittancesRecord!
+                                                                              .preparedBy!),
+                                                                  builder: (context,
+                                                                      snapshot) {
+                                                                    // Customize what your widget looks like when it's loading.
+                                                                    if (!snapshot
+                                                                        .hasData) {
+                                                                      return Center(
                                                                         child:
-                                                                            CircularProgressIndicator(
-                                                                          valueColor:
-                                                                              AlwaysStoppedAnimation<Color>(
-                                                                            FlutterFlowTheme.of(context).primary,
+                                                                            SizedBox(
+                                                                          width:
+                                                                              50.0,
+                                                                          height:
+                                                                              50.0,
+                                                                          child:
+                                                                              CircularProgressIndicator(
+                                                                            valueColor:
+                                                                                AlwaysStoppedAnimation<Color>(
+                                                                              FlutterFlowTheme.of(context).primary,
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                    );
-                                                                  }
-                                                                  final textUsersRecord =
-                                                                      snapshot
-                                                                          .data!;
-                                                                  return Text(
-                                                                    valueOrDefault<
-                                                                        String>(
+                                                                      );
+                                                                    }
+                                                                    final textUsersRecord =
+                                                                        snapshot
+                                                                            .data!;
+                                                                    return Text(
                                                                       textUsersRecord
                                                                           .displayName,
-                                                                      'Not yet collected',
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium,
+                                                                    );
+                                                                  },
+                                                                ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          splashColor: Colors
+                                                              .transparent,
+                                                          focusColor: Colors
+                                                              .transparent,
+                                                          hoverColor: Colors
+                                                              .transparent,
+                                                          highlightColor: Colors
+                                                              .transparent,
+                                                          onTap: () async {
+                                                            await showModalBottomSheet(
+                                                              isScrollControlled:
+                                                                  true,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              useSafeArea: true,
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return GestureDetector(
+                                                                  onTap: () => _model
+                                                                          .unfocusNode
+                                                                          .canRequestFocus
+                                                                      ? FocusScope.of(
+                                                                              context)
+                                                                          .requestFocus(_model
+                                                                              .unfocusNode)
+                                                                      : FocusScope.of(
+                                                                              context)
+                                                                          .unfocus(),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: MediaQuery
+                                                                        .viewInsetsOf(
+                                                                            context),
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          300.0,
+                                                                      child:
+                                                                          PreparedRemittanceUserWidget(
+                                                                        remittance:
+                                                                            mainCardRemittancesRecord!.reference,
+                                                                        preparedBy:
+                                                                            false,
+                                                                      ),
                                                                     ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium,
-                                                                  );
-                                                                },
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ).then((value) =>
+                                                                safeSetState(
+                                                                    () {}));
+                                                          },
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Text(
+                                                                'Collected By',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryText,
+                                                                    ),
                                                               ),
-                                                          ],
+                                                              if (mainCardRemittancesRecord
+                                                                      ?.hasCollectedBy() ??
+                                                                  true)
+                                                                StreamBuilder<
+                                                                    UsersRecord>(
+                                                                  stream: UsersRecord
+                                                                      .getDocument(
+                                                                          mainCardRemittancesRecord!
+                                                                              .collectedBy!),
+                                                                  builder: (context,
+                                                                      snapshot) {
+                                                                    // Customize what your widget looks like when it's loading.
+                                                                    if (!snapshot
+                                                                        .hasData) {
+                                                                      return Center(
+                                                                        child:
+                                                                            SizedBox(
+                                                                          width:
+                                                                              50.0,
+                                                                          height:
+                                                                              50.0,
+                                                                          child:
+                                                                              CircularProgressIndicator(
+                                                                            valueColor:
+                                                                                AlwaysStoppedAnimation<Color>(
+                                                                              FlutterFlowTheme.of(context).primary,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                    final textUsersRecord =
+                                                                        snapshot
+                                                                            .data!;
+                                                                    return Text(
+                                                                      valueOrDefault<
+                                                                          String>(
+                                                                        textUsersRecord
+                                                                            .displayName,
+                                                                        'Not yet collected',
+                                                                      ),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium,
+                                                                    );
+                                                                  },
+                                                                ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -1120,60 +1254,91 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                               .transactionToList!);
                                                     });
                                                   }
-                                                  while (_model
-                                                          .loopAbsencesCounter !=
-                                                      mainCardRemittancesRecord
-                                                          ?.absences?.length) {
-                                                    // read absence
-                                                    _model.absenceToList =
-                                                        await AbsencesRecord
+                                                  if (functions
+                                                      .isInventoryComplete(
+                                                          _model.transactions
+                                                              .toList(),
+                                                          _model.inventories
+                                                              .toList())) {
+                                                    while (_model
+                                                            .loopAbsencesCounter !=
+                                                        mainCardRemittancesRecord
+                                                            ?.absences
+                                                            ?.length) {
+                                                      // read absence
+                                                      _model.absenceToList =
+                                                          await AbsencesRecord
+                                                              .getDocumentOnce(
+                                                                  mainCardRemittancesRecord!
+                                                                          .absences[
+                                                                      _model
+                                                                          .loopAbsencesCounter]);
+                                                      // increment loop
+                                                      setState(() {
+                                                        _model.addToAbsences(
+                                                            _model
+                                                                .absenceToList!);
+                                                        _model.loopAbsencesCounter =
+                                                            _model.loopAbsencesCounter +
+                                                                1;
+                                                      });
+                                                    }
+                                                    // preparedBy
+                                                    _model.preparedBy =
+                                                        await UsersRecord
                                                             .getDocumentOnce(
                                                                 mainCardRemittancesRecord!
-                                                                        .absences[
-                                                                    _model
-                                                                        .loopAbsencesCounter]);
-                                                    // increment loop
+                                                                    .preparedBy!);
+                                                    if (mainCardRemittancesRecord
+                                                            ?.collectedBy !=
+                                                        null) {
+                                                      // collectedBy
+                                                      _model.collectedBy =
+                                                          await queryUsersRecordOnce(
+                                                        queryBuilder:
+                                                            (usersRecord) =>
+                                                                usersRecord
+                                                                    .where(
+                                                          'uid',
+                                                          isEqualTo:
+                                                              mainCardRemittancesRecord
+                                                                  ?.collectedBy
+                                                                  ?.id,
+                                                        ),
+                                                        singleRecord: true,
+                                                      ).then((s) =>
+                                                              s.firstOrNull);
+                                                    }
                                                     setState(() {
-                                                      _model.addToAbsences(
-                                                          _model
-                                                              .absenceToList!);
-                                                      _model.loopAbsencesCounter =
-                                                          _model.loopAbsencesCounter +
-                                                              1;
+                                                      _model.showDownloadButton =
+                                                          true;
+                                                      _model.showLoadButton =
+                                                          false;
+                                                      _model.isLoading = false;
                                                     });
-                                                  }
-                                                  // preparedBy
-                                                  _model.preparedBy =
-                                                      await UsersRecord
-                                                          .getDocumentOnce(
-                                                              mainCardRemittancesRecord!
-                                                                  .preparedBy!);
-                                                  if (mainCardRemittancesRecord
-                                                          ?.collectedBy !=
-                                                      null) {
-                                                    // collectedBy
-                                                    _model.collectedBy =
-                                                        await queryUsersRecordOnce(
-                                                      queryBuilder:
-                                                          (usersRecord) =>
-                                                              usersRecord.where(
-                                                        'uid',
-                                                        isEqualTo:
-                                                            mainCardRemittancesRecord
-                                                                ?.collectedBy
-                                                                ?.id,
+                                                  } else {
+                                                    // missing
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(
+                                                          'There\'s a missing inventory!',
+                                                          style: TextStyle(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .info,
+                                                          ),
+                                                        ),
+                                                        duration: Duration(
+                                                            milliseconds: 4000),
+                                                        backgroundColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .error,
                                                       ),
-                                                      singleRecord: true,
-                                                    ).then((s) =>
-                                                            s.firstOrNull);
+                                                    );
                                                   }
-                                                  setState(() {
-                                                    _model.showDownloadButton =
-                                                        true;
-                                                    _model.showLoadButton =
-                                                        false;
-                                                    _model.isLoading = false;
-                                                  });
 
                                                   setState(() {});
                                                 },

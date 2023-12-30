@@ -252,9 +252,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => ReplenishWidget(),
         ),
         FFRoute(
-          name: 'Stats',
-          path: '/stats',
-          builder: (context, params) => StatsWidget(),
+          name: 'Metrics',
+          path: '/metrics',
+          builder: (context, params) => MetricsWidget(),
         ),
         FFRoute(
           name: 'RoomHistory',

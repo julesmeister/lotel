@@ -429,8 +429,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                           EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 12.0),
                       child: AuthUserStreamWidget(
                         builder: (context) => FFButtonWidget(
-                          onPressed: _model.amountController.text == null ||
-                                  _model.amountController.text == ''
+                          onPressed: (_model.amountController.text == null ||
+                                  _model.amountController.text == '')
                               ? null
                               : () async {
                                   var _shouldSetState = false;

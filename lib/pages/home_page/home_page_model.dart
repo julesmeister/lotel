@@ -219,6 +219,22 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void clearPendingCountsCacheKey(String? uniqueKey) =>
       _pendingCountsManager.clearRequest(uniqueKey);
 
+  final _remittanceChangeManager =
+      FutureRequestManager<List<TransactionsRecord>>();
+  Future<List<TransactionsRecord>> remittanceChange({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<List<TransactionsRecord>> Function() requestFn,
+  }) =>
+      _remittanceChangeManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearRemittanceChangeCache() => _remittanceChangeManager.clear();
+  void clearRemittanceChangeCacheKey(String? uniqueKey) =>
+      _remittanceChangeManager.clearRequest(uniqueKey);
+
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {}
@@ -239,6 +255,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     clearHotelSettingsCache();
 
     clearPendingCountsCache();
+
+    clearRemittanceChangeCache();
   }
 
   /// Action blocks are added here.

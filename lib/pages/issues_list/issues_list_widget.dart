@@ -287,6 +287,9 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Expanded(
                                                           flex: 5,
@@ -356,7 +359,6 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                           context)
                                                                       .bodyLarge,
                                                                 ),
-                                                                maxLines: 1,
                                                               );
                                                             },
                                                           ),
@@ -496,7 +498,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                             .override(
                                                                               fontFamily: 'Readex Pro',
                                                                               color: listViewIssuesRecord.status == 'pending' ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
-                                                                              fontWeight: FontWeight.w600,
+                                                                              fontWeight: FontWeight.normal,
                                                                             ),
                                                                       )
                                                                     ],

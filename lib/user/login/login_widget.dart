@@ -144,8 +144,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Sign in with Google',
-                                textAlign: TextAlign.start,
+                                'Sign in',
+                                textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
                                     .displaySmall
                                     .override(
@@ -262,14 +262,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 15.0, 0.0, 16.0),
                                     child: FFButtonWidget(
-                                      onPressed: (_model.radioButtonValue ==
+                                      onPressed: ((_model.radioButtonValue ==
                                                       null ||
                                                   _model.radioButtonValue ==
                                                       '') ||
                                               (_model.textController.text ==
                                                       null ||
                                                   _model.textController.text ==
-                                                      '')
+                                                      ''))
                                           ? null
                                           : () async {
                                               GoRouter.of(context)

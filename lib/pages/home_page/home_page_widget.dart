@@ -1432,6 +1432,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   safeSetState(() {}));
                                             }
 
+                                            _model.clearHomeRemittanceCache();
+                                            _model.clearRemittanceChangeCache();
+                                            _model
+                                                .clearTotalTransactionsCache();
+                                            _model.clearSalesTotalCache();
                                             if (_shouldSetState)
                                               setState(() {});
                                           },
@@ -1502,7 +1507,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           alignment:
                                               AlignmentDirectional(0.0, 0.0),
                                           child: Text(
-                                            'Stats',
+                                            'Metrics',
                                             style: FlutterFlowTheme.of(context)
                                                 .headlineSmall,
                                           ),
@@ -1522,7 +1527,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     ),
                                     onPressed: () async {
                                       context.pushNamed(
-                                        'Stats',
+                                        'Metrics',
                                         extra: <String, dynamic>{
                                           kTransitionInfoKey: TransitionInfo(
                                             hasTransition: true,
@@ -3308,27 +3313,30 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       FutureBuilder<
                                                           List<
                                                               TransactionsRecord>>(
-                                                        future:
-                                                            queryTransactionsRecordOnce(
-                                                          queryBuilder:
-                                                              (transactionsRecord) =>
-                                                                  transactionsRecord
-                                                                      .where(
-                                                                        'hotel',
-                                                                        isEqualTo:
-                                                                            FFAppState().hotel,
-                                                                      )
-                                                                      .where(
-                                                                        'remitted',
-                                                                        isEqualTo:
-                                                                            false,
-                                                                      )
-                                                                      .where(
-                                                                        'type',
-                                                                        isEqualTo:
-                                                                            'change',
-                                                                      ),
-                                                          singleRecord: true,
+                                                        future: _model
+                                                            .remittanceChange(
+                                                          requestFn: () =>
+                                                              queryTransactionsRecordOnce(
+                                                            queryBuilder:
+                                                                (transactionsRecord) =>
+                                                                    transactionsRecord
+                                                                        .where(
+                                                                          'hotel',
+                                                                          isEqualTo:
+                                                                              FFAppState().hotel,
+                                                                        )
+                                                                        .where(
+                                                                          'remitted',
+                                                                          isEqualTo:
+                                                                              false,
+                                                                        )
+                                                                        .where(
+                                                                          'type',
+                                                                          isEqualTo:
+                                                                              'change',
+                                                                        ),
+                                                            singleRecord: true,
+                                                          ),
                                                         ),
                                                         builder: (context,
                                                             snapshot) {

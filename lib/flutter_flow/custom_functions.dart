@@ -1012,7 +1012,13 @@ double avgYData(List<int> sales) {
       winningPartitionSales.reduce((a, b) => a + b) /
           winningPartitionSales.length;
 
-  return averageWinningPartition;
+  // Calculate the overall average of all sales
+  double averageAllSales = sales.reduce((a, b) => a + b) / sales.length;
+
+  // Adjust the result to be closer to the average of all sales
+  double adjustedAverage = (averageWinningPartition + averageAllSales) / 2;
+
+  return adjustedAverage;
 }
 
 LineGraphStruct mergedLine(
@@ -1176,13 +1182,68 @@ String daysOfIssue(
 ) {
   // days from date if dateFixed is set, then days from date to dateFixed
   if (dateFixed != null) {
-    final days = dateFixed.difference(date).inDays;
-    final suffix = days.abs() == 1 ? ' day' : ' days';
-    return 'Solved in $days${suffix}';
+    final days = dateFixed.difference(date).inDays.abs() + 1;
+    final suffix = days == 1 ? ' day' : ' days';
+    return 'Solved in $days$suffix';
   } else {
     final now = DateTime.now();
-    final days = now.difference(date).inDays;
-    final suffix = days.abs() == 1 ? ' day' : ' days';
-    return '${days.abs()}$suffix ${days > 0 ? "ago" : "from now"}';
+    final days = now.difference(date).inDays.abs();
+    final suffix = days == 1 ? ' day' : ' days';
+    return '$days$suffix ${days > 0 ? "ago" : "from now"}';
   }
+}
+
+List<RoomPendingStruct>? allPendings(List<TransactionsRecord>? transactions) {
+  // combine all same booking transaction.booking and increment total, booking.toString() as key
+  if (transactions == null || transactions.isEmpty) {
+    return [];
+  }
+
+  final Map<String, RoomPendingStruct> pendingMap = {};
+
+  for (final transaction in transactions) {
+    final booking = transaction.booking.toString();
+    if (pendingMap.containsKey(booking)) {
+      final pending = pendingMap[booking]!;
+      pending.total += transaction.total;
+    } else {
+      final pending = RoomPendingStruct(
+        booking: transaction.booking,
+        room: transaction.room,
+        total: transaction.total,
+      );
+      pendingMap[booking] = pending;
+    }
+  }
+
+  return pendingMap.values.toList();
+}
+
+bool isInventoryComplete(
+  List<TransactionsRecord> transactions,
+  List<InventoriesRecord> inventories,
+) {
+  // all transactions that has goods also match with inventory
+
+  // Then, we iterate through each transaction and check if all its goods are in the inventory map
+  for (final transaction in transactions) {
+    if (transaction.type != "book" && transaction.type != "change") {
+      if (transaction.goods != null) {
+        for (final good in transaction.goods) {
+          // Check if there is a corresponding item in the inventories list
+          bool hasCorrespondingItem = inventories.any(
+            (inventory) => inventory.item == good.description,
+          );
+
+          // If there is no corresponding item, the inventory is not complete
+          if (!hasCorrespondingItem) {
+            return false;
+          }
+        }
+      }
+    }
+  }
+
+  // If all goods in all transactions are in the inventory map with sufficient quantities, then the inventory is complete
+  return true;
 }

@@ -124,7 +124,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                       color: FlutterFlowTheme.of(context).primaryText,
                       size: 24.0,
                     ),
-                    onPressed: widget.cart?.length == 0
+                    onPressed: (widget.cart?.length == 0)
                         ? null
                         : () async {
                             var _shouldSetState = false;

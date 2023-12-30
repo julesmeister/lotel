@@ -18,12 +18,14 @@ class TransactionEditWidget extends StatefulWidget {
     required this.description,
     required this.price,
     this.roomRef,
+    this.bookingRef,
   }) : super(key: key);
 
   final DocumentReference? ref;
   final String? description;
   final double? price;
   final DocumentReference? roomRef;
+  final DocumentReference? bookingRef;
 
   @override
   _TransactionEditWidgetState createState() => _TransactionEditWidgetState();
@@ -276,12 +278,50 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
+                                  // update transaction
+
                                   await widget.ref!
                                       .update(createTransactionsRecordData(
                                     description: _model.descController.text,
                                     total: double.tryParse(
                                         _model.priceController.text),
                                   ));
+                                  if (widget.bookingRef != null) {
+                                    // update book total
+
+                                    await widget.bookingRef!.update({
+                                      ...mapToFirestore(
+                                        {
+                                          'total': FieldValue.increment(
+                                              double.parse(_model
+                                                      .priceController.text) -
+                                                  widget.price!),
+                                        },
+                                      ),
+                                    });
+                                    if (widget.price !=
+                                        (double.parse(
+                                            _model.priceController.text))) {
+                                      // create history
+
+                                      await HistoryRecord.createDoc(
+                                              widget.roomRef!)
+                                          .set({
+                                        ...createHistoryRecordData(
+                                          description:
+                                              'The transaction amount was changed from ${widget.price?.toString()} to ${_model.priceController.text}.',
+                                          staff: currentUserReference,
+                                          booking: widget.bookingRef,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                    }
+                                  }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(

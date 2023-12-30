@@ -361,7 +361,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Icon(
-                                                          Icons.money_off_sharp,
+                                                          Icons
+                                                              .attach_money_sharp,
                                                           color: Colors.white,
                                                           size: 20.0,
                                                         ),
@@ -1439,7 +1440,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Icon(
-                                                          Icons.money_off_sharp,
+                                                          Icons
+                                                              .attach_money_sharp,
                                                           color: Colors.white,
                                                           size: 20.0,
                                                         ),
@@ -1911,7 +1913,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Icon(
-                                                          Icons.money_off_sharp,
+                                                          Icons
+                                                              .attach_money_sharp,
                                                           color: Colors.white,
                                                           size: 20.0,
                                                         ),
@@ -2332,7 +2335,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Icon(
-                                                          Icons.money_off_sharp,
+                                                          Icons
+                                                              .attach_money_sharp,
                                                           color: Colors.white,
                                                           size: 20.0,
                                                         ),

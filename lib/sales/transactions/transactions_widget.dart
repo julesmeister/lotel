@@ -1790,6 +1790,75 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin')
+                                                              Container(
+                                                                width: 36.0,
+                                                                height: 36.0,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Color(
+                                                                      0x98FFFFFF),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12.0),
+                                                                ),
+                                                                alignment:
+                                                                    AlignmentDirectional(
+                                                                        0.0,
+                                                                        0.0),
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .money_off_sharp,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 20.0,
+                                                                ),
+                                                              ),
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin')
+                                                              Text(
+                                                                formatNumber(
+                                                                  functions.totalBookedSales(transactionsTransactionsRecordList
+                                                                      .where((e) => valueOrDefault(currentUserDocument?.role, '') ==
+                                                                              'admin'
+                                                                          ? ((e.pending != true) &&
+                                                                              (e.remitted ==
+                                                                                  false))
+                                                                          : ((e.remitted == false) &&
+                                                                              (e.pending != true)))
+                                                                      .toList()),
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          18.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
+                                                              ),
                                                             Container(
                                                               width: 36.0,
                                                               height: 36.0,
@@ -1807,7 +1876,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       0.0, 0.0),
                                                               child: Icon(
                                                                 Icons
-                                                                    .money_off_sharp,
+                                                                    .attach_money_outlined,
                                                                 color: Colors
                                                                     .white,
                                                                 size: 20.0,
@@ -1823,10 +1892,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             'admin'
                                                                         ? (e.pending !=
                                                                             true)
-                                                                        : ((e.remitted ==
-                                                                                false) &&
-                                                                            (e.pending !=
-                                                                                true)))
+                                                                        : ((e.pending !=
+                                                                                true) &&
+                                                                            !e.remitted))
                                                                     .toList()),
                                                                 formatType:
                                                                     FormatType
@@ -2339,6 +2407,70 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin')
+                                                              Container(
+                                                                width: 36.0,
+                                                                height: 36.0,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Color(
+                                                                      0x98FFFFFF),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12.0),
+                                                                ),
+                                                                alignment:
+                                                                    AlignmentDirectional(
+                                                                        0.0,
+                                                                        0.0),
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .money_off_sharp,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 20.0,
+                                                                ),
+                                                              ),
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin')
+                                                              Text(
+                                                                formatNumber(
+                                                                  functions.totalGoodsSales(transactionsTransactionsRecordList
+                                                                      .where((e) =>
+                                                                          !e.remitted)
+                                                                      .toList()),
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          18.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
+                                                              ),
                                                             Container(
                                                               width: 36.0,
                                                               height: 36.0,
@@ -2356,7 +2488,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       0.0, 0.0),
                                                               child: Icon(
                                                                 Icons
-                                                                    .money_off_sharp,
+                                                                    .attach_money_outlined,
                                                                 color: Colors
                                                                     .white,
                                                                 size: 20.0,
@@ -2839,6 +2971,71 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin')
+                                                              Container(
+                                                                width: 36.0,
+                                                                height: 36.0,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Color(
+                                                                      0x98FFFFFF),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12.0),
+                                                                ),
+                                                                alignment:
+                                                                    AlignmentDirectional(
+                                                                        0.0,
+                                                                        0.0),
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .money_off_sharp,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 20.0,
+                                                                ),
+                                                              ),
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin')
+                                                              Text(
+                                                                formatNumber(
+                                                                  functions.totalExpenses(transactionsTransactionsRecordList
+                                                                      .where((e) =>
+                                                                          e.remitted ==
+                                                                          false)
+                                                                      .toList()),
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          18.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
+                                                              ),
                                                             Container(
                                                               width: 36.0,
                                                               height: 36.0,
@@ -2856,7 +3053,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       0.0, 0.0),
                                                               child: Icon(
                                                                 Icons
-                                                                    .money_off_sharp,
+                                                                    .attach_money_outlined,
                                                                 color: Colors
                                                                     .white,
                                                                 size: 20.0,
@@ -2865,11 +3062,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             Text(
                                                               formatNumber(
                                                                 functions.totalExpenses(transactionsTransactionsRecordList
-                                                                    .where((e) => valueOrDefault(currentUserDocument?.role, '') ==
+                                                                    .where((e) => valueOrDefault(currentUserDocument?.role,
+                                                                                '') ==
                                                                             'admin'
                                                                         ? true
-                                                                        : (e.remitted ==
-                                                                            false))
+                                                                        : !e.remitted)
                                                                     .toList()),
                                                                 formatType:
                                                                     FormatType
