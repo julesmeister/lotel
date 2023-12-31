@@ -1,7 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/staff_add_edit/staff_add_edit_widget.dart';
-import '/components/options/option_to_duplicate_payroll/option_to_duplicate_payroll_widget.dart';
+import '/components/options/option_to_payroll/option_to_payroll_widget.dart';
 import '/components/options/option_to_staff/option_to_staff_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
