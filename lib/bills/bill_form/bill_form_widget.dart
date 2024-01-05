@@ -343,9 +343,9 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                     _model.amountController.text != '') &&
                                 (_model.descriptionController.text != null &&
                                     _model.descriptionController.text != '') &&
-                                (functions.stringToInt(
-                                        _model.amountController.text)! >
-                                    0)) {
+                                (functions.stringToDouble(
+                                        _model.amountController.text) >
+                                    0.0)) {
                               var confirmDialogResponse =
                                   await showDialog<bool>(
                                         context: context,
@@ -428,7 +428,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    'There are some missing fields or amount cannot be just zero!',
+                                    'There are some missing fields and/or amount cannot be just zero!',
                                     style: TextStyle(
                                       color: FlutterFlowTheme.of(context).info,
                                     ),

@@ -90,9 +90,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
             borderWidth: 1.0,
             buttonSize: 60.0,
             icon: Icon(
-              Icons.arrow_back_rounded,
+              Icons.chevron_left,
               color: FlutterFlowTheme.of(context).primaryText,
-              size: 30.0,
+              size: 24.0,
             ),
             onPressed: () async {
               context.safePop();
@@ -181,8 +181,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                               ...createTransactionsRecordData(
                                 staff: currentUserReference,
                                 total: _model.expense
-                                    ? (functions
-                                        .totalOfCart(widget.cart?.toList())!)
+                                    ? ((functions
+                                        .totalOfCart(widget.cart?.toList())!))
                                     : functions
                                         .totalOfCart(widget.cart?.toList()),
                                 hotel: FFAppState().hotel,
@@ -214,8 +214,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                               ...createTransactionsRecordData(
                                 staff: currentUserReference,
                                 total: _model.expense
-                                    ? (functions
-                                        .totalOfCart(widget.cart?.toList())!)
+                                    ? ((functions
+                                        .totalOfCart(widget.cart?.toList())!))
                                     : functions
                                         .totalOfCart(widget.cart?.toList()),
                                 hotel: FFAppState().hotel,

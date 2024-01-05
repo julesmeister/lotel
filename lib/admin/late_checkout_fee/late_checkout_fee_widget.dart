@@ -100,9 +100,9 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
               borderRadius: 30.0,
               buttonSize: 48.0,
               icon: Icon(
-                Icons.arrow_back_rounded,
+                Icons.chevron_left,
                 color: FlutterFlowTheme.of(context).info,
-                size: 30.0,
+                size: 24.0,
               ),
               onPressed: () async {
                 context.safePop();

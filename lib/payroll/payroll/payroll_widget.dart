@@ -187,121 +187,72 @@ class _PayrollWidgetState extends State<PayrollWidget>
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
-                      child: FlutterFlowIconButton(
-                        borderColor: FlutterFlowTheme.of(context).alternate,
-                        borderRadius: 12.0,
-                        borderWidth: 2.0,
-                        buttonSize: 40.0,
-                        fillColor: FlutterFlowTheme.of(context).info,
-                        icon: Icon(
-                          Icons.add,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          size: 24.0,
-                        ),
-                        onPressed: () async {
-                          // count payrolls
-                          _model.countPayrolls = await queryPayrollsRecordCount(
-                            queryBuilder: (payrollsRecord) =>
-                                payrollsRecord.where(
-                              'hotel',
-                              isEqualTo: FFAppState().hotel,
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin')
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
+                        child: AuthUserStreamWidget(
+                          builder: (context) => FlutterFlowIconButton(
+                            borderColor: FlutterFlowTheme.of(context).alternate,
+                            borderRadius: 12.0,
+                            borderWidth: 2.0,
+                            buttonSize: 40.0,
+                            fillColor: FlutterFlowTheme.of(context).info,
+                            icon: Icon(
+                              Icons.add,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 24.0,
                             ),
-                          );
-                          if (payrollCount > 0) {
-                            // isLoading
-                            setState(() {
-                              _model.isLoading = true;
-                            });
-                            // get sample payroll
-                            _model.firstExistingPayroll =
-                                await queryPayrollsRecordOnce(
-                              queryBuilder: (payrollsRecord) => payrollsRecord
-                                  .where(
-                                    'hotel',
-                                    isEqualTo: FFAppState().hotel,
-                                  )
-                                  .orderBy('date', descending: true),
-                              singleRecord: true,
-                            ).then((s) => s.firstOrNull);
-                            // previous salaries
-                            _model.sampleSalaries =
-                                await querySalariesRecordOnce(
-                              parent: _model.firstExistingPayroll?.reference,
-                            );
-                            // reset loop counter
-                            setState(() {
-                              _model.loopSalariesCounter = 0;
-                              _model.loopAdvancesCounter = 0;
-                            });
-                            // create new payroll
+                            onPressed: () async {
+                              // count payrolls
+                              _model.countPayrolls =
+                                  await queryPayrollsRecordCount(
+                                queryBuilder: (payrollsRecord) =>
+                                    payrollsRecord.where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                ),
+                              );
+                              if (payrollCount > 0) {
+                                // isLoading
+                                setState(() {
+                                  _model.isLoading = true;
+                                });
+                                // get sample payroll
+                                _model.firstExistingPayroll =
+                                    await queryPayrollsRecordOnce(
+                                  queryBuilder: (payrollsRecord) =>
+                                      payrollsRecord
+                                          .where(
+                                            'hotel',
+                                            isEqualTo: FFAppState().hotel,
+                                          )
+                                          .orderBy('date', descending: true),
+                                  singleRecord: true,
+                                ).then((s) => s.firstOrNull);
+                                // previous salaries
+                                _model.sampleSalaries =
+                                    await querySalariesRecordOnce(
+                                  parent:
+                                      _model.firstExistingPayroll?.reference,
+                                );
+                                // reset loop counter
+                                setState(() {
+                                  _model.loopSalariesCounter = 0;
+                                  _model.loopAdvancesCounter = 0;
+                                });
+                                // create new payroll
 
-                            var payrollsRecordReference =
-                                PayrollsRecord.collection.doc();
-                            await payrollsRecordReference.set({
-                              ...createPayrollsRecordData(
-                                status: 'pending',
-                                hotel: FFAppState().hotel,
-                                fortnight: functions.upOrdinal(
-                                    _model.firstExistingPayroll!.fortnight),
-                                total: 0.0,
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'date': FieldValue.serverTimestamp(),
-                                },
-                              ),
-                            });
-                            _model.newPayrollCreated =
-                                PayrollsRecord.getDocumentFromData({
-                              ...createPayrollsRecordData(
-                                status: 'pending',
-                                hotel: FFAppState().hotel,
-                                fortnight: functions.upOrdinal(
-                                    _model.firstExistingPayroll!.fortnight),
-                                total: 0.0,
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'date': DateTime.now(),
-                                },
-                              ),
-                            }, payrollsRecordReference);
-                            while (_model.loopSalariesCounter !=
-                                _model.sampleSalaries?.length) {
-                              // staff
-                              _model.staffToCheckFired =
-                                  await StaffsRecord.getDocumentOnce(_model
-                                      .sampleSalaries![
-                                          _model.loopSalariesCounter!]
-                                      .staff!);
-                              if (_model.staffToCheckFired?.fired == false) {
-                                // creating salaries
-
-                                var salariesRecordReference =
-                                    SalariesRecord.createDoc(
-                                        _model.newPayrollCreated!.reference);
-                                await salariesRecordReference.set({
-                                  ...createSalariesRecordData(
-                                    sss: _model
-                                        .sampleSalaries?[
-                                            _model.loopSalariesCounter!]
-                                        ?.sss,
-                                    cashAdvance: 0.0,
-                                    pendingCA: _model
-                                        .sampleSalaries?[
-                                            _model.loopSalariesCounter!]
-                                        ?.pendingCA,
-                                    staff: _model
-                                        .sampleSalaries?[
-                                            _model.loopSalariesCounter!]
-                                        ?.staff,
-                                    rate: _model
-                                        .sampleSalaries?[
-                                            _model.loopSalariesCounter!]
-                                        ?.rate,
+                                var payrollsRecordReference =
+                                    PayrollsRecord.collection.doc();
+                                await payrollsRecordReference.set({
+                                  ...createPayrollsRecordData(
+                                    status: 'pending',
+                                    hotel: FFAppState().hotel,
+                                    fortnight: functions.upOrdinal(
+                                        _model.firstExistingPayroll!.fortnight),
+                                    total: 0.0,
                                   ),
                                   ...mapToFirestore(
                                     {
@@ -309,129 +260,189 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                     },
                                   ),
                                 });
-                                _model.newSalary =
-                                    SalariesRecord.getDocumentFromData({
-                                  ...createSalariesRecordData(
-                                    sss: _model
-                                        .sampleSalaries?[
-                                            _model.loopSalariesCounter!]
-                                        ?.sss,
-                                    cashAdvance: 0.0,
-                                    pendingCA: _model
-                                        .sampleSalaries?[
-                                            _model.loopSalariesCounter!]
-                                        ?.pendingCA,
-                                    staff: _model
-                                        .sampleSalaries?[
-                                            _model.loopSalariesCounter!]
-                                        ?.staff,
-                                    rate: _model
-                                        .sampleSalaries?[
-                                            _model.loopSalariesCounter!]
-                                        ?.rate,
+                                _model.newPayrollCreated =
+                                    PayrollsRecord.getDocumentFromData({
+                                  ...createPayrollsRecordData(
+                                    status: 'pending',
+                                    hotel: FFAppState().hotel,
+                                    fortnight: functions.upOrdinal(
+                                        _model.firstExistingPayroll!.fortnight),
+                                    total: 0.0,
                                   ),
                                   ...mapToFirestore(
                                     {
                                       'date': DateTime.now(),
                                     },
                                   ),
-                                }, salariesRecordReference);
-                                // Unsettled Cash Advances
-                                _model.unSettledCashAdvances =
-                                    await queryAdvancesRecordOnce(
-                                  parent: _model
-                                      .sampleSalaries?[
-                                          _model.loopSalariesCounter!]
-                                      ?.staff,
-                                  queryBuilder: (advancesRecord) =>
-                                      advancesRecord.where(
-                                    'settled',
-                                    isEqualTo: false,
-                                  ),
-                                );
-                                // Unsettled absences
-                                _model.absencesRaw =
-                                    await queryAbsencesRecordOnce(
-                                  parent: _model
-                                      .sampleSalaries?[
-                                          _model.loopSalariesCounter!]
-                                      ?.staff,
-                                );
-                                // save salary w/ cash advances
+                                }, payrollsRecordReference);
+                                while (_model.loopSalariesCounter !=
+                                    _model.sampleSalaries?.length) {
+                                  // staff
+                                  _model.staffToCheckFired =
+                                      await StaffsRecord.getDocumentOnce(_model
+                                          .sampleSalaries![
+                                              _model.loopSalariesCounter!]
+                                          .staff!);
+                                  if (_model.staffToCheckFired?.fired ==
+                                      false) {
+                                    // creating salaries
 
-                                await _model.newSalary!.reference.update({
-                                  ...createSalariesRecordData(
-                                    cashAdvance: valueOrDefault<double>(
-                                      functions.calculateUnsettledCashAdvances(
-                                          _model.unSettledCashAdvances!
-                                              .toList()),
-                                      0.0,
-                                    ),
-                                    total: valueOrDefault<double>(
-                                          _model
-                                              .sampleSalaries?[
-                                                  _model.loopSalariesCounter!]
-                                              ?.rate,
-                                          0.0,
-                                        ) -
-                                        _model
-                                            .sampleSalaries![
+                                    var salariesRecordReference =
+                                        SalariesRecord.createDoc(_model
+                                            .newPayrollCreated!.reference);
+                                    await salariesRecordReference.set({
+                                      ...createSalariesRecordData(
+                                        sss: _model
+                                            .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            .sss -
-                                        valueOrDefault<double>(
+                                            ?.sss,
+                                        cashAdvance: 0.0,
+                                        pendingCA: _model
+                                            .sampleSalaries?[
+                                                _model.loopSalariesCounter!]
+                                            ?.pendingCA,
+                                        staff: _model
+                                            .sampleSalaries?[
+                                                _model.loopSalariesCounter!]
+                                            ?.staff,
+                                        rate: _model
+                                            .sampleSalaries?[
+                                                _model.loopSalariesCounter!]
+                                            ?.rate,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
+                                    _model.newSalary =
+                                        SalariesRecord.getDocumentFromData({
+                                      ...createSalariesRecordData(
+                                        sss: _model
+                                            .sampleSalaries?[
+                                                _model.loopSalariesCounter!]
+                                            ?.sss,
+                                        cashAdvance: 0.0,
+                                        pendingCA: _model
+                                            .sampleSalaries?[
+                                                _model.loopSalariesCounter!]
+                                            ?.pendingCA,
+                                        staff: _model
+                                            .sampleSalaries?[
+                                                _model.loopSalariesCounter!]
+                                            ?.staff,
+                                        rate: _model
+                                            .sampleSalaries?[
+                                                _model.loopSalariesCounter!]
+                                            ?.rate,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': DateTime.now(),
+                                        },
+                                      ),
+                                    }, salariesRecordReference);
+                                    // Unsettled Cash Advances
+                                    _model.unSettledCashAdvances =
+                                        await queryAdvancesRecordOnce(
+                                      parent: _model
+                                          .sampleSalaries?[
+                                              _model.loopSalariesCounter!]
+                                          ?.staff,
+                                      queryBuilder: (advancesRecord) =>
+                                          advancesRecord.where(
+                                        'settled',
+                                        isEqualTo: false,
+                                      ),
+                                    );
+                                    // Unsettled absences
+                                    _model.absencesRaw =
+                                        await queryAbsencesRecordOnce(
+                                      parent: _model
+                                          .sampleSalaries?[
+                                              _model.loopSalariesCounter!]
+                                          ?.staff,
+                                    );
+                                    // save salary w/ cash advances
+
+                                    await _model.newSalary!.reference.update({
+                                      ...createSalariesRecordData(
+                                        cashAdvance: valueOrDefault<double>(
                                           functions
                                               .calculateUnsettledCashAdvances(
                                                   _model.unSettledCashAdvances!
                                                       .toList()),
                                           0.0,
-                                        ) -
-                                        functions.calculateAbsencesTotal(
-                                            _model.absencesRaw!.toList()),
-                                    absences: functions.calculateAbsencesTotal(
-                                        _model.absencesRaw!.toList()),
-                                  ),
-                                  ...mapToFirestore(
-                                    {
-                                      'caRefs': _model.unSettledCashAdvances
-                                          ?.map((e) => e.reference)
-                                          .toList(),
-                                      'absencesRefs': _model.absencesRaw
-                                          ?.where((e) => !e.settled)
-                                          .toList()
-                                          ?.map((e) => e.reference)
-                                          .toList(),
-                                    },
-                                  ),
+                                        ),
+                                        total: valueOrDefault<double>(
+                                              _model
+                                                  .sampleSalaries?[_model
+                                                      .loopSalariesCounter!]
+                                                  ?.rate,
+                                              0.0,
+                                            ) -
+                                            _model
+                                                .sampleSalaries![
+                                                    _model.loopSalariesCounter!]
+                                                .sss -
+                                            valueOrDefault<double>(
+                                              functions
+                                                  .calculateUnsettledCashAdvances(
+                                                      _model
+                                                          .unSettledCashAdvances!
+                                                          .toList()),
+                                              0.0,
+                                            ) -
+                                            functions.calculateAbsencesTotal(
+                                                _model.absencesRaw!.toList()),
+                                        absences:
+                                            functions.calculateAbsencesTotal(
+                                                _model.absencesRaw!.toList()),
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'caRefs': _model.unSettledCashAdvances
+                                              ?.map((e) => e.reference)
+                                              .toList(),
+                                          'absencesRefs': _model.absencesRaw
+                                              ?.where((e) => !e.settled)
+                                              .toList()
+                                              ?.map((e) => e.reference)
+                                              .toList(),
+                                        },
+                                      ),
+                                    });
+                                  }
+                                  // increment salaries counter
+                                  setState(() {
+                                    _model.loopSalariesCounter =
+                                        _model.loopSalariesCounter! + 1;
+                                  });
+                                }
+                                // is not Loading
+                                setState(() {
+                                  _model.isLoading = false;
                                 });
+
+                                context.pushNamed(
+                                  'NewEditPayroll',
+                                  queryParameters: {
+                                    'ref': serializeParam(
+                                      _model.newPayrollCreated?.reference,
+                                      ParamType.DocumentReference,
+                                    ),
+                                  }.withoutNulls,
+                                );
+                              } else {
+                                context.pushNamed('NewEditPayroll');
                               }
-                              // increment salaries counter
-                              setState(() {
-                                _model.loopSalariesCounter =
-                                    _model.loopSalariesCounter! + 1;
-                              });
-                            }
-                            // is not Loading
-                            setState(() {
-                              _model.isLoading = false;
-                            });
 
-                            context.pushNamed(
-                              'NewEditPayroll',
-                              queryParameters: {
-                                'ref': serializeParam(
-                                  _model.newPayrollCreated?.reference,
-                                  ParamType.DocumentReference,
-                                ),
-                              }.withoutNulls,
-                            );
-                          } else {
-                            context.pushNamed('NewEditPayroll');
-                          }
-
-                          setState(() {});
-                        },
+                              setState(() {});
+                            },
+                          ),
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ],
@@ -440,348 +451,357 @@ class _PayrollWidgetState extends State<PayrollWidget>
             ),
             body: SafeArea(
               top: true,
-              child: Visibility(
-                visible:
-                    valueOrDefault(currentUserDocument?.role, '') == 'admin',
-                child: AuthUserStreamWidget(
-                  builder: (context) => Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: AlignmentDirectional(0.0, -1.0),
-                          child: Container(
-                            width: double.infinity,
-                            constraints: BoxConstraints(
-                              maxWidth: 1170.0,
-                            ),
-                            decoration: BoxDecoration(),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 5.0, 0.0, 0.0),
-                                    child: Container(
-                                      height: 100.0,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Expanded(
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 0.0, 16.0, 0.0),
-                                              child: PagedListView<
-                                                  DocumentSnapshot<Object?>?,
-                                                  StaffsRecord>(
-                                                pagingController: _model
-                                                    .setListViewController1(
-                                                  StaffsRecord.collection
-                                                      .where(
-                                                        'hotel',
-                                                        isEqualTo:
-                                                            FFAppState().hotel,
-                                                      )
-                                                      .where(
-                                                        'fired',
-                                                        isEqualTo: false,
-                                                      ),
-                                                ),
-                                                padding: EdgeInsets.fromLTRB(
-                                                  16.0,
-                                                  0,
-                                                  0,
-                                                  0,
-                                                ),
-                                                reverse: false,
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                builderDelegate:
-                                                    PagedChildBuilderDelegate<
-                                                        StaffsRecord>(
-                                                  // Customize what your widget looks like when it's loading the first page.
-                                                  firstPageProgressIndicatorBuilder:
-                                                      (_) => Center(
-                                                    child: SizedBox(
-                                                      width: 50.0,
-                                                      height: 50.0,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        valueColor:
-                                                            AlwaysStoppedAnimation<
-                                                                Color>(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                        ),
-                                                      ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: AlignmentDirectional(0.0, -1.0),
+                      child: Container(
+                        width: double.infinity,
+                        constraints: BoxConstraints(
+                          maxWidth: 1170.0,
+                        ),
+                        decoration: BoxDecoration(),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 5.0, 0.0, 0.0),
+                                child: Container(
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 16.0, 0.0),
+                                          child: PagedListView<
+                                              DocumentSnapshot<Object?>?,
+                                              StaffsRecord>(
+                                            pagingController:
+                                                _model.setListViewController1(
+                                              StaffsRecord.collection
+                                                  .where(
+                                                    'hotel',
+                                                    isEqualTo:
+                                                        FFAppState().hotel,
+                                                  )
+                                                  .where(
+                                                    'fired',
+                                                    isEqualTo: false,
+                                                  ),
+                                            ),
+                                            padding: EdgeInsets.fromLTRB(
+                                              16.0,
+                                              0,
+                                              0,
+                                              0,
+                                            ),
+                                            reverse: false,
+                                            scrollDirection: Axis.horizontal,
+                                            builderDelegate:
+                                                PagedChildBuilderDelegate<
+                                                    StaffsRecord>(
+                                              // Customize what your widget looks like when it's loading the first page.
+                                              firstPageProgressIndicatorBuilder:
+                                                  (_) => Center(
+                                                child: SizedBox(
+                                                  width: 50.0,
+                                                  height: 50.0,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .primary,
                                                     ),
                                                   ),
-                                                  // Customize what your widget looks like when it's loading another page.
-                                                  newPageProgressIndicatorBuilder:
-                                                      (_) => Center(
-                                                    child: SizedBox(
-                                                      width: 50.0,
-                                                      height: 50.0,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        valueColor:
-                                                            AlwaysStoppedAnimation<
-                                                                Color>(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                        ),
-                                                      ),
+                                                ),
+                                              ),
+                                              // Customize what your widget looks like when it's loading another page.
+                                              newPageProgressIndicatorBuilder:
+                                                  (_) => Center(
+                                                child: SizedBox(
+                                                  width: 50.0,
+                                                  height: 50.0,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .primary,
                                                     ),
                                                   ),
+                                                ),
+                                              ),
 
-                                                  itemBuilder: (context, _,
-                                                      listViewIndex) {
-                                                    final listViewStaffsRecord =
-                                                        _model.listViewPagingController1!
-                                                                .itemList![
-                                                            listViewIndex];
-                                                    return Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  0.0,
-                                                                  10.0,
-                                                                  0.0),
-                                                      child: InkWell(
-                                                        splashColor:
+                                              itemBuilder:
+                                                  (context, _, listViewIndex) {
+                                                final listViewStaffsRecord = _model
+                                                    .listViewPagingController1!
+                                                    .itemList![listViewIndex];
+                                                return Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 10.0, 0.0),
+                                                  child: InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      context.pushNamed(
+                                                        'IndividualHistory',
+                                                        queryParameters: {
+                                                          'staff':
+                                                              serializeParam(
+                                                            listViewStaffsRecord,
+                                                            ParamType.Document,
+                                                          ),
+                                                        }.withoutNulls,
+                                                        extra: <String,
+                                                            dynamic>{
+                                                          'staff':
+                                                              listViewStaffsRecord,
+                                                        },
+                                                      );
+                                                    },
+                                                    onLongPress: () async {
+                                                      await showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        backgroundColor:
                                                             Colors.transparent,
-                                                        focusColor:
-                                                            Colors.transparent,
-                                                        hoverColor:
-                                                            Colors.transparent,
-                                                        highlightColor:
-                                                            Colors.transparent,
-                                                        onTap: () async {
-                                                          context.pushNamed(
-                                                            'IndividualHistory',
-                                                            queryParameters: {
-                                                              'staff':
-                                                                  serializeParam(
-                                                                listViewStaffsRecord,
-                                                                ParamType
-                                                                    .Document,
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return GestureDetector(
+                                                            onTap: () => _model
+                                                                    .unfocusNode
+                                                                    .canRequestFocus
+                                                                ? FocusScope.of(
+                                                                        context)
+                                                                    .requestFocus(
+                                                                        _model
+                                                                            .unfocusNode)
+                                                                : FocusScope.of(
+                                                                        context)
+                                                                    .unfocus(),
+                                                            child: Padding(
+                                                              padding: MediaQuery
+                                                                  .viewInsetsOf(
+                                                                      context),
+                                                              child: Container(
+                                                                height: 125.0,
+                                                                child:
+                                                                    OptionToStaffWidget(
+                                                                  staffRef:
+                                                                      listViewStaffsRecord
+                                                                          .reference,
+                                                                ),
                                                               ),
-                                                            }.withoutNulls,
-                                                            extra: <String,
-                                                                dynamic>{
-                                                              'staff':
-                                                                  listViewStaffsRecord,
-                                                            },
+                                                            ),
                                                           );
                                                         },
-                                                        onLongPress: () async {
-                                                          await showModalBottomSheet(
-                                                            isScrollControlled:
-                                                                true,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return GestureDetector(
-                                                                onTap: () => _model
-                                                                        .unfocusNode
-                                                                        .canRequestFocus
-                                                                    ? FocusScope.of(
-                                                                            context)
-                                                                        .requestFocus(_model
-                                                                            .unfocusNode)
-                                                                    : FocusScope.of(
-                                                                            context)
-                                                                        .unfocus(),
-                                                                child: Padding(
-                                                                  padding: MediaQuery
-                                                                      .viewInsetsOf(
-                                                                          context),
-                                                                  child:
-                                                                      Container(
-                                                                    height:
-                                                                        125.0,
-                                                                    child:
-                                                                        OptionToStaffWidget(
-                                                                      staffRef:
-                                                                          listViewStaffsRecord
-                                                                              .reference,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
-                                                          ).then((value) =>
-                                                              safeSetState(
-                                                                  () {}));
-                                                        },
-                                                        child: Container(
-                                                          width: 160.0,
-                                                          height: 170.0,
-                                                          decoration:
-                                                              BoxDecoration(
+                                                      ).then((value) =>
+                                                          safeSetState(() {}));
+                                                    },
+                                                    child: Container(
+                                                      width: 160.0,
+                                                      height: 170.0,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            Color(0xFF4B39EF),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            blurRadius: 5.0,
                                                             color: Color(
-                                                                0xFF4B39EF),
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                blurRadius: 5.0,
-                                                                color: Color(
-                                                                    0x23000000),
-                                                                offset: Offset(
-                                                                    0.0, 2.0),
-                                                              )
-                                                            ],
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8.0),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10.0),
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: [
-                                                                Expanded(
-                                                                  child: Column(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      AutoSizeText(
-                                                                        listViewStaffsRecord
-                                                                            .name
-                                                                            .maybeHandleOverflow(maxChars: 15),
-                                                                        maxLines:
-                                                                            1,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .headlineSmall
-                                                                            .override(
-                                                                              fontFamily: 'Outfit',
-                                                                              color: Colors.white,
-                                                                              fontSize: 24.0,
-                                                                              fontWeight: FontWeight.w500,
-                                                                            ),
-                                                                        minFontSize:
-                                                                            10.0,
-                                                                      ),
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                0x23000000),
+                                                            offset: Offset(
+                                                                0.0, 2.0),
+                                                          )
+                                                        ],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.0),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(
+                                                            10.0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  AutoSizeText(
+                                                                    listViewStaffsRecord
+                                                                        .name
+                                                                        .maybeHandleOverflow(
+                                                                            maxChars:
+                                                                                15),
+                                                                    maxLines: 1,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .headlineSmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Outfit',
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize:
+                                                                              24.0,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                    minFontSize:
+                                                                        10.0,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
                                                                             0.0,
                                                                             4.0,
                                                                             0.0,
                                                                             0.0),
-                                                                        child:
-                                                                            Text(
-                                                                          'Unpaid CAs:',
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .override(
-                                                                                fontFamily: 'Plus Jakarta Sans',
-                                                                                color: Color(0x9AFFFFFF),
-                                                                                fontSize: 12.0,
-                                                                                fontWeight: FontWeight.w500,
-                                                                              ),
-                                                                        ),
-                                                                      ),
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                    child: Text(
+                                                                      'Unpaid CAs:',
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .titleSmall
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Plus Jakarta Sans',
+                                                                            color:
+                                                                                Color(0x9AFFFFFF),
+                                                                            fontSize:
+                                                                                12.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
                                                                             0.0,
                                                                             3.0,
                                                                             0.0,
                                                                             0.0),
-                                                                        child: StreamBuilder<
-                                                                            List<AdvancesRecord>>(
-                                                                          stream:
-                                                                              queryAdvancesRecord(
-                                                                            parent:
-                                                                                listViewStaffsRecord.reference,
-                                                                            queryBuilder: (advancesRecord) =>
+                                                                    child: StreamBuilder<
+                                                                        List<
+                                                                            AdvancesRecord>>(
+                                                                      stream:
+                                                                          queryAdvancesRecord(
+                                                                        parent:
+                                                                            listViewStaffsRecord.reference,
+                                                                        queryBuilder:
+                                                                            (advancesRecord) =>
                                                                                 advancesRecord.where(
-                                                                              'settled',
-                                                                              isEqualTo: false,
-                                                                            ),
-                                                                          ),
-                                                                          builder:
-                                                                              (context, snapshot) {
-                                                                            // Customize what your widget looks like when it's loading.
-                                                                            if (!snapshot.hasData) {
-                                                                              return Center(
-                                                                                child: SizedBox(
-                                                                                  width: 50.0,
-                                                                                  height: 50.0,
-                                                                                  child: CircularProgressIndicator(
-                                                                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                                                                      FlutterFlowTheme.of(context).primary,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              );
-                                                                            }
-                                                                            List<AdvancesRecord>
-                                                                                textAdvancesRecordList =
-                                                                                snapshot.data!;
-                                                                            return Text(
-                                                                              formatNumber(
-                                                                                functions.totalOfCAs(textAdvancesRecordList.toList()),
-                                                                                formatType: FormatType.decimal,
-                                                                                decimalType: DecimalType.automatic,
-                                                                                currency: 'P ',
-                                                                              ),
-                                                                              style: FlutterFlowTheme.of(context).displaySmall.override(
-                                                                                    fontFamily: 'Outfit',
-                                                                                    color: Colors.white,
-                                                                                    fontSize: 16.0,
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                  ),
-                                                                            );
-                                                                          },
+                                                                          'settled',
+                                                                          isEqualTo:
+                                                                              false,
                                                                         ),
                                                                       ),
-                                                                    ],
-                                                                  ).animateOnPageLoad(
-                                                                      animationsMap[
-                                                                          'columnOnPageLoadAnimation']!),
-                                                                ),
-                                                              ],
+                                                                      builder:
+                                                                          (context,
+                                                                              snapshot) {
+                                                                        // Customize what your widget looks like when it's loading.
+                                                                        if (!snapshot
+                                                                            .hasData) {
+                                                                          return Center(
+                                                                            child:
+                                                                                SizedBox(
+                                                                              width: 50.0,
+                                                                              height: 50.0,
+                                                                              child: CircularProgressIndicator(
+                                                                                valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                  FlutterFlowTheme.of(context).primary,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }
+                                                                        List<AdvancesRecord>
+                                                                            textAdvancesRecordList =
+                                                                            snapshot.data!;
+                                                                        return Text(
+                                                                          formatNumber(
+                                                                            functions.totalOfCAs(textAdvancesRecordList.toList()),
+                                                                            formatType:
+                                                                                FormatType.decimal,
+                                                                            decimalType:
+                                                                                DecimalType.automatic,
+                                                                            currency:
+                                                                                'P ',
+                                                                          ),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .displaySmall
+                                                                              .override(
+                                                                                fontFamily: 'Outfit',
+                                                                                color: Colors.white,
+                                                                                fontSize: 16.0,
+                                                                                fontWeight: FontWeight.w600,
+                                                                              ),
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ).animateOnPageLoad(
+                                                                  animationsMap[
+                                                                      'columnOnPageLoadAnimation']!),
                                                             ),
-                                                          ),
+                                                          ],
                                                         ),
-                                                      ).animateOnPageLoad(
-                                                          animationsMap[
-                                                              'containerOnPageLoadAnimation']!),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
+                                                      ),
+                                                    ),
+                                                  ).animateOnPageLoad(animationsMap[
+                                                      'containerOnPageLoadAnimation']!),
+                                                );
+                                              },
                                             ),
                                           ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 8.0, 10.0, 8.0),
-                                            child: FlutterFlowIconButton(
+                                        ),
+                                      ),
+                                      if (valueOrDefault(
+                                              currentUserDocument?.role, '') ==
+                                          'admin')
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 8.0, 10.0, 8.0),
+                                          child: AuthUserStreamWidget(
+                                            builder: (context) =>
+                                                FlutterFlowIconButton(
                                               borderColor:
                                                   FlutterFlowTheme.of(context)
                                                       .alternate,
@@ -834,460 +854,545 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                               },
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 12.0, 16.0, 0.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  constraints: BoxConstraints(
+                                    maxWidth: double.infinity,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    border: Border.all(
+                                      color: FlutterFlowTheme.of(context)
+                                          .alternate,
+                                      width: 1.0,
                                     ),
                                   ),
-                                  Padding(
+                                  child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 12.0, 16.0, 0.0),
-                                    child: Container(
-                                      width: double.infinity,
-                                      constraints: BoxConstraints(
-                                        maxWidth: double.infinity,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        border: Border.all(
-                                          color: FlutterFlowTheme.of(context)
-                                              .alternate,
-                                          width: 1.0,
+                                        16.0, 12.0, 16.0, 12.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          flex: 4,
+                                          child: Text(
+                                            'Date',
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  fontSize: 14.0,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                          ),
                                         ),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            16.0, 12.0, 16.0, 12.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                'Date',
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .labelMedium
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
+                                        if (responsiveVisibility(
+                                          context: context,
+                                          phone: false,
+                                          tablet: false,
+                                          tabletLandscape: false,
+                                        ))
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              'Weight',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .labelMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryText,
+                                                    fontSize: 14.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ),
+                                        if (responsiveVisibility(
+                                          context: context,
+                                          phone: false,
+                                          tablet: false,
+                                          tabletLandscape: false,
+                                        ))
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              'Status',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryText,
+                                                    fontSize: 14.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            'Amount',
+                                            textAlign: TextAlign.end,
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Stack(
+                                children: [
+                                  if ((payrollCount > 0) &&
+                                      !_model.isLoading &&
+                                      (valueOrDefault(
+                                              currentUserDocument?.role, '') ==
+                                          'admin'))
+                                    AuthUserStreamWidget(
+                                      builder: (context) => PagedListView<
+                                          DocumentSnapshot<Object?>?,
+                                          PayrollsRecord>.separated(
+                                        pagingController:
+                                            _model.setListViewController2(
+                                          PayrollsRecord.collection
+                                              .where(
+                                                'hotel',
+                                                isEqualTo: FFAppState().hotel,
+                                              )
+                                              .orderBy('date',
+                                                  descending: true),
+                                        ),
+                                        padding: EdgeInsets.fromLTRB(
+                                          0,
+                                          12.0,
+                                          0,
+                                          44.0,
+                                        ),
+                                        primary: false,
+                                        shrinkWrap: true,
+                                        reverse: false,
+                                        scrollDirection: Axis.vertical,
+                                        separatorBuilder: (_, __) =>
+                                            SizedBox(height: 12.0),
+                                        builderDelegate:
+                                            PagedChildBuilderDelegate<
+                                                PayrollsRecord>(
+                                          // Customize what your widget looks like when it's loading the first page.
+                                          firstPageProgressIndicatorBuilder:
+                                              (_) => Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          // Customize what your widget looks like when it's loading another page.
+                                          newPageProgressIndicatorBuilder:
+                                              (_) => Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                          itemBuilder:
+                                              (context, _, listViewIndex) {
+                                            final listViewPayrollsRecord =
+                                                _model
+                                                    .listViewPagingController2!
+                                                    .itemList![listViewIndex];
+                                            return Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.0, 0.0, 16.0, 0.0),
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  context.pushNamed(
+                                                    'NewEditPayroll',
+                                                    queryParameters: {
+                                                      'ref': serializeParam(
+                                                        listViewPayrollsRecord
+                                                            .reference,
+                                                        ParamType
+                                                            .DocumentReference,
+                                                      ),
+                                                    }.withoutNulls,
+                                                  );
+                                                },
+                                                onLongPress: () async {
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return GestureDetector(
+                                                        onTap: () => _model
+                                                                .unfocusNode
+                                                                .canRequestFocus
+                                                            ? FocusScope.of(
+                                                                    context)
+                                                                .requestFocus(_model
+                                                                    .unfocusNode)
+                                                            : FocusScope.of(
+                                                                    context)
+                                                                .unfocus(),
+                                                        child: Padding(
+                                                          padding: MediaQuery
+                                                              .viewInsetsOf(
+                                                                  context),
+                                                          child: Container(
+                                                            height: 180.0,
+                                                            child:
+                                                                OptionToPayrollWidget(
+                                                              payroll:
+                                                                  listViewPayrollsRecord,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      safeSetState(() {}));
+                                                },
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  constraints: BoxConstraints(
+                                                    maxWidth: 570.0,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryBackground,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    border: Border.all(
                                                       color:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .secondaryText,
-                                                      fontSize: 14.0,
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                                              .alternate,
+                                                      width: 2.0,
                                                     ),
-                                              ),
-                                            ),
-                                            if (responsiveVisibility(
-                                              context: context,
-                                              phone: false,
-                                              tablet: false,
-                                              tabletLandscape: false,
-                                            ))
-                                              Expanded(
-                                                flex: 1,
-                                                child: Text(
-                                                  'Weight',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .labelMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontSize: 14.0,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                ),
-                                              ),
-                                            if (responsiveVisibility(
-                                              context: context,
-                                              phone: false,
-                                              tablet: false,
-                                              tabletLandscape: false,
-                                            ))
-                                              Expanded(
-                                                flex: 2,
-                                                child: Text(
-                                                  'Status',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontSize: 14.0,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                ),
-                                              ),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                'Amount',
-                                                textAlign: TextAlign.end,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Stack(
-                                    children: [
-                                      if ((payrollCount > 0) &&
-                                          !_model.isLoading)
-                                        PagedListView<
-                                            DocumentSnapshot<Object?>?,
-                                            PayrollsRecord>.separated(
-                                          pagingController:
-                                              _model.setListViewController2(
-                                            PayrollsRecord.collection
-                                                .where(
-                                                  'hotel',
-                                                  isEqualTo: FFAppState().hotel,
-                                                )
-                                                .orderBy('date',
-                                                    descending: true),
-                                          ),
-                                          padding: EdgeInsets.fromLTRB(
-                                            0,
-                                            12.0,
-                                            0,
-                                            44.0,
-                                          ),
-                                          primary: false,
-                                          shrinkWrap: true,
-                                          reverse: false,
-                                          scrollDirection: Axis.vertical,
-                                          separatorBuilder: (_, __) =>
-                                              SizedBox(height: 12.0),
-                                          builderDelegate:
-                                              PagedChildBuilderDelegate<
-                                                  PayrollsRecord>(
-                                            // Customize what your widget looks like when it's loading the first page.
-                                            firstPageProgressIndicatorBuilder:
-                                                (_) => Center(
-                                              child: SizedBox(
-                                                width: 50.0,
-                                                height: 50.0,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
                                                   ),
-                                                ),
-                                              ),
-                                            ),
-                                            // Customize what your widget looks like when it's loading another page.
-                                            newPageProgressIndicatorBuilder:
-                                                (_) => Center(
-                                              child: SizedBox(
-                                                width: 50.0,
-                                                height: 50.0,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-
-                                            itemBuilder:
-                                                (context, _, listViewIndex) {
-                                              final listViewPayrollsRecord =
-                                                  _model
-                                                      .listViewPagingController2!
-                                                      .itemList![listViewIndex];
-                                              return Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        16.0, 0.0, 16.0, 0.0),
-                                                child: InkWell(
-                                                  splashColor:
-                                                      Colors.transparent,
-                                                  focusColor:
-                                                      Colors.transparent,
-                                                  hoverColor:
-                                                      Colors.transparent,
-                                                  highlightColor:
-                                                      Colors.transparent,
-                                                  onTap: () async {
-                                                    context.pushNamed(
-                                                      'NewEditPayroll',
-                                                      queryParameters: {
-                                                        'ref': serializeParam(
-                                                          listViewPayrollsRecord
-                                                              .reference,
-                                                          ParamType
-                                                              .DocumentReference,
-                                                        ),
-                                                      }.withoutNulls,
-                                                    );
-                                                  },
-                                                  onLongPress: () async {
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
-                                                                      context)
-                                                                  .unfocus(),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                16.0,
+                                                                12.0,
+                                                                16.0,
+                                                                12.0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 3,
                                                           child: Padding(
-                                                            padding: MediaQuery
-                                                                .viewInsetsOf(
-                                                                    context),
-                                                            child: Container(
-                                                              height: 180.0,
-                                                              child:
-                                                                  OptionToPayrollWidget(
-                                                                payroll:
-                                                                    listViewPayrollsRecord,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ).then((value) =>
-                                                        safeSetState(() {}));
-                                                  },
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    constraints: BoxConstraints(
-                                                      maxWidth: 570.0,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                      border: Border.all(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .alternate,
-                                                        width: 2.0,
-                                                      ),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  16.0,
-                                                                  12.0,
-                                                                  16.0,
-                                                                  12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Expanded(
-                                                            flex: 3,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0.0,
+                                                                        5.0,
+                                                                        12.0,
+                                                                        0.0),
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                RichText(
+                                                                  textScaleFactor:
+                                                                      MediaQuery.of(
+                                                                              context)
+                                                                          .textScaleFactor,
+                                                                  text:
+                                                                      TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text:
+                                                                            'Fortnight #: ',
+                                                                        style:
+                                                                            TextStyle(),
+                                                                      ),
+                                                                      TextSpan(
+                                                                        text: listViewPayrollsRecord
+                                                                            .fortnight,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).primary,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge,
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
-                                                                          5.0,
-                                                                          12.0,
+                                                                          4.0,
+                                                                          0.0,
                                                                           0.0),
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  RichText(
-                                                                    textScaleFactor:
-                                                                        MediaQuery.of(context)
-                                                                            .textScaleFactor,
-                                                                    text:
-                                                                        TextSpan(
-                                                                      children: [
-                                                                        TextSpan(
-                                                                          text:
-                                                                              'Fortnight #: ',
-                                                                          style:
-                                                                              TextStyle(),
-                                                                        ),
-                                                                        TextSpan(
-                                                                          text:
-                                                                              listViewPayrollsRecord.fortnight,
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primary,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyLarge,
-                                                                    ),
+                                                                  child: Text(
+                                                                    dateTimeFormat(
+                                                                        'EEE MMM d y h:mm a',
+                                                                        listViewPayrollsRecord
+                                                                            .date!),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelMedium,
                                                                   ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      dateTimeFormat(
-                                                                          'EEE MMM d y h:mm a',
-                                                                          listViewPayrollsRecord
-                                                                              .date!),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelMedium,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                            tabletLandscape:
-                                                                false,
-                                                          ))
-                                                            Expanded(
-                                                              flex: 1,
-                                                              child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                children: [
-                                                                  Container(
-                                                                    height:
-                                                                        32.0,
-                                                                    decoration:
-                                                                        BoxDecoration(
+                                                        ),
+                                                        if (responsiveVisibility(
+                                                          context: context,
+                                                          phone: false,
+                                                          tablet: false,
+                                                          tabletLandscape:
+                                                              false,
+                                                        ))
+                                                          Expanded(
+                                                            flex: 1,
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              children: [
+                                                                Container(
+                                                                  height: 32.0,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryBackground,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            12.0),
+                                                                    border:
+                                                                        Border
+                                                                            .all(
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .primaryBackground,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              12.0),
-                                                                      border:
-                                                                          Border
-                                                                              .all(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .alternate,
-                                                                        width:
-                                                                            2.0,
-                                                                      ),
+                                                                          .alternate,
+                                                                      width:
+                                                                          2.0,
                                                                     ),
-                                                                    child:
-                                                                        Align(
-                                                                      alignment:
-                                                                          AlignmentDirectional(
-                                                                              0.0,
-                                                                              0.0),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            7.0,
+                                                                  ),
+                                                                  child: Align(
+                                                                    alignment:
+                                                                        AlignmentDirectional(
                                                                             0.0,
-                                                                            7.0,
                                                                             0.0),
-                                                                        child:
-                                                                            Text(
-                                                                          '2.5 lbs',
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelMedium,
-                                                                        ),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          7.0,
+                                                                          0.0,
+                                                                          7.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Text(
+                                                                        '2.5 lbs',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelMedium,
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                              ],
                                                             ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                            tabletLandscape:
-                                                                false,
-                                                          ))
-                                                            Expanded(
-                                                              flex: 2,
-                                                              child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                children: [
-                                                                  Container(
+                                                          ),
+                                                        if (responsiveVisibility(
+                                                          context: context,
+                                                          phone: false,
+                                                          tablet: false,
+                                                          tabletLandscape:
+                                                              false,
+                                                        ))
+                                                          Expanded(
+                                                            flex: 2,
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              children: [
+                                                                Container(
+                                                                  height: 32.0,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .accent1,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            12.0),
+                                                                    border:
+                                                                        Border
+                                                                            .all(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primary,
+                                                                      width:
+                                                                          2.0,
+                                                                    ),
+                                                                  ),
+                                                                  child: Align(
+                                                                    alignment:
+                                                                        AlignmentDirectional(
+                                                                            0.0,
+                                                                            0.0),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          8.0,
+                                                                          0.0,
+                                                                          8.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Text(
+                                                                        'Shipped',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              color: FlutterFlowTheme.of(context).primary,
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        Expanded(
+                                                          flex: 2,
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Text(
+                                                                formatNumber(
+                                                                  listViewPayrollsRecord
+                                                                      .total,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineSmall,
+                                                              ),
+                                                              if (responsiveVisibility(
+                                                                context:
+                                                                    context,
+                                                                desktop: false,
+                                                              ))
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          4.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child:
+                                                                      Container(
+                                                                    width: 91.0,
                                                                     height:
                                                                         32.0,
                                                                     decoration:
                                                                         BoxDecoration(
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .accent1,
+                                                                      color: listViewPayrollsRecord.status ==
+                                                                              'pending'
+                                                                          ? FlutterFlowTheme.of(context)
+                                                                              .accent3
+                                                                          : FlutterFlowTheme.of(context)
+                                                                              .accent2,
                                                                       borderRadius:
                                                                           BorderRadius.circular(
-                                                                              12.0),
+                                                                              5.0),
                                                                       border:
                                                                           Border
                                                                               .all(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primary,
+                                                                        color: listViewPayrollsRecord.status ==
+                                                                                'pending'
+                                                                            ? FlutterFlowTheme.of(context).error
+                                                                            : FlutterFlowTheme.of(context).secondary,
                                                                         width:
-                                                                            2.0,
+                                                                            1.0,
                                                                       ),
                                                                     ),
                                                                     child:
@@ -1305,154 +1410,62 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                             0.0),
                                                                         child:
                                                                             Text(
-                                                                          'Shipped',
+                                                                          listViewPayrollsRecord
+                                                                              .status,
+                                                                          textAlign:
+                                                                              TextAlign.center,
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .bodyMedium
                                                                               .override(
                                                                                 fontFamily: 'Readex Pro',
-                                                                                color: FlutterFlowTheme.of(context).primary,
+                                                                                color: listViewPayrollsRecord.status == 'pending' ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
                                                                               ),
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  formatNumber(
-                                                                    listViewPayrollsRecord
-                                                                        .total,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .decimal,
-                                                                    decimalType:
-                                                                        DecimalType
-                                                                            .automatic,
-                                                                    currency:
-                                                                        'P ',
-                                                                  ),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .end,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .headlineSmall,
                                                                 ),
-                                                                if (responsiveVisibility(
-                                                                  context:
-                                                                      context,
-                                                                  desktop:
-                                                                      false,
-                                                                ))
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child:
-                                                                        Container(
-                                                                      width:
-                                                                          91.0,
-                                                                      height:
-                                                                          32.0,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: listViewPayrollsRecord.status ==
-                                                                                'pending'
-                                                                            ? FlutterFlowTheme.of(context).accent3
-                                                                            : FlutterFlowTheme.of(context).accent2,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5.0),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color: listViewPayrollsRecord.status == 'pending'
-                                                                              ? FlutterFlowTheme.of(context).error
-                                                                              : FlutterFlowTheme.of(context).secondary,
-                                                                          width:
-                                                                              1.0,
-                                                                        ),
-                                                                      ),
-                                                                      child:
-                                                                          Align(
-                                                                        alignment: AlignmentDirectional(
-                                                                            0.0,
-                                                                            0.0),
-                                                                        child:
-                                                                            Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              8.0,
-                                                                              0.0,
-                                                                              8.0,
-                                                                              0.0),
-                                                                          child:
-                                                                              Text(
-                                                                            listViewPayrollsRecord.status,
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                  fontFamily: 'Readex Pro',
-                                                                                  color: listViewPayrollsRecord.status == 'pending' ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
-                                                                                ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                              ],
-                                                            ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
-                                              );
-                                            },
-                                          ),
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      if (_model.isLoading)
-                                        Container(
-                                          width: double.infinity,
-                                          height: 330.0,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: Image.asset(
-                                              'assets/images/giphy.gif',
-                                              width: 300.0,
-                                              height: 270.0,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                                      ),
+                                    ),
+                                  if (_model.isLoading)
+                                    Container(
+                                      width: double.infinity,
+                                      height: 330.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: Image.asset(
+                                          'assets/images/giphy.gif',
+                                          width: 300.0,
+                                          height: 270.0,
+                                          fit: BoxFit.cover,
                                         ),
-                                    ],
-                                  ),
+                                      ),
+                                    ),
                                 ],
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),

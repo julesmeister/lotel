@@ -99,7 +99,7 @@ class _GroceryProfitabilityState extends State<GroceryProfitability> {
       chartValuesOptions: ChartValuesOptions(
         showChartValueBackground: true,
         showChartValues: true,
-        showChartValuesInPercentage: false,
+        showChartValuesInPercentage: true,
         showChartValuesOutside: false,
         decimalPlaces: 0,
       ),

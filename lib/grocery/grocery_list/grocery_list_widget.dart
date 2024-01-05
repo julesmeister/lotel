@@ -177,6 +177,9 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                             ),
                           ],
                           controller: _model.tabBarController,
+                          onTap: (i) async {
+                            [() async {}, () async {}][i]();
+                          },
                         ),
                       ),
                       Expanded(
@@ -753,11 +756,21 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 CircularPercentIndicator(
-                                                  percent: functions.netCircleDecimal(
+                                                  percent: (double grocery,
+                                                          double revenue) {
+                                                    return (grocery + revenue ==
+                                                            0)
+                                                        ? 0.0
+                                                        : (revenue >=
+                                                                grocery * 2)
+                                                            ? revenue / revenue
+                                                            : revenue /
+                                                                (grocery * 2);
+                                                  }(
                                                       listViewGoodsRevenueRatioRecord
-                                                          .revenue,
+                                                          .grocery,
                                                       listViewGoodsRevenueRatioRecord
-                                                          .grocery),
+                                                          .revenue),
                                                   radius: 36.5,
                                                   lineWidth: 8.0,
                                                   animation: true,
@@ -769,11 +782,27 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                               context)
                                                           .tertiary,
                                                   center: Text(
-                                                    functions.netCircle(
+                                                    (double grocery,
+                                                            double revenue) {
+                                                      return (((grocery + revenue ==
+                                                                          0)
+                                                                      ? 0.0
+                                                                      : revenue /
+                                                                          (grocery *
+                                                                              2)) *
+                                                                  100)
+                                                              .toStringAsFixed(
+                                                                  1)
+                                                              .replaceAll(
+                                                                  RegExp(
+                                                                      r'\.0*$'),
+                                                                  '') +
+                                                          '%';
+                                                    }(
                                                         listViewGoodsRevenueRatioRecord
-                                                            .revenue,
+                                                            .grocery,
                                                         listViewGoodsRevenueRatioRecord
-                                                            .grocery),
+                                                            .revenue),
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .headlineMedium
@@ -861,6 +890,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       textAlign:
                                                                           TextAlign
                                                                               .start,
+                                                                      maxLines:
+                                                                          1,
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyLarge
@@ -891,6 +922,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     textAlign:
                                                                         TextAlign
                                                                             .end,
+                                                                    maxLines: 1,
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
                                                                         .bodyLarge
@@ -958,6 +990,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     textAlign:
                                                                         TextAlign
                                                                             .start,
+                                                                    maxLines: 1,
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
                                                                         .bodyLarge
@@ -988,6 +1021,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                   textAlign:
                                                                       TextAlign
                                                                           .end,
+                                                                  maxLines: 1,
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
                                                                       .bodyLarge
@@ -1058,6 +1092,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       textAlign:
                                                                           TextAlign
                                                                               .start,
+                                                                      maxLines:
+                                                                          1,
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyLarge
@@ -1148,6 +1184,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       textAlign:
                                                                           TextAlign
                                                                               .start,
+                                                                      maxLines:
+                                                                          1,
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyLarge
@@ -1166,11 +1204,10 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     (double grocery,
                                                                             double
                                                                                 revenue) {
-                                                                      return grocery + revenue ==
-                                                                              0
-                                                                          ? "0"
-                                                                          : (revenue / (grocery + revenue) * 100 - 50).round().toString() +
-                                                                              "%";
+                                                                      return ((50 - (((grocery + revenue == 0) ? 0.0 : revenue / (grocery * 2)) * 100)).abs()).toStringAsFixed(1).replaceAll(
+                                                                              RegExp(r'\.0*$'),
+                                                                              '') +
+                                                                          '%';
                                                                     }(
                                                                         listViewGoodsRevenueRatioRecord
                                                                             .grocery,

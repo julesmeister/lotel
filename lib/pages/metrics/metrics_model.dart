@@ -76,32 +76,32 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
 
   double bills = 0.0;
 
+  StatsRecord? stat;
+
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Firestore Query - Query a collection] action in Metrics widget.
-  int? initCount;
-  // Stores action output result for [Firestore Query - Query a collection] action in Metrics widget.
-  List<StatsRecord>? currentStats;
+  // Stores action output result for [Action Block - UpdateStatsByHotel] action in Container widget.
+  String? hotelName;
+  // Stores action output result for [Action Block - UpdateStatsByHotel] action in Container widget.
+  String? hotelName1;
+  // Stores action output result for [Action Block - UpdateStatsByHotel] action in Container widget.
+  String? hotelName2;
   // State field(s) for month widget.
   String? monthValue;
   FormFieldController<String>? monthValueController;
-  // Stores action output result for [Firestore Query - Query a collection] action in month widget.
-  int? initStatsCountCopy;
-  // Stores action output result for [Firestore Query - Query a collection] action in month widget.
-  List<StatsRecord>? foundMonthDoc;
   // State field(s) for year widget.
   String? yearValue;
   FormFieldController<String>? yearValueController;
-  // Stores action output result for [Firestore Query - Query a collection] action in year widget.
-  int? initStatsCountCopyCopy;
-  // Stores action output result for [Firestore Query - Query a collection] action in year widget.
-  List<StatsRecord>? foundYearDoc;
   // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
   List<TransactionsRecord>? bookingTransactionsOnly;
   // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
   List<TransactionsRecord>? goodsTransactionsOnly;
   // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
   List<TransactionsRecord>? expenseTransactionsOnly;
+  // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.
+  StatsRecord? statO;
+  // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.
+  List<RoomsRecord>? roomsCheck;
 
   /// Initialization and disposal methods.
 
@@ -110,6 +110,218 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
   void dispose() {}
 
   /// Action blocks are added here.
+
+  Future updateStatsByDate(
+    BuildContext context, {
+    required String? year,
+    required String? month,
+    required String? hotel,
+  }) async {
+    int? initStatsCount;
+    List<StatsRecord>? foundMonthDoc;
+
+    // count
+    initStatsCount = await queryStatsRecordCount(
+      queryBuilder: (statsRecord) => statsRecord
+          .where(
+            'month',
+            isEqualTo: month,
+          )
+          .where(
+            'year',
+            isEqualTo: year,
+          )
+          .where(
+            'hotel',
+            isEqualTo: hotel,
+          ),
+    );
+    if (initStatsCount! > 0) {
+      // get stats
+      foundMonthDoc = await queryStatsRecordOnce(
+        queryBuilder: (statsRecord) => statsRecord
+            .where(
+              'month',
+              isEqualTo: month,
+            )
+            .where(
+              'year',
+              isEqualTo: year,
+            ),
+      );
+      // initialize all stats
+      stats = foundMonthDoc!.toList().cast<StatsRecord>();
+      // initialize all page vars
+      month = month!;
+      year = year!;
+      expenses = stats
+              .where((e) => e.hotel == 'Serenity')
+              .toList()
+              .first
+              .expenses +
+          stats.where((e) => e.hotel == 'My Lifestyle').toList().first.expenses;
+      salaries = stats
+              .where((e) => e.hotel == 'Serenity')
+              .toList()
+              .first
+              .salaries +
+          stats.where((e) => e.hotel == 'My Lifestyle').toList().first.salaries;
+      goodsLine = functions.mergedLine(
+          stats.where((e) => e.hotel == 'Serenity').toList().first.goodsLine,
+          stats
+              .where((e) => e.hotel == 'My Lifestyle')
+              .toList()
+              .first
+              .goodsLine);
+      roomLine = functions.mergedLine(
+          stats.where((e) => e.hotel == 'Serenity').toList().first.roomLine,
+          stats
+              .where((e) => e.hotel == 'My Lifestyle')
+              .toList()
+              .first
+              .roomLine);
+      rooms =
+          stats.where((e) => e.hotel == 'Serenity').toList().first.roomsIncome +
+              stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .roomsIncome;
+      goods =
+          stats.where((e) => e.hotel == 'Serenity').toList().first.goodsIncome +
+              stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .goodsIncome;
+      hotel = 'All';
+      groceryExpenses = stats
+              .where((e) => e.hotel == 'Serenity')
+              .toList()
+              .first
+              .groceryExpenses +
+          stats
+              .where((e) => e.hotel == 'My Lifestyle')
+              .toList()
+              .first
+              .groceryExpenses;
+      bills = stats.where((e) => e.hotel == 'Serenity').toList().first.bills +
+          stats.where((e) => e.hotel == 'My Lifestyle').toList().first.bills;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Showing stats of ${monthValue} ${yearValue}',
+            style: TextStyle(
+              color: FlutterFlowTheme.of(context).primaryText,
+            ),
+          ),
+          duration: Duration(milliseconds: 4000),
+          backgroundColor: FlutterFlowTheme.of(context).secondary,
+        ),
+      );
+    } else {
+      // no data yet
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'No data yet!',
+            style: TextStyle(
+              color: FlutterFlowTheme.of(context).info,
+            ),
+          ),
+          duration: Duration(milliseconds: 4000),
+          backgroundColor: FlutterFlowTheme.of(context).error,
+        ),
+      );
+    }
+  }
+
+  Future<String?> updateStatsByHotel(
+    BuildContext context, {
+    required String? hotel,
+  }) async {
+    if (hotel == 'All') {
+      // initialize all page vars
+      expenses = stats
+              .where((e) => e.hotel == 'Serenity')
+              .toList()
+              .first
+              .expenses +
+          stats.where((e) => e.hotel == 'My Lifestyle').toList().first.expenses;
+      salaries = stats
+              .where((e) => e.hotel == 'Serenity')
+              .toList()
+              .first
+              .salaries +
+          stats.where((e) => e.hotel == 'My Lifestyle').toList().first.salaries;
+      goodsLine = functions.mergedLine(
+          stats.where((e) => e.hotel == 'Serenity').toList().first.goodsLine,
+          stats
+              .where((e) => e.hotel == 'My Lifestyle')
+              .toList()
+              .first
+              .goodsLine);
+      roomLine = functions.mergedLine(
+          stats.where((e) => e.hotel == 'Serenity').toList().first.roomLine,
+          stats
+              .where((e) => e.hotel == 'My Lifestyle')
+              .toList()
+              .first
+              .roomLine);
+      rooms =
+          stats.where((e) => e.hotel == 'Serenity').toList().first.roomsIncome +
+              stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .roomsIncome;
+      goods =
+          stats.where((e) => e.hotel == 'Serenity').toList().first.goodsIncome +
+              stats
+                  .where((e) => e.hotel == 'My Lifestyle')
+                  .toList()
+                  .first
+                  .goodsIncome;
+      hotel = 'All';
+      groceryExpenses = stats
+              .where((e) => e.hotel == 'Serenity')
+              .toList()
+              .first
+              .groceryExpenses +
+          stats
+              .where((e) => e.hotel == 'My Lifestyle')
+              .toList()
+              .first
+              .groceryExpenses;
+      bills = stats.where((e) => e.hotel == 'Serenity').toList().first.bills +
+          stats.where((e) => e.hotel == 'My Lifestyle').toList().first.bills;
+      net = rooms + goods - expenses - groceryExpenses - salaries - bills;
+    } else {
+      // statByHotel
+      stat = functions.statByHotel(stats.toList(), hotel!);
+      hotel = hotel!;
+      // initialize all page vars
+      expenses = stat!.expenses;
+      salaries = stat!.salaries;
+      roomUsage =
+          functions.extractRoomUsage(stat!).toList().cast<RoomUsageStruct>();
+      goodsLine = stat?.goodsLine;
+      roomLine = stat?.roomLine;
+      rooms = stat!.roomsIncome;
+      goods = stat!.goodsIncome;
+      statsRef = stat?.reference;
+      net = stat!.roomsIncome +
+          stat!.goodsIncome -
+          stat!.salaries -
+          stat!.expenses -
+          stat!.bills -
+          stat!.groceryExpenses;
+      groceryExpenses = stat!.groceryExpenses;
+      bills = stat!.bills;
+    }
+
+    return hotel;
+  }
 
   /// Additional helper methods are added here.
 }

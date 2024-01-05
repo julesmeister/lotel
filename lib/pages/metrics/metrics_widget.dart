@@ -66,137 +66,13 @@ class _MetricsWidgetState extends State<MetricsWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      // count
-      _model.initCount = await queryStatsRecordCount(
-        queryBuilder: (statsRecord) => statsRecord
-            .where(
-              'month',
-              isEqualTo: functions.currentMonth(),
-            )
-            .where(
-              'year',
-              isEqualTo: functions.currentYear(),
-            ),
+      await _model.updateStatsByDate(
+        context,
+        year: functions.currentYear(),
+        month: functions.currentMonth(),
+        hotel: FFAppState().hotel,
       );
-      if (_model.initCount! > 0) {
-        // get stats
-        _model.currentStats = await queryStatsRecordOnce(
-          queryBuilder: (statsRecord) => statsRecord
-              .where(
-                'month',
-                isEqualTo: functions.currentMonth(),
-              )
-              .where(
-                'year',
-                isEqualTo: functions.currentYear(),
-              ),
-        );
-        // initialize all stats
-        setState(() {
-          _model.stats = _model.currentStats!.toList().cast<StatsRecord>();
-        });
-        // initialize all page vars
-        setState(() {
-          _model.month = functions.currentMonth();
-          _model.year = functions.currentYear();
-          _model.expenses = _model.stats
-                  .where((e) => e.hotel == 'Serenity')
-                  .toList()
-                  .first
-                  .expenses +
-              _model.stats
-                  .where((e) => e.hotel == 'My Lifestyle')
-                  .toList()
-                  .first
-                  .expenses;
-          _model.salaries = _model.stats
-                  .where((e) => e.hotel == 'Serenity')
-                  .toList()
-                  .first
-                  .salaries +
-              _model.stats
-                  .where((e) => e.hotel == 'My Lifestyle')
-                  .toList()
-                  .first
-                  .salaries;
-          _model.goodsLine = functions.mergedLine(
-              _model.stats
-                  .where((e) => e.hotel == 'Serenity')
-                  .toList()
-                  .first
-                  .goodsLine,
-              _model.stats
-                  .where((e) => e.hotel == 'My Lifestyle')
-                  .toList()
-                  .first
-                  .goodsLine);
-          _model.roomLine = functions.mergedLine(
-              _model.stats
-                  .where((e) => e.hotel == 'Serenity')
-                  .toList()
-                  .first
-                  .roomLine,
-              _model.stats
-                  .where((e) => e.hotel == 'My Lifestyle')
-                  .toList()
-                  .first
-                  .roomLine);
-          _model.rooms = _model.stats
-                  .where((e) => e.hotel == 'Serenity')
-                  .toList()
-                  .first
-                  .roomsIncome +
-              _model.stats
-                  .where((e) => e.hotel == 'My Lifestyle')
-                  .toList()
-                  .first
-                  .roomsIncome;
-          _model.goods = _model.stats
-                  .where((e) => e.hotel == 'Serenity')
-                  .toList()
-                  .first
-                  .goodsIncome +
-              _model.stats
-                  .where((e) => e.hotel == 'My Lifestyle')
-                  .toList()
-                  .first
-                  .goodsIncome;
-          _model.groceryExpenses = _model.stats
-                  .where((e) => e.hotel == 'Serenity')
-                  .toList()
-                  .first
-                  .groceryExpenses +
-              _model.stats
-                  .where((e) => e.hotel == 'My Lifestyle')
-                  .toList()
-                  .first
-                  .groceryExpenses;
-          _model.bills = _model.stats
-                  .where((e) => e.hotel == 'Serenity')
-                  .toList()
-                  .first
-                  .bills +
-              _model.stats
-                  .where((e) => e.hotel == 'My Lifestyle')
-                  .toList()
-                  .first
-                  .bills;
-        });
-      } else {
-        // no data yet
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'No data yet!',
-              style: TextStyle(
-                color: FlutterFlowTheme.of(context).info,
-              ),
-            ),
-            duration: Duration(milliseconds: 4000),
-            backgroundColor: FlutterFlowTheme.of(context).error,
-          ),
-        );
-      }
+      setState(() {});
     });
 
     setupAnimations(
@@ -241,9 +117,9 @@ class _MetricsWidgetState extends State<MetricsWidget>
           borderWidth: 1.0,
           buttonSize: 60.0,
           icon: Icon(
-            Icons.arrow_back_rounded,
+            Icons.chevron_left,
             color: FlutterFlowTheme.of(context).primaryText,
-            size: 30.0,
+            size: 24.0,
           ),
           onPressed: () async {
             context.pop();
@@ -258,26 +134,104 @@ class _MetricsWidgetState extends State<MetricsWidget>
               ),
         ),
         actions: [
-          Visibility(
-            visible: _model.hotel != 'All',
-            child: Align(
-              alignment: AlignmentDirectional(0.0, 0.0),
-              child: Padding(
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
-                child: Container(
-                  width: 30.0,
-                  height: 30.0,
-                  child: custom_widgets.ShareStats(
-                    width: 30.0,
-                    height: 30.0,
-                    stats: _model.stats[_model.hotel == 'All'
-                        ? 0
-                        : functions.indexOfStatsFromHotel(
-                            _model.stats.toList(), _model.hotel)],
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    // set previous year
+                    setState(() {
+                      _model.yearValueController?.value = functions
+                          .previousYear(_model.monthValue!, _model.yearValue!);
+                    });
+                    // set previous month
+                    setState(() {
+                      _model.monthValueController?.value =
+                          functions.previousMonth(_model.monthValue!);
+                    });
+                    await _model.updateStatsByDate(
+                      context,
+                      year: _model.yearValue,
+                      month: _model.monthValue,
+                      hotel: FFAppState().hotel,
+                    );
+                    setState(() {});
+                    // set hotel to all
+                    setState(() {
+                      _model.hotel = 'All';
+                    });
+                  },
+                  child: Icon(
+                    Icons.chevron_left,
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    size: 24.0,
                   ),
                 ),
               ),
-            ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    // next Year
+                    setState(() {
+                      _model.yearValueController?.value = functions.nextYear(
+                          _model.yearValue!, _model.monthValue!);
+                    });
+                    // next month
+                    setState(() {
+                      _model.monthValueController?.value =
+                          functions.nextMonth(_model.monthValue!);
+                    });
+                    await _model.updateStatsByDate(
+                      context,
+                      year: _model.yearValue,
+                      month: _model.monthValue,
+                      hotel: FFAppState().hotel,
+                    );
+                    setState(() {});
+                    // set hotel to all
+                    setState(() {
+                      _model.hotel = 'All';
+                    });
+                  },
+                  child: Icon(
+                    Icons.chevron_right,
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    size: 24.0,
+                  ),
+                ),
+              ),
+              if (_model.hotel != 'All')
+                Align(
+                  alignment: AlignmentDirectional(0.0, 0.0),
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                    child: Container(
+                      width: 30.0,
+                      height: 30.0,
+                      child: custom_widgets.ShareStats(
+                        width: 30.0,
+                        height: 30.0,
+                        stats: _model.stats[_model.hotel == 'All'
+                            ? 0
+                            : functions.indexOfStatsFromHotel(
+                                _model.stats.toList(), _model.hotel)],
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ],
         centerTitle: false,
@@ -324,110 +278,16 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    // initialize all page vars
+                                    _model.hotelName =
+                                        await _model.updateStatsByHotel(
+                                      context,
+                                      hotel: 'All',
+                                    );
                                     setState(() {
-                                      _model.month = functions.currentMonth();
-                                      _model.year = functions.currentYear();
-                                      _model.expenses = _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .expenses +
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .expenses;
-                                      _model.salaries = _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .salaries +
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .salaries;
-                                      _model.goodsLine = functions.mergedLine(
-                                          _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .goodsLine,
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .goodsLine);
-                                      _model.roomLine = functions.mergedLine(
-                                          _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .roomLine,
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .roomLine);
-                                      _model.rooms = _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .roomsIncome +
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .roomsIncome;
-                                      _model.goods = _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .goodsIncome +
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .goodsIncome;
-                                      _model.hotel = 'All';
-                                      _model.groceryExpenses = _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .groceryExpenses +
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .groceryExpenses;
-                                      _model.bills = _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .bills +
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .bills;
+                                      _model.hotel = _model.hotelName!;
                                     });
+
+                                    setState(() {});
                                   },
                                   child: Container(
                                     width: 50.0,
@@ -485,89 +345,17 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    // initialize all page vars
+                                    _model.hotelName1 =
+                                        await _model.updateStatsByHotel(
+                                      context,
+                                      hotel: 'Serenity',
+                                    );
+                                    // set hotel name
                                     setState(() {
-                                      _model.month = functions.currentMonth();
-                                      _model.year = functions.currentYear();
-                                      _model.expenses = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .expenses;
-                                      _model.salaries = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .salaries;
-                                      _model.roomUsage = functions
-                                          .extractRoomUsage(_model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first)
-                                          .toList()
-                                          .cast<RoomUsageStruct>();
-                                      _model.goodsLine = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .goodsLine;
-                                      _model.roomLine = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .roomLine;
-                                      _model.rooms = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .roomsIncome;
-                                      _model.goods = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .goodsIncome;
-                                      _model.statsRef = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .reference;
-                                      _model.hotel = 'Serenity';
-                                      _model.net = _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .roomsIncome +
-                                          _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .goodsIncome -
-                                          _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .salaries -
-                                          _model.stats
-                                              .where(
-                                                  (e) => e.hotel == 'Serenity')
-                                              .toList()
-                                              .first
-                                              .expenses;
-                                      _model.groceryExpenses = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .groceryExpenses;
-                                      _model.bills = _model.stats
-                                          .where((e) => e.hotel == 'Serenity')
-                                          .toList()
-                                          .first
-                                          .bills;
+                                      _model.hotel = _model.hotelName1!;
                                     });
+
+                                    setState(() {});
                                   },
                                   child: Container(
                                     width: 115.0,
@@ -621,98 +409,17 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    // initialize all page vars
+                                    _model.hotelName2 =
+                                        await _model.updateStatsByHotel(
+                                      context,
+                                      hotel: 'My Lifestyle',
+                                    );
+                                    // set hotel
                                     setState(() {
-                                      _model.month = functions.currentMonth();
-                                      _model.year = functions.currentYear();
-                                      _model.expenses = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .expenses;
-                                      _model.salaries = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .salaries;
-                                      _model.roomUsage = functions
-                                          .extractRoomUsage(_model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first)
-                                          .toList()
-                                          .cast<RoomUsageStruct>();
-                                      _model.goodsLine = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .goodsLine;
-                                      _model.roomLine = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .roomLine;
-                                      _model.rooms = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .roomsIncome;
-                                      _model.goods = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .goodsIncome;
-                                      _model.statsRef = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .reference;
-                                      _model.net = _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .roomsIncome +
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .goodsIncome -
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .salaries -
-                                          _model.stats
-                                              .where((e) =>
-                                                  e.hotel == 'My Lifestyle')
-                                              .toList()
-                                              .first
-                                              .expenses;
-                                      _model.hotel = 'My Lifestyle';
-                                      _model.groceryExpenses = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .groceryExpenses;
-                                      _model.bills = _model.stats
-                                          .where(
-                                              (e) => e.hotel == 'My Lifestyle')
-                                          .toList()
-                                          .first
-                                          .bills;
+                                      _model.hotel = _model.hotelName2!;
                                     });
+
+                                    setState(() {});
                                   },
                                   child: Container(
                                     width: 115.0,
@@ -768,375 +475,109 @@ class _MetricsWidgetState extends State<MetricsWidget>
                 ),
               ],
             ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                if (functions.listOfMonths().length > 0)
-                  FlutterFlowDropDown<String>(
-                    controller: _model.monthValueController ??=
-                        FormFieldController<String>(
-                      _model.monthValue ??= functions.currentMonth(),
-                    ),
-                    options: functions.listOfMonths(),
-                    onChanged: (val) async {
-                      setState(() => _model.monthValue = val); // count
-                      _model.initStatsCountCopy = await queryStatsRecordCount(
-                        queryBuilder: (statsRecord) => statsRecord
-                            .where(
-                              'month',
-                              isEqualTo: _model.monthValue,
-                            )
-                            .where(
-                              'year',
-                              isEqualTo: _model.yearValue,
-                            )
-                            .where(
-                              'hotel',
-                              isEqualTo: FFAppState().hotel,
-                            ),
-                      );
-                      if (_model.initStatsCountCopy! > 0) {
-                        // get stats
-                        _model.foundMonthDoc = await queryStatsRecordOnce(
-                          queryBuilder: (statsRecord) => statsRecord
-                              .where(
-                                'month',
-                                isEqualTo: _model.monthValue,
-                              )
-                              .where(
-                                'year',
-                                isEqualTo: _model.yearValue,
-                              ),
-                        );
-                        // initialize all stats
-                        setState(() {
-                          _model.stats = _model.foundMonthDoc!
-                              .toList()
-                              .cast<StatsRecord>();
-                        });
-                        // initialize all page vars
-                        setState(() {
-                          _model.month = functions.currentMonth();
-                          _model.year = functions.currentYear();
-                          _model.expenses = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .expenses +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .expenses;
-                          _model.salaries = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .salaries +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .salaries;
-                          _model.goodsLine = functions.mergedLine(
-                              _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .goodsLine,
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .goodsLine);
-                          _model.roomLine = functions.mergedLine(
-                              _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .roomLine,
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .roomLine);
-                          _model.rooms = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .roomsIncome +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .roomsIncome;
-                          _model.goods = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .goodsIncome +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .goodsIncome;
-                          _model.hotel = 'All';
-                          _model.groceryExpenses = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .groceryExpenses +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .groceryExpenses;
-                          _model.bills = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .bills +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .bills;
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Showing stats of ${_model.monthValue} ${_model.yearValue}',
-                              style: TextStyle(
-                                color: FlutterFlowTheme.of(context).primaryText,
-                              ),
-                            ),
-                            duration: Duration(milliseconds: 4000),
-                            backgroundColor:
-                                FlutterFlowTheme.of(context).secondary,
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  if (functions.listOfMonths().length > 0)
+                    Expanded(
+                      flex: 6,
+                      child: Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                        child: FlutterFlowDropDown<String>(
+                          controller: _model.monthValueController ??=
+                              FormFieldController<String>(
+                            _model.monthValue ??= functions.currentMonth(),
                           ),
-                        );
-                      } else {
-                        // no data yet
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'No data yet!',
-                              style: TextStyle(
-                                color: FlutterFlowTheme.of(context).info,
-                              ),
-                            ),
-                            duration: Duration(milliseconds: 4000),
-                            backgroundColor: FlutterFlowTheme.of(context).error,
+                          options: functions.listOfMonths(),
+                          onChanged: (val) async {
+                            setState(() => _model.monthValue =
+                                val); // get stats from this month
+                            await _model.updateStatsByDate(
+                              context,
+                              year: _model.yearValue,
+                              month: _model.monthValue,
+                              hotel: FFAppState().hotel,
+                            );
+                            setState(() {});
+                            // set hotel to all
+                            setState(() {
+                              _model.hotel = 'All';
+                            });
+                          },
+                          width: 200.0,
+                          height: 50.0,
+                          textStyle: FlutterFlowTheme.of(context).bodyMedium,
+                          hintText: 'Month',
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            size: 24.0,
                           ),
-                        );
-                      }
-
-                      setState(() {});
-                    },
-                    width: 200.0,
-                    height: 50.0,
-                    textStyle: FlutterFlowTheme.of(context).bodyMedium,
-                    hintText: 'Month',
-                    icon: Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      size: 24.0,
+                          fillColor:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          elevation: 2.0,
+                          borderColor: FlutterFlowTheme.of(context).alternate,
+                          borderWidth: 2.0,
+                          borderRadius: 8.0,
+                          margin: EdgeInsetsDirectional.fromSTEB(
+                              16.0, 4.0, 16.0, 4.0),
+                          hidesUnderline: true,
+                          isSearchable: false,
+                          isMultiSelect: false,
+                        ),
+                      ),
                     ),
-                    fillColor: FlutterFlowTheme.of(context).secondaryBackground,
-                    elevation: 2.0,
-                    borderColor: FlutterFlowTheme.of(context).alternate,
-                    borderWidth: 2.0,
-                    borderRadius: 8.0,
-                    margin:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
-                    hidesUnderline: true,
-                    isSearchable: false,
-                    isMultiSelect: false,
-                  ),
-                if (functions.listOfYears().length > 0)
-                  FlutterFlowDropDown<String>(
-                    controller: _model.yearValueController ??=
-                        FormFieldController<String>(
-                      _model.yearValue ??= functions.currentYear(),
+                  if (functions.listOfYears().length > 0)
+                    Expanded(
+                      flex: 4,
+                      child: FlutterFlowDropDown<String>(
+                        controller: _model.yearValueController ??=
+                            FormFieldController<String>(
+                          _model.yearValue ??= functions.currentYear(),
+                        ),
+                        options: functions.listOfYears(),
+                        onChanged: (val) async {
+                          setState(() => _model.yearValue = val);
+                          await _model.updateStatsByDate(
+                            context,
+                            year: _model.yearValue,
+                            month: _model.monthValue,
+                            hotel: FFAppState().hotel,
+                          );
+                          setState(() {});
+                          // set hotel to all
+                          setState(() {
+                            _model.hotel = 'All';
+                          });
+                        },
+                        width: 130.0,
+                        height: 50.0,
+                        textStyle: FlutterFlowTheme.of(context).bodyMedium,
+                        hintText: 'Year',
+                        icon: Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: FlutterFlowTheme.of(context).secondaryText,
+                          size: 24.0,
+                        ),
+                        fillColor:
+                            FlutterFlowTheme.of(context).secondaryBackground,
+                        elevation: 2.0,
+                        borderColor: FlutterFlowTheme.of(context).alternate,
+                        borderWidth: 2.0,
+                        borderRadius: 8.0,
+                        margin: EdgeInsetsDirectional.fromSTEB(
+                            16.0, 4.0, 16.0, 4.0),
+                        hidesUnderline: true,
+                        isSearchable: false,
+                        isMultiSelect: false,
+                      ),
                     ),
-                    options: functions.listOfYears(),
-                    onChanged: (val) async {
-                      setState(() => _model.yearValue = val); // count
-                      _model.initStatsCountCopyCopy =
-                          await queryStatsRecordCount(
-                        queryBuilder: (statsRecord) => statsRecord
-                            .where(
-                              'month',
-                              isEqualTo: _model.monthValue,
-                            )
-                            .where(
-                              'year',
-                              isEqualTo: _model.yearValue,
-                            )
-                            .where(
-                              'hotel',
-                              isEqualTo: FFAppState().hotel,
-                            ),
-                      );
-                      if (_model.initStatsCountCopyCopy! > 0) {
-                        // get stats
-                        _model.foundYearDoc = await queryStatsRecordOnce(
-                          queryBuilder: (statsRecord) => statsRecord
-                              .where(
-                                'month',
-                                isEqualTo: _model.monthValue,
-                              )
-                              .where(
-                                'year',
-                                isEqualTo: _model.yearValue,
-                              ),
-                        );
-                        // initialize all stats
-                        setState(() {
-                          _model.stats =
-                              _model.foundYearDoc!.toList().cast<StatsRecord>();
-                        });
-                        // initialize all page vars
-                        setState(() {
-                          _model.month = functions.currentMonth();
-                          _model.year = functions.currentYear();
-                          _model.expenses = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .expenses +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .expenses;
-                          _model.salaries = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .salaries +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .salaries;
-                          _model.goodsLine = functions.mergedLine(
-                              _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .goodsLine,
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .goodsLine);
-                          _model.roomLine = functions.mergedLine(
-                              _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .roomLine,
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .roomLine);
-                          _model.rooms = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .roomsIncome +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .roomsIncome;
-                          _model.goods = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .goodsIncome +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .goodsIncome;
-                          _model.hotel = 'All';
-                          _model.groceryExpenses = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .groceryExpenses +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .groceryExpenses;
-                          _model.bills = _model.stats
-                                  .where((e) => e.hotel == 'Serenity')
-                                  .toList()
-                                  .first
-                                  .bills +
-                              _model.stats
-                                  .where((e) => e.hotel == 'My Lifestyle')
-                                  .toList()
-                                  .first
-                                  .bills;
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Showing stats of ${_model.month} ${_model.year}',
-                              style: TextStyle(
-                                color: FlutterFlowTheme.of(context).primaryText,
-                              ),
-                            ),
-                            duration: Duration(milliseconds: 4000),
-                            backgroundColor:
-                                FlutterFlowTheme.of(context).secondary,
-                          ),
-                        );
-                      } else {
-                        // no data yet
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'No data yet!',
-                              style: TextStyle(
-                                color: FlutterFlowTheme.of(context).info,
-                              ),
-                            ),
-                            duration: Duration(milliseconds: 4000),
-                            backgroundColor: FlutterFlowTheme.of(context).error,
-                          ),
-                        );
-                      }
-
-                      setState(() {});
-                    },
-                    width: 130.0,
-                    height: 50.0,
-                    textStyle: FlutterFlowTheme.of(context).bodyMedium,
-                    hintText: 'Year',
-                    icon: Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      size: 24.0,
-                    ),
-                    fillColor: FlutterFlowTheme.of(context).secondaryBackground,
-                    elevation: 2.0,
-                    borderColor: FlutterFlowTheme.of(context).alternate,
-                    borderWidth: 2.0,
-                    borderRadius: 8.0,
-                    margin:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
-                    hidesUnderline: true,
-                    isSearchable: false,
-                    isMultiSelect: false,
-                  ),
-              ],
+                ],
+              ),
             ),
             Align(
               alignment: AlignmentDirectional(-1.0, 0.0),
@@ -1720,7 +1161,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         child: Container(
                           height: 120.0,
                           constraints: BoxConstraints(
-                            maxWidth: 270.0,
+                            maxWidth: 290.0,
                           ),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
@@ -1797,7 +1238,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         child: Container(
                           height: 120.0,
                           constraints: BoxConstraints(
-                            maxWidth: 270.0,
+                            maxWidth: 290.0,
                           ),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
@@ -2079,62 +1520,65 @@ class _MetricsWidgetState extends State<MetricsWidget>
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                        child: Text(
-                          'Grocery Profitability',
-                          style:
-                              FlutterFlowTheme.of(context).titleLarge.override(
-                                    fontFamily: 'Outfit',
-                                    color: Color(0xFF14181B),
-                                    fontSize: 22.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(0.0, 0.0),
-                        child: Padding(
+            if (_model.groceryExpenses != 0.0)
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 10.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 400.0,
-                            child: custom_widgets.GroceryProfitability(
+                          child: Text(
+                            'Grocery Profitability',
+                            style: FlutterFlowTheme.of(context)
+                                .titleLarge
+                                .override(
+                                  fontFamily: 'Outfit',
+                                  color: Color(0xFF14181B),
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(0.0, 0.0),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 10.0),
+                            child: Container(
                               width: double.infinity,
                               height: 400.0,
-                              grocery: _model.groceryExpenses,
-                              revenue: _model.goods,
+                              child: custom_widgets.GroceryProfitability(
+                                width: double.infinity,
+                                height: 400.0,
+                                grocery: _model.groceryExpenses,
+                                revenue: _model.goods,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
             if (_model.hotel != 'All')
               Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding:
@@ -2143,6 +1587,122 @@ class _MetricsWidgetState extends State<MetricsWidget>
                           'Room Usage',
                           textAlign: TextAlign.start,
                           style: FlutterFlowTheme.of(context).headlineMedium,
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            // add missing
+                            var confirmDialogResponse = await showDialog<bool>(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      title: Text('Check For Missing Rooms'),
+                                      content: Text(
+                                          'This will go over all the rooms again, and it will add any if missing.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(
+                                              alertDialogContext, false),
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(
+                                              alertDialogContext, true),
+                                          child: Text('Confirm'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ) ??
+                                false;
+                            if (confirmDialogResponse) {
+                              // stat to be refreshed
+                              _model.statO = await queryStatsRecordOnce(
+                                queryBuilder: (statsRecord) => statsRecord
+                                    .where(
+                                      'hotel',
+                                      isEqualTo: _model.hotel,
+                                    )
+                                    .where(
+                                      'month',
+                                      isEqualTo: _model.monthValue,
+                                    )
+                                    .where(
+                                      'year',
+                                      isEqualTo: _model.yearValue,
+                                    ),
+                                singleRecord: true,
+                              ).then((s) => s.firstOrNull);
+                              // all rooms
+                              _model.roomsCheck = await queryRoomsRecordOnce(
+                                queryBuilder: (roomsRecord) =>
+                                    roomsRecord.where(
+                                  'hotel',
+                                  isEqualTo: _model.hotel,
+                                ),
+                              );
+                              if (_model.roomUsage.length !=
+                                  _model.roomsCheck?.length) {
+                                // update rooms
+
+                                await _model.statO!.reference.update({
+                                  ...mapToFirestore(
+                                    {
+                                      'roomUsage':
+                                          getRoomUsageListFirestoreData(
+                                        functions.refreshRoomsInStats(
+                                            _model.roomUsage.toList(),
+                                            _model.roomsCheck!.toList()),
+                                      ),
+                                    },
+                                  ),
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'An amendment was successful!',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).secondary,
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'There\'s nothing to add!',
+                                      style: TextStyle(
+                                        color:
+                                            FlutterFlowTheme.of(context).info,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).error,
+                                  ),
+                                );
+                              }
+                            }
+
+                            setState(() {});
+                          },
+                          child: Icon(
+                            Icons.refresh,
+                            color: FlutterFlowTheme.of(context).secondary,
+                            size: 24.0,
+                          ),
                         ),
                       ),
                     ],

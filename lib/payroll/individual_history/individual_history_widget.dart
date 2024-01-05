@@ -186,6 +186,9 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                 ),
                               ],
                               controller: _model.tabBarController,
+                              onTap: (i) async {
+                                [() async {}, () async {}, () async {}][i]();
+                              },
                             ),
                           ),
                           Expanded(
@@ -273,41 +276,48 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onLongPress: () async {
-                                                  await showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return GestureDetector(
-                                                        onTap: () => _model
-                                                                .unfocusNode
-                                                                .canRequestFocus
-                                                            ? FocusScope.of(
-                                                                    context)
-                                                                .requestFocus(_model
-                                                                    .unfocusNode)
-                                                            : FocusScope.of(
-                                                                    context)
-                                                                .unfocus(),
-                                                        child: Padding(
-                                                          padding: MediaQuery
-                                                              .viewInsetsOf(
-                                                                  context),
-                                                          child: Container(
-                                                            height: 130.0,
-                                                            child:
-                                                                SalaryOptionsWidget(
-                                                              salary:
-                                                                  listViewSalariesRecord
-                                                                      .reference,
+                                                  if (valueOrDefault(
+                                                          currentUserDocument
+                                                              ?.role,
+                                                          '') ==
+                                                      'admin') {
+                                                    await showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return GestureDetector(
+                                                          onTap: () => _model
+                                                                  .unfocusNode
+                                                                  .canRequestFocus
+                                                              ? FocusScope.of(
+                                                                      context)
+                                                                  .requestFocus(
+                                                                      _model
+                                                                          .unfocusNode)
+                                                              : FocusScope.of(
+                                                                      context)
+                                                                  .unfocus(),
+                                                          child: Padding(
+                                                            padding: MediaQuery
+                                                                .viewInsetsOf(
+                                                                    context),
+                                                            child: Container(
+                                                              height: 130.0,
+                                                              child:
+                                                                  SalaryOptionsWidget(
+                                                                salary:
+                                                                    listViewSalariesRecord
+                                                                        .reference,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ).then((value) =>
-                                                      safeSetState(() {}));
+                                                        );
+                                                      },
+                                                    ).then((value) =>
+                                                        safeSetState(() {}));
+                                                  }
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
@@ -551,40 +561,46 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                               highlightColor:
                                                   Colors.transparent,
                                               onLongPress: () async {
-                                                await showModalBottomSheet(
-                                                  isScrollControlled: true,
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return GestureDetector(
-                                                      onTap: () => _model
-                                                              .unfocusNode
-                                                              .canRequestFocus
-                                                          ? FocusScope.of(
-                                                                  context)
-                                                              .requestFocus(_model
-                                                                  .unfocusNode)
-                                                          : FocusScope.of(
-                                                                  context)
-                                                              .unfocus(),
-                                                      child: Padding(
-                                                        padding: MediaQuery
-                                                            .viewInsetsOf(
-                                                                context),
-                                                        child: Container(
-                                                          height: 130.0,
-                                                          child:
-                                                              CashAdvanceOptionsWidget(
-                                                            ca: listViewAdvancesRecord
-                                                                .reference,
+                                                if (valueOrDefault(
+                                                        currentUserDocument
+                                                            ?.role,
+                                                        '') ==
+                                                    'admin') {
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return GestureDetector(
+                                                        onTap: () => _model
+                                                                .unfocusNode
+                                                                .canRequestFocus
+                                                            ? FocusScope.of(
+                                                                    context)
+                                                                .requestFocus(_model
+                                                                    .unfocusNode)
+                                                            : FocusScope.of(
+                                                                    context)
+                                                                .unfocus(),
+                                                        child: Padding(
+                                                          padding: MediaQuery
+                                                              .viewInsetsOf(
+                                                                  context),
+                                                          child: Container(
+                                                            height: 130.0,
+                                                            child:
+                                                                CashAdvanceOptionsWidget(
+                                                              ca: listViewAdvancesRecord
+                                                                  .reference,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ).then((value) =>
-                                                    safeSetState(() {}));
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      safeSetState(() {}));
+                                                }
                                               },
                                               child: Container(
                                                 width: double.infinity,
@@ -1052,54 +1068,59 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                 Colors
                                                                     .transparent,
                                                             onTap: () async {
-                                                              await showModalBottomSheet(
-                                                                isScrollControlled:
-                                                                    true,
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .transparent,
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) {
-                                                                  return GestureDetector(
-                                                                    onTap: () => _model
-                                                                            .unfocusNode
-                                                                            .canRequestFocus
-                                                                        ? FocusScope.of(context).requestFocus(_model
-                                                                            .unfocusNode)
-                                                                        : FocusScope.of(context)
-                                                                            .unfocus(),
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: MediaQuery
-                                                                          .viewInsetsOf(
-                                                                              context),
+                                                              if (valueOrDefault(
+                                                                      currentUserDocument
+                                                                          ?.role,
+                                                                      '') ==
+                                                                  'admin') {
+                                                                await showModalBottomSheet(
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return GestureDetector(
+                                                                      onTap: () => _model
+                                                                              .unfocusNode
+                                                                              .canRequestFocus
+                                                                          ? FocusScope.of(context).requestFocus(_model
+                                                                              .unfocusNode)
+                                                                          : FocusScope.of(context)
+                                                                              .unfocus(),
                                                                       child:
-                                                                          Container(
-                                                                        height:
-                                                                            double.infinity,
+                                                                          Padding(
+                                                                        padding:
+                                                                            MediaQuery.viewInsetsOf(context),
                                                                         child:
-                                                                            ChangeDateWidget(
-                                                                          date:
-                                                                              listViewAbsencesRecord.date!,
+                                                                            Container(
+                                                                          height:
+                                                                              double.infinity,
+                                                                          child:
+                                                                              ChangeDateWidget(
+                                                                            date:
+                                                                                listViewAbsencesRecord.date!,
+                                                                          ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              ).then((value) =>
-                                                                  safeSetState(() =>
-                                                                      _model.adjustedDate =
-                                                                          value));
+                                                                    );
+                                                                  },
+                                                                ).then((value) =>
+                                                                    safeSetState(() =>
+                                                                        _model.adjustedDate =
+                                                                            value));
 
-                                                              await listViewAbsencesRecord
-                                                                  .reference
-                                                                  .update(
-                                                                      createAbsencesRecordData(
-                                                                date: _model
-                                                                    .adjustedDate,
-                                                              ));
+                                                                await listViewAbsencesRecord
+                                                                    .reference
+                                                                    .update(
+                                                                        createAbsencesRecordData(
+                                                                  date: _model
+                                                                      .adjustedDate,
+                                                                ));
+                                                              }
 
                                                               setState(() {});
                                                             },

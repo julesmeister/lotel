@@ -311,10 +311,19 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                           ],
                           onChanged: (val) async {
                             setState(() => _model.choicesValue = val?.first);
-                            setState(() {
-                              _model.descriptionController?.text =
-                                  _model.choicesValue!;
-                            });
+                            if (_model.choicesValue == 'Food') {
+                              // Food Allowance
+                              setState(() {
+                                _model.descriptionController?.text =
+                                    'Food Allowance for Staff';
+                              });
+                            } else {
+                              // choice
+                              setState(() {
+                                _model.descriptionController?.text =
+                                    _model.choicesValue!;
+                              });
+                            }
                           },
                           selectedChipStyle: ChipStyle(
                             backgroundColor:

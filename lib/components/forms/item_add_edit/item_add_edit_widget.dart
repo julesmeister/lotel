@@ -586,10 +586,11 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                               : _model.whyController.text,
                                           hotel: FFAppState().hotel,
                                           staff: currentUserReference,
-                                          quantityChange: functions.stringToInt(
-                                                  _model.quantityController
-                                                      .text)! -
-                                              widget.quantity!,
+                                          quantityChange:
+                                              (functions.stringToInt(_model
+                                                      .quantityController
+                                                      .text)!) -
+                                                  (widget.quantity!),
                                           previousQuantity: widget.quantity,
                                           item: _model.descController.text,
                                           operator: functions.whichOperator(

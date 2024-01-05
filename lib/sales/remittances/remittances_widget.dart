@@ -460,7 +460,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                     : null;
                             return Container(
                               width: double.infinity,
-                              height: 546.0,
+                              height: 589.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: [
@@ -476,6 +476,49 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 24.0, 24.0, 0.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                FFAppState().hotel,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          fontSize: 24.0,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            dateTimeFormat(
+                                                'jm',
+                                                mainCardRemittancesRecord!
+                                                    .date!),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  fontSize: 24.0,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                     Padding(
                                       padding: EdgeInsets.all(24.0),
                                       child: Row(

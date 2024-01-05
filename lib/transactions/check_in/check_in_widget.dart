@@ -1821,8 +1821,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 _model.startingBeds!,
                                                 _model.startingNights!,
                                                 FFAppState().extPricePerHr *
-                                                    int.parse(_model
-                                                        .hoursLateCheckoutValue!))! >
+                                                    int.parse((_model
+                                                        .hoursLateCheckoutValue!)))! >
                                             0.0) {
                                           // New Pending Transaction
 
@@ -1926,8 +1926,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               .set({
                                             ...createHistoryRecordData(
                                               description:
-                                                  'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                  'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}, but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                               staff: currentUserReference,
+                                              booking: widget
+                                                  .bookingToExtend?.reference,
                                             ),
                                             ...mapToFirestore(
                                               {
@@ -1945,8 +1947,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   _model.startingBeds!,
                                                   _model.startingNights!,
                                                   FFAppState().extPricePerHr *
-                                                      int.parse(_model
-                                                          .hoursLateCheckoutValue!))! <
+                                                      int.parse((_model
+                                                          .hoursLateCheckoutValue!)))! <
                                               0.0) {
                                             // New Pending Transaction
 
@@ -2050,8 +2052,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 .set({
                                               ...createHistoryRecordData(
                                                 description:
-                                                    'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)} but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                    'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}, but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                                 staff: currentUserReference,
+                                                booking: widget
+                                                    .bookingToExtend?.reference,
                                               ),
                                               ...mapToFirestore(
                                                 {
@@ -2106,8 +2110,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               '-1',
                                               0,
                                               FFAppState().extPricePerHr *
-                                                  int.parse(_model
-                                                      .hoursLateCheckoutValue!)),
+                                                  int.parse((_model
+                                                      .hoursLateCheckoutValue!))),
                                           0.0,
                                         ),
                                         extraBeds: _model.bedsValue,

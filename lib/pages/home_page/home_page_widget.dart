@@ -167,6 +167,24 @@ class _HomePageWidgetState extends State<HomePageWidget>
         if (_model.alreadyStats?.month == functions.currentMonth()) {
           return;
         }
+
+        // clear stats reference
+        setState(() {
+          FFAppState().statsReference = null;
+        });
+        // proceed new month
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Proceeding to new month!',
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: FlutterFlowTheme.of(context).secondary,
+          ),
+        );
       }
       // stat exist firestore not local
       _model.fireStat = await queryStatsRecordOnce(
@@ -192,7 +210,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
         });
         return;
       } else {
-        // create a
+        // create a new stat
         await action_blocks.createNewStats(context);
         setState(() {});
       }
@@ -985,7 +1003,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
-                              24.0, 24.0, 24.0, 16.0),
+                              16.0, 24.0, 16.0, 16.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -996,6 +1014,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 children: [
                                   Text(
                                     'Sales',
+                                    maxLines: 1,
                                     style: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -1066,6 +1085,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   DecimalType.automatic,
                                               currency: 'P ',
                                             ),
+                                            maxLines: 1,
                                             style: FlutterFlowTheme.of(context)
                                                 .displaySmall
                                                 .override(
@@ -1085,6 +1105,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       dateTimeFormat(
                                           'yMMMd', getCurrentTimestamp),
                                       textAlign: TextAlign.start,
+                                      maxLines: 1,
                                       style: FlutterFlowTheme.of(context)
                                           .labelSmall
                                           .override(
@@ -1206,13 +1227,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       .bodyMedium
                                                       .override(
                                                         fontFamily:
-                                                            'Readex Pro',
+                                                            'Plus Jakarta Sans',
                                                         color:
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .secondaryText,
+                                                        fontSize: 12.0,
                                                         fontWeight:
-                                                            FontWeight.normal,
+                                                            FontWeight.w500,
                                                       ),
                                                 ),
                                                 TextSpan(
@@ -1225,7 +1247,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               ],
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyMedium,
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Plus Jakarta Sans',
+                                                        fontSize: 12.0,
+                                                      ),
                                             ),
                                           ),
                                           Text(
@@ -1234,7 +1261,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
-                                                  fontFamily: 'Readex Pro',
+                                                  fontFamily:
+                                                      'Plus Jakarta Sans',
+                                                  fontSize: 12.0,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                           ),
@@ -1497,7 +1526,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 children: [
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 12.0, 12.0, 0.0),
+                                        16.0, 0.0, 12.0, 0.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
                                       crossAxisAlignment:
@@ -1515,17 +1544,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ],
                                     ),
                                   ),
-                                  FlutterFlowIconButton(
-                                    borderRadius: 20.0,
-                                    borderWidth: 1.0,
-                                    buttonSize: 40.0,
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_right_rounded,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      size: 24.0,
-                                    ),
-                                    onPressed: () async {
+                                  InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
                                       context.pushNamed(
                                         'Metrics',
                                         extra: <String, dynamic>{
@@ -1537,6 +1561,33 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         },
                                       );
                                     },
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Text(
+                                          'View More',
+                                          maxLines: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium,
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 2.0, 0.0, 0.0),
+                                            child: Icon(
+                                              Icons.chevron_right,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              size: 24.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -2775,7 +2826,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 children: [
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 10.0, 16.0, 0.0),
+                                        24.0, 10.0, 24.0, 0.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -2786,10 +2837,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           style: FlutterFlowTheme.of(context)
                                               .displaySmall
                                               .override(
-                                                fontFamily: 'Outfit',
+                                                fontFamily: 'Plus Jakarta Sans',
                                                 color: Color(0xFF14181B),
-                                                fontSize: 24.0,
-                                                fontWeight: FontWeight.normal,
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                         ),
                                         Row(
@@ -3121,6 +3172,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                                     fontWeight: FontWeight.w500,
                                                                                   ),
                                                                             ),
+                                                                            maxLines:
+                                                                                1,
                                                                           );
                                                                         },
                                                                       ),
@@ -3189,259 +3242,286 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   children: [
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          24.0, 24.0, 24.0, 16.0),
-                                      child: FutureBuilder<
-                                          List<RemittancesRecord>>(
-                                        future: _model.homeRemittance(
-                                          uniqueQueryKey: FFAppState().hotel,
-                                          requestFn: () =>
-                                              queryRemittancesRecordOnce(
-                                            queryBuilder: (remittancesRecord) =>
-                                                remittancesRecord
-                                                    .where(
-                                                      'hotel',
-                                                      isEqualTo:
-                                                          FFAppState().hotel,
-                                                    )
-                                                    .orderBy('date',
-                                                        descending: true),
-                                            singleRecord: true,
-                                          ),
-                                        ),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 50.0,
-                                                height: 50.0,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(
+                                          0.0, 15.0, 0.0, 0.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(-1.0, 0.0),
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      24.0, 0.0, 0.0, 5.0),
+                                              child: Text(
+                                                'Remittance',
+                                                textAlign: TextAlign.start,
+                                                maxLines: 1,
+                                                style:
                                                     FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                  ),
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Plus Jakarta Sans',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    24.0, 0.0, 24.0, 16.0),
+                                            child: FutureBuilder<
+                                                List<RemittancesRecord>>(
+                                              future: _model.homeRemittance(
+                                                uniqueQueryKey:
+                                                    FFAppState().hotel,
+                                                requestFn: () =>
+                                                    queryRemittancesRecordOnce(
+                                                  queryBuilder:
+                                                      (remittancesRecord) =>
+                                                          remittancesRecord
+                                                              .where(
+                                                                'hotel',
+                                                                isEqualTo:
+                                                                    FFAppState()
+                                                                        .hotel,
+                                                              )
+                                                              .orderBy('date',
+                                                                  descending:
+                                                                      true),
+                                                  singleRecord: true,
                                                 ),
                                               ),
-                                            );
-                                          }
-                                          List<RemittancesRecord>
-                                              topTitleRemittancesRecordList =
-                                              snapshot.data!;
-                                          // Return an empty Container when the item does not exist.
-                                          if (snapshot.data!.isEmpty) {
-                                            return Container();
-                                          }
-                                          final topTitleRemittancesRecord =
-                                              topTitleRemittancesRecordList
-                                                      .isNotEmpty
-                                                  ? topTitleRemittancesRecordList
-                                                      .first
-                                                  : null;
-                                          return Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 10.0),
-                                                    child: Text(
-                                                      'Last Remitted Amount',
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .labelMedium
-                                                          .override(
-                                                            fontFamily:
-                                                                'Plus Jakarta Sans',
-                                                            color: Color(
-                                                                0xFF57636C),
-                                                            fontSize: 14.0,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 10.0),
-                                                    child: Text(
-                                                      valueOrDefault<String>(
-                                                        formatNumber(
-                                                          topTitleRemittancesRecord
-                                                              ?.net,
-                                                          formatType: FormatType
-                                                              .decimal,
-                                                          decimalType:
-                                                              DecimalType
-                                                                  .automatic,
-                                                          currency: 'P ',
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50.0,
+                                                      height: 50.0,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                Color>(
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
                                                         ),
-                                                        '0',
                                                       ),
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .displaySmall
-                                                          .override(
-                                                            fontFamily:
-                                                                'Outfit',
-                                                            color: Color(
-                                                                0xFF14181B),
-                                                            fontSize: 36.0,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                          ),
                                                     ),
-                                                  ),
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      FutureBuilder<
-                                                          List<
-                                                              TransactionsRecord>>(
-                                                        future: _model
-                                                            .remittanceChange(
-                                                          requestFn: () =>
-                                                              queryTransactionsRecordOnce(
-                                                            queryBuilder:
-                                                                (transactionsRecord) =>
-                                                                    transactionsRecord
-                                                                        .where(
-                                                                          'hotel',
-                                                                          isEqualTo:
-                                                                              FFAppState().hotel,
-                                                                        )
-                                                                        .where(
-                                                                          'remitted',
-                                                                          isEqualTo:
-                                                                              false,
-                                                                        )
-                                                                        .where(
-                                                                          'type',
-                                                                          isEqualTo:
-                                                                              'change',
-                                                                        ),
-                                                            singleRecord: true,
-                                                          ),
-                                                        ),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          // Customize what your widget looks like when it's loading.
-                                                          if (!snapshot
-                                                              .hasData) {
-                                                            return Center(
-                                                              child: SizedBox(
-                                                                width: 50.0,
-                                                                height: 50.0,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  valueColor:
-                                                                      AlwaysStoppedAnimation<
-                                                                          Color>(
-                                                                    FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primary,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          }
-                                                          List<TransactionsRecord>
-                                                              textTransactionsRecordList =
-                                                              snapshot.data!;
-                                                          // Return an empty Container when the item does not exist.
-                                                          if (snapshot
-                                                              .data!.isEmpty) {
-                                                            return Container();
-                                                          }
-                                                          final textTransactionsRecord =
-                                                              textTransactionsRecordList
-                                                                      .isNotEmpty
-                                                                  ? textTransactionsRecordList
-                                                                      .first
-                                                                  : null;
-                                                          return Text(
-                                                            'Excess from last remittance: ${formatNumber(
-                                                              textTransactionsRecord
-                                                                  ?.total,
-                                                              formatType:
-                                                                  FormatType
-                                                                      .decimal,
-                                                              decimalType:
-                                                                  DecimalType
-                                                                      .automatic,
-                                                              currency: 'Php ',
-                                                            )}',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .labelSmall,
-                                                          );
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              Expanded(
-                                                child: Column(
+                                                  );
+                                                }
+                                                List<RemittancesRecord>
+                                                    rowRemittancesRecordList =
+                                                    snapshot.data!;
+                                                // Return an empty Container when the item does not exist.
+                                                if (snapshot.data!.isEmpty) {
+                                                  return Container();
+                                                }
+                                                final rowRemittancesRecord =
+                                                    rowRemittancesRecordList
+                                                            .isNotEmpty
+                                                        ? rowRemittancesRecordList
+                                                            .first
+                                                        : null;
+                                                return Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      'View All',
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .labelMedium
-                                                          .override(
-                                                            fontFamily:
-                                                                'Plus Jakarta Sans',
-                                                            color: Color(
-                                                                0xFF57636C),
-                                                            fontWeight:
-                                                                FontWeight.w500,
+                                                    Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      0.0,
+                                                                      0.0,
+                                                                      10.0),
+                                                          child: Text(
+                                                            'Last Remitted Amount',
+                                                            maxLines: 1,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .labelMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Plus Jakarta Sans',
+                                                                  color: Color(
+                                                                      0xFF57636C),
+                                                                  fontSize:
+                                                                      14.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
                                                           ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  15.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child:
-                                                          FlutterFlowIconButton(
-                                                        borderColor:
-                                                            Color(0xFFF1F4F8),
-                                                        borderRadius: 30.0,
-                                                        borderWidth: 2.0,
-                                                        buttonSize: 44.0,
-                                                        icon: Icon(
-                                                          Icons
-                                                              .arrow_forward_rounded,
-                                                          color:
-                                                              Color(0xFF57636C),
-                                                          size: 24.0,
                                                         ),
-                                                        onPressed: () async {
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      0.0,
+                                                                      0.0,
+                                                                      5.0),
+                                                          child: Text(
+                                                            valueOrDefault<
+                                                                String>(
+                                                              formatNumber(
+                                                                rowRemittancesRecord
+                                                                    ?.net,
+                                                                formatType:
+                                                                    FormatType
+                                                                        .decimal,
+                                                                decimalType:
+                                                                    DecimalType
+                                                                        .automatic,
+                                                                currency: 'P ',
+                                                              ),
+                                                              '0',
+                                                            ),
+                                                            maxLines: 1,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .displaySmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  color: Color(
+                                                                      0xFF14181B),
+                                                                  fontSize:
+                                                                      36.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            FutureBuilder<
+                                                                List<
+                                                                    TransactionsRecord>>(
+                                                              future: _model
+                                                                  .remittanceChange(
+                                                                requestFn: () =>
+                                                                    queryTransactionsRecordOnce(
+                                                                  queryBuilder: (transactionsRecord) =>
+                                                                      transactionsRecord
+                                                                          .where(
+                                                                            'hotel',
+                                                                            isEqualTo:
+                                                                                FFAppState().hotel,
+                                                                          )
+                                                                          .where(
+                                                                            'remitted',
+                                                                            isEqualTo:
+                                                                                false,
+                                                                          )
+                                                                          .where(
+                                                                            'type',
+                                                                            isEqualTo:
+                                                                                'change',
+                                                                          ),
+                                                                  singleRecord:
+                                                                      true,
+                                                                ),
+                                                              ),
+                                                              builder: (context,
+                                                                  snapshot) {
+                                                                // Customize what your widget looks like when it's loading.
+                                                                if (!snapshot
+                                                                    .hasData) {
+                                                                  return Center(
+                                                                    child:
+                                                                        SizedBox(
+                                                                      width:
+                                                                          50.0,
+                                                                      height:
+                                                                          50.0,
+                                                                      child:
+                                                                          CircularProgressIndicator(
+                                                                        valueColor:
+                                                                            AlwaysStoppedAnimation<Color>(
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .primary,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                }
+                                                                List<TransactionsRecord>
+                                                                    textTransactionsRecordList =
+                                                                    snapshot
+                                                                        .data!;
+                                                                // Return an empty Container when the item does not exist.
+                                                                if (snapshot
+                                                                    .data!
+                                                                    .isEmpty) {
+                                                                  return Container();
+                                                                }
+                                                                final textTransactionsRecord =
+                                                                    textTransactionsRecordList
+                                                                            .isNotEmpty
+                                                                        ? textTransactionsRecordList
+                                                                            .first
+                                                                        : null;
+                                                                return Text(
+                                                                  'Excess from last remittance: ${formatNumber(
+                                                                    textTransactionsRecord
+                                                                        ?.total,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .decimal,
+                                                                    decimalType:
+                                                                        DecimalType
+                                                                            .automatic,
+                                                                    currency:
+                                                                        'Php ',
+                                                                  )}',
+                                                                  maxLines: 1,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelSmall,
+                                                                );
+                                                              },
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Expanded(
+                                                      child: InkWell(
+                                                        splashColor:
+                                                            Colors.transparent,
+                                                        focusColor:
+                                                            Colors.transparent,
+                                                        hoverColor:
+                                                            Colors.transparent,
+                                                        highlightColor:
+                                                            Colors.transparent,
+                                                        onTap: () async {
                                                           context.pushNamed(
                                                             'remittances',
                                                             extra: <String,
@@ -3457,14 +3537,86 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             },
                                                           );
                                                         },
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Text(
+                                                              'View All',
+                                                              maxLines: 1,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .labelMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Plus Jakarta Sans',
+                                                                    color: Color(
+                                                                        0xFF57636C),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          15.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                              child:
+                                                                  FlutterFlowIconButton(
+                                                                borderColor: Color(
+                                                                    0xFFF1F4F8),
+                                                                borderRadius:
+                                                                    30.0,
+                                                                borderWidth:
+                                                                    2.0,
+                                                                buttonSize:
+                                                                    44.0,
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .arrow_forward_rounded,
+                                                                  color: Color(
+                                                                      0xFF57636C),
+                                                                  size: 24.0,
+                                                                ),
+                                                                onPressed:
+                                                                    () async {
+                                                                  context
+                                                                      .pushNamed(
+                                                                    'remittances',
+                                                                    extra: <String,
+                                                                        dynamic>{
+                                                                      kTransitionInfoKey:
+                                                                          TransitionInfo(
+                                                                        hasTransition:
+                                                                            true,
+                                                                        transitionType:
+                                                                            PageTransitionType.rightToLeft,
+                                                                      ),
+                                                                    },
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     if (valueOrDefault(
@@ -3480,274 +3632,315 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     if (valueOrDefault(
                                             currentUserDocument?.role, '') ==
                                         'admin')
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            24.0, 24.0, 24.0, 16.0),
-                                        child: FutureBuilder<
-                                            List<GoodsRevenueRatioRecord>>(
-                                          future: FFAppState().groceryHome(
-                                            requestFn: () =>
-                                                queryGoodsRevenueRatioRecordOnce(
-                                              queryBuilder:
-                                                  (goodsRevenueRatioRecord) =>
-                                                      goodsRevenueRatioRecord
-                                                          .where(
-                                                            'hotel',
-                                                            isEqualTo:
-                                                                FFAppState()
-                                                                    .hotel,
-                                                          )
-                                                          .orderBy('date',
-                                                              descending: true),
-                                              singleRecord: true,
+                                      Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(-1.0, 0.0),
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      24.0, 15.0, 0.0, 5.0),
+                                              child: Text(
+                                                'Grocery',
+                                                textAlign: TextAlign.start,
+                                                maxLines: 1,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Plus Jakarta Sans',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                              ),
                                             ),
                                           ),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 50.0,
-                                                  height: 50.0,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
-                                                    ),
-                                                  ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    24.0, 0.0, 24.0, 16.0),
+                                            child: FutureBuilder<
+                                                List<GoodsRevenueRatioRecord>>(
+                                              future: FFAppState().groceryHome(
+                                                requestFn: () =>
+                                                    queryGoodsRevenueRatioRecordOnce(
+                                                  queryBuilder:
+                                                      (goodsRevenueRatioRecord) =>
+                                                          goodsRevenueRatioRecord
+                                                              .where(
+                                                                'hotel',
+                                                                isEqualTo:
+                                                                    FFAppState()
+                                                                        .hotel,
+                                                              )
+                                                              .orderBy('date',
+                                                                  descending:
+                                                                      true),
+                                                  singleRecord: true,
                                                 ),
-                                              );
-                                            }
-                                            List<GoodsRevenueRatioRecord>
-                                                topTitleGoodsRevenueRatioRecordList =
-                                                snapshot.data!;
-                                            // Return an empty Container when the item does not exist.
-                                            if (snapshot.data!.isEmpty) {
-                                              return Container();
-                                            }
-                                            final topTitleGoodsRevenueRatioRecord =
-                                                topTitleGoodsRevenueRatioRecordList
-                                                        .isNotEmpty
-                                                    ? topTitleGoodsRevenueRatioRecordList
-                                                        .first
-                                                    : null;
-                                            return Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Column(
+                                              ),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50.0,
+                                                      height: 50.0,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                Color>(
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                List<GoodsRevenueRatioRecord>
+                                                    rowGoodsRevenueRatioRecordList =
+                                                    snapshot.data!;
+                                                // Return an empty Container when the item does not exist.
+                                                if (snapshot.data!.isEmpty) {
+                                                  return Container();
+                                                }
+                                                final rowGoodsRevenueRatioRecord =
+                                                    rowGoodsRevenueRatioRecordList
+                                                            .isNotEmpty
+                                                        ? rowGoodsRevenueRatioRecordList
+                                                            .first
+                                                        : null;
+                                                return Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  10.0),
-                                                      child: Text(
-                                                        valueOrDefault<String>(
-                                                          formatNumber(
-                                                            topTitleGoodsRevenueRatioRecord
-                                                                ?.grocery,
-                                                            formatType:
-                                                                FormatType
-                                                                    .decimal,
-                                                            decimalType:
-                                                                DecimalType
-                                                                    .automatic,
-                                                            currency: 'P ',
-                                                          ),
-                                                          '0',
-                                                        ),
-                                                        style: FlutterFlowTheme
-                                                                .of(context)
-                                                            .displaySmall
-                                                            .override(
-                                                              fontFamily:
-                                                                  'Outfit',
-                                                              color: Color(
-                                                                  0xFF14181B),
-                                                              fontSize: 36.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
-                                                      ),
-                                                    ),
-                                                    Row(
+                                                    Column(
                                                       mainAxisSize:
                                                           MainAxisSize.max,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
-                                                              .end,
+                                                              .start,
                                                       children: [
-                                                        Text(
-                                                          'Amount spent for groceries',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .labelSmall,
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      0.0,
+                                                                      0.0,
+                                                                      5.0),
+                                                          child: Text(
+                                                            valueOrDefault<
+                                                                String>(
+                                                              formatNumber(
+                                                                rowGoodsRevenueRatioRecord
+                                                                    ?.grocery,
+                                                                formatType:
+                                                                    FormatType
+                                                                        .decimal,
+                                                                decimalType:
+                                                                    DecimalType
+                                                                        .automatic,
+                                                                currency: 'P ',
+                                                              ),
+                                                              '0',
+                                                            ),
+                                                            maxLines: 1,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .displaySmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  color: Color(
+                                                                      0xFF14181B),
+                                                                  fontSize:
+                                                                      36.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Text(
+                                                              'Amount spent for groceries',
+                                                              maxLines: 1,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .labelSmall,
+                                                            ),
+                                                          ],
                                                         ),
                                                       ],
                                                     ),
-                                                  ],
-                                                ),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Row(
+                                                    Expanded(
+                                                      child: Column(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
                                                                 .end,
                                                         children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        5.0,
-                                                                        0.0),
-                                                            child:
-                                                                FlutterFlowIconButton(
-                                                              borderColor: Color(
-                                                                  0xFFF1F4F8),
-                                                              borderRadius:
-                                                                  30.0,
-                                                              borderWidth: 2.0,
-                                                              buttonSize: 44.0,
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .featured_play_list_outlined,
-                                                                color: Color(
-                                                                    0xFF57636C),
-                                                                size: 24.0,
-                                                              ),
-                                                              onPressed:
-                                                                  () async {
-                                                                // count
-                                                                _model.countGroceries =
-                                                                    await queryGroceriesRecordCount(
-                                                                  queryBuilder:
-                                                                      (groceriesRecord) =>
-                                                                          groceriesRecord
-                                                                              .where(
-                                                                    'hotel',
-                                                                    isEqualTo:
-                                                                        FFAppState()
-                                                                            .hotel,
+                                                          Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            5.0,
+                                                                            0.0),
+                                                                child:
+                                                                    FlutterFlowIconButton(
+                                                                  borderColor:
+                                                                      Color(
+                                                                          0xFFF1F4F8),
+                                                                  borderRadius:
+                                                                      30.0,
+                                                                  borderWidth:
+                                                                      2.0,
+                                                                  buttonSize:
+                                                                      44.0,
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .featured_play_list_outlined,
+                                                                    color: Color(
+                                                                        0xFF57636C),
+                                                                    size: 24.0,
                                                                   ),
-                                                                );
-                                                                if (_model
-                                                                        .countGroceries! >
-                                                                    0) {
-                                                                  context.pushNamed(
-                                                                      'groceryList');
-                                                                } else {
-                                                                  ScaffoldMessenger.of(
-                                                                          context)
-                                                                      .showSnackBar(
-                                                                    SnackBar(
-                                                                      content:
-                                                                          Text(
-                                                                        'There are no groceries yet!',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).info,
+                                                                  onPressed:
+                                                                      () async {
+                                                                    // count
+                                                                    _model.countGroceries =
+                                                                        await queryGroceriesRecordCount(
+                                                                      queryBuilder:
+                                                                          (groceriesRecord) =>
+                                                                              groceriesRecord.where(
+                                                                        'hotel',
+                                                                        isEqualTo:
+                                                                            FFAppState().hotel,
+                                                                      ),
+                                                                    );
+                                                                    if (_model
+                                                                            .countGroceries! >
+                                                                        0) {
+                                                                      context.pushNamed(
+                                                                          'groceryList');
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(
+                                                                              context)
+                                                                          .showSnackBar(
+                                                                        SnackBar(
+                                                                          content:
+                                                                              Text(
+                                                                            'There are no groceries yet!',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: FlutterFlowTheme.of(context).info,
+                                                                            ),
+                                                                          ),
+                                                                          duration:
+                                                                              Duration(milliseconds: 4000),
+                                                                          backgroundColor:
+                                                                              FlutterFlowTheme.of(context).error,
                                                                         ),
-                                                                      ),
-                                                                      duration: Duration(
-                                                                          milliseconds:
-                                                                              4000),
-                                                                      backgroundColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .error,
-                                                                    ),
-                                                                  );
-                                                                }
+                                                                      );
+                                                                    }
 
-                                                                setState(() {});
-                                                              },
-                                                            ),
-                                                          ),
-                                                          FlutterFlowIconButton(
-                                                            borderColor: Color(
-                                                                0xFFF1F4F8),
-                                                            borderRadius: 30.0,
-                                                            borderWidth: 2.0,
-                                                            buttonSize: 44.0,
-                                                            icon: Icon(
-                                                              Icons.add,
-                                                              color: Color(
-                                                                  0xFF57636C),
-                                                              size: 24.0,
-                                                            ),
-                                                            onPressed:
-                                                                () async {
-                                                              await showModalBottomSheet(
-                                                                isScrollControlled:
-                                                                    true,
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .transparent,
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) {
-                                                                  return GestureDetector(
-                                                                    onTap: () => _model
-                                                                            .unfocusNode
-                                                                            .canRequestFocus
-                                                                        ? FocusScope.of(context).requestFocus(_model
-                                                                            .unfocusNode)
-                                                                        : FocusScope.of(context)
-                                                                            .unfocus(),
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: MediaQuery
-                                                                          .viewInsetsOf(
-                                                                              context),
-                                                                      child:
-                                                                          Container(
-                                                                        height:
-                                                                            double.infinity,
+                                                                    setState(
+                                                                        () {});
+                                                                  },
+                                                                ),
+                                                              ),
+                                                              FlutterFlowIconButton(
+                                                                borderColor: Color(
+                                                                    0xFFF1F4F8),
+                                                                borderRadius:
+                                                                    30.0,
+                                                                borderWidth:
+                                                                    2.0,
+                                                                buttonSize:
+                                                                    44.0,
+                                                                icon: Icon(
+                                                                  Icons.add,
+                                                                  color: Color(
+                                                                      0xFF57636C),
+                                                                  size: 24.0,
+                                                                ),
+                                                                onPressed:
+                                                                    () async {
+                                                                  await showModalBottomSheet(
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return GestureDetector(
+                                                                        onTap: () => _model.unfocusNode.canRequestFocus
+                                                                            ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+                                                                            : FocusScope.of(context).unfocus(),
                                                                         child:
-                                                                            NewGroceryWidget(),
-                                                                      ),
-                                                                    ),
-                                                                  );
+                                                                            Padding(
+                                                                          padding:
+                                                                              MediaQuery.viewInsetsOf(context),
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                double.infinity,
+                                                                            child:
+                                                                                NewGroceryWidget(),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ).then((value) =>
+                                                                      safeSetState(
+                                                                          () {}));
                                                                 },
-                                                              ).then((value) =>
-                                                                  safeSetState(
-                                                                      () {}));
-                                                            },
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     if (valueOrDefault(
                                             currentUserDocument?.role, '') !=
@@ -3771,6 +3964,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           children: [
                                             Text(
                                               'Bills',
+                                              maxLines: 1,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .displaySmall
@@ -3891,81 +4085,73 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           ],
                                         ),
                                       ),
-                                    if (valueOrDefault(
-                                            currentUserDocument?.role, '') ==
-                                        'admin')
-                                      Divider(
-                                        height: 4.0,
-                                        thickness: 2.0,
-                                        indent: 20.0,
-                                        endIndent: 20.0,
-                                        color: Color(0xFFE0E3E7),
-                                      ),
-                                    if (valueOrDefault(
-                                            currentUserDocument?.role, '') ==
-                                        'admin')
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            24.0, 24.0, 24.0, 0.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Payroll',
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .displaySmall
-                                                  .override(
-                                                    fontFamily: 'Outfit',
-                                                    color: Color(0xFF14181B),
-                                                    fontSize: 36.0,
-                                                    fontWeight: FontWeight.w600,
+                                    Divider(
+                                      height: 4.0,
+                                      thickness: 2.0,
+                                      indent: 20.0,
+                                      endIndent: 20.0,
+                                      color: Color(0xFFE0E3E7),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 24.0, 24.0, 0.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Payroll',
+                                            maxLines: 1,
+                                            style: FlutterFlowTheme.of(context)
+                                                .displaySmall
+                                                .override(
+                                                  fontFamily: 'Outfit',
+                                                  color: Color(0xFF14181B),
+                                                  fontSize: 36.0,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                FlutterFlowIconButton(
+                                                  borderColor:
+                                                      Color(0xFFF1F4F8),
+                                                  borderRadius: 30.0,
+                                                  borderWidth: 2.0,
+                                                  buttonSize: 44.0,
+                                                  icon: Icon(
+                                                    Icons.arrow_forward_rounded,
+                                                    color: Color(0xFF57636C),
+                                                    size: 24.0,
                                                   ),
+                                                  onPressed: () async {
+                                                    context.pushNamed(
+                                                      'Payroll',
+                                                      extra: <String, dynamic>{
+                                                        kTransitionInfoKey:
+                                                            TransitionInfo(
+                                                          hasTransition: true,
+                                                          transitionType:
+                                                              PageTransitionType
+                                                                  .rightToLeft,
+                                                        ),
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ],
                                             ),
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  FlutterFlowIconButton(
-                                                    borderColor:
-                                                        Color(0xFFF1F4F8),
-                                                    borderRadius: 30.0,
-                                                    borderWidth: 2.0,
-                                                    buttonSize: 44.0,
-                                                    icon: Icon(
-                                                      Icons
-                                                          .arrow_forward_rounded,
-                                                      color: Color(0xFF57636C),
-                                                      size: 24.0,
-                                                    ),
-                                                    onPressed: () async {
-                                                      context.pushNamed(
-                                                        'Payroll',
-                                                        extra: <String,
-                                                            dynamic>{
-                                                          kTransitionInfoKey:
-                                                              TransitionInfo(
-                                                            hasTransition: true,
-                                                            transitionType:
-                                                                PageTransitionType
-                                                                    .rightToLeft,
-                                                          ),
-                                                        },
-                                                      );
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
+                                    ),
                                   ],
                                 ),
                               ),

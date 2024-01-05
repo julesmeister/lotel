@@ -295,7 +295,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                           'total': FieldValue.increment(
                                               double.parse(_model
                                                       .priceController.text) -
-                                                  widget.price!),
+                                                  (widget.price!)),
                                         },
                                       ),
                                     });

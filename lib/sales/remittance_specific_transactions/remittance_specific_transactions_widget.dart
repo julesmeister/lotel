@@ -285,6 +285,15 @@ class _RemittanceSpecificTransactionsWidgetState
                               ),
                             ],
                             controller: _model.tabBarController,
+                            onTap: (i) async {
+                              [
+                                () async {},
+                                () async {},
+                                () async {},
+                                () async {},
+                                () async {}
+                              ][i]();
+                            },
                           ),
                         ),
                         Expanded(

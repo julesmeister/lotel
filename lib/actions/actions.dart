@@ -7,6 +7,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future createNewStats(BuildContext context) async {
   List<RoomsRecord>? roomsFire;
@@ -15,6 +16,17 @@ Future createNewStats(BuildContext context) async {
   // reset for loop
   FFAppState().loopCounter = 0;
   FFAppState().roomUsages = [];
+  // creating
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        'Creating new stat!',
+        style: TextStyle(),
+      ),
+      duration: Duration(milliseconds: 4000),
+      backgroundColor: FlutterFlowTheme.of(context).secondary,
+    ),
+  );
   // roomsFire
   roomsFire = await queryRoomsRecordOnce(
     queryBuilder: (roomsRecord) => roomsRecord.where(
@@ -28,6 +40,8 @@ Future createNewStats(BuildContext context) async {
       number: roomsFire?[FFAppState().loopCounter]?.number,
       use: 0,
     ));
+    // increment
+    FFAppState().loopCounter = FFAppState().loopCounter + 1;
   }
   // new stat
 
@@ -154,8 +168,7 @@ Future payBalanceOfPending(
 
   await HistoryRecord.createDoc(booking!.room!).set({
     ...createHistoryRecordData(
-      description:
-          'Guest${functions.stringToInt(booking?.guests)! > 1 ? 's have' : ' has'} settled balance.',
+      description: 'Guest settled balance.',
       staff: currentUserReference,
       booking: booking?.reference,
     ),

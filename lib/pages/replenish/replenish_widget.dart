@@ -198,7 +198,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                       padding:
                           EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                       child: LinearPercentIndicator(
-                        percent: _model.replenishNeeded! /
+                        percent: (_model.replenishNeeded!) /
                             replenishGoodsRecordList.length,
                         width: MediaQuery.sizeOf(context).width * 1.0,
                         lineHeight: 12.0,

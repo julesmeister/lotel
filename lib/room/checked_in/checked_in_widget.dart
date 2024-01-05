@@ -111,9 +111,9 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                 borderWidth: 1.0,
                 buttonSize: 60.0,
                 icon: Icon(
-                  Icons.arrow_back_rounded,
+                  Icons.chevron_left,
                   color: FlutterFlowTheme.of(context).info,
-                  size: 30.0,
+                  size: 24.0,
                 ),
                 onPressed: () async {
                   context.pop();
@@ -371,7 +371,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     .where((e) =>
                                                                         e.number ==
                                                                         (int.parse(
-                                                                            _model.choiceChipsValue!)))
+                                                                            (_model.choiceChipsValue!))))
                                                                     .toList()
                                                                     .first
                                                                     .reference)
@@ -397,8 +397,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .where((e) =>
                                                                     e.number ==
                                                                     (int.parse(
-                                                                        _model
-                                                                            .choiceChipsValue!)))
+                                                                        (_model
+                                                                            .choiceChipsValue!))))
                                                                 .toList()
                                                                 .first
                                                                 .reference
@@ -457,16 +457,16 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   .where((e) =>
                                                                       e.number ==
                                                                       (int.parse(
-                                                                          _model
-                                                                              .choiceChipsValue!)))
+                                                                          (_model
+                                                                              .choiceChipsValue!))))
                                                                   .toList()
                                                                   .first
                                                                   .reference,
                                                               total: choiceChipsRoomsRecordList
                                                                       .where((e) =>
                                                                           e.number ==
-                                                                          (int.parse(_model
-                                                                              .choiceChipsValue!)))
+                                                                          (int.parse((_model
+                                                                              .choiceChipsValue!))))
                                                                       .toList()
                                                                       .first
                                                                       .price *
@@ -481,8 +481,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .update({
                                                               ...createTransactionsRecordData(
                                                                 room: int.parse(
-                                                                    _model
-                                                                        .choiceChipsValue!),
+                                                                    (_model
+                                                                        .choiceChipsValue!)),
                                                                 description: functions.modifyTransactionRoomDescription(
                                                                     _model
                                                                         .transaction!
@@ -496,7 +496,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     .where((e) =>
                                                                         e.number ==
                                                                         (int.parse(
-                                                                            _model.choiceChipsValue!)))
+                                                                            (_model.choiceChipsValue!))))
                                                                     .toList()
                                                                     .first
                                                                     .price,

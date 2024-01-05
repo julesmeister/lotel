@@ -966,6 +966,10 @@ double avgYData(List<int> sales) {
     return 0.0;
   }
 
+  if (sales.length == 1) {
+    return sales.first.toDouble();
+  }
+
   int partitionCount = ((sales.length - 1) / 3).ceil();
   sales.sort();
 
@@ -1246,4 +1250,108 @@ bool isInventoryComplete(
 
   // If all goods in all transactions are in the inventory map with sufficient quantities, then the inventory is complete
   return true;
+}
+
+String previousMonth(String currentMonth) {
+  // Parse the current month string
+  DateTime currentMonthDate = DateFormat('MMMM').parse(currentMonth);
+
+  // Subtract one month to get the previous month
+  DateTime previousMonthDate = currentMonthDate.subtract(Duration(days: 1));
+
+  // Format the result to return the month name
+  String previousMonthName = DateFormat('MMMM').format(previousMonthDate);
+
+  return previousMonthName;
+}
+
+String previousYear(
+  String currentMonth,
+  String currentYear,
+) {
+  // Parse the current month and year strings
+  DateTime currentDate =
+      DateFormat('MMMM yyyy').parse('$currentMonth $currentYear');
+
+  // Subtract one month to get the previous month
+  DateTime previousDate = currentDate.subtract(Duration(days: 1));
+
+  // Extract the previous year and format it as a string
+  String previousYear = DateFormat('yyyy').format(previousDate);
+
+  return previousYear;
+}
+
+StatsRecord statByHotel(
+  List<StatsRecord> stats,
+  String hotel,
+) {
+  // return stat that has state.hotel == hotel
+  return stats.firstWhere((stat) => stat.hotel == hotel);
+}
+
+String nextYear(
+  String year,
+  String month,
+) {
+  if (month == 'December') {
+    // If the current month is December, increment the year
+    return (int.parse(year) + 1).toString();
+  } else {
+    // If it's not December, return the same year
+    return year;
+  }
+}
+
+String nextMonth(String currentMonth) {
+  // List of month names
+  List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+
+  // Find the index of the current month
+  int currentMonthIndex = months.indexOf(currentMonth);
+
+  // Move to the next index (circularly) to get the next month
+  int nextMonthIndex = (currentMonthIndex + 1) % months.length;
+
+  // Get the next month name
+  String nextMonthName = months[nextMonthIndex];
+
+  return nextMonthName;
+}
+
+List<RoomUsageStruct> refreshRoomsInStats(
+  List<RoomUsageStruct> currentRoomUsages,
+  List<RoomsRecord> rooms,
+) {
+  // if  currentRoomUsage.number doesn't have room.number, add it to list
+  final List<RoomUsageStruct> updatedRoomUsages = [...currentRoomUsages];
+  for (final RoomsRecord room in rooms) {
+    final bool hasRoom =
+        updatedRoomUsages.any((ru) => ru.number == room.number);
+    if (!hasRoom) {
+      updatedRoomUsages.add(RoomUsageStruct(
+        number: room.number,
+        use: 0,
+      ));
+    }
+  }
+  return updatedRoomUsages;
+}
+
+double stringToDouble(String text) {
+  // string to double
+  return double.tryParse(text) ?? 0.0;
 }

@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -360,6 +361,26 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                               hotel: FFAppState().hotel,
                                             ),
                                             roomsRecordReference);
+                                    // append roomUsage
+
+                                    await FFAppState().statsReference!.update({
+                                      ...mapToFirestore(
+                                        {
+                                          'roomUsage': FieldValue.arrayUnion([
+                                            getRoomUsageFirestoreData(
+                                              updateRoomUsageStruct(
+                                                RoomUsageStruct(
+                                                  number: widget.number,
+                                                  use: 0,
+                                                ),
+                                                clearUnsetFields: false,
+                                              ),
+                                              true,
+                                            )
+                                          ]),
+                                        },
+                                      ),
+                                    });
                                     // history creation
 
                                     await HistoryRecord.createDoc(

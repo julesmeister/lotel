@@ -285,7 +285,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                           'bills': FieldValue.increment(
                                               double.parse(_model
                                                       .amountController.text) -
-                                                  widget.amount!),
+                                                  (widget.amount!)),
                                         },
                                       ),
                                     });
