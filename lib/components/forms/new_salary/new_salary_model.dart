@@ -24,7 +24,7 @@ class NewSalaryModel extends FlutterFlowModel<NewSalaryWidget> {
 
   int loopAdvancesCounter = 0;
 
-  double cashAdvanceTotal = 0.0;
+  double cashAdvanceTotal = 0;
 
   List<AdvancesRecord> cashAdvancesList = [];
   void addToCashAdvancesList(AdvancesRecord item) => cashAdvancesList.add(item);
@@ -50,7 +50,7 @@ class NewSalaryModel extends FlutterFlowModel<NewSalaryWidget> {
 
   int loopAbsencesCounter = 0;
 
-  double absencesTotal = 0.0;
+  double absencesTotal = 0;
 
   ///  State fields for stateful widgets in this component.
 

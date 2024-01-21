@@ -725,7 +725,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               // what's happening
                                               setState(() {
                                                 _model.happening =
-                                                    'Updating stats';
+                                                    'Updating metrics';
                                               });
                                               // update stats and graph
 

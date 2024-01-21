@@ -1137,7 +1137,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .set({
                                                                       ...createHistoryRecordData(
                                                                         description:
-                                                                            '${checkedInBookingsRecord.guests} guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} in room ${widget.roomNo?.toString()} have checked out.',
+                                                                            '${checkedInBookingsRecord.guests} guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} have checked out.',
                                                                         staff:
                                                                             currentUserReference,
                                                                         booking:

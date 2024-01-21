@@ -29,7 +29,7 @@ class PayrollModel extends FlutterFlowModel<PayrollWidget> {
 
   int loopAdvancesCounter = 0;
 
-  double cashAdvanceHolder = 0.0;
+  double cashAdvanceHolder = 0;
 
   List<AbsencesRecord> absences = [];
   void addToAbsences(AbsencesRecord item) => absences.add(item);

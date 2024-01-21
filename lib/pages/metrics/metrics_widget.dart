@@ -990,7 +990,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         child: Container(
                           height: 120.0,
                           constraints: BoxConstraints(
-                            maxWidth: 270.0,
+                            maxWidth: double.infinity,
                           ),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
@@ -1017,357 +1017,118 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     size: 32.0,
                                   ),
                                 ),
-                                Flexible(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Expenses',
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelMedium,
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 4.0, 4.0, 0.0),
-                                            child: InkWell(
-                                              splashColor: Colors.transparent,
-                                              focusColor: Colors.transparent,
-                                              hoverColor: Colors.transparent,
-                                              highlightColor:
-                                                  Colors.transparent,
-                                              onDoubleTap: () async {
-                                                var _shouldSetState = false;
-                                                if (_model.hotel != 'All') {
-                                                  var confirmDialogResponse =
-                                                      await showDialog<bool>(
-                                                            context: context,
-                                                            builder:
-                                                                (alertDialogContext) {
-                                                              return AlertDialog(
-                                                                title: Text(
-                                                                    'Update Stats'),
-                                                                content: Text(
-                                                                    'This will recalculate all transactions under expenses.'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            false),
-                                                                    child: Text(
-                                                                        'Cancel'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            true),
-                                                                    child: Text(
-                                                                        'Confirm'),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          ) ??
-                                                          false;
-                                                  if (confirmDialogResponse) {
-                                                    _model.expenseTransactionsOnly =
-                                                        await queryTransactionsRecordOnce(
-                                                      queryBuilder:
-                                                          (transactionsRecord) =>
-                                                              transactionsRecord
-                                                                  .where(
-                                                                    'hotel',
-                                                                    isEqualTo:
-                                                                        _model
-                                                                            .hotel,
-                                                                  )
-                                                                  .where(
-                                                                    'date',
-                                                                    isGreaterThanOrEqualTo:
-                                                                        functions
-                                                                            .startOfMonth(_model.month),
-                                                                  )
-                                                                  .where(
-                                                                    'type',
-                                                                    isEqualTo:
-                                                                        'expense',
-                                                                  ),
-                                                    );
-                                                    _shouldSetState = true;
-                                                    // upate expense var
-                                                    setState(() {
-                                                      _model.expenses = functions
-                                                          .sumOfExpenses(_model
-                                                              .expenseTransactionsOnly!
-                                                              .toList());
-                                                    });
-                                                    // update stats expense
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Expenses',
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 4.0, 4.0, 0.0),
+                                          child: InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onDoubleTap: () async {
+                                              var _shouldSetState = false;
+                                              if (_model.hotel != 'All') {
+                                                var confirmDialogResponse =
+                                                    await showDialog<bool>(
+                                                          context: context,
+                                                          builder:
+                                                              (alertDialogContext) {
+                                                            return AlertDialog(
+                                                              title: Text(
+                                                                  'Update Stats'),
+                                                              content: Text(
+                                                                  'This will recalculate all transactions under expenses.'),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          alertDialogContext,
+                                                                          false),
+                                                                  child: Text(
+                                                                      'Cancel'),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          alertDialogContext,
+                                                                          true),
+                                                                  child: Text(
+                                                                      'Confirm'),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        ) ??
+                                                        false;
+                                                if (confirmDialogResponse) {
+                                                  _model.expenseTransactionsOnly =
+                                                      await queryTransactionsRecordOnce(
+                                                    queryBuilder:
+                                                        (transactionsRecord) =>
+                                                            transactionsRecord
+                                                                .where(
+                                                                  'hotel',
+                                                                  isEqualTo:
+                                                                      _model
+                                                                          .hotel,
+                                                                )
+                                                                .where(
+                                                                  'date',
+                                                                  isGreaterThanOrEqualTo:
+                                                                      functions.startOfMonth(
+                                                                          _model
+                                                                              .month),
+                                                                )
+                                                                .where(
+                                                                  'type',
+                                                                  isEqualTo:
+                                                                      'expense',
+                                                                ),
+                                                  );
+                                                  _shouldSetState = true;
+                                                  // upate expense var
+                                                  setState(() {
+                                                    _model.expenses = functions
+                                                        .sumOfExpenses(_model
+                                                            .expenseTransactionsOnly!
+                                                            .toList());
+                                                  });
+                                                  // update stats expense
 
-                                                    await _model.statsRef!.update(
-                                                        createStatsRecordData(
-                                                      expenses: functions
-                                                          .sumOfExpenses(_model
-                                                              .expenseTransactionsOnly!
-                                                              .toList()),
-                                                    ));
-                                                  }
-                                                } else {
-                                                  if (_shouldSetState)
-                                                    setState(() {});
-                                                  return;
+                                                  await _model.statsRef!.update(
+                                                      createStatsRecordData(
+                                                    expenses: functions
+                                                        .sumOfExpenses(_model
+                                                            .expenseTransactionsOnly!
+                                                            .toList()),
+                                                  ));
                                                 }
-
+                                              } else {
                                                 if (_shouldSetState)
                                                   setState(() {});
-                                              },
-                                              child: AutoSizeText(
-                                                formatNumber(
-                                                  _model.expenses,
-                                                  formatType:
-                                                      FormatType.decimal,
-                                                  decimalType:
-                                                      DecimalType.automatic,
-                                                  currency: 'P ',
-                                                ),
-                                                maxLines: 1,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .displaySmall,
-                                                minFontSize: 30.0,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 12.0, 0.0, 12.0),
-                        child: Container(
-                          height: 120.0,
-                          constraints: BoxConstraints(
-                            maxWidth: 290.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: FlutterFlowTheme.of(context).alternate,
-                              width: 1.0,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 0.0, 16.0, 0.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Salaries',
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelMedium,
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 4.0, 4.0, 0.0),
-                                            child: Text(
-                                              formatNumber(
-                                                _model.salaries,
-                                                formatType: FormatType.decimal,
-                                                decimalType:
-                                                    DecimalType.automatic,
-                                                currency: 'P ',
-                                              ).maybeHandleOverflow(
-                                                  maxChars: 30),
-                                              maxLines: 1,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .displaySmall,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 12.0, 0.0, 12.0),
-                        child: Container(
-                          height: 120.0,
-                          constraints: BoxConstraints(
-                            maxWidth: 290.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: FlutterFlowTheme.of(context).alternate,
-                              width: 1.0,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 0.0, 16.0, 0.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Bills',
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelMedium,
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 4.0, 4.0, 0.0),
-                                            child: Text(
-                                              formatNumber(
-                                                _model.bills,
-                                                formatType: FormatType.decimal,
-                                                decimalType:
-                                                    DecimalType.automatic,
-                                                currency: 'P ',
-                                              ).maybeHandleOverflow(
-                                                  maxChars: 30),
-                                              maxLines: 1,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .displaySmall,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 12.0, 0.0, 12.0),
-                        child: Container(
-                          height: 120.0,
-                          constraints: BoxConstraints(
-                            maxWidth: 290.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: FlutterFlowTheme.of(context).alternate,
-                              width: 1.0,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                16.0, 0.0, 16.0, 0.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Net',
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelMedium,
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 4.0, 4.0, 0.0),
+                                                return;
+                                              }
+
+                                              if (_shouldSetState)
+                                                setState(() {});
+                                            },
                                             child: AutoSizeText(
                                               formatNumber(
-                                                _model.rooms +
-                                                    _model.goods -
-                                                    _model.expenses -
-                                                    _model.salaries -
-                                                    _model.bills,
+                                                _model.expenses,
                                                 formatType: FormatType.decimal,
                                                 decimalType:
                                                     DecimalType.automatic,
@@ -1380,10 +1141,231 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                               minFontSize: 30.0,
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            0.0, 12.0, 0.0, 12.0),
+                        child: Container(
+                          height: 120.0,
+                          constraints: BoxConstraints(
+                            maxWidth: double.infinity,
+                          ),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 16.0, 0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 16.0, 0.0),
+                                  child: Icon(
+                                    Icons.trending_up_rounded,
+                                    color:
+                                        FlutterFlowTheme.of(context).secondary,
+                                    size: 32.0,
                                   ),
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Salaries',
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 4.0, 4.0, 0.0),
+                                          child: Text(
+                                            formatNumber(
+                                              _model.salaries,
+                                              formatType: FormatType.decimal,
+                                              decimalType:
+                                                  DecimalType.automatic,
+                                              currency: 'P ',
+                                            ).maybeHandleOverflow(maxChars: 30),
+                                            maxLines: 1,
+                                            style: FlutterFlowTheme.of(context)
+                                                .displaySmall,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            0.0, 12.0, 0.0, 12.0),
+                        child: Container(
+                          height: 120.0,
+                          constraints: BoxConstraints(
+                            maxWidth: double.infinity,
+                          ),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 16.0, 0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 16.0, 0.0),
+                                  child: Icon(
+                                    Icons.trending_up_rounded,
+                                    color:
+                                        FlutterFlowTheme.of(context).secondary,
+                                    size: 32.0,
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Bills',
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 4.0, 4.0, 0.0),
+                                          child: Text(
+                                            formatNumber(
+                                              _model.bills,
+                                              formatType: FormatType.decimal,
+                                              decimalType:
+                                                  DecimalType.automatic,
+                                              currency: 'P ',
+                                            ).maybeHandleOverflow(maxChars: 30),
+                                            maxLines: 1,
+                                            style: FlutterFlowTheme.of(context)
+                                                .displaySmall,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            0.0, 12.0, 0.0, 12.0),
+                        child: Container(
+                          height: 120.0,
+                          constraints: BoxConstraints(
+                            maxWidth: double.infinity,
+                          ),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 16.0, 0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 16.0, 0.0),
+                                  child: Icon(
+                                    Icons.trending_up_rounded,
+                                    color:
+                                        FlutterFlowTheme.of(context).secondary,
+                                    size: 32.0,
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Net',
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 4.0, 4.0, 0.0),
+                                          child: AutoSizeText(
+                                            formatNumber(
+                                              _model.rooms +
+                                                  _model.goods -
+                                                  _model.expenses -
+                                                  _model.salaries -
+                                                  _model.bills,
+                                              formatType: FormatType.decimal,
+                                              decimalType:
+                                                  DecimalType.automatic,
+                                              currency: 'P ',
+                                            ),
+                                            maxLines: 1,
+                                            style: FlutterFlowTheme.of(context)
+                                                .displaySmall,
+                                            minFontSize: 30.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

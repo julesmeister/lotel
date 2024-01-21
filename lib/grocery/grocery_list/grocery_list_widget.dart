@@ -788,8 +788,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                           0)
                                                                       ? 0.0
                                                                       : revenue /
-                                                                          (grocery *
-                                                                              2)) *
+                                                                          grocery) *
                                                                   100)
                                                               .toStringAsFixed(
                                                                   1)
@@ -1170,7 +1169,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                   ),
                                                                 ),
                                                                 Expanded(
-                                                                  flex: 3,
+                                                                  flex: 1,
                                                                   child:
                                                                       Padding(
                                                                     padding: EdgeInsetsDirectional
@@ -1180,7 +1179,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                             0.0,
                                                                             0.0),
                                                                     child: Text(
-                                                                      'Gain',
+                                                                      'Net',
                                                                       textAlign:
                                                                           TextAlign
                                                                               .start,
@@ -1204,10 +1203,21 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     (double grocery,
                                                                             double
                                                                                 revenue) {
-                                                                      return ((50 - (((grocery + revenue == 0) ? 0.0 : revenue / (grocery * 2)) * 100)).abs()).toStringAsFixed(1).replaceAll(
+                                                                      return "P " +
+                                                                          (revenue - grocery)
+                                                                              .toStringAsFixed(
+                                                                                  1)
+                                                                              .replaceAllMapped(
+                                                                                RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                                                                                (Match match) => '${match[1]},',
+                                                                              ) +
+                                                                          " " +
+                                                                          "(" +
+                                                                          ((100 - (((grocery + revenue == 0) ? 0.0 : revenue / grocery) * 100)).abs()).toStringAsFixed(1).replaceAll(
                                                                               RegExp(r'\.0*$'),
                                                                               '') +
-                                                                          '%';
+                                                                          '%' +
+                                                                          ")";
                                                                     }(
                                                                         listViewGoodsRevenueRatioRecord
                                                                             .grocery,

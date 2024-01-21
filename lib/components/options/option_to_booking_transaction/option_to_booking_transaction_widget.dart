@@ -189,6 +189,8 @@ class _OptionToBookingTransactionWidgetState
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
+                    // close
+                    Navigator.pop(context);
                     var confirmDialogResponse = await showDialog<bool>(
                           context: context,
                           builder: (alertDialogContext) {
@@ -218,6 +220,7 @@ class _OptionToBookingTransactionWidgetState
                       await widget.ref!.update(createTransactionsRecordData(
                         pending: true,
                       ));
+                      // add to pending
 
                       await widget.booking!.update({
                         ...mapToFirestore(
@@ -240,8 +243,6 @@ class _OptionToBookingTransactionWidgetState
                         ),
                       );
                     }
-                    // close
-                    Navigator.pop(context);
                   },
                   child: Container(
                     width: double.infinity,

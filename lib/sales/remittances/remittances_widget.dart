@@ -269,51 +269,58 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                 ),
               ),
               actions: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    FlutterFlowIconButton(
-                      borderRadius: 20.0,
-                      borderWidth: 1.0,
-                      buttonSize: 40.0,
-                      icon: Icon(
-                        Icons.chevron_left,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                        child: FlutterFlowIconButton(
+                          borderRadius: 20.0,
+                          borderWidth: 1.0,
+                          buttonSize: 40.0,
+                          icon: Icon(
+                            Icons.chevron_left,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            setState(() {
+                              _model.date = functions.prevDate(_model.date!);
+                              _model.showLoadButton = true;
+                              _model.showDownloadButton = false;
+                              _model.inventories = [];
+                              _model.bookings = [];
+                              _model.transactions = [];
+                            });
+                          },
+                        ),
                       ),
-                      onPressed: () async {
-                        setState(() {
-                          _model.date = functions.prevDate(_model.date!);
-                          _model.showLoadButton = true;
-                          _model.showDownloadButton = false;
-                          _model.inventories = [];
-                          _model.bookings = [];
-                          _model.transactions = [];
-                        });
-                      },
-                    ),
-                    FlutterFlowIconButton(
-                      borderColor: Colors.transparent,
-                      borderRadius: 20.0,
-                      borderWidth: 1.0,
-                      buttonSize: 40.0,
-                      icon: Icon(
-                        Icons.navigate_next,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
+                      FlutterFlowIconButton(
+                        borderColor: Colors.transparent,
+                        borderRadius: 20.0,
+                        borderWidth: 1.0,
+                        buttonSize: 40.0,
+                        icon: Icon(
+                          Icons.navigate_next,
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          size: 24.0,
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            _model.date = functions.nextDate(_model.date!);
+                            _model.showLoadButton = true;
+                            _model.showDownloadButton = false;
+                            _model.inventories = [];
+                            _model.bookings = [];
+                            _model.transactions = [];
+                          });
+                        },
                       ),
-                      onPressed: () async {
-                        setState(() {
-                          _model.date = functions.nextDate(_model.date!);
-                          _model.showLoadButton = true;
-                          _model.showDownloadButton = false;
-                          _model.inventories = [];
-                          _model.bookings = [];
-                          _model.transactions = [];
-                        });
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
               centerTitle: false,

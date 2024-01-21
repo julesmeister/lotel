@@ -59,9 +59,12 @@ class _PrintRemittanceState extends State<PrintRemittance> {
     final goodsDescription = transaction.goods.isEmpty
         ? transaction.description
         : transaction.goods
-            .map((goodsItem) =>
-                '${goodsItem.description} x${goodsItem.quantity.toString()}')
-            .join(', ');
+                .map((goodsItem) =>
+                    '${goodsItem.description} x${goodsItem.quantity.toString()}')
+                .join(', ') +
+            (transaction.description.isNotEmpty
+                ? ' - ${transaction.description}'
+                : '');
 
     return goodsDescription;
   }

@@ -301,13 +301,13 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                           options: [
                             ChipData('Food'),
                             ChipData('Pamasahe'),
-                            ChipData('Dodong'),
                             ChipData('Cash Advance'),
                             ChipData('Materials'),
                             ChipData('Salary'),
                             ChipData('Refill Water'),
                             ChipData('Absent'),
-                            ChipData('Softdrinks')
+                            ChipData('Softdrinks'),
+                            ChipData('Sako')
                           ],
                           onChanged: (val) async {
                             setState(() => _model.choicesValue = val?.first);
@@ -317,12 +317,29 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                 _model.descriptionController?.text =
                                     'Food Allowance for Staff';
                               });
+                              // 150 amount
+                              setState(() {
+                                _model.amountController?.text = '150';
+                              });
                             } else {
                               // choice
                               setState(() {
                                 _model.descriptionController?.text =
                                     _model.choicesValue!;
                               });
+                              if (_model.choicesValue == 'Pamasahe') {
+                                // 100 pamasahe
+                                setState(() {
+                                  _model.amountController?.text = '100';
+                                });
+                              } else {
+                                if (_model.choicesValue == 'Sako') {
+                                  // 10 sako
+                                  setState(() {
+                                    _model.amountController?.text = '10';
+                                  });
+                                }
+                              }
                             }
                           },
                           selectedChipStyle: ChipStyle(
