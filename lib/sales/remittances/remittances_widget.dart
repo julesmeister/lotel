@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/missing_inventory/missing_inventory_widget.dart';
 import '/components/options/prepared_remittance_user/prepared_remittance_user_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
@@ -1388,6 +1389,119 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                 .error,
                                                       ),
                                                     );
+                                                    // not loading anymore
+                                                    setState(() {
+                                                      _model.isLoading = false;
+                                                      _model.showLoadButton =
+                                                          true;
+                                                      _model.showDownloadButton =
+                                                          false;
+                                                    });
+                                                    // reset counter
+                                                    setState(() {
+                                                      _model.loopTransactionCounter =
+                                                          0;
+                                                    });
+                                                    while (functions
+                                                            .transactionWithMissingInventory(
+                                                                _model
+                                                                    .transactions
+                                                                    .toList(),
+                                                                _model
+                                                                    .inventories
+                                                                    .toList())
+                                                            ?.goods
+                                                            ?.length !=
+                                                        _model
+                                                            .loopTransactionCounter) {
+                                                      if (functions.goodThatCannotBeFoundInInventory(
+                                                          _model.inventories
+                                                              .toList(),
+                                                          functions
+                                                              .transactionWithMissingInventory(
+                                                                  _model
+                                                                      .transactions
+                                                                      .toList(),
+                                                                  _model
+                                                                      .inventories
+                                                                      .toList())!
+                                                              .goods[_model.loopTransactionCounter])) {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return GestureDetector(
+                                                              onTap: () => _model
+                                                                      .unfocusNode
+                                                                      .canRequestFocus
+                                                                  ? FocusScope.of(
+                                                                          context)
+                                                                      .requestFocus(
+                                                                          _model
+                                                                              .unfocusNode)
+                                                                  : FocusScope.of(
+                                                                          context)
+                                                                      .unfocus(),
+                                                              child: Padding(
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
+                                                                child:
+                                                                    Container(
+                                                                  height: double
+                                                                      .infinity,
+                                                                  child:
+                                                                      MissingInventoryWidget(
+                                                                    description: functions
+                                                                        .transactionWithMissingInventory(
+                                                                            _model.transactions
+                                                                                .toList(),
+                                                                            _model.inventories
+                                                                                .toList())!
+                                                                        .goods[_model
+                                                                            .loopTransactionCounter]
+                                                                        .description,
+                                                                    quantity: functions
+                                                                        .transactionWithMissingInventory(
+                                                                            _model.transactions
+                                                                                .toList(),
+                                                                            _model.inventories
+                                                                                .toList())!
+                                                                        .goods[_model
+                                                                            .loopTransactionCounter]
+                                                                        .quantity,
+                                                                    transaction: functions.transactionWithMissingInventory(
+                                                                        _model
+                                                                            .transactions
+                                                                            .toList(),
+                                                                        _model
+                                                                            .inventories
+                                                                            .toList())!,
+                                                                    remittanceRef:
+                                                                        mainCardRemittancesRecord!
+                                                                            .reference,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            safeSetState(
+                                                                () {}));
+
+                                                        break;
+                                                      }
+                                                      // increment loop
+                                                      setState(() {
+                                                        _model.loopTransactionCounter =
+                                                            _model.loopTransactionCounter +
+                                                                1;
+                                                      });
+                                                    }
                                                   }
 
                                                   setState(() {});

@@ -47,6 +47,7 @@ class PrintRemittance extends StatefulWidget {
 
 class _PrintRemittanceState extends State<PrintRemittance> {
   String formattedDate = '';
+  double roomSales = 0.0; // Declare roomSales as an instance variable
 
   @override
   void initState() {
@@ -74,6 +75,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
 
     List<List<String>> generateRoomTableData() {
       final List<List<String>> entries = [];
+      int totalNights = 0;
 
       widget.rooms.sort((a, b) => a.number.compareTo(b.number));
 
@@ -93,6 +95,11 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 .toList() ??
             [];
 
+        roomSales += bookTransactions.isNotEmpty
+            ? bookTransactions.fold(
+                0.0, (sum, transaction) => sum + transaction.total)
+            : 0.0;
+
         final String total = bookTransactions.isNotEmpty
             ? "- ${bookTransactions.fold(0.0, (sum, transaction) => sum + transaction.total).toString()}"
             : '';
@@ -109,6 +116,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
             ? roomBookings.fold(0, (sum, booking) {
                 if (!uniqueBookingReferences.contains(booking.reference.path)) {
                   uniqueBookingReferences.add(booking.reference.path);
+                  totalNights += booking.nights; // Update totalNights here
                   return sum + booking.nights;
                 }
                 return sum;
@@ -117,6 +125,16 @@ class _PrintRemittanceState extends State<PrintRemittance> {
 
         entries.add(entry);
       }
+
+      // Add total entry
+      entries.add([
+        'Total',
+        NumberFormat.currency(
+          symbol: 'Php ',
+          decimalDigits: 2,
+        ).format(roomSales),
+        '$totalNights nights',
+      ]);
 
       return entries;
     }
@@ -135,9 +153,21 @@ class _PrintRemittanceState extends State<PrintRemittance> {
       ...roomTableData.sublist(halfLength),
     ];
 
+    // Add a helper method to safely convert double to int
+    int? safeToInt(double? value) {
+      return value?.toInt();
+    }
+
     List<List<String>> generateGoodsTableData() {
       final List<List<String>> entries = [];
       final Map<String, Map<String, double>> goodsData = {};
+
+      final Map<String, double> totals = {
+        'Quantity Sold': 0.0,
+        'Starting Quantity': 0.0,
+        'Remaining Quantity': 0.0,
+        'Total': 0.0,
+      };
 
       // Filter transactions to get only those with type "goods"
       final goodsTransactions = widget.transactions
@@ -173,6 +203,15 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         final remainingQuantity = startingQuantity - (data['quantity'] ?? 0);
         double price = data['price'] ?? 0.0;
 
+        // Update totals
+        totals['Quantity Sold'] =
+            (totals['Quantity Sold'] ?? 0.0) + (data['quantity'] ?? 0.0);
+        totals['Starting Quantity'] = (totals['Starting Quantity'] ?? 0.0) +
+            (startingQuantity ?? 0.0).toDouble();
+        totals['Remaining Quantity'] = (totals['Remaining Quantity'] ?? 0.0) +
+            (remainingQuantity ?? 0.0).toDouble();
+        totals['Total'] = (totals['Total'] ?? 0.0) + price;
+
         String formattedPrice = NumberFormat.currency(
           symbol: 'Php ',
           decimalDigits: 2,
@@ -180,14 +219,30 @@ class _PrintRemittanceState extends State<PrintRemittance> {
 
         final List<String> entry = [
           description,
-          (data['quantity'] ?? 0).toInt().toString(),
+          safeToInt(data['quantity'])?.toString() ?? '0', // Use safeToInt here
           startingQuantity.toString(),
-          remainingQuantity.toInt().toString(),
+          (remainingQuantity ?? 0).toString(), // Fix here
           formattedPrice,
         ];
 
         entries.add(entry);
       });
+
+      // Add totals to entries
+      final List<String> totalRow = [
+        'Total Sales',
+        safeToInt(totals['Quantity Sold'])?.toString() ??
+            '0', // Use safeToInt here
+        safeToInt(totals['Starting Quantity'])?.toString() ??
+            '0', // Use safeToInt here
+        safeToInt(totals['Remaining Quantity'])?.toString() ??
+            '0', // Use safeToInt here
+        NumberFormat.currency(
+          symbol: 'Php ',
+          decimalDigits: 2,
+        ).format(totals['Total']),
+      ];
+      entries.add(totalRow);
 
       return entries;
     }
@@ -195,6 +250,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
     // Function to generate data for the Expenses table
     List<List<String>> generateExpensesTableData() {
       final List<List<String>> entries = [];
+      double totalExpenses = 0.0; // Initialize totalExpenses
 
       // Filter transactions to get only those with type "expense"
       final expenseTransactions = widget.transactions
@@ -206,6 +262,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         final description = generateExpenseDescription(transaction);
 
         final total = transaction.total.toDouble();
+        totalExpenses += total; // Accumulate totalExpenses
         final List<String> entry = [
           description,
           NumberFormat.currency(
@@ -215,6 +272,15 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         ];
         entries.add(entry);
       }
+      // Add a row for the total expenses
+      final List<String> totalRow = [
+        'Total Expenses',
+        NumberFormat.currency(
+          symbol: 'Php ',
+          decimalDigits: 2,
+        ).format(totalExpenses),
+      ];
+      entries.add(totalRow);
 
       return entries;
     }
@@ -291,31 +357,6 @@ class _PrintRemittanceState extends State<PrintRemittance> {
     }
 
     pw.Widget createBottomRow(RemittancesRecord remittance) {
-      final roomSales = NumberFormat.currency(
-        symbol: 'Php ',
-        decimalDigits: 2,
-      ).format(
-        // Calculate the sum of transactions.total for transaction.type == 'book'
-        (widget.transactions ?? [])
-            .where((transaction) => transaction.type == 'book')
-            .fold(0.0, (sum, transaction) => sum + transaction.total),
-      );
-
-      final goodsSales = NumberFormat.currency(
-        symbol: 'Php ',
-        decimalDigits: 2,
-      ).format(
-        // Calculate the sum of transactions.total for transaction.type == 'goods'
-        (widget.transactions ?? [])
-            .where((transaction) => transaction.type == 'goods')
-            .fold(0.0, (sum, transaction) => sum + transaction.total),
-      );
-
-      final expenses = NumberFormat.currency(
-        symbol: 'Php ',
-        decimalDigits: 2,
-      ).format(remittance.expenses);
-
       final total = NumberFormat.currency(
         symbol: 'Php ',
         decimalDigits: 2,
@@ -332,25 +373,16 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         padding: pw.EdgeInsets.symmetric(horizontal: 24.0),
         child: pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: pw.CrossAxisAlignment.end,
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                pw.Text('Sales',
+                pw.Text('Remittance Received: $total',
                     style: pw.TextStyle(
-                        fontSize: 12, fontWeight: pw.FontWeight.bold)),
-                pw.Text('Rooms: $roomSales', style: pw.TextStyle(fontSize: 12)),
-                pw.Text('Goods: $goodsSales',
-                    style: pw.TextStyle(fontSize: 12)),
-              ],
-            ),
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Text('Expenses: $expenses',
-                    style: pw.TextStyle(fontSize: 12)),
-                pw.Text('Net Total: $total', style: pw.TextStyle(fontSize: 12)),
+                      fontSize: 12,
+                      fontWeight: pw.FontWeight.bold,
+                    )),
                 // Add additional information if needed
               ],
             ),
@@ -381,37 +413,57 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         build: (pw.Context context) {
           return pw.Center(
             child: pw.Column(
+              crossAxisAlignment:
+                  pw.CrossAxisAlignment.start, // Align children to the right
               children: [
-                pw.Text(
-                  widget.remittance.hotel,
-                  style: pw.TextStyle(
-                    fontSize: 18,
-                    fontWeight: pw.FontWeight.bold,
-                  ),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Container(
+                      padding:
+                          pw.EdgeInsets.only(left: 24.0), // Padding to the left
+                      child: pw.Text(
+                        widget.remittance.hotel,
+                        style: pw.TextStyle(
+                          fontSize: 18,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    pw.Container(
+                      padding:
+                          pw.EdgeInsets.only(left: 24.0), // Padding to the left
+                      child: pw.Text(
+                        "Remittance Report - $formattedDate",
+                        style: pw.TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                pw.Text(
-                  "Remittance Report - $formattedDate",
-                  style: pw.TextStyle(
-                    fontSize: 14,
+                pw.SizedBox(height: 25),
+                pw.Container(
+                  padding: pw.EdgeInsets.symmetric(
+                      horizontal: 24.0), // Padding left and right
+                  child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Expanded(child: createRoomTable(firstHalf)),
+                      pw.SizedBox(width: 20), // Add space between tables
+                      pw.Expanded(child: createRoomTable(secondHalf)),
+                      // Add more pw.Expanded widgets and SizedBox for additional children
+                    ],
                   ),
                 ),
 
-                pw.SizedBox(height: 25),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    createRoomTable(firstHalf),
-                    createRoomTable(secondHalf),
-                  ],
-                ),
                 pw.SizedBox(height: 10),
                 // Add the "Goods" table
                 createGoodsTable(generateGoodsTableData()),
                 pw.SizedBox(height: 10),
                 createExpensesTable(generateExpensesTableData()),
                 pw.SizedBox(height: 10),
-
                 createBottomRow(widget.remittance),
               ],
             ),

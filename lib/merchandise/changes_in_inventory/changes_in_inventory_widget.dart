@@ -397,14 +397,10 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                       MainAxisSize.max,
                                                   children: [
                                                     StreamBuilder<UsersRecord>(
-                                                      stream:
-                                                          _model.staffInventory(
-                                                        requestFn: () =>
-                                                            UsersRecord
-                                                                .getDocument(
-                                                                    activitiesItem
-                                                                        .staff!),
-                                                      ),
+                                                      stream: UsersRecord
+                                                          .getDocument(
+                                                              activitiesItem
+                                                                  .staff!),
                                                       builder:
                                                           (context, snapshot) {
                                                         // Customize what your widget looks like when it's loading.

@@ -629,7 +629,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               // what's happening
                                               setState(() {
                                                 _model.happening =
-                                                    'Updating grocery stats';
+                                                    'Updating grocery values';
                                               });
                                               // count grr
                                               _model.countGrr =

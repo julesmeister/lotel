@@ -1355,3 +1355,41 @@ double stringToDouble(String text) {
   // string to double
   return double.tryParse(text) ?? 0.0;
 }
+
+TransactionsRecord? transactionWithMissingInventory(
+  List<TransactionsRecord> transactions,
+  List<InventoriesRecord> inventories,
+) {
+  // Then, we iterate through each transaction and check if all its goods are in the inventory map
+  for (final transaction in transactions) {
+    if (transaction.type != "book" && transaction.type != "change") {
+      if (transaction.goods != null) {
+        for (final good in transaction.goods) {
+          // Check if there is a corresponding item in the inventories list
+          bool hasCorrespondingItem = inventories.any(
+            (inventory) => inventory.item == good.description,
+          );
+
+          // If there is no corresponding item, the inventory is not complete
+          if (!hasCorrespondingItem) {
+            return transaction;
+          }
+        }
+      }
+    }
+  }
+  return transactions[0];
+}
+
+bool goodThatCannotBeFoundInInventory(
+  List<InventoriesRecord> inventories,
+  CartGoodsStruct good,
+) {
+  // is the good.description found in inventory.item?
+  for (final inventory in inventories) {
+    if (inventory.item == good.description) {
+      return false;
+    }
+  }
+  return true;
+}
