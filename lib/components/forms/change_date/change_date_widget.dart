@@ -11,14 +11,14 @@ export 'change_date_model.dart';
 
 class ChangeDateWidget extends StatefulWidget {
   const ChangeDateWidget({
-    Key? key,
+    super.key,
     required this.date,
-  }) : super(key: key);
+  });
 
   final DateTime? date;
 
   @override
-  _ChangeDateWidgetState createState() => _ChangeDateWidgetState();
+  State<ChangeDateWidget> createState() => _ChangeDateWidgetState();
 }
 
 class _ChangeDateWidgetState extends State<ChangeDateWidget> {

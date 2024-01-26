@@ -11,12 +11,12 @@ export 'option_to_booking_model.dart';
 
 class OptionToBookingWidget extends StatefulWidget {
   const OptionToBookingWidget({
-    Key? key,
+    super.key,
     required this.ref,
     required this.roomNo,
     required this.bookingToExtend,
     this.extend,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
   final int? roomNo;
@@ -24,7 +24,7 @@ class OptionToBookingWidget extends StatefulWidget {
   final bool? extend;
 
   @override
-  _OptionToBookingWidgetState createState() => _OptionToBookingWidgetState();
+  State<OptionToBookingWidget> createState() => _OptionToBookingWidgetState();
 }
 
 class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {

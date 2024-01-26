@@ -261,5 +261,44 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   /// Action blocks are added here.
 
+  Future changeHotel(
+    BuildContext context, {
+    required double? bedPrice,
+    required DateTime? lastRemit,
+    required String? hotel,
+    required DocumentReference? statsReference,
+    required DocumentReference? settingsRef,
+    required double? extPricePerHr,
+  }) async {
+    FFAppState().bedPrice = bedPrice!;
+    FFAppState().lastRemit = lastRemit;
+    FFAppState().hotel = hotel!;
+    FFAppState().statsReference = statsReference;
+    FFAppState().settingRef = settingsRef;
+    FFAppState().extPricePerHr = extPricePerHr!;
+    clearRemittanceChangeCache();
+    // clear rooms cache
+    FFAppState().clearRoomsCache();
+    // clear checkincount
+    FFAppState().clearCheckInCountCache();
+    // clear replenish count
+    FFAppState().clearReplenishCountCache();
+    // clear staff count
+    FFAppState().clearStaffsCache();
+    FFAppState().clearGroceryHomeCache();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'You have switched to another hotel!',
+          style: TextStyle(
+            color: FlutterFlowTheme.of(context).primaryText,
+          ),
+        ),
+        duration: Duration(milliseconds: 4000),
+        backgroundColor: FlutterFlowTheme.of(context).secondary,
+      ),
+    );
+  }
+
   /// Additional helper methods are added here.
 }

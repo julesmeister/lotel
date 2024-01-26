@@ -22,14 +22,14 @@ export 'new_edit_payroll_model.dart';
 
 class NewEditPayrollWidget extends StatefulWidget {
   const NewEditPayrollWidget({
-    Key? key,
+    super.key,
     this.ref,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
 
   @override
-  _NewEditPayrollWidgetState createState() => _NewEditPayrollWidgetState();
+  State<NewEditPayrollWidget> createState() => _NewEditPayrollWidgetState();
 }
 
 class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {

@@ -19,20 +19,19 @@ export 'bill_form_model.dart';
 
 class BillFormWidget extends StatefulWidget {
   const BillFormWidget({
-    Key? key,
+    super.key,
     bool? additional,
     this.remittanceRef,
     double? net,
   })  : this.additional = additional ?? false,
-        this.net = net ?? 0.0,
-        super(key: key);
+        this.net = net ?? 0.0;
 
   final bool additional;
   final DocumentReference? remittanceRef;
   final double net;
 
   @override
-  _BillFormWidgetState createState() => _BillFormWidgetState();
+  State<BillFormWidget> createState() => _BillFormWidgetState();
 }
 
 class _BillFormWidgetState extends State<BillFormWidget>

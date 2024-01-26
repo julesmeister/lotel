@@ -16,13 +16,13 @@ export 'option_to_booking_transaction_model.dart';
 
 class OptionToBookingTransactionWidget extends StatefulWidget {
   const OptionToBookingTransactionWidget({
-    Key? key,
+    super.key,
     required this.ref,
     required this.roomNo,
     required this.description,
     required this.price,
     this.booking,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
   final int? roomNo;
@@ -31,7 +31,7 @@ class OptionToBookingTransactionWidget extends StatefulWidget {
   final DocumentReference? booking;
 
   @override
-  _OptionToBookingTransactionWidgetState createState() =>
+  State<OptionToBookingTransactionWidget> createState() =>
       _OptionToBookingTransactionWidgetState();
 }
 

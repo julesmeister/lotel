@@ -13,10 +13,10 @@ import 'new_grocery_model.dart';
 export 'new_grocery_model.dart';
 
 class NewGroceryWidget extends StatefulWidget {
-  const NewGroceryWidget({Key? key}) : super(key: key);
+  const NewGroceryWidget({super.key});
 
   @override
-  _NewGroceryWidgetState createState() => _NewGroceryWidgetState();
+  State<NewGroceryWidget> createState() => _NewGroceryWidgetState();
 }
 
 class _NewGroceryWidgetState extends State<NewGroceryWidget> {

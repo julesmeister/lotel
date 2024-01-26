@@ -13,14 +13,14 @@ export 'option_to_issue_model.dart';
 
 class OptionToIssueWidget extends StatefulWidget {
   const OptionToIssueWidget({
-    Key? key,
+    super.key,
     required this.ref,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
 
   @override
-  _OptionToIssueWidgetState createState() => _OptionToIssueWidgetState();
+  State<OptionToIssueWidget> createState() => _OptionToIssueWidgetState();
 }
 
 class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {

@@ -24,7 +24,7 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
 
   bool paid = true;
 
-  double price = 0;
+  double price = 0.0;
 
   int? startingNights;
 

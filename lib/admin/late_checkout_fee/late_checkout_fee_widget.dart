@@ -14,10 +14,10 @@ import 'late_checkout_fee_model.dart';
 export 'late_checkout_fee_model.dart';
 
 class LateCheckoutFeeWidget extends StatefulWidget {
-  const LateCheckoutFeeWidget({Key? key}) : super(key: key);
+  const LateCheckoutFeeWidget({super.key});
 
   @override
-  _LateCheckoutFeeWidgetState createState() => _LateCheckoutFeeWidgetState();
+  State<LateCheckoutFeeWidget> createState() => _LateCheckoutFeeWidgetState();
 }
 
 class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {

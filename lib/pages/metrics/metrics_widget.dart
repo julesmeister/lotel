@@ -25,10 +25,10 @@ import 'metrics_model.dart';
 export 'metrics_model.dart';
 
 class MetricsWidget extends StatefulWidget {
-  const MetricsWidget({Key? key}) : super(key: key);
+  const MetricsWidget({super.key});
 
   @override
-  _MetricsWidgetState createState() => _MetricsWidgetState();
+  State<MetricsWidget> createState() => _MetricsWidgetState();
 }
 
 class _MetricsWidgetState extends State<MetricsWidget>
@@ -594,7 +594,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         child: Container(
                           height: 120.0,
                           constraints: BoxConstraints(
-                            maxWidth: 270.0,
+                            maxWidth: 290.0,
                           ),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
@@ -611,17 +611,85 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 16.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          functions
+                                              .metricChange(
+                                                  _model.rooms,
+                                                  'rooms',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel)
+                                              .maybeHandleOverflow(maxChars: 6),
+                                          maxLines: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color: (String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                        _model.rooms,
+                                                        'rooms',
+                                                        _model.prevMetrics
+                                                            .toList(),
+                                                        _model.hotel))
+                                                    ? FlutterFlowTheme.of(
+                                                            context)
+                                                        .error
+                                                    : FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondary,
+                                                fontSize: 18.0,
+                                              ),
+                                        ),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            if (!((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.rooms,
+                                                'rooms',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))))
+                                              Icon(
+                                                Icons.trending_up_rounded,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                size: 32.0,
+                                              ),
+                                            if ((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.rooms,
+                                                'rooms',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel)))
+                                              Icon(
+                                                Icons.trending_down,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                size: 32.0,
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Flexible(
+                                Expanded(
+                                  flex: 6,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -814,17 +882,85 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 16.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          functions
+                                              .metricChange(
+                                                  _model.goods,
+                                                  'goods',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel)
+                                              .maybeHandleOverflow(maxChars: 6),
+                                          maxLines: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color: (String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                        _model.goods,
+                                                        'goods',
+                                                        _model.prevMetrics
+                                                            .toList(),
+                                                        _model.hotel))
+                                                    ? FlutterFlowTheme.of(
+                                                            context)
+                                                        .error
+                                                    : FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondary,
+                                                fontSize: 18.0,
+                                              ),
+                                        ),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            if (!((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.goods,
+                                                'goods',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))))
+                                              Icon(
+                                                Icons.trending_up_rounded,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                size: 32.0,
+                                              ),
+                                            if ((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.goods,
+                                                'goods',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel)))
+                                              Icon(
+                                                Icons.trending_down,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                size: 32.0,
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Flexible(
+                                Expanded(
+                                  flex: 6,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -990,7 +1126,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         child: Container(
                           height: 120.0,
                           constraints: BoxConstraints(
-                            maxWidth: double.infinity,
+                            maxWidth: 290.0,
                           ),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
@@ -1007,14 +1143,81 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 16.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          functions
+                                              .metricChange(
+                                                  _model.expenses,
+                                                  'expenses',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel)
+                                              .maybeHandleOverflow(maxChars: 6),
+                                          maxLines: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color: (String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                        _model.expenses,
+                                                        'expenses',
+                                                        _model.prevMetrics
+                                                            .toList(),
+                                                        _model.hotel))
+                                                    ? FlutterFlowTheme.of(
+                                                            context)
+                                                        .error
+                                                    : FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondary,
+                                                fontSize: 18.0,
+                                              ),
+                                        ),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            if (!((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.expenses,
+                                                'expenses',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))))
+                                              Icon(
+                                                Icons.trending_up_rounded,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                size: 32.0,
+                                              ),
+                                            if ((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.expenses,
+                                                'expenses',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel)))
+                                              Icon(
+                                                Icons.trending_down,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                size: 32.0,
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Column(
@@ -1157,7 +1360,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         child: Container(
                           height: 120.0,
                           constraints: BoxConstraints(
-                            maxWidth: double.infinity,
+                            maxWidth: 290.0,
                           ),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
@@ -1174,14 +1377,81 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 16.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          functions
+                                              .metricChange(
+                                                  _model.salaries,
+                                                  'salaries',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel)
+                                              .maybeHandleOverflow(maxChars: 6),
+                                          maxLines: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color: (String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                        _model.salaries,
+                                                        'salaries',
+                                                        _model.prevMetrics
+                                                            .toList(),
+                                                        _model.hotel))
+                                                    ? FlutterFlowTheme.of(
+                                                            context)
+                                                        .error
+                                                    : FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondary,
+                                                fontSize: 18.0,
+                                              ),
+                                        ),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            if (!((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.salaries,
+                                                'salaries',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))))
+                                              Icon(
+                                                Icons.trending_up_rounded,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                size: 32.0,
+                                              ),
+                                            if ((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.salaries,
+                                                'salaries',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel)))
+                                              Icon(
+                                                Icons.trending_down,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                size: 32.0,
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Column(
@@ -1229,7 +1499,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         child: Container(
                           height: 120.0,
                           constraints: BoxConstraints(
-                            maxWidth: double.infinity,
+                            maxWidth: 290.0,
                           ),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
@@ -1246,14 +1516,81 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 16.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          functions
+                                              .metricChange(
+                                                  _model.bills,
+                                                  'bills',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel)
+                                              .maybeHandleOverflow(maxChars: 6),
+                                          maxLines: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color: (String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                        _model.bills,
+                                                        'bills',
+                                                        _model.prevMetrics
+                                                            .toList(),
+                                                        _model.hotel))
+                                                    ? FlutterFlowTheme.of(
+                                                            context)
+                                                        .error
+                                                    : FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondary,
+                                                fontSize: 18.0,
+                                              ),
+                                        ),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            if (!((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.bills,
+                                                'bills',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))))
+                                              Icon(
+                                                Icons.trending_up_rounded,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                size: 32.0,
+                                              ),
+                                            if ((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.bills,
+                                                'bills',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel)))
+                                              Icon(
+                                                Icons.trending_down,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                size: 32.0,
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Column(
@@ -1301,7 +1638,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         child: Container(
                           height: 120.0,
                           constraints: BoxConstraints(
-                            maxWidth: double.infinity,
+                            maxWidth: 290.0,
                           ),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
@@ -1318,14 +1655,81 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 16.0, 0.0),
-                                  child: Icon(
-                                    Icons.trending_up_rounded,
-                                    color:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    size: 32.0,
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 16.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          functions
+                                              .metricChange(
+                                                  _model.net,
+                                                  'net',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel)
+                                              .maybeHandleOverflow(maxChars: 6),
+                                          maxLines: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color: (String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                        _model.net,
+                                                        'net',
+                                                        _model.prevMetrics
+                                                            .toList(),
+                                                        _model.hotel))
+                                                    ? FlutterFlowTheme.of(
+                                                            context)
+                                                        .error
+                                                    : FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondary,
+                                                fontSize: 18.0,
+                                              ),
+                                        ),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            if (!((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.net,
+                                                'net',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))))
+                                              Icon(
+                                                Icons.trending_up_rounded,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                size: 32.0,
+                                              ),
+                                            if ((String change) {
+                                              return change.contains("-");
+                                            }(functions.metricChange(
+                                                _model.net,
+                                                'net',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel)))
+                                              Icon(
+                                                Icons.trending_down,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                size: 32.0,
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Column(

@@ -30,11 +30,11 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
 
   String year = '2024';
 
-  double net = 0;
+  double net = 0.0;
 
-  double expenses = 0;
+  double expenses = 0.0;
 
-  double salaries = 0;
+  double salaries = 0.0;
 
   List<RoomUsageStruct> roomUsage = [];
   void addToRoomUsage(RoomUsageStruct item) => roomUsage.add(item);
@@ -53,13 +53,13 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
   void updateRoomLineStruct(Function(LineGraphStruct) updateFn) =>
       updateFn(roomLine ??= LineGraphStruct());
 
-  double rooms = 0;
+  double rooms = 0.0;
 
-  double goods = 0;
+  double goods = 0.0;
 
   DocumentReference? statsRef;
 
-  double rent = 0;
+  double rent = 0.0;
 
   String hotel = 'All';
 
@@ -72,11 +72,24 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
   void updateStatsAtIndex(int index, Function(StatsRecord) updateFn) =>
       stats[index] = updateFn(stats[index]);
 
-  double groceryExpenses = 0;
+  double groceryExpenses = 0.0;
 
-  double bills = 0;
+  double bills = 0.0;
 
   StatsRecord? stat;
+
+  List<MetricsHolderStruct> prevMetrics = [];
+  void addToPrevMetrics(MetricsHolderStruct item) => prevMetrics.add(item);
+  void removeFromPrevMetrics(MetricsHolderStruct item) =>
+      prevMetrics.remove(item);
+  void removeAtIndexFromPrevMetrics(int index) => prevMetrics.removeAt(index);
+  void insertAtIndexInPrevMetrics(int index, MetricsHolderStruct item) =>
+      prevMetrics.insert(index, item);
+  void updatePrevMetricsAtIndex(
+          int index, Function(MetricsHolderStruct) updateFn) =>
+      prevMetrics[index] = updateFn(prevMetrics[index]);
+
+  int loopCounter = 0;
 
   ///  State fields for stateful widgets in this page.
 
@@ -119,6 +132,7 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
   }) async {
     int? initStatsCount;
     List<StatsRecord>? foundMonthDoc;
+    List<StatsRecord>? foundPrevMonthDoc;
 
     // count
     initStatsCount = await queryStatsRecordCount(
@@ -147,6 +161,18 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
             .where(
               'year',
               isEqualTo: year,
+            ),
+      );
+      // get prev stats
+      foundPrevMonthDoc = await queryStatsRecordOnce(
+        queryBuilder: (statsRecord) => statsRecord
+            .where(
+              'month',
+              isEqualTo: functions.previousMonth(month!),
+            )
+            .where(
+              'year',
+              isEqualTo: functions.previousYear(month!, year!),
             ),
       );
       // initialize all stats
@@ -207,6 +233,26 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
               .groceryExpenses;
       bills = stats.where((e) => e.hotel == 'Serenity').toList().first.bills +
           stats.where((e) => e.hotel == 'My Lifestyle').toList().first.bills;
+      loopCounter = 0;
+      prevMetrics = [];
+      while (foundPrevMonthDoc?.length != loopCounter) {
+        // create hotel Metric
+        addToPrevMetrics(MetricsHolderStruct(
+          hotel: foundPrevMonthDoc?[loopCounter]?.hotel,
+          rooms: foundPrevMonthDoc?[loopCounter]?.roomsIncome,
+          goods: foundPrevMonthDoc?[loopCounter]?.goodsIncome,
+          expenses: foundPrevMonthDoc?[loopCounter]?.expenses,
+          salaries: foundPrevMonthDoc?[loopCounter]?.salaries,
+          bills: foundPrevMonthDoc?[loopCounter]?.bills,
+          net: foundPrevMonthDoc![loopCounter].roomsIncome +
+              foundPrevMonthDoc![loopCounter].goodsIncome -
+              foundPrevMonthDoc![loopCounter].expenses -
+              foundPrevMonthDoc![loopCounter].salaries -
+              foundPrevMonthDoc![loopCounter].bills,
+        ));
+        // increment loop
+        loopCounter = loopCounter + 1;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(

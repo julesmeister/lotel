@@ -14,14 +14,14 @@ export 'name_edit_model.dart';
 
 class NameEditWidget extends StatefulWidget {
   const NameEditWidget({
-    Key? key,
+    super.key,
     this.ref,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
 
   @override
-  _NameEditWidgetState createState() => _NameEditWidgetState();
+  State<NameEditWidget> createState() => _NameEditWidgetState();
 }
 
 class _NameEditWidgetState extends State<NameEditWidget> {

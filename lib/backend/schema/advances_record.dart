@@ -50,8 +50,8 @@ class AdvancesRecord extends FirestoreRecord {
           ? parent.collection('advances')
           : FirebaseFirestore.instance.collectionGroup('advances');
 
-  static DocumentReference createDoc(DocumentReference parent) =>
-      parent.collection('advances').doc();
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('advances').doc(id);
 
   static Stream<AdvancesRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => AdvancesRecord.fromSnapshot(s));

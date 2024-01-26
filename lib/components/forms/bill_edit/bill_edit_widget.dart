@@ -13,18 +13,18 @@ export 'bill_edit_model.dart';
 
 class BillEditWidget extends StatefulWidget {
   const BillEditWidget({
-    Key? key,
+    super.key,
     required this.ref,
     required this.description,
     required this.amount,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
   final String? description;
   final double? amount;
 
   @override
-  _BillEditWidgetState createState() => _BillEditWidgetState();
+  State<BillEditWidget> createState() => _BillEditWidgetState();
 }
 
 class _BillEditWidgetState extends State<BillEditWidget> {

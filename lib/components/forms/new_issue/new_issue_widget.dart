@@ -14,17 +14,16 @@ export 'new_issue_model.dart';
 
 class NewIssueWidget extends StatefulWidget {
   const NewIssueWidget({
-    Key? key,
+    super.key,
     bool? edit,
     this.ref,
-  })  : this.edit = edit ?? false,
-        super(key: key);
+  }) : this.edit = edit ?? false;
 
   final bool edit;
   final DocumentReference? ref;
 
   @override
-  _NewIssueWidgetState createState() => _NewIssueWidgetState();
+  State<NewIssueWidget> createState() => _NewIssueWidgetState();
 }
 
 class _NewIssueWidgetState extends State<NewIssueWidget> {

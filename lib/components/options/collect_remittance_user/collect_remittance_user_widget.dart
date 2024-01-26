@@ -12,10 +12,10 @@ import 'collect_remittance_user_model.dart';
 export 'collect_remittance_user_model.dart';
 
 class CollectRemittanceUserWidget extends StatefulWidget {
-  const CollectRemittanceUserWidget({Key? key}) : super(key: key);
+  const CollectRemittanceUserWidget({super.key});
 
   @override
-  _CollectRemittanceUserWidgetState createState() =>
+  State<CollectRemittanceUserWidget> createState() =>
       _CollectRemittanceUserWidgetState();
 }
 

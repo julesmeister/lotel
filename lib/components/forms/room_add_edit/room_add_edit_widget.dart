@@ -16,14 +16,13 @@ export 'room_add_edit_model.dart';
 
 class RoomAddEditWidget extends StatefulWidget {
   const RoomAddEditWidget({
-    Key? key,
+    super.key,
     this.roomRef,
     bool? edit,
     this.number,
     this.price,
     this.capacity,
-  })  : this.edit = edit ?? false,
-        super(key: key);
+  }) : this.edit = edit ?? false;
 
   final DocumentReference? roomRef;
   final bool edit;
@@ -32,7 +31,7 @@ class RoomAddEditWidget extends StatefulWidget {
   final int? capacity;
 
   @override
-  _RoomAddEditWidgetState createState() => _RoomAddEditWidgetState();
+  State<RoomAddEditWidget> createState() => _RoomAddEditWidgetState();
 }
 
 class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {

@@ -13,13 +13,13 @@ export 'transaction_edit_model.dart';
 
 class TransactionEditWidget extends StatefulWidget {
   const TransactionEditWidget({
-    Key? key,
+    super.key,
     required this.ref,
     required this.description,
     required this.price,
     this.roomRef,
     this.bookingRef,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
   final String? description;
@@ -28,7 +28,7 @@ class TransactionEditWidget extends StatefulWidget {
   final DocumentReference? bookingRef;
 
   @override
-  _TransactionEditWidgetState createState() => _TransactionEditWidgetState();
+  State<TransactionEditWidget> createState() => _TransactionEditWidgetState();
 }
 
 class _TransactionEditWidgetState extends State<TransactionEditWidget> {

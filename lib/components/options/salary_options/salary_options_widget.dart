@@ -12,14 +12,14 @@ export 'salary_options_model.dart';
 
 class SalaryOptionsWidget extends StatefulWidget {
   const SalaryOptionsWidget({
-    Key? key,
+    super.key,
     required this.salary,
-  }) : super(key: key);
+  });
 
   final DocumentReference? salary;
 
   @override
-  _SalaryOptionsWidgetState createState() => _SalaryOptionsWidgetState();
+  State<SalaryOptionsWidget> createState() => _SalaryOptionsWidgetState();
 }
 
 class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {

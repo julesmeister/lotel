@@ -21,18 +21,18 @@ export 'remittance_specific_transactions_model.dart';
 
 class RemittanceSpecificTransactionsWidget extends StatefulWidget {
   const RemittanceSpecificTransactionsWidget({
-    Key? key,
+    super.key,
     required this.transactions,
     required this.remittanceRef,
     this.absences,
-  }) : super(key: key);
+  });
 
   final List<DocumentReference>? transactions;
   final DocumentReference? remittanceRef;
   final List<DocumentReference>? absences;
 
   @override
-  _RemittanceSpecificTransactionsWidgetState createState() =>
+  State<RemittanceSpecificTransactionsWidget> createState() =>
       _RemittanceSpecificTransactionsWidgetState();
 }
 

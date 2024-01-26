@@ -46,14 +46,15 @@ class PrintRemittance extends StatefulWidget {
 }
 
 class _PrintRemittanceState extends State<PrintRemittance> {
-  String formattedDate = '';
-  double roomSales = 0.0; // Declare roomSales as an instance variable
+  late String formattedDate;
+  late double roomSales; // Declare roomSales as an instance variable
 
   @override
   void initState() {
     super.initState();
     formattedDate =
         DateFormat('EEEE MMMM d y h:mm a').format(widget.remittance.date!);
+    roomSales = 0.0;
   }
 
   String generateExpenseDescription(TransactionsRecord transaction) {
@@ -100,16 +101,25 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 0.0, (sum, transaction) => sum + transaction.total)
             : 0.0;
 
-        final String total = bookTransactions.isNotEmpty
-            ? "- ${bookTransactions.fold(0.0, (sum, transaction) => sum + transaction.total).toString()}"
-            : '';
+        final double total = bookTransactions.isNotEmpty
+            ? double.parse((bookTransactions.fold(
+                0.0, (sum, transaction) => sum + transaction.total)).toString())
+            : 0.0;
 
         final String totalText = bookTransactions.isNotEmpty
-            ? '${room.price.toString()} $total'
+            ? NumberFormat.currency(
+                symbol: 'Php ',
+                decimalDigits: 2,
+              ).format(total)
             : room.vacant
                 ? 'vacant'
                 : 'still occupied';
-
+        // Room Price
+        entry.add(NumberFormat.currency(
+          symbol: 'Php ',
+          decimalDigits: 2,
+        ).format(room.price));
+        // Amount Paid
         entry.add(totalText);
         Set<String> uniqueBookingReferences = Set<String>();
         entry.add(roomBookings.isNotEmpty
@@ -129,6 +139,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
       // Add total entry
       entries.add([
         'Total',
+        "",
         NumberFormat.currency(
           symbol: 'Php ',
           decimalDigits: 2,
@@ -141,7 +152,6 @@ class _PrintRemittanceState extends State<PrintRemittance> {
 
     // Data for the table
     final roomTableData = [
-      ['Room Number', 'Room Price', 'Nights of Stay'],
       ...generateRoomTableData(),
     ];
 
@@ -149,7 +159,6 @@ class _PrintRemittanceState extends State<PrintRemittance> {
     final int halfLength = (roomTableData.length / 2).ceil();
     final List<List<String>> firstHalf = roomTableData.sublist(0, halfLength);
     final List<List<String>> secondHalf = [
-      roomTableData[0],
       ...roomTableData.sublist(halfLength),
     ];
 
@@ -185,9 +194,10 @@ class _PrintRemittanceState extends State<PrintRemittance> {
             goodsData[description] = {'quantity': quantity, 'price': price};
           } else {
             var data = goodsData[description];
-            data ??= {'quantity': 0.0, 'price': 0.0}; // Initialize if null
-            data['quantity'] = (data['quantity'] ?? 0.0) + quantity;
-            data['price'] = (data['price'] ?? 0.0) + price;
+            data = {
+              'quantity': (data?['quantity'] ?? 0.0) + quantity,
+              'price': (data?['price'] ?? 0.0) + price,
+            };
           }
         }
       }
@@ -212,27 +222,34 @@ class _PrintRemittanceState extends State<PrintRemittance> {
             (remainingQuantity ?? 0.0).toDouble();
         totals['Total'] = (totals['Total'] ?? 0.0) + price;
 
-        String formattedPrice = NumberFormat.currency(
-          symbol: 'Php ',
-          decimalDigits: 2,
-        ).format(price);
-
         final List<String> entry = [
           description,
+          NumberFormat.currency(
+            symbol: 'Php ',
+            decimalDigits: 2,
+          ).format((data['quantity'] ?? 1) != 0
+              ? price / (data['quantity'] ?? 1)
+              : 0),
           safeToInt(data['quantity'])?.toString() ?? '0', // Use safeToInt here
           startingQuantity.toString(),
-          (remainingQuantity ?? 0).toString(), // Fix here
-          formattedPrice,
+          remainingQuantity.toInt().toString(),
+          NumberFormat.currency(
+            symbol: 'Php ',
+            decimalDigits: 2,
+          ).format(price),
         ];
 
         entries.add(entry);
       });
 
+      // Sort entries in ascending order of description
+      entries.sort((a, b) => a[0].compareTo(b[0]));
+
       // Add totals to entries
       final List<String> totalRow = [
         'Total Sales',
-        safeToInt(totals['Quantity Sold'])?.toString() ??
-            '0', // Use safeToInt here
+        '',
+        safeToInt(totals['Quantity Sold']).toString(), // Use safeToInt here
         safeToInt(totals['Starting Quantity'])?.toString() ??
             '0', // Use safeToInt here
         safeToInt(totals['Remaining Quantity'])?.toString() ??
@@ -242,6 +259,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
           decimalDigits: 2,
         ).format(totals['Total']),
       ];
+
       entries.add(totalRow);
 
       return entries;
@@ -286,22 +304,75 @@ class _PrintRemittanceState extends State<PrintRemittance> {
     }
 
     // Function to create a table
-    pw.Widget createRoomTable(List<List<String>> data) {
+    pw.Widget createRoomTable(List<List<String>> data, {bool last = false}) {
       if (data.isEmpty) {
         return pw.Text(widget.rooms.length
             .toString()); // Handle the case when data is empty
       }
 
-      return pw.TableHelper.fromTextArray(
-        headers: data[0],
-        data: data.sublist(1),
-        border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
-        headerAlignment: pw.Alignment.centerLeft,
-        // Define cell alignments for each column
-        cellAlignment: pw.Alignment.centerLeft,
-        headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
-        cellStyle: pw.TextStyle(fontSize: 8),
-        cellPadding: pw.EdgeInsets.symmetric(vertical: 1, horizontal: 3),
+      // List of headers
+      List<String> headers = [
+        "Room Number",
+        "Room Price",
+        "Amount Paid",
+        "Nights of Stay",
+      ];
+
+      return pw.Container(
+        child: pw.Table(
+          border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
+          children: [
+            // Header row
+            pw.TableRow(
+              children: headers.asMap().entries.map((entry) {
+                final int index = entry.key;
+                final String header = entry.value;
+                return pw.Container(
+                  padding: pw.EdgeInsets.symmetric(
+                    vertical: 1,
+                    horizontal: 3,
+                  ),
+                  child: pw.Text(
+                    header,
+                    style: pw.TextStyle(
+                      fontWeight: pw.FontWeight.bold,
+                      fontSize: 8,
+                    ),
+                    textAlign:
+                        index != 0 ? pw.TextAlign.center : pw.TextAlign.left,
+                  ),
+                );
+              }).toList(),
+            ),
+            // Data rows
+            for (int i = 0; i < data.length; i++)
+              pw.TableRow(
+                children: data[i].asMap().entries.map((entry) {
+                  final int index = entry.key;
+                  final String cell = entry.value;
+                  return pw.Container(
+                    padding: pw.EdgeInsets.symmetric(
+                        vertical: 1, horizontal: 3), // Adjusted padding
+                    child: pw.Text(
+                      cell,
+                      style: last && i == data.length - 1
+                          ? pw.TextStyle(
+                              fontSize: 8,
+                              fontWeight:
+                                  pw.FontWeight.bold) // Bold for the last row
+                          : pw.TextStyle(fontSize: 8),
+                      // Set textAlign to right for the last cell
+                      textAlign: (index == 1 || index == 2)
+                          ? pw.TextAlign.right
+                          : (index != 0
+                              ? pw.TextAlign.center
+                              : pw.TextAlign.left),
+                    ),
+                  );
+                }).toList(),
+              ),
+          ],
+        ),
       );
     }
 
@@ -310,26 +381,71 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         return pw.Text(
             'There are no goods.'); // Handle the case when data is empty
       }
+      // List of headers
+      List<String> headers = [
+        "Goods",
+        "Price",
+        "Quantity Sold",
+        "Starting Quantity",
+        "Remaining Quantity",
+        "Total",
+      ];
 
       return pw.Container(
-        padding: pw.EdgeInsets.symmetric(horizontal: 24.0),
-        child: pw.TableHelper.fromTextArray(
-          headers: [
-            'Goods',
-            'Quantity Sold',
-            'Starting Quantity',
-            'Remaining Quantity',
-            'Total'
-          ],
-          data: data,
+        padding: pw.EdgeInsets.symmetric(horizontal: 34.0),
+        child: pw.Table(
           border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
-          headerAlignment: pw.Alignment.centerLeft,
-          // Define cell alignments for each column
-          cellAlignment: pw.Alignment.centerLeft,
-          headerStyle:
-              pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
-          cellStyle: pw.TextStyle(fontSize: 8),
-          cellPadding: pw.EdgeInsets.symmetric(vertical: 1, horizontal: 3),
+          children: [
+            // Header row
+            pw.TableRow(
+              children: headers.asMap().entries.map((entry) {
+                final int index = entry.key;
+                final String header = entry.value;
+                return pw.Container(
+                  padding: pw.EdgeInsets.symmetric(
+                    vertical: 1,
+                    horizontal: 3,
+                  ),
+                  child: pw.Text(
+                    header,
+                    style: pw.TextStyle(
+                      fontWeight: pw.FontWeight.bold,
+                      fontSize: 8,
+                    ),
+                    textAlign:
+                        index != 0 ? pw.TextAlign.center : pw.TextAlign.left,
+                  ),
+                );
+              }).toList(),
+            ),
+            // Data rows
+            for (int i = 0; i < data.length; i++)
+              pw.TableRow(
+                children: data[i].asMap().entries.map((entry) {
+                  final int index = entry.key;
+                  final String cell = entry.value;
+                  return pw.Container(
+                    padding: pw.EdgeInsets.symmetric(
+                        vertical: 1, horizontal: 3), // Adjusted padding
+                    child: pw.Text(
+                      cell,
+                      style: i == data.length - 1
+                          ? pw.TextStyle(
+                              fontSize: 8,
+                              fontWeight:
+                                  pw.FontWeight.bold) // Bold for the last row
+                          : pw.TextStyle(fontSize: 8),
+                      // Set textAlign to right for the last cell
+                      textAlign: index == data[i].length - 1
+                          ? pw.TextAlign.right
+                          : (index != 0
+                              ? pw.TextAlign.center
+                              : pw.TextAlign.left),
+                    ),
+                  );
+                }).toList(),
+              ),
+          ],
         ),
       );
     }
@@ -340,18 +456,65 @@ class _PrintRemittanceState extends State<PrintRemittance> {
             'There are no expenses.'); // Handle the case when data is empty
       }
 
+      // List of headers
+      List<String> expenseHeaders = ["Expenses", "Amount"];
+
       return pw.Container(
-        padding: pw.EdgeInsets.symmetric(horizontal: 24.0),
-        child: pw.TableHelper.fromTextArray(
-          headers: <dynamic>['Expenses', 'Total'],
-          data: data,
+        padding: pw.EdgeInsets.symmetric(horizontal: 34.0),
+        child: pw.Table(
           border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
-          headerAlignment: pw.Alignment.centerLeft,
-          cellAlignment: pw.Alignment.centerLeft,
-          headerStyle:
-              pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
-          cellStyle: pw.TextStyle(fontSize: 8),
-          cellPadding: pw.EdgeInsets.symmetric(vertical: 1, horizontal: 3),
+          children: [
+            // Header row
+            pw.TableRow(
+              children: expenseHeaders.asMap().entries.map((entry) {
+                final int index = entry.key;
+                final String header = entry.value;
+                return pw.Container(
+                  padding: pw.EdgeInsets.symmetric(
+                    vertical: 1,
+                    horizontal: 3,
+                  ),
+                  child: pw.Text(
+                    header,
+                    style: pw.TextStyle(
+                      fontWeight: pw.FontWeight.bold,
+                      fontSize: 8,
+                    ),
+                    textAlign:
+                        index != 0 ? pw.TextAlign.center : pw.TextAlign.left,
+                  ),
+                );
+              }).toList(),
+            ),
+            // Data rows
+            for (int i = 0; i < data.length; i++)
+              pw.TableRow(
+                children: data[i].asMap().entries.map((entry) {
+                  final int index = entry.key;
+                  final String cell = entry.value;
+
+                  return pw.Container(
+                    padding: pw.EdgeInsets.symmetric(
+                      vertical: 1,
+                      horizontal: 3,
+                    ),
+                    child: pw.Text(
+                      cell,
+                      style: pw.TextStyle(
+                        fontSize: 8,
+                        fontWeight: i == data.length - 1
+                            ? pw.FontWeight.bold
+                            : pw.FontWeight.normal,
+                      ),
+                      // Set textAlign to right for the last cell
+                      textAlign: index == data[i].length - 1
+                          ? pw.TextAlign.right
+                          : pw.TextAlign.left,
+                    ),
+                  );
+                }).toList(),
+              ),
+          ],
         ),
       );
     }
@@ -370,22 +533,11 @@ class _PrintRemittanceState extends State<PrintRemittance> {
       }
 
       return pw.Container(
-        padding: pw.EdgeInsets.symmetric(horizontal: 24.0),
+        padding: pw.EdgeInsets.symmetric(horizontal: 34.0),
         child: pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Text('Remittance Received: $total',
-                    style: pw.TextStyle(
-                      fontSize: 12,
-                      fontWeight: pw.FontWeight.bold,
-                    )),
-                // Add additional information if needed
-              ],
-            ),
             pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
@@ -400,6 +552,17 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 // Add additional information if needed
               ],
             ),
+            pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text('Remittance Received: $total',
+                    style: pw.TextStyle(
+                      fontSize: 12,
+                      fontWeight: pw.FontWeight.bold,
+                    )),
+                // Add additional information if needed
+              ],
+            ),
           ],
         ),
       );
@@ -409,7 +572,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
-        margin: pw.EdgeInsets.only(top: 10.0),
+        margin: pw.EdgeInsets.only(top: 34.0),
         build: (pw.Context context) {
           return pw.Center(
             child: pw.Column(
@@ -421,7 +584,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                   children: [
                     pw.Container(
                       padding:
-                          pw.EdgeInsets.only(left: 24.0), // Padding to the left
+                          pw.EdgeInsets.only(left: 34.0), // Padding to the left
                       child: pw.Text(
                         widget.remittance.hotel,
                         style: pw.TextStyle(
@@ -432,7 +595,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                     ),
                     pw.Container(
                       padding:
-                          pw.EdgeInsets.only(left: 24.0), // Padding to the left
+                          pw.EdgeInsets.only(left: 34.0), // Padding to the left
                       child: pw.Text(
                         "Remittance Report - $formattedDate",
                         style: pw.TextStyle(
@@ -445,22 +608,22 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 pw.SizedBox(height: 25),
                 pw.Container(
                   padding: pw.EdgeInsets.symmetric(
-                      horizontal: 24.0), // Padding left and right
+                      horizontal: 34.0), // Padding left and right
                   child: pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
+                      // Wrap each table in a pw.Expanded widget
                       pw.Expanded(child: createRoomTable(firstHalf)),
-                      pw.SizedBox(width: 20), // Add space between tables
-                      pw.Expanded(child: createRoomTable(secondHalf)),
-                      // Add more pw.Expanded widgets and SizedBox for additional children
+                      pw.SizedBox(width: 20),
+                      pw.Expanded(
+                          child: createRoomTable(secondHalf, last: true)),
                     ],
                   ),
                 ),
 
                 pw.SizedBox(height: 10),
                 // Add the "Goods" table
-                createGoodsTable(generateGoodsTableData()),
+                //createGoodsTable(generateGoodsTableData()),
                 pw.SizedBox(height: 10),
                 createExpensesTable(generateExpensesTableData()),
                 pw.SizedBox(height: 10),

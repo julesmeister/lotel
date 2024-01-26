@@ -12,14 +12,14 @@ export 'cash_advance_options_model.dart';
 
 class CashAdvanceOptionsWidget extends StatefulWidget {
   const CashAdvanceOptionsWidget({
-    Key? key,
+    super.key,
     required this.ca,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ca;
 
   @override
-  _CashAdvanceOptionsWidgetState createState() =>
+  State<CashAdvanceOptionsWidget> createState() =>
       _CashAdvanceOptionsWidgetState();
 }
 

@@ -22,7 +22,7 @@ export 'check_in_model.dart';
 
 class CheckInWidget extends StatefulWidget {
   const CheckInWidget({
-    Key? key,
+    super.key,
     this.price,
     this.ref,
     double? totalAmount,
@@ -36,8 +36,7 @@ class CheckInWidget extends StatefulWidget {
         this.extend = extend ?? false,
         this.promoOn = promoOn ?? false,
         this.promoDetail = promoDetail ?? 'No promo',
-        this.promoDiscount = promoDiscount ?? 0.0,
-        super(key: key);
+        this.promoDiscount = promoDiscount ?? 0.0;
 
   final double? price;
   final DocumentReference? ref;
@@ -50,7 +49,7 @@ class CheckInWidget extends StatefulWidget {
   final double promoDiscount;
 
   @override
-  _CheckInWidgetState createState() => _CheckInWidgetState();
+  State<CheckInWidget> createState() => _CheckInWidgetState();
 }
 
 class _CheckInWidgetState extends State<CheckInWidget>

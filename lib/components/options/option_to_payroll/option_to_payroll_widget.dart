@@ -13,14 +13,14 @@ export 'option_to_payroll_model.dart';
 
 class OptionToPayrollWidget extends StatefulWidget {
   const OptionToPayrollWidget({
-    Key? key,
+    super.key,
     required this.payroll,
-  }) : super(key: key);
+  });
 
   final PayrollsRecord? payroll;
 
   @override
-  _OptionToPayrollWidgetState createState() => _OptionToPayrollWidgetState();
+  State<OptionToPayrollWidget> createState() => _OptionToPayrollWidgetState();
 }
 
 class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {

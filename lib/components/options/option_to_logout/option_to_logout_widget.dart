@@ -9,10 +9,10 @@ import 'option_to_logout_model.dart';
 export 'option_to_logout_model.dart';
 
 class OptionToLogoutWidget extends StatefulWidget {
-  const OptionToLogoutWidget({Key? key}) : super(key: key);
+  const OptionToLogoutWidget({super.key});
 
   @override
-  _OptionToLogoutWidgetState createState() => _OptionToLogoutWidgetState();
+  State<OptionToLogoutWidget> createState() => _OptionToLogoutWidgetState();
 }
 
 class _OptionToLogoutWidgetState extends State<OptionToLogoutWidget> {

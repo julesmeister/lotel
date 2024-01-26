@@ -14,14 +14,14 @@ export 'option_to_history_model.dart';
 
 class OptionToHistoryWidget extends StatefulWidget {
   const OptionToHistoryWidget({
-    Key? key,
+    super.key,
     required this.history,
-  }) : super(key: key);
+  });
 
   final HistoryRecord? history;
 
   @override
-  _OptionToHistoryWidgetState createState() => _OptionToHistoryWidgetState();
+  State<OptionToHistoryWidget> createState() => _OptionToHistoryWidgetState();
 }
 
 class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {

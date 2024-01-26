@@ -15,14 +15,13 @@ export 'staff_add_edit_model.dart';
 
 class StaffAddEditWidget extends StatefulWidget {
   const StaffAddEditWidget({
-    Key? key,
+    super.key,
     this.staffRef,
     bool? edit,
     this.name,
     this.sss,
     this.weeklyRate,
-  })  : this.edit = edit ?? false,
-        super(key: key);
+  }) : this.edit = edit ?? false;
 
   final DocumentReference? staffRef;
   final bool edit;
@@ -31,7 +30,7 @@ class StaffAddEditWidget extends StatefulWidget {
   final double? weeklyRate;
 
   @override
-  _StaffAddEditWidgetState createState() => _StaffAddEditWidgetState();
+  State<StaffAddEditWidget> createState() => _StaffAddEditWidgetState();
 }
 
 class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {

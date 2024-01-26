@@ -19,14 +19,14 @@ export 'individual_history_model.dart';
 
 class IndividualHistoryWidget extends StatefulWidget {
   const IndividualHistoryWidget({
-    Key? key,
+    super.key,
     required this.staff,
-  }) : super(key: key);
+  });
 
   final StaffsRecord? staff;
 
   @override
-  _IndividualHistoryWidgetState createState() =>
+  State<IndividualHistoryWidget> createState() =>
       _IndividualHistoryWidgetState();
 }
 

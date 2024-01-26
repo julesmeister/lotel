@@ -13,10 +13,10 @@ import 'promo_model.dart';
 export 'promo_model.dart';
 
 class PromoWidget extends StatefulWidget {
-  const PromoWidget({Key? key}) : super(key: key);
+  const PromoWidget({super.key});
 
   @override
-  _PromoWidgetState createState() => _PromoWidgetState();
+  State<PromoWidget> createState() => _PromoWidgetState();
 }
 
 class _PromoWidgetState extends State<PromoWidget> {

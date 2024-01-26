@@ -24,10 +24,10 @@ import 'remittances_model.dart';
 export 'remittances_model.dart';
 
 class RemittancesWidget extends StatefulWidget {
-  const RemittancesWidget({Key? key}) : super(key: key);
+  const RemittancesWidget({super.key});
 
   @override
-  _RemittancesWidgetState createState() => _RemittancesWidgetState();
+  State<RemittancesWidget> createState() => _RemittancesWidgetState();
 }
 
 class _RemittancesWidgetState extends State<RemittancesWidget>

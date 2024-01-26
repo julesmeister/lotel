@@ -16,10 +16,10 @@ import 'replenish_model.dart';
 export 'replenish_model.dart';
 
 class ReplenishWidget extends StatefulWidget {
-  const ReplenishWidget({Key? key}) : super(key: key);
+  const ReplenishWidget({super.key});
 
   @override
-  _ReplenishWidgetState createState() => _ReplenishWidgetState();
+  State<ReplenishWidget> createState() => _ReplenishWidgetState();
 }
 
 class _ReplenishWidgetState extends State<ReplenishWidget> {

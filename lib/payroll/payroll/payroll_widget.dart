@@ -24,10 +24,10 @@ import 'payroll_model.dart';
 export 'payroll_model.dart';
 
 class PayrollWidget extends StatefulWidget {
-  const PayrollWidget({Key? key}) : super(key: key);
+  const PayrollWidget({super.key});
 
   @override
-  _PayrollWidgetState createState() => _PayrollWidgetState();
+  State<PayrollWidget> createState() => _PayrollWidgetState();
 }
 
 class _PayrollWidgetState extends State<PayrollWidget>

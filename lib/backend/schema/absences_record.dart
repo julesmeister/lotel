@@ -62,8 +62,8 @@ class AbsencesRecord extends FirestoreRecord {
           ? parent.collection('absences')
           : FirebaseFirestore.instance.collectionGroup('absences');
 
-  static DocumentReference createDoc(DocumentReference parent) =>
-      parent.collection('absences').doc();
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('absences').doc(id);
 
   static Stream<AbsencesRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => AbsencesRecord.fromSnapshot(s));

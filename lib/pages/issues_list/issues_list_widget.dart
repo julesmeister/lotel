@@ -18,10 +18,10 @@ import 'issues_list_model.dart';
 export 'issues_list_model.dart';
 
 class IssuesListWidget extends StatefulWidget {
-  const IssuesListWidget({Key? key}) : super(key: key);
+  const IssuesListWidget({super.key});
 
   @override
-  _IssuesListWidgetState createState() => _IssuesListWidgetState();
+  State<IssuesListWidget> createState() => _IssuesListWidgetState();
 }
 
 class _IssuesListWidgetState extends State<IssuesListWidget> {

@@ -18,10 +18,10 @@ import 'mart_model.dart';
 export 'mart_model.dart';
 
 class MartWidget extends StatefulWidget {
-  const MartWidget({Key? key}) : super(key: key);
+  const MartWidget({super.key});
 
   @override
-  _MartWidgetState createState() => _MartWidgetState();
+  State<MartWidget> createState() => _MartWidgetState();
 }
 
 class _MartWidgetState extends State<MartWidget> {

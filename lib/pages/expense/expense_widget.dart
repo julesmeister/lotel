@@ -22,20 +22,19 @@ export 'expense_model.dart';
 
 class ExpenseWidget extends StatefulWidget {
   const ExpenseWidget({
-    Key? key,
+    super.key,
     bool? additional,
     this.remittanceRef,
     double? net,
   })  : this.additional = additional ?? false,
-        this.net = net ?? 0.0,
-        super(key: key);
+        this.net = net ?? 0.0;
 
   final bool additional;
   final DocumentReference? remittanceRef;
   final double net;
 
   @override
-  _ExpenseWidgetState createState() => _ExpenseWidgetState();
+  State<ExpenseWidget> createState() => _ExpenseWidgetState();
 }
 
 class _ExpenseWidgetState extends State<ExpenseWidget>

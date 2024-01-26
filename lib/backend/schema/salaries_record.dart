@@ -86,8 +86,8 @@ class SalariesRecord extends FirestoreRecord {
           ? parent.collection('salaries')
           : FirebaseFirestore.instance.collectionGroup('salaries');
 
-  static DocumentReference createDoc(DocumentReference parent) =>
-      parent.collection('salaries').doc();
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('salaries').doc(id);
 
   static Stream<SalariesRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => SalariesRecord.fromSnapshot(s));

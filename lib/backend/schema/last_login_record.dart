@@ -38,8 +38,8 @@ class LastLoginRecord extends FirestoreRecord {
           ? parent.collection('last_login')
           : FirebaseFirestore.instance.collectionGroup('last_login');
 
-  static DocumentReference createDoc(DocumentReference parent) =>
-      parent.collection('last_login').doc();
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('last_login').doc(id);
 
   static Stream<LastLoginRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => LastLoginRecord.fromSnapshot(s));

@@ -15,10 +15,10 @@ import 'room_list_model.dart';
 export 'room_list_model.dart';
 
 class RoomListWidget extends StatefulWidget {
-  const RoomListWidget({Key? key}) : super(key: key);
+  const RoomListWidget({super.key});
 
   @override
-  _RoomListWidgetState createState() => _RoomListWidgetState();
+  State<RoomListWidget> createState() => _RoomListWidgetState();
 }
 
 class _RoomListWidgetState extends State<RoomListWidget> {

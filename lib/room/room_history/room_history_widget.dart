@@ -14,14 +14,14 @@ export 'room_history_model.dart';
 
 class RoomHistoryWidget extends StatefulWidget {
   const RoomHistoryWidget({
-    Key? key,
+    super.key,
     required this.room,
-  }) : super(key: key);
+  });
 
   final RoomsRecord? room;
 
   @override
-  _RoomHistoryWidgetState createState() => _RoomHistoryWidgetState();
+  State<RoomHistoryWidget> createState() => _RoomHistoryWidgetState();
 }
 
 class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {

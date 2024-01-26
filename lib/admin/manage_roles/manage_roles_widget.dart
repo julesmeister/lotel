@@ -22,10 +22,10 @@ import 'manage_roles_model.dart';
 export 'manage_roles_model.dart';
 
 class ManageRolesWidget extends StatefulWidget {
-  const ManageRolesWidget({Key? key}) : super(key: key);
+  const ManageRolesWidget({super.key});
 
   @override
-  _ManageRolesWidgetState createState() => _ManageRolesWidgetState();
+  State<ManageRolesWidget> createState() => _ManageRolesWidgetState();
 }
 
 class _ManageRolesWidgetState extends State<ManageRolesWidget>

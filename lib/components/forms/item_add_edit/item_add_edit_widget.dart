@@ -16,7 +16,7 @@ export 'item_add_edit_model.dart';
 
 class ItemAddEditWidget extends StatefulWidget {
   const ItemAddEditWidget({
-    Key? key,
+    super.key,
     this.goodsRef,
     bool? edit,
     this.desc,
@@ -24,8 +24,7 @@ class ItemAddEditWidget extends StatefulWidget {
     this.price,
     this.category,
     this.categories,
-  })  : this.edit = edit ?? false,
-        super(key: key);
+  }) : this.edit = edit ?? false;
 
   final DocumentReference? goodsRef;
   final bool edit;
@@ -36,7 +35,7 @@ class ItemAddEditWidget extends StatefulWidget {
   final List<String>? categories;
 
   @override
-  _ItemAddEditWidgetState createState() => _ItemAddEditWidgetState();
+  State<ItemAddEditWidget> createState() => _ItemAddEditWidgetState();
 }
 
 class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {

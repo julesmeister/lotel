@@ -13,10 +13,10 @@ import 'edit_bed_price_model.dart';
 export 'edit_bed_price_model.dart';
 
 class EditBedPriceWidget extends StatefulWidget {
-  const EditBedPriceWidget({Key? key}) : super(key: key);
+  const EditBedPriceWidget({super.key});
 
   @override
-  _EditBedPriceWidgetState createState() => _EditBedPriceWidgetState();
+  State<EditBedPriceWidget> createState() => _EditBedPriceWidgetState();
 }
 
 class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {

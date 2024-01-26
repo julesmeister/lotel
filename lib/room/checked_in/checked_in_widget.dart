@@ -22,18 +22,18 @@ export 'checked_in_model.dart';
 
 class CheckedInWidget extends StatefulWidget {
   const CheckedInWidget({
-    Key? key,
+    super.key,
     this.ref,
     required this.booking,
     required this.roomNo,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
   final DocumentReference? booking;
   final int? roomNo;
 
   @override
-  _CheckedInWidgetState createState() => _CheckedInWidgetState();
+  State<CheckedInWidget> createState() => _CheckedInWidgetState();
 }
 
 class _CheckedInWidgetState extends State<CheckedInWidget> {

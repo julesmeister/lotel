@@ -25,10 +25,10 @@ import 'transactions_model.dart';
 export 'transactions_model.dart';
 
 class TransactionsWidget extends StatefulWidget {
-  const TransactionsWidget({Key? key}) : super(key: key);
+  const TransactionsWidget({super.key});
 
   @override
-  _TransactionsWidgetState createState() => _TransactionsWidgetState();
+  State<TransactionsWidget> createState() => _TransactionsWidgetState();
 }
 
 class _TransactionsWidgetState extends State<TransactionsWidget>

@@ -13,14 +13,14 @@ export 'history_edit_model.dart';
 
 class HistoryEditWidget extends StatefulWidget {
   const HistoryEditWidget({
-    Key? key,
+    super.key,
     required this.history,
-  }) : super(key: key);
+  });
 
   final HistoryRecord? history;
 
   @override
-  _HistoryEditWidgetState createState() => _HistoryEditWidgetState();
+  State<HistoryEditWidget> createState() => _HistoryEditWidgetState();
 }
 
 class _HistoryEditWidgetState extends State<HistoryEditWidget> {

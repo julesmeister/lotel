@@ -1,6 +1,4 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/forms/change_date/change_date_widget.dart';
 import '/components/options/option_to_grocery/option_to_grocery_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
@@ -8,10 +6,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'grocery_list_widget.dart' show GroceryListWidget;
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -38,17 +33,12 @@ class GroceryListModel extends FlutterFlowModel<GroceryListWidget> {
   Query? listViewPagingQuery1;
   List<StreamSubscription?> listViewStreamSubscriptions1 = [];
 
-  // Stores action output result for [Bottom Sheet - ChangeDate] action in Text widget.
-  DateTime? adjustedDate;
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, GoodsRevenueRatioRecord>?
       listViewPagingController2;
   Query? listViewPagingQuery2;
   List<StreamSubscription?> listViewStreamSubscriptions2 = [];
-
-  // Stores action output result for [Bottom Sheet - ChangeDate] action in Text widget.
-  DateTime? adjustedDateRatio;
 
   /// Initialization and disposal methods.
 

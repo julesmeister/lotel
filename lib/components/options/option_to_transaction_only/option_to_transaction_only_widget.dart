@@ -14,18 +14,18 @@ export 'option_to_transaction_only_model.dart';
 
 class OptionToTransactionOnlyWidget extends StatefulWidget {
   const OptionToTransactionOnlyWidget({
-    Key? key,
+    super.key,
     required this.ref,
     required this.description,
     required this.price,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
   final String? description;
   final double? price;
 
   @override
-  _OptionToTransactionOnlyWidgetState createState() =>
+  State<OptionToTransactionOnlyWidget> createState() =>
       _OptionToTransactionOnlyWidgetState();
 }
 

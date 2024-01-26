@@ -18,10 +18,10 @@ import 'pendings_model.dart';
 export 'pendings_model.dart';
 
 class PendingsWidget extends StatefulWidget {
-  const PendingsWidget({Key? key}) : super(key: key);
+  const PendingsWidget({super.key});
 
   @override
-  _PendingsWidgetState createState() => _PendingsWidgetState();
+  State<PendingsWidget> createState() => _PendingsWidgetState();
 }
 
 class _PendingsWidgetState extends State<PendingsWidget> {

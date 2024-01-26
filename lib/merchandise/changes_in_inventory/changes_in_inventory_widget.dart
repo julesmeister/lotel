@@ -19,10 +19,10 @@ import 'changes_in_inventory_model.dart';
 export 'changes_in_inventory_model.dart';
 
 class ChangesInInventoryWidget extends StatefulWidget {
-  const ChangesInInventoryWidget({Key? key}) : super(key: key);
+  const ChangesInInventoryWidget({super.key});
 
   @override
-  _ChangesInInventoryWidgetState createState() =>
+  State<ChangesInInventoryWidget> createState() =>
       _ChangesInInventoryWidgetState();
 }
 

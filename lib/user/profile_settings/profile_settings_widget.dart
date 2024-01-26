@@ -20,10 +20,10 @@ import 'profile_settings_model.dart';
 export 'profile_settings_model.dart';
 
 class ProfileSettingsWidget extends StatefulWidget {
-  const ProfileSettingsWidget({Key? key}) : super(key: key);
+  const ProfileSettingsWidget({super.key});
 
   @override
-  _ProfileSettingsWidgetState createState() => _ProfileSettingsWidgetState();
+  State<ProfileSettingsWidget> createState() => _ProfileSettingsWidgetState();
 }
 
 class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {

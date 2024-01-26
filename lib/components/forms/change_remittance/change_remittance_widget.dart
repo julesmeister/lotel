@@ -18,10 +18,10 @@ import 'change_remittance_model.dart';
 export 'change_remittance_model.dart';
 
 class ChangeRemittanceWidget extends StatefulWidget {
-  const ChangeRemittanceWidget({Key? key}) : super(key: key);
+  const ChangeRemittanceWidget({super.key});
 
   @override
-  _ChangeRemittanceWidgetState createState() => _ChangeRemittanceWidgetState();
+  State<ChangeRemittanceWidget> createState() => _ChangeRemittanceWidgetState();
 }
 
 class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {

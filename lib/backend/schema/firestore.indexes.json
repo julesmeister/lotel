@@ -47,6 +47,20 @@
       ]
     },
     {
+      "collectionGroup": "remittances",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hotel",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "goods_revenue_ratio",
       "queryScope": "COLLECTION",
       "fields": [
@@ -108,20 +122,6 @@
     },
     {
       "collectionGroup": "inventories",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "hotel",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "date",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "remittances",
       "queryScope": "COLLECTION",
       "fields": [
         {

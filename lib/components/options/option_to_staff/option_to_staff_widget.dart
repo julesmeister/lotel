@@ -13,14 +13,14 @@ export 'option_to_staff_model.dart';
 
 class OptionToStaffWidget extends StatefulWidget {
   const OptionToStaffWidget({
-    Key? key,
+    super.key,
     required this.staffRef,
-  }) : super(key: key);
+  });
 
   final DocumentReference? staffRef;
 
   @override
-  _OptionToStaffWidgetState createState() => _OptionToStaffWidgetState();
+  State<OptionToStaffWidget> createState() => _OptionToStaffWidgetState();
 }
 
 class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {

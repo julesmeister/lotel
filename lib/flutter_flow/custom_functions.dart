@@ -1393,3 +1393,84 @@ bool goodThatCannotBeFoundInInventory(
   }
   return true;
 }
+
+String daysAgo(DateTime date) {
+  // how many days ago since date
+  final now = DateTime.now();
+  final difference = now.difference(date).inDays;
+  if (difference == 0) {
+    return 'Today';
+  } else if (difference == 1) {
+    return 'Yesterday';
+  } else {
+    return '$difference days ago';
+  }
+}
+
+DateTime? dayBefore(DateTime date) {
+  // day before date in start hour on 0:00
+  final dayBefore = date.subtract(Duration(days: 1));
+  return DateTime(dayBefore.year, dayBefore.month, dayBefore.day, 0, 0);
+}
+
+String metricChange(
+  double currentValue,
+  String type,
+  List<MetricsHolderStruct> metrics,
+  String hotel,
+) {
+  // Helper function to get the value of a specific metric type
+  double getMetricValue(MetricsHolderStruct metric, String type) {
+    switch (type) {
+      case 'rooms':
+        return metric.rooms;
+      case 'expenses':
+        return metric.expenses;
+      case 'goods':
+        return metric.goods;
+      case 'salaries':
+        return metric.salaries;
+      case 'bills':
+        return metric.bills;
+      case 'net':
+        return metric.net;
+      default:
+        return 0.0; // Default to 0.0 if the type is not recognized
+    }
+  }
+
+  // Helper function to calculate percentage change
+  String calculatePercentageChange(
+      double currentValue, double comparisonValue) {
+    if (comparisonValue != 0.0) {
+      double percentageChange =
+          ((currentValue - comparisonValue) / comparisonValue) * 100;
+      int roundedPercentageChange =
+          percentageChange.round(); // Round to the nearest integer
+      return '$roundedPercentageChange%';
+    } else {
+      return 'N/A'; // Avoid division by zero, handle it as needed
+    }
+  }
+
+  // Filter metrics based on type
+  var relevantMetrics =
+      metrics.where((metric) => metric.hotel == hotel || hotel == 'All');
+
+  // If hotel is not 'All', find the specific metric with the same hotel
+  if (hotel != 'All') {
+    var specificMetric =
+        relevantMetrics.firstWhere((metric) => metric.hotel == hotel);
+
+    double specificMetricValue = getMetricValue(specificMetric, type);
+    return calculatePercentageChange(currentValue, specificMetricValue);
+  } else {
+    // If hotel is 'All', get the sum of the metrics of the same type
+    double sumMetricsValue = relevantMetrics.fold(
+        0.0, (sum, metric) => sum + getMetricValue(metric, type));
+    return calculatePercentageChange(currentValue, sumMetricsValue);
+  }
+
+  // If no relevant metrics found, return an appropriate message or handle it as needed
+  return 'N/A';
+}

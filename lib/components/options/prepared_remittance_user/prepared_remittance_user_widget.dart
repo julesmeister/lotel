@@ -12,17 +12,16 @@ export 'prepared_remittance_user_model.dart';
 
 class PreparedRemittanceUserWidget extends StatefulWidget {
   const PreparedRemittanceUserWidget({
-    Key? key,
+    super.key,
     required this.remittance,
     bool? preparedBy,
-  })  : this.preparedBy = preparedBy ?? true,
-        super(key: key);
+  }) : this.preparedBy = preparedBy ?? true;
 
   final DocumentReference? remittance;
   final bool preparedBy;
 
   @override
-  _PreparedRemittanceUserWidgetState createState() =>
+  State<PreparedRemittanceUserWidget> createState() =>
       _PreparedRemittanceUserWidgetState();
 }
 

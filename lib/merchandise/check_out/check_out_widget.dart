@@ -18,14 +18,14 @@ export 'check_out_model.dart';
 
 class CheckOutWidget extends StatefulWidget {
   const CheckOutWidget({
-    Key? key,
+    super.key,
     required this.cart,
-  }) : super(key: key);
+  });
 
   final List<GoodsRecord>? cart;
 
   @override
-  _CheckOutWidgetState createState() => _CheckOutWidgetState();
+  State<CheckOutWidget> createState() => _CheckOutWidgetState();
 }
 
 class _CheckOutWidgetState extends State<CheckOutWidget> {

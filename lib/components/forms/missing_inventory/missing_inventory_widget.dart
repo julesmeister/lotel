@@ -18,12 +18,12 @@ export 'missing_inventory_model.dart';
 
 class MissingInventoryWidget extends StatefulWidget {
   const MissingInventoryWidget({
-    Key? key,
+    super.key,
     required this.description,
     required this.quantity,
     required this.transaction,
     required this.remittanceRef,
-  }) : super(key: key);
+  });
 
   final String? description;
   final int? quantity;
@@ -31,7 +31,7 @@ class MissingInventoryWidget extends StatefulWidget {
   final DocumentReference? remittanceRef;
 
   @override
-  _MissingInventoryWidgetState createState() => _MissingInventoryWidgetState();
+  State<MissingInventoryWidget> createState() => _MissingInventoryWidgetState();
 }
 
 class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
@@ -178,7 +178,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 0.0, 0.0),
                                     child: Text(
-                                      'Missing Item In Inventory',
+                                      'Missing Item in Inventory',
                                       style: FlutterFlowTheme.of(context)
                                           .headlineSmall,
                                     ),
@@ -217,11 +217,18 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 children: [
-                                                  Expanded(
+                                                  Flexible(
                                                     flex: 1,
                                                     child: Container(
                                                       width: 36.0,
                                                       height: 36.0,
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        minWidth: 36.0,
+                                                        minHeight: 36.0,
+                                                        maxWidth: 36.0,
+                                                        maxHeight: 36.0,
+                                                      ),
                                                       decoration: BoxDecoration(
                                                         color:
                                                             Color(0x98FFFFFF),
@@ -260,7 +267,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                                                   'Readex Pro',
                                                               color:
                                                                   Colors.white,
-                                                              fontSize: 18.0,
+                                                              fontSize: 14.0,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal,
@@ -476,7 +483,9 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                       staff: currentUserReference,
                                       quantityChange: int.tryParse(
                                           _model.quantityController.text),
-                                      previousQuantity: _model.good?.quantity,
+                                      previousQuantity: (_model.good!.quantity -
+                                              (widget.quantity!))
+                                          .abs(),
                                       item: _model.descController.text,
                                       operator: 'minus',
                                       previousPrice: _model.good?.price,
@@ -495,7 +504,9 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                                   _model
                                                       .quantityController.text),
                                               previousQuantity:
-                                                  _model.good?.quantity,
+                                                  (_model.good!.quantity -
+                                                          (widget.quantity!))
+                                                      .abs(),
                                               item: _model.descController.text,
                                               operator: 'minus',
                                               previousPrice: _model.good?.price,

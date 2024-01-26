@@ -12,16 +12,16 @@ export 'option_to_remove_book_remittance_model.dart';
 
 class OptionToRemoveBookRemittanceWidget extends StatefulWidget {
   const OptionToRemoveBookRemittanceWidget({
-    Key? key,
+    super.key,
     required this.remittance,
     required this.transaction,
-  }) : super(key: key);
+  });
 
   final DocumentReference? remittance;
   final TransactionsRecord? transaction;
 
   @override
-  _OptionToRemoveBookRemittanceWidgetState createState() =>
+  State<OptionToRemoveBookRemittanceWidget> createState() =>
       _OptionToRemoveBookRemittanceWidgetState();
 }
 

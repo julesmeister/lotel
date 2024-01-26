@@ -14,14 +14,14 @@ export 'option_to_grocery_model.dart';
 
 class OptionToGroceryWidget extends StatefulWidget {
   const OptionToGroceryWidget({
-    Key? key,
+    super.key,
     required this.ref,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
 
   @override
-  _OptionToGroceryWidgetState createState() => _OptionToGroceryWidgetState();
+  State<OptionToGroceryWidget> createState() => _OptionToGroceryWidgetState();
 }
 
 class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {

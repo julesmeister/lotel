@@ -13,14 +13,14 @@ export 'option_to_bill_model.dart';
 
 class OptionToBillWidget extends StatefulWidget {
   const OptionToBillWidget({
-    Key? key,
+    super.key,
     required this.ref,
-  }) : super(key: key);
+  });
 
   final DocumentReference? ref;
 
   @override
-  _OptionToBillWidgetState createState() => _OptionToBillWidgetState();
+  State<OptionToBillWidget> createState() => _OptionToBillWidgetState();
 }
 
 class _OptionToBillWidgetState extends State<OptionToBillWidget> {

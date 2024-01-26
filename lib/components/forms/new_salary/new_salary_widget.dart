@@ -18,14 +18,13 @@ export 'new_salary_model.dart';
 
 class NewSalaryWidget extends StatefulWidget {
   const NewSalaryWidget({
-    Key? key,
+    super.key,
     required this.payrollRef,
     this.staffsForSelection,
     this.salaryDoc,
     this.staffDoc,
     bool? edit,
-  })  : this.edit = edit ?? false,
-        super(key: key);
+  }) : this.edit = edit ?? false;
 
   final DocumentReference? payrollRef;
   final List<StaffsRecord>? staffsForSelection;
@@ -34,7 +33,7 @@ class NewSalaryWidget extends StatefulWidget {
   final bool edit;
 
   @override
-  _NewSalaryWidgetState createState() => _NewSalaryWidgetState();
+  State<NewSalaryWidget> createState() => _NewSalaryWidgetState();
 }
 
 class _NewSalaryWidgetState extends State<NewSalaryWidget> {
