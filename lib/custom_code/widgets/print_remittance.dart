@@ -623,7 +623,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
 
                 pw.SizedBox(height: 10),
                 // Add the "Goods" table
-                //createGoodsTable(generateGoodsTableData()),
+                createGoodsTable(generateGoodsTableData()),
                 pw.SizedBox(height: 10),
                 createExpensesTable(generateExpensesTableData()),
                 pw.SizedBox(height: 10),

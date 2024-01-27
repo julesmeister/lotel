@@ -1405,6 +1405,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             _model.clearSalesTotalCache();
                                             FFAppState()
                                                 .clearGroceryHomeCache();
+                                            // clear rooms cache
+                                            FFAppState().clearRoomsCache();
+                                            // clear checkincount
+                                            FFAppState()
+                                                .clearCheckInCountCache();
+                                            // clear replenish count
+                                            FFAppState()
+                                                .clearReplenishCountCache();
+                                            // clear staff count
+                                            FFAppState().clearStaffsCache();
+                                            _model.clearPendingCountsCache();
                                             if (_shouldSetState)
                                               setState(() {});
                                           },
@@ -1798,6 +1809,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               context.pushNamed('Pendings');
+                                            },
+                                            onDoubleTap: () async {
+                                              _model.clearPendingCountsCache();
                                             },
                                             child: Container(
                                               width: 130.0,
@@ -3513,6 +3527,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                         TransactionsRecord>>(
                                                                   future: _model
                                                                       .remittanceChange(
+                                                                    uniqueQueryKey:
+                                                                        FFAppState()
+                                                                            .hotel,
                                                                     requestFn: () =>
                                                                         queryTransactionsRecordOnce(
                                                                       queryBuilder: (transactionsRecord) => transactionsRecord
@@ -3582,7 +3599,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                                         (Match match) => '${match[1]},',
                                                                                       );
                                                                             }(textTransactionsRecord!.total)}.'
-                                                                          : 'The latest remittance was received in its exact amount.',
+                                                                          : 'The remittance was received in its exact amount.',
                                                                       maxLines:
                                                                           2,
                                                                       style: FlutterFlowTheme.of(
@@ -3706,19 +3723,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ],
                                       ),
                                     ),
-                                    if (valueOrDefault(
-                                            currentUserDocument?.role, '') ==
-                                        'admin')
-                                      Divider(
-                                        height: 4.0,
-                                        thickness: 2.0,
-                                        indent: 20.0,
-                                        endIndent: 20.0,
-                                        color: Color(0xFFE0E3E7),
-                                      ),
+                                    Divider(
+                                      height: 4.0,
+                                      thickness: 2.0,
+                                      indent: 20.0,
+                                      endIndent: 20.0,
+                                      color: Color(0xFFE0E3E7),
+                                    ),
                                     FutureBuilder<
                                         List<GoodsRevenueRatioRecord>>(
                                       future: FFAppState().groceryHome(
+                                        uniqueQueryKey: FFAppState().hotel,
                                         requestFn: () =>
                                             queryGoodsRevenueRatioRecordOnce(
                                           queryBuilder:

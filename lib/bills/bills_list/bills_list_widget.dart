@@ -166,33 +166,37 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    await showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (context) {
-                                        return GestureDetector(
-                                          onTap: () => _model
-                                                  .unfocusNode.canRequestFocus
-                                              ? FocusScope.of(context)
-                                                  .requestFocus(
-                                                      _model.unfocusNode)
-                                              : FocusScope.of(context)
-                                                  .unfocus(),
-                                          child: Padding(
-                                            padding: MediaQuery.viewInsetsOf(
-                                                context),
-                                            child: Container(
-                                              height: 180.0,
-                                              child: OptionToBillWidget(
-                                                ref: listViewBillsRecord
-                                                    .reference,
+                                    if (valueOrDefault(
+                                            currentUserDocument?.role, '') ==
+                                        'admin') {
+                                      await showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) {
+                                          return GestureDetector(
+                                            onTap: () => _model
+                                                    .unfocusNode.canRequestFocus
+                                                ? FocusScope.of(context)
+                                                    .requestFocus(
+                                                        _model.unfocusNode)
+                                                : FocusScope.of(context)
+                                                    .unfocus(),
+                                            child: Padding(
+                                              padding: MediaQuery.viewInsetsOf(
+                                                  context),
+                                              child: Container(
+                                                height: 180.0,
+                                                child: OptionToBillWidget(
+                                                  ref: listViewBillsRecord
+                                                      .reference,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    ).then((value) => safeSetState(() {}));
+                                          );
+                                        },
+                                      ).then((value) => safeSetState(() {}));
+                                    }
                                   },
                                   child: Container(
                                     width: 100.0,
@@ -496,7 +500,15 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                                   'Recorded by ${textUsersRecord.displayName} on ${dateTimeFormat('EEE MMM d y h:mm a', listViewBillsRecord.date)}',
                                                   style: FlutterFlowTheme.of(
                                                           context)
-                                                      .labelMedium,
+                                                      .labelMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                      ),
                                                 ),
                                               );
                                             },

@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,12 +15,12 @@ export 'bill_edit_model.dart';
 class BillEditWidget extends StatefulWidget {
   const BillEditWidget({
     super.key,
-    required this.ref,
+    required this.bill,
     required this.description,
     required this.amount,
   });
 
-  final DocumentReference? ref;
+  final BillsRecord? bill;
   final String? description;
   final double? amount;
 
@@ -277,9 +278,29 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                   if (widget.amount !=
                                       (double.parse(
                                           _model.amountController.text))) {
+                                    // statsThisBillBelongsTo
+                                    _model.rightStats =
+                                        await queryStatsRecordOnce(
+                                      queryBuilder: (statsRecord) => statsRecord
+                                          .where(
+                                            'hotel',
+                                            isEqualTo: FFAppState().hotel,
+                                          )
+                                          .where(
+                                            'month',
+                                            isEqualTo: dateTimeFormat(
+                                                'MMMM', widget.bill?.date),
+                                          )
+                                          .where(
+                                            'year',
+                                            isEqualTo: dateTimeFormat(
+                                                'y', widget.bill?.date),
+                                          ),
+                                      singleRecord: true,
+                                    ).then((s) => s.firstOrNull);
                                     // update bill stat
 
-                                    await FFAppState().statsReference!.update({
+                                    await _model.rightStats!.reference.update({
                                       ...mapToFirestore(
                                         {
                                           'bills': FieldValue.increment(
@@ -292,7 +313,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                   }
                                   // update bill
 
-                                  await widget.ref!
+                                  await widget.bill!.reference
                                       .update(createBillsRecordData(
                                     description: _model.descController.text,
                                     amount: double.tryParse(
@@ -314,6 +335,8 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                     ),
                                   );
                                   Navigator.pop(context);
+
+                                  setState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

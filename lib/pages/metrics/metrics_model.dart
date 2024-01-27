@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -108,9 +109,11 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
   // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
   List<TransactionsRecord>? bookingTransactionsOnly;
   // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
-  List<TransactionsRecord>? goodsTransactionsOnly;
-  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
   List<TransactionsRecord>? expenseTransactionsOnly;
+  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
+  List<BillsRecord>? billsOnly;
+  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
+  List<TransactionsRecord>? goodsTransactionsOnly;
   // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.
   StatsRecord? statO;
   // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.
@@ -235,20 +238,40 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
           stats.where((e) => e.hotel == 'My Lifestyle').toList().first.bills;
       loopCounter = 0;
       prevMetrics = [];
+      // set net only
+      net = rooms + goods - expenses - salaries - bills;
       while (foundPrevMonthDoc?.length != loopCounter) {
         // create hotel Metric
         addToPrevMetrics(MetricsHolderStruct(
           hotel: foundPrevMonthDoc?[loopCounter]?.hotel,
-          rooms: foundPrevMonthDoc?[loopCounter]?.roomsIncome,
-          goods: foundPrevMonthDoc?[loopCounter]?.goodsIncome,
-          expenses: foundPrevMonthDoc?[loopCounter]?.expenses,
-          salaries: foundPrevMonthDoc?[loopCounter]?.salaries,
-          bills: foundPrevMonthDoc?[loopCounter]?.bills,
-          net: foundPrevMonthDoc![loopCounter].roomsIncome +
-              foundPrevMonthDoc![loopCounter].goodsIncome -
-              foundPrevMonthDoc![loopCounter].expenses -
-              foundPrevMonthDoc![loopCounter].salaries -
-              foundPrevMonthDoc![loopCounter].bills,
+          rooms: valueOrDefault<double>(
+            foundPrevMonthDoc?[loopCounter]?.roomsIncome,
+            0.0,
+          ),
+          goods: valueOrDefault<double>(
+            foundPrevMonthDoc?[loopCounter]?.goodsIncome,
+            0.0,
+          ),
+          expenses: valueOrDefault<double>(
+            foundPrevMonthDoc?[loopCounter]?.expenses,
+            0.0,
+          ),
+          salaries: valueOrDefault<double>(
+            foundPrevMonthDoc?[loopCounter]?.salaries,
+            0.0,
+          ),
+          bills: valueOrDefault<double>(
+            foundPrevMonthDoc?[loopCounter]?.bills,
+            0.0,
+          ),
+          net: valueOrDefault<double>(
+            foundPrevMonthDoc![loopCounter].roomsIncome +
+                foundPrevMonthDoc![loopCounter].goodsIncome -
+                foundPrevMonthDoc![loopCounter].expenses -
+                foundPrevMonthDoc![loopCounter].salaries -
+                foundPrevMonthDoc![loopCounter].bills,
+            0.0,
+          ),
         ));
         // increment loop
         loopCounter = loopCounter + 1;
@@ -341,6 +364,7 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
               .groceryExpenses;
       bills = stats.where((e) => e.hotel == 'Serenity').toList().first.bills +
           stats.where((e) => e.hotel == 'My Lifestyle').toList().first.bills;
+      // initialize net only
       net = rooms + goods - expenses - groceryExpenses - salaries - bills;
     } else {
       // statByHotel

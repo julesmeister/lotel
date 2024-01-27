@@ -880,11 +880,13 @@ String roomUpdateHistoryDescription(
   }
 }
 
-DateTime startOfMonth(String month) {
+DateTime startOfMonth(
+  String month,
+  String year,
+) {
   // starting time of the given month only
-  final now = DateTime.now();
   final selectedMonth = DateFormat('MMMM').parse(month).month;
-  return DateTime(now.year, selectedMonth, 1);
+  return DateTime(int.parse(year), selectedMonth, 1);
 }
 
 List<StaffsRecord> staffsToAddSalary(
@@ -1457,6 +1459,11 @@ String metricChange(
   var relevantMetrics =
       metrics.where((metric) => metric.hotel == hotel || hotel == 'All');
 
+  // Check if relevantMetrics is empty
+  if (relevantMetrics.isEmpty) {
+    return 'N/A';
+  }
+
   // If hotel is not 'All', find the specific metric with the same hotel
   if (hotel != 'All') {
     var specificMetric =
@@ -1473,4 +1480,46 @@ String metricChange(
 
   // If no relevant metrics found, return an appropriate message or handle it as needed
   return 'N/A';
+}
+
+DateTime endOfMonth(
+  String month,
+  String year,
+) {
+  // end of month which is MMMM
+  final nextYear =
+      month == "December" ? (int.parse(year) + 1).toString() : year;
+
+  final Map<String, int> monthMap = {
+    'January': 1,
+    'February': 2,
+    'March': 3,
+    'April': 4,
+    'May': 5,
+    'June': 6,
+    'July': 7,
+    'August': 8,
+    'September': 9,
+    'October': 10,
+    'November': 11,
+    'December': 12,
+  };
+
+  final firstDayOfNextMonth = DateTime.utc(
+    int.parse(nextYear),
+    monthMap[month]! + 1,
+    1,
+  );
+  final lastDayOfMonth = firstDayOfNextMonth.subtract(Duration(days: 1));
+
+  return lastDayOfMonth;
+}
+
+double sumOfBills(List<BillsRecord> bills) {
+  // sum of bills amount
+  double sum = 0.0;
+  for (var bill in bills) {
+    sum += bill.amount;
+  }
+  return sum;
 }

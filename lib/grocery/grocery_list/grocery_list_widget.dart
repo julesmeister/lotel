@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -398,8 +399,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     BoxDecoration(
                                                                   color: listViewGroceriesRecord
                                                                               .date! >=
-                                                                          columnGoodsRevenueRatioRecord!
-                                                                              .date!
+                                                                          functions.startOfDay(columnGoodsRevenueRatioRecord!
+                                                                              .date!)
                                                                       ? FlutterFlowTheme.of(
                                                                               context)
                                                                           .accent1
@@ -411,8 +412,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                   border: Border
                                                                       .all(
                                                                     color: listViewGroceriesRecord.date! >=
-                                                                            columnGoodsRevenueRatioRecord!
-                                                                                .date!
+                                                                            functions.startOfDay(columnGoodsRevenueRatioRecord!
+                                                                                .date!)
                                                                         ? FlutterFlowTheme.of(context)
                                                                             .primary
                                                                         : FlutterFlowTheme.of(context)
@@ -431,8 +432,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     Icons
                                                                         .local_grocery_store_outlined,
                                                                     color: listViewGroceriesRecord.date! >=
-                                                                            columnGoodsRevenueRatioRecord!
-                                                                                .date!
+                                                                            functions.startOfDay(columnGoodsRevenueRatioRecord!
+                                                                                .date!)
                                                                         ? FlutterFlowTheme.of(context)
                                                                             .primary
                                                                         : FlutterFlowTheme.of(context)
@@ -484,7 +485,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                               .bodyLarge
                                                                               .override(
                                                                                 fontFamily: 'Readex Pro',
-                                                                                color: listViewGroceriesRecord.date! >= columnGoodsRevenueRatioRecord!.date! ? FlutterFlowTheme.of(context).primaryText : FlutterFlowTheme.of(context).secondaryText,
+                                                                                color: listViewGroceriesRecord.date! >= functions.startOfDay(columnGoodsRevenueRatioRecord!.date!) ? FlutterFlowTheme.of(context).primaryText : FlutterFlowTheme.of(context).secondaryText,
                                                                               ),
                                                                         ),
                                                                       ),
@@ -539,7 +540,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                               textAlign: TextAlign.start,
                                                                               style: FlutterFlowTheme.of(context).bodyLarge.override(
                                                                                     fontFamily: 'Readex Pro',
-                                                                                    color: listViewGroceriesRecord.date! >= columnGoodsRevenueRatioRecord!.date! ? FlutterFlowTheme.of(context).primaryText : FlutterFlowTheme.of(context).secondaryText,
+                                                                                    color: listViewGroceriesRecord.date! >= functions.startOfDay(columnGoodsRevenueRatioRecord!.date!) ? FlutterFlowTheme.of(context).primaryText : FlutterFlowTheme.of(context).secondaryText,
                                                                                     fontSize: 24.0,
                                                                                     fontWeight: FontWeight.w500,
                                                                                   ),
@@ -607,8 +608,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                   style:
                                                                       TextStyle(
                                                                     color: listViewGroceriesRecord.date! >=
-                                                                            columnGoodsRevenueRatioRecord!
-                                                                                .date!
+                                                                            functions.startOfDay(columnGoodsRevenueRatioRecord!
+                                                                                .date!)
                                                                         ? FlutterFlowTheme.of(context)
                                                                             .primaryText
                                                                         : FlutterFlowTheme.of(context)
@@ -645,8 +646,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     fontFamily:
                                                                         'Readex Pro',
                                                                     color: listViewGroceriesRecord.date! >=
-                                                                            columnGoodsRevenueRatioRecord!
-                                                                                .date!
+                                                                            functions.startOfDay(columnGoodsRevenueRatioRecord!
+                                                                                .date!)
                                                                         ? FlutterFlowTheme.of(context)
                                                                             .primaryText
                                                                         : FlutterFlowTheme.of(context)
@@ -1276,7 +1277,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                     children: [
                                                       TextSpan(
                                                         text:
-                                                            'Grocery was bought since ',
+                                                            'Groceries purchased since ',
                                                         style: TextStyle(),
                                                       ),
                                                       TextSpan(

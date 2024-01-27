@@ -102,7 +102,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           child: Container(
                             height: double.infinity,
                             child: BillEditWidget(
-                              ref: widget.ref!,
+                              bill: _model.billToChange!,
                               description: _model.billToChange!.description,
                               amount: _model.billToChange!.amount,
                             ),

@@ -387,7 +387,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                     },
                                   ),
                                 });
-                                // update bills stats
+                                // increment bills stats
 
                                 await FFAppState().statsReference!.update({
                                   ...mapToFirestore(
