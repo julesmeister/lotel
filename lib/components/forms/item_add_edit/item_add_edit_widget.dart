@@ -5,11 +5,8 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'item_add_edit_model.dart';
 export 'item_add_edit_model.dart';
@@ -24,7 +21,7 @@ class ItemAddEditWidget extends StatefulWidget {
     this.price,
     this.category,
     this.categories,
-  }) : this.edit = edit ?? false;
+  }) : edit = edit ?? false;
 
   final DocumentReference? goodsRef;
   final bool edit;
@@ -87,20 +84,20 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0xB20B191E),
       ),
       child: Align(
-        alignment: AlignmentDirectional(0.0, 1.0),
+        alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -121,7 +118,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -133,7 +130,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -145,25 +142,29 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 widget.edit ? 'Edit Item' : 'New Item',
-                                style:
-                                    FlutterFlowTheme.of(context).headlineSmall,
+                                style: FlutterFlowTheme.of(context)
+                                    .headlineSmall
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -183,6 +184,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                               textCapitalization: TextCapitalization.words,
                               obscureText: false,
                               decoration: InputDecoration(
+                                isDense: false,
                                 labelText: 'Item Description',
                                 hintText: 'Item Description',
                                 hintStyle: FlutterFlowTheme.of(context)
@@ -192,6 +194,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 enabledBorder: InputBorder.none,
@@ -201,11 +204,15 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
-                              minLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                               validator: _model.descControllerValidator
                                   .asValidator(context),
                             ),
@@ -223,6 +230,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 enabledBorder: InputBorder.none,
@@ -232,11 +240,15 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
-                              minLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -261,6 +273,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 enabledBorder: InputBorder.none,
@@ -270,11 +283,15 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
-                              minLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                               keyboardType: TextInputType.number,
                               validator: _model.quantityControllerValidator
                                   .asValidator(context),
@@ -298,6 +315,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryText,
                                         fontSize: 14.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.normal,
                                       ),
                                   enabledBorder: InputBorder.none,
@@ -308,11 +326,15 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   fillColor: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
                                   contentPadding:
-                                      EdgeInsetsDirectional.fromSTEB(
+                                      const EdgeInsetsDirectional.fromSTEB(
                                           16.0, 24.0, 20.0, 24.0),
                                 ),
-                                style: FlutterFlowTheme.of(context).bodyMedium,
-                                minLines: 1,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                                 validator: _model.whyControllerValidator
                                     .asValidator(context),
                               ),
@@ -339,9 +361,13 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   textController: _model.categoryController!,
                                   options: options.toList(),
                                   onSelected: onSelected,
-                                  textStyle:
-                                      FlutterFlowTheme.of(context).bodyMedium,
-                                  textHighlightStyle: TextStyle(),
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
+                                  textHighlightStyle: const TextStyle(),
                                   elevation: 4.0,
                                   optionBackgroundColor:
                                       FlutterFlowTheme.of(context)
@@ -384,6 +410,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                           color: FlutterFlowTheme.of(context)
                                               .secondaryText,
                                           fontSize: 14.0,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.normal,
                                         ),
                                     enabledBorder: InputBorder.none,
@@ -394,12 +421,15 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                     fillColor: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
                                     contentPadding:
-                                        EdgeInsetsDirectional.fromSTEB(
+                                        const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 24.0, 20.0, 24.0),
                                   ),
-                                  style:
-                                      FlutterFlowTheme.of(context).bodyMedium,
-                                  minLines: 1,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
                                   validator: _model.categoryControllerValidator
                                       .asValidator(context),
                                 );
@@ -408,24 +438,23 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   10.0, 0.0, 0.0, 0.0),
                               child: RichText(
-                                textScaleFactor:
-                                    MediaQuery.of(context).textScaleFactor,
+                                textScaler: MediaQuery.of(context).textScaler,
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
@@ -436,12 +465,17 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                             fontFamily: 'Readex Pro',
                                             color: FlutterFlowTheme.of(context)
                                                 .primaryText,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.normal,
                                           ),
                                     )
                                   ],
-                                  style:
-                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
                                 ),
                               ),
                             ),
@@ -459,9 +493,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   if (widget.edit == false) {
-                                    if (_model.categoryController.text !=
-                                            null &&
-                                        _model.categoryController.text != '') {
+                                    if (_model.categoryController.text != '') {
                                       // create goods
 
                                       var goodsRecordReference =
@@ -524,7 +556,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                             ),
                                           ),
                                           duration:
-                                              Duration(milliseconds: 4000),
+                                              const Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .secondary,
@@ -543,7 +575,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                             ),
                                           ),
                                           duration:
-                                              Duration(milliseconds: 4000),
+                                              const Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .error,
@@ -610,7 +642,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -627,7 +659,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         widget.edit ? 'Save' : 'Create',
@@ -638,6 +670,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
+                                              letterSpacing: 0.0,
                                               fontWeight: FontWeight.w500,
                                             ),
                                       ),

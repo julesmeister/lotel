@@ -3,16 +3,15 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 
 import '/backend/schema/util/firestore_util.dart';
-import '/backend/schema/util/schema_util.dart';
 
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 class BillsRecord extends FirestoreRecord {
   BillsRecord._(
-    DocumentReference reference,
-    Map<String, dynamic> data,
-  ) : super(reference, data) {
+    super.reference,
+    super.data,
+  ) {
     _initializeFields();
   }
 
@@ -41,12 +40,18 @@ class BillsRecord extends FirestoreRecord {
   DocumentReference? get staff => _staff;
   bool hasStaff() => _staff != null;
 
+  // "afterDue" field.
+  double? _afterDue;
+  double get afterDue => _afterDue ?? 0.0;
+  bool hasAfterDue() => _afterDue != null;
+
   void _initializeFields() {
     _description = snapshotData['description'] as String?;
     _amount = castToType<double>(snapshotData['amount']);
     _date = snapshotData['date'] as DateTime?;
     _hotel = snapshotData['hotel'] as String?;
     _staff = snapshotData['staff'] as DocumentReference?;
+    _afterDue = castToType<double>(snapshotData['afterDue']);
   }
 
   static CollectionReference get collection =>
@@ -88,6 +93,7 @@ Map<String, dynamic> createBillsRecordData({
   DateTime? date,
   String? hotel,
   DocumentReference? staff,
+  double? afterDue,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -96,6 +102,7 @@ Map<String, dynamic> createBillsRecordData({
       'date': date,
       'hotel': hotel,
       'staff': staff,
+      'afterDue': afterDue,
     }.withoutNulls,
   );
 
@@ -111,12 +118,13 @@ class BillsRecordDocumentEquality implements Equality<BillsRecord> {
         e1?.amount == e2?.amount &&
         e1?.date == e2?.date &&
         e1?.hotel == e2?.hotel &&
-        e1?.staff == e2?.staff;
+        e1?.staff == e2?.staff &&
+        e1?.afterDue == e2?.afterDue;
   }
 
   @override
-  int hash(BillsRecord? e) => const ListEquality()
-      .hash([e?.description, e?.amount, e?.date, e?.hotel, e?.staff]);
+  int hash(BillsRecord? e) => const ListEquality().hash(
+      [e?.description, e?.amount, e?.date, e?.hotel, e?.staff, e?.afterDue]);
 
   @override
   bool isValidKey(Object? o) => o is BillsRecord;

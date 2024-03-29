@@ -1,6 +1,5 @@
 import 'form_field_controller.dart';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -71,13 +70,12 @@ class FlutterFlowChoiceChips extends StatefulWidget {
 
 class _FlutterFlowChoiceChipsState extends State<FlutterFlowChoiceChips> {
   late List<String> choiceChipValues;
-  ValueListenable<List<String>?> get changeSelectedValues => widget.controller;
   List<String> get selectedValues => widget.controller.value ?? [];
 
   @override
   void initState() {
     super.initState();
-    choiceChipValues = selectedValues;
+    choiceChipValues = List.from(selectedValues);
     if (!widget.initialized && choiceChipValues.isNotEmpty) {
       SchedulerBinding.instance.addPostFrameCallback(
         (_) {
@@ -87,16 +85,10 @@ class _FlutterFlowChoiceChipsState extends State<FlutterFlowChoiceChips> {
         },
       );
     }
-    changeSelectedValues.addListener(() {
-      if (widget.onChanged != null) {
-        widget.onChanged!(selectedValues);
-      }
-    });
   }
 
   @override
   void dispose() {
-    changeSelectedValues.removeListener(() {});
     super.dispose();
   }
 
@@ -113,6 +105,7 @@ class _FlutterFlowChoiceChipsState extends State<FlutterFlowChoiceChips> {
             selected: selected,
             onSelected: widget.onChanged != null
                 ? (isSelected) {
+                    choiceChipValues = List.from(selectedValues);
                     if (isSelected) {
                       widget.multiselect
                           ? choiceChipValues.add(option.label)
@@ -126,6 +119,7 @@ class _FlutterFlowChoiceChipsState extends State<FlutterFlowChoiceChips> {
                         setState(() {});
                       }
                     }
+                    widget.onChanged!(choiceChipValues);
                   }
                 : null,
             label: Text(

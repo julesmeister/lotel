@@ -1,6 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/forms/missing_inventory/missing_inventory_widget.dart';
 import '/components/options/prepared_remittance_user/prepared_remittance_user_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
@@ -8,16 +7,14 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/pages/missing_inventory/missing_inventory_widget.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'remittances_model.dart';
@@ -52,8 +49,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(-40.0, 0.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(-40.0, 0.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -72,8 +69,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
           curve: Curves.easeInOut,
           delay: 200.ms,
           duration: 600.ms,
-          begin: Offset(0.7, 0.7),
-          end: Offset(1.0, 1.0),
+          begin: const Offset(0.7, 0.7),
+          end: const Offset(1.0, 1.0),
         ),
       ],
     ),
@@ -91,8 +88,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(0.0, 50.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(0.0, 50.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -110,8 +107,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(40.0, 0.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(40.0, 0.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -129,15 +126,15 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(-50.0, 0.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(-50.0, 0.0),
+          end: const Offset(0.0, 0.0),
         ),
         ScaleEffect(
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(0.7, 0.7),
-          end: Offset(1.0, 1.0),
+          begin: const Offset(0.7, 0.7),
+          end: const Offset(1.0, 1.0),
         ),
       ],
     ),
@@ -189,15 +186,6 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return FutureBuilder<int>(
@@ -259,25 +247,26 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                 },
               ),
               title: Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
+                alignment: const AlignmentDirectional(-1.0, 0.0),
                 child: Text(
                   'Remittance',
                   textAlign: TextAlign.start,
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Readex Pro',
                         fontSize: 26.0,
+                        letterSpacing: 0.0,
                       ),
                 ),
               ),
               actions: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
                         child: FlutterFlowIconButton(
                           borderRadius: 20.0,
                           borderWidth: 1.0,
@@ -336,7 +325,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                   children: [
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -351,6 +340,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                   .override(
                                     fontFamily: 'Outfit',
                                     fontSize: 26.0,
+                                    letterSpacing: 0.0,
                                   ),
                               minFontSize: 22.0,
                             ).animateOnPageLoad(
@@ -361,7 +351,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                             Expanded(
                               flex: 1,
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     12.0, 0.0, 0.0, 0.0),
                                 child: AuthUserStreamWidget(
                                   builder: (context) => FlutterFlowIconButton(
@@ -398,6 +388,9 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                         weekStartsMonday: false,
                         rowHeight: 64.0,
                         onChange: (DateTimeRange? newSelectedDate) async {
+                          if (_model.calendarSelectedDay == newSelectedDate) {
+                            return;
+                          }
                           _model.calendarSelectedDay = newSelectedDate;
                           setState(() {
                             _model.date = _model.calendarSelectedDay?.start;
@@ -409,17 +402,35 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                           });
                           setState(() {});
                         },
-                        titleStyle: FlutterFlowTheme.of(context).headlineSmall,
-                        dayOfWeekStyle: FlutterFlowTheme.of(context).labelLarge,
-                        dateStyle: FlutterFlowTheme.of(context).bodyMedium,
+                        titleStyle:
+                            FlutterFlowTheme.of(context).headlineSmall.override(
+                                  fontFamily: 'Outfit',
+                                  letterSpacing: 0.0,
+                                ),
+                        dayOfWeekStyle:
+                            FlutterFlowTheme.of(context).labelLarge.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
+                        dateStyle:
+                            FlutterFlowTheme.of(context).bodyMedium.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
                         selectedDateStyle:
-                            FlutterFlowTheme.of(context).titleSmall,
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
                         inactiveDateStyle:
-                            FlutterFlowTheme.of(context).labelMedium,
+                            FlutterFlowTheme.of(context).labelMedium.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
                       ),
                     if (remittancesCount > 0)
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             16.0, 20.0, 16.0, 20.0),
                         child: StreamBuilder<List<RemittancesRecord>>(
                           stream: queryRemittancesRecord(
@@ -471,11 +482,14 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                               height: 589.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x33000000),
-                                    offset: Offset(0.0, 2.0),
+                                    offset: Offset(
+                                      0.0,
+                                      2.0,
+                                    ),
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(12.0),
@@ -485,7 +499,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           24.0, 24.0, 24.0, 0.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
@@ -506,6 +520,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           fontFamily:
                                                               'Readex Pro',
                                                           fontSize: 24.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                         ),
@@ -522,13 +537,14 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                 .override(
                                                   fontFamily: 'Readex Pro',
                                                   fontSize: 24.0,
+                                                  letterSpacing: 0.0,
                                                 ),
                                           ),
                                         ],
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.all(24.0),
+                                      padding: const EdgeInsets.all(24.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
@@ -548,14 +564,15 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                       .override(
                                                         fontFamily: 'Outfit',
                                                         color:
-                                                            Color(0xFF14181B),
+                                                            const Color(0xFF14181B),
                                                         fontSize: 24.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 4.0, 0.0, 0.0),
                                                   child: Text(
@@ -567,26 +584,27 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           fontFamily:
                                                               'Readex Pro',
                                                           color:
-                                                              Color(0xFF57636C),
+                                                              const Color(0xFF57636C),
                                                           fontSize: 14.0,
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
                                                   ),
                                                 ),
                                                 if (mainCardRemittancesRecord
-                                                        ?.hasNet() ??
+                                                        .hasNet() ??
                                                     true)
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 8.0,
                                                                 0.0, 0.0),
                                                     child: Text(
                                                       valueOrDefault<String>(
                                                         formatNumber(
                                                           mainCardRemittancesRecord
-                                                              ?.net,
+                                                              .net,
                                                           formatType: FormatType
                                                               .decimal,
                                                           decimalType:
@@ -602,9 +620,10 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           .override(
                                                             fontFamily:
                                                                 'Outfit',
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF14181B),
                                                             fontSize: 32.0,
+                                                            letterSpacing: 0.0,
                                                             fontWeight:
                                                                 FontWeight.w600,
                                                           ),
@@ -616,29 +635,30 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                           ),
                                           CircularPercentIndicator(
                                             percent: functions.netCircleDecimal(
-                                                mainCardRemittancesRecord!
+                                                mainCardRemittancesRecord
                                                     .gross,
-                                                mainCardRemittancesRecord!
+                                                mainCardRemittancesRecord
                                                     .expenses),
                                             radius: 50.0,
                                             lineWidth: 8.0,
                                             animation: true,
                                             animateFromLastPercent: true,
-                                            progressColor: Color(0xFF4B39EF),
-                                            backgroundColor: Color(0xFFE0E3E7),
+                                            progressColor: const Color(0xFF4B39EF),
+                                            backgroundColor: const Color(0xFFE0E3E7),
                                             center: Text(
                                               functions.netCircle(
-                                                  mainCardRemittancesRecord!
+                                                  mainCardRemittancesRecord
                                                       .gross,
-                                                  mainCardRemittancesRecord!
+                                                  mainCardRemittancesRecord
                                                       .expenses),
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .headlineMedium
                                                   .override(
                                                     fontFamily: 'Outfit',
-                                                    color: Color(0xFF14181B),
+                                                    color: const Color(0xFF14181B),
                                                     fontSize: 22.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                             ),
@@ -658,7 +678,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(
                                                                 24.0,
                                                                 25.0,
@@ -692,14 +712,16 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                     color: FlutterFlowTheme.of(
                                                                             context)
                                                                         .secondaryText,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                   ),
                                                             ),
                                                             if (mainCardRemittancesRecord
-                                                                    ?.hasExpenses() ??
+                                                                    .hasExpenses() ??
                                                                 true)
                                                               Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             5.0,
@@ -707,7 +729,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                             0.0),
                                                                 child: Text(
                                                                   formatNumber(
-                                                                    mainCardRemittancesRecord!
+                                                                    mainCardRemittancesRecord
                                                                         .expenses,
                                                                     formatType:
                                                                         FormatType
@@ -726,6 +748,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                             'Readex Pro',
                                                                         fontSize:
                                                                             20.0,
+                                                                        letterSpacing:
+                                                                            0.0,
                                                                       ),
                                                                 ),
                                                               ),
@@ -766,14 +790,14 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                     'remittanceRef':
                                                                         serializeParam(
                                                                       mainCardRemittancesRecord
-                                                                          ?.reference,
+                                                                          .reference,
                                                                       ParamType
                                                                           .DocumentReference,
                                                                     ),
                                                                     'net':
                                                                         serializeParam(
                                                                       mainCardRemittancesRecord
-                                                                          ?.net,
+                                                                          .net,
                                                                       ParamType
                                                                           .double,
                                                                     ),
@@ -787,7 +811,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                   ),
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(24.0, 0.0,
                                                                 24.0, 25.0),
                                                     child: Row(
@@ -815,14 +839,16 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                     color: FlutterFlowTheme.of(
                                                                             context)
                                                                         .secondaryText,
+                                                                    letterSpacing:
+                                                                        0.0,
                                                                   ),
                                                             ),
                                                             if (mainCardRemittancesRecord
-                                                                    ?.hasGross() ??
+                                                                    .hasGross() ??
                                                                 true)
                                                               Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             5.0,
@@ -830,7 +856,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                             0.0),
                                                                 child: Text(
                                                                   formatNumber(
-                                                                    mainCardRemittancesRecord!
+                                                                    mainCardRemittancesRecord
                                                                         .gross,
                                                                     formatType:
                                                                         FormatType
@@ -849,6 +875,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                             'Readex Pro',
                                                                         fontSize:
                                                                             20.0,
+                                                                        letterSpacing:
+                                                                            0.0,
                                                                       ),
                                                                 ),
                                                               ),
@@ -859,7 +887,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                   ),
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(24.0, 0.0,
                                                                 24.0, 25.0),
                                                     child: Row(
@@ -905,13 +933,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                         .viewInsetsOf(
                                                                             context),
                                                                     child:
-                                                                        Container(
+                                                                        SizedBox(
                                                                       height:
                                                                           300.0,
                                                                       child:
                                                                           PreparedRemittanceUserWidget(
                                                                         remittance:
-                                                                            mainCardRemittancesRecord!.reference,
+                                                                            mainCardRemittancesRecord.reference,
                                                                         preparedBy:
                                                                             true,
                                                                       ),
@@ -942,16 +970,18 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .secondaryText,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                               ),
                                                               if (mainCardRemittancesRecord
-                                                                      ?.hasPreparedBy() ??
+                                                                      .hasPreparedBy() ??
                                                                   true)
                                                                 StreamBuilder<
                                                                     UsersRecord>(
                                                                   stream: UsersRecord
                                                                       .getDocument(
-                                                                          mainCardRemittancesRecord!
+                                                                          mainCardRemittancesRecord
                                                                               .preparedBy!),
                                                                   builder: (context,
                                                                       snapshot) {
@@ -983,7 +1013,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                           .displayName,
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .bodyMedium,
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                          ),
                                                                     );
                                                                   },
                                                                 ),
@@ -1027,13 +1063,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                         .viewInsetsOf(
                                                                             context),
                                                                     child:
-                                                                        Container(
+                                                                        SizedBox(
                                                                       height:
                                                                           300.0,
                                                                       child:
                                                                           PreparedRemittanceUserWidget(
                                                                         remittance:
-                                                                            mainCardRemittancesRecord!.reference,
+                                                                            mainCardRemittancesRecord.reference,
                                                                         preparedBy:
                                                                             false,
                                                                       ),
@@ -1064,16 +1100,18 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .secondaryText,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                               ),
                                                               if (mainCardRemittancesRecord
-                                                                      ?.hasCollectedBy() ??
+                                                                      .hasCollectedBy() ??
                                                                   true)
                                                                 StreamBuilder<
                                                                     UsersRecord>(
                                                                   stream: UsersRecord
                                                                       .getDocument(
-                                                                          mainCardRemittancesRecord!
+                                                                          mainCardRemittancesRecord
                                                                               .collectedBy!),
                                                                   builder: (context,
                                                                       snapshot) {
@@ -1109,7 +1147,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                       ),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .bodyMedium,
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                          ),
                                                                     );
                                                                   },
                                                                 ),
@@ -1136,7 +1180,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                         ),
                                         Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 0.0, 16.0, 15.0),
                                           child: FFButtonWidget(
                                             onPressed: () async {
@@ -1146,19 +1190,19 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                   'transactions':
                                                       serializeParam(
                                                     mainCardRemittancesRecord
-                                                        ?.transactions,
+                                                        .transactions,
                                                     ParamType.DocumentReference,
                                                     true,
                                                   ),
                                                   'remittanceRef':
                                                       serializeParam(
                                                     mainCardRemittancesRecord
-                                                        ?.reference,
+                                                        .reference,
                                                     ParamType.DocumentReference,
                                                   ),
                                                   'absences': serializeParam(
                                                     mainCardRemittancesRecord
-                                                        ?.absences,
+                                                        .absences,
                                                     ParamType.DocumentReference,
                                                     true,
                                                   ),
@@ -1169,11 +1213,11 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                             options: FFButtonOptions(
                                               width: double.infinity,
                                               height: 50.0,
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              iconPadding: EdgeInsetsDirectional
+                                              iconPadding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              color: Color(0xFF39D2C0),
+                                              color: const Color(0xFF39D2C0),
                                               textStyle:
                                                   FlutterFlowTheme.of(context)
                                                       .titleSmall
@@ -1182,11 +1226,12 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                             'Plus Jakarta Sans',
                                                         color: Colors.white,
                                                         fontSize: 16.0,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
                                               elevation: 2.0,
-                                              borderSide: BorderSide(
+                                              borderSide: const BorderSide(
                                                 color: Colors.transparent,
                                                 width: 1.0,
                                               ),
@@ -1196,9 +1241,9 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                         if (_model.showLoadButton)
                                           Align(
                                             alignment:
-                                                AlignmentDirectional(0.0, 0.0),
+                                                const AlignmentDirectional(0.0, 0.0),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       16.0, 0.0, 16.0, 15.0),
                                               child: FFButtonWidget(
@@ -1241,13 +1286,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                   while (_model
                                                           .loopInvetoryCounter !=
                                                       mainCardRemittancesRecord
-                                                          ?.inventories
-                                                          ?.length) {
+                                                          .inventories
+                                                          .length) {
                                                     // read inventory
                                                     _model.inventoryToList =
                                                         await InventoriesRecord
                                                             .getDocumentOnce(
-                                                                mainCardRemittancesRecord!
+                                                                mainCardRemittancesRecord
                                                                         .inventories[
                                                                     _model
                                                                         .loopInvetoryCounter]);
@@ -1264,12 +1309,12 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                   while (_model
                                                           .loopBookCounter !=
                                                       mainCardRemittancesRecord
-                                                          ?.bookings?.length) {
+                                                          .bookings.length) {
                                                     // read book
                                                     _model.bookToList =
                                                         await BookingsRecord
                                                             .getDocumentOnce(
-                                                                mainCardRemittancesRecord!
+                                                                mainCardRemittancesRecord
                                                                         .bookings[
                                                                     _model
                                                                         .loopBookCounter]);
@@ -1285,13 +1330,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                   while (_model
                                                           .loopTransactionCounter !=
                                                       mainCardRemittancesRecord
-                                                          ?.transactions
-                                                          ?.length) {
+                                                          .transactions
+                                                          .length) {
                                                     // read transactions
                                                     _model.transactionToList =
                                                         await TransactionsRecord
                                                             .getDocumentOnce(
-                                                                mainCardRemittancesRecord!
+                                                                mainCardRemittancesRecord
                                                                         .transactions[
                                                                     _model
                                                                         .loopTransactionCounter]);
@@ -1314,13 +1359,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     while (_model
                                                             .loopAbsencesCounter !=
                                                         mainCardRemittancesRecord
-                                                            ?.absences
-                                                            ?.length) {
+                                                            .absences
+                                                            .length) {
                                                       // read absence
                                                       _model.absenceToList =
                                                           await AbsencesRecord
                                                               .getDocumentOnce(
-                                                                  mainCardRemittancesRecord!
+                                                                  mainCardRemittancesRecord
                                                                           .absences[
                                                                       _model
                                                                           .loopAbsencesCounter]);
@@ -1338,10 +1383,10 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     _model.preparedBy =
                                                         await UsersRecord
                                                             .getDocumentOnce(
-                                                                mainCardRemittancesRecord!
+                                                                mainCardRemittancesRecord
                                                                     .preparedBy!);
                                                     if (mainCardRemittancesRecord
-                                                            ?.collectedBy !=
+                                                            .collectedBy !=
                                                         null) {
                                                       // collectedBy
                                                       _model.collectedBy =
@@ -1353,7 +1398,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           'uid',
                                                           isEqualTo:
                                                               mainCardRemittancesRecord
-                                                                  ?.collectedBy
+                                                                  .collectedBy
                                                                   ?.id,
                                                         ),
                                                         singleRecord: true,
@@ -1381,7 +1426,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                 .info,
                                                           ),
                                                         ),
-                                                        duration: Duration(
+                                                        duration: const Duration(
                                                             milliseconds: 4000),
                                                         backgroundColor:
                                                             FlutterFlowTheme.of(
@@ -1411,7 +1456,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                     .inventories
                                                                     .toList())
                                                             ?.goods
-                                                            ?.length !=
+                                                            .length !=
                                                         _model
                                                             .loopTransactionCounter) {
                                                       if (functions.goodThatCannotBeFoundInInventory(
@@ -1451,7 +1496,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    Container(
+                                                                    SizedBox(
                                                                   height: double
                                                                       .infinity,
                                                                   child:
@@ -1482,7 +1527,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                             .inventories
                                                                             .toList())!,
                                                                     remittanceRef:
-                                                                        mainCardRemittancesRecord!
+                                                                        mainCardRemittancesRecord
                                                                             .reference,
                                                                   ),
                                                                 ),
@@ -1510,11 +1555,11 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                 options: FFButtonOptions(
                                                   width: double.infinity,
                                                   height: 50.0,
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 0.0, 0.0),
                                                   iconPadding:
-                                                      EdgeInsetsDirectional
+                                                      const EdgeInsetsDirectional
                                                           .fromSTEB(0.0, 0.0,
                                                               0.0, 0.0),
                                                   color: FlutterFlowTheme.of(
@@ -1529,11 +1574,12 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                 'Plus Jakarta Sans',
                                                             color: Colors.white,
                                                             fontSize: 16.0,
+                                                            letterSpacing: 0.0,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),
                                                   elevation: 2.0,
-                                                  borderSide: BorderSide(
+                                                  borderSide: const BorderSide(
                                                     color: Colors.transparent,
                                                     width: 1.0,
                                                   ),
@@ -1544,9 +1590,9 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                         if (_model.showDownloadButton)
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 0.0, 16.0, 0.0),
-                                            child: Container(
+                                            child: SizedBox(
                                               width: double.infinity,
                                               height: 50.0,
                                               child: custom_widgets
@@ -1554,7 +1600,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                 width: double.infinity,
                                                 height: 50.0,
                                                 remittance:
-                                                    mainCardRemittancesRecord!,
+                                                    mainCardRemittancesRecord,
                                                 transactions:
                                                     _model.transactions,
                                                 inventories: _model.inventories,
@@ -1565,7 +1611,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     .preparedBy?.displayName,
                                                 collectedBy:
                                                     mainCardRemittancesRecord
-                                                                ?.collectedBy !=
+                                                                .collectedBy !=
                                                             null
                                                         ? _model.collectedBy
                                                             ?.displayName

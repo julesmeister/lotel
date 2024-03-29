@@ -1,33 +1,10 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
-import '/components/forms/change_date/change_date_widget.dart';
-import '/components/forms/change_remittance/change_remittance_widget.dart';
-import '/components/forms/new_grocery/new_grocery_widget.dart';
-import '/components/forms/new_issue/new_issue_widget.dart';
-import '/components/forms/promo/promo_widget.dart';
-import '/components/options/collect_remittance_user/collect_remittance_user_widget.dart';
-import '/components/options/option_to_issue/option_to_issue_widget.dart';
-import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import '/actions/actions.dart' as action_blocks;
-import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/request_manager.dart';
 
 import 'home_page_widget.dart' show HomePageWidget;
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   ///  Local state fields for this page.
@@ -235,10 +212,10 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void clearRemittanceChangeCacheKey(String? uniqueKey) =>
       _remittanceChangeManager.clearRequest(uniqueKey);
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {
     unfocusNode.dispose();
 
@@ -259,8 +236,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     clearRemittanceChangeCache();
   }
 
-  /// Action blocks are added here.
-
+  /// Action blocks.
   Future changeHotel(
     BuildContext context, {
     required double? bedPrice,
@@ -276,16 +252,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     FFAppState().statsReference = statsReference;
     FFAppState().settingRef = settingsRef;
     FFAppState().extPricePerHr = extPricePerHr!;
-    clearRemittanceChangeCache();
-    // clear rooms cache
-    FFAppState().clearRoomsCache();
-    // clear checkincount
-    FFAppState().clearCheckInCountCache();
-    // clear replenish count
-    FFAppState().clearReplenishCountCache();
-    // clear staff count
-    FFAppState().clearStaffsCache();
-    FFAppState().clearGroceryHomeCache();
+    await clearCache(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -294,11 +261,26 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
             color: FlutterFlowTheme.of(context).primaryText,
           ),
         ),
-        duration: Duration(milliseconds: 4000),
+        duration: const Duration(milliseconds: 4000),
         backgroundColor: FlutterFlowTheme.of(context).secondary,
       ),
     );
   }
 
-  /// Additional helper methods are added here.
+  Future clearCache(BuildContext context) async {
+    clearHomeRemittanceCacheKey(FFAppState().hotel);
+    clearRemittanceChangeCacheKey(FFAppState().hotel);
+    clearTotalTransactionsCacheKey(FFAppState().hotel);
+    clearSalesTotalCacheKey(FFAppState().hotel);
+    FFAppState().clearGroceryHomeCacheKey(FFAppState().hotel);
+    // clear rooms cache
+    FFAppState().clearRoomsCache();
+    // clear checkincount
+    FFAppState().clearCheckInCountCache();
+    // clear replenish count
+    FFAppState().clearReplenishCountCache();
+    // clear staff count
+    FFAppState().clearStaffsCacheKey(FFAppState().hotel);
+    clearPendingCountsCacheKey(FFAppState().hotel);
+  }
 }

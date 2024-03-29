@@ -1,11 +1,7 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'cash_advance_options_model.dart';
 export 'cash_advance_options_model.dart';
@@ -52,36 +48,42 @@ class _CashAdvanceOptionsWidgetState extends State<CashAdvanceOptionsWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
-              offset: Offset(0.0, 2.0),
+              offset: Offset(
+                0.0,
+                2.0,
+              ),
             )
           ],
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
-                  style: FlutterFlowTheme.of(context).labelMedium,
+                  style: FlutterFlowTheme.of(context).labelMedium.override(
+                        fontFamily: 'Readex Pro',
+                        letterSpacing: 0.0,
+                      ),
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -112,7 +114,7 @@ class _CashAdvanceOptionsWidgetState extends State<CashAdvanceOptionsWidget> {
                             color: FlutterFlowTheme.of(context).info,
                           ),
                         ),
-                        duration: Duration(milliseconds: 4000),
+                        duration: const Duration(milliseconds: 4000),
                         backgroundColor: FlutterFlowTheme.of(context).error,
                       ),
                     );
@@ -126,12 +128,12 @@ class _CashAdvanceOptionsWidgetState extends State<CashAdvanceOptionsWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.delete_outlined,
@@ -141,11 +143,16 @@ class _CashAdvanceOptionsWidgetState extends State<CashAdvanceOptionsWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),

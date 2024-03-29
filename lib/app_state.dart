@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'flutter_flow/request_manager.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 
@@ -66,48 +65,48 @@ class FFAppState extends ChangeNotifier {
 
   String _role = 'generic';
   String get role => _role;
-  set role(String _value) {
-    _role = _value;
-    prefs.setString('ff_role', _value);
+  set role(String value) {
+    _role = value;
+    prefs.setString('ff_role', value);
   }
 
   String _hotel = '';
   String get hotel => _hotel;
-  set hotel(String _value) {
-    _hotel = _value;
-    prefs.setString('ff_hotel', _value);
+  set hotel(String value) {
+    _hotel = value;
+    prefs.setString('ff_hotel', value);
   }
 
   double _bedPrice = 0.0;
   double get bedPrice => _bedPrice;
-  set bedPrice(double _value) {
-    _bedPrice = _value;
-    prefs.setDouble('ff_bedPrice', _value);
+  set bedPrice(double value) {
+    _bedPrice = value;
+    prefs.setDouble('ff_bedPrice', value);
   }
 
   DateTime? _lastRemit = DateTime.fromMillisecondsSinceEpoch(1697548080000);
   DateTime? get lastRemit => _lastRemit;
-  set lastRemit(DateTime? _value) {
-    _lastRemit = _value;
-    _value != null
-        ? prefs.setInt('ff_lastRemit', _value.millisecondsSinceEpoch)
+  set lastRemit(DateTime? value) {
+    _lastRemit = value;
+    value != null
+        ? prefs.setInt('ff_lastRemit', value.millisecondsSinceEpoch)
         : prefs.remove('ff_lastRemit');
   }
 
   DocumentReference? _statsReference;
   DocumentReference? get statsReference => _statsReference;
-  set statsReference(DocumentReference? _value) {
-    _statsReference = _value;
-    _value != null
-        ? prefs.setString('ff_statsReference', _value.path)
+  set statsReference(DocumentReference? value) {
+    _statsReference = value;
+    value != null
+        ? prefs.setString('ff_statsReference', value.path)
         : prefs.remove('ff_statsReference');
   }
 
   CurrentStatsStruct _currentStats = CurrentStatsStruct();
   CurrentStatsStruct get currentStats => _currentStats;
-  set currentStats(CurrentStatsStruct _value) {
-    _currentStats = _value;
-    prefs.setString('ff_currentStats', _value.serialize());
+  set currentStats(CurrentStatsStruct value) {
+    _currentStats = value;
+    prefs.setString('ff_currentStats', value.serialize());
   }
 
   void updateCurrentStatsStruct(Function(CurrentStatsStruct) updateFn) {
@@ -117,53 +116,53 @@ class FFAppState extends ChangeNotifier {
 
   DocumentReference? _settingRef;
   DocumentReference? get settingRef => _settingRef;
-  set settingRef(DocumentReference? _value) {
-    _settingRef = _value;
-    _value != null
-        ? prefs.setString('ff_settingRef', _value.path)
+  set settingRef(DocumentReference? value) {
+    _settingRef = value;
+    value != null
+        ? prefs.setString('ff_settingRef', value.path)
         : prefs.remove('ff_settingRef');
   }
 
   double _extPricePerHr = 0.0;
   double get extPricePerHr => _extPricePerHr;
-  set extPricePerHr(double _value) {
-    _extPricePerHr = _value;
-    prefs.setDouble('ff_extPricePerHr', _value);
+  set extPricePerHr(double value) {
+    _extPricePerHr = value;
+    prefs.setDouble('ff_extPricePerHr', value);
   }
 
   int _loopCounter = 0;
   int get loopCounter => _loopCounter;
-  set loopCounter(int _value) {
-    _loopCounter = _value;
+  set loopCounter(int value) {
+    _loopCounter = value;
   }
 
   List<RoomUsageStruct> _roomUsages = [];
   List<RoomUsageStruct> get roomUsages => _roomUsages;
-  set roomUsages(List<RoomUsageStruct> _value) {
-    _roomUsages = _value;
+  set roomUsages(List<RoomUsageStruct> value) {
+    _roomUsages = value;
   }
 
-  void addToRoomUsages(RoomUsageStruct _value) {
-    _roomUsages.add(_value);
+  void addToRoomUsages(RoomUsageStruct value) {
+    _roomUsages.add(value);
   }
 
-  void removeFromRoomUsages(RoomUsageStruct _value) {
-    _roomUsages.remove(_value);
+  void removeFromRoomUsages(RoomUsageStruct value) {
+    _roomUsages.remove(value);
   }
 
-  void removeAtIndexFromRoomUsages(int _index) {
-    _roomUsages.removeAt(_index);
+  void removeAtIndexFromRoomUsages(int index) {
+    _roomUsages.removeAt(index);
   }
 
   void updateRoomUsagesAtIndex(
-    int _index,
+    int index,
     RoomUsageStruct Function(RoomUsageStruct) updateFn,
   ) {
-    _roomUsages[_index] = updateFn(_roomUsages[_index]);
+    _roomUsages[index] = updateFn(_roomUsages[index]);
   }
 
-  void insertAtIndexInRoomUsages(int _index, RoomUsageStruct _value) {
-    _roomUsages.insert(_index, _value);
+  void insertAtIndexInRoomUsages(int index, RoomUsageStruct value) {
+    _roomUsages.insert(index, value);
   }
 
   final _roomsManager = StreamRequestManager<List<RoomsRecord>>();
@@ -272,16 +271,6 @@ class FFAppState extends ChangeNotifier {
   void clearStatsSettingsCache() => _statsSettingsManager.clear();
   void clearStatsSettingsCacheKey(String? uniqueKey) =>
       _statsSettingsManager.clearRequest(uniqueKey);
-}
-
-LatLng? _latLngFromString(String? val) {
-  if (val == null) {
-    return null;
-  }
-  final split = val.split(',');
-  final lat = double.parse(split.first);
-  final lng = double.parse(split.last);
-  return LatLng(lat, lng);
 }
 
 void _safeInit(Function() initializeField) {

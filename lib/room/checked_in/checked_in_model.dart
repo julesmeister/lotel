@@ -1,25 +1,11 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/options/option_to_booking/option_to_booking_widget.dart';
-import '/flutter_flow/flutter_flow_choice_chips.dart';
-import '/flutter_flow/flutter_flow_drop_down.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import '/actions/actions.dart' as action_blocks;
-import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/request_manager.dart';
 
 import 'checked_in_widget.dart' show CheckedInWidget;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   ///  Local state fields for this page.
@@ -50,12 +36,17 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
           int index, Function(TransactionsRecord) updateFn) =>
       transactions[index] = updateFn(transactions[index]);
 
+  String operator = '-';
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
   // State field(s) for ChoiceChips widget.
-  String? choiceChipsValue;
   FormFieldController<List<String>>? choiceChipsValueController;
+  String? get choiceChipsValue =>
+      choiceChipsValueController?.value?.firstOrNull;
+  set choiceChipsValue(String? val) =>
+      choiceChipsValueController?.value = val != null ? [val] : [];
   // Stores action output result for [Firestore Query - Query a collection] action in ChoiceChips widget.
   TransactionsRecord? transaction;
   // Stores action output result for [Bottom Sheet - OptionToBooking] action in Button widget.
@@ -63,10 +54,10 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   // State field(s) for priceChangedescription widget.
   String? priceChangedescriptionValue;
   FormFieldController<String>? priceChangedescriptionValueController;
-  // State field(s) for newPrice widget.
-  FocusNode? newPriceFocusNode;
-  TextEditingController? newPriceController;
-  String? Function(BuildContext, String?)? newPriceControllerValidator;
+  // State field(s) for adjust widget.
+  FocusNode? adjustFocusNode;
+  TextEditingController? adjustController;
+  String? Function(BuildContext, String?)? adjustControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in saveChangedPrice widget.
   HotelSettingsRecord? hotelSetting;
   // Stores action output result for [Backend Call - Create Document] action in saveChangedPrice widget.
@@ -91,21 +82,17 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   void clearBookingDetailsCacheKey(String? uniqueKey) =>
       _bookingDetailsManager.clearRequest(uniqueKey);
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {
     unfocusNode.dispose();
-    newPriceFocusNode?.dispose();
-    newPriceController?.dispose();
+    adjustFocusNode?.dispose();
+    adjustController?.dispose();
 
     /// Dispose query cache managers for this widget.
 
     clearBookingDetailsCache();
   }
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

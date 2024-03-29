@@ -2,8 +2,7 @@
 export '/pages/home_page/home_page_widget.dart' show HomePageWidget;
 export '/user/login/login_widget.dart' show LoginWidget;
 export '/room/room_list/room_list_widget.dart' show RoomListWidget;
-export '/user/profile_settings/profile_settings_widget.dart'
-    show ProfileSettingsWidget;
+export '/user/settings/settings_widget.dart' show SettingsWidget;
 export '/admin/manage_roles/manage_roles_widget.dart' show ManageRolesWidget;
 export '/room/checked_in/checked_in_widget.dart' show CheckedInWidget;
 export '/transactions/check_in/check_in_widget.dart' show CheckInWidget;
@@ -34,3 +33,5 @@ export '/bills/bill_form/bill_form_widget.dart' show BillFormWidget;
 export '/bills/bills_list/bills_list_widget.dart' show BillsListWidget;
 export '/grocery/grocery_list/grocery_list_widget.dart' show GroceryListWidget;
 export '/room/pendings/pendings_widget.dart' show PendingsWidget;
+export '/admin/manage_options/manage_options_widget.dart'
+    show ManageOptionsWidget;

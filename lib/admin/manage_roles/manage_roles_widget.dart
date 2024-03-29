@@ -1,4 +1,3 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/name_edit/name_edit_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -6,18 +5,10 @@ import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'manage_roles_model.dart';
 export 'manage_roles_model.dart';
 
@@ -42,8 +33,8 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
           curve: Curves.elasticOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(0.0, 0.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(0.0, 0.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -66,17 +57,6 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
-    context.watch<FFAppState>();
-
     return StreamBuilder<List<UsersRecord>>(
       stream: queryUsersRecord(
         queryBuilder: (usersRecord) => usersRecord.where(
@@ -121,7 +101,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                 icon: Icon(
                   Icons.chevron_left,
                   color: FlutterFlowTheme.of(context).primaryText,
-                  size: 24.0,
+                  size: 30.0,
                 ),
                 onPressed: () async {
                   context.pop();
@@ -133,6 +113,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                       fontFamily: 'Readex Pro',
                       color: FlutterFlowTheme.of(context).primaryText,
                       fontSize: 25.0,
+                      letterSpacing: 0.0,
                     ),
               ),
               actions: [
@@ -142,7 +123,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                     if (_model.selectedUsers.length == 1)
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
                         child: FlutterFlowIconButton(
                           borderColor: Colors.transparent,
                           borderRadius: 30.0,
@@ -168,7 +149,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                           : FocusScope.of(context).unfocus(),
                                   child: Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
-                                    child: Container(
+                                    child: SizedBox(
                                       height: double.infinity,
                                       child: NameEditWidget(
                                         ref: _model.selectedUsers.first,
@@ -181,10 +162,10 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                           },
                         ),
                       ),
-                    if (_model.selectedUsers.length >= 1)
+                    if (_model.selectedUsers.isNotEmpty)
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
                         child: FlutterFlowIconButton(
                           borderColor: Colors.transparent,
                           borderRadius: 30.0,
@@ -217,7 +198,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                         .primaryText,
                                   ),
                                 ),
-                                duration: Duration(milliseconds: 4000),
+                                duration: const Duration(milliseconds: 4000),
                                 backgroundColor:
                                     FlutterFlowTheme.of(context).secondary,
                               ),
@@ -235,7 +216,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
             body: Stack(
               children: [
                 Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
+                  alignment: const AlignmentDirectional(0.0, 0.0),
                   child: FutureBuilder<int>(
                     future: queryUsersRecordCount(
                       queryBuilder: (usersRecord) => usersRecord
@@ -271,7 +252,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 16.0, 0.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -279,31 +260,43 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 12.0, 0.0, 0.0),
                                     child: Text(
                                       'Select to edit or delete',
                                       style: FlutterFlowTheme.of(context)
-                                          .labelMedium,
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                     ),
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 12.0, 0.0, 0.0),
                                   child: Text(
                                     _model.selectedUsers.length.toString(),
-                                    style:
-                                        FlutterFlowTheme.of(context).bodyMedium,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       2.0, 12.0, 0.0, 0.0),
                                   child: Text(
                                     'Selected',
-                                    style:
-                                        FlutterFlowTheme.of(context).bodyMedium,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                   ),
                                 ),
                               ],
@@ -311,7 +304,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                           ),
                           if (columnCount > 0)
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 10.0, 0.0, 0.0),
                               child: Container(
                                 width: MediaQuery.sizeOf(context).width * 1.0,
@@ -323,24 +316,31 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       blurRadius: 0.0,
                                       color: FlutterFlowTheme.of(context)
                                           .alternate,
-                                      offset: Offset(0.0, 1.0),
+                                      offset: const Offset(
+                                        0.0,
+                                        1.0,
+                                      ),
                                     )
                                   ],
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 10.0, 0.0, 10.0),
                                   child: Text(
                                     'Created Today',
                                     style: FlutterFlowTheme.of(context)
-                                        .labelMedium,
+                                        .labelMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                   ),
                                 ),
                               ),
                             ),
                           if (columnCount > 0)
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 12.0, 0.0, 0.0),
                               child: Builder(
                                 builder: (context) {
@@ -365,7 +365,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       );
                                     },
                                     child: ListView.builder(
-                                      padding: EdgeInsets.fromLTRB(
+                                      padding: const EdgeInsets.fromLTRB(
                                         0,
                                         0,
                                         0,
@@ -379,7 +379,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                         final recentItem = recent[recentIndex];
                                         return Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 0.0, 16.0, 8.0),
                                           child: Container(
                                             width: 100.0,
@@ -401,7 +401,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           8.0, 0.0, 0.0, 0.0),
                                                   child: Card(
@@ -444,11 +444,11 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                 Expanded(
                                                   child: Align(
                                                     alignment:
-                                                        AlignmentDirectional(
+                                                        const AlignmentDirectional(
                                                             0.0, -1.0),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   10.0,
                                                                   0.0,
@@ -536,6 +536,8 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                       lineHeight:
                                                                           2.0,
                                                                     ),
@@ -551,6 +553,8 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .success,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                               ),
                                                               tileColor: FlutterFlowTheme
@@ -567,7 +571,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                   ListTileControlAffinity
                                                                       .trailing,
                                                               contentPadding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           8.0,
                                                                           0.0,
@@ -608,23 +612,30 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                     blurRadius: 0.0,
                                     color:
                                         FlutterFlowTheme.of(context).alternate,
-                                    offset: Offset(0.0, 1.0),
+                                    offset: const Offset(
+                                      0.0,
+                                      1.0,
+                                    ),
                                   )
                                 ],
                               ),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 10.0, 0.0, 10.0),
                                 child: Text(
                                   'Others',
-                                  style:
-                                      FlutterFlowTheme.of(context).labelMedium,
+                                  style: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
                                 ),
                               ),
                             ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 12.0, 0.0, 0.0),
                               child: Builder(
                                 builder: (context) {
@@ -649,7 +660,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       );
                                     },
                                     child: ListView.builder(
-                                      padding: EdgeInsets.fromLTRB(
+                                      padding: const EdgeInsets.fromLTRB(
                                         0,
                                         0,
                                         0,
@@ -663,7 +674,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                         final othersItem = others[othersIndex];
                                         return Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 0.0, 16.0, 8.0),
                                           child: Container(
                                             width: 100.0,
@@ -685,7 +696,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           8.0, 0.0, 0.0, 0.0),
                                                   child: Card(
@@ -728,11 +739,11 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                 Expanded(
                                                   child: Align(
                                                     alignment:
-                                                        AlignmentDirectional(
+                                                        const AlignmentDirectional(
                                                             0.0, -1.0),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   10.0,
                                                                   0.0,
@@ -820,6 +831,8 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                       lineHeight:
                                                                           2.0,
                                                                     ),
@@ -835,6 +848,8 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .success,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                               ),
                                                               tileColor: FlutterFlowTheme
@@ -851,7 +866,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                   ListTileControlAffinity
                                                                       .trailing,
                                                               contentPadding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           8.0,
                                                                           0.0,
@@ -882,9 +897,9 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                               ),
                             ),
                           ),
-                          if (_model.selectedUsers.length > 0)
+                          if (_model.selectedUsers.isNotEmpty)
                             Align(
-                              alignment: AlignmentDirectional(0.0, 1.0),
+                              alignment: const AlignmentDirectional(0.0, 1.0),
                               child: Container(
                                 width: double.infinity,
                                 height: 140.0,
@@ -895,17 +910,17 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       FlutterFlowTheme.of(context)
                                           .secondaryBackground
                                     ],
-                                    stops: [0.0, 1.0],
-                                    begin: AlignmentDirectional(0.0, -1.0),
-                                    end: AlignmentDirectional(0, 1.0),
+                                    stops: const [0.0, 1.0],
+                                    begin: const AlignmentDirectional(0.0, -1.0),
+                                    end: const AlignmentDirectional(0, 1.0),
                                   ),
                                 ),
-                                alignment: AlignmentDirectional(0.0, 0.0),
+                                alignment: const AlignmentDirectional(0.0, 0.0),
                                 child: FlutterFlowDropDown<String>(
                                   controller:
                                       _model.selectedRoleValueController ??=
                                           FormFieldController<String>(null),
-                                  options: [
+                                  options: const [
                                     'staff',
                                     'admin',
                                     'generic',
@@ -955,7 +970,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -965,8 +980,12 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                   },
                                   width: 300.0,
                                   height: 50.0,
-                                  textStyle:
-                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
                                   hintText: 'Please select new role...',
                                   icon: Icon(
                                     Icons.keyboard_arrow_down_rounded,
@@ -981,7 +1000,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       FlutterFlowTheme.of(context).alternate,
                                   borderWidth: 2.0,
                                   borderRadius: 50.0,
-                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                  margin: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 4.0, 16.0, 4.0),
                                   hidesUnderline: true,
                                   isSearchable: false,

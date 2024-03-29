@@ -1,12 +1,8 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'collect_remittance_user_model.dart';
 export 'collect_remittance_user_model.dart';
@@ -49,16 +45,19 @@ class _CollectRemittanceUserWidgetState
     context.watch<FFAppState>();
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
-              offset: Offset(0.0, 2.0),
+              offset: Offset(
+                0.0,
+                2.0,
+              ),
             )
           ],
           borderRadius: BorderRadius.circular(12.0),
@@ -75,16 +74,19 @@ class _CollectRemittanceUserWidgetState
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                     child: Text(
                       'Who collected the remittance?',
                       textAlign: TextAlign.start,
-                      style: FlutterFlowTheme.of(context).labelMedium,
+                      style: FlutterFlowTheme.of(context).labelMedium.override(
+                            fontFamily: 'Readex Pro',
+                            letterSpacing: 0.0,
+                          ),
                     ),
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
@@ -103,7 +105,7 @@ class _CollectRemittanceUserWidgetState
                 ],
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
                 child: FutureBuilder<List<UsersRecord>>(
                   future: queryUsersRecordOnce(
                     queryBuilder: (usersRecord) => usersRecord
@@ -143,7 +145,7 @@ class _CollectRemittanceUserWidgetState
                           final selectWidgetUsersRecord =
                               selectWidgetUsersRecordList[selectWidgetIndex];
                           return Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 12.0, 0.0, 0.0),
                             child: InkWell(
                               splashColor: Colors.transparent,
@@ -184,7 +186,7 @@ class _CollectRemittanceUserWidgetState
                                             .primaryText,
                                       ),
                                     ),
-                                    duration: Duration(milliseconds: 4000),
+                                    duration: const Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
@@ -199,13 +201,13 @@ class _CollectRemittanceUserWidgetState
                                       .secondaryBackground,
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 8.0, 0.0, 8.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             12.0, 0.0, 0.0, 0.0),
                                         child: Icon(
                                           Icons.location_history,
@@ -217,12 +219,16 @@ class _CollectRemittanceUserWidgetState
                                       Expanded(
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   12.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             selectWidgetUsersRecord.displayName,
                                             style: FlutterFlowTheme.of(context)
-                                                .bodyMedium,
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  letterSpacing: 0.0,
+                                                ),
                                           ),
                                         ),
                                       ),

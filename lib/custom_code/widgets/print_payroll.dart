@@ -116,6 +116,8 @@ class _PrintPayrollState extends State<PrintPayroll> {
       ];
     }).toList();
 
+    tableData.sort((a, b) => a[0].compareTo(b[0]));
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,

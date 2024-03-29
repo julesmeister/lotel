@@ -1,14 +1,10 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'late_checkout_fee_model.dart';
 export 'late_checkout_fee_model.dart';
@@ -46,15 +42,6 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return StreamBuilder<List<HotelSettingsRecord>>(
@@ -102,7 +89,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
               icon: Icon(
                 Icons.chevron_left,
                 color: FlutterFlowTheme.of(context).info,
-                size: 24.0,
+                size: 25.0,
               ),
               onPressed: () async {
                 context.safePop();
@@ -110,7 +97,10 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
             ),
             title: Text(
               'Change Late Check Out Fee',
-              style: FlutterFlowTheme.of(context).titleSmall,
+              style: FlutterFlowTheme.of(context).titleSmall.override(
+                    fontFamily: 'Readex Pro',
+                    letterSpacing: 0.0,
+                  ),
             ),
             actions: [
               FlutterFlowIconButton(
@@ -137,7 +127,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                           color: FlutterFlowTheme.of(context).primaryText,
                         ),
                       ),
-                      duration: Duration(milliseconds: 4000),
+                      duration: const Duration(milliseconds: 4000),
                       backgroundColor: FlutterFlowTheme.of(context).secondary,
                     ),
                   );
@@ -164,23 +154,26 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                             color: FlutterFlowTheme.of(context).primary,
                           ),
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 16.0, 24.0),
                             child: Container(
                               width: MediaQuery.sizeOf(context).width * 0.9,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).accent4,
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 8.0,
                                     color: Color(0x36000000),
-                                    offset: Offset(0.0, 4.0),
+                                    offset: Offset(
+                                      0.0,
+                                      4.0,
+                                    ),
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.all(12.0),
+                                padding: const EdgeInsets.all(12.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
@@ -197,7 +190,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                                 BorderRadius.circular(8.0),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.all(8.0),
                                             child: Icon(
                                               Icons.roundabout_left,
                                               color:
@@ -210,7 +203,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                         Expanded(
                                           child: Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     8.0, 0.0, 0.0, 0.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
@@ -218,18 +211,22 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           8.0, 0.0, 0.0, 0.0),
                                                   child: Text(
                                                     'Extension Rate Per Hour',
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .headlineSmall,
+                                                        .headlineSmall
+                                                        .override(
+                                                          fontFamily: 'Outfit',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           8.0, 4.0, 12.0, 0.0),
                                                   child: Text(
@@ -241,6 +238,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                                           fontFamily:
                                                               'Readex Pro',
                                                           fontSize: 12.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ),
@@ -256,7 +254,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                         Expanded(
                                           child: Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 16.0, 0.0, 0.0),
                                             child: TextFormField(
                                               controller: _model.textController,
@@ -267,7 +265,12 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                                 hintText: 'How much?',
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
-                                                        .bodyMedium,
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                                 enabledBorder:
                                                     OutlineInputBorder(
                                                   borderSide: BorderSide(
@@ -322,7 +325,13 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                               ),
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyMedium,
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                              minLines: null,
                                               keyboardType: const TextInputType
                                                   .numberWithOptions(
                                                   decimal: true),
@@ -345,7 +354,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 16.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 16.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: () async {
                         if ((lateCheckoutFeeHotelSettingsRecord != null) ==
@@ -382,7 +391,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -393,17 +402,18 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                         width: double.infinity,
                         height: 50.0,
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                         iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                         color: FlutterFlowTheme.of(context).primary,
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(
                                   fontFamily: 'Readex Pro',
                                   color: Colors.white,
+                                  letterSpacing: 0.0,
                                 ),
                         elevation: 3.0,
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Colors.transparent,
                           width: 1.0,
                         ),

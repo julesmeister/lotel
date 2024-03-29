@@ -1,17 +1,14 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_autocomplete_options_list.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'check_out_model.dart';
 export 'check_out_model.dart';
@@ -28,10 +25,26 @@ class CheckOutWidget extends StatefulWidget {
   State<CheckOutWidget> createState() => _CheckOutWidgetState();
 }
 
-class _CheckOutWidgetState extends State<CheckOutWidget> {
+class _CheckOutWidgetState extends State<CheckOutWidget>
+    with TickerProviderStateMixin {
   late CheckOutModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = {
+    'containerOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0.0,
+          end: 1.0,
+        ),
+      ],
+    ),
+  };
 
   @override
   void initState() {
@@ -63,15 +76,6 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -92,7 +96,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
             icon: Icon(
               Icons.chevron_left,
               color: FlutterFlowTheme.of(context).primaryText,
-              size: 24.0,
+              size: 30.0,
             ),
             onPressed: () async {
               context.safePop();
@@ -103,6 +107,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
             style: FlutterFlowTheme.of(context).bodyLarge.override(
                   fontFamily: 'Readex Pro',
                   fontSize: 24.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [
@@ -110,7 +115,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
               visible:
                   valueOrDefault(currentUserDocument?.role, '') != 'generic',
               child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                 child: AuthUserStreamWidget(
                   builder: (context) => FlutterFlowIconButton(
                     borderColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -118,20 +123,19 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                     borderWidth: 1.0,
                     buttonSize: 40.0,
                     fillColor: FlutterFlowTheme.of(context).primaryBackground,
-                    disabledIconColor: Color(0xFFDADBDC),
+                    disabledIconColor: const Color(0xFFDADBDC),
                     icon: Icon(
                       Icons.check,
                       color: FlutterFlowTheme.of(context).primaryText,
                       size: 24.0,
                     ),
-                    onPressed: (widget.cart?.length == 0)
+                    onPressed: (widget.cart.isEmpty)
                         ? null
                         : () async {
-                            var _shouldSetState = false;
+                            var shouldSetState = false;
                             if (_model.expense) {
                               if ((_model.whichExpense == 'consumedBy') &&
-                                  (_model.priceController1.text == null ||
-                                      _model.priceController1.text == '')) {
+                                  (_model.priceController1.text == '')) {
                                 // who consumed?
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -142,12 +146,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                             .primaryText,
                                       ),
                                     ),
-                                    duration: Duration(milliseconds: 4000),
+                                    duration: const Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
                                 );
-                                if (_shouldSetState) setState(() {});
+                                if (shouldSetState) setState(() {});
                                 return;
                               }
                             }
@@ -242,7 +246,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                 },
                               ),
                             }, transactionsRecordReference);
-                            _shouldSetState = true;
+                            shouldSetState = true;
                             while (_model.loopGoodsCounter !=
                                 functions
                                     .summarizeCart(widget.cart?.toList())
@@ -330,7 +334,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                         remitted: false,
                                       ),
                                       inventoriesRecordReference);
-                              _shouldSetState = true;
+                              shouldSetState = true;
                               // collect inventories to list
                               setState(() {
                                 _model.addToInventories(
@@ -361,7 +365,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                             context.pushNamed(
                               'mart',
                               extra: <String, dynamic>{
-                                kTransitionInfoKey: TransitionInfo(
+                                kTransitionInfoKey: const TransitionInfo(
                                   hasTransition: true,
                                   transitionType:
                                       PageTransitionType.rightToLeft,
@@ -378,12 +382,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                         .primaryText,
                                   ),
                                 ),
-                                duration: Duration(milliseconds: 4000),
+                                duration: const Duration(milliseconds: 4000),
                                 backgroundColor:
                                     FlutterFlowTheme.of(context).secondary,
                               ),
                             );
-                            if (_shouldSetState) setState(() {});
+                            if (shouldSetState) setState(() {});
                           },
                   ),
                 ),
@@ -402,10 +406,13 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
               children: [
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 12.0),
+                      const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 12.0),
                   child: Text(
                     'Items',
-                    style: FlutterFlowTheme.of(context).labelMedium,
+                    style: FlutterFlowTheme.of(context).labelMedium.override(
+                          fontFamily: 'Readex Pro',
+                          letterSpacing: 0.0,
+                        ),
                   ),
                 ),
                 Stack(
@@ -426,7 +433,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                             itemBuilder: (context, cartGoodsIndex) {
                               final cartGoodsItem = cartGoods[cartGoodsIndex];
                               return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 1.0),
                                 child: Container(
                                   width: double.infinity,
@@ -438,12 +445,15 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                       BoxShadow(
                                         color: FlutterFlowTheme.of(context)
                                             .primaryBackground,
-                                        offset: Offset(0.0, 1.0),
+                                        offset: const Offset(
+                                          0.0,
+                                          1.0,
+                                        ),
                                       )
                                     ],
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 5.0, 16.0, 5.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
@@ -461,24 +471,34 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                               cartGoodsItem.description,
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyLarge,
+                                                      .bodyLarge
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        letterSpacing: 0.0,
+                                                      ),
                                             ),
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
                                                     'x ',
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .labelMedium,
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
@@ -486,7 +506,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                                         .toString(),
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .labelMedium,
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                                   ),
                                                 ),
                                               ],
@@ -501,7 +526,11 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                             currency: 'P ',
                                           ),
                                           style: FlutterFlowTheme.of(context)
-                                              .titleLarge,
+                                              .titleLarge
+                                              .override(
+                                                fontFamily: 'Outfit',
+                                                letterSpacing: 0.0,
+                                              ),
                                         ),
                                       ],
                                     ),
@@ -521,7 +550,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 20.0, 16.0, 0.0),
                               child: Text(
                                 'Please don\'t touch anything while transaction is being completed.',
@@ -531,11 +560,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                     .override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 24.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
                             Align(
-                              alignment: AlignmentDirectional(0.0, -2.13),
+                              alignment: const AlignmentDirectional(0.0, -2.13),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Image.asset(
@@ -548,14 +578,18 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                             ),
                           ],
                         ),
-                      ),
+                      ).animateOnPageLoad(
+                          animationsMap['containerOnPageLoadAnimation']!),
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 0.0),
                   child: Text(
                     'Total',
-                    style: FlutterFlowTheme.of(context).labelMedium,
+                    style: FlutterFlowTheme.of(context).labelMedium.override(
+                          fontFamily: 'Readex Pro',
+                          letterSpacing: 0.0,
+                        ),
                   ),
                 ),
                 ListView(
@@ -566,7 +600,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 1.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 1.0),
                       child: Container(
                         width: double.infinity,
                         height: 60.0,
@@ -577,12 +611,15 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                             BoxShadow(
                               color: FlutterFlowTheme.of(context)
                                   .primaryBackground,
-                              offset: Offset(0.0, 1.0),
+                              offset: const Offset(
+                                0.0,
+                                1.0,
+                              ),
                             )
                           ],
                         ),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 5.0, 16.0, 5.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -595,11 +632,15 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                 children: [
                                   Text(
                                     'Total Amount',
-                                    style:
-                                        FlutterFlowTheme.of(context).bodyLarge,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyLarge
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 5.0, 0.0, 0.0),
                                     child: Text(
                                       valueOrDefault<int>(
@@ -615,12 +656,16 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                               ? '1 item in the basket'
                                               : '${valueOrDefault<String>(
                                                   widget.cart?.length
-                                                      ?.toString(),
+                                                      .toString(),
                                                   '0',
                                                 )} items in the basket')
                                           : 'No items in the basket',
                                       style: FlutterFlowTheme.of(context)
-                                          .labelMedium,
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -636,7 +681,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                   ),
                                   '0',
                                 ),
-                                style: FlutterFlowTheme.of(context).titleLarge,
+                                style: FlutterFlowTheme.of(context)
+                                    .titleLarge
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ],
                           ),
@@ -645,7 +695,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
                       child: Container(
                         width: double.infinity,
                         height: 60.0,
@@ -656,19 +706,22 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                             BoxShadow(
                               color: FlutterFlowTheme.of(context)
                                   .primaryBackground,
-                              offset: Offset(0.0, 1.0),
+                              offset: const Offset(
+                                0.0,
+                                1.0,
+                              ),
                             )
                           ],
                         ),
                         child: Align(
-                          alignment: AlignmentDirectional(0.0, -1.0),
+                          alignment: const AlignmentDirectional(0.0, -1.0),
                           child: SwitchListTile.adaptive(
                             value: _model.switchListTileValue ??=
                                 _model.expense,
                             onChanged: (newValue) async {
                               setState(
-                                  () => _model.switchListTileValue = newValue!);
-                              if (newValue!) {
+                                  () => _model.switchListTileValue = newValue);
+                              if (newValue) {
                                 setState(() {
                                   _model.expense = true;
                                 });
@@ -680,11 +733,21 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                             },
                             title: Text(
                               'Expense',
-                              style: FlutterFlowTheme.of(context).bodyLarge,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyLarge
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                             ),
                             subtitle: Text(
                               'Is this an expense?',
-                              style: FlutterFlowTheme.of(context).labelMedium,
+                              style: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                             ),
                             tileColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
@@ -701,13 +764,15 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                 ),
                 if (_model.expense)
                   Align(
-                    alignment: AlignmentDirectional(0.0, -1.0),
+                    alignment: const AlignmentDirectional(0.0, -1.0),
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 600),
+                        curve: Curves.easeIn,
                         width: double.infinity,
                         height: 50.0,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxWidth: 500.0,
                         ),
                         decoration: BoxDecoration(
@@ -719,7 +784,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -767,7 +832,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                         size: 16.0,
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             4.0, 0.0, 0.0, 0.0),
                                         child: Text(
                                           'Consumed By',
@@ -778,6 +843,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primaryText,
+                                                letterSpacing: 0.0,
                                               ),
                                         ),
                                       ),
@@ -828,7 +894,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                         ),
                                         Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   4.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             'Spoilage',
@@ -839,6 +905,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                                   color: FlutterFlowTheme.of(
                                                           context)
                                                       .primaryText,
+                                                  letterSpacing: 0.0,
                                                 ),
                                           ),
                                         ),
@@ -887,7 +954,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                         size: 16.0,
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             4.0, 0.0, 0.0, 0.0),
                                         child: Text(
                                           'Other',
@@ -898,6 +965,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primaryText,
+                                                letterSpacing: 0.0,
                                               ),
                                         ),
                                       ),
@@ -914,9 +982,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                 if ((_model.whichExpense == 'consumedBy') && _model.expense)
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
                     child: Autocomplete<String>(
-                      initialValue: TextEditingValue(),
+                      initialValue: const TextEditingValue(),
                       optionsBuilder: (textEditingValue) {
                         if (textEditingValue.text == '') {
                           return const Iterable<String>.empty();
@@ -933,8 +1001,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                           textController: _model.priceController1!,
                           options: options.toList(),
                           onSelected: onSelected,
-                          textStyle: FlutterFlowTheme.of(context).bodyMedium,
-                          textHighlightStyle: TextStyle(),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                          textHighlightStyle: const TextStyle(),
                           elevation: 4.0,
                           optionBackgroundColor:
                               FlutterFlowTheme.of(context).primaryBackground,
@@ -965,9 +1037,18 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: 'Who consumed?',
-                            labelStyle:
-                                FlutterFlowTheme.of(context).labelMedium,
-                            hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                            labelStyle: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: FlutterFlowTheme.of(context).alternate,
@@ -999,13 +1080,18 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                 20.0, 24.0, 0.0, 24.0),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.emoji_people_sharp,
                             ),
                           ),
-                          style: FlutterFlowTheme.of(context).bodyMedium,
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                          minLines: null,
                           validator: _model.priceController1Validator
                               .asValidator(context),
                         );
@@ -1015,7 +1101,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                 if ((_model.whichExpense == 'other') && _model.expense)
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
                     child: TextFormField(
                       controller: _model.priceController2,
                       focusNode: _model.priceFocusNode2,
@@ -1023,8 +1109,16 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                       obscureText: false,
                       decoration: InputDecoration(
                         labelText: 'What reason?',
-                        labelStyle: FlutterFlowTheme.of(context).labelMedium,
-                        hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                        labelStyle:
+                            FlutterFlowTheme.of(context).labelMedium.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
+                        hintStyle:
+                            FlutterFlowTheme.of(context).labelMedium.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: FlutterFlowTheme.of(context).alternate,
@@ -1056,13 +1150,17 @@ class _CheckOutWidgetState extends State<CheckOutWidget> {
                         filled: true,
                         fillColor:
                             FlutterFlowTheme.of(context).secondaryBackground,
-                        contentPadding: EdgeInsetsDirectional.fromSTEB(
+                        contentPadding: const EdgeInsetsDirectional.fromSTEB(
                             20.0, 24.0, 0.0, 24.0),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.question_mark,
                         ),
                       ),
-                      style: FlutterFlowTheme.of(context).bodyMedium,
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Readex Pro',
+                            letterSpacing: 0.0,
+                          ),
+                      minLines: null,
                       validator:
                           _model.priceController2Validator.asValidator(context),
                     ),

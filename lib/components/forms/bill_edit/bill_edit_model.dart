@@ -1,15 +1,7 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'bill_edit_widget.dart' show BillEditWidget;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class BillEditModel extends FlutterFlowModel<BillEditWidget> {
   ///  State fields for stateful widgets in this component.
@@ -22,22 +14,25 @@ class BillEditModel extends FlutterFlowModel<BillEditWidget> {
   FocusNode? amountFocusNode;
   TextEditingController? amountController;
   String? Function(BuildContext, String?)? amountControllerValidator;
+  // State field(s) for afterdue widget.
+  FocusNode? afterdueFocusNode;
+  TextEditingController? afterdueController;
+  String? Function(BuildContext, String?)? afterdueControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in Row widget.
   StatsRecord? rightStats;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {
     descFocusNode?.dispose();
     descController?.dispose();
 
     amountFocusNode?.dispose();
     amountController?.dispose();
+
+    afterdueFocusNode?.dispose();
+    afterdueController?.dispose();
   }
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

@@ -1,18 +1,15 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'change_remittance_model.dart';
 export 'change_remittance_model.dart';
@@ -79,7 +76,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
           decoration: BoxDecoration(
             color: FlutterFlowTheme.of(context).accent4,
           ),
-          alignment: AlignmentDirectional(0.0, 1.0),
+          alignment: const AlignmentDirectional(0.0, 1.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -88,14 +85,17 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.of(context).secondaryBackground,
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       blurRadius: 7.0,
                       color: Color(0x33000000),
-                      offset: Offset(0.0, -2.0),
+                      offset: Offset(
+                        0.0,
+                        -2.0,
+                      ),
                     )
                   ],
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
                     topLeft: Radius.circular(16.0),
@@ -103,7 +103,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                   child: FutureBuilder<HotelSettingsRecord>(
                     future: HotelSettingsRecord.getDocumentOnce(
                         FFAppState().settingRef!),
@@ -142,7 +142,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                             ],
                           ),
                           Container(
-                            decoration: BoxDecoration(),
+                            decoration: const BoxDecoration(),
                             child: Stack(
                               children: [
                                 if (!_model.isLoading)
@@ -152,31 +152,37 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 16.0, 0.0, 0.0),
                                         child: Text(
                                           'Change',
                                           style: FlutterFlowTheme.of(context)
-                                              .headlineSmall,
+                                              .headlineSmall
+                                              .override(
+                                                fontFamily: 'Outfit',
+                                                letterSpacing: 0.0,
+                                              ),
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'This amount will carry over to the next remittance.',
                                           textAlign: TextAlign.start,
                                           style: FlutterFlowTheme.of(context)
-                                              .labelMedium,
+                                              .labelMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                letterSpacing: 0.0,
+                                              ),
                                         ),
                                       ),
                                       if (columnHotelSettingsRecord
-                                              .failedToRemitTransactions
-                                              .length >
-                                          0)
+                                              .failedToRemitTransactions.isNotEmpty)
                                         Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 16.0, 16.0, 0.0),
                                           child: FFButtonWidget(
                                             onPressed: () async {
@@ -226,7 +232,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                               .primaryText,
                                                     ),
                                                   ),
-                                                  duration: Duration(
+                                                  duration: const Duration(
                                                       milliseconds: 4000),
                                                   backgroundColor:
                                                       FlutterFlowTheme.of(
@@ -239,9 +245,9 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             options: FFButtonOptions(
                                               width: double.infinity,
                                               height: 50.0,
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              iconPadding: EdgeInsetsDirectional
+                                              iconPadding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                               color:
                                                   FlutterFlowTheme.of(context)
@@ -253,9 +259,10 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                         fontFamily:
                                                             'Readex Pro',
                                                         color: Colors.white,
+                                                        letterSpacing: 0.0,
                                                       ),
                                               elevation: 2.0,
-                                              borderSide: BorderSide(
+                                              borderSide: const BorderSide(
                                                 color: Colors.transparent,
                                                 width: 1.0,
                                               ),
@@ -265,7 +272,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                           ),
                                         ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 16.0, 16.0, 0.0),
                                         child: TextFormField(
                                           controller:
@@ -275,7 +282,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                           onChanged: (_) =>
                                               EasyDebounce.debounce(
                                             '_model.changeExtraController',
-                                            Duration(milliseconds: 2000),
+                                            const Duration(milliseconds: 2000),
                                             () => setState(() {}),
                                           ),
                                           autofocus: true,
@@ -290,6 +297,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     .override(
                                                       fontFamily: 'Readex Pro',
                                                       fontSize: 36.0,
+                                                      letterSpacing: 0.0,
                                                     ),
                                             hintText: 'Remittance',
                                             hintStyle:
@@ -298,6 +306,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     .override(
                                                       fontFamily: 'Readex Pro',
                                                       fontSize: 36.0,
+                                                      letterSpacing: 0.0,
                                                     ),
                                             enabledBorder: InputBorder.none,
                                             focusedBorder: InputBorder.none,
@@ -309,7 +318,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                 FlutterFlowTheme.of(context)
                                                     .secondaryBackground,
                                             contentPadding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 24.0, 20.0, 24.0),
                                             suffixIcon: _model
                                                     .changeExtraController!
@@ -322,7 +331,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                           ?.clear();
                                                       setState(() {});
                                                     },
-                                                    child: Icon(
+                                                    child: const Icon(
                                                       Icons.clear,
                                                       color: Color(0xFF757575),
                                                       size: 22.0,
@@ -335,7 +344,9 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               .override(
                                                 fontFamily: 'Readex Pro',
                                                 fontSize: 36.0,
+                                                letterSpacing: 0.0,
                                               ),
+                                          minLines: null,
                                           keyboardType: const TextInputType
                                               .numberWithOptions(decimal: true),
                                           cursorColor:
@@ -351,7 +362,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 16.0, 16.0, 20.0),
                                         child: FFButtonWidget(
                                           onPressed: () async {
@@ -388,8 +399,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       .cast<
                                                           TransactionsRecord>();
                                             });
-                                            if (_model.transactions?.length !=
-                                                0) {
+                                            if (_model.transactions.isNotEmpty) {
                                               // unremitted inventories of this hotel
                                               _model.inventoriesToRemitFirestore =
                                                   await queryInventoriesRecordOnce(
@@ -902,9 +912,6 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   staff: currentUserReference,
                                                   total: _model.changeExtraController
                                                                   .text !=
-                                                              null &&
-                                                          _model.changeExtraController
-                                                                  .text !=
                                                               ''
                                                       ? (-double.parse(_model
                                                           .changeExtraController
@@ -954,7 +961,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                               .primaryText,
                                                     ),
                                                   ),
-                                                  duration: Duration(
+                                                  duration: const Duration(
                                                       milliseconds: 4000),
                                                   backgroundColor:
                                                       FlutterFlowTheme.of(
@@ -976,7 +983,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                               .info,
                                                     ),
                                                   ),
-                                                  duration: Duration(
+                                                  duration: const Duration(
                                                       milliseconds: 4000),
                                                   backgroundColor:
                                                       FlutterFlowTheme.of(
@@ -1002,10 +1009,10 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             width: double.infinity,
                                             height: 50.0,
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 0.0, 0.0),
                                             iconPadding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 0.0, 0.0),
                                             color: FlutterFlowTheme.of(context)
                                                 .primary,
@@ -1015,9 +1022,10 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     .override(
                                                       fontFamily: 'Readex Pro',
                                                       color: Colors.white,
+                                                      letterSpacing: 0.0,
                                                     ),
                                             elevation: 2.0,
-                                            borderSide: BorderSide(
+                                            borderSide: const BorderSide(
                                               color: Colors.transparent,
                                               width: 1.0,
                                             ),
@@ -1033,7 +1041,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 20.0, 16.0, 0.0),
                                         child: Text(
                                           'Please don\'t touch anything while remittance is being submitted.',
@@ -1043,21 +1051,26 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               .override(
                                                 fontFamily: 'Readex Pro',
                                                 fontSize: 24.0,
+                                                letterSpacing: 0.0,
                                               ),
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 20.0, 0.0, 0.0),
                                         child: Text(
                                           _model.happening,
                                           style: FlutterFlowTheme.of(context)
-                                              .bodyMedium,
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                letterSpacing: 0.0,
+                                              ),
                                         ),
                                       ),
                                       Align(
                                         alignment:
-                                            AlignmentDirectional(0.0, -2.13),
+                                            const AlignmentDirectional(0.0, -2.13),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8.0),

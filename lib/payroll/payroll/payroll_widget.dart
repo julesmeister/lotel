@@ -7,17 +7,11 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'payroll_model.dart';
@@ -51,8 +45,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(0.0, 50.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(0.0, 50.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -70,8 +64,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(40.0, 0.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(40.0, 0.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -101,15 +95,6 @@ class _PayrollWidgetState extends State<PayrollWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return FutureBuilder<int>(
@@ -171,15 +156,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                           fontFamily: 'Outfit',
                           color: FlutterFlowTheme.of(context).primaryText,
                           fontSize: 22.0,
+                          letterSpacing: 0.0,
                         ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
-                    child: Text(
-                      'Below are records of salaries',
-                      textAlign: TextAlign.start,
-                      style: FlutterFlowTheme.of(context).labelMedium,
-                    ),
                   ),
                 ],
               ),
@@ -191,7 +169,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                         'admin')
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
                         child: AuthUserStreamWidget(
                           builder: (context) => FlutterFlowIconButton(
                             borderColor: FlutterFlowTheme.of(context).alternate,
@@ -295,20 +273,20 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                         sss: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.sss,
+                                            .sss,
                                         cashAdvance: 0.0,
                                         pendingCA: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.pendingCA,
+                                            .pendingCA,
                                         staff: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.staff,
+                                            .staff,
                                         rate: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.rate,
+                                            .rate,
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -322,20 +300,20 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                         sss: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.sss,
+                                            .sss,
                                         cashAdvance: 0.0,
                                         pendingCA: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.pendingCA,
+                                            .pendingCA,
                                         staff: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.staff,
+                                            .staff,
                                         rate: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.rate,
+                                            .rate,
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -349,7 +327,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                       parent: _model
                                           .sampleSalaries?[
                                               _model.loopSalariesCounter!]
-                                          ?.staff,
+                                          .staff,
                                       queryBuilder: (advancesRecord) =>
                                           advancesRecord.where(
                                         'settled',
@@ -362,7 +340,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                       parent: _model
                                           .sampleSalaries?[
                                               _model.loopSalariesCounter!]
-                                          ?.staff,
+                                          .staff,
                                     );
                                     // save salary w/ cash advances
 
@@ -379,7 +357,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                               _model
                                                   .sampleSalaries?[_model
                                                       .loopSalariesCounter!]
-                                                  ?.rate,
+                                                  .rate,
                                               0.0,
                                             ) -
                                             _model
@@ -408,7 +386,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                           'absencesRefs': _model.absencesRaw
                                               ?.where((e) => !e.settled)
                                               .toList()
-                                              ?.map((e) => e.reference)
+                                              .map((e) => e.reference)
                                               .toList(),
                                         },
                                       ),
@@ -457,20 +435,20 @@ class _PayrollWidgetState extends State<PayrollWidget>
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(0.0, -1.0),
+                      alignment: const AlignmentDirectional(0.0, -1.0),
                       child: Container(
                         width: double.infinity,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxWidth: 1170.0,
                         ),
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 5.0, 0.0, 0.0),
                                 child: Container(
                                   height: 100.0,
@@ -484,7 +462,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                       Expanded(
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 16.0, 0.0),
                                           child: PagedListView<
                                               DocumentSnapshot<Object?>?,
@@ -502,7 +480,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                     isEqualTo: false,
                                                   ),
                                             ),
-                                            padding: EdgeInsets.fromLTRB(
+                                            padding: const EdgeInsets.fromLTRB(
                                               16.0,
                                               0,
                                               0,
@@ -556,7 +534,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                     .listViewPagingController1!
                                                     .itemList![listViewIndex];
                                                 return Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 10.0, 0.0),
                                                   child: InkWell(
@@ -616,7 +594,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    Container(
+                                                                    SizedBox(
                                                                   height: 170.0,
                                                                   child:
                                                                       OptionToStaffWidget(
@@ -638,14 +616,16 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                       height: 170.0,
                                                       decoration: BoxDecoration(
                                                         color:
-                                                            Color(0xFF4B39EF),
-                                                        boxShadow: [
+                                                            const Color(0xFF4B39EF),
+                                                        boxShadow: const [
                                                           BoxShadow(
                                                             blurRadius: 5.0,
                                                             color: Color(
                                                                 0x23000000),
                                                             offset: Offset(
-                                                                0.0, 2.0),
+                                                              0.0,
+                                                              2.0,
+                                                            ),
                                                           )
                                                         ],
                                                         borderRadius:
@@ -653,7 +633,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                 .circular(8.0),
                                                       ),
                                                       child: Padding(
-                                                        padding: EdgeInsets.all(
+                                                        padding: const EdgeInsets.all(
                                                             10.0),
                                                         child: Row(
                                                           mainAxisSize:
@@ -688,6 +668,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                               Colors.white,
                                                                           fontSize:
                                                                               24.0,
+                                                                          letterSpacing:
+                                                                              0.0,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                         ),
@@ -695,7 +677,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                         10.0,
                                                                   ),
                                                                   Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             4.0,
@@ -710,16 +692,18 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                             fontFamily:
                                                                                 'Plus Jakarta Sans',
                                                                             color:
-                                                                                Color(0x9AFFFFFF),
+                                                                                const Color(0x9AFFFFFF),
                                                                             fontSize:
                                                                                 12.0,
+                                                                            letterSpacing:
+                                                                                0.0,
                                                                             fontWeight:
                                                                                 FontWeight.w500,
                                                                           ),
                                                                     ),
                                                                   ),
                                                                   Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             3.0,
@@ -778,6 +762,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                                 fontFamily: 'Outfit',
                                                                                 color: Colors.white,
                                                                                 fontSize: 16.0,
+                                                                                letterSpacing: 0.0,
                                                                                 fontWeight: FontWeight.w600,
                                                                               ),
                                                                         );
@@ -806,7 +791,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                           'admin')
                                         Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 8.0, 10.0, 8.0),
                                           child: AuthUserStreamWidget(
                                             builder: (context) =>
@@ -849,7 +834,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                         padding: MediaQuery
                                                             .viewInsetsOf(
                                                                 context),
-                                                        child: Container(
+                                                        child: const SizedBox(
                                                           height:
                                                               double.infinity,
                                                           child:
@@ -869,11 +854,11 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 12.0, 16.0, 0.0),
                                 child: Container(
                                   width: double.infinity,
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                     maxWidth: double.infinity,
                                   ),
                                   decoration: BoxDecoration(
@@ -887,7 +872,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                     ),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 12.0, 16.0, 12.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
@@ -906,6 +891,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                           context)
                                                       .secondaryText,
                                                   fontSize: 14.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                           ),
@@ -929,6 +915,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                             context)
                                                         .secondaryText,
                                                     fontSize: 14.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                             ),
@@ -952,6 +939,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                             context)
                                                         .secondaryText,
                                                     fontSize: 14.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                             ),
@@ -962,7 +950,11 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                             'Amount',
                                             textAlign: TextAlign.end,
                                             style: FlutterFlowTheme.of(context)
-                                                .labelMedium,
+                                                .labelMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  letterSpacing: 0.0,
+                                                ),
                                           ),
                                         ),
                                       ],
@@ -984,7 +976,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                             )
                                             .orderBy('date', descending: true),
                                       ),
-                                      padding: EdgeInsets.fromLTRB(
+                                      padding: const EdgeInsets.fromLTRB(
                                         0,
                                         12.0,
                                         0,
@@ -995,7 +987,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                       reverse: false,
                                       scrollDirection: Axis.vertical,
                                       separatorBuilder: (_, __) =>
-                                          SizedBox(height: 12.0),
+                                          const SizedBox(height: 12.0),
                                       builderDelegate:
                                           PagedChildBuilderDelegate<
                                               PayrollsRecord>(
@@ -1037,7 +1029,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                               .itemList![listViewIndex];
                                           return Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 0.0, 16.0, 0.0),
                                             child: InkWell(
                                               splashColor: Colors.transparent,
@@ -1080,7 +1072,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                         padding: MediaQuery
                                                             .viewInsetsOf(
                                                                 context),
-                                                        child: Container(
+                                                        child: SizedBox(
                                                           height: 180.0,
                                                           child:
                                                               OptionToPayrollWidget(
@@ -1096,7 +1088,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                               },
                                               child: Container(
                                                 width: double.infinity,
-                                                constraints: BoxConstraints(
+                                                constraints: const BoxConstraints(
                                                   maxWidth: 570.0,
                                                 ),
                                                 decoration: BoxDecoration(
@@ -1114,7 +1106,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(16.0, 12.0,
                                                           16.0, 12.0),
                                                   child: Row(
@@ -1131,7 +1123,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                         flex: 3,
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       5.0,
@@ -1149,13 +1141,12 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                     .start,
                                                             children: [
                                                               RichText(
-                                                                textScaleFactor:
-                                                                    MediaQuery.of(
-                                                                            context)
-                                                                        .textScaleFactor,
+                                                                textScaler: MediaQuery.of(
+                                                                        context)
+                                                                    .textScaler,
                                                                 text: TextSpan(
                                                                   children: [
-                                                                    TextSpan(
+                                                                    const TextSpan(
                                                                       text:
                                                                           'Fortnight #: ',
                                                                       style:
@@ -1175,12 +1166,18 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                   ],
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyLarge,
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
                                                                 ),
                                                               ),
                                                               Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             4.0,
@@ -1193,7 +1190,13 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                           .date!),
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .labelMedium,
+                                                                      .labelMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
                                                                 ),
                                                               ),
                                                             ],
@@ -1234,12 +1237,12 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                 ),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             7.0,
                                                                             0.0,
@@ -1249,7 +1252,13 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                       '2.5 lbs',
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .labelMedium,
+                                                                          .labelMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                          ),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -1291,12 +1300,12 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                 ),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             8.0,
                                                                             0.0,
@@ -1312,6 +1321,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                                 'Readex Pro',
                                                                             color:
                                                                                 FlutterFlowTheme.of(context).primary,
+                                                                            letterSpacing:
+                                                                                0.0,
                                                                           ),
                                                                     ),
                                                                   ),
@@ -1345,7 +1356,13 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                   TextAlign.end,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
-                                                                  .headlineSmall,
+                                                                  .headlineSmall
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Outfit',
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
                                                             ),
                                                             if (responsiveVisibility(
                                                               context: context,
@@ -1353,7 +1370,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                             ))
                                                               Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             4.0,
@@ -1389,12 +1406,12 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                   ),
                                                                   child: Align(
                                                                     alignment:
-                                                                        AlignmentDirectional(
+                                                                        const AlignmentDirectional(
                                                                             0.0,
                                                                             0.0),
                                                                     child:
                                                                         Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           8.0,
                                                                           0.0,
                                                                           8.0,
@@ -1410,6 +1427,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                             .override(
                                                                               fontFamily: 'Readex Pro',
                                                                               color: listViewPayrollsRecord.status == 'pending' ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
+                                                                              letterSpacing: 0.0,
                                                                             ),
                                                                       ),
                                                                     ),

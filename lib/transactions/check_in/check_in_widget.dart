@@ -8,14 +8,12 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'check_in_model.dart';
 export 'check_in_model.dart';
@@ -32,11 +30,11 @@ class CheckInWidget extends StatefulWidget {
     bool? promoOn,
     String? promoDetail,
     double? promoDiscount,
-  })  : this.totalAmount = totalAmount ?? 0.0,
-        this.extend = extend ?? false,
-        this.promoOn = promoOn ?? false,
-        this.promoDetail = promoDetail ?? 'No promo',
-        this.promoDiscount = promoDiscount ?? 0.0;
+  })  : totalAmount = totalAmount ?? 0.0,
+        extend = extend ?? false,
+        promoOn = promoOn ?? false,
+        promoDetail = promoDetail ?? 'No promo',
+        promoDiscount = promoDiscount ?? 0.0;
 
   final double? price;
   final DocumentReference? ref;
@@ -73,8 +71,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(0.0, 100.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(0.0, 100.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -90,10 +88,41 @@ class _CheckInWidgetState extends State<CheckInWidget>
       // default status
       setState(() {
         _model.paid = true;
+        _model.loop = 0;
       });
       if (widget.extend) {
         // room
         _model.room = await RoomsRecord.getDocumentOnce(widget.ref!);
+        while (_model.loop != widget.bookingToExtend?.transactions.length) {
+          // trans
+          _model.trans = await TransactionsRecord.getDocumentOnce(
+              widget.bookingToExtend!.transactions[_model.loop]);
+          // add trans to list
+          setState(() {
+            _model.addToTransactions(_model.trans!);
+          });
+          // + loop
+          setState(() {
+            _model.loop = _model.loop + 1;
+          });
+        }
+        // reset loop
+        setState(() {
+          _model.loop = 0;
+        });
+        while (_model.loop != widget.bookingToExtend?.pendings.length) {
+          // pendings to trans
+          _model.pendingsToTrans = await TransactionsRecord.getDocumentOnce(
+              widget.bookingToExtend!.pendings[_model.loop]);
+          // add trans to list
+          setState(() {
+            _model.addToTransactions(_model.pendingsToTrans!);
+          });
+          // + loop
+          setState(() {
+            _model.loop = _model.loop + 1;
+          });
+        }
         // set price, nights, beds, paid
         setState(() {
           _model.price = valueOrDefault<double>(
@@ -107,9 +136,6 @@ class _CheckInWidgetState extends State<CheckInWidget>
           _model.startingBeds = widget.bookingToExtend?.extraBeds;
           _model.paid = widget.bookingToExtend?.status == 'paid';
           _model.pendings = widget.bookingToExtend!.pendings
-              .toList()
-              .cast<DocumentReference>();
-          _model.transactions = widget.bookingToExtend!.transactions
               .toList()
               .cast<DocumentReference>();
           _model.ability = widget.bookingToExtend!.ability;
@@ -153,15 +179,6 @@ class _CheckInWidgetState extends State<CheckInWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return Scaffold(
@@ -177,7 +194,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
           icon: Icon(
             Icons.arrow_back_rounded,
             color: FlutterFlowTheme.of(context).info,
-            size: 30.0,
+            size: 25.0,
           ),
           onPressed: () async {
             context.safePop();
@@ -185,9 +202,12 @@ class _CheckInWidgetState extends State<CheckInWidget>
         ),
         title: Text(
           '${widget.extend == false ? 'New Booking' : 'Extend Booking'} In Room ${widget.roomNo?.toString()}',
-          style: FlutterFlowTheme.of(context).titleSmall,
+          style: FlutterFlowTheme.of(context).titleSmall.override(
+                fontFamily: 'Readex Pro',
+                letterSpacing: 0.0,
+              ),
         ),
-        actions: [],
+        actions: const [],
         centerTitle: false,
         elevation: 0.0,
       ),
@@ -216,9 +236,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               children: [
                                 if (widget.promoOn)
                                   Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           16.0, 24.0, 16.0, 0.0),
                                       child: Container(
                                         width:
@@ -227,18 +247,21 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         decoration: BoxDecoration(
                                           color: FlutterFlowTheme.of(context)
                                               .error,
-                                          boxShadow: [
+                                          boxShadow: const [
                                             BoxShadow(
                                               blurRadius: 8.0,
                                               color: Color(0x36000000),
-                                              offset: Offset(0.0, 4.0),
+                                              offset: Offset(
+                                                0.0,
+                                                4.0,
+                                              ),
                                             )
                                           ],
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                         ),
                                         child: Padding(
-                                          padding: EdgeInsets.all(12.0),
+                                          padding: const EdgeInsets.all(12.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
@@ -251,7 +274,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   Card(
                                                     clipBehavior: Clip
                                                         .antiAliasWithSaveLayer,
-                                                    color: Color(0xFFFD949C),
+                                                    color: const Color(0xFFFD949C),
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
@@ -260,7 +283,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     ),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsets.all(8.0),
+                                                          const EdgeInsets.all(8.0),
                                                       child: Icon(
                                                         Icons.discount_outlined,
                                                         color:
@@ -295,13 +318,15 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
                                                                       .info,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                 ),
                                                           ),
                                                         ],
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     4.0,
@@ -321,6 +346,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                                         context)
                                                                     .accent4,
                                                                 fontSize: 14.0,
+                                                                letterSpacing:
+                                                                    0.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
@@ -338,9 +365,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ),
                                   ),
                                 Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  alignment: const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 24.0, 16.0, 24.0),
                                     child: Container(
                                       width: MediaQuery.sizeOf(context).width *
@@ -348,18 +375,21 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context)
                                             .accent4,
-                                        boxShadow: [
+                                        boxShadow: const [
                                           BoxShadow(
                                             blurRadius: 8.0,
                                             color: Color(0x36000000),
-                                            offset: Offset(0.0, 4.0),
+                                            offset: Offset(
+                                              0.0,
+                                              4.0,
+                                            ),
                                           )
                                         ],
                                         borderRadius:
                                             BorderRadius.circular(8.0),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsets.all(12.0),
+                                        padding: const EdgeInsets.all(12.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
@@ -382,7 +412,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        EdgeInsets.all(8.0),
+                                                        const EdgeInsets.all(8.0),
                                                     child: FaIcon(
                                                       FontAwesomeIcons.bed,
                                                       color:
@@ -410,13 +440,19 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                               .toString(),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
-                                                              .titleLarge,
+                                                              .titleLarge
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Outfit',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
                                                         ),
                                                       ],
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   4.0,
@@ -436,6 +472,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                                       .secondaryText,
                                                                   fontSize:
                                                                       14.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -472,7 +510,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           ? FlutterFlowTheme.of(
                                                                   context)
                                                               .secondaryText
-                                                          : Color(0xFFE0E3E7),
+                                                          : const Color(0xFFE0E3E7),
                                                       size: 20.0,
                                                     ),
                                                     incrementIconBuilder:
@@ -482,16 +520,20 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           ? FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryText
-                                                          : Color(0xFFE0E3E7),
+                                                          : const Color(0xFFE0E3E7),
                                                       size: 20.0,
                                                     ),
                                                     countBuilder: (count) =>
                                                         Text(
                                                       count.toString(),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .headlineMedium,
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .headlineMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Outfit',
+                                                            letterSpacing: 0.0,
+                                                          ),
                                                     ),
                                                     count: _model
                                                         .nightsValue ??= widget
@@ -525,7 +567,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -535,7 +577,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
                                   child: TextFormField(
                                     controller: _model.contactFieldController,
@@ -544,10 +586,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     decoration: InputDecoration(
                                       labelText: 'Contact',
                                       labelStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium,
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                       hintText: 'Mobile Number',
                                       hintStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium,
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: FlutterFlowTheme.of(context)
@@ -594,7 +644,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           fontFamily: 'Readex Pro',
                                           color: FlutterFlowTheme.of(context)
                                               .secondaryText,
+                                          letterSpacing: 0.0,
                                         ),
+                                    minLines: null,
                                     validator: _model
                                         .contactFieldControllerValidator
                                         .asValidator(context),
@@ -608,7 +660,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
                                   child: TextFormField(
                                     controller: _model.detailsFieldController,
@@ -617,10 +669,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     decoration: InputDecoration(
                                       labelText: 'ID',
                                       labelStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium,
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                       hintText: 'Additional details',
                                       hintStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium,
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: FlutterFlowTheme.of(context)
@@ -667,6 +727,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           fontFamily: 'Readex Pro',
                                           color: FlutterFlowTheme.of(context)
                                               .secondaryText,
+                                          letterSpacing: 0.0,
                                         ),
                                     maxLines: null,
                                     minLines: 3,
@@ -687,7 +748,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 16.0, 24.0, 0.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -699,25 +760,29 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     .bodySmall
                                     .override(
                                       fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
-                              if (FFAppState().bedPrice != null)
-                                Text(
-                                  formatNumber(
-                                    FFAppState().bedPrice,
-                                    formatType: FormatType.decimal,
-                                    decimalType: DecimalType.automatic,
-                                    currency: 'Php ',
-                                  ),
-                                  style:
-                                      FlutterFlowTheme.of(context).bodyMedium,
+                              Text(
+                                formatNumber(
+                                  FFAppState().bedPrice,
+                                  formatType: FormatType.decimal,
+                                  decimalType: DecimalType.automatic,
+                                  currency: 'Php ',
                                 ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 12.0, 16.0, 0.0),
                           child: Wrap(
                             spacing: 0.0,
@@ -730,10 +795,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             clipBehavior: Clip.none,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 8.0, 0.0, 15.0),
                                 child: FlutterFlowChoiceChips(
-                                  options: [
+                                  options: const [
                                     ChipData('0'),
                                     ChipData('1'),
                                     ChipData('2'),
@@ -746,17 +811,21 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ChipData('9'),
                                     ChipData('10')
                                   ],
-                                  onChanged: (val) => setState(
-                                      () => _model.bedsValue = val?.first),
+                                  onChanged: (val) => setState(() =>
+                                      _model.bedsValue = val?.firstOrNull),
                                   selectedChipStyle: ChipStyle(
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).primary,
-                                    textStyle:
-                                        FlutterFlowTheme.of(context).titleSmall,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                     iconColor: Colors.white,
                                     iconSize: 18.0,
                                     labelPadding:
-                                        EdgeInsetsDirectional.fromSTEB(
+                                        const EdgeInsetsDirectional.fromSTEB(
                                             12.0, 4.0, 12.0, 4.0),
                                     elevation: 2.0,
                                   ),
@@ -764,12 +833,16 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).alternate,
                                     textStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium,
+                                        .labelMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                     iconColor: FlutterFlowTheme.of(context)
                                         .primaryText,
                                     iconSize: 18.0,
                                     labelPadding:
-                                        EdgeInsetsDirectional.fromSTEB(
+                                        const EdgeInsetsDirectional.fromSTEB(
                                             12.0, 4.0, 12.0, 4.0),
                                     elevation: 0.0,
                                   ),
@@ -799,7 +872,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 16.0, 24.0, 0.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -810,6 +883,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     .bodySmall
                                     .override(
                                       fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -817,7 +891,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 12.0, 16.0, 0.0),
                           child: Wrap(
                             spacing: 0.0,
@@ -830,10 +904,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             clipBehavior: Clip.none,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 8.0, 0.0, 15.0),
                                 child: FlutterFlowChoiceChips(
-                                  options: [
+                                  options: const [
                                     ChipData('1'),
                                     ChipData('2'),
                                     ChipData('3'),
@@ -841,17 +915,21 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ChipData('5'),
                                     ChipData('6')
                                   ],
-                                  onChanged: (val) => setState(
-                                      () => _model.guestsValue = val?.first),
+                                  onChanged: (val) => setState(() =>
+                                      _model.guestsValue = val?.firstOrNull),
                                   selectedChipStyle: ChipStyle(
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).primary,
-                                    textStyle:
-                                        FlutterFlowTheme.of(context).titleSmall,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                     iconColor: Colors.white,
                                     iconSize: 18.0,
                                     labelPadding:
-                                        EdgeInsetsDirectional.fromSTEB(
+                                        const EdgeInsetsDirectional.fromSTEB(
                                             12.0, 4.0, 12.0, 4.0),
                                     elevation: 2.0,
                                   ),
@@ -859,12 +937,16 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).alternate,
                                     textStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium,
+                                        .labelMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                     iconColor: FlutterFlowTheme.of(context)
                                         .primaryText,
                                     iconSize: 18.0,
                                     labelPadding:
-                                        EdgeInsetsDirectional.fromSTEB(
+                                        const EdgeInsetsDirectional.fromSTEB(
                                             12.0, 4.0, 12.0, 4.0),
                                     elevation: 0.0,
                                   ),
@@ -895,7 +977,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 24.0, 16.0, 24.0, 0.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -907,29 +989,30 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       .bodySmall
                                       .override(
                                         fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.bold,
                                       ),
                                 ),
-                                if (FFAppState().extPricePerHr != null)
-                                  Text(
-                                    formatNumber(
-                                      FFAppState().extPricePerHr,
-                                      formatType: FormatType.decimal,
-                                      decimalType: DecimalType.automatic,
-                                      currency: 'Php ',
-                                    ),
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          fontSize: 12.0,
-                                        ),
+                                Text(
+                                  formatNumber(
+                                    FFAppState().extPricePerHr,
+                                    formatType: FormatType.decimal,
+                                    decimalType: DecimalType.automatic,
+                                    currency: 'Php ',
                                   ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        fontSize: 12.0,
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
                               ],
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 24.0, 12.0, 16.0, 0.0),
                             child: Wrap(
                               spacing: 0.0,
@@ -942,10 +1025,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               clipBehavior: Clip.none,
                               children: [
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 8.0, 0.0, 15.0),
                                   child: FlutterFlowChoiceChips(
-                                    options: [
+                                    options: const [
                                       ChipData('0'),
                                       ChipData('1'),
                                       ChipData('2'),
@@ -954,8 +1037,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       ChipData('5')
                                     ],
                                     onChanged: (val) async {
-                                      setState(() => _model
-                                          .hoursLateCheckoutValue = val?.first);
+                                      setState(() =>
+                                          _model.hoursLateCheckoutValue =
+                                              val?.firstOrNull);
                                       if (_model.paid == false) {
                                         if (_model.hoursLateCheckoutValue !=
                                             '0') {
@@ -970,11 +1054,15 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       backgroundColor:
                                           FlutterFlowTheme.of(context).primary,
                                       textStyle: FlutterFlowTheme.of(context)
-                                          .titleSmall,
+                                          .titleSmall
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                       iconColor: Colors.white,
                                       iconSize: 18.0,
                                       labelPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
+                                          const EdgeInsetsDirectional.fromSTEB(
                                               12.0, 4.0, 12.0, 4.0),
                                       elevation: 2.0,
                                     ),
@@ -983,12 +1071,16 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           FlutterFlowTheme.of(context)
                                               .alternate,
                                       textStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium,
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                       iconColor: FlutterFlowTheme.of(context)
                                           .primaryText,
                                       iconSize: 18.0,
                                       labelPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
+                                          const EdgeInsetsDirectional.fromSTEB(
                                               12.0, 4.0, 12.0, 4.0),
                                       elevation: 0.0,
                                     ),
@@ -1012,13 +1104,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                         ],
                       ),
                     Align(
-                      alignment: AlignmentDirectional(0.0, -1.0),
+                      alignment: const AlignmentDirectional(0.0, -1.0),
                       child: Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(16.0),
                         child: Container(
                           width: double.infinity,
                           height: 50.0,
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             maxWidth: 500.0,
                           ),
                           decoration: BoxDecoration(
@@ -1031,7 +1123,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             ),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(4.0),
+                            padding: const EdgeInsets.all(4.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -1084,7 +1176,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     4.0, 0.0, 0.0, 0.0),
                                             child: Text(
                                               'Paid',
@@ -1096,6 +1188,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .primaryText,
+                                                    letterSpacing: 0.0,
                                                   ),
                                             ),
                                           ),
@@ -1148,7 +1241,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     4.0, 0.0, 0.0, 0.0),
                                             child: Text(
                                               'Pending',
@@ -1160,6 +1253,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .primaryText,
+                                                    letterSpacing: 0.0,
                                                   ),
                                             ),
                                           ),
@@ -1176,14 +1270,14 @@ class _CheckInWidgetState extends State<CheckInWidget>
                     ),
                     if (!widget.extend)
                       Align(
-                        alignment: AlignmentDirectional(0.0, -1.0),
+                        alignment: const AlignmentDirectional(0.0, -1.0),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 16.0, 16.0),
                           child: Container(
                             width: double.infinity,
                             height: 50.0,
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxWidth: 500.0,
                             ),
                             decoration: BoxDecoration(
@@ -1196,7 +1290,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -1250,7 +1344,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               size: 16.0,
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'Normal',
@@ -1263,6 +1357,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryText,
+                                                      letterSpacing: 0.0,
                                                     ),
                                               ),
                                             ),
@@ -1321,7 +1416,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               size: 16.0,
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'Senior',
@@ -1334,6 +1429,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryText,
+                                                      letterSpacing: 0.0,
                                                     ),
                                               ),
                                             ),
@@ -1392,7 +1488,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               size: 16.0,
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'PWD',
@@ -1405,6 +1501,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryText,
+                                                      letterSpacing: 0.0,
                                                     ),
                                               ),
                                             ),
@@ -1421,17 +1518,20 @@ class _CheckInWidgetState extends State<CheckInWidget>
                       ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
                       child: Container(
                         width: MediaQuery.sizeOf(context).width * 1.0,
                         decoration: BoxDecoration(
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               blurRadius: 4.0,
                               color: Color(0x55000000),
-                              offset: Offset(0.0, 2.0),
+                              offset: Offset(
+                                0.0,
+                                2.0,
+                              ),
                             )
                           ],
                           borderRadius: BorderRadius.circular(12.0),
@@ -1441,7 +1541,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 16.0, 16.0, 16.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -1487,18 +1587,23 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                             .hoursLateCheckoutValue,
                                                         '0',
                                                       )))
-                                                  : 0.0),
+                                                  : 0.0,
+                                              _model.transactions.toList()),
                                           formatType: FormatType.decimal,
                                           decimalType: DecimalType.automatic,
                                           currency: 'P ',
                                         ),
                                         style: FlutterFlowTheme.of(context)
-                                            .titleLarge,
+                                            .titleLarge
+                                            .override(
+                                              fontFamily: 'Outfit',
+                                              letterSpacing: 0.0,
+                                            ),
                                       ),
                                     ],
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 4.0, 0.0, 0.0),
                                     child: Text(
                                       'Total',
@@ -1509,6 +1614,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             color: FlutterFlowTheme.of(context)
                                                 .secondary,
                                             fontSize: 14.0,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.normal,
                                           ),
                                     ),
@@ -1517,7 +1623,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               ),
                               FFButtonWidget(
                                 onPressed: () async {
-                                  var _shouldSetState = false;
+                                  var shouldSetState = false;
                                   if (widget.extend) {
                                     if (_model.paid) {
                                       if (functions.hasDifferencesInBookings(
@@ -1564,7 +1670,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                               .hoursLateCheckoutValue,
                                                           '0',
                                                         )))
-                                                    : 0.0),
+                                                    : 0.0,
+                                                _model.transactions.toList()),
                                             type: 'book',
                                             hotel: FFAppState().hotel,
                                             booking: widget
@@ -1612,7 +1719,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                               .hoursLateCheckoutValue,
                                                           '0',
                                                         )))
-                                                    : 0.0),
+                                                    : 0.0,
+                                                _model.transactions.toList()),
                                             type: 'book',
                                             hotel: FFAppState().hotel,
                                             booking: widget
@@ -1631,11 +1739,11 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             },
                                           ),
                                         }, transactionsRecordReference1);
-                                        _shouldSetState = true;
+                                        shouldSetState = true;
                                         // add to trans list
                                         setState(() {
                                           _model.addToTransactions(
-                                              _model.refundTrans!.reference);
+                                              _model.refundTrans!);
                                         });
                                         // add this change to history
 
@@ -1694,92 +1802,21 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               ),
                                             ),
                                             duration:
-                                                Duration(milliseconds: 4000),
+                                                const Duration(milliseconds: 4000),
                                             backgroundColor:
                                                 FlutterFlowTheme.of(context)
                                                     .secondary,
                                           ),
                                         );
-                                        if (_shouldSetState) setState(() {});
+                                        if (shouldSetState) setState(() {});
                                         return;
                                       }
 
-                                      while (_model.loopPendingTransactions !=
-                                          widget.bookingToExtend?.pendings
-                                              ?.length) {
-                                        // pendingTrans
-                                        _model.pendingTrans =
-                                            await TransactionsRecord
-                                                .getDocumentOnce(widget
-                                                        .bookingToExtend!
-                                                        .pendings[
-                                                    _model
-                                                        .loopPendingTransactions]);
-                                        _shouldSetState = true;
-                                        // pay balance of this transaction
-
-                                        await widget
-                                            .bookingToExtend!
-                                            .pendings[
-                                                _model.loopPendingTransactions]
-                                            .update({
-                                          ...createTransactionsRecordData(
-                                            pending: false,
-                                            description: _model
-                                                        .pendingTrans!.total <
-                                                    0.0
-                                                ? _model
-                                                    .pendingTrans?.description
-                                                : 'Guest paid the balance for ${_model.pendingTrans?.description}',
-                                          ),
-                                          ...mapToFirestore(
-                                            {
-                                              'date':
-                                                  FieldValue.serverTimestamp(),
-                                            },
-                                          ),
-                                        });
-                                        // remove trans from pending in booking
-
-                                        await widget.bookingToExtend!.reference
-                                            .update({
-                                          ...mapToFirestore(
-                                            {
-                                              'pendings':
-                                                  FieldValue.arrayRemove([
-                                                _model.pendingTrans?.reference
-                                              ]),
-                                              'transactions':
-                                                  FieldValue.arrayUnion([
-                                                _model.pendingTrans?.reference
-                                              ]),
-                                            },
-                                          ),
-                                        });
-                                        // increment loop
-                                        setState(() {
-                                          _model.loopPendingTransactions =
-                                              _model.loopPendingTransactions +
-                                                  1;
-                                        });
-                                      }
-                                      // reset pending list
-                                      setState(() {
-                                        _model.pendings = [];
-                                      });
-                                      // paid booking status
-
-                                      await widget.bookingToExtend!.reference
-                                          .update({
-                                        ...createBookingsRecordData(
-                                          status: 'paid',
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'pendings': _model.pendings,
-                                          },
-                                        ),
-                                      });
+                                      // pay all balances
+                                      await action_blocks.payBalanceOfPending(
+                                        context,
+                                        booking: widget.bookingToExtend,
+                                      );
                                     } else {
                                       // haven't paid balance
                                       var confirmDialogResponse =
@@ -1787,9 +1824,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 context: context,
                                                 builder: (alertDialogContext) {
                                                   return AlertDialog(
-                                                    title: Text(
+                                                    title: const Text(
                                                         'Did the guest not pay balance yet?'),
-                                                    content: Text(
+                                                    content: const Text(
                                                         'Confirm to proceed even without paying the balance yet.'),
                                                     actions: [
                                                       TextButton(
@@ -1797,14 +1834,14 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                             Navigator.pop(
                                                                 alertDialogContext,
                                                                 false),
-                                                        child: Text('Cancel'),
+                                                        child: const Text('Cancel'),
                                                       ),
                                                       TextButton(
                                                         onPressed: () =>
                                                             Navigator.pop(
                                                                 alertDialogContext,
                                                                 true),
-                                                        child: Text('Confirm'),
+                                                        child: const Text('Confirm'),
                                                       ),
                                                     ],
                                                   );
@@ -1821,14 +1858,15 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 _model.startingNights!,
                                                 FFAppState().extPricePerHr *
                                                     int.parse((_model
-                                                        .hoursLateCheckoutValue!)))! >
+                                                        .hoursLateCheckoutValue!)),
+                                                _model.transactions.toList())! >
                                             0.0) {
                                           // New Pending Transaction
 
-                                          var transactionsRecordReference3 =
+                                          var transactionsRecordReference2 =
                                               TransactionsRecord.collection
                                                   .doc();
-                                          await transactionsRecordReference3
+                                          await transactionsRecordReference2
                                               .set({
                                             ...createTransactionsRecordData(
                                               staff: currentUserReference,
@@ -1850,7 +1888,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                                 .hoursLateCheckoutValue,
                                                             '0',
                                                           )))
-                                                      : 0.0),
+                                                      : 0.0,
+                                                  _model.transactions.toList()),
                                               type: 'book',
                                               hotel: FFAppState().hotel,
                                               booking: widget
@@ -1893,7 +1932,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                                 .hoursLateCheckoutValue,
                                                             '0',
                                                           )))
-                                                      : 0.0),
+                                                      : 0.0,
+                                                  _model.transactions.toList()),
                                               type: 'book',
                                               hotel: FFAppState().hotel,
                                               booking: widget
@@ -1911,8 +1951,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 'date': DateTime.now(),
                                               },
                                             ),
-                                          }, transactionsRecordReference3);
-                                          _shouldSetState = true;
+                                          }, transactionsRecordReference2);
+                                          shouldSetState = true;
                                           // add to pendings list
                                           setState(() {
                                             _model.addToPendings(_model
@@ -1947,14 +1987,16 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   _model.startingNights!,
                                                   FFAppState().extPricePerHr *
                                                       int.parse((_model
-                                                          .hoursLateCheckoutValue!)))! <
+                                                          .hoursLateCheckoutValue!)),
+                                                  _model.transactions
+                                                      .toList())! <
                                               0.0) {
                                             // New Pending Transaction
 
-                                            var transactionsRecordReference4 =
+                                            var transactionsRecordReference3 =
                                                 TransactionsRecord.collection
                                                     .doc();
-                                            await transactionsRecordReference4
+                                            await transactionsRecordReference3
                                                 .set({
                                               ...createTransactionsRecordData(
                                                 staff: currentUserReference,
@@ -1976,7 +2018,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                                   .hoursLateCheckoutValue,
                                                               '0',
                                                             )))
-                                                        : 0.0),
+                                                        : 0.0,
+                                                    _model.transactions
+                                                        .toList()),
                                                 type: 'book',
                                                 hotel: FFAppState().hotel,
                                                 booking: widget
@@ -2019,7 +2063,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                                   .hoursLateCheckoutValue,
                                                               '0',
                                                             )))
-                                                        : 0.0),
+                                                        : 0.0,
+                                                    _model.transactions
+                                                        .toList()),
                                                 type: 'book',
                                                 hotel: FFAppState().hotel,
                                                 booking: widget
@@ -2037,8 +2083,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   'date': DateTime.now(),
                                                 },
                                               ),
-                                            }, transactionsRecordReference4);
-                                            _shouldSetState = true;
+                                            }, transactionsRecordReference3);
+                                            shouldSetState = true;
                                             // add to pendings list
                                             setState(() {
                                               _model.addToPendings(_model
@@ -2076,20 +2122,21 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                         .info,
                                                   ),
                                                 ),
-                                                duration: Duration(
+                                                duration: const Duration(
                                                     milliseconds: 4000),
                                                 backgroundColor:
                                                     FlutterFlowTheme.of(context)
                                                         .error,
                                               ),
                                             );
-                                            if (_shouldSetState)
+                                            if (shouldSetState) {
                                               setState(() {});
+                                            }
                                             return;
                                           }
                                         }
                                       } else {
-                                        if (_shouldSetState) setState(() {});
+                                        if (shouldSetState) setState(() {});
                                         return;
                                       }
                                     }
@@ -2110,7 +2157,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               0,
                                               FFAppState().extPricePerHr *
                                                   int.parse((_model
-                                                      .hoursLateCheckoutValue!))),
+                                                      .hoursLateCheckoutValue!)),
+                                              _model.transactions.toList()),
                                           0.0,
                                         ),
                                         extraBeds: _model.bedsValue,
@@ -2127,7 +2175,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       ...mapToFirestore(
                                         {
                                           'pendings': _model.pendings,
-                                          'transactions': _model.transactions,
+                                          'transactions': _model.transactions
+                                              .map((e) => e.reference)
+                                              .toList(),
                                         },
                                       ),
                                     });
@@ -2140,7 +2190,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -2170,7 +2220,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               FFAppState().bedPrice,
                                               '-1',
                                               0,
-                                              0.0),
+                                              0.0,
+                                              _model.transactions.toList()),
                                           0.0,
                                         ),
                                         status: functions
@@ -2186,7 +2237,6 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           'dateIn':
                                               FieldValue.serverTimestamp(),
                                           'pendings': _model.pendings,
-                                          'transactions': _model.transactions,
                                         },
                                       ),
                                     });
@@ -2210,7 +2260,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               FFAppState().bedPrice,
                                               '-1',
                                               0,
-                                              0.0),
+                                              0.0,
+                                              _model.transactions.toList()),
                                           0.0,
                                         ),
                                         status: functions
@@ -2225,17 +2276,16 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         {
                                           'dateIn': DateTime.now(),
                                           'pendings': _model.pendings,
-                                          'transactions': _model.transactions,
                                         },
                                       ),
                                     }, bookingsRecordReference);
-                                    _shouldSetState = true;
+                                    shouldSetState = true;
                                     if (_model.paid) {
                                       // New Transaction
 
-                                      var transactionsRecordReference5 =
+                                      var transactionsRecordReference4 =
                                           TransactionsRecord.collection.doc();
-                                      await transactionsRecordReference5.set({
+                                      await transactionsRecordReference4.set({
                                         ...createTransactionsRecordData(
                                           staff: currentUserReference,
                                           total: functions.getTotalAmount(
@@ -2245,7 +2295,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               FFAppState().bedPrice,
                                               _model.startingBeds!,
                                               _model.startingNights!,
-                                              0.0),
+                                              0.0,
+                                              _model.transactions.toList()),
                                           type: 'book',
                                           hotel: FFAppState().hotel,
                                           booking:
@@ -2254,7 +2305,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               .stringToInt(_model.guestsValue),
                                           room: widget.roomNo,
                                           description:
-                                              'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                              'New check in in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                           remitted: false,
                                           pending: false,
                                         ),
@@ -2276,7 +2327,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               FFAppState().bedPrice,
                                               _model.startingBeds!,
                                               _model.startingNights!,
-                                              0.0),
+                                              0.0,
+                                              _model.transactions.toList()),
                                           type: 'book',
                                           hotel: FFAppState().hotel,
                                           booking:
@@ -2285,7 +2337,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               .stringToInt(_model.guestsValue),
                                           room: widget.roomNo,
                                           description:
-                                              'New checkin in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                              'New check in in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                           remitted: false,
                                           pending: false,
                                         ),
@@ -2294,12 +2346,12 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             'date': DateTime.now(),
                                           },
                                         ),
-                                      }, transactionsRecordReference5);
-                                      _shouldSetState = true;
+                                      }, transactionsRecordReference4);
+                                      shouldSetState = true;
                                       // add to trans list
                                       setState(() {
                                         _model.addToTransactions(
-                                            _model.checkin1!.reference);
+                                            _model.checkin1!);
                                       });
                                       // Check In To History
 
@@ -2322,9 +2374,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     } else {
                                       // New Pending Transaction
 
-                                      var transactionsRecordReference6 =
+                                      var transactionsRecordReference5 =
                                           TransactionsRecord.collection.doc();
-                                      await transactionsRecordReference6.set({
+                                      await transactionsRecordReference5.set({
                                         ...createTransactionsRecordData(
                                           staff: currentUserReference,
                                           total: functions.getTotalAmount(
@@ -2334,7 +2386,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               FFAppState().bedPrice,
                                               _model.startingBeds!,
                                               _model.startingNights!,
-                                              0.0),
+                                              0.0,
+                                              _model.transactions.toList()),
                                           type: 'book',
                                           hotel: FFAppState().hotel,
                                           booking:
@@ -2365,7 +2418,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               FFAppState().bedPrice,
                                               _model.startingBeds!,
                                               _model.startingNights!,
-                                              0.0),
+                                              0.0,
+                                              _model.transactions.toList()),
                                           type: 'book',
                                           hotel: FFAppState().hotel,
                                           booking:
@@ -2383,8 +2437,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             'date': DateTime.now(),
                                           },
                                         ),
-                                      }, transactionsRecordReference6);
-                                      _shouldSetState = true;
+                                      }, transactionsRecordReference5);
+                                      shouldSetState = true;
                                       // add to pendings list
 
                                       await _model.savedBooking!.reference
@@ -2426,7 +2480,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -2445,25 +2499,41 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       currentBooking:
                                           _model.savedBooking?.reference,
                                     ));
+                                    // add transactions to booking
+
+                                    await _model.savedBooking!.reference
+                                        .update({
+                                      ...mapToFirestore(
+                                        {
+                                          'transactions': _model.transactions
+                                              .map((e) => e.reference)
+                                              .toList(),
+                                        },
+                                      ),
+                                    });
                                   }
 
                                   context.safePop();
-                                  if (_shouldSetState) setState(() {});
+                                  if (shouldSetState) setState(() {});
                                 },
                                 text:
                                     widget.extend == true ? 'Save' : 'Check In',
                                 options: FFButtonOptions(
                                   width: 130.0,
                                   height: 50.0,
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
-                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
                                   color: FlutterFlowTheme.of(context).primary,
-                                  textStyle:
-                                      FlutterFlowTheme.of(context).titleSmall,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
                                   elevation: 3.0,
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: Colors.transparent,
                                     width: 1.0,
                                   ),

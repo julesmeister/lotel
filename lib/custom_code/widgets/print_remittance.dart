@@ -65,7 +65,8 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                     '${goodsItem.description} x${goodsItem.quantity.toString()}')
                 .join(', ') +
             (transaction.description.isNotEmpty
-                ? ' - ${transaction.description}'
+                ? ' - ${transaction.description}' +
+                    ' - excluded from total expenses'
                 : '');
 
     return goodsDescription;
@@ -73,6 +74,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
 
   Future<void> generatePdf() async {
     final pdf = pw.Document();
+    roomSales = 0.0;
 
     List<List<String>> generateRoomTableData() {
       final List<List<String>> entries = [];
@@ -280,7 +282,9 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         final description = generateExpenseDescription(transaction);
 
         final total = transaction.total.toDouble();
-        totalExpenses += total; // Accumulate totalExpenses
+        if (transaction.goods.isEmpty) {
+          totalExpenses += total; // Accumulate totalExpenses
+        }
         final List<String> entry = [
           description,
           NumberFormat.currency(

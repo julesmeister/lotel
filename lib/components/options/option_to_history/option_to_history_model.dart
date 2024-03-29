@@ -1,15 +1,7 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/forms/history_edit/history_edit_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'option_to_history_widget.dart' show OptionToHistoryWidget;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class OptionToHistoryModel extends FlutterFlowModel<OptionToHistoryWidget> {
   ///  State fields for stateful widgets in this component.
@@ -17,13 +9,9 @@ class OptionToHistoryModel extends FlutterFlowModel<OptionToHistoryWidget> {
   // Stores action output result for [Backend Call - Read Document] action in changeDetails widget.
   BookingsRecord? book;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {}
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

@@ -7,13 +7,8 @@ import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:provider/provider.dart';
 import 'individual_history_model.dart';
 export 'individual_history_model.dart';
 
@@ -58,17 +53,6 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
-    context.watch<FFAppState>();
-
     return FutureBuilder<int>(
       future: querySalariesRecordCount(
         queryBuilder: (salariesRecord) => salariesRecord.where(
@@ -123,9 +107,12 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                   widget.staff?.name,
                   'Name',
                 ),
-                style: FlutterFlowTheme.of(context).headlineMedium,
+                style: FlutterFlowTheme.of(context).headlineMedium.override(
+                      fontFamily: 'Outfit',
+                      letterSpacing: 0.0,
+                    ),
               ),
-              actions: [],
+              actions: const [],
               centerTitle: false,
               elevation: 0.0,
             ),
@@ -137,26 +124,33 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 0.0, 0.0),
                     child: Text(
                       'Below is the summary of ${widget.staff?.name}\'s salary history.',
-                      style: FlutterFlowTheme.of(context).labelMedium,
+                      style: FlutterFlowTheme.of(context).labelMedium.override(
+                            fontFamily: 'Readex Pro',
+                            letterSpacing: 0.0,
+                          ),
                     ),
                   ),
                   Expanded(
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                       child: Column(
                         children: [
                           Align(
-                            alignment: Alignment(0.0, 0),
+                            alignment: const Alignment(0.0, 0),
                             child: FlutterFlowButtonTabBar(
                               useToggleButtonStyle: true,
                               isScrollable: true,
-                              labelStyle:
-                                  FlutterFlowTheme.of(context).labelMedium,
-                              unselectedLabelStyle: TextStyle(),
+                              labelStyle: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                              unselectedLabelStyle: const TextStyle(),
                               labelColor:
                                   FlutterFlowTheme.of(context).primaryText,
                               unselectedLabelColor:
@@ -170,11 +164,11 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                               borderWidth: 2.0,
                               borderRadius: 12.0,
                               elevation: 0.0,
-                              labelPadding: EdgeInsetsDirectional.fromSTEB(
+                              labelPadding: const EdgeInsetsDirectional.fromSTEB(
                                   20.0, 0.0, 20.0, 0.0),
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   24.0, 0.0, 24.0, 0.0),
-                              tabs: [
+                              tabs: const [
                                 Tab(
                                   text: 'Salaries',
                                 ),
@@ -215,7 +209,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                 .orderBy('date',
                                                     descending: true),
                                           ),
-                                          padding: EdgeInsets.fromLTRB(
+                                          padding: const EdgeInsets.fromLTRB(
                                             0,
                                             10.0,
                                             0,
@@ -303,7 +297,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: Container(
+                                                            child: SizedBox(
                                                               height: 130.0,
                                                               child:
                                                                   SalaryOptionsWidget(
@@ -331,7 +325,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(20.0, 0.0,
                                                                 25.0, 0.0),
                                                     child: Row(
@@ -341,20 +335,20 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Container(
+                                                        SizedBox(
                                                           width: 24.0,
                                                           child: Stack(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             children: [
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         -1.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -407,7 +401,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
+                                                                const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         10.0,
                                                                         5.0,
@@ -425,7 +419,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                       .start,
                                                               children: [
                                                                 Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -435,7 +429,13 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                     'Date Settled',
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .labelSmall,
+                                                                        .labelSmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
                                                                   ),
                                                                 ),
                                                                 Row(
@@ -453,7 +453,13 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                               .date!),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .bodyLarge,
+                                                                          .bodyLarge
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                          ),
                                                                     ),
                                                                     Text(
                                                                       formatNumber(
@@ -468,7 +474,13 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                       ),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .bodyLarge,
+                                                                          .bodyLarge
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                          ),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -503,7 +515,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                         descending: true),
                                                 parent:
                                                     widget.staff?.reference),
-                                        padding: EdgeInsets.fromLTRB(
+                                        padding: const EdgeInsets.fromLTRB(
                                           0,
                                           10.0,
                                           0,
@@ -587,7 +599,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                           padding: MediaQuery
                                                               .viewInsetsOf(
                                                                   context),
-                                                          child: Container(
+                                                          child: SizedBox(
                                                             height: 130.0,
                                                             child:
                                                                 CashAdvanceOptionsWidget(
@@ -613,7 +625,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                           0.0),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           20.0, 0.0, 25.0, 0.0),
                                                   child: Row(
@@ -623,21 +635,21 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Container(
+                                                      SizedBox(
                                                         width: 24.0,
                                                         child: Stack(
                                                           alignment:
-                                                              AlignmentDirectional(
+                                                              const AlignmentDirectional(
                                                                   0.0, 0.0),
                                                           children: [
                                                             Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0,
                                                                       -1.0),
                                                               child: Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -698,7 +710,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           10.0,
                                                                           0.0,
@@ -747,7 +759,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                             .start,
                                                                     children: [
                                                                       Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             0.0,
                                                                             0.0,
@@ -755,8 +767,12 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                         child:
                                                                             Text(
                                                                           'Issued by ${columnUsersRecord.displayName} on ',
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelSmall,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .labelSmall
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                letterSpacing: 0.0,
+                                                                              ),
                                                                         ),
                                                                       ),
                                                                       Text(
@@ -764,7 +780,11 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                             'MMM d y h:mm a',
                                                                             listViewAdvancesRecord.date!),
                                                                         style: FlutterFlowTheme.of(context)
-                                                                            .bodyLarge,
+                                                                            .bodyLarge
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              letterSpacing: 0.0,
+                                                                            ),
                                                                       ),
                                                                     ],
                                                                   );
@@ -794,10 +814,16 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                   ),
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyLarge,
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           8.0,
@@ -833,12 +859,12 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                     child:
                                                                         Align(
                                                                       alignment:
-                                                                          AlignmentDirectional(
+                                                                          const AlignmentDirectional(
                                                                               0.0,
                                                                               0.0),
                                                                       child:
                                                                           Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             8.0,
                                                                             0.0,
                                                                             8.0,
@@ -855,6 +881,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                               .override(
                                                                                 fontFamily: 'Readex Pro',
                                                                                 color: listViewAdvancesRecord.settled == false ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
+                                                                                letterSpacing: 0.0,
                                                                               ),
                                                                         ),
                                                                       ),
@@ -886,7 +913,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                               .orderBy('date',
                                                   descending: true),
                                           parent: widget.staff?.reference),
-                                  padding: EdgeInsets.fromLTRB(
+                                  padding: const EdgeInsets.fromLTRB(
                                     0,
                                     10.0,
                                     0,
@@ -942,7 +969,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                         ),
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   20.0, 0.0, 25.0, 0.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
@@ -959,20 +986,20 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Container(
+                                                    SizedBox(
                                                       width: 24.0,
                                                       child: Stack(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         children: [
                                                           Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, -1.5),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -1021,7 +1048,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   10.0,
                                                                   0.0,
@@ -1096,7 +1123,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                         padding:
                                                                             MediaQuery.viewInsetsOf(context),
                                                                         child:
-                                                                            Container(
+                                                                            SizedBox(
                                                                           height:
                                                                               double.infinity,
                                                                           child:
@@ -1136,7 +1163,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                       .start,
                                                               children: [
                                                                 Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -1146,7 +1173,13 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                     'Reported by ${columnUsersRecord.displayName} on',
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .labelSmall,
+                                                                        .labelSmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
                                                                   ),
                                                                 ),
                                                                 Text(
@@ -1156,7 +1189,13 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                           .date!),
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyLarge,
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
                                                                 ),
                                                               ],
                                                             ),
@@ -1185,11 +1224,17 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                           ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
-                                                              .bodyLarge,
+                                                              .bodyLarge
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       8.0,
@@ -1229,11 +1274,11 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                             ),
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             8.0,
                                                                             0.0,
@@ -1257,6 +1302,8 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                                 false
                                                                             ? FlutterFlowTheme.of(context).error
                                                                             : FlutterFlowTheme.of(context).secondary,
+                                                                        letterSpacing:
+                                                                            0.0,
                                                                       ),
                                                                 ),
                                                               ),

@@ -21,29 +21,47 @@ double? getTotalAmount(
   String startingBeds,
   int startingNights,
   double? lateCheckoutFee,
+  List<TransactionsRecord>? transactions,
 ) {
+  double prevTotalAmount = 0.0;
   double totalAmount = 0.0;
+  double totalTransactions = transactions != null
+      ? transactions.fold<double>(
+          0.0, (prev, transaction) => prev + (transaction.total ?? 0.0))
+      : 0.0;
 
   int parsedStartingBeds = int.tryParse(startingBeds) ?? 0;
   int parsedBeds = int.tryParse(beds) ?? 0;
 
   if (parsedStartingBeds == -1) {
+    // New transaction
     totalAmount += parsedBeds * bedPrice;
   } else {
+    // Change in booking
+    prevTotalAmount += parsedStartingBeds * bedPrice;
     int bedDifference = parsedBeds - parsedStartingBeds;
     totalAmount += bedDifference * bedPrice;
   }
 
   if (startingNights != 0) {
+    // Change in booking
+    prevTotalAmount = startingNights * roomPrice;
     int nightDifference = nights - startingNights;
     totalAmount += nightDifference * roomPrice;
   } else {
+    // New transaction
     totalAmount += nights * roomPrice;
   }
 
   // Add late checkout fee if indicated
   if (lateCheckoutFee != null) {
     totalAmount += lateCheckoutFee;
+  }
+
+  if (totalAmount != prevTotalAmount) {
+    // this means there are changes in this total amount. with this changes, let's add them to totalTransactions and that will be returned instead.
+    totalTransactions += totalAmount - prevTotalAmount;
+    return totalTransactions;
   }
 
   return totalAmount;
@@ -192,7 +210,9 @@ double totalToRemit(List<TransactionsRecord>? transactions) {
   for (final transaction in transactions) {
     if (transaction.type == 'expense') {
       // Decrement the total for expense transactions
-      total -= transaction.total;
+      if (transaction.goods.isEmpty) {
+        total -= transaction.total;
+      }
     } else {
       // Add the total for other types of transactions
       total += transaction.total;
@@ -386,7 +406,38 @@ String startBigLetter(String text) {
   if (text.isEmpty) {
     return text;
   }
-  return text[0].toUpperCase() + text.substring(1);
+
+  List<String> words = text.split(RegExp(r'\s+|\b(?=[()]|\b)'));
+  List<String> capitalizedWords = [];
+
+  for (int i = 0; i < words.length; i++) {
+    String word = words[i];
+
+    // Capitalize the first letter of each word
+    if (word.isNotEmpty) {
+      word = word[0].toUpperCase() + word.substring(1);
+    }
+
+    // Check for parenthesis and handle spaces
+    if (word.startsWith('(') && i > 0 && !capitalizedWords.last.endsWith(' ')) {
+      capitalizedWords[capitalizedWords.length - 1] += ' ';
+    } else if (word.endsWith(')') &&
+        i < words.length - 1 &&
+        !words[i + 1].startsWith(')')) {
+      word += ' ';
+    }
+
+    capitalizedWords.add(word);
+  }
+
+  // Join capitalized words into a single string
+  String resultText = capitalizedWords.join(' ');
+
+  // Define a regular expression to match spaces before periods and commas
+  RegExp regex = RegExp(r' (?=[.,])');
+
+  // Replace spaces before periods and commas with an empty string
+  return resultText.replaceAll(regex, '');
 }
 
 double grossTransactions(List<TransactionsRecord> transactions) {
@@ -407,7 +458,9 @@ double netOfTransactions(List<TransactionsRecord> transactions) {
   double sum = 0.0;
   for (var transaction in transactions) {
     if (transaction.type == 'expense') {
-      sum -= transaction.total;
+      if (transaction.goods.isEmpty) {
+        sum -= transaction.total;
+      }
     } else {
       sum += transaction.total;
     }
@@ -420,7 +473,9 @@ double sumOfExpenses(List<TransactionsRecord> transactions) {
   double total = 0.0;
   for (TransactionsRecord transaction in transactions) {
     if (transaction.type == 'expense') {
-      total += transaction.total;
+      if (transaction.goods.isEmpty) {
+        total += transaction.total;
+      }
     }
   }
   return total;
@@ -1212,11 +1267,15 @@ List<RoomPendingStruct>? allPendings(List<TransactionsRecord>? transactions) {
     if (pendingMap.containsKey(booking)) {
       final pending = pendingMap[booking]!;
       pending.total += transaction.total;
+      pending.since = transaction.date!.isAfter(pending.since!)
+          ? transaction.date
+          : pending.since;
     } else {
       final pending = RoomPendingStruct(
         booking: transaction.booking,
         room: transaction.room,
         total: transaction.total,
+        since: transaction.date,
       );
       pendingMap[booking] = pending;
     }
@@ -1522,4 +1581,42 @@ double sumOfBills(List<BillsRecord> bills) {
     sum += bill.amount;
   }
   return sum;
+}
+
+bool isThisMonth(DateTime date) {
+  // is the date this month?
+  final now = DateTime.now();
+  return date.year == now.year && date.month == now.month;
+}
+
+String hoursAgo(DateTime date) {
+  // how many minutes and hours ago
+  final now = DateTime.now();
+  final difference = now.difference(date);
+  final hours = difference.inHours;
+  final minutes = difference.inMinutes.remainder(60);
+  if (hours > 0) {
+    return '$hours hour${hours > 1 ? 's' : ''} ago';
+  } else {
+    return '$minutes minute${minutes > 1 ? 's' : ''} ago';
+  }
+}
+
+double? adjustPrice(
+  String operator,
+  double original,
+  String? adjustment,
+) {
+  if (adjustment == null) {
+    return original;
+  }
+
+  // return original operator (+/-) adjustment.toDouble
+  if (operator == '+') {
+    return original + double.tryParse(adjustment)!;
+  } else if (operator == '-') {
+    return original - double.tryParse(adjustment)!;
+  } else {
+    return original;
+  }
 }

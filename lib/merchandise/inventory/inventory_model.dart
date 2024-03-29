@@ -1,21 +1,10 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/forms/item_add_edit/item_add_edit_widget.dart';
-import '/flutter_flow/flutter_flow_choice_chips.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/request_manager.dart';
 
 import 'inventory_widget.dart' show InventoryWidget;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class InventoryModel extends FlutterFlowModel<InventoryWidget> {
   ///  Local state fields for this page.
@@ -33,12 +22,10 @@ class InventoryModel extends FlutterFlowModel<InventoryWidget> {
 
   final unfocusNode = FocusNode();
   // State field(s) for categories widget.
-  String? categoriesValue;
   FormFieldController<List<String>>? categoriesValueController;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode;
-  TextEditingController? textController;
-  String? Function(BuildContext, String?)? textControllerValidator;
+  String? get categoriesValue => categoriesValueController?.value?.firstOrNull;
+  set categoriesValue(String? val) =>
+      categoriesValueController?.value = val != null ? [val] : [];
 
   /// Query cache managers for this widget.
 
@@ -57,21 +44,15 @@ class InventoryModel extends FlutterFlowModel<InventoryWidget> {
   void clearInventoryGoodsCacheKey(String? uniqueKey) =>
       _inventoryGoodsManager.clearRequest(uniqueKey);
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {
     unfocusNode.dispose();
-    textFieldFocusNode?.dispose();
-    textController?.dispose();
 
     /// Dispose query cache managers for this widget.
 
     clearInventoryGoodsCache();
   }
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

@@ -1,21 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
 import '/index.dart';
 import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/lat_lng.dart';
-import '/flutter_flow/place.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
@@ -80,221 +74,336 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
+          appStateNotifier.loggedIn ? const NavBarPage() : const LoginWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
+              appStateNotifier.loggedIn ? const NavBarPage() : const LoginWidget(),
         ),
         FFRoute(
           name: 'HomePage',
           path: '/homePage',
+          requireAuth: true,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'HomePage')
-              : HomePageWidget(),
+              ? const NavBarPage(initialPage: 'HomePage')
+              : const HomePageWidget(),
         ),
         FFRoute(
           name: 'Login',
           path: '/login',
-          builder: (context, params) => LoginWidget(),
+          builder: (context, params) => const LoginWidget(),
         ),
         FFRoute(
           name: 'RoomList',
           path: '/roomList',
-          builder: (context, params) => RoomListWidget(),
+          requireAuth: true,
+          builder: (context, params) => const RoomListWidget(),
         ),
         FFRoute(
-          name: 'ProfileSettings',
-          path: '/profileSettings',
+          name: 'Settings',
+          path: '/settings',
+          requireAuth: true,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'ProfileSettings')
-              : ProfileSettingsWidget(),
+              ? const NavBarPage(initialPage: 'Settings')
+              : const SettingsWidget(),
         ),
         FFRoute(
           name: 'ManageRoles',
           path: '/manageRoles',
-          builder: (context, params) => ManageRolesWidget(),
+          requireAuth: true,
+          builder: (context, params) => const ManageRolesWidget(),
         ),
         FFRoute(
           name: 'CheckedIn',
           path: '/checkedIn',
+          requireAuth: true,
           builder: (context, params) => CheckedInWidget(
-            ref: params
-                .getParam('ref', ParamType.DocumentReference, false, ['rooms']),
+            ref: params.getParam(
+              'ref',
+              ParamType.DocumentReference,
+              false,
+              ['rooms'],
+            ),
             booking: params.getParam(
-                'booking', ParamType.DocumentReference, false, ['bookings']),
-            roomNo: params.getParam('roomNo', ParamType.int),
+              'booking',
+              ParamType.DocumentReference,
+              false,
+              ['bookings'],
+            ),
+            roomNo: params.getParam(
+              'roomNo',
+              ParamType.int,
+            ),
           ),
         ),
         FFRoute(
           name: 'CheckIn',
           path: '/CheckIn',
+          requireAuth: true,
           asyncParams: {
             'bookingToExtend':
                 getDoc(['bookings'], BookingsRecord.fromSnapshot),
           },
           builder: (context, params) => CheckInWidget(
-            price: params.getParam('price', ParamType.double),
-            ref: params
-                .getParam('ref', ParamType.DocumentReference, false, ['rooms']),
-            totalAmount: params.getParam('totalAmount', ParamType.double),
-            roomNo: params.getParam('roomNo', ParamType.int),
-            extend: params.getParam('extend', ParamType.bool),
-            bookingToExtend:
-                params.getParam('bookingToExtend', ParamType.Document),
-            promoOn: params.getParam('promoOn', ParamType.bool),
-            promoDetail: params.getParam('promoDetail', ParamType.String),
-            promoDiscount: params.getParam('promoDiscount', ParamType.double),
+            price: params.getParam(
+              'price',
+              ParamType.double,
+            ),
+            ref: params.getParam(
+              'ref',
+              ParamType.DocumentReference,
+              false,
+              ['rooms'],
+            ),
+            totalAmount: params.getParam(
+              'totalAmount',
+              ParamType.double,
+            ),
+            roomNo: params.getParam(
+              'roomNo',
+              ParamType.int,
+            ),
+            extend: params.getParam(
+              'extend',
+              ParamType.bool,
+            ),
+            bookingToExtend: params.getParam(
+              'bookingToExtend',
+              ParamType.Document,
+            ),
+            promoOn: params.getParam(
+              'promoOn',
+              ParamType.bool,
+            ),
+            promoDetail: params.getParam(
+              'promoDetail',
+              ParamType.String,
+            ),
+            promoDiscount: params.getParam(
+              'promoDiscount',
+              ParamType.double,
+            ),
           ),
         ),
         FFRoute(
           name: 'EditBedPrice',
           path: '/editBedPrice',
-          builder: (context, params) => EditBedPriceWidget(),
+          requireAuth: true,
+          builder: (context, params) => const EditBedPriceWidget(),
         ),
         FFRoute(
           name: 'mart',
           path: '/mart',
+          requireAuth: true,
           builder: (context, params) =>
-              params.isEmpty ? NavBarPage(initialPage: 'mart') : MartWidget(),
+              params.isEmpty ? const NavBarPage(initialPage: 'mart') : const MartWidget(),
         ),
         FFRoute(
           name: 'inventory',
           path: '/inventory',
-          builder: (context, params) => InventoryWidget(),
+          requireAuth: true,
+          builder: (context, params) => const InventoryWidget(),
         ),
         FFRoute(
           name: 'CheckOut',
           path: '/checkOut',
+          requireAuth: true,
           asyncParams: {
             'cart': getDocList(['goods'], GoodsRecord.fromSnapshot),
           },
           builder: (context, params) => CheckOutWidget(
-            cart:
-                params.getParam<GoodsRecord>('cart', ParamType.Document, true),
+            cart: params.getParam<GoodsRecord>(
+              'cart',
+              ParamType.Document,
+              true,
+            ),
           ),
         ),
         FFRoute(
           name: 'transactions',
           path: '/transactions',
+          requireAuth: true,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'transactions')
-              : TransactionsWidget(),
+              ? const NavBarPage(initialPage: 'transactions')
+              : const TransactionsWidget(),
         ),
         FFRoute(
           name: 'ChangesInInventory',
           path: '/changesInInventory',
-          builder: (context, params) => ChangesInInventoryWidget(),
+          requireAuth: true,
+          builder: (context, params) => const ChangesInInventoryWidget(),
         ),
         FFRoute(
           name: 'remittances',
           path: '/remittances',
           requireAuth: true,
-          builder: (context, params) => RemittancesWidget(),
+          builder: (context, params) => const RemittancesWidget(),
         ),
         FFRoute(
           name: 'Expense',
           path: '/expense',
+          requireAuth: true,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'Expense')
+              ? const NavBarPage(initialPage: 'Expense')
               : ExpenseWidget(
-                  additional: params.getParam('additional', ParamType.bool),
-                  remittanceRef: params.getParam('remittanceRef',
-                      ParamType.DocumentReference, false, ['remittances']),
-                  net: params.getParam('net', ParamType.double),
+                  additional: params.getParam(
+                    'additional',
+                    ParamType.bool,
+                  ),
+                  remittanceRef: params.getParam(
+                    'remittanceRef',
+                    ParamType.DocumentReference,
+                    false,
+                    ['remittances'],
+                  ),
+                  net: params.getParam(
+                    'net',
+                    ParamType.double,
+                  ),
                 ),
         ),
         FFRoute(
           name: 'Payroll',
           path: '/payroll',
-          builder: (context, params) => PayrollWidget(),
+          requireAuth: true,
+          builder: (context, params) => const PayrollWidget(),
         ),
         FFRoute(
           name: 'NewEditPayroll',
           path: '/newEditPayroll',
+          requireAuth: true,
           builder: (context, params) => NewEditPayrollWidget(
             ref: params.getParam(
-                'ref', ParamType.DocumentReference, false, ['payrolls']),
+              'ref',
+              ParamType.DocumentReference,
+              false,
+              ['payrolls'],
+            ),
           ),
         ),
         FFRoute(
           name: 'remittanceSpecificTransactions',
           path: '/remittanceSpecificTransactions',
+          requireAuth: true,
           builder: (context, params) => RemittanceSpecificTransactionsWidget(
-            transactions: params.getParam<DocumentReference>('transactions',
-                ParamType.DocumentReference, true, ['transactions']),
-            remittanceRef: params.getParam('remittanceRef',
-                ParamType.DocumentReference, false, ['remittances']),
-            absences: params.getParam<DocumentReference>('absences',
-                ParamType.DocumentReference, true, ['staffs', 'absences']),
+            transactions: params.getParam<DocumentReference>(
+              'transactions',
+              ParamType.DocumentReference,
+              true,
+              ['transactions'],
+            ),
+            remittanceRef: params.getParam(
+              'remittanceRef',
+              ParamType.DocumentReference,
+              false,
+              ['remittances'],
+            ),
+            absences: params.getParam<DocumentReference>(
+              'absences',
+              ParamType.DocumentReference,
+              true,
+              ['staffs', 'absences'],
+            ),
           ),
         ),
         FFRoute(
           name: 'IndividualHistory',
           path: '/individualHistory',
+          requireAuth: true,
           asyncParams: {
             'staff': getDoc(['staffs'], StaffsRecord.fromSnapshot),
           },
           builder: (context, params) => IndividualHistoryWidget(
-            staff: params.getParam('staff', ParamType.Document),
+            staff: params.getParam(
+              'staff',
+              ParamType.Document,
+            ),
           ),
         ),
         FFRoute(
           name: 'IssuesList',
           path: '/issuesList',
-          builder: (context, params) => IssuesListWidget(),
+          requireAuth: true,
+          builder: (context, params) => const IssuesListWidget(),
         ),
         FFRoute(
           name: 'Replenish',
           path: '/replenish',
-          builder: (context, params) => ReplenishWidget(),
+          requireAuth: true,
+          builder: (context, params) => const ReplenishWidget(),
         ),
         FFRoute(
           name: 'Metrics',
           path: '/metrics',
-          builder: (context, params) => MetricsWidget(),
+          requireAuth: true,
+          builder: (context, params) => const MetricsWidget(),
         ),
         FFRoute(
           name: 'RoomHistory',
           path: '/roomHistory',
+          requireAuth: true,
           asyncParams: {
             'room': getDoc(['rooms'], RoomsRecord.fromSnapshot),
           },
           builder: (context, params) => RoomHistoryWidget(
-            room: params.getParam('room', ParamType.Document),
+            room: params.getParam(
+              'room',
+              ParamType.Document,
+            ),
           ),
         ),
         FFRoute(
           name: 'LateCheckoutFee',
           path: '/lateCheckoutFee',
-          builder: (context, params) => LateCheckoutFeeWidget(),
+          requireAuth: true,
+          builder: (context, params) => const LateCheckoutFeeWidget(),
         ),
         FFRoute(
           name: 'BillForm',
           path: '/billForm',
+          requireAuth: true,
           builder: (context, params) => BillFormWidget(
-            additional: params.getParam('additional', ParamType.bool),
-            remittanceRef: params.getParam('remittanceRef',
-                ParamType.DocumentReference, false, ['remittances']),
-            net: params.getParam('net', ParamType.double),
+            additional: params.getParam(
+              'additional',
+              ParamType.bool,
+            ),
+            remittanceRef: params.getParam(
+              'remittanceRef',
+              ParamType.DocumentReference,
+              false,
+              ['remittances'],
+            ),
+            net: params.getParam(
+              'net',
+              ParamType.double,
+            ),
           ),
         ),
         FFRoute(
           name: 'billsList',
           path: '/billsList',
-          builder: (context, params) => BillsListWidget(),
+          requireAuth: true,
+          builder: (context, params) => const BillsListWidget(),
         ),
         FFRoute(
           name: 'groceryList',
           path: '/groceryList',
-          builder: (context, params) => GroceryListWidget(),
+          requireAuth: true,
+          builder: (context, params) => const GroceryListWidget(),
         ),
         FFRoute(
           name: 'Pendings',
           path: '/pendings',
-          builder: (context, params) => PendingsWidget(),
+          requireAuth: true,
+          builder: (context, params) => const PendingsWidget(),
+        ),
+        FFRoute(
+          name: 'ManageOptions',
+          path: '/manageOptions',
+          requireAuth: true,
+          builder: (context, params) => const ManageOptionsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -414,6 +523,7 @@ class FFParameters {
     ParamType type, [
     bool isList = false,
     List<String>? collectionNamePath,
+    StructBuilder<T>? structBuilder,
   ]) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
@@ -427,8 +537,13 @@ class FFParameters {
       return param;
     }
     // Return serialized value.
-    return deserializeParam<T>(param, type, isList,
-        collectionNamePath: collectionNamePath);
+    return deserializeParam<T>(
+      param,
+      type,
+      isList,
+      collectionNamePath: collectionNamePath,
+      structBuilder: structBuilder,
+    );
   }
 }
 
@@ -466,6 +581,7 @@ class FFRoute {
           return null;
         },
         pageBuilder: (context, state) {
+          fixStatusBarOniOS16AndBelow(context);
           final ffParams = FFParameters(state, asyncParams);
           final page = ffParams.hasFutures
               ? FutureBuilder(
@@ -527,7 +643,7 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => const TransitionInfo(hasTransition: false);
 }
 
 class RootPageContext {

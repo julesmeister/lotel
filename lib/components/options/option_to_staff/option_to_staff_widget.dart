@@ -1,13 +1,8 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/staff_add_edit/staff_add_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'option_to_staff_model.dart';
 export 'option_to_staff_model.dart';
 
@@ -49,39 +44,43 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
-              offset: Offset(0.0, 2.0),
+              offset: Offset(
+                0.0,
+                2.0,
+              ),
             )
           ],
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
-                  style: FlutterFlowTheme.of(context).labelMedium,
+                  style: FlutterFlowTheme.of(context).labelMedium.override(
+                        fontFamily: 'Readex Pro',
+                        letterSpacing: 0.0,
+                      ),
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -98,7 +97,7 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                       builder: (context) {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
-                          child: Container(
+                          child: SizedBox(
                             height: double.infinity,
                             child: StaffAddEditWidget(
                               staffRef: widget.staffRef,
@@ -121,12 +120,12 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.edit_outlined,
@@ -136,11 +135,16 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Edit',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),
@@ -151,7 +155,7 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -162,19 +166,19 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Are you sure?'),
-                              content: Text(
+                              title: const Text('Are you sure?'),
+                              content: const Text(
                                   'Firing this staff means he/she will no longer show up in the next salary.'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -197,12 +201,12 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.local_fire_department_outlined,
@@ -212,11 +216,16 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Fired',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),

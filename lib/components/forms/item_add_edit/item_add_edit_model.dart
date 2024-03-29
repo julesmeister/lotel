@@ -1,17 +1,7 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/flutter_flow/flutter_flow_autocomplete_options_list.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'item_add_edit_widget.dart' show ItemAddEditWidget;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class ItemAddEditModel extends FlutterFlowModel<ItemAddEditWidget> {
   ///  State fields for stateful widgets in this component.
@@ -41,10 +31,10 @@ class ItemAddEditModel extends FlutterFlowModel<ItemAddEditWidget> {
   // Stores action output result for [Backend Call - Create Document] action in Row widget.
   GoodsRecord? createPayload;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {
     descFocusNode?.dispose();
     descController?.dispose();
@@ -60,8 +50,4 @@ class ItemAddEditModel extends FlutterFlowModel<ItemAddEditWidget> {
 
     categoryFocusNode?.dispose();
   }
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

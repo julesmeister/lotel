@@ -9,13 +9,9 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'new_edit_payroll_model.dart';
 export 'new_edit_payroll_model.dart';
@@ -106,15 +102,6 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -144,14 +131,17 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
           ),
           title: Text(
             _model.edit ? 'Edit Payroll' : 'New Payroll',
-            style: FlutterFlowTheme.of(context).titleLarge,
+            style: FlutterFlowTheme.of(context).titleLarge.override(
+                  fontFamily: 'Outfit',
+                  letterSpacing: 0.0,
+                ),
           ),
           actions: [
             Visibility(
               visible: (_model.existingPayroll?.status != 'settled') &&
                   (widget.ref != null),
               child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
                 child: FlutterFlowIconButton(
                   borderColor: FlutterFlowTheme.of(context).alternate,
                   borderRadius: 12.0,
@@ -176,7 +166,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               : FocusScope.of(context).unfocus(),
                           child: Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: Container(
+                            child: SizedBox(
                               height: double.infinity,
                               child: NewSalaryWidget(
                                 payrollRef: widget.ref!,
@@ -208,7 +198,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
         body: SafeArea(
           top: true,
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+            padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -226,10 +216,15 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                           children: [
                             Text(
                               'Total',
-                              style: FlutterFlowTheme.of(context).labelLarge,
+                              style: FlutterFlowTheme.of(context)
+                                  .labelLarge
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 4.0, 0.0, 0.0),
                               child: AutoSizeText(
                                 formatNumber(
@@ -240,8 +235,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   currency: 'P ',
                                 ),
                                 maxLines: 1,
-                                style:
-                                    FlutterFlowTheme.of(context).headlineMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .headlineMedium
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      letterSpacing: 0.0,
+                                    ),
                                 minFontSize: 22.0,
                               ),
                             ),
@@ -263,6 +262,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     fontFamily: 'Readex Pro',
                                     color: FlutterFlowTheme.of(context)
                                         .primaryText,
+                                    letterSpacing: 0.0,
                                   ),
                               minFontSize: 12.0,
                             ),
@@ -273,7 +273,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               children: [
                                 if (_model.existingPayroll?.status != 'settled')
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 5.0, 0.0, 0.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
@@ -285,10 +285,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       text: 'Change Rate',
                                       options: FFButtonOptions(
                                         height: 30.0,
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             24.0, 0.0, 24.0, 0.0),
                                         iconPadding:
-                                            EdgeInsetsDirectional.fromSTEB(
+                                            const EdgeInsetsDirectional.fromSTEB(
                                                 0.0, 0.0, 0.0, 0.0),
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryText,
@@ -298,10 +298,11 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                               fontFamily: 'Readex Pro',
                                               color: Colors.white,
                                               fontSize: 10.0,
+                                              letterSpacing: 0.0,
                                               fontWeight: FontWeight.normal,
                                             ),
                                         elevation: 3.0,
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Colors.transparent,
                                           width: 1.0,
                                         ),
@@ -323,7 +324,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 8.0, 0.0),
                             child: TextFormField(
                               controller: _model.newRateController,
@@ -332,10 +333,18 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelText: 'New Rate',
-                                labelStyle:
-                                    FlutterFlowTheme.of(context).labelMedium,
-                                hintStyle:
-                                    FlutterFlowTheme.of(context).labelMedium,
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color:
@@ -366,7 +375,13 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                              minLines: null,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
@@ -377,7 +392,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 8.0, 0.0),
                             child: TextFormField(
                               controller: _model.newSSSController,
@@ -386,10 +401,18 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelText: 'New SSS Rate',
-                                labelStyle:
-                                    FlutterFlowTheme.of(context).labelMedium,
-                                hintStyle:
-                                    FlutterFlowTheme.of(context).labelMedium,
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color:
@@ -420,7 +443,13 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                              minLines: null,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
@@ -443,19 +472,19 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   context: context,
                                   builder: (alertDialogContext) {
                                     return AlertDialog(
-                                      title: Text('Are you sure?'),
-                                      content: Text(
+                                      title: const Text('Are you sure?'),
+                                      content: const Text(
                                           'This will change the fortnight rate of all employees. '),
                                       actions: [
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, false),
-                                          child: Text('Cancel'),
+                                          child: const Text('Cancel'),
                                         ),
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, true),
-                                          child: Text('Confirm'),
+                                          child: const Text('Confirm'),
                                         ),
                                       ],
                                     );
@@ -469,8 +498,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               });
                               while (_model.loopSalariesCounter !=
                                   _model.salaries.length) {
-                                if (_model.newRateController.text != null &&
-                                    _model.newRateController.text != '') {
+                                if (_model.newRateController.text != '') {
                                   // update rate every staff
 
                                   await _model
@@ -481,8 +509,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         _model.newRateController.text),
                                   ));
                                 }
-                                if (_model.newSSSController.text != null &&
-                                    _model.newSSSController.text != '') {
+                                if (_model.newSSSController.text != '') {
                                   if (_model
                                           .salaries[_model.loopSalariesCounter]
                                           .sss !=
@@ -505,10 +532,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     .reference
                                     .update(createSalariesRecordData(
                                   total: functions.updateSalaryTotal(
-                                      _model.newRateController.text != null &&
-                                          _model.newRateController.text != '',
-                                      _model.newSSSController.text != null &&
-                                          _model.newSSSController.text != '',
+                                      _model.newRateController.text != '',
+                                      _model.newSSSController.text != '',
                                       _model
                                           .salaries[_model.loopSalariesCounter]
                                           .rate,
@@ -559,7 +584,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                   if (valueOrDefault(currentUserDocument?.role, '') == 'admin')
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                       child: AuthUserStreamWidget(
                         builder: (context) => Row(
                           mainAxisSize: MainAxisSize.max,
@@ -574,6 +599,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryText,
                                     fontSize: 16.0,
+                                    letterSpacing: 0.0,
                                   ),
                             ),
                             Row(
@@ -606,6 +632,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       .override(
                                         fontFamily: 'Outfit',
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                                 Row(
@@ -644,15 +671,15 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                       (valueOrDefault(currentUserDocument?.role, '') ==
                           'admin'))
                     Align(
-                      alignment: AlignmentDirectional(0.0, -1.0),
+                      alignment: const AlignmentDirectional(0.0, -1.0),
                       child: Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                         child: AuthUserStreamWidget(
                           builder: (context) => Container(
                             width: double.infinity,
                             height: 50.0,
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxWidth: 500.0,
                             ),
                             decoration: BoxDecoration(
@@ -665,7 +692,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -718,7 +745,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                               size: 16.0,
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'Settled',
@@ -731,6 +758,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryText,
+                                                      letterSpacing: 0.0,
                                                     ),
                                               ),
                                             ),
@@ -783,7 +811,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                               size: 16.0,
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'Pending',
@@ -796,6 +824,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryText,
+                                                      letterSpacing: 0.0,
                                                     ),
                                               ),
                                             ),
@@ -813,7 +842,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                     ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
                     child: Builder(
                       builder: (context) {
                         final salariesList =
@@ -828,7 +857,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                             final salariesListItem =
                                 salariesList[salariesListIndex];
                             return Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 10.0),
                               child: StreamBuilder<StaffsRecord>(
                                 stream: StaffsRecord.getDocument(
@@ -875,7 +904,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                             child: Padding(
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
-                                              child: Container(
+                                              child: SizedBox(
                                                 height: double.infinity,
                                                 child: NewSalaryWidget(
                                                   edit: true,
@@ -921,7 +950,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                             child: Padding(
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
-                                              child: Container(
+                                              child: SizedBox(
                                                 height: 125.0,
                                                 child: SalaryOptionsWidget(
                                                   salary: salariesListItem
@@ -935,7 +964,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     },
                                     child: Container(
                                       width: double.infinity,
-                                      constraints: BoxConstraints(
+                                      constraints: const BoxConstraints(
                                         maxWidth: 570.0,
                                       ),
                                       decoration: BoxDecoration(
@@ -950,7 +979,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsets.all(10.0),
+                                        padding: const EdgeInsets.all(10.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
@@ -961,7 +990,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                   flex: 3,
                                                   child: Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 0.0,
                                                                 12.0, 0.0),
                                                     child: Column(
@@ -978,11 +1007,17 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           'Staff',
                                                           style: FlutterFlowTheme
                                                                   .of(context)
-                                                              .labelMedium,
+                                                              .labelMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       0.0,
@@ -1002,6 +1037,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                                       .primaryText,
                                                                   fontSize:
                                                                       16.0,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -1020,6 +1057,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                       .override(
                                                         fontFamily:
                                                             'Readex Pro',
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -1027,7 +1065,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                               ],
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 5.0, 0.0, 0.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
@@ -1046,6 +1084,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .secondaryText,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                   Text(
@@ -1066,13 +1105,14 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .primaryText,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 5.0, 0.0, 0.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
@@ -1091,6 +1131,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .secondaryText,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                   Text(
@@ -1111,13 +1152,14 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .primaryText,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 5.0, 0.0, 0.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
@@ -1136,6 +1178,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .secondaryText,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                   Text(
@@ -1157,13 +1200,14 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .primaryText,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 5.0, 0.0, 0.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
@@ -1182,6 +1226,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .secondaryText,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                   Text(
@@ -1202,13 +1247,14 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .primaryText,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 5.0, 0.0, 0.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
@@ -1228,6 +1274,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                                   .of(context)
                                                               .primary,
                                                           fontSize: 16.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                   Text(
@@ -1249,6 +1296,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                                   .of(context)
                                                               .primaryText,
                                                           fontSize: 16.0,
+                                                          letterSpacing: 0.0,
                                                         ),
                                                   ),
                                                 ],
@@ -1270,7 +1318,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                   if (valueOrDefault(currentUserDocument?.role, '') == 'admin')
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 0.0),
                       child: AuthUserStreamWidget(
                         builder: (context) => Row(
                           mainAxisSize: MainAxisSize.max,
@@ -1278,7 +1326,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 12.0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
@@ -1288,24 +1336,24 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                               context: context,
                                               builder: (alertDialogContext) {
                                                 return AlertDialog(
-                                                  title: Text(
+                                                  title: const Text(
                                                       'Delete This Payroll'),
                                                   content:
-                                                      Text('Are you certain?'),
+                                                      const Text('Are you certain?'),
                                                   actions: [
                                                     TextButton(
                                                       onPressed: () =>
                                                           Navigator.pop(
                                                               alertDialogContext,
                                                               false),
-                                                      child: Text('Cancel'),
+                                                      child: const Text('Cancel'),
                                                     ),
                                                     TextButton(
                                                       onPressed: () =>
                                                           Navigator.pop(
                                                               alertDialogContext,
                                                               true),
-                                                      child: Text('Confirm'),
+                                                      child: const Text('Confirm'),
                                                     ),
                                                   ],
                                                 );
@@ -1409,7 +1457,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                             ),
                                           ),
                                           duration:
-                                              Duration(milliseconds: 4000),
+                                              const Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .error,
@@ -1421,14 +1469,14 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     }
                                   },
                                   text: 'Delete',
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.delete_sweep_outlined,
                                     size: 15.0,
                                   ),
                                   options: FFButtonOptions(
                                     height: 48.0,
-                                    padding: EdgeInsets.all(0.0),
-                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsets.all(0.0),
+                                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 0.0, 0.0),
                                     color: FlutterFlowTheme.of(context).error,
                                     textStyle: FlutterFlowTheme.of(context)
@@ -1436,9 +1484,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         .override(
                                           fontFamily: 'Readex Pro',
                                           color: Colors.white,
+                                          letterSpacing: 0.0,
                                         ),
                                     elevation: 4.0,
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                       color: Colors.transparent,
                                       width: 1.0,
                                     ),
@@ -1456,9 +1505,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                           'admin'))
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                       child: AuthUserStreamWidget(
-                        builder: (context) => Container(
+                        builder: (context) => SizedBox(
                           width: double.infinity,
                           height: 48.0,
                           child: custom_widgets.PrintPayroll(
@@ -1479,10 +1528,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                       (valueOrDefault(currentUserDocument?.role, '') ==
                           'admin'))
                     Align(
-                      alignment: AlignmentDirectional(0.0, 1.0),
+                      alignment: const AlignmentDirectional(0.0, 1.0),
                       child: Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                         child: AuthUserStreamWidget(
                           builder: (context) => FFButtonWidget(
                             onPressed: () async {
@@ -1605,12 +1654,13 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                               .primaryText,
                                         ),
                                       ),
-                                      duration: Duration(milliseconds: 4000),
+                                      duration: const Duration(milliseconds: 4000),
                                       backgroundColor:
                                           FlutterFlowTheme.of(context)
                                               .secondary,
                                     ),
                                   );
+                                  context.safePop();
                                 }
                               } else {
                                 // new payroll
@@ -1653,7 +1703,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                             .primaryText,
                                       ),
                                     ),
-                                    duration: Duration(milliseconds: 4000),
+                                    duration: const Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
@@ -1676,25 +1726,26 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               setState(() {});
                             },
                             text: _model.edit ? 'Save' : 'Create',
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.save,
                               size: 15.0,
                             ),
                             options: FFButtonOptions(
                               width: MediaQuery.sizeOf(context).width * 1.0,
                               height: 50.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsets.all(0.0),
+                              iconPadding: const EdgeInsets.all(0.0),
                               color: FlutterFlowTheme.of(context).primary,
                               textStyle: FlutterFlowTheme.of(context)
                                   .titleMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     color: Colors.white,
+                                    letterSpacing: 0.0,
                                   ),
                               elevation: 2.0,
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 color: Colors.transparent,
                                 width: 1.0,
                               ),

@@ -5,15 +5,11 @@ import '/flutter_flow/flutter_flow_calendar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'changes_in_inventory_model.dart';
 export 'changes_in_inventory_model.dart';
@@ -41,8 +37,8 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
           curve: Curves.elasticOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(0.0, 0.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(0.0, 0.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -60,15 +56,15 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 400.ms,
-          begin: Offset(0.9, 0.9),
-          end: Offset(1.0, 1.0),
+          begin: const Offset(0.9, 0.9),
+          end: const Offset(1.0, 1.0),
         ),
         MoveEffect(
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 400.ms,
-          begin: Offset(0.0, 20.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(0.0, 20.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -105,15 +101,6 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return StreamBuilder<List<InventoriesRecord>>(
@@ -177,7 +164,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                 },
               ),
               title: Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
+                alignment: const AlignmentDirectional(-1.0, 0.0),
                 child: AutoSizeText(
                   'Changes in Inventory',
                   textAlign: TextAlign.start,
@@ -185,6 +172,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                   style: FlutterFlowTheme.of(context).headlineLarge.override(
                         fontFamily: 'Outfit',
                         fontSize: 24.0,
+                        letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
                       ),
                   minFontSize: 22.0,
@@ -192,10 +180,10 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
               ),
               actions: [
                 Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
+                  alignment: const AlignmentDirectional(0.0, 0.0),
                   child: Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -268,7 +256,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
             body: SafeArea(
               top: true,
               child: Align(
-                alignment: AlignmentDirectional(0.0, 0.0),
+                alignment: const AlignmentDirectional(0.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -283,19 +271,40 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                         initialDate: _model.date,
                         rowHeight: 64.0,
                         onChange: (DateTimeRange? newSelectedDate) async {
+                          if (_model.calendarSelectedDay == newSelectedDate) {
+                            return;
+                          }
                           _model.calendarSelectedDay = newSelectedDate;
                           setState(() {
                             _model.date = _model.calendarSelectedDay?.start;
                           });
                           setState(() {});
                         },
-                        titleStyle: FlutterFlowTheme.of(context).headlineSmall,
-                        dayOfWeekStyle: FlutterFlowTheme.of(context).labelLarge,
-                        dateStyle: FlutterFlowTheme.of(context).bodyMedium,
+                        titleStyle:
+                            FlutterFlowTheme.of(context).headlineSmall.override(
+                                  fontFamily: 'Outfit',
+                                  letterSpacing: 0.0,
+                                ),
+                        dayOfWeekStyle:
+                            FlutterFlowTheme.of(context).labelLarge.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
+                        dateStyle:
+                            FlutterFlowTheme.of(context).bodyMedium.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
                         selectedDateStyle:
-                            FlutterFlowTheme.of(context).titleSmall,
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
                         inactiveDateStyle:
-                            FlutterFlowTheme.of(context).labelMedium,
+                            FlutterFlowTheme.of(context).labelMedium.override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
                       ).animateOnActionTrigger(
                         animationsMap['calendarOnActionTriggerAnimation']!,
                       ),
@@ -305,7 +314,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                           final activities =
                               changesInInventoryInventoriesRecordList.toList();
                           return ListView.builder(
-                            padding: EdgeInsets.fromLTRB(
+                            padding: const EdgeInsets.fromLTRB(
                               0,
                               0,
                               0,
@@ -319,41 +328,44 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                               final activitiesItem =
                                   activities[activitiesIndex];
                               return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 1.0),
                                 child: Container(
                                   width: 100.0,
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                     minHeight: 100.0,
                                     maxHeight: 120.0,
                                   ),
                                   decoration: BoxDecoration(
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
-                                    boxShadow: [
+                                    boxShadow: const [
                                       BoxShadow(
                                         blurRadius: 0.0,
                                         color: Color(0xFFE0E3E7),
-                                        offset: Offset(0.0, 1.0),
+                                        offset: Offset(
+                                          0.0,
+                                          1.0,
+                                        ),
                                       )
                                     ],
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         4.0, 0.0, 0.0, 0.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           width: 24.0,
                                           child: Stack(
                                             alignment:
-                                                AlignmentDirectional(0.0, 0.0),
+                                                const AlignmentDirectional(0.0, 0.0),
                                             children: [
                                               Align(
-                                                alignment: AlignmentDirectional(
+                                                alignment: const AlignmentDirectional(
                                                     0.0, -0.7),
                                                 child: Container(
                                                   width: 12.0,
@@ -385,7 +397,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                         Expanded(
                                           child: Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 16.0, 16.0, 12.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
@@ -434,13 +446,15 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                 fontFamily:
                                                                     'Readex Pro',
                                                                 fontSize: 14.0,
+                                                                letterSpacing:
+                                                                    0.0,
                                                               ),
                                                         );
                                                       },
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   8.0,
                                                                   0.0,
@@ -470,6 +484,8 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                       : FlutterFlowTheme.of(
                                                                               context)
                                                                           .secondary,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                 ),
                                                       ),
                                                     ),
@@ -484,7 +500,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     4.0,
@@ -496,12 +512,18 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                               .toString(),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
-                                                              .labelMedium,
+                                                              .labelMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
                                                         ),
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     4.0,
@@ -511,12 +533,18 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                           ' pieces of ',
                                                           style: FlutterFlowTheme
                                                                   .of(context)
-                                                              .labelMedium,
+                                                              .labelMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
                                                         ),
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     4.0,
@@ -526,7 +554,13 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                           activitiesItem.item,
                                                           style: FlutterFlowTheme
                                                                   .of(context)
-                                                              .labelMedium,
+                                                              .labelMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
                                                         ),
                                                       ),
                                                     ],
@@ -541,10 +575,10 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                             .priceChange)
                                                       Expanded(
                                                         child: RichText(
-                                                          textScaleFactor:
+                                                          textScaler:
                                                               MediaQuery.of(
                                                                       context)
-                                                                  .textScaleFactor,
+                                                                  .textScaler,
                                                           text: TextSpan(
                                                             children: [
                                                               TextSpan(
@@ -566,7 +600,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                     activitiesItem
                                                                         .item,
                                                                 style:
-                                                                    TextStyle(),
+                                                                    const TextStyle(),
                                                               ),
                                                               TextSpan(
                                                                 text:
@@ -601,12 +635,14 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .secondaryText,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .normal,
                                                                     ),
                                                               ),
-                                                              TextSpan(
+                                                              const TextSpan(
                                                                 text: ' to ',
                                                                 style:
                                                                     TextStyle(),
@@ -642,6 +678,8 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
                                                                       .secondaryText,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                 ),
                                                           ),
                                                         ),
@@ -649,7 +687,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                   ],
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 12.0, 0.0, 0.0),
                                                   child: Column(
@@ -671,9 +709,9 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                         .quantityChange !=
                                                                     0)
                                                                   RichText(
-                                                                    textScaleFactor:
+                                                                    textScaler:
                                                                         MediaQuery.of(context)
-                                                                            .textScaleFactor,
+                                                                            .textScaler,
                                                                     text:
                                                                         TextSpan(
                                                                       children: [
@@ -681,15 +719,19 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                           text: activitiesItem
                                                                               .previousQuantity
                                                                               .toString(),
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).bodyMedium,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                letterSpacing: 0.0,
+                                                                              ),
                                                                         ),
                                                                         TextSpan(
                                                                           text: activitiesItem.operator == 'add'
                                                                               ? ' + '
                                                                               : ' - ',
                                                                           style:
-                                                                              TextStyle(),
+                                                                              const TextStyle(),
                                                                         ),
                                                                         TextSpan(
                                                                           text: activitiesItem
@@ -697,9 +739,9 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                               .abs()
                                                                               .toString(),
                                                                           style:
-                                                                              TextStyle(),
+                                                                              const TextStyle(),
                                                                         ),
-                                                                        TextSpan(
+                                                                        const TextSpan(
                                                                           text:
                                                                               ' = ',
                                                                           style:
@@ -710,9 +752,9 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                               .prevOperatorChange(activitiesItem.previousQuantity, activitiesItem.operator, activitiesItem.quantityChange)
                                                                               .toString(),
                                                                           style:
-                                                                              TextStyle(),
+                                                                              const TextStyle(),
                                                                         ),
-                                                                        TextSpan(
+                                                                        const TextSpan(
                                                                           text:
                                                                               ' pieces left',
                                                                           style:
@@ -721,7 +763,13 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                       ],
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .bodyMedium,
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                          ),
                                                                     ),
                                                                     maxLines: 2,
                                                                   ),
@@ -732,7 +780,7 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                             flex: 1,
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -748,7 +796,13 @@ class _ChangesInInventoryWidgetState extends State<ChangesInInventoryWidget>
                                                                         .end,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .labelMedium,
+                                                                    .labelMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
                                                               ),
                                                             ),
                                                           ),

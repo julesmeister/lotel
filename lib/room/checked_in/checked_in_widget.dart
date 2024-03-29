@@ -10,12 +10,10 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'checked_in_model.dart';
 export 'checked_in_model.dart';
@@ -46,8 +44,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
     super.initState();
     _model = createModel(context, () => CheckedInModel());
 
-    _model.newPriceController ??= TextEditingController();
-    _model.newPriceFocusNode ??= FocusNode();
+    _model.adjustController ??= TextEditingController();
+    _model.adjustFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -61,15 +59,6 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return StreamBuilder<BookingsRecord>(
@@ -113,7 +102,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                 icon: Icon(
                   Icons.chevron_left,
                   color: FlutterFlowTheme.of(context).info,
-                  size: 24.0,
+                  size: 30.0,
                 ),
                 onPressed: () async {
                   context.pop();
@@ -121,9 +110,12 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
               ),
               title: Text(
                 'Booking Details',
-                style: FlutterFlowTheme.of(context).titleMedium,
+                style: FlutterFlowTheme.of(context).titleMedium.override(
+                      fontFamily: 'Readex Pro',
+                      letterSpacing: 0.0,
+                    ),
               ),
-              actions: [],
+              actions: const [],
               centerTitle: false,
               elevation: 2.0,
             ),
@@ -135,10 +127,10 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(0.0, -1.0),
+                      alignment: const AlignmentDirectional(0.0, -1.0),
                       child: Container(
                         width: double.infinity,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxWidth: 1170.0,
                         ),
                         decoration: BoxDecoration(
@@ -151,18 +143,18 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                             children: [
                               Container(
                                 width: double.infinity,
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   maxWidth: 1170.0,
                                 ),
-                                decoration: BoxDecoration(),
+                                decoration: const BoxDecoration(),
                               ),
                               Align(
-                                alignment: AlignmentDirectional(0.0, -1.0),
+                                alignment: const AlignmentDirectional(0.0, -1.0),
                                 child: Padding(
-                                  padding: EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.all(16.0),
                                   child: Container(
                                     width: double.infinity,
-                                    constraints: BoxConstraints(
+                                    constraints: const BoxConstraints(
                                       maxWidth: 1170.0,
                                     ),
                                     decoration: BoxDecoration(
@@ -180,25 +172,29 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                         Expanded(
                                           flex: 8,
                                           child: Padding(
-                                            padding: EdgeInsets.all(16.0),
+                                            padding: const EdgeInsets.all(16.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 0.0, 15.0),
                                                   child: Text(
                                                     'Booking Details',
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .headlineMedium,
+                                                        .headlineMedium
+                                                        .override(
+                                                          fontFamily: 'Outfit',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -213,7 +209,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .labelMedium,
+                                                                .labelMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                       Row(
                                                         mainAxisSize:
@@ -229,7 +231,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                             )),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
-                                                                .bodyMedium,
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                           ),
                                                           if (!((checkedInBookingsRecord
                                                                       .status ==
@@ -238,7 +246,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   null)))
                                                             Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           5.0,
                                                                           0.0,
@@ -280,7 +288,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                 if (_model.showMoveRoom)
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 5.0,
                                                                 0.0, 0.0),
                                                     child: FutureBuilder<
@@ -343,7 +351,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               (val) async {
                                                             setState(() => _model
                                                                     .choiceChipsValue =
-                                                                val?.first); // from room history
+                                                                val?.firstOrNull); // from room history
 
                                                             await HistoryRecord
                                                                     .createDoc(
@@ -521,7 +529,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .primaryText,
                                                                   ),
                                                                 ),
-                                                                duration: Duration(
+                                                                duration: const Duration(
                                                                     milliseconds:
                                                                         4000),
                                                                 backgroundColor:
@@ -554,6 +562,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .info,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                             iconColor:
                                                                 FlutterFlowTheme.of(
@@ -582,6 +592,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .primaryText,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                             iconColor:
                                                                 FlutterFlowTheme.of(
@@ -612,7 +624,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                     ),
                                                   ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -627,7 +639,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .labelMedium,
+                                                                .labelMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                       Text(
                                                         (String extraBeds) {
@@ -640,13 +658,19 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyMedium,
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -665,6 +689,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .override(
                                                                   fontFamily:
                                                                       'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -678,13 +704,19 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyMedium,
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -703,6 +735,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .override(
                                                                   fontFamily:
                                                                       'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -719,13 +753,19 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyMedium,
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -744,6 +784,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .override(
                                                                   fontFamily:
                                                                       'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -757,13 +799,19 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyMedium,
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -782,6 +830,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .override(
                                                                   fontFamily:
                                                                       'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -790,9 +840,6 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                       Text(
                                                         checkedInBookingsRecord
                                                                         .promo !=
-                                                                    null &&
-                                                                checkedInBookingsRecord
-                                                                        .promo !=
                                                                     ''
                                                             ? checkedInBookingsRecord
                                                                 .promo
@@ -800,13 +847,19 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyMedium,
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -825,6 +878,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .override(
                                                                   fontFamily:
                                                                       'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -844,13 +899,19 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyMedium,
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 15.0, 0.0, 0.0),
                                                   child: Row(
@@ -865,7 +926,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .labelLarge,
+                                                                .labelLarge
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                       Text(
                                                         formatNumber(
@@ -881,13 +948,19 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .headlineSmall,
+                                                                .headlineSmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 10.0, 0.0, 0.0),
                                                   child: Row(
@@ -904,7 +977,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
+                                                                const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         12.0,
@@ -938,7 +1011,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         padding:
                                                                             MediaQuery.viewInsetsOf(context),
                                                                         child:
-                                                                            Container(
+                                                                            SizedBox(
                                                                           height:
                                                                               180.0,
                                                                           child:
@@ -967,13 +1040,15 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   setState(() {
                                                                     _model.showChangePrice =
                                                                         true;
+                                                                    _model.operator =
+                                                                        '-';
                                                                   });
                                                                 }
 
                                                                 setState(() {});
                                                               },
                                                               text: 'Modify',
-                                                              icon: Icon(
+                                                              icon: const Icon(
                                                                 Icons
                                                                     .edit_outlined,
                                                                 size: 15.0,
@@ -981,14 +1056,14 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               options:
                                                                   FFButtonOptions(
                                                                 height: 48.0,
-                                                                padding: EdgeInsetsDirectional
+                                                                padding: const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         16.0,
                                                                         0.0,
                                                                         16.0,
                                                                         0.0),
                                                                 iconPadding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -999,7 +1074,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     .secondaryBackground,
                                                                 textStyle: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyLarge,
+                                                                    .bodyLarge
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
                                                                 elevation: 0.0,
                                                                 borderSide:
                                                                     BorderSide(
@@ -1023,7 +1104,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
+                                                                const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         12.0,
@@ -1045,16 +1126,16 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                             builder:
                                                                                 (alertDialogContext) {
                                                                               return AlertDialog(
-                                                                                title: Text('Is the guest paying?'),
-                                                                                content: Text('The guest will be marked paid if you confirm.'),
+                                                                                title: const Text('Is the guest paying?'),
+                                                                                content: const Text('The guest will be marked paid if you confirm.'),
                                                                                 actions: [
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, false),
-                                                                                    child: Text('Cancel'),
+                                                                                    child: const Text('Cancel'),
                                                                                   ),
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, true),
-                                                                                    child: Text('Confirm'),
+                                                                                    child: const Text('Confirm'),
                                                                                   ),
                                                                                 ],
                                                                               );
@@ -1085,7 +1166,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           ),
                                                                         ),
                                                                         duration:
-                                                                            Duration(milliseconds: 4000),
+                                                                            const Duration(milliseconds: 4000),
                                                                         backgroundColor:
                                                                             FlutterFlowTheme.of(context).secondary,
                                                                       ),
@@ -1103,16 +1184,16 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                             builder:
                                                                                 (alertDialogContext) {
                                                                               return AlertDialog(
-                                                                                title: Text('Is this guest checking out?'),
-                                                                                content: Text('This guest will be checked out if you confirm.'),
+                                                                                title: const Text('Is this guest checking out?'),
+                                                                                content: const Text('This guest will be checked out if you confirm.'),
                                                                                 actions: [
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, false),
-                                                                                    child: Text('Cancel'),
+                                                                                    child: const Text('Cancel'),
                                                                                   ),
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, true),
-                                                                                    child: Text('Confirm'),
+                                                                                    child: const Text('Confirm'),
                                                                                   ),
                                                                                 ],
                                                                               );
@@ -1181,7 +1262,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           ),
                                                                         ),
                                                                         duration:
-                                                                            Duration(milliseconds: 4000),
+                                                                            const Duration(milliseconds: 4000),
                                                                         backgroundColor:
                                                                             FlutterFlowTheme.of(context).secondary,
                                                                       ),
@@ -1201,14 +1282,14 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               options:
                                                                   FFButtonOptions(
                                                                 height: 48.0,
-                                                                padding: EdgeInsetsDirectional
+                                                                padding: const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         16.0,
                                                                         0.0,
                                                                         16.0,
                                                                         0.0),
                                                                 iconPadding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -1225,7 +1306,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .error,
                                                                 textStyle: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .titleSmall,
+                                                                    .titleSmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
                                                                 elevation: 3.0,
                                                                 borderRadius:
                                                                     BorderRadius
@@ -1236,85 +1323,346 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                           ),
                                                         ),
                                                     ].divide(
-                                                        SizedBox(width: 16.0)),
+                                                        const SizedBox(width: 16.0)),
                                                   ),
                                                 ),
                                                 if (_model.showChangePrice)
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 10.0,
                                                                 0.0, 0.0),
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.max,
                                                       children: [
-                                                        Align(
-                                                          alignment:
-                                                              AlignmentDirectional(
-                                                                  -1.0, 0.0),
-                                                          child:
-                                                              FlutterFlowDropDown<
-                                                                  String>(
-                                                            controller: _model
-                                                                    .priceChangedescriptionValueController ??=
-                                                                FormFieldController<
-                                                                    String>(
-                                                              _model.priceChangedescriptionValue ??=
-                                                                  'Discount',
+                                                        Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Expanded(
+                                                              flex: 3,
+                                                              child: Align(
+                                                                alignment:
+                                                                    const AlignmentDirectional(
+                                                                        -1.0,
+                                                                        0.0),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0,
+                                                                          0.0),
+                                                                  child:
+                                                                      FlutterFlowDropDown<
+                                                                          String>(
+                                                                    controller: _model
+                                                                            .priceChangedescriptionValueController ??=
+                                                                        FormFieldController<
+                                                                            String>(
+                                                                      _model.priceChangedescriptionValue ??=
+                                                                          'Discount',
+                                                                    ),
+                                                                    options: const [
+                                                                      'Discount',
+                                                                      'Extend Hours',
+                                                                      'Change Room'
+                                                                    ],
+                                                                    onChanged: (val) =>
+                                                                        setState(() =>
+                                                                            _model.priceChangedescriptionValue =
+                                                                                val),
+                                                                    height:
+                                                                        50.0,
+                                                                    textStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
+                                                                    hintText:
+                                                                        'Please select...',
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .keyboard_arrow_down_rounded,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryText,
+                                                                      size:
+                                                                          24.0,
+                                                                    ),
+                                                                    fillColor: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryBackground,
+                                                                    elevation:
+                                                                        2.0,
+                                                                    borderColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .alternate,
+                                                                    borderWidth:
+                                                                        2.0,
+                                                                    borderRadius:
+                                                                        8.0,
+                                                                    margin: const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            16.0,
+                                                                            4.0,
+                                                                            16.0,
+                                                                            4.0),
+                                                                    hidesUnderline:
+                                                                        true,
+                                                                    isSearchable:
+                                                                        false,
+                                                                    isMultiSelect:
+                                                                        false,
+                                                                  ),
+                                                                ),
+                                                              ),
                                                             ),
-                                                            options: [
-                                                              'Discount',
-                                                              'Extend Hours',
-                                                              'Change Room'
-                                                            ],
-                                                            onChanged: (val) =>
-                                                                setState(() =>
-                                                                    _model.priceChangedescriptionValue =
-                                                                        val),
-                                                            width: 308.0,
-                                                            height: 50.0,
-                                                            textStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium,
-                                                            hintText:
-                                                                'Please select...',
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_rounded,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryText,
-                                                              size: 24.0,
+                                                            Expanded(
+                                                              flex: 5,
+                                                              child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Align(
+                                                                    alignment:
+                                                                        const AlignmentDirectional(
+                                                                            0.0,
+                                                                            -1.0),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          10.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Container(
+                                                                        width:
+                                                                            80.0,
+                                                                        height:
+                                                                            50.0,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).primaryBackground,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(12.0),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).alternate,
+                                                                            width:
+                                                                                1.0,
+                                                                          ),
+                                                                        ),
+                                                                        child:
+                                                                            Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.all(4.0),
+                                                                          child:
+                                                                              Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.start,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: InkWell(
+                                                                                  splashColor: Colors.transparent,
+                                                                                  focusColor: Colors.transparent,
+                                                                                  hoverColor: Colors.transparent,
+                                                                                  highlightColor: Colors.transparent,
+                                                                                  onTap: () async {
+                                                                                    // minus operator
+                                                                                    setState(() {
+                                                                                      _model.operator = '-';
+                                                                                    });
+                                                                                  },
+                                                                                  child: AnimatedContainer(
+                                                                                    duration: const Duration(milliseconds: 100),
+                                                                                    curve: Curves.linear,
+                                                                                    width: 115.0,
+                                                                                    height: 100.0,
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: _model.operator == '-' ? FlutterFlowTheme.of(context).secondaryBackground : FlutterFlowTheme.of(context).primaryBackground,
+                                                                                      borderRadius: BorderRadius.circular(10.0),
+                                                                                      border: Border.all(
+                                                                                        color: valueOrDefault<Color>(
+                                                                                          _model.operator == '-' ? FlutterFlowTheme.of(context).alternate : FlutterFlowTheme.of(context).primaryBackground,
+                                                                                          FlutterFlowTheme.of(context).alternate,
+                                                                                        ),
+                                                                                        width: 1.0,
+                                                                                      ),
+                                                                                    ),
+                                                                                    child: Row(
+                                                                                      mainAxisSize: MainAxisSize.max,
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      children: [
+                                                                                        Icon(
+                                                                                          Icons.horizontal_rule_outlined,
+                                                                                          color: FlutterFlowTheme.of(context).primaryText,
+                                                                                          size: 16.0,
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: InkWell(
+                                                                                  splashColor: Colors.transparent,
+                                                                                  focusColor: Colors.transparent,
+                                                                                  hoverColor: Colors.transparent,
+                                                                                  highlightColor: Colors.transparent,
+                                                                                  onTap: () async {
+                                                                                    // operator plus
+                                                                                    setState(() {
+                                                                                      _model.operator = '+';
+                                                                                    });
+                                                                                  },
+                                                                                  child: AnimatedContainer(
+                                                                                    duration: const Duration(milliseconds: 100),
+                                                                                    curve: Curves.linear,
+                                                                                    width: 115.0,
+                                                                                    height: 100.0,
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: _model.operator == '+' ? FlutterFlowTheme.of(context).secondaryBackground : FlutterFlowTheme.of(context).primaryBackground,
+                                                                                      borderRadius: BorderRadius.circular(10.0),
+                                                                                      border: Border.all(
+                                                                                        color: _model.operator == '+' ? FlutterFlowTheme.of(context).alternate : FlutterFlowTheme.of(context).primaryBackground,
+                                                                                        width: 1.0,
+                                                                                      ),
+                                                                                    ),
+                                                                                    child: Row(
+                                                                                      mainAxisSize: MainAxisSize.max,
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      children: [
+                                                                                        Icon(
+                                                                                          Icons.add,
+                                                                                          color: FlutterFlowTheme.of(context).primaryText,
+                                                                                          size: 16.0,
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Expanded(
+                                                                    child:
+                                                                        SizedBox(
+                                                                      width:
+                                                                          100.0,
+                                                                      child:
+                                                                          TextFormField(
+                                                                        controller:
+                                                                            _model.adjustController,
+                                                                        focusNode:
+                                                                            _model.adjustFocusNode,
+                                                                        autofocus:
+                                                                            true,
+                                                                        obscureText:
+                                                                            false,
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          labelText:
+                                                                              'Adjust',
+                                                                          labelStyle: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                letterSpacing: 0.0,
+                                                                              ),
+                                                                          hintStyle: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                letterSpacing: 0.0,
+                                                                              ),
+                                                                          enabledBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(
+                                                                              color: FlutterFlowTheme.of(context).alternate,
+                                                                              width: 2.0,
+                                                                            ),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8.0),
+                                                                          ),
+                                                                          focusedBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(
+                                                                              color: FlutterFlowTheme.of(context).primary,
+                                                                              width: 2.0,
+                                                                            ),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8.0),
+                                                                          ),
+                                                                          errorBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(
+                                                                              color: FlutterFlowTheme.of(context).error,
+                                                                              width: 2.0,
+                                                                            ),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8.0),
+                                                                          ),
+                                                                          focusedErrorBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(
+                                                                              color: FlutterFlowTheme.of(context).error,
+                                                                              width: 2.0,
+                                                                            ),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8.0),
+                                                                          ),
+                                                                        ),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              letterSpacing: 0.0,
+                                                                            ),
+                                                                        minLines:
+                                                                            null,
+                                                                        keyboardType:
+                                                                            TextInputType.number,
+                                                                        validator: _model
+                                                                            .adjustControllerValidator
+                                                                            .asValidator(context),
+                                                                        inputFormatters: [
+                                                                          FilteringTextInputFormatter.allow(
+                                                                              RegExp('[0-9]'))
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
-                                                            fillColor: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryBackground,
-                                                            elevation: 2.0,
-                                                            borderColor:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .alternate,
-                                                            borderWidth: 2.0,
-                                                            borderRadius: 8.0,
-                                                            margin:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        16.0,
-                                                                        4.0,
-                                                                        16.0,
-                                                                        4.0),
-                                                            hidesUnderline:
-                                                                true,
-                                                            isSearchable: false,
-                                                            isMultiSelect:
-                                                                false,
-                                                          ),
+                                                          ],
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       5.0,
@@ -1338,7 +1686,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   decimalType:
                                                                       DecimalType
                                                                           .automatic,
-                                                                  currency: '₱',
+                                                                  currency:
+                                                                      '₱ ',
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
@@ -1348,10 +1697,12 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           'Readex Pro',
                                                                       fontSize:
                                                                           18.0,
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                     ),
                                                               ),
                                                               Padding(
-                                                                padding: EdgeInsetsDirectional
+                                                                padding: const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         20.0,
                                                                         0.0,
@@ -1366,429 +1717,375 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   size: 24.0,
                                                                 ),
                                                               ),
-                                                              Expanded(
-                                                                child: Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          8.0,
+                                                              Text(
+                                                                valueOrDefault<
+                                                                    String>(
+                                                                  formatNumber(
+                                                                    functions.adjustPrice(
+                                                                        valueOrDefault<String>(
+                                                                          _model
+                                                                              .operator,
+                                                                          '-',
+                                                                        ),
+                                                                        checkedInBookingsRecord.total,
+                                                                        valueOrDefault<String>(
+                                                                          _model
+                                                                              .adjustController
+                                                                              .text,
+                                                                          '0',
+                                                                        )),
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .decimal,
+                                                                    decimalType:
+                                                                        DecimalType
+                                                                            .automatic,
+                                                                    currency:
+                                                                        '₱ ',
+                                                                  ),
+                                                                  '0',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      fontSize:
+                                                                          18.0,
+                                                                      letterSpacing:
                                                                           0.0,
-                                                                          8.0,
+                                                                    ),
+                                                              ),
+                                                              if (_model.adjustController
+                                                                          .text !=
+                                                                      '')
+                                                                Padding(
+                                                                  padding: const EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          10.0,
+                                                                          0.0,
+                                                                          0.0,
                                                                           0.0),
                                                                   child:
-                                                                      Container(
-                                                                    width:
-                                                                        100.0,
-                                                                    child:
-                                                                        TextFormField(
-                                                                      controller:
-                                                                          _model
-                                                                              .newPriceController,
-                                                                      focusNode:
-                                                                          _model
-                                                                              .newPriceFocusNode,
-                                                                      autofocus:
-                                                                          true,
-                                                                      obscureText:
-                                                                          false,
-                                                                      decoration:
-                                                                          InputDecoration(
-                                                                        labelText:
-                                                                            'New Price',
-                                                                        labelStyle:
-                                                                            FlutterFlowTheme.of(context).labelMedium,
-                                                                        hintStyle:
-                                                                            FlutterFlowTheme.of(context).labelMedium,
-                                                                        enabledBorder:
-                                                                            UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).alternate,
-                                                                            width:
-                                                                                2.0,
-                                                                          ),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(8.0),
-                                                                        ),
-                                                                        focusedBorder:
-                                                                            UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primary,
-                                                                            width:
-                                                                                2.0,
-                                                                          ),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(8.0),
-                                                                        ),
-                                                                        errorBorder:
-                                                                            UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).error,
-                                                                            width:
-                                                                                2.0,
-                                                                          ),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(8.0),
-                                                                        ),
-                                                                        focusedErrorBorder:
-                                                                            UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).error,
-                                                                            width:
-                                                                                2.0,
-                                                                          ),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(8.0),
-                                                                        ),
-                                                                      ),
-                                                                      style: FlutterFlowTheme.of(
+                                                                      FlutterFlowIconButton(
+                                                                    borderRadius:
+                                                                        20.0,
+                                                                    borderWidth:
+                                                                        1.0,
+                                                                    buttonSize:
+                                                                        40.0,
+                                                                    icon:
+                                                                        FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .check,
+                                                                      color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .bodyMedium,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .number,
-                                                                      validator: _model
-                                                                          .newPriceControllerValidator
-                                                                          .asValidator(
-                                                                              context),
-                                                                      inputFormatters: [
-                                                                        FilteringTextInputFormatter.allow(
-                                                                            RegExp('[0-9]'))
-                                                                      ],
+                                                                          .primaryText,
+                                                                      size:
+                                                                          24.0,
                                                                     ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      if (_model.adjustController.text !=
+                                                                              '') {
+                                                                        // update Booking
+
+                                                                        await widget
+                                                                            .booking!
+                                                                            .update(createBookingsRecordData(
+                                                                          total: functions.adjustPrice(
+                                                                              valueOrDefault<String>(
+                                                                                _model.operator,
+                                                                                '-',
+                                                                              ),
+                                                                              checkedInBookingsRecord.total,
+                                                                              valueOrDefault<String>(
+                                                                                _model.adjustController.text,
+                                                                                '0',
+                                                                              )),
+                                                                        ));
+                                                                        // hotel settings
+                                                                        _model.hotelSetting =
+                                                                            await queryHotelSettingsRecordOnce(
+                                                                          queryBuilder: (hotelSettingsRecord) =>
+                                                                              hotelSettingsRecord.where(
+                                                                            'hotel',
+                                                                            isEqualTo:
+                                                                                FFAppState().hotel,
+                                                                          ),
+                                                                          singleRecord:
+                                                                              true,
+                                                                        ).then((s) =>
+                                                                                s.firstOrNull);
+                                                                        if (checkedInBookingsRecord.status ==
+                                                                            'paid') {
+                                                                          // new transaction
+
+                                                                          var transactionsRecordReference1 = TransactionsRecord
+                                                                              .collection
+                                                                              .doc();
+                                                                          await transactionsRecordReference1
+                                                                              .set({
+                                                                            ...createTransactionsRecordData(
+                                                                              staff: currentUserReference,
+                                                                              total: functions.priceHasChanged(
+                                                                                  checkedInBookingsRecord.total,
+                                                                                  functions.adjustPrice(
+                                                                                      _model.operator,
+                                                                                      checkedInBookingsRecord.total,
+                                                                                      valueOrDefault<String>(
+                                                                                        _model.adjustController.text,
+                                                                                        '0',
+                                                                                      ))!),
+                                                                              booking: widget.booking,
+                                                                              hotel: FFAppState().hotel,
+                                                                              type: 'book',
+                                                                              guests: int.parse(checkedInBookingsRecord.guests),
+                                                                              room: widget.roomNo,
+                                                                              description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
+                                                                                  return priceChange ~/ bedPrice.abs().toString() + " ";
+                                                                                }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
+                                                                                    _model.adjustController.text,
+                                                                                    '0',
+                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                              remitted: false,
+                                                                              pending: false,
+                                                                            ),
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'date': FieldValue.serverTimestamp(),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                          _model.changePriceTrans =
+                                                                              TransactionsRecord.getDocumentFromData({
+                                                                            ...createTransactionsRecordData(
+                                                                              staff: currentUserReference,
+                                                                              total: functions.priceHasChanged(
+                                                                                  checkedInBookingsRecord.total,
+                                                                                  functions.adjustPrice(
+                                                                                      _model.operator,
+                                                                                      checkedInBookingsRecord.total,
+                                                                                      valueOrDefault<String>(
+                                                                                        _model.adjustController.text,
+                                                                                        '0',
+                                                                                      ))!),
+                                                                              booking: widget.booking,
+                                                                              hotel: FFAppState().hotel,
+                                                                              type: 'book',
+                                                                              guests: int.parse(checkedInBookingsRecord.guests),
+                                                                              room: widget.roomNo,
+                                                                              description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
+                                                                                  return priceChange ~/ bedPrice.abs().toString() + " ";
+                                                                                }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
+                                                                                    _model.adjustController.text,
+                                                                                    '0',
+                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                              remitted: false,
+                                                                              pending: false,
+                                                                            ),
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'date': DateTime.now(),
+                                                                              },
+                                                                            ),
+                                                                          }, transactionsRecordReference1);
+                                                                          // add trans to booking
+
+                                                                          await widget
+                                                                              .booking!
+                                                                              .update({
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'transactions': FieldValue.arrayUnion([
+                                                                                  _model.changePriceTrans?.reference
+                                                                                ]),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                          // add this price change to history
+
+                                                                          await HistoryRecord.createDoc(checkedInBookingsRecord.room!)
+                                                                              .set({
+                                                                            ...createHistoryRecordData(
+                                                                              description: 'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
+                                                                                    _model.adjustController.text,
+                                                                                    '0',
+                                                                                  ))?.toString()}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
+                                                                                    _model.adjustController.text,
+                                                                                    '0',
+                                                                                  ))!).toString()}.',
+                                                                              staff: currentUserReference,
+                                                                              booking: widget.booking,
+                                                                            ),
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'date': FieldValue.serverTimestamp(),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                        } else {
+                                                                          // new pending transaction
+
+                                                                          var transactionsRecordReference2 = TransactionsRecord
+                                                                              .collection
+                                                                              .doc();
+                                                                          await transactionsRecordReference2
+                                                                              .set({
+                                                                            ...createTransactionsRecordData(
+                                                                              staff: currentUserReference,
+                                                                              total: functions.priceHasChanged(
+                                                                                  checkedInBookingsRecord.total,
+                                                                                  functions.adjustPrice(
+                                                                                      _model.operator,
+                                                                                      checkedInBookingsRecord.total,
+                                                                                      valueOrDefault<String>(
+                                                                                        _model.adjustController.text,
+                                                                                        '0',
+                                                                                      ))!),
+                                                                              booking: widget.booking,
+                                                                              hotel: FFAppState().hotel,
+                                                                              type: 'book',
+                                                                              guests: int.parse(checkedInBookingsRecord.guests),
+                                                                              room: widget.roomNo,
+                                                                              description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
+                                                                                  return "${priceChange ~/ bedPrice.abs()} ";
+                                                                                }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
+                                                                                    _model.adjustController.text,
+                                                                                    '0',
+                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                              remitted: false,
+                                                                              pending: true,
+                                                                            ),
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'date': FieldValue.serverTimestamp(),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                          _model.newPending =
+                                                                              TransactionsRecord.getDocumentFromData({
+                                                                            ...createTransactionsRecordData(
+                                                                              staff: currentUserReference,
+                                                                              total: functions.priceHasChanged(
+                                                                                  checkedInBookingsRecord.total,
+                                                                                  functions.adjustPrice(
+                                                                                      _model.operator,
+                                                                                      checkedInBookingsRecord.total,
+                                                                                      valueOrDefault<String>(
+                                                                                        _model.adjustController.text,
+                                                                                        '0',
+                                                                                      ))!),
+                                                                              booking: widget.booking,
+                                                                              hotel: FFAppState().hotel,
+                                                                              type: 'book',
+                                                                              guests: int.parse(checkedInBookingsRecord.guests),
+                                                                              room: widget.roomNo,
+                                                                              description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
+                                                                                  return "${priceChange ~/ bedPrice.abs()} ";
+                                                                                }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
+                                                                                    _model.adjustController.text,
+                                                                                    '0',
+                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                              remitted: false,
+                                                                              pending: true,
+                                                                            ),
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'date': DateTime.now(),
+                                                                              },
+                                                                            ),
+                                                                          }, transactionsRecordReference2);
+                                                                          // add to pending list
+
+                                                                          await widget
+                                                                              .booking!
+                                                                              .update({
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'pendings': FieldValue.arrayUnion([
+                                                                                  _model.newPending?.reference
+                                                                                ]),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                          // add this price change to history
+
+                                                                          await HistoryRecord.createDoc(checkedInBookingsRecord.room!)
+                                                                              .set({
+                                                                            ...createHistoryRecordData(
+                                                                              description: 'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
+                                                                                    _model.adjustController.text,
+                                                                                    '0',
+                                                                                  ))?.toString()}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
+                                                                                    _model.adjustController.text,
+                                                                                    '0',
+                                                                                  ))!).toString()}. But payment is pending.',
+                                                                              staff: currentUserReference,
+                                                                              booking: widget.booking,
+                                                                            ),
+                                                                            ...mapToFirestore(
+                                                                              {
+                                                                                'date': FieldValue.serverTimestamp(),
+                                                                              },
+                                                                            ),
+                                                                          });
+                                                                        }
+
+                                                                        if (_model.priceChangedescriptionValue ==
+                                                                            'Extra Bed') {
+                                                                          // change extra bed value
+
+                                                                          await widget
+                                                                              .booking!
+                                                                              .update(createBookingsRecordData(
+                                                                            extraBeds:
+                                                                                (functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.adjustController.text)) ~/ _model.hotelSetting!.bedPrice.abs()).toString(),
+                                                                          ));
+                                                                        }
+                                                                        context
+                                                                            .safePop();
+                                                                        ScaffoldMessenger.of(context)
+                                                                            .showSnackBar(
+                                                                          SnackBar(
+                                                                            content:
+                                                                                Text(
+                                                                              'Price has been adjusted!',
+                                                                              style: TextStyle(
+                                                                                color: FlutterFlowTheme.of(context).primaryText,
+                                                                              ),
+                                                                            ),
+                                                                            duration:
+                                                                                const Duration(milliseconds: 4000),
+                                                                            backgroundColor:
+                                                                                FlutterFlowTheme.of(context).secondary,
+                                                                          ),
+                                                                        );
+                                                                      } else {
+                                                                        ScaffoldMessenger.of(context)
+                                                                            .showSnackBar(
+                                                                          SnackBar(
+                                                                            content:
+                                                                                Text(
+                                                                              'You left the price empty!',
+                                                                              style: TextStyle(
+                                                                                color: FlutterFlowTheme.of(context).accent4,
+                                                                              ),
+                                                                            ),
+                                                                            duration:
+                                                                                const Duration(milliseconds: 4000),
+                                                                            backgroundColor:
+                                                                                FlutterFlowTheme.of(context).error,
+                                                                          ),
+                                                                        );
+                                                                      }
+
+                                                                      setState(
+                                                                          () {});
+                                                                    },
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              FlutterFlowIconButton(
-                                                                borderRadius:
-                                                                    20.0,
-                                                                borderWidth:
-                                                                    1.0,
-                                                                buttonSize:
-                                                                    40.0,
-                                                                icon: FaIcon(
-                                                                  FontAwesomeIcons
-                                                                      .check,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primaryText,
-                                                                  size: 24.0,
-                                                                ),
-                                                                onPressed:
-                                                                    () async {
-                                                                  if (_model.newPriceController
-                                                                              .text !=
-                                                                          null &&
-                                                                      _model.newPriceController
-                                                                              .text !=
-                                                                          '') {
-                                                                    // update Booking
-
-                                                                    await widget
-                                                                        .booking!
-                                                                        .update(
-                                                                            createBookingsRecordData(
-                                                                      total: double.tryParse(_model
-                                                                          .newPriceController
-                                                                          .text),
-                                                                    ));
-                                                                    // hotel settings
-                                                                    _model.hotelSetting =
-                                                                        await queryHotelSettingsRecordOnce(
-                                                                      queryBuilder:
-                                                                          (hotelSettingsRecord) =>
-                                                                              hotelSettingsRecord.where(
-                                                                        'hotel',
-                                                                        isEqualTo:
-                                                                            FFAppState().hotel,
-                                                                      ),
-                                                                      singleRecord:
-                                                                          true,
-                                                                    ).then((s) =>
-                                                                            s.firstOrNull);
-                                                                    if (checkedInBookingsRecord
-                                                                            .status ==
-                                                                        'paid') {
-                                                                      // new transaction
-
-                                                                      var transactionsRecordReference1 = TransactionsRecord
-                                                                          .collection
-                                                                          .doc();
-                                                                      await transactionsRecordReference1
-                                                                          .set({
-                                                                        ...createTransactionsRecordData(
-                                                                          staff:
-                                                                              currentUserReference,
-                                                                          total: functions.priceHasChanged(
-                                                                              checkedInBookingsRecord.total,
-                                                                              double.parse(_model.newPriceController.text)),
-                                                                          booking:
-                                                                              widget.booking,
-                                                                          hotel:
-                                                                              FFAppState().hotel,
-                                                                          type:
-                                                                              'book',
-                                                                          guests:
-                                                                              int.parse(checkedInBookingsRecord.guests),
-                                                                          room:
-                                                                              widget.roomNo,
-                                                                          description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                              return (priceChange / bedPrice).toInt().abs().toString() + " ";
-                                                                            }(functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
-                                                                          remitted:
-                                                                              false,
-                                                                          pending:
-                                                                              false,
-                                                                        ),
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'date':
-                                                                                FieldValue.serverTimestamp(),
-                                                                          },
-                                                                        ),
-                                                                      });
-                                                                      _model.changePriceTrans =
-                                                                          TransactionsRecord
-                                                                              .getDocumentFromData({
-                                                                        ...createTransactionsRecordData(
-                                                                          staff:
-                                                                              currentUserReference,
-                                                                          total: functions.priceHasChanged(
-                                                                              checkedInBookingsRecord.total,
-                                                                              double.parse(_model.newPriceController.text)),
-                                                                          booking:
-                                                                              widget.booking,
-                                                                          hotel:
-                                                                              FFAppState().hotel,
-                                                                          type:
-                                                                              'book',
-                                                                          guests:
-                                                                              int.parse(checkedInBookingsRecord.guests),
-                                                                          room:
-                                                                              widget.roomNo,
-                                                                          description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                              return (priceChange / bedPrice).toInt().abs().toString() + " ";
-                                                                            }(functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
-                                                                          remitted:
-                                                                              false,
-                                                                          pending:
-                                                                              false,
-                                                                        ),
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'date':
-                                                                                DateTime.now(),
-                                                                          },
-                                                                        ),
-                                                                      }, transactionsRecordReference1);
-
-                                                                      await widget
-                                                                          .booking!
-                                                                          .update({
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'transactions':
-                                                                                FieldValue.arrayUnion([
-                                                                              _model.changePriceTrans?.reference
-                                                                            ]),
-                                                                          },
-                                                                        ),
-                                                                      });
-                                                                      // add this price change to history
-
-                                                                      await HistoryRecord.createDoc(
-                                                                              checkedInBookingsRecord.room!)
-                                                                          .set({
-                                                                        ...createHistoryRecordData(
-                                                                          description:
-                                                                              'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${_model.newPriceController.text}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)).toString()}.',
-                                                                          staff:
-                                                                              currentUserReference,
-                                                                          booking:
-                                                                              widget.booking,
-                                                                        ),
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'date':
-                                                                                FieldValue.serverTimestamp(),
-                                                                          },
-                                                                        ),
-                                                                      });
-                                                                    } else {
-                                                                      // new pending transaction
-
-                                                                      var transactionsRecordReference2 = TransactionsRecord
-                                                                          .collection
-                                                                          .doc();
-                                                                      await transactionsRecordReference2
-                                                                          .set({
-                                                                        ...createTransactionsRecordData(
-                                                                          staff:
-                                                                              currentUserReference,
-                                                                          total: functions.priceHasChanged(
-                                                                              checkedInBookingsRecord.total,
-                                                                              double.parse(_model.newPriceController.text)),
-                                                                          booking:
-                                                                              widget.booking,
-                                                                          hotel:
-                                                                              FFAppState().hotel,
-                                                                          type:
-                                                                              'book',
-                                                                          guests:
-                                                                              int.parse(checkedInBookingsRecord.guests),
-                                                                          room:
-                                                                              widget.roomNo,
-                                                                          description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                              return (priceChange / bedPrice).toInt().abs().toString() + " ";
-                                                                            }(functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
-                                                                          remitted:
-                                                                              false,
-                                                                          pending:
-                                                                              true,
-                                                                        ),
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'date':
-                                                                                FieldValue.serverTimestamp(),
-                                                                          },
-                                                                        ),
-                                                                      });
-                                                                      _model.newPending =
-                                                                          TransactionsRecord
-                                                                              .getDocumentFromData({
-                                                                        ...createTransactionsRecordData(
-                                                                          staff:
-                                                                              currentUserReference,
-                                                                          total: functions.priceHasChanged(
-                                                                              checkedInBookingsRecord.total,
-                                                                              double.parse(_model.newPriceController.text)),
-                                                                          booking:
-                                                                              widget.booking,
-                                                                          hotel:
-                                                                              FFAppState().hotel,
-                                                                          type:
-                                                                              'book',
-                                                                          guests:
-                                                                              int.parse(checkedInBookingsRecord.guests),
-                                                                          room:
-                                                                              widget.roomNo,
-                                                                          description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                              return (priceChange / bedPrice).toInt().abs().toString() + " ";
-                                                                            }(functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
-                                                                          remitted:
-                                                                              false,
-                                                                          pending:
-                                                                              true,
-                                                                        ),
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'date':
-                                                                                DateTime.now(),
-                                                                          },
-                                                                        ),
-                                                                      }, transactionsRecordReference2);
-                                                                      // add to pending list
-
-                                                                      await widget
-                                                                          .booking!
-                                                                          .update({
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'pendings':
-                                                                                FieldValue.arrayUnion([
-                                                                              _model.newPending?.reference
-                                                                            ]),
-                                                                          },
-                                                                        ),
-                                                                      });
-                                                                      // add this price change to history
-
-                                                                      await HistoryRecord.createDoc(
-                                                                              checkedInBookingsRecord.room!)
-                                                                          .set({
-                                                                        ...createHistoryRecordData(
-                                                                          description:
-                                                                              'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${_model.newPriceController.text}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)).toString()}. But payment is pending.',
-                                                                          staff:
-                                                                              currentUserReference,
-                                                                          booking:
-                                                                              widget.booking,
-                                                                        ),
-                                                                        ...mapToFirestore(
-                                                                          {
-                                                                            'date':
-                                                                                FieldValue.serverTimestamp(),
-                                                                          },
-                                                                        ),
-                                                                      });
-                                                                    }
-
-                                                                    if (_model
-                                                                            .priceChangedescriptionValue ==
-                                                                        'Extra Bed') {
-                                                                      // change extra bed value
-
-                                                                      await widget
-                                                                          .booking!
-                                                                          .update(
-                                                                              createBookingsRecordData(
-                                                                        extraBeds:
-                                                                            ((functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.newPriceController.text)) / _model.hotelSetting!.bedPrice).toInt().abs()).toString(),
-                                                                      ));
-                                                                    }
-                                                                    context
-                                                                        .safePop();
-                                                                    ScaffoldMessenger.of(
-                                                                            context)
-                                                                        .showSnackBar(
-                                                                      SnackBar(
-                                                                        content:
-                                                                            Text(
-                                                                          'Price has been adjusted!',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primaryText,
-                                                                          ),
-                                                                        ),
-                                                                        duration:
-                                                                            Duration(milliseconds: 4000),
-                                                                        backgroundColor:
-                                                                            FlutterFlowTheme.of(context).secondary,
-                                                                      ),
-                                                                    );
-                                                                  } else {
-                                                                    ScaffoldMessenger.of(
-                                                                            context)
-                                                                        .showSnackBar(
-                                                                      SnackBar(
-                                                                        content:
-                                                                            Text(
-                                                                          'You left the price empty!',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).accent4,
-                                                                          ),
-                                                                        ),
-                                                                        duration:
-                                                                            Duration(milliseconds: 4000),
-                                                                        backgroundColor:
-                                                                            FlutterFlowTheme.of(context).error,
-                                                                      ),
-                                                                    );
-                                                                  }
-
-                                                                  setState(
-                                                                      () {});
-                                                                },
-                                                              ),
                                                             ],
                                                           ),
                                                         ),
@@ -1804,7 +2101,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                 ))
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 16.0,
                                                                 0.0, 0.0),
                                                     child: Column(
@@ -1816,7 +2113,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       4.0,
@@ -1826,12 +2123,18 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                             'Checked In By',
                                                             style: FlutterFlowTheme
                                                                     .of(context)
-                                                                .labelMedium,
+                                                                .labelMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                           ),
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       0.0,
@@ -1890,7 +2193,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   ),
                                                                 ),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -1906,7 +2209,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     children: [
                                                                       Padding(
                                                                         padding:
-                                                                            EdgeInsets.all(12.0),
+                                                                            const EdgeInsets.all(12.0),
                                                                         child:
                                                                             Row(
                                                                           mainAxisSize:
@@ -1923,7 +2226,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                 ),
                                                                               ),
                                                                               child: Padding(
-                                                                                padding: EdgeInsets.all(2.0),
+                                                                                padding: const EdgeInsets.all(2.0),
                                                                                 child: ClipRRect(
                                                                                   borderRadius: BorderRadius.circular(10.0),
                                                                                   child: Image.asset(
@@ -1936,7 +2239,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               ),
                                                                             ),
                                                                             Padding(
-                                                                              padding: EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
+                                                                              padding: const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
                                                                               child: Column(
                                                                                 mainAxisSize: MainAxisSize.max,
                                                                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1944,15 +2247,19 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                 children: [
                                                                                   Text(
                                                                                     containerUsersRecord.displayName,
-                                                                                    style: FlutterFlowTheme.of(context).bodyLarge,
+                                                                                    style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                                                                          fontFamily: 'Readex Pro',
+                                                                                          letterSpacing: 0.0,
+                                                                                        ),
                                                                                   ),
                                                                                   Padding(
-                                                                                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                                                                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                                                                                     child: Text(
                                                                                       'staff',
                                                                                       style: FlutterFlowTheme.of(context).labelSmall.override(
                                                                                             fontFamily: 'Readex Pro',
                                                                                             color: FlutterFlowTheme.of(context).primaryText,
+                                                                                            letterSpacing: 0.0,
                                                                                           ),
                                                                                     ),
                                                                                   ),
@@ -1963,7 +2270,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         ),
                                                                       ),
                                                                       Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             16.0,
                                                                             0.0,
                                                                             0.0,
@@ -1971,12 +2278,16 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         child:
                                                                             Text(
                                                                           'Date of Check In',
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).labelSmall,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .labelSmall
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                letterSpacing: 0.0,
+                                                                              ),
                                                                         ),
                                                                       ),
                                                                       Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             16.0,
                                                                             3.0,
                                                                             0.0,
@@ -1986,8 +2297,12 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           dateTimeFormat(
                                                                               'MMMM EEEE d h:mm a',
                                                                               checkedInBookingsRecord.dateIn!),
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).bodyMedium,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                letterSpacing: 0.0,
+                                                                              ),
                                                                         ),
                                                                       ),
                                                                     ],
@@ -2001,7 +2316,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                     ),
                                                   ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -2020,6 +2335,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .override(
                                                                   fontFamily:
                                                                       'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -2031,24 +2348,35 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyMedium,
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Text(
                                                     'Guest Details',
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .labelMedium,
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Text(
@@ -2056,14 +2384,19 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         .details,
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .bodyLarge,
+                                                        .bodyLarge
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
                                         ),
-                                      ].divide(SizedBox(width: 16.0)),
+                                      ].divide(const SizedBox(width: 16.0)),
                                     ),
                                   ),
                                 ),

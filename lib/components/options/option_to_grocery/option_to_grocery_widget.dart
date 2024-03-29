@@ -1,13 +1,9 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_grocery_model.dart';
 export 'option_to_grocery_model.dart';
@@ -53,82 +49,79 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
-              offset: Offset(0.0, 2.0),
+              offset: Offset(
+                0.0,
+                2.0,
+              ),
             )
           ],
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
-                  style: FlutterFlowTheme.of(context).labelMedium,
+                  style: FlutterFlowTheme.of(context).labelMedium.override(
+                        fontFamily: 'Readex Pro',
+                        letterSpacing: 0.0,
+                      ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: Text('Starting Point'),
-                              content: Text(
-                                  'Are you sure you want to track revenue from this point forward?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      // get grocery
-                      _model.groceryToTrack =
-                          await GroceriesRecord.getDocumentOnce(widget.ref!);
-                      // count grr
-                      _model.countGrr = await queryGoodsRevenueRatioRecordCount(
-                        queryBuilder: (goodsRevenueRatioRecord) =>
-                            goodsRevenueRatioRecord
-                                .where(
-                                  'hotel',
-                                  isEqualTo: FFAppState().hotel,
-                                )
-                                .orderBy('date', descending: true),
-                      );
-                      if (_model.countGrr! > 0) {
-                        // last grr
-                        _model.lastGrr = await queryGoodsRevenueRatioRecordOnce(
+              if (FFAppState().role == 'admin')
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Starting Point'),
+                                content: const Text(
+                                    'Are you sure you want to track revenue from this point forward?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        // get grocery
+                        _model.groceryToTrack =
+                            await GroceriesRecord.getDocumentOnce(widget.ref!);
+                        // count grr
+                        _model.countGrr =
+                            await queryGoodsRevenueRatioRecordCount(
                           queryBuilder: (goodsRevenueRatioRecord) =>
                               goodsRevenueRatioRecord
                                   .where(
@@ -136,94 +129,123 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                                     isEqualTo: FFAppState().hotel,
                                   )
                                   .orderBy('date', descending: true),
-                          singleRecord: true,
-                        ).then((s) => s.firstOrNull);
-                        // decrement grocery
+                        );
+                        if (_model.countGrr! > 0) {
+                          // last grr
+                          _model.lastGrr =
+                              await queryGoodsRevenueRatioRecordOnce(
+                            queryBuilder: (goodsRevenueRatioRecord) =>
+                                goodsRevenueRatioRecord
+                                    .where(
+                                      'hotel',
+                                      isEqualTo: FFAppState().hotel,
+                                    )
+                                    .orderBy('date', descending: true),
+                            singleRecord: true,
+                          ).then((s) => s.firstOrNull);
+                          // decrement grocery
 
-                        await _model.lastGrr!.reference.update({
+                          await _model.lastGrr!.reference.update({
+                            ...mapToFirestore(
+                              {
+                                'grocery': FieldValue.increment(
+                                    -(_model.groceryToTrack!.amount)),
+                              },
+                            ),
+                          });
+                        }
+                        // create grr
+
+                        await GoodsRevenueRatioRecord.collection.doc().set({
+                          ...createGoodsRevenueRatioRecordData(
+                            grocery: _model.groceryToTrack?.amount,
+                            revenue: 0.0,
+                            hotel: FFAppState().hotel,
+                            daysToBreakEven: 0,
+                            daysPassed: valueOrDefault<int>(
+                              functions.daysFrom(_model.groceryToTrack!.date!),
+                              0,
+                            ),
+                          ),
                           ...mapToFirestore(
                             {
-                              'grocery': FieldValue.increment(
-                                  -(_model.groceryToTrack!.amount)),
+                              'date': FieldValue.serverTimestamp(),
                             },
                           ),
                         });
-                      }
-                      // create grr
+                        // statsRef
+                        _model.statsRef = await StatsRecord.getDocumentOnce(
+                            FFAppState().statsReference!);
+                        if (_model.statsRef?.groceryExpenses == 0.0) {
+                          // set grocery expenses to amount
 
-                      await GoodsRevenueRatioRecord.collection.doc().set({
-                        ...createGoodsRevenueRatioRecordData(
-                          grocery: _model.groceryToTrack?.amount,
-                          revenue: 0.0,
-                          hotel: FFAppState().hotel,
-                          daysToBreakEven: 0,
-                          daysPassed: valueOrDefault<int>(
-                            functions.daysFrom(_model.groceryToTrack!.date!),
-                            0,
-                          ),
-                        ),
-                        ...mapToFirestore(
-                          {
-                            'date': FieldValue.serverTimestamp(),
-                          },
-                        ),
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'The sales will restart tracking from this day forward.',
-                            style: TextStyle(
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                          ),
-                          duration: Duration(milliseconds: 4000),
-                          backgroundColor:
-                              FlutterFlowTheme.of(context).secondary,
-                        ),
-                      );
-                    }
-                    Navigator.pop(context);
-
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                12.0, 0.0, 0.0, 0.0),
-                            child: Icon(
-                              Icons.start,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20.0,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                'Mark as starting point',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                          await FFAppState()
+                              .statsReference!
+                              .update(createStatsRecordData(
+                                groceryExpenses: _model.groceryToTrack?.amount,
+                              ));
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'The sales will restart tracking from this day forward.',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
                           ),
-                        ],
+                        );
+                      }
+                      Navigator.pop(context);
+
+                      setState(() {});
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Icon(
+                                Icons.start,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 20.0,
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 0.0, 0.0, 0.0),
+                                child: Text(
+                                  'Mark as starting point',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -288,7 +310,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                             color: FlutterFlowTheme.of(context).info,
                           ),
                         ),
-                        duration: Duration(milliseconds: 4000),
+                        duration: const Duration(milliseconds: 4000),
                         backgroundColor: FlutterFlowTheme.of(context).error,
                       ),
                     );
@@ -306,12 +328,12 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.remove,
@@ -321,11 +343,16 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Remove',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),

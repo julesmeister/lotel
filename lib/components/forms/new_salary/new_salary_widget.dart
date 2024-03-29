@@ -1,17 +1,12 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'new_salary_model.dart';
 export 'new_salary_model.dart';
@@ -24,7 +19,7 @@ class NewSalaryWidget extends StatefulWidget {
     this.salaryDoc,
     this.staffDoc,
     bool? edit,
-  }) : this.edit = edit ?? false;
+  }) : edit = edit ?? false;
 
   final DocumentReference? payrollRef;
   final List<StaffsRecord>? staffsForSelection;
@@ -101,19 +96,19 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
     });
 
     _model.rateController ??= TextEditingController(
-        text: _model.edit ? widget.salaryDoc?.rate?.toString() : '0');
+        text: _model.edit ? widget.salaryDoc?.rate.toString() : '0');
     _model.rateFocusNode ??= FocusNode();
 
     _model.sssController ??= TextEditingController(
-        text: _model.edit ? widget.salaryDoc?.sss?.toString() : '0');
+        text: _model.edit ? widget.salaryDoc?.sss.toString() : '0');
     _model.sssFocusNode ??= FocusNode();
 
     _model.caController ??= TextEditingController(
-        text: _model.edit ? widget.salaryDoc?.cashAdvance?.toString() : '0');
+        text: _model.edit ? widget.salaryDoc?.cashAdvance.toString() : '0');
     _model.caFocusNode ??= FocusNode();
 
     _model.absencesController ??= TextEditingController(
-        text: _model.edit ? widget.salaryDoc?.absences?.toString() : '0');
+        text: _model.edit ? widget.salaryDoc?.absences.toString() : '0');
     _model.absencesFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -133,20 +128,20 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0xB20B191E),
       ),
       child: Align(
-        alignment: AlignmentDirectional(0.0, 1.0),
+        alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -167,7 +162,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -179,7 +174,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -191,7 +186,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -200,12 +195,16 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                             Expanded(
                               flex: 6,
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 0.0, 0.0, 0.0),
                                 child: Text(
                                   widget.edit ? 'Edit Salary' : 'New Salary',
                                   style: FlutterFlowTheme.of(context)
-                                      .headlineSmall,
+                                      .headlineSmall
+                                      .override(
+                                        fontFamily: 'Outfit',
+                                        letterSpacing: 0.0,
+                                      ),
                                 ),
                               ),
                             ),
@@ -213,7 +212,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               Expanded(
                                 flex: 4,
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 16.0, 0.0),
                                   child: FlutterFlowDropDown<String>(
                                     controller:
@@ -225,7 +224,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     onChanged: (val) async {
                                       setState(
                                           () => _model.dropDownValue = val);
-                                      var _shouldSetState = false;
+                                      var shouldSetState = false;
                                       // reset values and set staff
                                       setState(() {
                                         _model.selectedStaff = widget
@@ -233,7 +232,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                             ?.where((e) =>
                                                 e.name == _model.dropDownValue)
                                             .toList()
-                                            ?.first;
+                                            .first;
                                         _model.cashAdvanceTotal = 0.0;
                                         _model.loopAdvancesCounter = 0;
                                         _model.cashAdvancesList = [];
@@ -270,8 +269,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                           isEqualTo: false,
                                         ),
                                       );
-                                      _shouldSetState = true;
-                                      if (_model.cashAdvances!.length > 0) {
+                                      shouldSetState = true;
+                                      if (_model.cashAdvances!.isNotEmpty) {
                                         while (_model.loopAdvancesCounter !=
                                             _model.cashAdvances?.length) {
                                           // add ca to list
@@ -299,7 +298,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                               .toString();
                                         });
                                       } else {
-                                        if (_shouldSetState) setState(() {});
+                                        if (shouldSetState) setState(() {});
                                         return;
                                       }
 
@@ -313,8 +312,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                           isEqualTo: false,
                                         ),
                                       );
-                                      _shouldSetState = true;
-                                      if (_model.absences!.length > 0) {
+                                      shouldSetState = true;
+                                      if (_model.absences!.isNotEmpty) {
                                         while (_model.loopAdvancesCounter !=
                                             _model.absences?.length) {
                                           // add absences to list
@@ -341,12 +340,16 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                               _model.absencesTotal.toString();
                                         });
                                       }
-                                      if (_shouldSetState) setState(() {});
+                                      if (shouldSetState) setState(() {});
                                     },
                                     width: 160.0,
                                     height: 40.0,
-                                    textStyle:
-                                        FlutterFlowTheme.of(context).bodyMedium,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                     hintText: 'Select Name',
                                     icon: Icon(
                                       Icons.keyboard_arrow_down_rounded,
@@ -357,10 +360,10 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     fillColor: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
                                     elevation: 2.0,
-                                    borderColor: Color(0xFFE0E3E7),
+                                    borderColor: const Color(0xFFE0E3E7),
                                     borderWidth: 2.0,
                                     borderRadius: 8.0,
-                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                    margin: const EdgeInsetsDirectional.fromSTEB(
                                         12.0, 4.0, 12.0, 4.0),
                                     hidesUnderline: true,
                                     isSearchable: false,
@@ -371,7 +374,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -390,6 +393,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               focusNode: _model.rateFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
+                                isDense: false,
                                 labelText: 'Fortnight Rate',
                                 hintText: 'Fortnight Rate',
                                 hintStyle: FlutterFlowTheme.of(context)
@@ -399,6 +403,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 enabledBorder: InputBorder.none,
@@ -408,11 +413,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
-                              minLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -437,6 +446,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 enabledBorder: InputBorder.none,
@@ -446,11 +456,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
-                              minLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -475,6 +489,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 enabledBorder: InputBorder.none,
@@ -484,11 +499,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
-                              minLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -513,6 +532,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                                 enabledBorder: InputBorder.none,
@@ -522,11 +542,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
-                              style: FlutterFlowTheme.of(context).bodyMedium,
-                              minLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -540,24 +564,23 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 16.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   10.0, 0.0, 0.0, 0.0),
                               child: RichText(
-                                textScaleFactor:
-                                    MediaQuery.of(context).textScaleFactor,
+                                textScaler: MediaQuery.of(context).textScaler,
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
@@ -568,6 +591,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                             fontFamily: 'Readex Pro',
                                             color: FlutterFlowTheme.of(context)
                                                 .primaryText,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.normal,
                                           ),
                                     ),
@@ -592,8 +616,12 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       ),
                                     )
                                   ],
-                                  style:
-                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
                                 ),
                               ),
                             ),
@@ -737,7 +765,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -751,7 +779,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 12.0, 0.0),
                                         child: Text(
                                           'Save',
@@ -762,6 +790,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primary,
+                                                letterSpacing: 0.0,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                         ),

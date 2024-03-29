@@ -6,16 +6,12 @@ import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'expense_model.dart';
 export 'expense_model.dart';
@@ -26,8 +22,8 @@ class ExpenseWidget extends StatefulWidget {
     bool? additional,
     this.remittanceRef,
     double? net,
-  })  : this.additional = additional ?? false,
-        this.net = net ?? 0.0;
+  })  : additional = additional ?? false,
+        net = net ?? 0.0;
 
   final bool additional;
   final DocumentReference? remittanceRef;
@@ -44,6 +40,42 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   final animationsMap = {
+    'textOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        MoveEffect(
+          curve: Curves.bounceOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: const Offset(0.0, -100.0),
+          end: const Offset(0.0, 0.0),
+        ),
+      ],
+    ),
+    'textFieldOnPageLoadAnimation1': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        MoveEffect(
+          curve: Curves.bounceOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: const Offset(-100.0, 0.0),
+          end: const Offset(0.0, 0.0),
+        ),
+      ],
+    ),
+    'textFieldOnPageLoadAnimation2': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        MoveEffect(
+          curve: Curves.bounceOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: const Offset(100.0, 0.0),
+          end: const Offset(0.0, 0.0),
+        ),
+      ],
+    ),
     'containerOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
@@ -58,8 +90,20 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(0.0, 110.0),
-          end: Offset(0.0, 0.0),
+          begin: const Offset(0.0, 110.0),
+          end: const Offset(0.0, 0.0),
+        ),
+      ],
+    ),
+    'dropDownOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        MoveEffect(
+          curve: Curves.bounceOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: const Offset(0.0, 100.0),
+          end: const Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -76,13 +120,6 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
     _model.descriptionController ??= TextEditingController();
     _model.descriptionFocusNode ??= FocusNode();
 
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
-
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -95,15 +132,6 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -121,31 +149,585 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
             style: FlutterFlowTheme.of(context).bodyMedium.override(
                   fontFamily: 'Readex Pro',
                   fontSize: 26.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [
-            Visibility(
-              visible: widget.additional,
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 15.0, 0.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    FlutterFlowIconButton(
-                      borderRadius: 20.0,
-                      borderWidth: 1.0,
-                      buttonSize: 40.0,
-                      icon: Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
-                      ),
-                      onPressed: () async {
-                        context.safePop();
-                      },
-                    ),
-                  ],
-                ),
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 15.0, 0.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      if (valueOrDefault(currentUserDocument?.role, '') !=
+                          'generic')
+                        AuthUserStreamWidget(
+                          builder: (context) => FlutterFlowIconButton(
+                            borderRadius: 20.0,
+                            borderWidth: 1.0,
+                            buttonSize: 40.0,
+                            disabledIconColor: const Color(0xFFDADBDC),
+                            icon: Icon(
+                              Icons.check,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 24.0,
+                            ),
+                            onPressed: _model.disableSubmit
+                                ? null
+                                : () async {
+                                    var shouldSetState = false;
+                                    if (_model.choicesValue == 'Cash Advance') {
+                                      if (_model.staffSelected != null) {
+                                        // Cash Advance? Sure?
+                                        var confirmDialogResponse =
+                                            await showDialog<bool>(
+                                                  context: context,
+                                                  builder:
+                                                      (alertDialogContext) {
+                                                    return AlertDialog(
+                                                      title:
+                                                          const Text('Cash Advance'),
+                                                      content: const Text(
+                                                          'Are you sure you want to cash in advance?'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  false),
+                                                          child: const Text('Cancel'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  true),
+                                                          child:
+                                                              const Text('Confirm'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ) ??
+                                                false;
+                                        if (confirmDialogResponse) {
+                                          // cash advance
+
+                                          await AdvancesRecord.createDoc(
+                                                  _model.staffSelected!)
+                                              .set({
+                                            ...createAdvancesRecordData(
+                                              settled: false,
+                                              amount: double.tryParse(
+                                                  _model.amountController.text),
+                                              requestedBy: currentUserReference,
+                                            ),
+                                            ...mapToFirestore(
+                                              {
+                                                'date': FieldValue
+                                                    .serverTimestamp(),
+                                              },
+                                            ),
+                                          });
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'You have cashed in advance!',
+                                                style: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                ),
+                                              ),
+                                              duration:
+                                                  const Duration(milliseconds: 4000),
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                            ),
+                                          );
+                                        } else {
+                                          if (shouldSetState) setState(() {});
+                                          return;
+                                        }
+
+                                        // Create transaction expense
+
+                                        var transactionsRecordReference1 =
+                                            TransactionsRecord.collection.doc();
+                                        await transactionsRecordReference1.set({
+                                          ...createTransactionsRecordData(
+                                            staff: currentUserReference,
+                                            total: double.tryParse(
+                                                _model.amountController.text),
+                                            type: 'expense',
+                                            hotel: FFAppState().hotel,
+                                            description:
+                                                '${_model.selectedNameValue} claimed ${_model.descriptionController.text}',
+                                            remitted: widget.additional
+                                                ? true
+                                                : false,
+                                            pending: false,
+                                          ),
+                                          ...mapToFirestore(
+                                            {
+                                              'date':
+                                                  FieldValue.serverTimestamp(),
+                                            },
+                                          ),
+                                        });
+                                        _model.newCACopy = TransactionsRecord
+                                            .getDocumentFromData({
+                                          ...createTransactionsRecordData(
+                                            staff: currentUserReference,
+                                            total: double.tryParse(
+                                                _model.amountController.text),
+                                            type: 'expense',
+                                            hotel: FFAppState().hotel,
+                                            description:
+                                                '${_model.selectedNameValue} claimed ${_model.descriptionController.text}',
+                                            remitted: widget.additional
+                                                ? true
+                                                : false,
+                                            pending: false,
+                                          ),
+                                          ...mapToFirestore(
+                                            {
+                                              'date': DateTime.now(),
+                                            },
+                                          ),
+                                        }, transactionsRecordReference1);
+                                        shouldSetState = true;
+                                        // CA to expenseRef
+                                        setState(() {
+                                          _model.expenseRef =
+                                              _model.newCACopy?.reference;
+                                        });
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'You have not selected a staff yet!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                              ),
+                                            ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .error,
+                                          ),
+                                        );
+                                        if (shouldSetState) setState(() {});
+                                        return;
+                                      }
+                                    } else {
+                                      if (functions.findTextsInString(
+                                          _model.choicesValue, 'Absent')) {
+                                        if (_model.staffSelected != null) {
+                                          // Absent? Sure?
+                                          var confirmDialogResponse =
+                                              await showDialog<bool>(
+                                                    context: context,
+                                                    builder:
+                                                        (alertDialogContext) {
+                                                      return AlertDialog(
+                                                        title: const Text('Absent'),
+                                                        content: const Text(
+                                                            'Are you sure you want to someone was absent?'),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext,
+                                                                    false),
+                                                            child:
+                                                                const Text('Cancel'),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext,
+                                                                    true),
+                                                            child:
+                                                                const Text('Confirm'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ) ??
+                                                  false;
+                                          if (confirmDialogResponse) {
+                                            // create absent
+
+                                            await AbsencesRecord.createDoc(
+                                                    _model.staffSelected!)
+                                                .set({
+                                              ...createAbsencesRecordData(
+                                                settled: false,
+                                                amount: double.tryParse(_model
+                                                    .amountController.text),
+                                                encodedBy: currentUserReference,
+                                                remitted: false,
+                                                hotel: FFAppState().hotel,
+                                              ),
+                                              ...mapToFirestore(
+                                                {
+                                                  'date': FieldValue
+                                                      .serverTimestamp(),
+                                                },
+                                              ),
+                                            });
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'You have marked ${_model.selectedNameValue} absent!',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                  ),
+                                                ),
+                                                duration: const Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                              ),
+                                            );
+                                          } else {
+                                            if (shouldSetState) {
+                                              setState(() {});
+                                            }
+                                            return;
+                                          }
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'You have not selected a staff yet!',
+                                                style: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .info,
+                                                ),
+                                              ),
+                                              duration:
+                                                  const Duration(milliseconds: 4000),
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                            ),
+                                          );
+                                          if (shouldSetState) setState(() {});
+                                          return;
+                                        }
+                                      } else {
+                                        // Not cash advance
+                                        var confirmDialogResponse =
+                                            await showDialog<bool>(
+                                                  context: context,
+                                                  builder:
+                                                      (alertDialogContext) {
+                                                    return AlertDialog(
+                                                      title:
+                                                          const Text('Are you sure?'),
+                                                      content: const Text(
+                                                          'You are submitting a new expense.'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  false),
+                                                          child: const Text('Cancel'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  true),
+                                                          child:
+                                                              const Text('Confirm'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ) ??
+                                                false;
+                                        if (confirmDialogResponse) {
+                                          // Create transaction expense
+
+                                          var transactionsRecordReference2 =
+                                              TransactionsRecord.collection
+                                                  .doc();
+                                          await transactionsRecordReference2
+                                              .set({
+                                            ...createTransactionsRecordData(
+                                              staff: currentUserReference,
+                                              total: double.tryParse(
+                                                  _model.amountController.text),
+                                              type: 'expense',
+                                              hotel: FFAppState().hotel,
+                                              description: functions.resetFont(
+                                                  functions.startBigLetter(
+                                                      _model
+                                                          .descriptionController
+                                                          .text)),
+                                              remitted: widget.additional
+                                                  ? true
+                                                  : false,
+                                              pending: false,
+                                            ),
+                                            ...mapToFirestore(
+                                              {
+                                                'date': FieldValue
+                                                    .serverTimestamp(),
+                                              },
+                                            ),
+                                          });
+                                          _model.newExpCopy = TransactionsRecord
+                                              .getDocumentFromData({
+                                            ...createTransactionsRecordData(
+                                              staff: currentUserReference,
+                                              total: double.tryParse(
+                                                  _model.amountController.text),
+                                              type: 'expense',
+                                              hotel: FFAppState().hotel,
+                                              description: functions.resetFont(
+                                                  functions.startBigLetter(
+                                                      _model
+                                                          .descriptionController
+                                                          .text)),
+                                              remitted: widget.additional
+                                                  ? true
+                                                  : false,
+                                              pending: false,
+                                            ),
+                                            ...mapToFirestore(
+                                              {
+                                                'date': DateTime.now(),
+                                              },
+                                            ),
+                                          }, transactionsRecordReference2);
+                                          shouldSetState = true;
+                                          // Saved
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Expense saved!',
+                                                style: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                ),
+                                              ),
+                                              duration:
+                                                  const Duration(milliseconds: 4000),
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                            ),
+                                          );
+                                          // exp to expenseRef
+                                          setState(() {
+                                            _model.expenseRef =
+                                                _model.newExpCopy?.reference;
+                                          });
+                                          if (functions.findTextsInString(
+                                              _model.choicesValue,
+                                              'Softdrinks')) {
+                                            // also creating grocery
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Also creating grocery!',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                  ),
+                                                ),
+                                                duration: const Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                              ),
+                                            );
+                                            // create grocery
+
+                                            await GroceriesRecord.collection
+                                                .doc()
+                                                .set({
+                                              ...createGroceriesRecordData(
+                                                hotel: FFAppState().hotel,
+                                                recordedBy:
+                                                    currentUserReference,
+                                                amount: double.tryParse(_model
+                                                    .amountController.text),
+                                                remark: _model
+                                                    .descriptionController.text,
+                                              ),
+                                              ...mapToFirestore(
+                                                {
+                                                  'date': FieldValue
+                                                      .serverTimestamp(),
+                                                },
+                                              ),
+                                            });
+                                            // increment stats grocery
+
+                                            await FFAppState()
+                                                .statsReference!
+                                                .update({
+                                              ...mapToFirestore(
+                                                {
+                                                  'groceryExpenses':
+                                                      FieldValue.increment(
+                                                          double.parse(_model
+                                                              .amountController
+                                                              .text)),
+                                                },
+                                              ),
+                                            });
+                                            // count grr
+                                            _model.countGrrCopy =
+                                                await queryGoodsRevenueRatioRecordCount(
+                                              queryBuilder:
+                                                  (goodsRevenueRatioRecord) =>
+                                                      goodsRevenueRatioRecord
+                                                          .where(
+                                                            'hotel',
+                                                            isEqualTo:
+                                                                FFAppState()
+                                                                    .hotel,
+                                                          )
+                                                          .orderBy('date',
+                                                              descending: true),
+                                            );
+                                            shouldSetState = true;
+                                            if (_model.countGrrCopy! > 0) {
+                                              // last grr
+                                              _model.lastGrrCopy =
+                                                  await queryGoodsRevenueRatioRecordOnce(
+                                                queryBuilder:
+                                                    (goodsRevenueRatioRecord) =>
+                                                        goodsRevenueRatioRecord
+                                                            .where(
+                                                              'hotel',
+                                                              isEqualTo:
+                                                                  FFAppState()
+                                                                      .hotel,
+                                                            )
+                                                            .orderBy('date',
+                                                                descending:
+                                                                    true),
+                                                singleRecord: true,
+                                              ).then((s) => s.firstOrNull);
+                                              shouldSetState = true;
+                                              // increment grocery
+
+                                              await _model
+                                                  .lastGrrCopy!.reference
+                                                  .update({
+                                                ...mapToFirestore(
+                                                  {
+                                                    'grocery':
+                                                        FieldValue.increment(
+                                                            double.parse(_model
+                                                                .amountController
+                                                                .text)),
+                                                  },
+                                                ),
+                                              });
+                                            }
+                                          }
+                                        } else {
+                                          if (shouldSetState) setState(() {});
+                                          return;
+                                        }
+                                      }
+                                    }
+
+                                    if (widget.additional) {
+                                      // add expensRef to remittance
+
+                                      await widget.remittanceRef!.update({
+                                        ...mapToFirestore(
+                                          {
+                                            'expenses': FieldValue.increment(
+                                                double.parse(_model
+                                                    .amountController.text)),
+                                            'transactions':
+                                                FieldValue.arrayUnion(
+                                                    [_model.expenseRef]),
+                                            'net': FieldValue.increment(
+                                                -(double.parse(_model
+                                                    .amountController.text))),
+                                          },
+                                        ),
+                                      });
+                                      // update stats
+
+                                      await FFAppState()
+                                          .statsReference!
+                                          .update({
+                                        ...mapToFirestore(
+                                          {
+                                            'expenses': FieldValue.increment(
+                                                double.parse(_model
+                                                    .amountController.text)),
+                                          },
+                                        ),
+                                      });
+                                    }
+                                    // Reset choice chips
+                                    setState(() {
+                                      _model.choicesValueController?.reset();
+                                    });
+                                    // Reset amount/description
+                                    setState(() {
+                                      _model.amountController?.clear();
+                                      _model.descriptionController?.clear();
+                                    });
+                                    // Reset selected staff
+                                    setState(() {
+                                      _model.selectedNameValueController
+                                          ?.reset();
+                                    });
+                                    if (shouldSetState) setState(() {});
+                                  },
+                          ),
+                        ),
+                      if (widget.additional)
+                        FlutterFlowIconButton(
+                          borderRadius: 20.0,
+                          borderWidth: 1.0,
+                          buttonSize: 40.0,
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            context.safePop();
+                          },
+                        ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
@@ -155,7 +737,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
         body: SafeArea(
           top: true,
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+            padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -163,13 +745,20 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                 children: [
                   Text(
                     'Type a new expense',
-                    style: FlutterFlowTheme.of(context).headlineMedium,
-                  ),
+                    style: FlutterFlowTheme.of(context).headlineMedium.override(
+                          fontFamily: 'Outfit',
+                          letterSpacing: 0.0,
+                        ),
+                  ).animateOnPageLoad(
+                      animationsMap['textOnPageLoadAnimation']!),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                     child: Text(
                       'Fill out the form below to record a new expense.',
-                      style: FlutterFlowTheme.of(context).labelLarge,
+                      style: FlutterFlowTheme.of(context).labelLarge.override(
+                            fontFamily: 'Readex Pro',
+                            letterSpacing: 0.0,
+                          ),
                     ),
                   ),
                   Column(
@@ -178,6 +767,23 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                       TextFormField(
                         controller: _model.amountController,
                         focusNode: _model.amountFocusNode,
+                        onChanged: (_) => EasyDebounce.debounce(
+                          '_model.amountController',
+                          const Duration(milliseconds: 2000),
+                          () async {
+                            if (_model.amountController.text == '') {
+                              // disable
+                              setState(() {
+                                _model.disableSubmit = true;
+                              });
+                            } else {
+                              // enable
+                              setState(() {
+                                _model.disableSubmit = false;
+                              });
+                            }
+                          },
+                        ),
                         autofocus: true,
                         obscureText: false,
                         decoration: InputDecoration(
@@ -188,9 +794,14 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                 fontFamily: 'Outfit',
                                 color:
                                     FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
                                 fontWeight: FontWeight.w500,
                               ),
-                          hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                          hintStyle:
+                              FlutterFlowTheme.of(context).labelMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: FlutterFlowTheme.of(context).alternate,
@@ -219,25 +830,40 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             ),
                             borderRadius: BorderRadius.circular(0.0),
                           ),
-                          contentPadding: EdgeInsetsDirectional.fromSTEB(
+                          contentPadding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 12.0, 16.0, 12.0),
                         ),
-                        style: FlutterFlowTheme.of(context).headlineSmall,
+                        style:
+                            FlutterFlowTheme.of(context).headlineSmall.override(
+                                  fontFamily: 'Outfit',
+                                  letterSpacing: 0.0,
+                                ),
+                        minLines: null,
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                         cursorColor: FlutterFlowTheme.of(context).primary,
                         validator: _model.amountControllerValidator
                             .asValidator(context),
-                      ),
+                      ).animateOnPageLoad(
+                          animationsMap['textFieldOnPageLoadAnimation1']!),
                       TextFormField(
                         controller: _model.descriptionController,
                         focusNode: _model.descriptionFocusNode,
+                        autofocus: false,
                         textCapitalization: TextCapitalization.words,
                         obscureText: false,
                         decoration: InputDecoration(
-                          labelStyle: FlutterFlowTheme.of(context).labelMedium,
+                          labelStyle:
+                              FlutterFlowTheme.of(context).labelMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                           hintText: 'Describe the expense',
-                          hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                          hintStyle:
+                              FlutterFlowTheme.of(context).labelMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: FlutterFlowTheme.of(context).alternate,
@@ -266,120 +892,169 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             ),
                             borderRadius: BorderRadius.circular(0.0),
                           ),
-                          contentPadding: EdgeInsetsDirectional.fromSTEB(
+                          contentPadding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 24.0, 16.0, 12.0),
                         ),
-                        style: FlutterFlowTheme.of(context).bodyMedium,
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              letterSpacing: 0.0,
+                            ),
                         maxLines: 16,
                         minLines: 6,
                         cursorColor: FlutterFlowTheme.of(context).primary,
                         validator: _model.descriptionControllerValidator
                             .asValidator(context),
-                      ),
+                      ).animateOnPageLoad(
+                          animationsMap['textFieldOnPageLoadAnimation2']!),
                     ]
-                        .divide(SizedBox(height: 16.0))
-                        .addToStart(SizedBox(height: 12.0)),
+                        .divide(const SizedBox(height: 16.0))
+                        .addToStart(const SizedBox(height: 12.0)),
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        borderRadius: BorderRadius.circular(12.0),
-                        border: Border.all(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 2.0,
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
+                    child: StreamBuilder<List<OptionsRecord>>(
+                      stream: queryOptionsRecord(
+                        queryBuilder: (optionsRecord) => optionsRecord.where(
+                          'type',
+                          isEqualTo: 'expense',
                         ),
                       ),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 15.0, 16.0, 15.0),
-                        child: FlutterFlowChoiceChips(
-                          options: [
-                            ChipData('Food'),
-                            ChipData('Pamasahe'),
-                            ChipData('Cash Advance'),
-                            ChipData('Materials'),
-                            ChipData('Salary'),
-                            ChipData('Refill Water'),
-                            ChipData('Absent'),
-                            ChipData('Softdrinks'),
-                            ChipData('Sako')
-                          ],
-                          onChanged: (val) async {
-                            setState(() => _model.choicesValue = val?.first);
-                            if (_model.choicesValue == 'Food') {
-                              // Food Allowance
-                              setState(() {
-                                _model.descriptionController?.text =
-                                    'Food Allowance for Staff';
-                              });
-                              // 150 amount
-                              setState(() {
-                                _model.amountController?.text = '150';
-                              });
-                            } else {
-                              // choice
-                              setState(() {
-                                _model.descriptionController?.text =
-                                    _model.choicesValue!;
-                              });
-                              if (_model.choicesValue == 'Pamasahe') {
-                                // 100 pamasahe
-                                setState(() {
-                                  _model.amountController?.text = '100';
-                                });
-                              } else {
-                                if (_model.choicesValue == 'Sako') {
-                                  // 10 sako
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  FlutterFlowTheme.of(context).primary,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        List<OptionsRecord> containerOptionsRecordList =
+                            snapshot.data!;
+                        return Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            borderRadius: BorderRadius.circular(12.0),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 2.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 15.0, 16.0, 15.0),
+                            child: FlutterFlowChoiceChips(
+                              options: containerOptionsRecordList
+                                  .map((e) => e.choice)
+                                  .toList()
+                                  .map((label) => ChipData(label))
+                                  .toList(),
+                              onChanged: (val) async {
+                                setState(() =>
+                                    _model.choicesValue = val?.firstOrNull);
+                                if (_model.choicesValue == 'Food') {
+                                  // Food Allowance
                                   setState(() {
-                                    _model.amountController?.text = '10';
+                                    _model.descriptionController?.text =
+                                        'Food Allowance for Staff';
                                   });
+                                  // 150 amount
+                                  setState(() {
+                                    _model.amountController?.text = '150';
+                                  });
+                                  // enable submit
+                                  setState(() {
+                                    _model.disableSubmit = false;
+                                  });
+                                } else {
+                                  // choice
+                                  setState(() {
+                                    _model.descriptionController?.text =
+                                        _model.choicesValue!;
+                                  });
+                                  if (_model.choicesValue == 'Pamasahe') {
+                                    // 100 pamasahe
+                                    setState(() {
+                                      _model.amountController?.text = '100';
+                                    });
+                                    // enable submit
+                                    setState(() {
+                                      _model.disableSubmit = false;
+                                    });
+                                  } else {
+                                    if (_model.choicesValue == 'Sako') {
+                                      // 10 sako
+                                      setState(() {
+                                        _model.amountController?.text = '10';
+                                      });
+                                      // enable submit
+                                      setState(() {
+                                        _model.disableSubmit = false;
+                                      });
+                                    }
+                                  }
                                 }
-                              }
-                            }
-                          },
-                          selectedChipStyle: ChipStyle(
-                            backgroundColor:
-                                FlutterFlowTheme.of(context).primary,
-                            textStyle: FlutterFlowTheme.of(context).titleSmall,
-                            iconColor: Colors.white,
-                            iconSize: 18.0,
-                            labelPadding: EdgeInsetsDirectional.fromSTEB(
-                                12.0, 4.0, 12.0, 4.0),
-                            elevation: 2.0,
+                              },
+                              selectedChipStyle: ChipStyle(
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                                iconColor: Colors.white,
+                                iconSize: 18.0,
+                                labelPadding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 4.0, 12.0, 4.0),
+                                elevation: 2.0,
+                              ),
+                              unselectedChipStyle: ChipStyle(
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).alternate,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                                iconColor:
+                                    FlutterFlowTheme.of(context).primaryText,
+                                iconSize: 18.0,
+                                labelPadding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 4.0, 12.0, 4.0),
+                                elevation: 0.0,
+                              ),
+                              chipSpacing: 12.0,
+                              rowSpacing: 10.0,
+                              multiselect: false,
+                              alignment: WrapAlignment.start,
+                              controller: _model.choicesValueController ??=
+                                  FormFieldController<List<String>>(
+                                [],
+                              ),
+                              wrapped: true,
+                            ),
                           ),
-                          unselectedChipStyle: ChipStyle(
-                            backgroundColor:
-                                FlutterFlowTheme.of(context).alternate,
-                            textStyle: FlutterFlowTheme.of(context).labelMedium,
-                            iconColor: FlutterFlowTheme.of(context).primaryText,
-                            iconSize: 18.0,
-                            labelPadding: EdgeInsetsDirectional.fromSTEB(
-                                12.0, 4.0, 12.0, 4.0),
-                            elevation: 0.0,
-                          ),
-                          chipSpacing: 12.0,
-                          rowSpacing: 24.0,
-                          multiselect: false,
-                          alignment: WrapAlignment.start,
-                          controller: _model.choicesValueController ??=
-                              FormFieldController<List<String>>(
-                            [],
-                          ),
-                          wrapped: true,
-                        ),
-                      ),
-                    ).animateOnPageLoad(
-                        animationsMap['containerOnPageLoadAnimation']!),
+                        ).animateOnPageLoad(
+                            animationsMap['containerOnPageLoadAnimation']!);
+                      },
+                    ),
                   ),
                   if (functions.findTextsInString(
                       _model.choicesValue, 'Cash Advance,Absent'))
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                       child: StreamBuilder<List<StaffsRecord>>(
                         stream: _model.staffsCashAdvance(
                           requestFn: () => queryStaffsRecord(
@@ -425,7 +1100,12 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                               });
                             },
                             height: 60.0,
-                            textStyle: FlutterFlowTheme.of(context).bodyMedium,
+                            textStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
                             hintText: 'Select Name',
                             icon: Icon(
                               Icons.keyboard_arrow_down_rounded,
@@ -435,551 +1115,17 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
                             elevation: 2.0,
-                            borderColor: Color(0xFFE0E3E7),
+                            borderColor: const Color(0xFFE0E3E7),
                             borderWidth: 2.0,
                             borderRadius: 8.0,
-                            margin: EdgeInsetsDirectional.fromSTEB(
+                            margin: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 4.0, 12.0, 4.0),
                             hidesUnderline: true,
                             isSearchable: false,
                             isMultiSelect: false,
-                          );
+                          ).animateOnPageLoad(
+                              animationsMap['dropDownOnPageLoadAnimation']!);
                         },
-                      ),
-                    ),
-                  if (valueOrDefault(currentUserDocument?.role, '') !=
-                      'generic')
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 12.0),
-                      child: AuthUserStreamWidget(
-                        builder: (context) => FFButtonWidget(
-                          onPressed: (_model.amountController.text == null ||
-                                  _model.amountController.text == '')
-                              ? null
-                              : () async {
-                                  var _shouldSetState = false;
-                                  if (_model.choicesValue == 'Cash Advance') {
-                                    if (_model.staffSelected != null) {
-                                      // Cash Advance? Sure?
-                                      var confirmDialogResponse =
-                                          await showDialog<bool>(
-                                                context: context,
-                                                builder: (alertDialogContext) {
-                                                  return AlertDialog(
-                                                    title: Text('Cash Advance'),
-                                                    content: Text(
-                                                        'Are you sure you want to cash in advance?'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                false),
-                                                        child: Text('Cancel'),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                true),
-                                                        child: Text('Confirm'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              ) ??
-                                              false;
-                                      if (confirmDialogResponse) {
-                                        // cash advance
-
-                                        await AdvancesRecord.createDoc(
-                                                _model.staffSelected!)
-                                            .set({
-                                          ...createAdvancesRecordData(
-                                            settled: false,
-                                            amount: double.tryParse(
-                                                _model.amountController.text),
-                                            requestedBy: currentUserReference,
-                                          ),
-                                          ...mapToFirestore(
-                                            {
-                                              'date':
-                                                  FieldValue.serverTimestamp(),
-                                            },
-                                          ),
-                                        });
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              'You have cashed in advance!',
-                                              style: TextStyle(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                              ),
-                                            ),
-                                            duration:
-                                                Duration(milliseconds: 4000),
-                                            backgroundColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                          ),
-                                        );
-                                      } else {
-                                        if (_shouldSetState) setState(() {});
-                                        return;
-                                      }
-
-                                      // Create transaction expense
-
-                                      var transactionsRecordReference1 =
-                                          TransactionsRecord.collection.doc();
-                                      await transactionsRecordReference1.set({
-                                        ...createTransactionsRecordData(
-                                          staff: currentUserReference,
-                                          total: double.tryParse(
-                                              _model.amountController.text),
-                                          type: 'expense',
-                                          hotel: FFAppState().hotel,
-                                          description:
-                                              '${_model.selectedNameValue} claimed ${_model.descriptionController.text}',
-                                          remitted:
-                                              widget.additional ? true : false,
-                                          pending: false,
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'date':
-                                                FieldValue.serverTimestamp(),
-                                          },
-                                        ),
-                                      });
-                                      _model.newCA = TransactionsRecord
-                                          .getDocumentFromData({
-                                        ...createTransactionsRecordData(
-                                          staff: currentUserReference,
-                                          total: double.tryParse(
-                                              _model.amountController.text),
-                                          type: 'expense',
-                                          hotel: FFAppState().hotel,
-                                          description:
-                                              '${_model.selectedNameValue} claimed ${_model.descriptionController.text}',
-                                          remitted:
-                                              widget.additional ? true : false,
-                                          pending: false,
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'date': DateTime.now(),
-                                          },
-                                        ),
-                                      }, transactionsRecordReference1);
-                                      _shouldSetState = true;
-                                      // CA to expenseRef
-                                      setState(() {
-                                        _model.expenseRef =
-                                            _model.newCA?.reference;
-                                      });
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'You have not selected a staff yet!',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .info,
-                                            ),
-                                          ),
-                                          duration:
-                                              Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .error,
-                                        ),
-                                      );
-                                      if (_shouldSetState) setState(() {});
-                                      return;
-                                    }
-                                  } else {
-                                    if (functions.findTextsInString(
-                                        _model.choicesValue, 'Absent')) {
-                                      if (_model.staffSelected != null) {
-                                        // Absent? Sure?
-                                        var confirmDialogResponse =
-                                            await showDialog<bool>(
-                                                  context: context,
-                                                  builder:
-                                                      (alertDialogContext) {
-                                                    return AlertDialog(
-                                                      title: Text('Absent'),
-                                                      content: Text(
-                                                          'Are you sure you want to someone was absent?'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  false),
-                                                          child: Text('Cancel'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  true),
-                                                          child:
-                                                              Text('Confirm'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                ) ??
-                                                false;
-                                        if (confirmDialogResponse) {
-                                          // create absent
-
-                                          await AbsencesRecord.createDoc(
-                                                  _model.staffSelected!)
-                                              .set({
-                                            ...createAbsencesRecordData(
-                                              settled: false,
-                                              amount: double.tryParse(
-                                                  _model.amountController.text),
-                                              encodedBy: currentUserReference,
-                                              remitted: false,
-                                              hotel: FFAppState().hotel,
-                                            ),
-                                            ...mapToFirestore(
-                                              {
-                                                'date': FieldValue
-                                                    .serverTimestamp(),
-                                              },
-                                            ),
-                                          });
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'You have marked ${_model.selectedNameValue} absent!',
-                                                style: TextStyle(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
-                                                ),
-                                              ),
-                                              duration:
-                                                  Duration(milliseconds: 4000),
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondary,
-                                            ),
-                                          );
-                                        } else {
-                                          if (_shouldSetState) setState(() {});
-                                          return;
-                                        }
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              'You have not selected a staff yet!',
-                                              style: TextStyle(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .info,
-                                              ),
-                                            ),
-                                            duration:
-                                                Duration(milliseconds: 4000),
-                                            backgroundColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .error,
-                                          ),
-                                        );
-                                        if (_shouldSetState) setState(() {});
-                                        return;
-                                      }
-                                    } else {
-                                      // Not cash advance
-                                      var confirmDialogResponse =
-                                          await showDialog<bool>(
-                                                context: context,
-                                                builder: (alertDialogContext) {
-                                                  return AlertDialog(
-                                                    title:
-                                                        Text('Are you sure?'),
-                                                    content: Text(
-                                                        'You are submitting a new expense.'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                false),
-                                                        child: Text('Cancel'),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                true),
-                                                        child: Text('Confirm'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              ) ??
-                                              false;
-                                      if (confirmDialogResponse) {
-                                        // Create transaction expense
-
-                                        var transactionsRecordReference2 =
-                                            TransactionsRecord.collection.doc();
-                                        await transactionsRecordReference2.set({
-                                          ...createTransactionsRecordData(
-                                            staff: currentUserReference,
-                                            total: double.tryParse(
-                                                _model.amountController.text),
-                                            type: 'expense',
-                                            hotel: FFAppState().hotel,
-                                            description: functions.resetFont(
-                                                _model.descriptionController
-                                                    .text),
-                                            remitted: widget.additional
-                                                ? true
-                                                : false,
-                                            pending: false,
-                                          ),
-                                          ...mapToFirestore(
-                                            {
-                                              'date':
-                                                  FieldValue.serverTimestamp(),
-                                            },
-                                          ),
-                                        });
-                                        _model.newExp = TransactionsRecord
-                                            .getDocumentFromData({
-                                          ...createTransactionsRecordData(
-                                            staff: currentUserReference,
-                                            total: double.tryParse(
-                                                _model.amountController.text),
-                                            type: 'expense',
-                                            hotel: FFAppState().hotel,
-                                            description: functions.resetFont(
-                                                _model.descriptionController
-                                                    .text),
-                                            remitted: widget.additional
-                                                ? true
-                                                : false,
-                                            pending: false,
-                                          ),
-                                          ...mapToFirestore(
-                                            {
-                                              'date': DateTime.now(),
-                                            },
-                                          ),
-                                        }, transactionsRecordReference2);
-                                        _shouldSetState = true;
-                                        // Saved
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              'Expense saved!',
-                                              style: TextStyle(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                              ),
-                                            ),
-                                            duration:
-                                                Duration(milliseconds: 4000),
-                                            backgroundColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                          ),
-                                        );
-                                        // exp to expenseRef
-                                        setState(() {
-                                          _model.expenseRef =
-                                              _model.newExp?.reference;
-                                        });
-                                        if (functions.findTextsInString(
-                                            _model.choicesValue,
-                                            'Softdrinks')) {
-                                          // also creating grocery
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Also creating grocery!',
-                                                style: TextStyle(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
-                                                ),
-                                              ),
-                                              duration:
-                                                  Duration(milliseconds: 4000),
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondary,
-                                            ),
-                                          );
-                                          // create grocery
-
-                                          await GroceriesRecord.collection
-                                              .doc()
-                                              .set({
-                                            ...createGroceriesRecordData(
-                                              hotel: FFAppState().hotel,
-                                              recordedBy: currentUserReference,
-                                              amount: double.tryParse(
-                                                  _model.amountController.text),
-                                              remark: _model
-                                                  .descriptionController.text,
-                                            ),
-                                            ...mapToFirestore(
-                                              {
-                                                'date': FieldValue
-                                                    .serverTimestamp(),
-                                              },
-                                            ),
-                                          });
-                                          // count grr
-                                          _model.countGrr =
-                                              await queryGoodsRevenueRatioRecordCount(
-                                            queryBuilder:
-                                                (goodsRevenueRatioRecord) =>
-                                                    goodsRevenueRatioRecord
-                                                        .where(
-                                                          'hotel',
-                                                          isEqualTo:
-                                                              FFAppState()
-                                                                  .hotel,
-                                                        )
-                                                        .orderBy('date',
-                                                            descending: true),
-                                          );
-                                          _shouldSetState = true;
-                                          if (_model.countGrr! > 0) {
-                                            // last grr
-                                            _model.lastGrr =
-                                                await queryGoodsRevenueRatioRecordOnce(
-                                              queryBuilder:
-                                                  (goodsRevenueRatioRecord) =>
-                                                      goodsRevenueRatioRecord
-                                                          .where(
-                                                            'hotel',
-                                                            isEqualTo:
-                                                                FFAppState()
-                                                                    .hotel,
-                                                          )
-                                                          .orderBy('date',
-                                                              descending: true),
-                                              singleRecord: true,
-                                            ).then((s) => s.firstOrNull);
-                                            _shouldSetState = true;
-                                            // increment grocery
-
-                                            await _model.lastGrr!.reference
-                                                .update({
-                                              ...mapToFirestore(
-                                                {
-                                                  'grocery':
-                                                      FieldValue.increment(
-                                                          double.parse(_model
-                                                              .amountController
-                                                              .text)),
-                                                },
-                                              ),
-                                            });
-                                          }
-                                        }
-                                      } else {
-                                        if (_shouldSetState) setState(() {});
-                                        return;
-                                      }
-                                    }
-                                  }
-
-                                  if (widget.additional) {
-                                    // add expensRef to remittance
-
-                                    await widget.remittanceRef!.update({
-                                      ...mapToFirestore(
-                                        {
-                                          'expenses': FieldValue.increment(
-                                              double.parse(_model
-                                                  .amountController.text)),
-                                          'transactions': FieldValue.arrayUnion(
-                                              [_model.expenseRef]),
-                                          'net': FieldValue.increment(
-                                              -(double.parse(_model
-                                                  .amountController.text))),
-                                        },
-                                      ),
-                                    });
-                                    // update stats
-
-                                    await FFAppState().statsReference!.update({
-                                      ...mapToFirestore(
-                                        {
-                                          'expenses': FieldValue.increment(
-                                              double.parse(_model
-                                                  .amountController.text)),
-                                        },
-                                      ),
-                                    });
-                                  }
-                                  // Reset choice chips
-                                  setState(() {
-                                    _model.choicesValueController?.reset();
-                                  });
-                                  // Reset amount/description
-                                  setState(() {
-                                    _model.amountController?.clear();
-                                    _model.descriptionController?.clear();
-                                  });
-                                  // Reset selected staff
-                                  setState(() {
-                                    _model.selectedNameValueController?.reset();
-                                  });
-                                  if (_shouldSetState) setState(() {});
-                                },
-                          text: 'Submit Expense',
-                          icon: Icon(
-                            Icons.receipt_long,
-                            size: 15.0,
-                          ),
-                          options: FFButtonOptions(
-                            width: double.infinity,
-                            height: 54.0,
-                            padding: EdgeInsets.all(0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: FlutterFlowTheme.of(context).primary,
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                ),
-                            elevation: 4.0,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(12.0),
-                            disabledColor: Color(0xFFDDE0E3),
-                            disabledTextColor: Color(0xFF12151C),
-                          ),
-                        ),
                       ),
                     ),
                 ],

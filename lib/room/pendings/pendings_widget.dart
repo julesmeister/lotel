@@ -1,18 +1,10 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'pendings_model.dart';
 export 'pendings_model.dart';
@@ -46,15 +38,6 @@ class _PendingsWidgetState extends State<PendingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return StreamBuilder<List<TransactionsRecord>>(
@@ -107,7 +90,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                 icon: Icon(
                   Icons.chevron_left,
                   color: FlutterFlowTheme.of(context).primaryText,
-                  size: 24.0,
+                  size: 30.0,
                 ),
                 onPressed: () async {
                   context.pop();
@@ -119,16 +102,17 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                       fontFamily: 'Readex Pro',
                       color: FlutterFlowTheme.of(context).primaryText,
                       fontSize: 25.0,
+                      letterSpacing: 0.0,
                     ),
               ),
               actions: [
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    if (_model.selectedTransaction.length >= 1)
+                    if (_model.selectedTransaction.isNotEmpty)
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
                         child: FlutterFlowIconButton(
                           borderColor: Colors.transparent,
                           borderRadius: 30.0,
@@ -146,19 +130,19 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                   context: context,
                                   builder: (alertDialogContext) {
                                     return AlertDialog(
-                                      title: Text('Clear Balance'),
-                                      content: Text(
+                                      title: const Text('Clear Balance'),
+                                      content: const Text(
                                           'All the selected transactions will be cleared of balance.'),
                                       actions: [
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, false),
-                                          child: Text('Cancel'),
+                                          child: const Text('Cancel'),
                                         ),
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, true),
-                                          child: Text('Confirm'),
+                                          child: const Text('Confirm'),
                                         ),
                                       ],
                                     );
@@ -195,7 +179,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                           .primaryText,
                                     ),
                                   ),
-                                  duration: Duration(milliseconds: 4000),
+                                  duration: const Duration(milliseconds: 4000),
                                   backgroundColor:
                                       FlutterFlowTheme.of(context).secondary,
                                 ),
@@ -218,7 +202,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
+                  alignment: const AlignmentDirectional(0.0, 0.0),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
@@ -226,7 +210,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 16.0, 0.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -234,38 +218,50 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 12.0, 0.0, 0.0),
                                   child: Text(
                                     'Select to pay balance',
                                     style: FlutterFlowTheme.of(context)
-                                        .labelMedium,
+                                        .labelMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 12.0, 0.0, 0.0),
                                 child: Text(
                                   _model.selectedTransaction.length.toString(),
-                                  style:
-                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     2.0, 12.0, 0.0, 0.0),
                                 child: Text(
                                   'Selected',
-                                  style:
-                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 12.0, 0.0, 0.0),
                           child: Builder(
                             builder: (context) {
@@ -290,7 +286,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                   );
                                 },
                                 child: ListView.builder(
-                                  padding: EdgeInsets.fromLTRB(
+                                  padding: const EdgeInsets.fromLTRB(
                                     0,
                                     0,
                                     0,
@@ -304,7 +300,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                     final pendingsItem =
                                         pendings[pendingsIndex];
                                     return Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           16.0, 0.0, 16.0, 8.0),
                                       child: Container(
                                         width: 100.0,
@@ -325,10 +321,10 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                           children: [
                                             Expanded(
                                               child: Align(
-                                                alignment: AlignmentDirectional(
+                                                alignment: const AlignmentDirectional(
                                                     0.0, -1.0),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           10.0, 0.0, 0.0, 0.0),
                                                   child: Theme(
@@ -360,14 +356,16 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                                       },
                                                       title: Text(
                                                         'Room ${pendingsItem.room.toString()}',
-                                                        style: FlutterFlowTheme
-                                                                .of(context)
-                                                            .bodyLarge
-                                                            .override(
-                                                              fontFamily:
-                                                                  'Readex Pro',
-                                                              lineHeight: 2.0,
-                                                            ),
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyLarge
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
                                                       subtitle: Text(
                                                         'Balance: Php ${formatNumber(
@@ -377,7 +375,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                                           decimalType:
                                                               DecimalType
                                                                   .automatic,
-                                                        )}',
+                                                        )} - ${functions.hoursAgo(pendingsItem.since!)}',
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -388,6 +386,8 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
                                                                       .success,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                 ),
                                                       ),
                                                       tileColor: FlutterFlowTheme
@@ -403,7 +403,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                                           ListTileControlAffinity
                                                               .trailing,
                                                       contentPadding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   8.0,
                                                                   0.0,

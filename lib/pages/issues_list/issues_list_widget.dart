@@ -1,17 +1,11 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/change_date/change_date_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'issues_list_model.dart';
@@ -46,15 +40,6 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -76,7 +61,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
             icon: Icon(
               Icons.chevron_left,
               color: FlutterFlowTheme.of(context).primaryText,
-              size: 24.0,
+              size: 30.0,
             ),
             onPressed: () async {
               context.pop();
@@ -88,9 +73,10 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                   fontFamily: 'Outfit',
                   color: FlutterFlowTheme.of(context).primaryText,
                   fontSize: 22.0,
+                  letterSpacing: 0.0,
                 ),
           ),
-          actions: [],
+          actions: const [],
           centerTitle: false,
           elevation: 0.0,
         ),
@@ -102,13 +88,13 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
             children: [
               Expanded(
                 child: Align(
-                  alignment: AlignmentDirectional(0.0, -1.0),
+                  alignment: const AlignmentDirectional(0.0, -1.0),
                   child: Container(
                     width: double.infinity,
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       maxWidth: 1170.0,
                     ),
-                    decoration: BoxDecoration(),
+                    decoration: const BoxDecoration(),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +115,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                             shrinkWrap: true,
                             reverse: false,
                             scrollDirection: Axis.vertical,
-                            separatorBuilder: (_, __) => SizedBox(height: 1.0),
+                            separatorBuilder: (_, __) => const SizedBox(height: 1.0),
                             builderDelegate:
                                 PagedChildBuilderDelegate<IssuesRecord>(
                               // Customize what your widget looks like when it's loading the first page.
@@ -183,7 +169,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                           child: Padding(
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
-                                            child: Container(
+                                            child: SizedBox(
                                               height: 220.0,
                                               child: OptionToIssueWidget(
                                                 ref: listViewIssuesRecord
@@ -205,12 +191,15 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                           blurRadius: 0.0,
                                           color: FlutterFlowTheme.of(context)
                                               .alternate,
-                                          offset: Offset(0.0, 1.0),
+                                          offset: const Offset(
+                                            0.0,
+                                            1.0,
+                                          ),
                                         )
                                       ],
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           16.0, 12.0, 16.0, 12.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
@@ -218,11 +207,11 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Align(
-                                            alignment: AlignmentDirectional(
+                                            alignment: const AlignmentDirectional(
                                                 -1.0, -1.0),
                                             child: AnimatedContainer(
                                               duration:
-                                                  Duration(milliseconds: 150),
+                                                  const Duration(milliseconds: 150),
                                               curve: Curves.easeInOut,
                                               width: 36.0,
                                               height: 36.0,
@@ -230,7 +219,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                 color: listViewIssuesRecord
                                                             .status ==
                                                         'pending'
-                                                    ? Color(0x63FF5963)
+                                                    ? const Color(0x63FF5963)
                                                     : FlutterFlowTheme.of(
                                                             context)
                                                         .accent2,
@@ -249,7 +238,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                 ),
                                               ),
                                               child: Padding(
-                                                padding: EdgeInsets.all(2.0),
+                                                padding: const EdgeInsets.all(2.0),
                                                 child: Icon(
                                                   Icons.build_circle_outlined,
                                                   color: listViewIssuesRecord
@@ -268,7 +257,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                           ),
                                           Flexible(
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       16.0, 0.0, 0.0, 0.0),
                                               child: Column(
@@ -278,7 +267,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 0.0,
                                                                 0.0, 12.0),
                                                     child: Row(
@@ -326,10 +315,9 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                   snapshot
                                                                       .data!;
                                                               return RichText(
-                                                                textScaleFactor:
-                                                                    MediaQuery.of(
-                                                                            context)
-                                                                        .textScaleFactor,
+                                                                textScaler: MediaQuery.of(
+                                                                        context)
+                                                                    .textScaler,
                                                                 text: TextSpan(
                                                                   children: [
                                                                     TextSpan(
@@ -344,11 +332,13 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                             color: listViewIssuesRecord.status == 'pending'
                                                                                 ? FlutterFlowTheme.of(context).error
                                                                                 : FlutterFlowTheme.of(context).secondary,
+                                                                            letterSpacing:
+                                                                                0.0,
                                                                             fontWeight:
                                                                                 FontWeight.w600,
                                                                           ),
                                                                     ),
-                                                                    TextSpan(
+                                                                    const TextSpan(
                                                                       text:
                                                                           ' reported',
                                                                       style:
@@ -357,7 +347,13 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                   ],
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyLarge,
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
                                                                 ),
                                                               );
                                                             },
@@ -428,7 +424,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                           padding:
                                                                               MediaQuery.viewInsetsOf(context),
                                                                           child:
-                                                                              Container(
+                                                                              SizedBox(
                                                                             height:
                                                                                 double.infinity,
                                                                             child:
@@ -471,7 +467,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                           ),
                                                                         ),
                                                                         duration:
-                                                                            Duration(milliseconds: 4000),
+                                                                            const Duration(milliseconds: 4000),
                                                                         backgroundColor:
                                                                             FlutterFlowTheme.of(context).secondary,
                                                                       ),
@@ -482,10 +478,9 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                       () {});
                                                                 },
                                                                 child: RichText(
-                                                                  textScaleFactor:
-                                                                      MediaQuery.of(
-                                                                              context)
-                                                                          .textScaleFactor,
+                                                                  textScaler: MediaQuery.of(
+                                                                          context)
+                                                                      .textScaler,
                                                                   text:
                                                                       TextSpan(
                                                                     children: [
@@ -498,13 +493,20 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                             .override(
                                                                               fontFamily: 'Readex Pro',
                                                                               color: listViewIssuesRecord.status == 'pending' ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
+                                                                              letterSpacing: 0.0,
                                                                               fontWeight: FontWeight.normal,
                                                                             ),
                                                                       )
                                                                     ],
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .bodyLarge,
+                                                                        .bodyLarge
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
                                                                   ),
                                                                   textAlign:
                                                                       TextAlign
@@ -519,7 +521,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                     ),
                                                   ),
                                                   AnimatedContainer(
-                                                    duration: Duration(
+                                                    duration: const Duration(
                                                         milliseconds: 150),
                                                     curve: Curves.easeInOut,
                                                     width: double.infinity,
@@ -527,7 +529,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                       color: listViewIssuesRecord
                                                                   .status ==
                                                               'pending'
-                                                          ? Color(0x57FF5963)
+                                                          ? const Color(0x57FF5963)
                                                           : FlutterFlowTheme.of(
                                                                   context)
                                                               .accent2,
@@ -549,7 +551,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                     ),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsets.all(12.0),
+                                                          const EdgeInsets.all(12.0),
                                                       child: Column(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -562,7 +564,13 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                                 .detail,
                                                             style: FlutterFlowTheme
                                                                     .of(context)
-                                                                .bodyLarge,
+                                                                .bodyLarge
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                           ),
                                                         ],
                                                       ),
@@ -570,7 +578,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                   ),
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 8.0,
                                                                 0.0, 0.0),
                                                     child: Text(
@@ -578,10 +586,14 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                           'EEE MMM d y h:mm a',
                                                           listViewIssuesRecord
                                                               .date!),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .labelMedium,
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
+                                                          ),
                                                     ),
                                                   ),
                                                 ],

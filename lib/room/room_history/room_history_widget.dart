@@ -3,12 +3,8 @@ import '/components/options/option_to_history/option_to_history_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:provider/provider.dart';
 import 'room_history_model.dart';
 export 'room_history_model.dart';
 
@@ -46,17 +42,6 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
-    context.watch<FFAppState>();
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -81,10 +66,13 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
             },
           ),
           title: Text(
-            'History of Room ${widget.room?.number?.toString()}',
-            style: FlutterFlowTheme.of(context).headlineMedium,
+            'History of Room ${widget.room?.number.toString()}',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Outfit',
+                  letterSpacing: 0.0,
+                ),
           ),
-          actions: [],
+          actions: const [],
           centerTitle: false,
           elevation: 0.0,
         ),
@@ -95,10 +83,13 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
                 child: Text(
                   'Below is the history for this room.',
-                  style: FlutterFlowTheme.of(context).labelMedium,
+                  style: FlutterFlowTheme.of(context).labelMedium.override(
+                        fontFamily: 'Readex Pro',
+                        letterSpacing: 0.0,
+                      ),
                 ),
               ),
               Expanded(
@@ -107,7 +98,7 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                       HistoryRecord.collection(widget.room?.reference)
                           .orderBy('date', descending: true),
                       parent: widget.room?.reference),
-                  padding: EdgeInsets.fromLTRB(
+                  padding: const EdgeInsets.fromLTRB(
                     0,
                     10.0,
                     0,
@@ -199,7 +190,7 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                             FlutterFlowTheme.of(context).info,
                                       ),
                                     ),
-                                    duration: Duration(milliseconds: 4000),
+                                    duration: const Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).error,
                                   ),
@@ -220,7 +211,7 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                         : FocusScope.of(context).unfocus(),
                                     child: Padding(
                                       padding: MediaQuery.viewInsetsOf(context),
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 175.0,
                                         child: OptionToHistoryWidget(
                                           history: listViewHistoryRecord,
@@ -241,7 +232,10 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                     blurRadius: 0.0,
                                     color:
                                         FlutterFlowTheme.of(context).alternate,
-                                    offset: Offset(0.0, 1.0),
+                                    offset: const Offset(
+                                      0.0,
+                                      1.0,
+                                    ),
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(0.0),
@@ -250,7 +244,7 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                 ),
                               ),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 10.0, 16.0, 0.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -260,9 +254,9 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                       flex: 1,
                                       child: Align(
                                         alignment:
-                                            AlignmentDirectional(-1.0, -1.0),
+                                            const AlignmentDirectional(-1.0, -1.0),
                                         child: AnimatedContainer(
-                                          duration: Duration(milliseconds: 150),
+                                          duration: const Duration(milliseconds: 150),
                                           curve: Curves.easeInOut,
                                           width: 36.0,
                                           height: 36.0,
@@ -278,7 +272,7 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                             ),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.all(2.0),
+                                            padding: const EdgeInsets.all(2.0),
                                             child: Icon(
                                               Icons.pending_actions,
                                               color:
@@ -293,7 +287,7 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                     Expanded(
                                       flex: 7,
                                       child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             15.0, 0.0, 0.0, 0.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
@@ -303,25 +297,35 @@ class _RoomHistoryWidgetState extends State<RoomHistoryWidget> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 0.0, 0.0, 5.0),
                                               child: Text(
                                                 listViewHistoryRecord
                                                     .description,
                                                 style:
                                                     FlutterFlowTheme.of(context)
-                                                        .bodyLarge,
+                                                        .bodyLarge
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       0.0, 4.0, 0.0, 15.0),
                                               child: Text(
                                                 'Issued by ${containerUsersRecord.displayName} on ${dateTimeFormat('EEE MMMM d y h:mm a', listViewHistoryRecord.date)}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
-                                                        .labelSmall,
+                                                        .labelSmall
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                               ),
                                             ),
                                           ],

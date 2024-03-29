@@ -4,12 +4,9 @@ import '/components/forms/transaction_edit/transaction_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_booking_transaction_model.dart';
 export 'option_to_booking_transaction_model.dart';
@@ -84,36 +81,42 @@ class _OptionToBookingTransactionWidgetState
     context.watch<FFAppState>();
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
-              offset: Offset(0.0, 2.0),
+              offset: Offset(
+                0.0,
+                2.0,
+              ),
             )
           ],
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options For Room ${widget.roomNo?.toString()}',
                   textAlign: TextAlign.start,
-                  style: FlutterFlowTheme.of(context).labelMedium,
+                  style: FlutterFlowTheme.of(context).labelMedium.override(
+                        fontFamily: 'Readex Pro',
+                        letterSpacing: 0.0,
+                      ),
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -128,7 +131,7 @@ class _OptionToBookingTransactionWidgetState
                       builder: (context) {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
-                          child: Container(
+                          child: SizedBox(
                             height: double.infinity,
                             child: TransactionEditWidget(
                               ref: widget.ref!,
@@ -152,12 +155,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -167,11 +170,16 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Details',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),
@@ -182,7 +190,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -195,19 +203,19 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Mark as Pending'),
-                              content: Text(
+                              title: const Text('Mark as Pending'),
+                              content: const Text(
                                   'Guest has decided not to pay balance yet?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -237,7 +245,7 @@ class _OptionToBookingTransactionWidgetState
                               color: FlutterFlowTheme.of(context).primaryText,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor:
                               FlutterFlowTheme.of(context).secondary,
                         ),
@@ -251,12 +259,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -266,11 +274,16 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Mark as Pending',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),
@@ -281,7 +294,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -292,18 +305,18 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Converting Guest to Senior Citizen'),
-                              content: Text('Are you sure about this?'),
+                              title: const Text('Converting Guest to Senior Citizen'),
+                              content: const Text('Are you sure about this?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -324,7 +337,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
                         );
@@ -393,7 +406,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -412,12 +425,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.transform,
@@ -427,11 +440,16 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Remove Senior/PWD Discount',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),
@@ -442,7 +460,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -453,18 +471,18 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Converting Guest to Senior Citizen'),
-                              content: Text('Are you sure about this?'),
+                              title: const Text('Converting Guest to Senior Citizen'),
+                              content: const Text('Are you sure about this?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -536,7 +554,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -551,7 +569,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
                         );
@@ -569,12 +587,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.transform,
@@ -584,11 +602,16 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Categorize as Senior',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),
@@ -599,7 +622,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -610,18 +633,18 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Categorizing Guest to PWD'),
-                              content: Text('Are you sure about this?'),
+                              title: const Text('Categorizing Guest to PWD'),
+                              content: const Text('Are you sure about this?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -695,7 +718,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -710,7 +733,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
                         );
@@ -728,12 +751,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.transform_sharp,
@@ -743,11 +766,16 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Categorize as PWD',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),
@@ -758,7 +786,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -770,19 +798,19 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Are you sure?'),
-                              content: Text(
+                              title: const Text('Are you sure?'),
+                              content: const Text(
                                   'This transaction will be deleted. If this is a new checkin, the booking will also be deleted.'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -856,7 +884,7 @@ class _OptionToBookingTransactionWidgetState
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -872,12 +900,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.delete_outlined,
@@ -887,11 +915,16 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete Transaction',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),
@@ -902,7 +935,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -914,18 +947,18 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Are you sure?'),
-                              content: Text('This duplicate will be removed.'),
+                              title: const Text('Are you sure?'),
+                              content: const Text('This duplicate will be removed.'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -979,7 +1012,7 @@ class _OptionToBookingTransactionWidgetState
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -995,12 +1028,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.remove_outlined,
@@ -1010,11 +1043,16 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Remove duplicate',
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           ),

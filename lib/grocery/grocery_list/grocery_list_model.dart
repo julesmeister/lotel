@@ -1,22 +1,8 @@
 import '/backend/backend.dart';
-import '/components/options/option_to_grocery/option_to_grocery_widget.dart';
-import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_button_tabbar.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'grocery_list_widget.dart' show GroceryListWidget;
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:provider/provider.dart';
 
 class GroceryListModel extends FlutterFlowModel<GroceryListWidget> {
   ///  State fields for stateful widgets in this page.
@@ -41,24 +27,25 @@ class GroceryListModel extends FlutterFlowModel<GroceryListWidget> {
   Query? listViewPagingQuery2;
   List<StreamSubscription?> listViewStreamSubscriptions2 = [];
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {
     unfocusNode.dispose();
     tabBarController?.dispose();
-    listViewStreamSubscriptions1.forEach((s) => s?.cancel());
+    for (var s in listViewStreamSubscriptions1) {
+      s?.cancel();
+    }
     listViewPagingController1?.dispose();
 
-    listViewStreamSubscriptions2.forEach((s) => s?.cancel());
+    for (var s in listViewStreamSubscriptions2) {
+      s?.cancel();
+    }
     listViewPagingController2?.dispose();
   }
 
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
-
+  /// Additional helper methods.
   PagingController<DocumentSnapshot?, GroceriesRecord> setListViewController1(
     Query query, {
     DocumentReference<Object?>? parent,
