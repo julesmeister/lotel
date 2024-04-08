@@ -23,45 +23,28 @@ double? getTotalAmount(
   double? lateCheckoutFee,
   List<TransactionsRecord>? transactions,
 ) {
-  double prevTotalAmount = 0.0;
   double totalAmount = 0.0;
-  double totalTransactions = transactions != null
-      ? transactions.fold<double>(
-          0.0, (prev, transaction) => prev + (transaction.total ?? 0.0))
-      : 0.0;
 
   int parsedStartingBeds = int.tryParse(startingBeds) ?? 0;
   int parsedBeds = int.tryParse(beds) ?? 0;
 
   if (parsedStartingBeds == -1) {
-    // New transaction
     totalAmount += parsedBeds * bedPrice;
   } else {
-    // Change in booking
-    prevTotalAmount += parsedStartingBeds * bedPrice;
     int bedDifference = parsedBeds - parsedStartingBeds;
     totalAmount += bedDifference * bedPrice;
   }
 
   if (startingNights != 0) {
-    // Change in booking
-    prevTotalAmount = startingNights * roomPrice;
     int nightDifference = nights - startingNights;
     totalAmount += nightDifference * roomPrice;
   } else {
-    // New transaction
     totalAmount += nights * roomPrice;
   }
 
   // Add late checkout fee if indicated
   if (lateCheckoutFee != null) {
     totalAmount += lateCheckoutFee;
-  }
-
-  if (totalAmount != prevTotalAmount) {
-    // this means there are changes in this total amount. with this changes, let's add them to totalTransactions and that will be returned instead.
-    totalTransactions += totalAmount - prevTotalAmount;
-    return totalTransactions;
   }
 
   return totalAmount;
@@ -1241,17 +1224,10 @@ String daysOfIssue(
   DateTime date,
   DateTime? dateFixed,
 ) {
-  // days from date if dateFixed is set, then days from date to dateFixed
-  if (dateFixed != null) {
-    final days = dateFixed.difference(date).inDays.abs() + 1;
-    final suffix = days == 1 ? ' day' : ' days';
-    return 'Solved in $days$suffix';
-  } else {
-    final now = DateTime.now();
-    final days = now.difference(date).inDays.abs();
-    final suffix = days == 1 ? ' day' : ' days';
-    return '$days$suffix ${days > 0 ? "ago" : "from now"}';
-  }
+  final now = DateTime.now();
+  final days = now.difference(date).inDays.abs();
+  final suffix = days == 1 ? ' day' : ' days';
+  return '$days$suffix ${days > 0 ? "ago" : "from now"}';
 }
 
 List<RoomPendingStruct>? allPendings(List<TransactionsRecord>? transactions) {
@@ -1619,4 +1595,46 @@ double? adjustPrice(
   } else {
     return original;
   }
+}
+
+String daysSolved(
+  DateTime date,
+  DateTime? dateFixed,
+) {
+  // days from date if dateFixed is set, then days from date to dateFixed
+  if (dateFixed != null) {
+    final days = dateFixed.difference(date).inDays.abs() + 1;
+    final suffix = days == 1 ? ' day' : ' days';
+    return '($days$suffix)';
+  } else {
+    return '';
+  }
+}
+
+List<String> billsChoices(List<String>? descriptions) {
+  // Initialize a map to count occurrences of each description
+  final Map<String, int> descriptionCount = {};
+
+  // Count occurrences of each description
+  if (descriptions != null) {
+    for (final description in descriptions) {
+      descriptionCount[description] = (descriptionCount[description] ?? 0) + 1;
+    }
+  }
+
+  // Filter descriptions with more than one occurrence
+  final filteredDescriptions =
+      descriptionCount.entries.where((entry) => entry.value > 1).toList();
+
+  // Sort filtered descriptions by their occurrences in descending order
+  filteredDescriptions.sort((a, b) => b.value.compareTo(a.value));
+
+  // Extract sorted descriptions
+  final sortedUniqueDescriptions =
+      filteredDescriptions.map((entry) => entry.key).toList();
+
+  // Add "All" at the beginning of the list
+  sortedUniqueDescriptions.insert(0, 'All');
+
+  return sortedUniqueDescriptions;
 }

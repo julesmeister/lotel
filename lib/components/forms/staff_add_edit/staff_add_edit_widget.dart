@@ -90,9 +90,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0xB20B191E),
-      ),
+      decoration: const BoxDecoration(),
       child: Align(
         alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(

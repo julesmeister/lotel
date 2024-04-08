@@ -51,10 +51,8 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0xB20B191E),
-      ),
+      height: 285.0,
+      decoration: const BoxDecoration(),
       child: Align(
         alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
@@ -183,7 +181,6 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
-                          maxLines: 28,
                           validator: _model.detailsControllerValidator
                               .asValidator(context),
                         ),

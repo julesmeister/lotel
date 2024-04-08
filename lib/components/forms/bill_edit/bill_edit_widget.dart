@@ -68,9 +68,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0xB20B191E),
-      ),
+      decoration: const BoxDecoration(),
       child: Align(
         alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
@@ -205,7 +203,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
-                              maxLines: 28,
+                              maxLines: 2,
                               validator: _model.descControllerValidator
                                   .asValidator(context),
                             ),

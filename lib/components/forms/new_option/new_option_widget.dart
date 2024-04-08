@@ -47,9 +47,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0xB20B191E),
-      ),
+      decoration: const BoxDecoration(),
       child: Align(
         alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
@@ -167,7 +165,6 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
-                          maxLines: 28,
                           validator: _model.nameControllerValidator
                               .asValidator(context),
                         ),
@@ -182,7 +179,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             if (valueOrDefault(currentUserDocument?.role, '') ==
                                 'admin')

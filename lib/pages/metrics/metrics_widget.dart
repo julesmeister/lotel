@@ -1210,175 +1210,239 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 12.0, 12.0),
-                          child: Container(
-                            width: 230.0,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 4.0,
-                                  color: Color(0x34090F13),
-                                  offset: Offset(
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onDoubleTap: () async {
+                              if (_model.hotel != 'All') {
+                                // bills this month
+                                _model.billsThisMonth =
+                                    await queryBillsRecordOnce(
+                                  queryBuilder: (billsRecord) => billsRecord
+                                      .where(
+                                        'hotel',
+                                        isEqualTo: _model.hotel,
+                                      )
+                                      .where(
+                                        'date',
+                                        isGreaterThanOrEqualTo:
+                                            functions.startOfMonth(
+                                                _model.month, _model.year),
+                                      )
+                                      .where(
+                                        'date',
+                                        isLessThanOrEqualTo:
+                                            functions.endOfMonth(
+                                                _model.month, _model.year),
+                                      ),
+                                );
+                                // update bills
+
+                                await _model.statsRef!
+                                    .update(createStatsRecordData(
+                                  bills: valueOrDefault<double>(
+                                    functions.sumOfBills(
+                                        _model.billsThisMonth!.toList()),
                                     0.0,
-                                    1.0,
                                   ),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 4.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: (String change) {
-                                        return change.contains("-");
-                                      }(functions.metricChange(
-                                              _model.bills,
-                                              'bills',
-                                              _model.prevMetrics.toList(),
-                                              _model.hotel))
-                                          ? FlutterFlowTheme.of(context).error
-                                          : FlutterFlowTheme.of(context)
-                                              .secondary,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(0.0),
-                                        bottomRight: Radius.circular(0.0),
-                                        topLeft: Radius.circular(12.0),
-                                        topRight: Radius.circular(12.0),
+                                ));
+                                // recalculated
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Bills for this month have been recalculated for this month\'s metric total.',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
                                       ),
                                     ),
-                                    child: Padding(
+                                    duration: const Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).secondary,
+                                  ),
+                                );
+                              }
+
+                              setState(() {});
+                            },
+                            child: Container(
+                              width: 230.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 4.0,
+                                    color: Color(0x34090F13),
+                                    offset: Offset(
+                                      0.0,
+                                      1.0,
+                                    ),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 4.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: (String change) {
+                                          return change.contains("-");
+                                        }(functions.metricChange(
+                                                _model.bills,
+                                                'bills',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))
+                                            ? FlutterFlowTheme.of(context).error
+                                            : FlutterFlowTheme.of(context)
+                                                .secondary,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(0.0),
+                                          bottomRight: Radius.circular(0.0),
+                                          topLeft: Radius.circular(12.0),
+                                          topRight: Radius.circular(12.0),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              formatNumber(
+                                                _model.bills,
+                                                formatType: FormatType.decimal,
+                                                decimalType:
+                                                    DecimalType.automatic,
+                                                currency: 'P ',
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color: Colors.white,
+                                                        fontSize: 20.0,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
+                                            ),
+                                            Text(
+                                              'Bills',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .titleSmall
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: Colors.white,
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
                                       padding: const EdgeInsets.all(12.0),
-                                      child: Column(
+                                      child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            formatNumber(
-                                              _model.bills,
-                                              formatType: FormatType.decimal,
-                                              decimalType:
-                                                  DecimalType.automatic,
-                                              currency: 'P ',
+                                          Container(
+                                            width: 36.0,
+                                            height: 36.0,
+                                            decoration: BoxDecoration(
+                                              color: (String change) {
+                                                return change.contains("-");
+                                              }(functions.metricChange(
+                                                      _model.bills,
+                                                      'bills',
+                                                      _model.prevMetrics
+                                                          .toList(),
+                                                      _model.hotel))
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .error
+                                                  : FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
                                             ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 20.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
+                                            alignment:
+                                                const AlignmentDirectional(0.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if ((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.bills,
+                                                    'bills',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel)))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretDown,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                                if (!((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.bills,
+                                                    'bills',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel))))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretUp,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                              ],
+                                            ),
                                           ),
-                                          Text(
-                                            'Bills',
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleSmall
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 8.0, 0.0),
+                                            child: Text(
+                                              functions.metricChange(
+                                                  _model.bills,
+                                                  'bills',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: const Color(0xFF14181B),
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: 36.0,
-                                          height: 36.0,
-                                          decoration: BoxDecoration(
-                                            color: (String change) {
-                                              return change.contains("-");
-                                            }(functions.metricChange(
-                                                    _model.bills,
-                                                    'bills',
-                                                    _model.prevMetrics.toList(),
-                                                    _model.hotel))
-                                                ? FlutterFlowTheme.of(context)
-                                                    .error
-                                                : FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          alignment:
-                                              const AlignmentDirectional(0.0, 0.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if ((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.bills,
-                                                  'bills',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel)))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretDown,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                              if (!((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.bills,
-                                                  'bills',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel))))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretUp,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 8.0, 0.0),
-                                          child: Text(
-                                            functions.metricChange(
-                                                _model.bills,
-                                                'bills',
-                                                _model.prevMetrics.toList(),
-                                                _model.hotel),
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: const Color(0xFF14181B),
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ).animateOnPageLoad(

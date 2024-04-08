@@ -65,8 +65,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                     '${goodsItem.description} x${goodsItem.quantity.toString()}')
                 .join(', ') +
             (transaction.description.isNotEmpty
-                ? ' - ${transaction.description}' +
-                    ' - excluded from total expenses'
+                ? ' - ${transaction.description}'
                 : '');
 
     return goodsDescription;
@@ -74,7 +73,6 @@ class _PrintRemittanceState extends State<PrintRemittance> {
 
   Future<void> generatePdf() async {
     final pdf = pw.Document();
-    roomSales = 0.0;
 
     List<List<String>> generateRoomTableData() {
       final List<List<String>> entries = [];
@@ -282,9 +280,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         final description = generateExpenseDescription(transaction);
 
         final total = transaction.total.toDouble();
-        if (transaction.goods.isEmpty) {
-          totalExpenses += total; // Accumulate totalExpenses
-        }
+        totalExpenses += total; // Accumulate totalExpenses
         final List<String> entry = [
           description,
           NumberFormat.currency(
@@ -308,7 +304,8 @@ class _PrintRemittanceState extends State<PrintRemittance> {
     }
 
     // Function to create a table
-    pw.Widget createRoomTable(List<List<String>> data, {bool last = false}) {
+    pw.Widget createRoomTable(List<List<String>> data,
+        {double width = 0.0, bool last = false}) {
       if (data.isEmpty) {
         return pw.Text(widget.rooms.length
             .toString()); // Handle the case when data is empty
@@ -323,6 +320,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
       ];
 
       return pw.Container(
+        width: width,
         child: pw.Table(
           border: pw.TableBorder.all(width: 1.0, color: PdfColors.black),
           children: [
@@ -524,10 +522,22 @@ class _PrintRemittanceState extends State<PrintRemittance> {
     }
 
     pw.Widget createBottomRow(RemittancesRecord remittance) {
+      final changeTransactions = widget.transactions
+              ?.where((transaction) => transaction.type == 'change')
+              .toList() ??
+          [];
+
       final total = NumberFormat.currency(
         symbol: 'Php ',
         decimalDigits: 2,
       ).format(remittance.net);
+
+      final extraPhp = NumberFormat.currency(
+        symbol: 'Php ',
+        decimalDigits: 2,
+      ).format(changeTransactions.isNotEmpty
+          ? changeTransactions.first.total.abs()
+          : 0);
 
       String capitalizeFirstLetter(String text) {
         if (text.isEmpty) {
@@ -557,14 +567,23 @@ class _PrintRemittanceState extends State<PrintRemittance> {
               ],
             ),
             pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              crossAxisAlignment: pw.CrossAxisAlignment.end,
               children: [
-                pw.Text('Remittance Received: $total',
-                    style: pw.TextStyle(
-                      fontSize: 12,
-                      fontWeight: pw.FontWeight.bold,
-                    )),
+                pw.Text(
+                  'Remittance Received: $total',
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
                 // Add additional information if needed
+
+                pw.Text(
+                  "Extra amount received yesterday: $extraPhp",
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           ],
@@ -612,15 +631,18 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                 pw.SizedBox(height: 25),
                 pw.Container(
                   padding: pw.EdgeInsets.symmetric(
-                      horizontal: 34.0), // Padding left and right
+                    horizontal: 34.0,
+                  ),
                   child: pw.Row(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      // Wrap each table in a pw.Expanded widget
-                      pw.Expanded(child: createRoomTable(firstHalf)),
-                      pw.SizedBox(width: 20),
-                      pw.Expanded(
-                          child: createRoomTable(secondHalf, last: true)),
+                      // First Table
+                      createRoomTable(firstHalf,
+                          width: (595.0 - 34.0 * 2 - 20) / 2),
+                      pw.Spacer(), // Add a spacer to evenly distribute the space
+                      // Second Table
+                      createRoomTable(secondHalf,
+                          width: (595.0 - 34.0 * 2 - 20) / 2, last: true),
                     ],
                   ),
                 ),

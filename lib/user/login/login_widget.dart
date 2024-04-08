@@ -219,7 +219,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             .alternate,
                                         width: 2.0,
                                       ),
-                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(0.0),
                                     ),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
@@ -227,7 +227,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             .primary,
                                         width: 2.0,
                                       ),
-                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(0.0),
                                     ),
                                     errorBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
@@ -235,7 +235,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             FlutterFlowTheme.of(context).error,
                                         width: 2.0,
                                       ),
-                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(0.0),
                                     ),
                                     focusedErrorBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
@@ -243,7 +243,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             FlutterFlowTheme.of(context).error,
                                         width: 2.0,
                                       ),
-                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(0.0),
                                     ),
                                   ),
                                   style: FlutterFlowTheme.of(context)

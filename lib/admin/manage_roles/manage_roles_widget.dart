@@ -150,7 +150,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                   child: Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
                                     child: SizedBox(
-                                      height: double.infinity,
+                                      height: 300.0,
                                       child: NameEditWidget(
                                         ref: _model.selectedUsers.first,
                                       ),
@@ -538,8 +538,6 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                           'Readex Pro',
                                                                       letterSpacing:
                                                                           0.0,
-                                                                      lineHeight:
-                                                                          2.0,
                                                                     ),
                                                               ),
                                                               subtitle: Text(
@@ -833,8 +831,6 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                           'Readex Pro',
                                                                       letterSpacing:
                                                                           0.0,
-                                                                      lineHeight:
-                                                                          2.0,
                                                                     ),
                                                               ),
                                                               subtitle: Text(

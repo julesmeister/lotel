@@ -2,12 +2,15 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/change_date/change_date_widget.dart';
 import '/components/options/option_to_bill/option_to_bill_widget.dart';
+import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'bills_list_model.dart';
@@ -29,6 +32,26 @@ class _BillsListWidgetState extends State<BillsListWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => BillsListModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // all bills
+      _model.allBills = await queryBillsRecordOnce(
+        queryBuilder: (billsRecord) => billsRecord.where(
+          'hotel',
+          isEqualTo: FFAppState().hotel,
+        ),
+        limit: 50,
+      );
+      // set all descriptions
+      setState(() {
+        _model.allDescriptions = functions
+            .billsChoices(
+                _model.allBills?.map((e) => e.description).toList().toList())
+            .toList()
+            .cast<String>();
+      });
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -69,16 +92,46 @@ class _BillsListWidgetState extends State<BillsListWidget> {
               context.pop();
             },
           ),
-          title: Text(
-            'Records of Bills',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Outfit',
-                  color: FlutterFlowTheme.of(context).primaryText,
-                  fontSize: 22.0,
-                  letterSpacing: 0.0,
-                ),
+          title: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Records of Bills',
+                style: FlutterFlowTheme.of(context).headlineMedium.override(
+                      fontFamily: 'Outfit',
+                      color: FlutterFlowTheme.of(context).primaryText,
+                      fontSize: 22.0,
+                      letterSpacing: 0.0,
+                    ),
+              ),
+              Text(
+                FFAppState().hotel,
+                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Readex Pro',
+                      letterSpacing: 0.0,
+                    ),
+              ),
+            ],
           ),
-          actions: const [],
+          actions: [
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+              child: FlutterFlowIconButton(
+                borderRadius: 20.0,
+                borderWidth: 1.0,
+                buttonSize: 40.0,
+                icon: Icon(
+                  Icons.add,
+                  color: FlutterFlowTheme.of(context).primaryText,
+                  size: 24.0,
+                ),
+                onPressed: () async {
+                  context.pushNamed('BillForm');
+                },
+              ),
+            ),
+          ],
           centerTitle: false,
           elevation: 0.0,
         ),
@@ -101,6 +154,84 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16.0, 12.0, 16.0, 0.0),
+                          child: FlutterFlowChoiceChips(
+                            options: _model.allDescriptions
+                                .map((label) => ChipData(label))
+                                .toList(),
+                            onChanged: (val) async {
+                              setState(() => _model.choiceChipsValue =
+                                  val?.firstOrNull); // reset showInList
+                              setState(() {
+                                _model.showInList = [];
+                              });
+                              if (_model.choiceChipsValue == 'All') {
+                                // all
+                                setState(() {
+                                  _model.showInList = _model.allDescriptions
+                                      .toList()
+                                      .cast<String>();
+                                });
+                              } else {
+                                // choice only
+                                setState(() {
+                                  _model.addToShowInList(
+                                      _model.choiceChipsValue!);
+                                });
+                              }
+                            },
+                            selectedChipStyle: ChipStyle(
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).primary,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    letterSpacing: 0.0,
+                                  ),
+                              iconColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              iconSize: 18.0,
+                              labelPadding: const EdgeInsetsDirectional.fromSTEB(
+                                  10.0, 0.0, 10.0, 0.0),
+                              elevation: 4.0,
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            unselectedChipStyle: ChipStyle(
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).alternate,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    letterSpacing: 0.0,
+                                  ),
+                              iconColor:
+                                  FlutterFlowTheme.of(context).secondaryText,
+                              iconSize: 18.0,
+                              labelPadding: const EdgeInsetsDirectional.fromSTEB(
+                                  10.0, 0.0, 10.0, 0.0),
+                              elevation: 0.0,
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            chipSpacing: 12.0,
+                            rowSpacing: 12.0,
+                            multiselect: false,
+                            initialized: _model.choiceChipsValue != null,
+                            alignment: WrapAlignment.start,
+                            controller: _model.choiceChipsValueController ??=
+                                FormFieldController<List<String>>(
+                              ['All'],
+                            ),
+                            wrapped: false,
+                          ),
+                        ),
                         Expanded(
                           child: PagedListView<DocumentSnapshot<Object?>?,
                               BillsRecord>.separated(
@@ -110,6 +241,7 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                     'hotel',
                                     isEqualTo: FFAppState().hotel,
                                   )
+                                  .whereIn('description', _model.showInList)
                                   .orderBy('date', descending: true),
                             ),
                             padding: EdgeInsets.zero,
@@ -177,8 +309,7 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                               child: SizedBox(
                                                 height: 180.0,
                                                 child: OptionToBillWidget(
-                                                  ref: listViewBillsRecord
-                                                      .reference,
+                                                  bill: listViewBillsRecord,
                                                 ),
                                               ),
                                             ),
@@ -186,6 +317,17 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                         },
                                       ).then((value) => safeSetState(() {}));
                                     }
+                                  },
+                                  onDoubleTap: () async {
+                                    // reset
+                                    setState(() {
+                                      _model.showInList = [];
+                                    });
+                                    // add to showInList
+                                    setState(() {
+                                      _model.addToShowInList(
+                                          listViewBillsRecord.description);
+                                    });
                                   },
                                   child: Container(
                                     width: 100.0,
@@ -216,73 +358,335 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                CrossAxisAlignment.center,
                                             children: [
-                                              Align(
-                                                alignment: const AlignmentDirectional(
-                                                    -1.0, -1.0),
-                                                child: Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 8.0, 0.0, 0.0),
-                                                  child: AnimatedContainer(
-                                                    duration: const Duration(
-                                                        milliseconds: 150),
-                                                    curve: Curves.easeInOut,
-                                                    width: 36.0,
-                                                    height: 36.0,
-                                                    decoration: BoxDecoration(
-                                                      color: functions.isThisMonth(
+                                              InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  var shouldSetState = false;
+                                                  if (valueOrDefault(
+                                                          currentUserDocument
+                                                              ?.role,
+                                                          '') ==
+                                                      'admin') {
+                                                    await showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return GestureDetector(
+                                                          onTap: () => _model
+                                                                  .unfocusNode
+                                                                  .canRequestFocus
+                                                              ? FocusScope.of(
+                                                                      context)
+                                                                  .requestFocus(
+                                                                      _model
+                                                                          .unfocusNode)
+                                                              : FocusScope.of(
+                                                                      context)
+                                                                  .unfocus(),
+                                                          child: Padding(
+                                                            padding: MediaQuery
+                                                                .viewInsetsOf(
+                                                                    context),
+                                                            child: SizedBox(
+                                                              height: double
+                                                                  .infinity,
+                                                              child:
+                                                                  ChangeDateWidget(
+                                                                date:
+                                                                    listViewBillsRecord
+                                                                        .date!,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ).then((value) =>
+                                                        safeSetState(() =>
+                                                            _model.adjustedDate =
+                                                                value));
+
+                                                    shouldSetState = true;
+                                                    if (_model.adjustedDate !=
+                                                        null) {
+                                                      if (dateTimeFormat(
+                                                              'M',
                                                               listViewBillsRecord
-                                                                  .date!)
-                                                          ? FlutterFlowTheme.of(
+                                                                  .date) ==
+                                                          dateTimeFormat(
+                                                              'M',
+                                                              _model
+                                                                  .adjustedDate)) {
+                                                        // adjusted
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          SnackBar(
+                                                            content: Text(
+                                                              'Date has been adjusted!',
+                                                              style: TextStyle(
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                              ),
+                                                            ),
+                                                            duration: const Duration(
+                                                                milliseconds:
+                                                                    4000),
+                                                            backgroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondary,
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        // prevStats
+                                                        _model.prevStats =
+                                                            await queryStatsRecordOnce(
+                                                          queryBuilder:
+                                                              (statsRecord) =>
+                                                                  statsRecord
+                                                                      .where(
+                                                                        'month',
+                                                                        isEqualTo: dateTimeFormat(
+                                                                            'MMMM',
+                                                                            listViewBillsRecord.date),
+                                                                      )
+                                                                      .where(
+                                                                        'year',
+                                                                        isEqualTo: dateTimeFormat(
+                                                                            'y',
+                                                                            listViewBillsRecord.date),
+                                                                      )
+                                                                      .where(
+                                                                        'hotel',
+                                                                        isEqualTo:
+                                                                            FFAppState().hotel,
+                                                                      ),
+                                                          singleRecord: true,
+                                                        ).then((s) =>
+                                                                s.firstOrNull);
+                                                        shouldSetState = true;
+                                                        // deduct from prev stats
+
+                                                        await _model.prevStats!
+                                                            .reference
+                                                            .update({
+                                                          ...mapToFirestore(
+                                                            {
+                                                              'bills': FieldValue
+                                                                  .increment(
+                                                                      -(listViewBillsRecord
+                                                                          .amount)),
+                                                            },
+                                                          ),
+                                                        });
+                                                        // belongingStats
+                                                        _model.belongingStats =
+                                                            await queryStatsRecordOnce(
+                                                          queryBuilder:
+                                                              (statsRecord) =>
+                                                                  statsRecord
+                                                                      .where(
+                                                                        'month',
+                                                                        isEqualTo: dateTimeFormat(
+                                                                            'MMMM',
+                                                                            _model.adjustedDate),
+                                                                      )
+                                                                      .where(
+                                                                        'year',
+                                                                        isEqualTo: dateTimeFormat(
+                                                                            'y',
+                                                                            _model.adjustedDate),
+                                                                      )
+                                                                      .where(
+                                                                        'hotel',
+                                                                        isEqualTo:
+                                                                            FFAppState().hotel,
+                                                                      ),
+                                                          singleRecord: true,
+                                                        ).then((s) =>
+                                                                s.firstOrNull);
+                                                        shouldSetState = true;
+                                                        if (_model
+                                                                .belongingStats
+                                                                ?.reference !=
+                                                            null) {
+                                                          // increment
+
+                                                          await _model
+                                                              .belongingStats!
+                                                              .reference
+                                                              .update({
+                                                            ...mapToFirestore(
+                                                              {
+                                                                'bills': FieldValue
+                                                                    .increment(
+                                                                        listViewBillsRecord
+                                                                            .amount),
+                                                              },
+                                                            ),
+                                                          });
+                                                        } else {
+                                                          // inexistent
+                                                          ScaffoldMessenger.of(
                                                                   context)
-                                                              .accent1
-                                                          : FlutterFlowTheme.of(
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Text(
+                                                                'Metrics from this date does not exist yet!',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryBackground,
+                                                                ),
+                                                              ),
+                                                              duration: const Duration(
+                                                                  milliseconds:
+                                                                      4000),
+                                                              backgroundColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .error,
+                                                            ),
+                                                          );
+                                                          if (shouldSetState) {
+                                                            setState(() {});
+                                                          }
+                                                          return;
+                                                        }
+
+                                                        // moved month
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          SnackBar(
+                                                            content: Text(
+                                                              'Bill has been moved to ${dateTimeFormat('MMMM', _model.adjustedDate)}!',
+                                                              style: TextStyle(
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                              ),
+                                                            ),
+                                                            duration: const Duration(
+                                                                milliseconds:
+                                                                    4000),
+                                                            backgroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondary,
+                                                          ),
+                                                        );
+                                                      }
+
+                                                      // adjust the time of this bill
+
+                                                      await listViewBillsRecord
+                                                          .reference
+                                                          .update(
+                                                              createBillsRecordData(
+                                                        date:
+                                                            _model.adjustedDate,
+                                                      ));
+                                                    }
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(
+                                                          'Only management can change date!',
+                                                          style: TextStyle(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .info,
+                                                          ),
+                                                        ),
+                                                        duration: const Duration(
+                                                            milliseconds: 4000),
+                                                        backgroundColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .error,
+                                                      ),
+                                                    );
+                                                  }
+
+                                                  if (shouldSetState) {
+                                                    setState(() {});
+                                                  }
+                                                },
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Text(
+                                                      dateTimeFormat(
+                                                          'MMM',
+                                                          listViewBillsRecord
+                                                              .date!),
+                                                      style:
+                                                          FlutterFlowTheme.of(
                                                                   context)
-                                                              .alternate,
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                        color: functions
-                                                                .isThisMonth(
-                                                                    listViewBillsRecord
-                                                                        .date!)
-                                                            ? FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary
-                                                            : FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryText,
-                                                        width: 2.0,
-                                                      ),
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: functions.isThisMonth(
+                                                                        listViewBillsRecord
+                                                                            .date!)
+                                                                    ? const Color(
+                                                                        0xFF6758FB)
+                                                                    : FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
                                                     ),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(2.0),
-                                                      child: Icon(
-                                                        Icons
-                                                            .event_note_outlined,
-                                                        color: functions
-                                                                .isThisMonth(
-                                                                    listViewBillsRecord
-                                                                        .date!)
-                                                            ? FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary
-                                                            : FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryText,
-                                                        size: 20.0,
-                                                      ),
+                                                    Text(
+                                                      dateTimeFormat(
+                                                          'd',
+                                                          listViewBillsRecord
+                                                              .date!),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: functions.isThisMonth(
+                                                                        listViewBillsRecord
+                                                                            .date!)
+                                                                    ? FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary
+                                                                    : FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText,
+                                                                fontSize: 25.0,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
                                               Flexible(
                                                 child: Padding(
                                                   padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
+                                                          20.0, 0.0, 0.0, 0.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -506,310 +910,110 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                           padding:
                                               const EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 0.0, 16.0, 10.0),
-                                          child: StreamBuilder<UsersRecord>(
-                                            stream: UsersRecord.getDocument(
-                                                listViewBillsRecord.staff!),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 50.0,
-                                                    height: 50.0,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      valueColor:
-                                                          AlwaysStoppedAnimation<
-                                                              Color>(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primary,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              final textUsersRecord =
-                                                  snapshot.data!;
-                                              return InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  var shouldSetState = false;
-                                                  if (valueOrDefault(
-                                                          currentUserDocument
-                                                              ?.role,
-                                                          '') ==
-                                                      'admin') {
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
-                                                                      context)
-                                                                  .unfocus(),
-                                                          child: Padding(
-                                                            padding: MediaQuery
-                                                                .viewInsetsOf(
-                                                                    context),
-                                                            child: SizedBox(
-                                                              height: double
-                                                                  .infinity,
-                                                              child:
-                                                                  ChangeDateWidget(
-                                                                date:
-                                                                    listViewBillsRecord
-                                                                        .date!,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ).then((value) =>
-                                                        safeSetState(() =>
-                                                            _model.adjustedDate =
-                                                                value));
-
-                                                    shouldSetState = true;
-                                                    if (_model.adjustedDate !=
-                                                        null) {
-                                                      if (dateTimeFormat(
-                                                              'M',
-                                                              listViewBillsRecord
-                                                                  .date) ==
-                                                          dateTimeFormat(
-                                                              'M',
-                                                              _model
-                                                                  .adjustedDate)) {
-                                                        // adjusted
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          SnackBar(
-                                                            content: Text(
-                                                              'Date has been adjusted!',
-                                                              style: TextStyle(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                              ),
-                                                            ),
-                                                            duration: const Duration(
-                                                                milliseconds:
-                                                                    4000),
-                                                            backgroundColor:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondary,
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        // prevStats
-                                                        _model.prevStats =
-                                                            await queryStatsRecordOnce(
-                                                          queryBuilder:
-                                                              (statsRecord) =>
-                                                                  statsRecord
-                                                                      .where(
-                                                                        'month',
-                                                                        isEqualTo: dateTimeFormat(
-                                                                            'MMMM',
-                                                                            listViewBillsRecord.date),
-                                                                      )
-                                                                      .where(
-                                                                        'year',
-                                                                        isEqualTo: dateTimeFormat(
-                                                                            'y',
-                                                                            listViewBillsRecord.date),
-                                                                      ),
-                                                          singleRecord: true,
-                                                        ).then((s) =>
-                                                                s.firstOrNull);
-                                                        shouldSetState = true;
-                                                        // deduct from prev stats
-
-                                                        await _model.prevStats!
-                                                            .reference
-                                                            .update({
-                                                          ...mapToFirestore(
-                                                            {
-                                                              'bills': FieldValue
-                                                                  .increment(
-                                                                      -(listViewBillsRecord
-                                                                          .amount)),
-                                                            },
-                                                          ),
-                                                        });
-                                                        // belongingStats
-                                                        _model.belongingStats =
-                                                            await queryStatsRecordOnce(
-                                                          queryBuilder:
-                                                              (statsRecord) =>
-                                                                  statsRecord
-                                                                      .where(
-                                                                        'month',
-                                                                        isEqualTo: dateTimeFormat(
-                                                                            'MMMM',
-                                                                            _model.adjustedDate),
-                                                                      )
-                                                                      .where(
-                                                                        'year',
-                                                                        isEqualTo: dateTimeFormat(
-                                                                            'y',
-                                                                            _model.adjustedDate),
-                                                                      ),
-                                                          singleRecord: true,
-                                                        ).then((s) =>
-                                                                s.firstOrNull);
-                                                        shouldSetState = true;
-                                                        if (_model
-                                                                .belongingStats
-                                                                ?.reference !=
-                                                            null) {
-                                                          // increment
-
-                                                          await _model
-                                                              .belongingStats!
-                                                              .reference
-                                                              .update({
-                                                            ...mapToFirestore(
-                                                              {
-                                                                'bills': FieldValue
-                                                                    .increment(
-                                                                        listViewBillsRecord
-                                                                            .amount),
-                                                              },
-                                                            ),
-                                                          });
-                                                        } else {
-                                                          // inexistent
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                            SnackBar(
-                                                              content: Text(
-                                                                'Metrics from this date does not exist yet!',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryBackground,
-                                                                ),
-                                                              ),
-                                                              duration: const Duration(
-                                                                  milliseconds:
-                                                                      4000),
-                                                              backgroundColor:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .error,
-                                                            ),
-                                                          );
-                                                          if (shouldSetState) {
-                                                            setState(() {});
-                                                          }
-                                                          return;
-                                                        }
-
-                                                        // moved month
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          SnackBar(
-                                                            content: Text(
-                                                              'Bill has been moved to ${dateTimeFormat('MMMM', _model.adjustedDate)}!',
-                                                              style: TextStyle(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                              ),
-                                                            ),
-                                                            duration: const Duration(
-                                                                milliseconds:
-                                                                    4000),
-                                                            backgroundColor:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondary,
-                                                          ),
-                                                        );
-                                                      }
-
-                                                      // adjust the time of this bill
-
-                                                      await listViewBillsRecord
-                                                          .reference
-                                                          .update(
-                                                              createBillsRecordData(
-                                                        date:
-                                                            _model.adjustedDate,
-                                                      ));
-                                                    }
-                                                  } else {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                        content: Text(
-                                                          'Only management can change date!',
-                                                          style: TextStyle(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .info,
-                                                          ),
-                                                        ),
-                                                        duration: const Duration(
-                                                            milliseconds: 4000),
-                                                        backgroundColor:
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              StreamBuilder<UsersRecord>(
+                                                stream: UsersRecord.getDocument(
+                                                    listViewBillsRecord.staff!),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 50.0,
+                                                        height: 50.0,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          valueColor:
+                                                              AlwaysStoppedAnimation<
+                                                                  Color>(
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .error,
+                                                                .primary,
+                                                          ),
+                                                        ),
                                                       ),
                                                     );
                                                   }
-
-                                                  if (shouldSetState) {
-                                                    setState(() {});
-                                                  }
+                                                  final textUsersRecord =
+                                                      snapshot.data!;
+                                                  return Text(
+                                                    'Recorded by ${textUsersRecord.displayName}',
+                                                    style:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Readex Pro',
+                                                              color: functions.isThisMonth(
+                                                                      listViewBillsRecord
+                                                                          .date!)
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText
+                                                                  : FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                              letterSpacing:
+                                                                  0.0,
+                                                            ),
+                                                  );
                                                 },
-                                                child: Text(
-                                                  'Recorded by ${textUsersRecord.displayName} on ${dateTimeFormat('EEE MMM d y h:mm a', listViewBillsRecord.date)}',
-                                                  style:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .override(
-                                                            fontFamily:
-                                                                'Readex Pro',
-                                                            color: functions
-                                                                    .isThisMonth(
-                                                                        listViewBillsRecord
-                                                                            .date!)
-                                                                ? FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText
-                                                                : FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryText,
-                                                            letterSpacing: 0.0,
+                                              ),
+                                              StreamBuilder<UsersRecord>(
+                                                stream: UsersRecord.getDocument(
+                                                    listViewBillsRecord.staff!),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 50.0,
+                                                        height: 50.0,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          valueColor:
+                                                              AlwaysStoppedAnimation<
+                                                                  Color>(
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primary,
                                                           ),
-                                                ),
-                                              );
-                                            },
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  final textUsersRecord =
+                                                      snapshot.data!;
+                                                  return Text(
+                                                    dateTimeFormat('y', listViewBillsRecord.date),
+                                                    style:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Readex Pro',
+                                                              color: functions.isThisMonth(
+                                                                      listViewBillsRecord
+                                                                          .date!)
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText
+                                                                  : FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                              letterSpacing:
+                                                                  0.0,
+                                                            ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],

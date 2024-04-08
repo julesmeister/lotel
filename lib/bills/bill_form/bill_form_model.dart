@@ -1,6 +1,8 @@
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'bill_form_widget.dart' show BillFormWidget;
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class BillFormModel extends FlutterFlowModel<BillFormWidget> {
@@ -12,9 +14,17 @@ class BillFormModel extends FlutterFlowModel<BillFormWidget> {
 
   bool disableSubmit = true;
 
+  DateTime? date;
+
+  DocumentReference? stats;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
+  StatsRecord? statsBillBelong;
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in Row widget.
+  DateTime? adjustedDate;
   // State field(s) for amount widget.
   FocusNode? amountFocusNode;
   TextEditingController? amountController;

@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/components/forms/new_grocery/new_grocery_widget.dart';
 import '/components/options/option_to_grocery/option_to_grocery_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
@@ -110,14 +111,63 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
               context.safePop();
             },
           ),
-          title: Text(
-            'Recorded Groceries',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Outfit',
-                  letterSpacing: 0.0,
-                ),
+          title: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Recorded Groceries',
+                style: FlutterFlowTheme.of(context).headlineMedium.override(
+                      fontFamily: 'Outfit',
+                      letterSpacing: 0.0,
+                    ),
+              ),
+              Text(
+                FFAppState().hotel,
+                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Readex Pro',
+                      letterSpacing: 0.0,
+                    ),
+              ),
+            ],
           ),
-          actions: const [],
+          actions: [
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+              child: FlutterFlowIconButton(
+                borderRadius: 20.0,
+                borderWidth: 1.0,
+                buttonSize: 40.0,
+                icon: Icon(
+                  Icons.add,
+                  color: FlutterFlowTheme.of(context).primaryText,
+                  size: 24.0,
+                ),
+                onPressed: () async {
+                  await showModalBottomSheet(
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (context) {
+                      return GestureDetector(
+                        onTap: () => _model.unfocusNode.canRequestFocus
+                            ? FocusScope.of(context)
+                                .requestFocus(_model.unfocusNode)
+                            : FocusScope.of(context).unfocus(),
+                        child: Padding(
+                          padding: MediaQuery.viewInsetsOf(context),
+                          child: const SizedBox(
+                            height: 420.0,
+                            child: NewGroceryWidget(),
+                          ),
+                        ),
+                      );
+                    },
+                  ).then((value) => safeSetState(() {}));
+                },
+              ),
+            ),
+          ],
           centerTitle: false,
           elevation: 0.0,
         ),
@@ -373,84 +423,67 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                             MainAxisSize.max,
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
-                                                                .start,
+                                                                .center,
                                                         children: [
-                                                          Align(
-                                                            alignment:
-                                                                const AlignmentDirectional(
-                                                                    -1.0, -1.0),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsetsDirectional
-                                                                      .fromSTEB(
+                                                          Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              Text(
+                                                                dateTimeFormat(
+                                                                    'MMM',
+                                                                    listViewGroceriesRecord
+                                                                        .date!),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: listViewGroceriesRecord.date! >=
+                                                                              functions.startOfDay(columnGoodsRevenueRatioRecord!
+                                                                                  .date!)
+                                                                          ? const Color(
+                                                                              0xFF6758FB)
+                                                                          : FlutterFlowTheme.of(context)
+                                                                              .secondaryText,
+                                                                      letterSpacing:
                                                                           0.0,
-                                                                          8.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                              child:
-                                                                  AnimatedContainer(
-                                                                duration: const Duration(
-                                                                    milliseconds:
-                                                                        150),
-                                                                curve: Curves
-                                                                    .easeInOut,
-                                                                width: 36.0,
-                                                                height: 36.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: listViewGroceriesRecord
-                                                                              .date! >=
-                                                                          functions.startOfDay(columnGoodsRevenueRatioRecord!
-                                                                              .date!)
-                                                                      ? FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .accent1
-                                                                      : FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .alternate,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                  border: Border
-                                                                      .all(
-                                                                    color: listViewGroceriesRecord.date! >=
-                                                                            functions.startOfDay(columnGoodsRevenueRatioRecord
-                                                                                .date!)
-                                                                        ? FlutterFlowTheme.of(context)
-                                                                            .primary
-                                                                        : FlutterFlowTheme.of(context)
-                                                                            .secondaryText,
-                                                                    width: 2.0,
-                                                                  ),
-                                                                ),
-                                                                child: Padding(
-                                                                  padding: const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          2.0,
-                                                                          2.0,
-                                                                          2.0,
-                                                                          2.0),
-                                                                  child: Icon(
-                                                                    Icons
-                                                                        .local_grocery_store_outlined,
-                                                                    color: listViewGroceriesRecord.date! >=
-                                                                            functions.startOfDay(columnGoodsRevenueRatioRecord
-                                                                                .date!)
-                                                                        ? FlutterFlowTheme.of(context)
-                                                                            .primary
-                                                                        : FlutterFlowTheme.of(context)
-                                                                            .secondaryText,
-                                                                    size: 20.0,
-                                                                  ),
-                                                                ),
+                                                                    ),
                                                               ),
-                                                            ),
+                                                              Text(
+                                                                dateTimeFormat(
+                                                                    'd',
+                                                                    listViewGroceriesRecord
+                                                                        .date!),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: listViewGroceriesRecord.date! >=
+                                                                              functions.startOfDay(columnGoodsRevenueRatioRecord
+                                                                                  .date!)
+                                                                          ? FlutterFlowTheme.of(context)
+                                                                              .primary
+                                                                          : FlutterFlowTheme.of(context)
+                                                                              .primaryText,
+                                                                      fontSize:
+                                                                          25.0,
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
+                                                              ),
+                                                            ],
                                                           ),
                                                           Flexible(
                                                             child: Padding(
                                                               padding:
                                                                   const EdgeInsetsDirectional
                                                                       .fromSTEB(
-                                                                          25.0,
+                                                                          20.0,
                                                                           0.0,
                                                                           0.0,
                                                                           0.0),
@@ -568,103 +601,119 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                   0.0,
                                                                   24.0,
                                                                   10.0),
-                                                      child: StreamBuilder<
-                                                          UsersRecord>(
-                                                        stream: UsersRecord
-                                                            .getDocument(
-                                                                listViewGroceriesRecord
-                                                                    .recordedBy!),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          // Customize what your widget looks like when it's loading.
-                                                          if (!snapshot
-                                                              .hasData) {
-                                                            return Center(
-                                                              child: SizedBox(
-                                                                width: 50.0,
-                                                                height: 50.0,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  valueColor:
-                                                                      AlwaysStoppedAnimation<
-                                                                          Color>(
-                                                                    FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primary,
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          StreamBuilder<
+                                                              UsersRecord>(
+                                                            stream: UsersRecord
+                                                                .getDocument(
+                                                                    listViewGroceriesRecord
+                                                                        .recordedBy!),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              // Customize what your widget looks like when it's loading.
+                                                              if (!snapshot
+                                                                  .hasData) {
+                                                                return Center(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    width: 50.0,
+                                                                    height:
+                                                                        50.0,
+                                                                    child:
+                                                                        CircularProgressIndicator(
+                                                                      valueColor:
+                                                                          AlwaysStoppedAnimation<
+                                                                              Color>(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .primary,
+                                                                      ),
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          }
-                                                          final richTextUsersRecord =
-                                                              snapshot.data!;
-                                                          return RichText(
-                                                            textScaler:
-                                                                MediaQuery.of(
+                                                                );
+                                                              }
+                                                              final richTextUsersRecord =
+                                                                  snapshot
+                                                                      .data!;
+                                                              return RichText(
+                                                                textScaler: MediaQuery.of(
                                                                         context)
                                                                     .textScaler,
-                                                            text: TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                  text:
-                                                                      'Recorded by ',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: listViewGroceriesRecord.date! >=
-                                                                            functions.startOfDay(columnGoodsRevenueRatioRecord
-                                                                                .date!)
-                                                                        ? FlutterFlowTheme.of(context)
-                                                                            .primaryText
-                                                                        : FlutterFlowTheme.of(context)
-                                                                            .secondaryText,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                  ),
+                                                                text: TextSpan(
+                                                                  children: [
+                                                                    TextSpan(
+                                                                      text:
+                                                                          'Recorded by ',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: listViewGroceriesRecord.date! >=
+                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord.date!)
+                                                                            ? FlutterFlowTheme.of(context).primaryText
+                                                                            : FlutterFlowTheme.of(context).secondaryText,
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      ),
+                                                                    ),
+                                                                    TextSpan(
+                                                                      text: richTextUsersRecord
+                                                                          .displayName,
+                                                                      style:
+                                                                          const TextStyle(),
+                                                                    )
+                                                                  ],
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        color: listViewGroceriesRecord.date! >=
+                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord.date!)
+                                                                            ? FlutterFlowTheme.of(context).primaryText
+                                                                            : FlutterFlowTheme.of(context).secondaryText,
+                                                                        fontSize:
+                                                                            14.0,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
                                                                 ),
-                                                                TextSpan(
-                                                                  text: richTextUsersRecord
-                                                                      .displayName,
-                                                                  style:
-                                                                      const TextStyle(),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .start,
+                                                              );
+                                                            },
+                                                          ),
+                                                          Text(
+                                                            dateTimeFormat(
+                                                                'h:mm a y',
+                                                                listViewGroceriesRecord
+                                                                    .date!),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  color: listViewGroceriesRecord
+                                                                              .date! >=
+                                                                          functions.startOfDay(columnGoodsRevenueRatioRecord
+                                                                              .date!)
+                                                                      ? FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText
+                                                                      : FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryText,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                 ),
-                                                                const TextSpan(
-                                                                  text: ' on ',
-                                                                  style:
-                                                                      TextStyle(),
-                                                                ),
-                                                                TextSpan(
-                                                                  text: dateTimeFormat(
-                                                                      'EEEE MMMM d y h:mm a',
-                                                                      listViewGroceriesRecord
-                                                                          .date!),
-                                                                  style:
-                                                                      const TextStyle(),
-                                                                )
-                                                              ],
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyLarge
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: listViewGroceriesRecord.date! >=
-                                                                            functions.startOfDay(columnGoodsRevenueRatioRecord
-                                                                                .date!)
-                                                                        ? FlutterFlowTheme.of(context)
-                                                                            .primaryText
-                                                                        : FlutterFlowTheme.of(context)
-                                                                            .secondaryText,
-                                                                    fontSize:
-                                                                        14.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                          );
-                                                        },
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ],

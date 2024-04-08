@@ -98,7 +98,7 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
                           child: SizedBox(
-                            height: double.infinity,
+                            height: 300.0,
                             child: HistoryEditWidget(
                               history: widget.history!,
                             ),

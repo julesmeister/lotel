@@ -1,5 +1,7 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/change_date/change_date_widget.dart';
+import '/components/options/issuer/issuer_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -67,14 +69,27 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
               context.pop();
             },
           ),
-          title: Text(
-            'Issues',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Outfit',
-                  color: FlutterFlowTheme.of(context).primaryText,
-                  fontSize: 22.0,
-                  letterSpacing: 0.0,
-                ),
+          title: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Issues',
+                style: FlutterFlowTheme.of(context).headlineMedium.override(
+                      fontFamily: 'Outfit',
+                      color: FlutterFlowTheme.of(context).primaryText,
+                      fontSize: 22.0,
+                      letterSpacing: 0.0,
+                    ),
+              ),
+              Text(
+                FFAppState().hotel,
+                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Readex Pro',
+                      letterSpacing: 0.0,
+                    ),
+              ),
+            ],
           ),
           actions: const [],
           centerTitle: false,
@@ -206,54 +221,69 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Align(
-                                            alignment: const AlignmentDirectional(
-                                                -1.0, -1.0),
-                                            child: AnimatedContainer(
-                                              duration:
-                                                  const Duration(milliseconds: 150),
-                                              curve: Curves.easeInOut,
-                                              width: 36.0,
-                                              height: 36.0,
-                                              decoration: BoxDecoration(
-                                                color: listViewIssuesRecord
-                                                            .status ==
-                                                        'pending'
-                                                    ? const Color(0x63FF5963)
-                                                    : FlutterFlowTheme.of(
-                                                            context)
-                                                        .accent2,
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: listViewIssuesRecord
-                                                              .status ==
-                                                          'pending'
-                                                      ? FlutterFlowTheme.of(
-                                                              context)
-                                                          .error
-                                                      : FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondary,
-                                                  width: 2.0,
-                                                ),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Text(
+                                                dateTimeFormat('MMM',
+                                                    listViewIssuesRecord.date!),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          color: listViewIssuesRecord
+                                                                      .status ==
+                                                                  'pending'
+                                                              ? const Color(
+                                                                  0xFFFD9DA3)
+                                                              : const Color(
+                                                                  0xFF70F6E1),
+                                                          letterSpacing: 0.0,
+                                                        ),
                                               ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(2.0),
-                                                child: Icon(
-                                                  Icons.build_circle_outlined,
-                                                  color: listViewIssuesRecord
-                                                              .status ==
-                                                          'pending'
-                                                      ? FlutterFlowTheme.of(
-                                                              context)
-                                                          .error
-                                                      : FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondary,
-                                                  size: 20.0,
-                                                ),
+                                              Text(
+                                                dateTimeFormat('d',
+                                                    listViewIssuesRecord.date!),
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .bodyMedium
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      color: listViewIssuesRecord
+                                                                  .status ==
+                                                              'pending'
+                                                          ? FlutterFlowTheme.of(
+                                                                  context)
+                                                              .error
+                                                          : FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondary,
+                                                      fontSize: 25.0,
+                                                      letterSpacing: 0.0,
+                                                    ),
                                               ),
-                                            ),
+                                              Text(
+                                                dateTimeFormat('y',
+                                                    listViewIssuesRecord.date!),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          color: listViewIssuesRecord
+                                                                      .status ==
+                                                                  'pending'
+                                                              ? const Color(
+                                                                  0xFFFD9DA3)
+                                                              : const Color(
+                                                                  0xFF70F6E1),
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                              ),
+                                            ],
                                           ),
                                           Flexible(
                                             child: Padding(
@@ -314,46 +344,94 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                               final richTextUsersRecord =
                                                                   snapshot
                                                                       .data!;
-                                                              return RichText(
-                                                                textScaler: MediaQuery.of(
-                                                                        context)
-                                                                    .textScaler,
-                                                                text: TextSpan(
-                                                                  children: [
-                                                                    TextSpan(
-                                                                      text: richTextUsersRecord
-                                                                          .displayName,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyLarge
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color: listViewIssuesRecord.status == 'pending'
-                                                                                ? FlutterFlowTheme.of(context).error
-                                                                                : FlutterFlowTheme.of(context).secondary,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
+                                                              return InkWell(
+                                                                splashColor: Colors
+                                                                    .transparent,
+                                                                focusColor: Colors
+                                                                    .transparent,
+                                                                hoverColor: Colors
+                                                                    .transparent,
+                                                                highlightColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                onTap:
+                                                                    () async {
+                                                                  if (valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.role,
+                                                                          '') ==
+                                                                      'admin') {
+                                                                    await showModalBottomSheet(
+                                                                      isScrollControlled:
+                                                                          true,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      enableDrag:
+                                                                          false,
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) {
+                                                                        return GestureDetector(
+                                                                          onTap: () => _model.unfocusNode.canRequestFocus
+                                                                              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+                                                                              : FocusScope.of(context).unfocus(),
+                                                                          child:
+                                                                              Padding(
+                                                                            padding:
+                                                                                MediaQuery.viewInsetsOf(context),
+                                                                            child:
+                                                                                SizedBox(
+                                                                              height: 300.0,
+                                                                              child: IssuerWidget(
+                                                                                issue: listViewIssuesRecord.reference,
+                                                                              ),
+                                                                            ),
                                                                           ),
-                                                                    ),
-                                                                    const TextSpan(
-                                                                      text:
-                                                                          ' reported',
-                                                                      style:
-                                                                          TextStyle(),
-                                                                    )
-                                                                  ],
-                                                                  style: FlutterFlowTheme.of(
+                                                                        );
+                                                                      },
+                                                                    ).then((value) =>
+                                                                        safeSetState(
+                                                                            () {}));
+                                                                  }
+                                                                },
+                                                                child: RichText(
+                                                                  textScaler: MediaQuery.of(
                                                                           context)
-                                                                      .bodyLarge
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Readex Pro',
-                                                                        letterSpacing:
-                                                                            0.0,
+                                                                      .textScaler,
+                                                                  text:
+                                                                      TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text: richTextUsersRecord
+                                                                            .displayName,
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyLarge
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              color: listViewIssuesRecord.status == 'pending' ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
+                                                                              letterSpacing: 0.0,
+                                                                              fontWeight: FontWeight.w600,
+                                                                            ),
                                                                       ),
+                                                                      const TextSpan(
+                                                                        text:
+                                                                            ' reported',
+                                                                        style:
+                                                                            TextStyle(),
+                                                                      )
+                                                                    ],
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
+                                                                  ),
                                                                 ),
                                                               );
                                                             },
@@ -581,19 +659,26 @@ class _IssuesListWidgetState extends State<IssuesListWidget> {
                                                         const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 8.0,
                                                                 0.0, 0.0),
-                                                    child: Text(
-                                                      dateTimeFormat(
-                                                          'EEE MMM d y h:mm a',
-                                                          listViewIssuesRecord
-                                                              .date!),
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .labelMedium
-                                                          .override(
-                                                            fontFamily:
-                                                                'Readex Pro',
-                                                            letterSpacing: 0.0,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        if (listViewIssuesRecord
+                                                                .dateFixed !=
+                                                            null)
+                                                          Text(
+                                                            'Solved on ${dateTimeFormat('EEE MMM d y h:mm a', listViewIssuesRecord.dateFixed)} ${functions.daysSolved(listViewIssuesRecord.date!, listViewIssuesRecord.dateFixed)}',
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .labelMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                           ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ],

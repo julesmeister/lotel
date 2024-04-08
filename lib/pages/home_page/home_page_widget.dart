@@ -1663,8 +1663,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       padding: MediaQuery
                                                           .viewInsetsOf(
                                                               context),
-                                                      child:
-                                                          const ChangeRemittanceWidget(),
+                                                      child: const SizedBox(
+                                                        height: 504.0,
+                                                        child:
+                                                            ChangeRemittanceWidget(),
+                                                      ),
                                                     ),
                                                   );
                                                 },
@@ -4468,7 +4471,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           child:
                                                                               const SizedBox(
                                                                             height:
-                                                                                double.infinity,
+                                                                                420.0,
                                                                             child:
                                                                                 NewGroceryWidget(),
                                                                           ),

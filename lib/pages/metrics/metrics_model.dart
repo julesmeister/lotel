@@ -1,5 +1,4 @@
 import '/backend/backend.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'metrics_widget.dart' show MetricsWidget;
@@ -83,6 +82,8 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
   String? hotelName1;
   // Stores action output result for [Action Block - UpdateStatsByHotel] action in Container widget.
   String? hotelName2;
+  // Stores action output result for [Firestore Query - Query a collection] action in billsCard widget.
+  List<BillsRecord>? billsThisMonth;
   // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.
   StatsRecord? statO;
   // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.
@@ -244,18 +245,6 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
         // increment loop
         loopCounter = loopCounter + 1;
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Showing stats of $month $year',
-            style: TextStyle(
-              color: FlutterFlowTheme.of(context).primaryText,
-            ),
-          ),
-          duration: const Duration(milliseconds: 4000),
-          backgroundColor: FlutterFlowTheme.of(context).secondary,
-        ),
-      );
     } else {
       // initialize all page vars
       month = month!;

@@ -45,9 +45,38 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
         _model.roomUsage =
             _model.initStat!.roomUsage.toList().cast<RoomUsageStruct>();
       });
+      // transactionsToRemit
+      _model.toRemit = await queryTransactionsRecordOnce(
+        queryBuilder: (transactionsRecord) => transactionsRecord
+            .where(
+              'hotel',
+              isEqualTo: FFAppState().hotel,
+            )
+            .where(
+              'remitted',
+              isEqualTo: false,
+            )
+            .where(
+              'pending',
+              isNotEqualTo: true,
+            ),
+      );
+      // amount to remit to field
+      setState(() {
+        _model.amountController?.text =
+            functions.netOfTransactions(_model.toRemit!.toList()).toString();
+      });
+      setState(() {
+        _model.toRemitAmount =
+            functions.netOfTransactions(_model.toRemit!.toList());
+      });
     });
 
-    _model.changeExtraController ??= TextEditingController();
+    _model.amountController ??=
+        TextEditingController(text: _model.toRemitAmount.toString());
+    _model.amountFocusNode ??= FocusNode();
+
+    _model.changeExtraController ??= TextEditingController(text: '0');
     _model.changeExtraFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -73,9 +102,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).accent4,
-          ),
+          decoration: const BoxDecoration(),
           alignment: const AlignmentDirectional(0.0, 1.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -275,6 +302,114 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                         padding: const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 16.0, 16.0, 0.0),
                                         child: TextFormField(
+                                          controller: _model.amountController,
+                                          focusNode: _model.amountFocusNode,
+                                          onChanged: (_) =>
+                                              EasyDebounce.debounce(
+                                            '_model.amountController',
+                                            const Duration(milliseconds: 2000),
+                                            () async {
+                                              // set change
+                                              setState(() {
+                                                _model.changeExtraController
+                                                    ?.text = ((_model
+                                                            .toRemitAmount -
+                                                        double.parse(_model
+                                                            .amountController
+                                                            .text))
+                                                    .abs()
+                                                    .toString());
+                                              });
+                                            },
+                                          ),
+                                          autofocus: true,
+                                          textCapitalization:
+                                              TextCapitalization.none,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            labelText: 'Remit Amount',
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyLarge
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      fontSize: 36.0,
+                                                      letterSpacing: 0.0,
+                                                    ),
+                                            hintText: 'Remittance',
+                                            hintStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelLarge
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      fontSize: 36.0,
+                                                      letterSpacing: 0.0,
+                                                    ),
+                                            enabledBorder: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            focusedErrorBorder:
+                                                InputBorder.none,
+                                            filled: true,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryBackground,
+                                            contentPadding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    24.0, 24.0, 20.0, 24.0),
+                                            suffixIcon: _model.amountController!
+                                                    .text.isNotEmpty
+                                                ? InkWell(
+                                                    onTap: () async {
+                                                      _model.amountController
+                                                          ?.clear(); // set change
+                                                      setState(() {
+                                                        _model
+                                                            .changeExtraController
+                                                            ?.text = ((_model
+                                                                    .toRemitAmount -
+                                                                double.parse(_model
+                                                                    .amountController
+                                                                    .text))
+                                                            .abs()
+                                                            .toString());
+                                                      });
+                                                      setState(() {});
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.clear,
+                                                      color: Color(0xFF757575),
+                                                      size: 22.0,
+                                                    ),
+                                                  )
+                                                : null,
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                fontSize: 36.0,
+                                                letterSpacing: 0.0,
+                                              ),
+                                          minLines: null,
+                                          keyboardType: const TextInputType
+                                              .numberWithOptions(decimal: true),
+                                          cursorColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                          validator: _model
+                                              .amountControllerValidator
+                                              .asValidator(context),
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp('[0-9]'))
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            16.0, 16.0, 16.0, 0.0),
+                                        child: TextFormField(
                                           controller:
                                               _model.changeExtraController,
                                           focusNode:
@@ -283,14 +418,27 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               EasyDebounce.debounce(
                                             '_model.changeExtraController',
                                             const Duration(milliseconds: 2000),
-                                            () => setState(() {}),
+                                            () async {
+                                              // set amountEntered
+                                              setState(() {
+                                                _model.amountController
+                                                    ?.text = ((_model
+                                                            .toRemitAmount
+                                                            .abs() -
+                                                        double.parse(_model
+                                                                .changeExtraController
+                                                                .text)
+                                                            .abs())
+                                                    .toString());
+                                              });
+                                            },
                                           ),
                                           autofocus: true,
                                           textCapitalization:
                                               TextCapitalization.none,
                                           obscureText: false,
                                           decoration: InputDecoration(
-                                            labelText: 'Amount',
+                                            labelText: 'Change',
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyLarge
@@ -328,7 +476,18 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     onTap: () async {
                                                       _model
                                                           .changeExtraController
-                                                          ?.clear();
+                                                          ?.clear(); // set amountEntered
+                                                      setState(() {
+                                                        _model.amountController
+                                                            ?.text = ((_model
+                                                                    .toRemitAmount
+                                                                    .abs() -
+                                                                double.parse(_model
+                                                                        .changeExtraController
+                                                                        .text)
+                                                                    .abs())
+                                                            .toString());
+                                                      });
                                                       setState(() {});
                                                     },
                                                     child: const Icon(

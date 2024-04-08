@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/change_date/change_date_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -7,8 +8,10 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'bill_form_model.dart';
@@ -111,6 +114,14 @@ class _BillFormWidgetState extends State<BillFormWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => BillFormModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        _model.date = getCurrentTimestamp;
+        _model.stats = FFAppState().statsReference;
+      });
+    });
 
     _model.amountController ??= TextEditingController();
     _model.amountFocusNode ??= FocusNode();
@@ -218,29 +229,52 @@ class _BillFormWidgetState extends State<BillFormWidget>
                               if (confirmDialogResponse) {
                                 // bill creation
 
-                                await BillsRecord.collection.doc().set({
-                                  ...createBillsRecordData(
-                                    description: functions.startBigLetter(
-                                        _model.descriptionController.text),
-                                    amount: double.tryParse(
-                                        _model.amountController.text),
-                                    hotel: FFAppState().hotel,
-                                    staff: currentUserReference,
-                                    afterDue: valueOrDefault<double>(
-                                      double.tryParse(
-                                          _model.afterdueController.text),
-                                      0.0,
-                                    ),
-                                  ),
-                                  ...mapToFirestore(
-                                    {
-                                      'date': FieldValue.serverTimestamp(),
-                                    },
-                                  ),
-                                });
+                                await BillsRecord.collection
+                                    .doc()
+                                    .set(createBillsRecordData(
+                                      description: functions.startBigLetter(
+                                          _model.descriptionController.text),
+                                      amount: double.tryParse(
+                                          _model.amountController.text),
+                                      date: _model.date,
+                                      hotel: FFAppState().hotel,
+                                      staff: currentUserReference,
+                                      afterDue: valueOrDefault<double>(
+                                        double.tryParse(
+                                            _model.afterdueController.text),
+                                        0.0,
+                                      ),
+                                    ));
+                                if (!functions.isThisMonth(_model.date!)) {
+                                  // which stats belong
+                                  _model.statsBillBelong =
+                                      await queryStatsRecordOnce(
+                                    queryBuilder: (statsRecord) => statsRecord
+                                        .where(
+                                          'hotel',
+                                          isEqualTo: FFAppState().hotel,
+                                        )
+                                        .where(
+                                          'month',
+                                          isEqualTo: dateTimeFormat(
+                                              'MMMM', _model.date),
+                                        )
+                                        .where(
+                                          'year',
+                                          isEqualTo:
+                                              dateTimeFormat('y', _model.date),
+                                        ),
+                                    singleRecord: true,
+                                  ).then((s) => s.firstOrNull);
+                                  // set stats ref
+                                  setState(() {
+                                    _model.stats =
+                                        _model.statsBillBelong?.reference;
+                                  });
+                                }
                                 // increment bills stats
 
-                                await FFAppState().statsReference!.update({
+                                await _model.stats!.update({
                                   ...mapToFirestore(
                                     {
                                       'bills': FieldValue.increment(
@@ -273,6 +307,10 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                   _model.amountController?.clear();
                                   _model.descriptionController?.clear();
                                 });
+                                // reset date
+                                setState(() {
+                                  _model.date = getCurrentTimestamp;
+                                });
                               }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -289,6 +327,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                 ),
                               );
                             }
+
+                            setState(() {});
                           },
                   ),
                 ),
@@ -323,6 +363,92 @@ class _BillFormWidgetState extends State<BillFormWidget>
                             fontFamily: 'Readex Pro',
                             letterSpacing: 0.0,
                           ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          enableDrag: false,
+                          useSafeArea: true,
+                          context: context,
+                          builder: (context) {
+                            return GestureDetector(
+                              onTap: () => _model.unfocusNode.canRequestFocus
+                                  ? FocusScope.of(context)
+                                      .requestFocus(_model.unfocusNode)
+                                  : FocusScope.of(context).unfocus(),
+                              child: Padding(
+                                padding: MediaQuery.viewInsetsOf(context),
+                                child: SizedBox(
+                                  height: double.infinity,
+                                  child: ChangeDateWidget(
+                                    date: _model.date!,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ).then((value) =>
+                            safeSetState(() => _model.adjustedDate = value));
+
+                        if (_model.adjustedDate != null) {
+                          setState(() {
+                            _model.date = _model.adjustedDate;
+                          });
+                        }
+
+                        setState(() {});
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const Icon(
+                            Icons.calendar_month,
+                            color: Color(0xFF04B9F9),
+                            size: 35.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 0.0, 0.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Select Date',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                                Text(
+                                  dateTimeFormat('MMMM d, y', _model.date),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        fontSize: 18.0,
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Column(

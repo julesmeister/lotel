@@ -122,10 +122,18 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
 
   String happening = 'Neutral';
 
+  double toRemitAmount = 0.0;
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Read Document] action in ChangeRemittance widget.
   StatsRecord? initStat;
+  // Stores action output result for [Firestore Query - Query a collection] action in ChangeRemittance widget.
+  List<TransactionsRecord>? toRemit;
+  // State field(s) for amount widget.
+  FocusNode? amountFocusNode;
+  TextEditingController? amountController;
+  String? Function(BuildContext, String?)? amountControllerValidator;
   // State field(s) for changeExtra widget.
   FocusNode? changeExtraFocusNode;
   TextEditingController? changeExtraController;
@@ -148,6 +156,9 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
 
   @override
   void dispose() {
+    amountFocusNode?.dispose();
+    amountController?.dispose();
+
     changeExtraFocusNode?.dispose();
     changeExtraController?.dispose();
   }

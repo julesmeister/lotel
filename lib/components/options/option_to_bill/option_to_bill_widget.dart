@@ -2,7 +2,10 @@ import '/backend/backend.dart';
 import '/components/forms/bill_edit/bill_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'option_to_bill_model.dart';
 export 'option_to_bill_model.dart';
@@ -10,10 +13,10 @@ export 'option_to_bill_model.dart';
 class OptionToBillWidget extends StatefulWidget {
   const OptionToBillWidget({
     super.key,
-    required this.ref,
+    required this.bill,
   });
 
-  final DocumentReference? ref;
+  final BillsRecord? bill;
 
   @override
   State<OptionToBillWidget> createState() => _OptionToBillWidgetState();
@@ -32,6 +35,13 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => OptionToBillModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        _model.stats = FFAppState().statsReference;
+      });
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -91,8 +101,8 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                   highlightColor: Colors.transparent,
                   onTap: () async {
                     // read bill
-                    _model.billToChange =
-                        await BillsRecord.getDocumentOnce(widget.ref!);
+                    _model.billToChange = await BillsRecord.getDocumentOnce(
+                        widget.bill!.reference);
                     // edit transaction description
                     await showModalBottomSheet(
                       isScrollControlled: true,
@@ -102,7 +112,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
                           child: SizedBox(
-                            height: double.infinity,
+                            height: 550.0,
                             child: BillEditWidget(
                               bill: _model.billToChange!,
                               description: _model.billToChange!.description,
@@ -171,21 +181,53 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    _model.bill =
-                        await BillsRecord.getDocumentOnce(widget.ref!);
+                    if (!functions.isThisMonth(widget.bill!.date!)) {
+                      // which stats belong
+                      _model.statsBillBelong = await queryStatsRecordOnce(
+                        queryBuilder: (statsRecord) => statsRecord
+                            .where(
+                              'hotel',
+                              isEqualTo: FFAppState().hotel,
+                            )
+                            .where(
+                              'month',
+                              isEqualTo:
+                                  dateTimeFormat('MMMM', widget.bill?.date),
+                            )
+                            .where(
+                              'year',
+                              isEqualTo: dateTimeFormat('y', widget.bill?.date),
+                            ),
+                        singleRecord: true,
+                      ).then((s) => s.firstOrNull);
+                      // set stats ref
+                      setState(() {
+                        _model.stats = _model.statsBillBelong?.reference;
+                      });
+                    }
                     // reduce from stat
 
-                    await FFAppState().statsReference!.update({
+                    await _model.stats!.update({
                       ...mapToFirestore(
                         {
-                          'bills': FieldValue.increment(-(_model.bill!.amount)),
+                          'bills': FieldValue.increment(-(widget.bill!.amount)),
                         },
                       ),
                     });
+                    await widget.bill!.reference.delete();
+                    Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          '${_model.bill?.amount.toString()} is deducted from stats.',
+                          '${valueOrDefault<String>(
+                            formatNumber(
+                              widget.bill?.amount,
+                              formatType: FormatType.decimal,
+                              decimalType: DecimalType.automatic,
+                              currency: 'Php ',
+                            ),
+                            '0',
+                          )} is deducted from ${dateTimeFormat('MMMM y', widget.bill?.date)} metrics.',
                           style: TextStyle(
                             color: FlutterFlowTheme.of(context).primaryText,
                           ),
@@ -194,8 +236,9 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                         backgroundColor: FlutterFlowTheme.of(context).secondary,
                       ),
                     );
-                    await widget.ref!.delete();
-                    Navigator.pop(context);
+                    context.safePop();
+
+                    context.pushNamed('billsList');
 
                     setState(() {});
                   },

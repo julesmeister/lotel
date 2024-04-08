@@ -93,36 +93,6 @@ class _CheckInWidgetState extends State<CheckInWidget>
       if (widget.extend) {
         // room
         _model.room = await RoomsRecord.getDocumentOnce(widget.ref!);
-        while (_model.loop != widget.bookingToExtend?.transactions.length) {
-          // trans
-          _model.trans = await TransactionsRecord.getDocumentOnce(
-              widget.bookingToExtend!.transactions[_model.loop]);
-          // add trans to list
-          setState(() {
-            _model.addToTransactions(_model.trans!);
-          });
-          // + loop
-          setState(() {
-            _model.loop = _model.loop + 1;
-          });
-        }
-        // reset loop
-        setState(() {
-          _model.loop = 0;
-        });
-        while (_model.loop != widget.bookingToExtend?.pendings.length) {
-          // pendings to trans
-          _model.pendingsToTrans = await TransactionsRecord.getDocumentOnce(
-              widget.bookingToExtend!.pendings[_model.loop]);
-          // add trans to list
-          setState(() {
-            _model.addToTransactions(_model.pendingsToTrans!);
-          });
-          // + loop
-          setState(() {
-            _model.loop = _model.loop + 1;
-          });
-        }
         // set price, nights, beds, paid
         setState(() {
           _model.price = valueOrDefault<double>(
@@ -140,6 +110,44 @@ class _CheckInWidgetState extends State<CheckInWidget>
               .cast<DocumentReference>();
           _model.ability = widget.bookingToExtend!.ability;
         });
+        if (widget.bookingToExtend!.transactions.isNotEmpty) {
+          while (_model.loop != widget.bookingToExtend?.transactions.length) {
+            // trans
+            _model.trans = await TransactionsRecord.getDocumentOnce(
+                widget.bookingToExtend!.transactions[_model.loop]);
+            // add trans to list
+            setState(() {
+              _model.addToTransactions(_model.trans!);
+            });
+            // + loop
+            setState(() {
+              _model.loop = _model.loop + 1;
+            });
+          }
+        }
+        if (widget.bookingToExtend!.pendings.isNotEmpty) {
+          // reset loop
+          setState(() {
+            _model.loop = 0;
+          });
+          while (_model.loop !=
+              valueOrDefault<int>(
+                widget.bookingToExtend?.pendings.length,
+                0,
+              )) {
+            // pendings to trans
+            _model.pendingsToTrans = await TransactionsRecord.getDocumentOnce(
+                widget.bookingToExtend!.pendings[_model.loop]);
+            // add trans to list
+            setState(() {
+              _model.addToTransactions(_model.pendingsToTrans!);
+            });
+            // + loop
+            setState(() {
+              _model.loop = _model.loop + 1;
+            });
+          }
+        }
       } else {
         setState(() {
           _model.price = valueOrDefault<double>(
