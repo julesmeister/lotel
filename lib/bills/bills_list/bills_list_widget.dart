@@ -990,7 +990,7 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                                   final textUsersRecord =
                                                       snapshot.data!;
                                                   return Text(
-                                                    dateTimeFormat('y', listViewBillsRecord.date),
+                                                    dateTimeFormat('h:mm a y', listViewBillsRecord.date),
                                                     style:
                                                         FlutterFlowTheme.of(
                                                                 context)

@@ -616,6 +616,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                         ),
                       ),
                     ),
+                    pw.SizedBox(height: 2),
                     pw.Container(
                       padding:
                           pw.EdgeInsets.only(left: 34.0), // Padding to the left
@@ -628,7 +629,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                     ),
                   ],
                 ),
-                pw.SizedBox(height: 25),
+                pw.SizedBox(height: 15),
                 pw.Container(
                   padding: pw.EdgeInsets.symmetric(
                     horizontal: 34.0,

@@ -424,7 +424,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                 _model.amountController
                                                     ?.text = ((_model
                                                             .toRemitAmount
-                                                            .abs() -
+                                                            .abs() +
                                                         double.parse(_model
                                                                 .changeExtraController
                                                                 .text)
@@ -481,7 +481,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                         _model.amountController
                                                             ?.text = ((_model
                                                                     .toRemitAmount
-                                                                    .abs() -
+                                                                    .abs() +
                                                                 double.parse(_model
                                                                         .changeExtraController
                                                                         .text)
