@@ -244,6 +244,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                                       fontSize: 28.0,
                                       letterSpacing: 0.0,
                                     ),
+                                minLines: 1,
                                 validator: _model.detailControllerValidator
                                     .asValidator(context),
                               ),
@@ -290,6 +291,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                                       fontSize: 28.0,
                                       letterSpacing: 0.0,
                                     ),
+                                minLines: 1,
                                 keyboardType:
                                     const TextInputType.numberWithOptions(
                                         signed: true, decimal: true),

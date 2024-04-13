@@ -344,6 +344,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               validator: _model.descControllerValidator
                                   .asValidator(context),
                             ),
@@ -380,6 +381,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType: TextInputType.number,
                               validator: _model.quantityControllerValidator
                                   .asValidator(context),
@@ -421,6 +423,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               validator: _model.whyControllerValidator
                                   .asValidator(context),
                             ),

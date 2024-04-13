@@ -896,54 +896,6 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                 ),
                                           ),
                                         ),
-                                        if (responsiveVisibility(
-                                          context: context,
-                                          phone: false,
-                                          tablet: false,
-                                          tabletLandscape: false,
-                                        ))
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              'Weight',
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .labelMedium
-                                                  .override(
-                                                    fontFamily: 'Readex Pro',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryText,
-                                                    fontSize: 14.0,
-                                                    letterSpacing: 0.0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                            ),
-                                          ),
-                                        if (responsiveVisibility(
-                                          context: context,
-                                          phone: false,
-                                          tablet: false,
-                                          tabletLandscape: false,
-                                        ))
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text(
-                                              'Status',
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .bodyMedium
-                                                  .override(
-                                                    fontFamily: 'Readex Pro',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryText,
-                                                    fontSize: 14.0,
-                                                    letterSpacing: 0.0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                            ),
-                                          ),
                                         Expanded(
                                           flex: 2,
                                           child: Text(
@@ -1117,7 +1069,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                             .spaceBetween,
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
-                                                            .start,
+                                                            .center,
                                                     children: [
                                                       Expanded(
                                                         flex: 3,
@@ -1126,7 +1078,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                               const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
-                                                                      5.0,
+                                                                      0.0,
                                                                       12.0,
                                                                       0.0),
                                                           child: Column(
@@ -1148,7 +1100,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                   children: [
                                                                     const TextSpan(
                                                                       text:
-                                                                          'Fortnight #: ',
+                                                                          'Fortnight: ',
                                                                       style:
                                                                           TextStyle(),
                                                                     ),
@@ -1203,134 +1155,6 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                           ),
                                                         ),
                                                       ),
-                                                      if (responsiveVisibility(
-                                                        context: context,
-                                                        phone: false,
-                                                        tablet: false,
-                                                        tabletLandscape: false,
-                                                      ))
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              Container(
-                                                                height: 32.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primaryBackground,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              12.0),
-                                                                  border: Border
-                                                                      .all(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .alternate,
-                                                                    width: 2.0,
-                                                                  ),
-                                                                ),
-                                                                child: Align(
-                                                                  alignment:
-                                                                      const AlignmentDirectional(
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            7.0,
-                                                                            0.0,
-                                                                            7.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      '2.5 lbs',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      if (responsiveVisibility(
-                                                        context: context,
-                                                        phone: false,
-                                                        tablet: false,
-                                                        tabletLandscape: false,
-                                                      ))
-                                                        Expanded(
-                                                          flex: 2,
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              Container(
-                                                                height: 32.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .accent1,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              12.0),
-                                                                  border: Border
-                                                                      .all(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primary,
-                                                                    width: 2.0,
-                                                                  ),
-                                                                ),
-                                                                child: Align(
-                                                                  alignment:
-                                                                      const AlignmentDirectional(
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            8.0,
-                                                                            0.0,
-                                                                            8.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      'Shipped',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primary,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
                                                       Expanded(
                                                         flex: 2,
                                                         child: Column(
@@ -1364,76 +1188,33 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                         0.0,
                                                                   ),
                                                             ),
-                                                            if (responsiveVisibility(
-                                                              context: context,
-                                                              desktop: false,
-                                                            ))
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            4.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                child:
-                                                                    Container(
-                                                                  width: 91.0,
-                                                                  height: 32.0,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: listViewPayrollsRecord.status ==
-                                                                            'pending'
-                                                                        ? FlutterFlowTheme.of(context)
-                                                                            .accent3
-                                                                        : FlutterFlowTheme.of(context)
-                                                                            .accent2,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5.0),
-                                                                    border:
-                                                                        Border
-                                                                            .all(
+                                                            Align(
+                                                              alignment:
+                                                                  const AlignmentDirectional(
+                                                                      1.0, 0.0),
+                                                              child: Text(
+                                                                listViewPayrollsRecord
+                                                                    .status,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
                                                                       color: listViewPayrollsRecord.status ==
                                                                               'pending'
                                                                           ? FlutterFlowTheme.of(context)
                                                                               .error
                                                                           : FlutterFlowTheme.of(context)
                                                                               .secondary,
-                                                                      width:
-                                                                          1.0,
-                                                                    ),
-                                                                  ),
-                                                                  child: Align(
-                                                                    alignment:
-                                                                        const AlignmentDirectional(
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                          8.0,
+                                                                      letterSpacing:
                                                                           0.0,
-                                                                          8.0,
-                                                                          0.0),
-                                                                      child:
-                                                                          Text(
-                                                                        listViewPayrollsRecord
-                                                                            .status,
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .override(
-                                                                              fontFamily: 'Readex Pro',
-                                                                              color: listViewPayrollsRecord.status == 'pending' ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
-                                                                              letterSpacing: 0.0,
-                                                                            ),
-                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                ),
                                                               ),
+                                                            ),
                                                           ],
                                                         ),
                                                       ),

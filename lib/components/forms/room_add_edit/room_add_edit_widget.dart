@@ -200,6 +200,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType: TextInputType.number,
                               validator: _model.numberControllerValidator
                                   .asValidator(context),
@@ -241,6 +242,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -284,6 +286,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType: TextInputType.number,
                               validator: _model.capacityControllerValidator
                                   .asValidator(context),

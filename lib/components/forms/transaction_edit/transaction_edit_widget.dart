@@ -199,6 +199,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                     letterSpacing: 0.0,
                                   ),
                               maxLines: 2,
+                              minLines: 1,
                               validator: _model.descControllerValidator
                                   .asValidator(context),
                             ),
@@ -244,6 +245,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),

@@ -420,6 +420,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -463,6 +464,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -506,6 +508,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -549,6 +552,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),

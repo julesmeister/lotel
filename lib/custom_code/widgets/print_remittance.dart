@@ -65,7 +65,8 @@ class _PrintRemittanceState extends State<PrintRemittance> {
                     '${goodsItem.description} x${goodsItem.quantity.toString()}')
                 .join(', ') +
             (transaction.description.isNotEmpty
-                ? ' - ${transaction.description}'
+                ? ' - ${transaction.description}' +
+                    ' - excluded from total expenses'
                 : '');
 
     return goodsDescription;
@@ -280,13 +281,16 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         final description = generateExpenseDescription(transaction);
 
         final total = transaction.total.toDouble();
-        totalExpenses += total; // Accumulate totalExpenses
+        final String formattedTotal = NumberFormat.currency(
+          symbol: 'Php ',
+          decimalDigits: 2,
+        ).format(total);
+        if (transaction.goods.isEmpty) {
+          totalExpenses += total; // Accumulate totalExpenses
+        }
         final List<String> entry = [
           description,
-          NumberFormat.currency(
-            symbol: 'Php ',
-            decimalDigits: 2,
-          ).format(total),
+          !transaction.goods.isEmpty ? '($formattedTotal)' : formattedTotal,
         ];
         entries.add(entry);
       }

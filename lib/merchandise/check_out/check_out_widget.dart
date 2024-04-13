@@ -1091,7 +1091,6 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
-                          minLines: null,
                           validator: _model.priceController1Validator
                               .asValidator(context),
                         );
@@ -1160,7 +1159,6 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             fontFamily: 'Readex Pro',
                             letterSpacing: 0.0,
                           ),
-                      minLines: null,
                       validator:
                           _model.priceController2Validator.asValidator(context),
                     ),

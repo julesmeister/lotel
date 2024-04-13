@@ -187,6 +187,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               validator: _model.remarkControllerValidator
                                   .asValidator(context),
                             ),
@@ -233,6 +234,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),

@@ -654,7 +654,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                             0.0,
                                                                             0.0,
                                                                             0.0,
-                                                                            60.0),
+                                                                            30.0),
                                                                 child:
                                                                     Container(
                                                                   width: 12.0,
@@ -682,7 +682,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                       .center,
                                                               children: [
                                                                 SizedBox(
-                                                                  height: 75.0,
+                                                                  height: 50.0,
                                                                   child:
                                                                       VerticalDivider(
                                                                     thickness:
@@ -708,187 +708,154 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          10.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                              child: StreamBuilder<
-                                                                  UsersRecord>(
-                                                                stream: UsersRecord
-                                                                    .getDocument(
-                                                                        listViewAdvancesRecord
-                                                                            .requestedBy!),
-                                                                builder: (context,
-                                                                    snapshot) {
-                                                                  // Customize what your widget looks like when it's loading.
-                                                                  if (!snapshot
-                                                                      .hasData) {
-                                                                    return Center(
-                                                                      child:
-                                                                          SizedBox(
-                                                                        width:
-                                                                            50.0,
-                                                                        height:
-                                                                            50.0,
+                                                            Expanded(
+                                                              flex: 3,
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                child: StreamBuilder<
+                                                                    UsersRecord>(
+                                                                  stream: UsersRecord
+                                                                      .getDocument(
+                                                                          listViewAdvancesRecord
+                                                                              .requestedBy!),
+                                                                  builder: (context,
+                                                                      snapshot) {
+                                                                    // Customize what your widget looks like when it's loading.
+                                                                    if (!snapshot
+                                                                        .hasData) {
+                                                                      return Center(
                                                                         child:
-                                                                            CircularProgressIndicator(
-                                                                          valueColor:
-                                                                              AlwaysStoppedAnimation<Color>(
-                                                                            FlutterFlowTheme.of(context).primary,
+                                                                            SizedBox(
+                                                                          width:
+                                                                              50.0,
+                                                                          height:
+                                                                              50.0,
+                                                                          child:
+                                                                              CircularProgressIndicator(
+                                                                            valueColor:
+                                                                                AlwaysStoppedAnimation<Color>(
+                                                                              FlutterFlowTheme.of(context).primary,
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                    );
-                                                                  }
-                                                                  final columnUsersRecord =
-                                                                      snapshot
-                                                                          .data!;
-                                                                  return Column(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            5.0),
-                                                                        child:
-                                                                            Text(
-                                                                          'Issued by ${columnUsersRecord.displayName} on ',
+                                                                      );
+                                                                    }
+                                                                    final columnUsersRecord =
+                                                                        snapshot
+                                                                            .data!;
+                                                                    return Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Padding(
+                                                                          padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                              0.0,
+                                                                              0.0,
+                                                                              0.0,
+                                                                              5.0),
+                                                                          child:
+                                                                              Text(
+                                                                            'Issued by ${columnUsersRecord.displayName} on ',
+                                                                            style: FlutterFlowTheme.of(context).labelSmall.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  letterSpacing: 0.0,
+                                                                                ),
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          dateTimeFormat(
+                                                                              'MMM d y h:mm a',
+                                                                              listViewAdvancesRecord.date!),
                                                                           style: FlutterFlowTheme.of(context)
-                                                                              .labelSmall
+                                                                              .bodyLarge
                                                                               .override(
                                                                                 fontFamily: 'Readex Pro',
                                                                                 letterSpacing: 0.0,
                                                                               ),
                                                                         ),
-                                                                      ),
-                                                                      Text(
-                                                                        dateTimeFormat(
-                                                                            'MMM d y h:mm a',
-                                                                            listViewAdvancesRecord.date!),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyLarge
-                                                                            .override(
-                                                                              fontFamily: 'Readex Pro',
-                                                                              letterSpacing: 0.0,
-                                                                            ),
-                                                                      ),
-                                                                    ],
-                                                                  );
-                                                                },
+                                                                      ],
+                                                                    );
+                                                                  },
+                                                                ),
                                                               ),
                                                             ),
-                                                            Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  formatNumber(
-                                                                    listViewAdvancesRecord
-                                                                        .amount,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .decimal,
-                                                                    decimalType:
-                                                                        DecimalType
-                                                                            .automatic,
-                                                                    currency:
-                                                                        'P ',
-                                                                  ),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyLarge
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Readex Pro',
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                      ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          8.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      Container(
-                                                                    width: 91.0,
-                                                                    height:
-                                                                        32.0,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: listViewAdvancesRecord.settled ==
-                                                                              false
-                                                                          ? FlutterFlowTheme.of(context)
-                                                                              .accent3
-                                                                          : FlutterFlowTheme.of(context)
-                                                                              .accent2,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5.0),
-                                                                      border:
-                                                                          Border
-                                                                              .all(
-                                                                        color: listViewAdvancesRecord.settled ==
-                                                                                false
-                                                                            ? FlutterFlowTheme.of(context).error
-                                                                            : FlutterFlowTheme.of(context).secondary,
-                                                                        width:
-                                                                            1.0,
-                                                                      ),
+                                                            Expanded(
+                                                              flex: 2,
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  Text(
+                                                                    formatNumber(
+                                                                      listViewAdvancesRecord
+                                                                          .amount,
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .decimal,
+                                                                      decimalType:
+                                                                          DecimalType
+                                                                              .automatic,
+                                                                      currency:
+                                                                          'P ',
                                                                     ),
-                                                                    child:
-                                                                        Align(
-                                                                      alignment:
-                                                                          const AlignmentDirectional(
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          letterSpacing:
                                                                               0.0,
-                                                                              0.0),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                            8.0,
-                                                                            0.0,
-                                                                            8.0,
-                                                                            0.0),
-                                                                        child:
-                                                                            Text(
-                                                                          listViewAdvancesRecord.settled
-                                                                              ? 'settled'
-                                                                              : 'pending',
-                                                                          textAlign:
-                                                                              TextAlign.center,
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .bodyMedium
-                                                                              .override(
-                                                                                fontFamily: 'Readex Pro',
-                                                                                color: listViewAdvancesRecord.settled == false ? FlutterFlowTheme.of(context).error : FlutterFlowTheme.of(context).secondary,
-                                                                                letterSpacing: 0.0,
-                                                                              ),
                                                                         ),
-                                                                      ),
+                                                                  ),
+                                                                  Align(
+                                                                    alignment:
+                                                                        const AlignmentDirectional(
+                                                                            1.0,
+                                                                            0.0),
+                                                                    child: Text(
+                                                                      listViewAdvancesRecord
+                                                                              .settled
+                                                                          ? 'settled'
+                                                                          : 'pending',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      maxLines:
+                                                                          1,
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            color: listViewAdvancesRecord.settled == false
+                                                                                ? FlutterFlowTheme.of(context).error
+                                                                                : FlutterFlowTheme.of(context).secondary,
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                          ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
                                                           ],
                                                         ),

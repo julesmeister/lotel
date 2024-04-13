@@ -193,6 +193,7 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
+                          minLines: 1,
                           validator: _model.nameControllerValidator
                               .asValidator(context),
                         ),

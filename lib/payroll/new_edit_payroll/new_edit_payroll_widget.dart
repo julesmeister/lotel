@@ -381,7 +381,6 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
-                              minLines: null,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
@@ -449,7 +448,6 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
-                              minLines: null,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),

@@ -219,6 +219,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               validator: _model.nameControllerValidator
                                   .asValidator(context),
                             ),
@@ -255,6 +256,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -298,6 +300,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType: TextInputType.number,
                               validator: _model.rateControllerValidator
                                   .asValidator(context),

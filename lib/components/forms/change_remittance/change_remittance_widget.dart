@@ -391,7 +391,6 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                 fontSize: 36.0,
                                                 letterSpacing: 0.0,
                                               ),
-                                          minLines: null,
                                           keyboardType: const TextInputType
                                               .numberWithOptions(decimal: true),
                                           cursorColor:
@@ -505,7 +504,6 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                 fontSize: 36.0,
                                                 letterSpacing: 0.0,
                                               ),
-                                          minLines: null,
                                           keyboardType: const TextInputType
                                               .numberWithOptions(decimal: true),
                                           cursorColor:

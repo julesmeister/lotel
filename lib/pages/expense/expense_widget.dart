@@ -838,7 +838,6 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                   fontFamily: 'Outfit',
                                   letterSpacing: 0.0,
                                 ),
-                        minLines: null,
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                         cursorColor: FlutterFlowTheme.of(context).primary,

@@ -181,6 +181,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
+                          minLines: 1,
                           validator: _model.detailsControllerValidator
                               .asValidator(context),
                         ),

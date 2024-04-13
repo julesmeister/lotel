@@ -654,7 +654,6 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               .secondaryText,
                                           letterSpacing: 0.0,
                                         ),
-                                    minLines: null,
                                     validator: _model
                                         .contactFieldControllerValidator
                                         .asValidator(context),

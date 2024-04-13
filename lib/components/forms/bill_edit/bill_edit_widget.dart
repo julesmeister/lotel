@@ -204,6 +204,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                     letterSpacing: 0.0,
                                   ),
                               maxLines: 2,
+                              minLines: 1,
                               validator: _model.descControllerValidator
                                   .asValidator(context),
                             ),
@@ -249,6 +250,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
@@ -297,6 +299,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                     fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
+                              minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),

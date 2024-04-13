@@ -528,7 +528,6 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                   fontFamily: 'Outfit',
                                   letterSpacing: 0.0,
                                 ),
-                        minLines: null,
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                         cursorColor: FlutterFlowTheme.of(context).primary,
@@ -593,7 +592,6 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                   fontFamily: 'Outfit',
                                   letterSpacing: 0.0,
                                 ),
-                        minLines: null,
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                         cursorColor: FlutterFlowTheme.of(context).primary,

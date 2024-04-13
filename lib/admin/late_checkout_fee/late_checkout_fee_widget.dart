@@ -331,7 +331,6 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                                             'Readex Pro',
                                                         letterSpacing: 0.0,
                                                       ),
-                                              minLines: null,
                                               keyboardType: const TextInputType
                                                   .numberWithOptions(
                                                   decimal: true),

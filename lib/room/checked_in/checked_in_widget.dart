@@ -1641,8 +1641,6 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               fontFamily: 'Readex Pro',
                                                                               letterSpacing: 0.0,
                                                                             ),
-                                                                        minLines:
-                                                                            null,
                                                                         keyboardType:
                                                                             TextInputType.number,
                                                                         validator: _model
