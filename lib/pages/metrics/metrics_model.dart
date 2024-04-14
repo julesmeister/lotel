@@ -74,6 +74,19 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
 
   bool showMonthPicker = false;
 
+  List<TransactionsRecord> transactionsTemp = [];
+  void addToTransactionsTemp(TransactionsRecord item) =>
+      transactionsTemp.add(item);
+  void removeFromTransactionsTemp(TransactionsRecord item) =>
+      transactionsTemp.remove(item);
+  void removeAtIndexFromTransactionsTemp(int index) =>
+      transactionsTemp.removeAt(index);
+  void insertAtIndexInTransactionsTemp(int index, TransactionsRecord item) =>
+      transactionsTemp.insert(index, item);
+  void updateTransactionsTempAtIndex(
+          int index, Function(TransactionsRecord) updateFn) =>
+      transactionsTemp[index] = updateFn(transactionsTemp[index]);
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Action Block - UpdateStatsByHotel] action in Container widget.
@@ -82,8 +95,26 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
   String? hotelName1;
   // Stores action output result for [Action Block - UpdateStatsByHotel] action in Container widget.
   String? hotelName2;
+  // Stores action output result for [Firestore Query - Query a collection] action in roomsCard widget.
+  RemittancesRecord? remittanceForRooms;
+  // Stores action output result for [Backend Call - Read Document] action in roomsCard widget.
+  TransactionsRecord? transactionFromRemittanceRooms;
+  // Stores action output result for [Firestore Query - Query a collection] action in roomsCard widget.
+  List<TransactionsRecord>? roomSales;
+  // Stores action output result for [Firestore Query - Query a collection] action in expensesCard widget.
+  RemittancesRecord? remittanceForExpenses;
+  // Stores action output result for [Backend Call - Read Document] action in expensesCard widget.
+  TransactionsRecord? transactionFromRemittanceExpenses;
+  // Stores action output result for [Firestore Query - Query a collection] action in expensesCard widget.
+  List<TransactionsRecord>? expensesRecalculate;
   // Stores action output result for [Firestore Query - Query a collection] action in billsCard widget.
   List<BillsRecord>? billsThisMonth;
+  // Stores action output result for [Firestore Query - Query a collection] action in goodsCard widget.
+  RemittancesRecord? remittanceForGoods;
+  // Stores action output result for [Backend Call - Read Document] action in goodsCard widget.
+  TransactionsRecord? transactionFromRemittanceGoods;
+  // Stores action output result for [Firestore Query - Query a collection] action in goodsCard widget.
+  List<TransactionsRecord>? goodSales;
   // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.
   StatsRecord? statO;
   // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.

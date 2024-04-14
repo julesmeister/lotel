@@ -1638,3 +1638,20 @@ List<String> billsChoices(List<String>? descriptions) {
 
   return sortedUniqueDescriptions;
 }
+
+List<TransactionsRecord> mergeTransactions(
+  List<TransactionsRecord> transactionsWhole,
+  List<TransactionsRecord> transactionsFirstDayOfMonth,
+) {
+  // merge transactionsFirstDayOfMonth should not already be in transactionsWhole
+  final Set<String> transactionIds =
+      transactionsWhole.map((t) => t.reference.id).toSet();
+  final List<TransactionsRecord> mergedTransactions =
+      List.from(transactionsWhole);
+  for (final transaction in transactionsFirstDayOfMonth) {
+    if (!transactionIds.contains(transaction.reference.id)) {
+      mergedTransactions.add(transaction);
+    }
+  }
+  return mergedTransactions;
+}

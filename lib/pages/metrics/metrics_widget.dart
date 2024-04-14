@@ -812,96 +812,213 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 12.0, 12.0),
-                          child: Container(
-                            width: 230.0,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 4.0,
-                                  color: Color(0x34090F13),
-                                  offset: Offset(
-                                    0.0,
-                                    1.0,
-                                  ),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 4.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: (String change) {
-                                        return change.contains("-");
-                                      }(functions.metricChange(
-                                              _model.rooms,
-                                              'rooms',
-                                              _model.prevMetrics.toList(),
-                                              _model.hotel))
-                                          ? FlutterFlowTheme.of(context).error
-                                          : FlutterFlowTheme.of(context)
-                                              .secondary,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(0.0),
-                                        bottomRight: Radius.circular(0.0),
-                                        topLeft: Radius.circular(12.0),
-                                        topRight: Radius.circular(12.0),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            formatNumber(
-                                              _model.rooms,
-                                              formatType: FormatType.decimal,
-                                              decimalType:
-                                                  DecimalType.automatic,
-                                              currency: 'P ',
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onDoubleTap: () async {
+                              if (_model.hotel != 'All') {
+                                var confirmDialogResponse =
+                                    await showDialog<bool>(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: const Text('Recalibrate'),
+                                              content: const Text(
+                                                  'This will recalculate all room sales of this month from this establishment.'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          false),
+                                                  child: const Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          true),
+                                                  child: const Text('Confirm'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ) ??
+                                        false;
+                                if (confirmDialogResponse) {
+                                  // reset loop and temp
+                                  setState(() {
+                                    _model.loopCounter = 0;
+                                    _model.transactionsTemp = [];
+                                  });
+                                  // remittance first day of month
+                                  _model.remittanceForRooms =
+                                      await queryRemittancesRecordOnce(
+                                    queryBuilder: (remittancesRecord) =>
+                                        remittancesRecord
+                                            .where(
+                                              'hotel',
+                                              isEqualTo: _model.hotel,
+                                            )
+                                            .where(
+                                              'date',
+                                              isGreaterThanOrEqualTo:
+                                                  functions.startOfDay(
+                                                      functions.startOfMonth(
+                                                          _model.month,
+                                                          _model.year)),
+                                            )
+                                            .where(
+                                              'date',
+                                              isLessThanOrEqualTo:
+                                                  functions.endOfDay(
+                                                      functions.startOfMonth(
+                                                          _model.month,
+                                                          _model.year)),
                                             ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 20.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                          ),
-                                          Text(
-                                            'Rooms Income',
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleSmall
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 0.0),
-                                            child: Text(
+                                    singleRecord: true,
+                                  ).then((s) => s.firstOrNull);
+                                  while (_model.loopCounter !=
+                                      _model.remittanceForRooms?.transactions
+                                          .length) {
+                                    // transactionFromRemittanceGoods
+                                    _model.transactionFromRemittanceRooms =
+                                        await TransactionsRecord
+                                            .getDocumentOnce(_model
+                                                    .remittanceForRooms!
+                                                    .transactions[
+                                                _model.loopCounter]);
+                                    if (_model.transactionFromRemittanceRooms
+                                            ?.type ==
+                                        'book') {
+                                      // add to temp
+                                      setState(() {
+                                        _model.addToTransactionsTemp(_model
+                                            .transactionFromRemittanceRooms!);
+                                      });
+                                    }
+                                    // + loop
+                                    setState(() {
+                                      _model.loopCounter =
+                                          _model.loopCounter + 1;
+                                    });
+                                  }
+                                  // room  sales
+                                  _model.roomSales =
+                                      await queryTransactionsRecordOnce(
+                                    queryBuilder: (transactionsRecord) =>
+                                        transactionsRecord
+                                            .where(
+                                              'hotel',
+                                              isEqualTo: _model.hotel,
+                                            )
+                                            .where(
+                                              'type',
+                                              isEqualTo: 'book',
+                                            )
+                                            .where(
+                                              'remitted',
+                                              isEqualTo: true,
+                                            )
+                                            .where(
+                                              'date',
+                                              isGreaterThanOrEqualTo:
+                                                  functions.startOfMonth(
+                                                      _model.month,
+                                                      _model.year),
+                                            )
+                                            .where(
+                                              'date',
+                                              isLessThanOrEqualTo:
+                                                  functions.endOfMonth(
+                                                      _model.month,
+                                                      _model.year),
+                                            ),
+                                  );
+                                  // set room income of this stats ref
+
+                                  await _model.statsRef!
+                                      .update(createStatsRecordData(
+                                    roomsIncome: functions.sumOfRoomsIncome(
+                                        functions
+                                            .mergeTransactions(
+                                                _model.roomSales!.toList(),
+                                                _model.transactionsTemp
+                                                    .toList())
+                                            .toList()),
+                                  ));
+                                  await _model.updateStatsByDate(
+                                    context,
+                                    year: _model.year,
+                                    month: _model.month,
+                                    hotel: FFAppState().hotel,
+                                  );
+                                  setState(() {});
+                                  // set hotel to all
+                                  setState(() {
+                                    _model.hotel = 'All';
+                                  });
+                                }
+                              }
+
+                              setState(() {});
+                            },
+                            child: Container(
+                              width: 230.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 4.0,
+                                    color: Color(0x34090F13),
+                                    offset: Offset(
+                                      0.0,
+                                      1.0,
+                                    ),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 4.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: (String change) {
+                                          return change.contains("-");
+                                        }(functions.metricChange(
+                                                _model.rooms,
+                                                'rooms',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))
+                                            ? FlutterFlowTheme.of(context).error
+                                            : FlutterFlowTheme.of(context)
+                                                .secondary,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(0.0),
+                                          bottomRight: Radius.circular(0.0),
+                                          topLeft: Radius.circular(12.0),
+                                          topRight: Radius.circular(12.0),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
                                               formatNumber(
-                                                functions.avgYData(_model
-                                                    .roomLine!.yData
-                                                    .toList()),
+                                                _model.rooms,
                                                 formatType: FormatType.decimal,
                                                 decimalType:
                                                     DecimalType.automatic,
@@ -920,111 +1037,156 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                             FontWeight.normal,
                                                       ),
                                             ),
-                                          ),
-                                          AutoSizeText(
-                                            'Daily Average',
-                                            maxLines: 1,
-                                            style: FlutterFlowTheme.of(context)
-                                                .labelMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryBackground,
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
+                                            Text(
+                                              'Rooms Income',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .titleSmall
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: Colors.white,
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      0.0, 10.0, 0.0, 0.0),
+                                              child: Text(
+                                                formatNumber(
+                                                  functions.avgYData(_model
+                                                      .roomLine!.yData
+                                                      .toList()),
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.automatic,
+                                                  currency: 'P ',
                                                 ),
-                                            minFontSize: 10.0,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          color: Colors.white,
+                                                          fontSize: 20.0,
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                              ),
+                                            ),
+                                            AutoSizeText(
+                                              'Daily Average',
+                                              maxLines: 1,
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .labelMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryBackground,
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                              minFontSize: 10.0,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: 36.0,
+                                            height: 36.0,
+                                            decoration: BoxDecoration(
+                                              color: (String change) {
+                                                return change.contains("-");
+                                              }(functions.metricChange(
+                                                      _model.rooms,
+                                                      'rooms',
+                                                      _model.prevMetrics
+                                                          .toList(),
+                                                      _model.hotel))
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .error
+                                                  : FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            alignment:
+                                                const AlignmentDirectional(0.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if ((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.rooms,
+                                                    'rooms',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel)))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretDown,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                                if (!((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.rooms,
+                                                    'rooms',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel))))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretUp,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 8.0, 0.0),
+                                            child: Text(
+                                              functions.metricChange(
+                                                  _model.rooms,
+                                                  'rooms',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: const Color(0xFF14181B),
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: 36.0,
-                                          height: 36.0,
-                                          decoration: BoxDecoration(
-                                            color: (String change) {
-                                              return change.contains("-");
-                                            }(functions.metricChange(
-                                                    _model.rooms,
-                                                    'rooms',
-                                                    _model.prevMetrics.toList(),
-                                                    _model.hotel))
-                                                ? FlutterFlowTheme.of(context)
-                                                    .error
-                                                : FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          alignment:
-                                              const AlignmentDirectional(0.0, 0.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if ((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.rooms,
-                                                  'rooms',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel)))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretDown,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                              if (!((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.rooms,
-                                                  'rooms',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel))))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretUp,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 8.0, 0.0),
-                                          child: Text(
-                                            functions.metricChange(
-                                                _model.rooms,
-                                                'rooms',
-                                                _model.prevMetrics.toList(),
-                                                _model.hotel),
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: const Color(0xFF14181B),
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ).animateOnPageLoad(
@@ -1033,175 +1195,334 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 12.0, 12.0),
-                          child: Container(
-                            width: 230.0,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 4.0,
-                                  color: Color(0x34090F13),
-                                  offset: Offset(
-                                    0.0,
-                                    1.0,
-                                  ),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 4.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: (String change) {
-                                        return change.contains("-");
-                                      }(functions.metricChange(
-                                              _model.expenses,
-                                              'expenses',
-                                              _model.prevMetrics.toList(),
-                                              _model.hotel))
-                                          ? FlutterFlowTheme.of(context).error
-                                          : FlutterFlowTheme.of(context)
-                                              .secondary,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(0.0),
-                                        bottomRight: Radius.circular(0.0),
-                                        topLeft: Radius.circular(12.0),
-                                        topRight: Radius.circular(12.0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onDoubleTap: () async {
+                              if (_model.hotel != 'All') {
+                                var confirmDialogResponse =
+                                    await showDialog<bool>(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: const Text('Recalibrate'),
+                                              content: const Text(
+                                                  'This will recalculate all expenses of this month from this establishment.'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          false),
+                                                  child: const Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          true),
+                                                  child: const Text('Confirm'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ) ??
+                                        false;
+                                if (confirmDialogResponse) {
+                                  // reset loop and temp
+                                  setState(() {
+                                    _model.loopCounter = 0;
+                                    _model.transactionsTemp = [];
+                                  });
+                                  // remittance first day of month
+                                  _model.remittanceForExpenses =
+                                      await queryRemittancesRecordOnce(
+                                    queryBuilder: (remittancesRecord) =>
+                                        remittancesRecord
+                                            .where(
+                                              'hotel',
+                                              isEqualTo: _model.hotel,
+                                            )
+                                            .where(
+                                              'date',
+                                              isGreaterThanOrEqualTo:
+                                                  functions.startOfDay(
+                                                      functions.startOfMonth(
+                                                          _model.month,
+                                                          _model.year)),
+                                            )
+                                            .where(
+                                              'date',
+                                              isLessThanOrEqualTo:
+                                                  functions.endOfDay(
+                                                      functions.startOfMonth(
+                                                          _model.month,
+                                                          _model.year)),
+                                            ),
+                                    singleRecord: true,
+                                  ).then((s) => s.firstOrNull);
+                                  while (_model.loopCounter !=
+                                      _model.remittanceForExpenses?.transactions
+                                          .length) {
+                                    // transactionFromRemittanceGoods
+                                    _model.transactionFromRemittanceExpenses =
+                                        await TransactionsRecord
+                                            .getDocumentOnce(_model
+                                                    .remittanceForExpenses!
+                                                    .transactions[
+                                                _model.loopCounter]);
+                                    if (_model.transactionFromRemittanceExpenses
+                                            ?.type ==
+                                        'expense') {
+                                      // add to temp
+                                      setState(() {
+                                        _model.addToTransactionsTemp(_model
+                                            .transactionFromRemittanceExpenses!);
+                                      });
+                                    }
+                                    // + loop
+                                    setState(() {
+                                      _model.loopCounter =
+                                          _model.loopCounter + 1;
+                                    });
+                                  }
+                                  // expenses recalculate
+                                  _model.expensesRecalculate =
+                                      await queryTransactionsRecordOnce(
+                                    queryBuilder: (transactionsRecord) =>
+                                        transactionsRecord
+                                            .where(
+                                              'hotel',
+                                              isEqualTo: _model.hotel,
+                                            )
+                                            .where(
+                                              'type',
+                                              isEqualTo: 'expense',
+                                            )
+                                            .where(
+                                              'remitted',
+                                              isEqualTo: true,
+                                            )
+                                            .where(
+                                              'date',
+                                              isGreaterThanOrEqualTo:
+                                                  functions.startOfMonth(
+                                                      _model.month,
+                                                      _model.year),
+                                            )
+                                            .where(
+                                              'date',
+                                              isLessThanOrEqualTo:
+                                                  functions.endOfMonth(
+                                                      _model.month,
+                                                      _model.year),
+                                            ),
+                                  );
+                                  // set expenses of this stats ref
+
+                                  await _model.statsRef!
+                                      .update(createStatsRecordData(
+                                    expenses: functions.sumOfExpenses(functions
+                                        .mergeTransactions(
+                                            _model.expensesRecalculate!
+                                                .toList(),
+                                            _model.transactionsTemp.toList())
+                                        .toList()),
+                                  ));
+                                  await _model.updateStatsByDate(
+                                    context,
+                                    year: _model.year,
+                                    month: _model.month,
+                                    hotel: FFAppState().hotel,
+                                  );
+                                  setState(() {});
+                                  // set hotel to all
+                                  setState(() {
+                                    _model.hotel = 'All';
+                                  });
+                                }
+                              }
+
+                              setState(() {});
+                            },
+                            child: Container(
+                              width: 230.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 4.0,
+                                    color: Color(0x34090F13),
+                                    offset: Offset(
+                                      0.0,
+                                      1.0,
+                                    ),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 4.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: (String change) {
+                                          return change.contains("-");
+                                        }(functions.metricChange(
+                                                _model.expenses,
+                                                'expenses',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))
+                                            ? FlutterFlowTheme.of(context).error
+                                            : FlutterFlowTheme.of(context)
+                                                .secondary,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(0.0),
+                                          bottomRight: Radius.circular(0.0),
+                                          topLeft: Radius.circular(12.0),
+                                          topRight: Radius.circular(12.0),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              formatNumber(
+                                                _model.expenses,
+                                                formatType: FormatType.decimal,
+                                                decimalType:
+                                                    DecimalType.automatic,
+                                                currency: 'P ',
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color: Colors.white,
+                                                        fontSize: 20.0,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
+                                            ),
+                                            Text(
+                                              'Expenses',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .titleSmall
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: Colors.white,
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    child: Padding(
+                                    Padding(
                                       padding: const EdgeInsets.all(12.0),
-                                      child: Column(
+                                      child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            formatNumber(
-                                              _model.expenses,
-                                              formatType: FormatType.decimal,
-                                              decimalType:
-                                                  DecimalType.automatic,
-                                              currency: 'P ',
+                                          Container(
+                                            width: 36.0,
+                                            height: 36.0,
+                                            decoration: BoxDecoration(
+                                              color: (String change) {
+                                                return change.contains("-");
+                                              }(functions.metricChange(
+                                                      _model.expenses,
+                                                      'expenses',
+                                                      _model.prevMetrics
+                                                          .toList(),
+                                                      _model.hotel))
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .error
+                                                  : FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
                                             ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 20.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
+                                            alignment:
+                                                const AlignmentDirectional(0.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if ((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.expenses,
+                                                    'expenses',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel)))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretDown,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                                if (!((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.expenses,
+                                                    'expenses',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel))))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretUp,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                              ],
+                                            ),
                                           ),
-                                          Text(
-                                            'Expenses',
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleSmall
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 8.0, 0.0),
+                                            child: Text(
+                                              functions.metricChange(
+                                                  _model.expenses,
+                                                  'expenses',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: const Color(0xFF14181B),
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: 36.0,
-                                          height: 36.0,
-                                          decoration: BoxDecoration(
-                                            color: (String change) {
-                                              return change.contains("-");
-                                            }(functions.metricChange(
-                                                    _model.expenses,
-                                                    'expenses',
-                                                    _model.prevMetrics.toList(),
-                                                    _model.hotel))
-                                                ? FlutterFlowTheme.of(context)
-                                                    .error
-                                                : FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          alignment:
-                                              const AlignmentDirectional(0.0, 0.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if ((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.expenses,
-                                                  'expenses',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel)))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretDown,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                              if (!((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.expenses,
-                                                  'expenses',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel))))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretUp,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 8.0, 0.0),
-                                          child: Text(
-                                            functions.metricChange(
-                                                _model.expenses,
-                                                'expenses',
-                                                _model.prevMetrics.toList(),
-                                                _model.hotel),
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: const Color(0xFF14181B),
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ).animateOnPageLoad(
@@ -1460,96 +1781,213 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 16.0, 12.0),
-                          child: Container(
-                            width: 230.0,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 4.0,
-                                  color: Color(0x34090F13),
-                                  offset: Offset(
-                                    0.0,
-                                    1.0,
-                                  ),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 4.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: (String change) {
-                                        return change.contains("-");
-                                      }(functions.metricChange(
-                                              _model.goods,
-                                              'goods',
-                                              _model.prevMetrics.toList(),
-                                              _model.hotel))
-                                          ? FlutterFlowTheme.of(context).error
-                                          : FlutterFlowTheme.of(context)
-                                              .secondary,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(0.0),
-                                        bottomRight: Radius.circular(0.0),
-                                        topLeft: Radius.circular(12.0),
-                                        topRight: Radius.circular(12.0),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            formatNumber(
-                                              _model.goods,
-                                              formatType: FormatType.decimal,
-                                              decimalType:
-                                                  DecimalType.automatic,
-                                              currency: 'P ',
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onDoubleTap: () async {
+                              if (_model.hotel != 'All') {
+                                var confirmDialogResponse =
+                                    await showDialog<bool>(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: const Text('Recalibrate'),
+                                              content: const Text(
+                                                  'This will recalculate all goods sales of this month from this establishment.'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          false),
+                                                  child: const Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          true),
+                                                  child: const Text('Confirm'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ) ??
+                                        false;
+                                if (confirmDialogResponse) {
+                                  // reset loop and temp
+                                  setState(() {
+                                    _model.loopCounter = 0;
+                                    _model.transactionsTemp = [];
+                                  });
+                                  // remittance first day of month
+                                  _model.remittanceForGoods =
+                                      await queryRemittancesRecordOnce(
+                                    queryBuilder: (remittancesRecord) =>
+                                        remittancesRecord
+                                            .where(
+                                              'hotel',
+                                              isEqualTo: _model.hotel,
+                                            )
+                                            .where(
+                                              'date',
+                                              isGreaterThanOrEqualTo:
+                                                  functions.startOfDay(
+                                                      functions.startOfMonth(
+                                                          _model.month,
+                                                          _model.year)),
+                                            )
+                                            .where(
+                                              'date',
+                                              isLessThanOrEqualTo:
+                                                  functions.endOfDay(
+                                                      functions.startOfMonth(
+                                                          _model.month,
+                                                          _model.year)),
                                             ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 20.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                          ),
-                                          Text(
-                                            'Goods Income',
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleSmall
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 0.0),
-                                            child: Text(
+                                    singleRecord: true,
+                                  ).then((s) => s.firstOrNull);
+                                  while (_model.loopCounter !=
+                                      _model.remittanceForGoods?.transactions
+                                          .length) {
+                                    // transactionFromRemittanceGoods
+                                    _model.transactionFromRemittanceGoods =
+                                        await TransactionsRecord
+                                            .getDocumentOnce(_model
+                                                    .remittanceForGoods!
+                                                    .transactions[
+                                                _model.loopCounter]);
+                                    if (_model.transactionFromRemittanceGoods
+                                            ?.type ==
+                                        'goods') {
+                                      // add to temp
+                                      setState(() {
+                                        _model.addToTransactionsTemp(_model
+                                            .transactionFromRemittanceGoods!);
+                                      });
+                                    }
+                                    // + loop
+                                    setState(() {
+                                      _model.loopCounter =
+                                          _model.loopCounter + 1;
+                                    });
+                                  }
+                                  // goods sales
+                                  _model.goodSales =
+                                      await queryTransactionsRecordOnce(
+                                    queryBuilder: (transactionsRecord) =>
+                                        transactionsRecord
+                                            .where(
+                                              'hotel',
+                                              isEqualTo: _model.hotel,
+                                            )
+                                            .where(
+                                              'type',
+                                              isEqualTo: 'goods',
+                                            )
+                                            .where(
+                                              'remitted',
+                                              isEqualTo: true,
+                                            )
+                                            .where(
+                                              'date',
+                                              isGreaterThanOrEqualTo:
+                                                  functions.startOfMonth(
+                                                      _model.month,
+                                                      _model.year),
+                                            )
+                                            .where(
+                                              'date',
+                                              isLessThanOrEqualTo:
+                                                  functions.endOfMonth(
+                                                      _model.month,
+                                                      _model.year),
+                                            ),
+                                  );
+                                  // set goods income of this stats ref
+
+                                  await _model.statsRef!
+                                      .update(createStatsRecordData(
+                                    goodsIncome: functions.sumOfGoodsIncome(
+                                        functions
+                                            .mergeTransactions(
+                                                _model.goodSales!.toList(),
+                                                _model.transactionsTemp
+                                                    .toList())
+                                            .toList()),
+                                  ));
+                                  await _model.updateStatsByDate(
+                                    context,
+                                    year: _model.year,
+                                    month: _model.month,
+                                    hotel: FFAppState().hotel,
+                                  );
+                                  setState(() {});
+                                  // set hotel to all
+                                  setState(() {
+                                    _model.hotel = 'All';
+                                  });
+                                }
+                              }
+
+                              setState(() {});
+                            },
+                            child: Container(
+                              width: 230.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 4.0,
+                                    color: Color(0x34090F13),
+                                    offset: Offset(
+                                      0.0,
+                                      1.0,
+                                    ),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 4.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: (String change) {
+                                          return change.contains("-");
+                                        }(functions.metricChange(
+                                                _model.goods,
+                                                'goods',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))
+                                            ? FlutterFlowTheme.of(context).error
+                                            : FlutterFlowTheme.of(context)
+                                                .secondary,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(0.0),
+                                          bottomRight: Radius.circular(0.0),
+                                          topLeft: Radius.circular(12.0),
+                                          topRight: Radius.circular(12.0),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
                                               formatNumber(
-                                                functions.avgYData(_model
-                                                    .goodsLine!.yData
-                                                    .toList()),
+                                                _model.goods,
                                                 formatType: FormatType.decimal,
                                                 decimalType:
                                                     DecimalType.automatic,
@@ -1568,111 +2006,156 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                             FontWeight.normal,
                                                       ),
                                             ),
-                                          ),
-                                          AutoSizeText(
-                                            'Daily Average',
-                                            maxLines: 1,
-                                            style: FlutterFlowTheme.of(context)
-                                                .labelMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryBackground,
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
+                                            Text(
+                                              'Goods Income',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .titleSmall
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: Colors.white,
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      0.0, 10.0, 0.0, 0.0),
+                                              child: Text(
+                                                formatNumber(
+                                                  functions.avgYData(_model
+                                                      .goodsLine!.yData
+                                                      .toList()),
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.automatic,
+                                                  currency: 'P ',
                                                 ),
-                                            minFontSize: 10.0,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          color: Colors.white,
+                                                          fontSize: 20.0,
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                              ),
+                                            ),
+                                            AutoSizeText(
+                                              'Daily Average',
+                                              maxLines: 1,
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .labelMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryBackground,
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                              minFontSize: 10.0,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: 36.0,
+                                            height: 36.0,
+                                            decoration: BoxDecoration(
+                                              color: (String change) {
+                                                return change.contains("-");
+                                              }(functions.metricChange(
+                                                      _model.goods,
+                                                      'goods',
+                                                      _model.prevMetrics
+                                                          .toList(),
+                                                      _model.hotel))
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .error
+                                                  : FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            alignment:
+                                                const AlignmentDirectional(0.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if ((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.goods,
+                                                    'goods',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel)))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretDown,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                                if (!((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.goods,
+                                                    'goods',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel))))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretUp,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 8.0, 0.0),
+                                            child: Text(
+                                              functions.metricChange(
+                                                  _model.goods,
+                                                  'goods',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: const Color(0xFF14181B),
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: 36.0,
-                                          height: 36.0,
-                                          decoration: BoxDecoration(
-                                            color: (String change) {
-                                              return change.contains("-");
-                                            }(functions.metricChange(
-                                                    _model.goods,
-                                                    'goods',
-                                                    _model.prevMetrics.toList(),
-                                                    _model.hotel))
-                                                ? FlutterFlowTheme.of(context)
-                                                    .error
-                                                : FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          alignment:
-                                              const AlignmentDirectional(0.0, 0.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if ((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.goods,
-                                                  'goods',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel)))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretDown,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                              if (!((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.goods,
-                                                  'goods',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel))))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretUp,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 8.0, 0.0),
-                                          child: Text(
-                                            functions.metricChange(
-                                                _model.goods,
-                                                'goods',
-                                                _model.prevMetrics.toList(),
-                                                _model.hotel),
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: const Color(0xFF14181B),
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ).animateOnPageLoad(
