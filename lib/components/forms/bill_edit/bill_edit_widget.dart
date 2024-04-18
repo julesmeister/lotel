@@ -40,14 +40,15 @@ class _BillEditWidgetState extends State<BillEditWidget> {
     super.initState();
     _model = createModel(context, () => BillEditModel());
 
-    _model.descController ??= TextEditingController(text: widget.description);
+    _model.descTextController ??=
+        TextEditingController(text: widget.description);
     _model.descFocusNode ??= FocusNode();
 
-    _model.amountController ??=
+    _model.amountTextController ??=
         TextEditingController(text: widget.amount?.toString());
     _model.amountFocusNode ??= FocusNode();
 
-    _model.afterdueController ??=
+    _model.afterdueTextController ??=
         TextEditingController(text: widget.afterDue.toString());
     _model.afterdueFocusNode ??= FocusNode();
 
@@ -161,7 +162,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextFormField(
-                              controller: _model.descController,
+                              controller: _model.descTextController,
                               focusNode: _model.descFocusNode,
                               textCapitalization: TextCapitalization.sentences,
                               obscureText: false,
@@ -205,11 +206,11 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                   ),
                               maxLines: 2,
                               minLines: 1,
-                              validator: _model.descControllerValidator
+                              validator: _model.descTextControllerValidator
                                   .asValidator(context),
                             ),
                             TextFormField(
-                              controller: _model.amountController,
+                              controller: _model.amountTextController,
                               focusNode: _model.amountFocusNode,
                               textCapitalization: TextCapitalization.none,
                               obscureText: false,
@@ -254,11 +255,11 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
-                              validator: _model.amountControllerValidator
+                              validator: _model.amountTextControllerValidator
                                   .asValidator(context),
                             ),
                             TextFormField(
-                              controller: _model.afterdueController,
+                              controller: _model.afterdueTextController,
                               focusNode: _model.afterdueFocusNode,
                               textCapitalization: TextCapitalization.none,
                               obscureText: false,
@@ -303,7 +304,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
-                              validator: _model.afterdueControllerValidator
+                              validator: _model.afterdueTextControllerValidator
                                   .asValidator(context),
                             ),
                           ],
@@ -336,7 +337,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                 onTap: () async {
                                   if (widget.amount !=
                                       (double.parse(
-                                          _model.amountController.text))) {
+                                          _model.amountTextController.text))) {
                                     // statsThisBillBelongsTo
                                     _model.rightStats =
                                         await queryStatsRecordOnce(
@@ -364,7 +365,8 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                         {
                                           'bills': FieldValue.increment(
                                               double.parse(_model
-                                                      .amountController.text) -
+                                                      .amountTextController
+                                                      .text) -
                                                   (widget.amount!)),
                                         },
                                       ),
@@ -374,11 +376,11 @@ class _BillEditWidgetState extends State<BillEditWidget> {
 
                                   await widget.bill!.reference
                                       .update(createBillsRecordData(
-                                    description: _model.descController.text,
+                                    description: _model.descTextController.text,
                                     amount: double.tryParse(
-                                        _model.amountController.text),
+                                        _model.amountTextController.text),
                                     afterDue: double.tryParse(
-                                        _model.afterdueController.text),
+                                        _model.afterdueTextController.text),
                                   ));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

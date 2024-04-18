@@ -29,7 +29,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
     super.initState();
     _model = createModel(context, () => NewOptionModel());
 
-    _model.nameController ??= TextEditingController();
+    _model.nameTextController ??= TextEditingController();
     _model.nameFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -137,7 +137,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
                         child: TextFormField(
-                          controller: _model.nameController,
+                          controller: _model.nameTextController,
                           focusNode: _model.nameFocusNode,
                           textCapitalization: TextCapitalization.words,
                           obscureText: false,
@@ -166,7 +166,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                     letterSpacing: 0.0,
                                   ),
                           minLines: 1,
-                          validator: _model.nameControllerValidator
+                          validator: _model.nameTextControllerValidator
                               .asValidator(context),
                         ),
                       ),
@@ -399,7 +399,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                       .set(createOptionsRecordData(
                                         type: _model.type,
                                         choice: functions.startBigLetter(
-                                            _model.nameController.text),
+                                            _model.nameTextController.text),
                                       ));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

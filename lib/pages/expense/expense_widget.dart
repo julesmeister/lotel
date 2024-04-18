@@ -39,86 +39,88 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final animationsMap = {
-    'textOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(0.0, -100.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'textFieldOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(-100.0, 0.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'textFieldOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(100.0, 0.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(0.0, 110.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'dropDownOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(0.0, 100.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ExpenseModel());
 
-    _model.amountController ??= TextEditingController();
+    _model.amountTextController ??= TextEditingController();
     _model.amountFocusNode ??= FocusNode();
 
-    _model.descriptionController ??= TextEditingController();
+    _model.descriptionTextController ??= TextEditingController();
     _model.descriptionFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'textOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.bounceOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, -100.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'textFieldOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.bounceOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'textFieldOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.bounceOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 110.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'dropDownOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.bounceOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 100.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -220,8 +222,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                               .set({
                                             ...createAdvancesRecordData(
                                               settled: false,
-                                              amount: double.tryParse(
-                                                  _model.amountController.text),
+                                              amount: double.tryParse(_model
+                                                  .amountTextController.text),
                                               requestedBy: currentUserReference,
                                             ),
                                             ...mapToFirestore(
@@ -261,12 +263,12 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                         await transactionsRecordReference1.set({
                                           ...createTransactionsRecordData(
                                             staff: currentUserReference,
-                                            total: double.tryParse(
-                                                _model.amountController.text),
+                                            total: double.tryParse(_model
+                                                .amountTextController.text),
                                             type: 'expense',
                                             hotel: FFAppState().hotel,
                                             description:
-                                                '${_model.selectedNameValue} claimed ${_model.descriptionController.text}',
+                                                '${_model.selectedNameValue} claimed ${_model.descriptionTextController.text}',
                                             remitted: widget.additional
                                                 ? true
                                                 : false,
@@ -283,12 +285,12 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                             .getDocumentFromData({
                                           ...createTransactionsRecordData(
                                             staff: currentUserReference,
-                                            total: double.tryParse(
-                                                _model.amountController.text),
+                                            total: double.tryParse(_model
+                                                .amountTextController.text),
                                             type: 'expense',
                                             hotel: FFAppState().hotel,
                                             description:
-                                                '${_model.selectedNameValue} claimed ${_model.descriptionController.text}',
+                                                '${_model.selectedNameValue} claimed ${_model.descriptionTextController.text}',
                                             remitted: widget.additional
                                                 ? true
                                                 : false,
@@ -373,7 +375,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                               ...createAbsencesRecordData(
                                                 settled: false,
                                                 amount: double.tryParse(_model
-                                                    .amountController.text),
+                                                    .amountTextController.text),
                                                 encodedBy: currentUserReference,
                                                 remitted: false,
                                                 hotel: FFAppState().hotel,
@@ -474,15 +476,14 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                               .set({
                                             ...createTransactionsRecordData(
                                               staff: currentUserReference,
-                                              total: double.tryParse(
-                                                  _model.amountController.text),
+                                              total: double.tryParse(_model
+                                                  .amountTextController.text),
                                               type: 'expense',
                                               hotel: FFAppState().hotel,
                                               description: functions.resetFont(
-                                                  functions.startBigLetter(
-                                                      _model
-                                                          .descriptionController
-                                                          .text)),
+                                                  functions.startBigLetter(_model
+                                                      .descriptionTextController
+                                                      .text)),
                                               remitted: widget.additional
                                                   ? true
                                                   : false,
@@ -499,15 +500,14 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                               .getDocumentFromData({
                                             ...createTransactionsRecordData(
                                               staff: currentUserReference,
-                                              total: double.tryParse(
-                                                  _model.amountController.text),
+                                              total: double.tryParse(_model
+                                                  .amountTextController.text),
                                               type: 'expense',
                                               hotel: FFAppState().hotel,
                                               description: functions.resetFont(
-                                                  functions.startBigLetter(
-                                                      _model
-                                                          .descriptionController
-                                                          .text)),
+                                                  functions.startBigLetter(_model
+                                                      .descriptionTextController
+                                                      .text)),
                                               remitted: widget.additional
                                                   ? true
                                                   : false,
@@ -576,9 +576,10 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                 recordedBy:
                                                     currentUserReference,
                                                 amount: double.tryParse(_model
-                                                    .amountController.text),
+                                                    .amountTextController.text),
                                                 remark: _model
-                                                    .descriptionController.text,
+                                                    .descriptionTextController
+                                                    .text,
                                               ),
                                               ...mapToFirestore(
                                                 {
@@ -597,7 +598,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                   'groceryExpenses':
                                                       FieldValue.increment(
                                                           double.parse(_model
-                                                              .amountController
+                                                              .amountTextController
                                                               .text)),
                                                 },
                                               ),
@@ -644,11 +645,10 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                   .update({
                                                 ...mapToFirestore(
                                                   {
-                                                    'grocery':
-                                                        FieldValue.increment(
-                                                            double.parse(_model
-                                                                .amountController
-                                                                .text)),
+                                                    'grocery': FieldValue.increment(
+                                                        double.parse(_model
+                                                            .amountTextController
+                                                            .text)),
                                                   },
                                                 ),
                                               });
@@ -669,13 +669,15 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                           {
                                             'expenses': FieldValue.increment(
                                                 double.parse(_model
-                                                    .amountController.text)),
+                                                    .amountTextController
+                                                    .text)),
                                             'transactions':
                                                 FieldValue.arrayUnion(
                                                     [_model.expenseRef]),
                                             'net': FieldValue.increment(
                                                 -(double.parse(_model
-                                                    .amountController.text))),
+                                                    .amountTextController
+                                                    .text))),
                                           },
                                         ),
                                       });
@@ -688,7 +690,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                           {
                                             'expenses': FieldValue.increment(
                                                 double.parse(_model
-                                                    .amountController.text)),
+                                                    .amountTextController
+                                                    .text)),
                                           },
                                         ),
                                       });
@@ -699,8 +702,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                     });
                                     // Reset amount/description
                                     setState(() {
-                                      _model.amountController?.clear();
-                                      _model.descriptionController?.clear();
+                                      _model.amountTextController?.clear();
+                                      _model.descriptionTextController?.clear();
                                     });
                                     // Reset selected staff
                                     setState(() {
@@ -765,13 +768,13 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       TextFormField(
-                        controller: _model.amountController,
+                        controller: _model.amountTextController,
                         focusNode: _model.amountFocusNode,
                         onChanged: (_) => EasyDebounce.debounce(
-                          '_model.amountController',
+                          '_model.amountTextController',
                           const Duration(milliseconds: 2000),
                           () async {
-                            if (_model.amountController.text == '') {
+                            if (_model.amountTextController.text == '') {
                               // disable
                               setState(() {
                                 _model.disableSubmit = true;
@@ -841,12 +844,12 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                         cursorColor: FlutterFlowTheme.of(context).primary,
-                        validator: _model.amountControllerValidator
+                        validator: _model.amountTextControllerValidator
                             .asValidator(context),
                       ).animateOnPageLoad(
                           animationsMap['textFieldOnPageLoadAnimation1']!),
                       TextFormField(
-                        controller: _model.descriptionController,
+                        controller: _model.descriptionTextController,
                         focusNode: _model.descriptionFocusNode,
                         autofocus: false,
                         textCapitalization: TextCapitalization.words,
@@ -901,7 +904,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                         maxLines: 16,
                         minLines: 6,
                         cursorColor: FlutterFlowTheme.of(context).primary,
-                        validator: _model.descriptionControllerValidator
+                        validator: _model.descriptionTextControllerValidator
                             .asValidator(context),
                       ).animateOnPageLoad(
                           animationsMap['textFieldOnPageLoadAnimation2']!),
@@ -962,12 +965,12 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                 if (_model.choicesValue == 'Food') {
                                   // Food Allowance
                                   setState(() {
-                                    _model.descriptionController?.text =
+                                    _model.descriptionTextController?.text =
                                         'Food Allowance for Staff';
                                   });
                                   // 150 amount
                                   setState(() {
-                                    _model.amountController?.text = '150';
+                                    _model.amountTextController?.text = '150';
                                   });
                                   // enable submit
                                   setState(() {
@@ -976,13 +979,13 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                 } else {
                                   // choice
                                   setState(() {
-                                    _model.descriptionController?.text =
+                                    _model.descriptionTextController?.text =
                                         _model.choicesValue!;
                                   });
                                   if (_model.choicesValue == 'Pamasahe') {
                                     // 100 pamasahe
                                     setState(() {
-                                      _model.amountController?.text = '100';
+                                      _model.amountTextController?.text = '100';
                                     });
                                     // enable submit
                                     setState(() {
@@ -992,7 +995,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                     if (_model.choicesValue == 'Sako') {
                                       // 10 sako
                                       setState(() {
-                                        _model.amountController?.text = '10';
+                                        _model.amountTextController?.text =
+                                            '10';
                                       });
                                       // enable submit
                                       setState(() {

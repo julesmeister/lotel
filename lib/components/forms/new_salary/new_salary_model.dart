@@ -56,20 +56,20 @@ class NewSalaryModel extends FlutterFlowModel<NewSalaryWidget> {
   List<AbsencesRecord>? absences;
   // State field(s) for rate widget.
   FocusNode? rateFocusNode;
-  TextEditingController? rateController;
-  String? Function(BuildContext, String?)? rateControllerValidator;
+  TextEditingController? rateTextController;
+  String? Function(BuildContext, String?)? rateTextControllerValidator;
   // State field(s) for sss widget.
   FocusNode? sssFocusNode;
-  TextEditingController? sssController;
-  String? Function(BuildContext, String?)? sssControllerValidator;
+  TextEditingController? sssTextController;
+  String? Function(BuildContext, String?)? sssTextControllerValidator;
   // State field(s) for ca widget.
   FocusNode? caFocusNode;
-  TextEditingController? caController;
-  String? Function(BuildContext, String?)? caControllerValidator;
+  TextEditingController? caTextController;
+  String? Function(BuildContext, String?)? caTextControllerValidator;
   // State field(s) for absences widget.
   FocusNode? absencesFocusNode;
-  TextEditingController? absencesController;
-  String? Function(BuildContext, String?)? absencesControllerValidator;
+  TextEditingController? absencesTextController;
+  String? Function(BuildContext, String?)? absencesTextControllerValidator;
   // Stores action output result for [Backend Call - Read Document] action in Row widget.
   SalariesRecord? updatedSalary;
   // Stores action output result for [Backend Call - Create Document] action in Row widget.
@@ -81,15 +81,15 @@ class NewSalaryModel extends FlutterFlowModel<NewSalaryWidget> {
   @override
   void dispose() {
     rateFocusNode?.dispose();
-    rateController?.dispose();
+    rateTextController?.dispose();
 
     sssFocusNode?.dispose();
-    sssController?.dispose();
+    sssTextController?.dispose();
 
     caFocusNode?.dispose();
-    caController?.dispose();
+    caTextController?.dispose();
 
     absencesFocusNode?.dispose();
-    absencesController?.dispose();
+    absencesTextController?.dispose();
   }
 }

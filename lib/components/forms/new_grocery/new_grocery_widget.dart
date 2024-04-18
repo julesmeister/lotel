@@ -30,10 +30,10 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
     super.initState();
     _model = createModel(context, () => NewGroceryModel());
 
-    _model.remarkController ??= TextEditingController();
+    _model.remarkTextController ??= TextEditingController();
     _model.remarkFocusNode ??= FocusNode();
 
-    _model.amountController ??= TextEditingController();
+    _model.amountTextController ??= TextEditingController();
     _model.amountFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -145,7 +145,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextFormField(
-                              controller: _model.remarkController,
+                              controller: _model.remarkTextController,
                               focusNode: _model.remarkFocusNode,
                               autofocus: false,
                               textCapitalization: TextCapitalization.sentences,
@@ -188,11 +188,11 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
-                              validator: _model.remarkControllerValidator
+                              validator: _model.remarkTextControllerValidator
                                   .asValidator(context),
                             ),
                             TextFormField(
-                              controller: _model.amountController,
+                              controller: _model.amountTextController,
                               focusNode: _model.amountFocusNode,
                               autofocus: true,
                               textCapitalization: TextCapitalization.none,
@@ -238,7 +238,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
-                              validator: _model.amountControllerValidator
+                              validator: _model.amountTextControllerValidator
                                   .asValidator(context),
                             ),
                           ],
@@ -339,7 +339,8 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    if (_model.amountController.text != '') {
+                                    if (_model.amountTextController.text !=
+                                            '') {
                                       var confirmDialogResponse =
                                           await showDialog<bool>(
                                                 context: context,
@@ -348,7 +349,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                                     title: const Text(
                                                         'Have you really spent for grocery?'),
                                                     content: Text(
-                                                        'You are recording an amount of Php ${_model.amountController.text}.'),
+                                                        'You are recording an amount of Php ${_model.amountTextController.text}.'),
                                                     actions: [
                                                       TextButton(
                                                         onPressed: () =>
@@ -376,10 +377,10 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                           ...createGroceriesRecordData(
                                             hotel: FFAppState().hotel,
                                             recordedBy: currentUserReference,
-                                            amount: double.tryParse(
-                                                _model.amountController.text),
-                                            remark:
-                                                _model.remarkController.text,
+                                            amount: double.tryParse(_model
+                                                .amountTextController.text),
+                                            remark: _model
+                                                .remarkTextController.text,
                                           ),
                                           ...mapToFirestore(
                                             {
@@ -396,8 +397,8 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                               .doc()
                                               .set({
                                             ...createGoodsRevenueRatioRecordData(
-                                              grocery: double.tryParse(
-                                                  _model.amountController.text),
+                                              grocery: double.tryParse(_model
+                                                  .amountTextController.text),
                                               revenue: 0.0,
                                               hotel: FFAppState().hotel,
                                               daysToBreakEven: 0,
@@ -449,11 +450,10 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                                 .update({
                                               ...mapToFirestore(
                                                 {
-                                                  'grocery':
-                                                      FieldValue.increment(
-                                                          double.parse(_model
-                                                              .amountController
-                                                              .text)),
+                                                  'grocery': FieldValue.increment(
+                                                      double.parse(_model
+                                                          .amountTextController
+                                                          .text)),
                                                 },
                                               ),
                                             });
@@ -461,7 +461,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                                 valueOrDefault<double>(
                                                   _model.lastGrr!.grocery +
                                                       double.parse(_model
-                                                          .amountController
+                                                          .amountTextController
                                                           .text),
                                                   0.0,
                                                 )) {
@@ -486,7 +486,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                               'groceryExpenses':
                                                   FieldValue.increment(
                                                       double.parse(_model
-                                                          .amountController
+                                                          .amountTextController
                                                           .text)),
                                             },
                                           ),

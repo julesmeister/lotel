@@ -11,8 +11,8 @@ class NewOptionModel extends FlutterFlowModel<NewOptionWidget> {
 
   // State field(s) for name widget.
   FocusNode? nameFocusNode;
-  TextEditingController? nameController;
-  String? Function(BuildContext, String?)? nameControllerValidator;
+  TextEditingController? nameTextController;
+  String? Function(BuildContext, String?)? nameTextControllerValidator;
 
   @override
   void initState(BuildContext context) {}
@@ -20,6 +20,6 @@ class NewOptionModel extends FlutterFlowModel<NewOptionWidget> {
   @override
   void dispose() {
     nameFocusNode?.dispose();
-    nameController?.dispose();
+    nameTextController?.dispose();
   }
 }

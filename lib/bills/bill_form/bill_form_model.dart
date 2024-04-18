@@ -27,16 +27,16 @@ class BillFormModel extends FlutterFlowModel<BillFormWidget> {
   DateTime? adjustedDate;
   // State field(s) for amount widget.
   FocusNode? amountFocusNode;
-  TextEditingController? amountController;
-  String? Function(BuildContext, String?)? amountControllerValidator;
+  TextEditingController? amountTextController;
+  String? Function(BuildContext, String?)? amountTextControllerValidator;
   // State field(s) for afterdue widget.
   FocusNode? afterdueFocusNode;
-  TextEditingController? afterdueController;
-  String? Function(BuildContext, String?)? afterdueControllerValidator;
+  TextEditingController? afterdueTextController;
+  String? Function(BuildContext, String?)? afterdueTextControllerValidator;
   // State field(s) for description widget.
   FocusNode? descriptionFocusNode;
-  TextEditingController? descriptionController;
-  String? Function(BuildContext, String?)? descriptionControllerValidator;
+  TextEditingController? descriptionTextController;
+  String? Function(BuildContext, String?)? descriptionTextControllerValidator;
   // State field(s) for choices widget.
   FormFieldController<List<String>>? choicesValueController;
   String? get choicesValue => choicesValueController?.value?.firstOrNull;
@@ -50,12 +50,12 @@ class BillFormModel extends FlutterFlowModel<BillFormWidget> {
   void dispose() {
     unfocusNode.dispose();
     amountFocusNode?.dispose();
-    amountController?.dispose();
+    amountTextController?.dispose();
 
     afterdueFocusNode?.dispose();
-    afterdueController?.dispose();
+    afterdueTextController?.dispose();
 
     descriptionFocusNode?.dispose();
-    descriptionController?.dispose();
+    descriptionTextController?.dispose();
   }
 }

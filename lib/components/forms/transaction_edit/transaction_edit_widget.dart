@@ -41,10 +41,11 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
     super.initState();
     _model = createModel(context, () => TransactionEditModel());
 
-    _model.descController ??= TextEditingController(text: widget.description);
+    _model.descTextController ??=
+        TextEditingController(text: widget.description);
     _model.descFocusNode ??= FocusNode();
 
-    _model.priceController ??=
+    _model.priceTextController ??=
         TextEditingController(text: widget.price?.toString());
     _model.priceFocusNode ??= FocusNode();
 
@@ -156,7 +157,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextFormField(
-                              controller: _model.descController,
+                              controller: _model.descTextController,
                               focusNode: _model.descFocusNode,
                               textCapitalization: TextCapitalization.sentences,
                               obscureText: false,
@@ -200,11 +201,11 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                   ),
                               maxLines: 2,
                               minLines: 1,
-                              validator: _model.descControllerValidator
+                              validator: _model.descTextControllerValidator
                                   .asValidator(context),
                             ),
                             TextFormField(
-                              controller: _model.priceController,
+                              controller: _model.priceTextController,
                               focusNode: _model.priceFocusNode,
                               textCapitalization: TextCapitalization.none,
                               obscureText: false,
@@ -249,7 +250,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
-                              validator: _model.priceControllerValidator
+                              validator: _model.priceTextControllerValidator
                                   .asValidator(context),
                             ),
                           ],
@@ -284,9 +285,9 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
 
                                   await widget.ref!
                                       .update(createTransactionsRecordData(
-                                    description: _model.descController.text,
+                                    description: _model.descTextController.text,
                                     total: double.tryParse(
-                                        _model.priceController.text),
+                                        _model.priceTextController.text),
                                   ));
                                   if (widget.bookingRef != null) {
                                     // update book total
@@ -296,14 +297,15 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                         {
                                           'total': FieldValue.increment(
                                               double.parse(_model
-                                                      .priceController.text) -
+                                                      .priceTextController
+                                                      .text) -
                                                   (widget.price!)),
                                         },
                                       ),
                                     });
                                     if (widget.price !=
                                         (double.parse(
-                                            _model.priceController.text))) {
+                                            _model.priceTextController.text))) {
                                       // create history
 
                                       await HistoryRecord.createDoc(
@@ -311,7 +313,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                           .set({
                                         ...createHistoryRecordData(
                                           description:
-                                              'The transaction amount was changed from ${widget.price?.toString()} to ${_model.priceController.text}.',
+                                              'The transaction amount was changed from ${widget.price?.toString()} to ${_model.priceTextController.text}.',
                                           staff: currentUserReference,
                                           booking: widget.bookingRef,
                                         ),

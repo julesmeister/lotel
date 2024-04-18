@@ -8,16 +8,16 @@ class MissingInventoryModel extends FlutterFlowModel<MissingInventoryWidget> {
 
   // State field(s) for desc widget.
   FocusNode? descFocusNode;
-  TextEditingController? descController;
-  String? Function(BuildContext, String?)? descControllerValidator;
+  TextEditingController? descTextController;
+  String? Function(BuildContext, String?)? descTextControllerValidator;
   // State field(s) for quantity widget.
   FocusNode? quantityFocusNode;
-  TextEditingController? quantityController;
-  String? Function(BuildContext, String?)? quantityControllerValidator;
+  TextEditingController? quantityTextController;
+  String? Function(BuildContext, String?)? quantityTextControllerValidator;
   // State field(s) for why widget.
   FocusNode? whyFocusNode;
-  TextEditingController? whyController;
-  String? Function(BuildContext, String?)? whyControllerValidator;
+  TextEditingController? whyTextController;
+  String? Function(BuildContext, String?)? whyTextControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in Row widget.
   GoodsRecord? good;
   // Stores action output result for [Backend Call - Create Document] action in Row widget.
@@ -29,12 +29,12 @@ class MissingInventoryModel extends FlutterFlowModel<MissingInventoryWidget> {
   @override
   void dispose() {
     descFocusNode?.dispose();
-    descController?.dispose();
+    descTextController?.dispose();
 
     quantityFocusNode?.dispose();
-    quantityController?.dispose();
+    quantityTextController?.dispose();
 
     whyFocusNode?.dispose();
-    whyController?.dispose();
+    whyTextController?.dispose();
   }
 }

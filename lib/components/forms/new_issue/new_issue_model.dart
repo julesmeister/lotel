@@ -14,8 +14,8 @@ class NewIssueModel extends FlutterFlowModel<NewIssueWidget> {
   IssuesRecord? issueToEdit;
   // State field(s) for detail widget.
   FocusNode? detailFocusNode;
-  TextEditingController? detailController;
-  String? Function(BuildContext, String?)? detailControllerValidator;
+  TextEditingController? detailTextController;
+  String? Function(BuildContext, String?)? detailTextControllerValidator;
 
   @override
   void initState(BuildContext context) {}
@@ -23,6 +23,6 @@ class NewIssueModel extends FlutterFlowModel<NewIssueWidget> {
   @override
   void dispose() {
     detailFocusNode?.dispose();
-    detailController?.dispose();
+    detailTextController?.dispose();
   }
 }

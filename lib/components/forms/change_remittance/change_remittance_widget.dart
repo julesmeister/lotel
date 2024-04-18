@@ -63,7 +63,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
       );
       // amount to remit to field
       setState(() {
-        _model.amountController?.text =
+        _model.amountTextController?.text =
             functions.netOfTransactions(_model.toRemit!.toList()).toString();
       });
       setState(() {
@@ -72,11 +72,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
       });
     });
 
-    _model.amountController ??=
+    _model.amountTextController ??=
         TextEditingController(text: _model.toRemitAmount.toString());
     _model.amountFocusNode ??= FocusNode();
 
-    _model.changeExtraController ??= TextEditingController(text: '0');
+    _model.changeExtraTextController ??= TextEditingController(text: '0');
     _model.changeExtraFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -96,8 +96,8 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
     return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(
-          sigmaX: 6.0,
-          sigmaY: 8.0,
+          sigmaX: 0.0,
+          sigmaY: 0.0,
         ),
         child: Container(
           width: double.infinity,
@@ -302,20 +302,21 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                         padding: const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 16.0, 16.0, 0.0),
                                         child: TextFormField(
-                                          controller: _model.amountController,
+                                          controller:
+                                              _model.amountTextController,
                                           focusNode: _model.amountFocusNode,
                                           onChanged: (_) =>
                                               EasyDebounce.debounce(
-                                            '_model.amountController',
+                                            '_model.amountTextController',
                                             const Duration(milliseconds: 2000),
                                             () async {
                                               // set change
                                               setState(() {
-                                                _model.changeExtraController
+                                                _model.changeExtraTextController
                                                     ?.text = ((_model
                                                             .toRemitAmount -
                                                         double.parse(_model
-                                                            .amountController
+                                                            .amountTextController
                                                             .text))
                                                     .abs()
                                                     .toString());
@@ -357,19 +358,22 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             contentPadding:
                                                 const EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 24.0, 20.0, 24.0),
-                                            suffixIcon: _model.amountController!
-                                                    .text.isNotEmpty
+                                            suffixIcon: _model
+                                                    .amountTextController!
+                                                    .text
+                                                    .isNotEmpty
                                                 ? InkWell(
                                                     onTap: () async {
-                                                      _model.amountController
+                                                      _model
+                                                          .amountTextController
                                                           ?.clear(); // set change
                                                       setState(() {
                                                         _model
-                                                            .changeExtraController
+                                                            .changeExtraTextController
                                                             ?.text = ((_model
                                                                     .toRemitAmount -
                                                                 double.parse(_model
-                                                                    .amountController
+                                                                    .amountTextController
                                                                     .text))
                                                             .abs()
                                                             .toString());
@@ -397,7 +401,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               FlutterFlowTheme.of(context)
                                                   .primary,
                                           validator: _model
-                                              .amountControllerValidator
+                                              .amountTextControllerValidator
                                               .asValidator(context),
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
@@ -410,22 +414,22 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             16.0, 16.0, 16.0, 0.0),
                                         child: TextFormField(
                                           controller:
-                                              _model.changeExtraController,
+                                              _model.changeExtraTextController,
                                           focusNode:
                                               _model.changeExtraFocusNode,
                                           onChanged: (_) =>
                                               EasyDebounce.debounce(
-                                            '_model.changeExtraController',
+                                            '_model.changeExtraTextController',
                                             const Duration(milliseconds: 2000),
                                             () async {
                                               // set amountEntered
                                               setState(() {
-                                                _model.amountController
+                                                _model.amountTextController
                                                     ?.text = ((_model
                                                             .toRemitAmount
                                                             .abs() +
                                                         double.parse(_model
-                                                                .changeExtraController
+                                                                .changeExtraTextController
                                                                 .text)
                                                             .abs())
                                                     .toString());
@@ -468,21 +472,22 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                 const EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 24.0, 20.0, 24.0),
                                             suffixIcon: _model
-                                                    .changeExtraController!
+                                                    .changeExtraTextController!
                                                     .text
                                                     .isNotEmpty
                                                 ? InkWell(
                                                     onTap: () async {
                                                       _model
-                                                          .changeExtraController
+                                                          .changeExtraTextController
                                                           ?.clear(); // set amountEntered
                                                       setState(() {
-                                                        _model.amountController
+                                                        _model
+                                                            .amountTextController
                                                             ?.text = ((_model
                                                                     .toRemitAmount
                                                                     .abs() +
                                                                 double.parse(_model
-                                                                        .changeExtraController
+                                                                        .changeExtraTextController
                                                                         .text)
                                                                     .abs())
                                                             .toString());
@@ -510,7 +515,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               FlutterFlowTheme.of(context)
                                                   .primary,
                                           validator: _model
-                                              .changeExtraControllerValidator
+                                              .changeExtraTextControllerValidator
                                               .asValidator(context),
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
@@ -1067,11 +1072,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   .set({
                                                 ...createTransactionsRecordData(
                                                   staff: currentUserReference,
-                                                  total: _model.changeExtraController
+                                                  total: _model.changeExtraTextController
                                                                   .text !=
                                                               ''
                                                       ? (-double.parse(_model
-                                                          .changeExtraController
+                                                          .changeExtraTextController
                                                           .text))
                                                       : 0.0,
                                                   type: 'change',

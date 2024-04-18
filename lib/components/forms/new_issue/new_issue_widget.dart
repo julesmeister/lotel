@@ -44,12 +44,12 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
         _model.issueToEdit = await IssuesRecord.getDocumentOnce(widget.ref!);
         // set form with detail
         setState(() {
-          _model.detailController?.text = _model.issueToEdit!.detail;
+          _model.detailTextController?.text = _model.issueToEdit!.detail;
         });
       }
     });
 
-    _model.detailController ??= TextEditingController();
+    _model.detailTextController ??= TextEditingController();
     _model.detailFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -162,7 +162,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                     .secondaryBackground,
                               ),
                               child: TextFormField(
-                                controller: _model.detailController,
+                                controller: _model.detailTextController,
                                 focusNode: _model.detailFocusNode,
                                 autofocus: true,
                                 textCapitalization:
@@ -174,7 +174,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                       .bodySmall
                                       .override(
                                         fontFamily: 'Readex Pro',
-                                        fontSize: 20.0,
+                                        fontSize: 24.0,
                                         letterSpacing: 0.0,
                                       ),
                                   hintText: 'Type your issue here',
@@ -184,7 +184,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                         fontFamily: 'Lexend Deca',
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryText,
-                                        fontSize: 20.0,
+                                        fontSize: 28.0,
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.normal,
                                       ),
@@ -203,13 +203,13 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
-                                      fontSize: 20.0,
+                                      fontSize: 28.0,
                                       letterSpacing: 0.0,
                                     ),
                                 maxLines: 10,
                                 minLines: 6,
                                 keyboardType: TextInputType.multiline,
-                                validator: _model.detailControllerValidator
+                                validator: _model.detailTextControllerValidator
                                     .asValidator(context),
                               ),
                             ),
@@ -280,7 +280,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                   if (widget.edit) {
                                     await widget.ref!
                                         .update(createIssuesRecordData(
-                                      detail: _model.detailController.text,
+                                      detail: _model.detailTextController.text,
                                     ));
                                     Navigator.pop(context);
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -302,7 +302,8 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                     await IssuesRecord.collection.doc().set({
                                       ...createIssuesRecordData(
                                         staff: currentUserReference,
-                                        detail: _model.detailController.text,
+                                        detail:
+                                            _model.detailTextController.text,
                                         status: 'pending',
                                         hotel: FFAppState().hotel,
                                       ),

@@ -85,12 +85,12 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
   SalariesRecord? salary;
   // State field(s) for newRate widget.
   FocusNode? newRateFocusNode;
-  TextEditingController? newRateController;
-  String? Function(BuildContext, String?)? newRateControllerValidator;
+  TextEditingController? newRateTextController;
+  String? Function(BuildContext, String?)? newRateTextControllerValidator;
   // State field(s) for newSSS widget.
   FocusNode? newSSSFocusNode;
-  TextEditingController? newSSSController;
-  String? Function(BuildContext, String?)? newSSSControllerValidator;
+  TextEditingController? newSSSTextController;
+  String? Function(BuildContext, String?)? newSSSTextControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
   List<SalariesRecord>? updatedSalaries;
   // Stores action output result for [Bottom Sheet - NewSalary] action in listContainer widget.
@@ -111,9 +111,9 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
   void dispose() {
     unfocusNode.dispose();
     newRateFocusNode?.dispose();
-    newRateController?.dispose();
+    newRateTextController?.dispose();
 
     newSSSFocusNode?.dispose();
-    newSSSController?.dispose();
+    newSSSTextController?.dispose();
   }
 }

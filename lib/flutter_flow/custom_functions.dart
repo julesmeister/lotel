@@ -1655,3 +1655,18 @@ List<TransactionsRecord> mergeTransactions(
   }
   return mergedTransactions;
 }
+
+double pendingsTotal(List<TransactionsRecord>? transactions) {
+  // combine all same booking transaction.booking and increment total, booking.toString() as key
+  if (transactions == null || transactions.isEmpty) {
+    return 0.0; // Return 0.0 for empty or null transactions
+  }
+
+  double total = 0.0; // Initialize total sum
+
+  for (final transaction in transactions) {
+    total += transaction.total;
+  }
+
+  return total; // Return the sum of transaction.total values
+}

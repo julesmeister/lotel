@@ -7,8 +7,8 @@ class HistoryEditModel extends FlutterFlowModel<HistoryEditWidget> {
 
   // State field(s) for details widget.
   FocusNode? detailsFocusNode;
-  TextEditingController? detailsController;
-  String? Function(BuildContext, String?)? detailsControllerValidator;
+  TextEditingController? detailsTextController;
+  String? Function(BuildContext, String?)? detailsTextControllerValidator;
 
   @override
   void initState(BuildContext context) {}
@@ -16,6 +16,6 @@ class HistoryEditModel extends FlutterFlowModel<HistoryEditWidget> {
   @override
   void dispose() {
     detailsFocusNode?.dispose();
-    detailsController?.dispose();
+    detailsTextController?.dispose();
   }
 }

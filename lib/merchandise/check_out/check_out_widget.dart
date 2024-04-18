@@ -31,20 +31,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -59,10 +46,25 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
       });
     });
 
-    _model.priceController1 ??= TextEditingController();
+    _model.priceTextController1 ??= TextEditingController();
 
-    _model.priceController2 ??= TextEditingController();
+    _model.priceTextController2 ??= TextEditingController();
     _model.priceFocusNode2 ??= FocusNode();
+
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+        ],
+      ),
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -135,7 +137,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             var shouldSetState = false;
                             if (_model.expense) {
                               if ((_model.whichExpense == 'consumedBy') &&
-                                  (_model.priceController1.text == '')) {
+                                  (_model.priceTextController1.text == '')) {
                                 // who consumed?
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -196,8 +198,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     ? valueOrDefault<String>(
                                         functions.descriptionOfExpense(
                                             _model.whichExpense,
-                                            _model.priceController1.text,
-                                            _model.priceController2.text),
+                                            _model.priceTextController1.text,
+                                            _model.priceTextController2.text),
                                         'deducted for some reason',
                                       )
                                     : 'sold',
@@ -229,8 +231,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     ? valueOrDefault<String>(
                                         functions.descriptionOfExpense(
                                             _model.whichExpense,
-                                            _model.priceController1.text,
-                                            _model.priceController2.text),
+                                            _model.priceTextController1.text,
+                                            _model.priceTextController2.text),
                                         'deducted for some reason',
                                       )
                                     : 'sold',
@@ -262,8 +264,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     ? valueOrDefault<String>(
                                         functions.descriptionOfExpense(
                                             _model.whichExpense,
-                                            _model.priceController1.text,
-                                            _model.priceController2.text),
+                                            _model.priceTextController1.text,
+                                            _model.priceTextController2.text),
                                         'deducted for some reason',
                                       )
                                     : 'sold',
@@ -299,10 +301,10 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                             ? valueOrDefault<String>(
                                                 functions.descriptionOfExpense(
                                                     _model.whichExpense,
-                                                    _model
-                                                        .priceController1.text,
-                                                    _model
-                                                        .priceController2.text),
+                                                    _model.priceTextController1
+                                                        .text,
+                                                    _model.priceTextController2
+                                                        .text),
                                                 'deducted for some reason',
                                               )
                                             : 'sold',
@@ -998,7 +1000,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                       optionsViewBuilder: (context, onSelected, options) {
                         return AutocompleteOptionsList(
                           textFieldKey: _model.priceKey1,
-                          textController: _model.priceController1!,
+                          textController: _model.priceTextController1!,
                           options: options.toList(),
                           onSelected: onSelected,
                           textStyle:
@@ -1027,7 +1029,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                       ) {
                         _model.priceFocusNode1 = focusNode;
 
-                        _model.priceController1 = textEditingController;
+                        _model.priceTextController1 = textEditingController;
                         return TextFormField(
                           key: _model.priceKey1,
                           controller: textEditingController,
@@ -1091,7 +1093,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
-                          validator: _model.priceController1Validator
+                          validator: _model.priceTextController1Validator
                               .asValidator(context),
                         );
                       },
@@ -1102,7 +1104,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                     padding:
                         const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
                     child: TextFormField(
-                      controller: _model.priceController2,
+                      controller: _model.priceTextController2,
                       focusNode: _model.priceFocusNode2,
                       textCapitalization: TextCapitalization.words,
                       obscureText: false,
@@ -1159,8 +1161,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             fontFamily: 'Readex Pro',
                             letterSpacing: 0.0,
                           ),
-                      validator:
-                          _model.priceController2Validator.asValidator(context),
+                      validator: _model.priceTextController2Validator
+                          .asValidator(context),
                     ),
                   ),
               ],

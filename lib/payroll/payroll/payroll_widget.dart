@@ -30,52 +30,53 @@ class _PayrollWidgetState extends State<PayrollWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(0.0, 50.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'columnOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(40.0, 0.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => PayrollModel());
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(40.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -183,237 +184,268 @@ class _PayrollWidgetState extends State<PayrollWidget>
                               size: 24.0,
                             ),
                             onPressed: () async {
-                              // count payrolls
-                              _model.countPayrolls =
-                                  await queryPayrollsRecordCount(
-                                queryBuilder: (payrollsRecord) =>
-                                    payrollsRecord.where(
-                                  'hotel',
-                                  isEqualTo: FFAppState().hotel,
-                                ),
-                              );
-                              if (payrollCount > 0) {
-                                // isLoading
-                                setState(() {
-                                  _model.isLoading = true;
-                                });
-                                // get sample payroll
-                                _model.firstExistingPayroll =
-                                    await queryPayrollsRecordOnce(
+                              // create payroll
+                              var confirmDialogResponse =
+                                  await showDialog<bool>(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: const Text('Create Payroll'),
+                                            content: const Text(
+                                                'This action will replicate the latest payroll data, although you may need to make adjustments as required.'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, false),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, true),
+                                                child: const Text('Confirm'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ) ??
+                                      false;
+                              if (confirmDialogResponse) {
+                                // count payrolls
+                                _model.countPayrolls =
+                                    await queryPayrollsRecordCount(
                                   queryBuilder: (payrollsRecord) =>
-                                      payrollsRecord
-                                          .where(
-                                            'hotel',
-                                            isEqualTo: FFAppState().hotel,
-                                          )
-                                          .orderBy('date', descending: true),
-                                  singleRecord: true,
-                                ).then((s) => s.firstOrNull);
-                                // previous salaries
-                                _model.sampleSalaries =
-                                    await querySalariesRecordOnce(
-                                  parent:
-                                      _model.firstExistingPayroll?.reference,
+                                      payrollsRecord.where(
+                                    'hotel',
+                                    isEqualTo: FFAppState().hotel,
+                                  ),
                                 );
-                                // reset loop counter
-                                setState(() {
-                                  _model.loopSalariesCounter = 0;
-                                  _model.loopAdvancesCounter = 0;
-                                });
-                                // create new payroll
+                                if (payrollCount > 0) {
+                                  // isLoading
+                                  setState(() {
+                                    _model.isLoading = true;
+                                  });
+                                  // get sample payroll
+                                  _model.firstExistingPayroll =
+                                      await queryPayrollsRecordOnce(
+                                    queryBuilder: (payrollsRecord) =>
+                                        payrollsRecord
+                                            .where(
+                                              'hotel',
+                                              isEqualTo: FFAppState().hotel,
+                                            )
+                                            .orderBy('date', descending: true),
+                                    singleRecord: true,
+                                  ).then((s) => s.firstOrNull);
+                                  // previous salaries
+                                  _model.sampleSalaries =
+                                      await querySalariesRecordOnce(
+                                    parent:
+                                        _model.firstExistingPayroll?.reference,
+                                  );
+                                  // reset loop counter
+                                  setState(() {
+                                    _model.loopSalariesCounter = 0;
+                                    _model.loopAdvancesCounter = 0;
+                                  });
+                                  // create new payroll
 
-                                var payrollsRecordReference =
-                                    PayrollsRecord.collection.doc();
-                                await payrollsRecordReference.set({
-                                  ...createPayrollsRecordData(
-                                    status: 'pending',
-                                    hotel: FFAppState().hotel,
-                                    fortnight: functions.upOrdinal(
-                                        _model.firstExistingPayroll!.fortnight),
-                                    total: 0.0,
-                                  ),
-                                  ...mapToFirestore(
-                                    {
-                                      'date': FieldValue.serverTimestamp(),
-                                    },
-                                  ),
-                                });
-                                _model.newPayrollCreated =
-                                    PayrollsRecord.getDocumentFromData({
-                                  ...createPayrollsRecordData(
-                                    status: 'pending',
-                                    hotel: FFAppState().hotel,
-                                    fortnight: functions.upOrdinal(
-                                        _model.firstExistingPayroll!.fortnight),
-                                    total: 0.0,
-                                  ),
-                                  ...mapToFirestore(
-                                    {
-                                      'date': DateTime.now(),
-                                    },
-                                  ),
-                                }, payrollsRecordReference);
-                                while (_model.loopSalariesCounter !=
-                                    _model.sampleSalaries?.length) {
-                                  // staff
-                                  _model.staffToCheckFired =
-                                      await StaffsRecord.getDocumentOnce(_model
-                                          .sampleSalaries![
-                                              _model.loopSalariesCounter!]
-                                          .staff!);
-                                  if (_model.staffToCheckFired?.fired ==
-                                      false) {
-                                    // creating salaries
-
-                                    var salariesRecordReference =
-                                        SalariesRecord.createDoc(_model
-                                            .newPayrollCreated!.reference);
-                                    await salariesRecordReference.set({
-                                      ...createSalariesRecordData(
-                                        sss: _model
-                                            .sampleSalaries?[
-                                                _model.loopSalariesCounter!]
-                                            .sss,
-                                        cashAdvance: 0.0,
-                                        pendingCA: _model
-                                            .sampleSalaries?[
-                                                _model.loopSalariesCounter!]
-                                            .pendingCA,
-                                        staff: _model
-                                            .sampleSalaries?[
-                                                _model.loopSalariesCounter!]
-                                            .staff,
-                                        rate: _model
-                                            .sampleSalaries?[
-                                                _model.loopSalariesCounter!]
-                                            .rate,
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': FieldValue.serverTimestamp(),
-                                        },
-                                      ),
-                                    });
-                                    _model.newSalary =
-                                        SalariesRecord.getDocumentFromData({
-                                      ...createSalariesRecordData(
-                                        sss: _model
-                                            .sampleSalaries?[
-                                                _model.loopSalariesCounter!]
-                                            .sss,
-                                        cashAdvance: 0.0,
-                                        pendingCA: _model
-                                            .sampleSalaries?[
-                                                _model.loopSalariesCounter!]
-                                            .pendingCA,
-                                        staff: _model
-                                            .sampleSalaries?[
-                                                _model.loopSalariesCounter!]
-                                            .staff,
-                                        rate: _model
-                                            .sampleSalaries?[
-                                                _model.loopSalariesCounter!]
-                                            .rate,
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': DateTime.now(),
-                                        },
-                                      ),
-                                    }, salariesRecordReference);
-                                    // Unsettled Cash Advances
-                                    _model.unSettledCashAdvances =
-                                        await queryAdvancesRecordOnce(
-                                      parent: _model
-                                          .sampleSalaries?[
-                                              _model.loopSalariesCounter!]
-                                          .staff,
-                                      queryBuilder: (advancesRecord) =>
-                                          advancesRecord.where(
-                                        'settled',
-                                        isEqualTo: false,
-                                      ),
-                                    );
-                                    // Unsettled absences
-                                    _model.absencesRaw =
-                                        await queryAbsencesRecordOnce(
-                                      parent: _model
-                                          .sampleSalaries?[
-                                              _model.loopSalariesCounter!]
-                                          .staff,
-                                    );
-                                    // save salary w/ cash advances
-
-                                    await _model.newSalary!.reference.update({
-                                      ...createSalariesRecordData(
-                                        cashAdvance: valueOrDefault<double>(
-                                          functions
-                                              .calculateUnsettledCashAdvances(
-                                                  _model.unSettledCashAdvances!
-                                                      .toList()),
-                                          0.0,
-                                        ),
-                                        total: valueOrDefault<double>(
-                                              _model
-                                                  .sampleSalaries?[_model
-                                                      .loopSalariesCounter!]
-                                                  .rate,
-                                              0.0,
-                                            ) -
+                                  var payrollsRecordReference =
+                                      PayrollsRecord.collection.doc();
+                                  await payrollsRecordReference.set({
+                                    ...createPayrollsRecordData(
+                                      status: 'pending',
+                                      hotel: FFAppState().hotel,
+                                      fortnight: functions.upOrdinal(_model
+                                          .firstExistingPayroll!.fortnight),
+                                      total: 0.0,
+                                    ),
+                                    ...mapToFirestore(
+                                      {
+                                        'date': FieldValue.serverTimestamp(),
+                                      },
+                                    ),
+                                  });
+                                  _model.newPayrollCreated =
+                                      PayrollsRecord.getDocumentFromData({
+                                    ...createPayrollsRecordData(
+                                      status: 'pending',
+                                      hotel: FFAppState().hotel,
+                                      fortnight: functions.upOrdinal(_model
+                                          .firstExistingPayroll!.fortnight),
+                                      total: 0.0,
+                                    ),
+                                    ...mapToFirestore(
+                                      {
+                                        'date': DateTime.now(),
+                                      },
+                                    ),
+                                  }, payrollsRecordReference);
+                                  while (_model.loopSalariesCounter !=
+                                      _model.sampleSalaries?.length) {
+                                    // staff
+                                    _model.staffToCheckFired =
+                                        await StaffsRecord.getDocumentOnce(
                                             _model
                                                 .sampleSalaries![
                                                     _model.loopSalariesCounter!]
-                                                .sss -
-                                            valueOrDefault<double>(
-                                              functions
-                                                  .calculateUnsettledCashAdvances(
-                                                      _model
-                                                          .unSettledCashAdvances!
-                                                          .toList()),
-                                              0.0,
-                                            ) -
-                                            functions.calculateAbsencesTotal(
-                                                _model.absencesRaw!.toList()),
-                                        absences:
-                                            functions.calculateAbsencesTotal(
-                                                _model.absencesRaw!.toList()),
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'caRefs': _model.unSettledCashAdvances
-                                              ?.map((e) => e.reference)
-                                              .toList(),
-                                          'absencesRefs': _model.absencesRaw
-                                              ?.where((e) => !e.settled)
-                                              .toList()
-                                              .map((e) => e.reference)
-                                              .toList(),
-                                        },
-                                      ),
+                                                .staff!);
+                                    if (_model.staffToCheckFired?.fired ==
+                                        false) {
+                                      // creating salaries
+
+                                      var salariesRecordReference =
+                                          SalariesRecord.createDoc(_model
+                                              .newPayrollCreated!.reference);
+                                      await salariesRecordReference.set({
+                                        ...createSalariesRecordData(
+                                          sss: _model
+                                              .sampleSalaries?[
+                                                  _model.loopSalariesCounter!]
+                                              .sss,
+                                          cashAdvance: 0.0,
+                                          pendingCA: _model
+                                              .sampleSalaries?[
+                                                  _model.loopSalariesCounter!]
+                                              .pendingCA,
+                                          staff: _model
+                                              .sampleSalaries?[
+                                                  _model.loopSalariesCounter!]
+                                              .staff,
+                                          rate: _model
+                                              .sampleSalaries?[
+                                                  _model.loopSalariesCounter!]
+                                              .rate,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                      _model.newSalary =
+                                          SalariesRecord.getDocumentFromData({
+                                        ...createSalariesRecordData(
+                                          sss: _model
+                                              .sampleSalaries?[
+                                                  _model.loopSalariesCounter!]
+                                              .sss,
+                                          cashAdvance: 0.0,
+                                          pendingCA: _model
+                                              .sampleSalaries?[
+                                                  _model.loopSalariesCounter!]
+                                              .pendingCA,
+                                          staff: _model
+                                              .sampleSalaries?[
+                                                  _model.loopSalariesCounter!]
+                                              .staff,
+                                          rate: _model
+                                              .sampleSalaries?[
+                                                  _model.loopSalariesCounter!]
+                                              .rate,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date': DateTime.now(),
+                                          },
+                                        ),
+                                      }, salariesRecordReference);
+                                      // Unsettled Cash Advances
+                                      _model.unSettledCashAdvances =
+                                          await queryAdvancesRecordOnce(
+                                        parent: _model
+                                            .sampleSalaries?[
+                                                _model.loopSalariesCounter!]
+                                            .staff,
+                                        queryBuilder: (advancesRecord) =>
+                                            advancesRecord.where(
+                                          'settled',
+                                          isEqualTo: false,
+                                        ),
+                                      );
+                                      // Unsettled absences
+                                      _model.absencesRaw =
+                                          await queryAbsencesRecordOnce(
+                                        parent: _model
+                                            .sampleSalaries?[
+                                                _model.loopSalariesCounter!]
+                                            .staff,
+                                      );
+                                      // save salary w/ cash advances
+
+                                      await _model.newSalary!.reference.update({
+                                        ...createSalariesRecordData(
+                                          cashAdvance: valueOrDefault<double>(
+                                            functions
+                                                .calculateUnsettledCashAdvances(
+                                                    _model
+                                                        .unSettledCashAdvances!
+                                                        .toList()),
+                                            0.0,
+                                          ),
+                                          total: valueOrDefault<double>(
+                                                _model
+                                                    .sampleSalaries?[_model
+                                                        .loopSalariesCounter!]
+                                                    .rate,
+                                                0.0,
+                                              ) -
+                                              _model
+                                                  .sampleSalaries![_model
+                                                      .loopSalariesCounter!]
+                                                  .sss -
+                                              valueOrDefault<double>(
+                                                functions
+                                                    .calculateUnsettledCashAdvances(
+                                                        _model
+                                                            .unSettledCashAdvances!
+                                                            .toList()),
+                                                0.0,
+                                              ) -
+                                              functions.calculateAbsencesTotal(
+                                                  _model.absencesRaw!.toList()),
+                                          absences:
+                                              functions.calculateAbsencesTotal(
+                                                  _model.absencesRaw!.toList()),
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'caRefs': _model
+                                                .unSettledCashAdvances
+                                                ?.map((e) => e.reference)
+                                                .toList(),
+                                            'absencesRefs': _model.absencesRaw
+                                                ?.where((e) => !e.settled)
+                                                .toList()
+                                                .map((e) => e.reference)
+                                                .toList(),
+                                          },
+                                        ),
+                                      });
+                                    }
+                                    // increment salaries counter
+                                    setState(() {
+                                      _model.loopSalariesCounter =
+                                          _model.loopSalariesCounter! + 1;
                                     });
                                   }
-                                  // increment salaries counter
+                                  // is not Loading
                                   setState(() {
-                                    _model.loopSalariesCounter =
-                                        _model.loopSalariesCounter! + 1;
+                                    _model.isLoading = false;
                                   });
-                                }
-                                // is not Loading
-                                setState(() {
-                                  _model.isLoading = false;
-                                });
 
-                                context.pushNamed(
-                                  'NewEditPayroll',
-                                  queryParameters: {
-                                    'ref': serializeParam(
-                                      _model.newPayrollCreated?.reference,
-                                      ParamType.DocumentReference,
-                                    ),
-                                  }.withoutNulls,
-                                );
-                              } else {
-                                context.pushNamed('NewEditPayroll');
+                                  context.pushNamed(
+                                    'NewEditPayroll',
+                                    queryParameters: {
+                                      'ref': serializeParam(
+                                        _model.newPayrollCreated?.reference,
+                                        ParamType.DocumentReference,
+                                      ),
+                                    }.withoutNulls,
+                                  );
+                                } else {
+                                  context.pushNamed('NewEditPayroll');
+                                }
                               }
 
                               setState(() {});

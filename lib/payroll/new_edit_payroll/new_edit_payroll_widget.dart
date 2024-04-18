@@ -84,10 +84,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
       });
     });
 
-    _model.newRateController ??= TextEditingController();
+    _model.newRateTextController ??= TextEditingController();
     _model.newRateFocusNode ??= FocusNode();
 
-    _model.newSSSController ??= TextEditingController();
+    _model.newSSSTextController ??= TextEditingController();
     _model.newSSSFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -327,7 +327,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 8.0, 0.0),
                             child: TextFormField(
-                              controller: _model.newRateController,
+                              controller: _model.newRateTextController,
                               focusNode: _model.newRateFocusNode,
                               autofocus: true,
                               obscureText: false,
@@ -384,7 +384,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
-                              validator: _model.newRateControllerValidator
+                              validator: _model.newRateTextControllerValidator
                                   .asValidator(context),
                             ),
                           ),
@@ -394,7 +394,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 8.0, 0.0),
                             child: TextFormField(
-                              controller: _model.newSSSController,
+                              controller: _model.newSSSTextController,
                               focusNode: _model.newSSSFocusNode,
                               autofocus: true,
                               obscureText: false,
@@ -451,7 +451,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
-                              validator: _model.newSSSControllerValidator
+                              validator: _model.newSSSTextControllerValidator
                                   .asValidator(context),
                             ),
                           ),
@@ -496,7 +496,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                               });
                               while (_model.loopSalariesCounter !=
                                   _model.salaries.length) {
-                                if (_model.newRateController.text != '') {
+                                if (_model.newRateTextController.text != '') {
                                   // update rate every staff
 
                                   await _model
@@ -504,10 +504,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       .reference
                                       .update(createSalariesRecordData(
                                     rate: double.tryParse(
-                                        _model.newRateController.text),
+                                        _model.newRateTextController.text),
                                   ));
                                 }
-                                if (_model.newSSSController.text != '') {
+                                if (_model.newSSSTextController.text != '') {
                                   if (_model
                                           .salaries[_model.loopSalariesCounter]
                                           .sss !=
@@ -519,7 +519,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         .reference
                                         .update(createSalariesRecordData(
                                       sss: double.tryParse(
-                                          _model.newSSSController.text),
+                                          _model.newSSSTextController.text),
                                     ));
                                   }
                                 }
@@ -530,18 +530,20 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     .reference
                                     .update(createSalariesRecordData(
                                   total: functions.updateSalaryTotal(
-                                      _model.newRateController.text != '',
-                                      _model.newSSSController.text != '',
+                                      _model.newRateTextController.text !=
+                                              '',
+                                      _model.newSSSTextController.text !=
+                                              '',
                                       _model
                                           .salaries[_model.loopSalariesCounter]
                                           .rate,
                                       double.tryParse(
-                                          _model.newRateController.text),
+                                          _model.newRateTextController.text),
                                       _model
                                           .salaries[_model.loopSalariesCounter]
                                           .sss,
                                       double.tryParse(
-                                          _model.newSSSController.text),
+                                          _model.newSSSTextController.text),
                                       _model
                                           .salaries[_model.loopSalariesCounter]
                                           .cashAdvance,
@@ -570,8 +572,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                             }
                             // reset form fields
                             setState(() {
-                              _model.newRateController?.clear();
-                              _model.newSSSController?.clear();
+                              _model.newRateTextController?.clear();
+                              _model.newSSSTextController?.clear();
                             });
 
                             setState(() {});

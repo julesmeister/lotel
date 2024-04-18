@@ -35,13 +35,13 @@ class CheckOutModel extends FlutterFlowModel<CheckOutWidget> {
   // State field(s) for price widget.
   final priceKey1 = GlobalKey();
   FocusNode? priceFocusNode1;
-  TextEditingController? priceController1;
+  TextEditingController? priceTextController1;
   String? priceSelectedOption1;
-  String? Function(BuildContext, String?)? priceController1Validator;
+  String? Function(BuildContext, String?)? priceTextController1Validator;
   // State field(s) for price widget.
   FocusNode? priceFocusNode2;
-  TextEditingController? priceController2;
-  String? Function(BuildContext, String?)? priceController2Validator;
+  TextEditingController? priceTextController2;
+  String? Function(BuildContext, String?)? priceTextController2Validator;
   // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
   TransactionsRecord? newTransaction;
   // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
@@ -56,6 +56,6 @@ class CheckOutModel extends FlutterFlowModel<CheckOutWidget> {
     priceFocusNode1?.dispose();
 
     priceFocusNode2?.dispose();
-    priceController2?.dispose();
+    priceTextController2?.dispose();
   }
 }

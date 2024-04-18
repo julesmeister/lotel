@@ -49,22 +49,22 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
     super.initState();
     _model = createModel(context, () => ItemAddEditModel());
 
-    _model.descController ??=
+    _model.descTextController ??=
         TextEditingController(text: widget.edit ? widget.desc : '');
     _model.descFocusNode ??= FocusNode();
 
-    _model.priceController ??= TextEditingController(
+    _model.priceTextController ??= TextEditingController(
         text: widget.edit ? widget.price?.toString() : '');
     _model.priceFocusNode ??= FocusNode();
 
-    _model.quantityController ??= TextEditingController(
+    _model.quantityTextController ??= TextEditingController(
         text: widget.edit ? widget.quantity?.toString() : '');
     _model.quantityFocusNode ??= FocusNode();
 
-    _model.whyController ??= TextEditingController(text: '');
+    _model.whyTextController ??= TextEditingController(text: '');
     _model.whyFocusNode ??= FocusNode();
 
-    _model.categoryController ??=
+    _model.categoryTextController ??=
         TextEditingController(text: widget.edit ? widget.category : '');
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -177,7 +177,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextFormField(
-                              controller: _model.descController,
+                              controller: _model.descTextController,
                               focusNode: _model.descFocusNode,
                               textCapitalization: TextCapitalization.words,
                               obscureText: false,
@@ -212,11 +212,11 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
-                              validator: _model.descControllerValidator
+                              validator: _model.descTextControllerValidator
                                   .asValidator(context),
                             ),
                             TextFormField(
-                              controller: _model.priceController,
+                              controller: _model.priceTextController,
                               focusNode: _model.priceFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -252,7 +252,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
-                              validator: _model.priceControllerValidator
+                              validator: _model.priceTextControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -260,7 +260,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                               ],
                             ),
                             TextFormField(
-                              controller: _model.quantityController,
+                              controller: _model.quantityTextController,
                               focusNode: _model.quantityFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -294,7 +294,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   ),
                               minLines: 1,
                               keyboardType: TextInputType.number,
-                              validator: _model.quantityControllerValidator
+                              validator: _model.quantityTextControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -303,7 +303,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                             ),
                             if (widget.edit)
                               TextFormField(
-                                controller: _model.whyController,
+                                controller: _model.whyTextController,
                                 focusNode: _model.whyFocusNode,
                                 obscureText: false,
                                 decoration: InputDecoration(
@@ -337,7 +337,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                       letterSpacing: 0.0,
                                     ),
                                 minLines: 1,
-                                validator: _model.whyControllerValidator
+                                validator: _model.whyTextControllerValidator
                                     .asValidator(context),
                               ),
                             Autocomplete<String>(
@@ -360,7 +360,8 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   (context, onSelected, options) {
                                 return AutocompleteOptionsList(
                                   textFieldKey: _model.categoryKey,
-                                  textController: _model.categoryController!,
+                                  textController:
+                                      _model.categoryTextController!,
                                   options: options.toList(),
                                   onSelected: onSelected,
                                   textStyle: FlutterFlowTheme.of(context)
@@ -393,7 +394,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                               ) {
                                 _model.categoryFocusNode = focusNode;
 
-                                _model.categoryController =
+                                _model.categoryTextController =
                                     textEditingController;
                                 return TextFormField(
                                   key: _model.categoryKey,
@@ -433,7 +434,8 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                         letterSpacing: 0.0,
                                       ),
                                   minLines: 1,
-                                  validator: _model.categoryControllerValidator
+                                  validator: _model
+                                      .categoryTextControllerValidator
                                       .asValidator(context),
                                 );
                               },
@@ -496,7 +498,8 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   if (widget.edit == false) {
-                                    if (_model.categoryController.text != '') {
+                                    if (_model.categoryTextController.text !=
+                                            '') {
                                       // create goods
 
                                       var goodsRecordReference =
@@ -504,27 +507,30 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                       await goodsRecordReference
                                           .set(createGoodsRecordData(
                                         price: double.tryParse(
-                                            _model.priceController.text),
+                                            _model.priceTextController.text),
                                         hotel: FFAppState().hotel,
                                         quantity: int.tryParse(
-                                            _model.quantityController.text),
-                                        description: _model.descController.text,
+                                            _model.quantityTextController.text),
+                                        description:
+                                            _model.descTextController.text,
                                         category:
-                                            _model.categoryController.text,
+                                            _model.categoryTextController.text,
                                         replenish: false,
                                       ));
                                       _model.createPayload =
                                           GoodsRecord.getDocumentFromData(
                                               createGoodsRecordData(
                                                 price: double.tryParse(_model
-                                                    .priceController.text),
+                                                    .priceTextController.text),
                                                 hotel: FFAppState().hotel,
                                                 quantity: int.tryParse(_model
-                                                    .quantityController.text),
-                                                description:
-                                                    _model.descController.text,
+                                                    .quantityTextController
+                                                    .text),
+                                                description: _model
+                                                    .descTextController.text,
                                                 category: _model
-                                                    .categoryController.text,
+                                                    .categoryTextController
+                                                    .text,
                                                 replenish: false,
                                               ),
                                               goodsRecordReference);
@@ -537,21 +543,22 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                             activity: 'added new item',
                                             hotel: FFAppState().hotel,
                                             staff: currentUserReference,
-                                            quantityChange: int.tryParse(
-                                                _model.quantityController.text),
+                                            quantityChange: int.tryParse(_model
+                                                .quantityTextController.text),
                                             previousQuantity: 0,
-                                            item: _model.descController.text,
+                                            item:
+                                                _model.descTextController.text,
                                             operator: 'add',
                                             previousPrice: widget.price,
-                                            priceChange: double.tryParse(
-                                                _model.priceController.text),
+                                            priceChange: double.tryParse(_model
+                                                .priceTextController.text),
                                             remitted: false,
                                           ));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            '${_model.descController.text} has been added!',
+                                            '${_model.descTextController.text} has been added!',
                                             style: TextStyle(
                                               color:
                                                   FlutterFlowTheme.of(context)
@@ -591,11 +598,13 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                     await widget.goodsRef!
                                         .update(createGoodsRecordData(
                                       price: double.tryParse(
-                                          _model.priceController.text),
-                                      description: _model.descController.text,
+                                          _model.priceTextController.text),
+                                      description:
+                                          _model.descTextController.text,
                                       quantity: int.tryParse(
-                                          _model.quantityController.text),
-                                      category: _model.categoryController.text,
+                                          _model.quantityTextController.text),
+                                      category:
+                                          _model.categoryTextController.text,
                                     ));
                                     // Saving inventory
 
@@ -603,43 +612,48 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                         .doc()
                                         .set(createInventoriesRecordData(
                                           date: functions.today(),
-                                          activity: _model.whyController.text ==
+                                          activity: _model
+                                                      .whyTextController.text ==
                                                   ''
                                               ? functions.activityOfInventory(
                                                   widget.price!,
                                                   double.parse(_model
-                                                      .priceController.text),
+                                                      .priceTextController
+                                                      .text),
                                                   widget.quantity!,
                                                   int.parse(_model
-                                                      .quantityController.text),
+                                                      .quantityTextController
+                                                      .text),
                                                   widget.desc!,
-                                                  _model.descController.text,
-                                                  widget.category!,
                                                   _model
-                                                      .categoryController.text)
-                                              : _model.whyController.text,
+                                                      .descTextController.text,
+                                                  widget.category!,
+                                                  _model.categoryTextController
+                                                      .text)
+                                              : _model.whyTextController.text,
                                           hotel: FFAppState().hotel,
                                           staff: currentUserReference,
                                           quantityChange:
                                               (functions.stringToInt(_model
-                                                      .quantityController
+                                                      .quantityTextController
                                                       .text)!) -
                                                   (widget.quantity!),
                                           previousQuantity: widget.quantity,
-                                          item: _model.descController.text,
+                                          item: _model.descTextController.text,
                                           operator: functions.whichOperator(
                                               widget.quantity!,
                                               int.parse(_model
-                                                  .quantityController.text)),
+                                                  .quantityTextController
+                                                  .text)),
                                           previousPrice: widget.price,
                                           priceChange: double.tryParse(
-                                              _model.priceController.text),
+                                              _model.priceTextController.text),
                                           remitted: false,
                                         ));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          '${_model.descController.text} has been updated!',
+                                          '${_model.descTextController.text} has been updated!',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
                                                 .primaryText,

@@ -8,16 +8,16 @@ class RoomAddEditModel extends FlutterFlowModel<RoomAddEditWidget> {
 
   // State field(s) for number widget.
   FocusNode? numberFocusNode;
-  TextEditingController? numberController;
-  String? Function(BuildContext, String?)? numberControllerValidator;
+  TextEditingController? numberTextController;
+  String? Function(BuildContext, String?)? numberTextControllerValidator;
   // State field(s) for price widget.
   FocusNode? priceFocusNode;
-  TextEditingController? priceController;
-  String? Function(BuildContext, String?)? priceControllerValidator;
+  TextEditingController? priceTextController;
+  String? Function(BuildContext, String?)? priceTextControllerValidator;
   // State field(s) for capacity widget.
   FocusNode? capacityFocusNode;
-  TextEditingController? capacityController;
-  String? Function(BuildContext, String?)? capacityControllerValidator;
+  TextEditingController? capacityTextController;
+  String? Function(BuildContext, String?)? capacityTextControllerValidator;
   // Stores action output result for [Backend Call - Create Document] action in Row widget.
   RoomsRecord? createRoom;
 
@@ -27,12 +27,12 @@ class RoomAddEditModel extends FlutterFlowModel<RoomAddEditWidget> {
   @override
   void dispose() {
     numberFocusNode?.dispose();
-    numberController?.dispose();
+    numberTextController?.dispose();
 
     priceFocusNode?.dispose();
-    priceController?.dispose();
+    priceTextController?.dispose();
 
     capacityFocusNode?.dispose();
-    capacityController?.dispose();
+    capacityTextController?.dispose();
   }
 }

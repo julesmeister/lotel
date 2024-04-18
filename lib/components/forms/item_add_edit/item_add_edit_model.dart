@@ -8,26 +8,26 @@ class ItemAddEditModel extends FlutterFlowModel<ItemAddEditWidget> {
 
   // State field(s) for desc widget.
   FocusNode? descFocusNode;
-  TextEditingController? descController;
-  String? Function(BuildContext, String?)? descControllerValidator;
+  TextEditingController? descTextController;
+  String? Function(BuildContext, String?)? descTextControllerValidator;
   // State field(s) for price widget.
   FocusNode? priceFocusNode;
-  TextEditingController? priceController;
-  String? Function(BuildContext, String?)? priceControllerValidator;
+  TextEditingController? priceTextController;
+  String? Function(BuildContext, String?)? priceTextControllerValidator;
   // State field(s) for quantity widget.
   FocusNode? quantityFocusNode;
-  TextEditingController? quantityController;
-  String? Function(BuildContext, String?)? quantityControllerValidator;
+  TextEditingController? quantityTextController;
+  String? Function(BuildContext, String?)? quantityTextControllerValidator;
   // State field(s) for why widget.
   FocusNode? whyFocusNode;
-  TextEditingController? whyController;
-  String? Function(BuildContext, String?)? whyControllerValidator;
+  TextEditingController? whyTextController;
+  String? Function(BuildContext, String?)? whyTextControllerValidator;
   // State field(s) for category widget.
   final categoryKey = GlobalKey();
   FocusNode? categoryFocusNode;
-  TextEditingController? categoryController;
+  TextEditingController? categoryTextController;
   String? categorySelectedOption;
-  String? Function(BuildContext, String?)? categoryControllerValidator;
+  String? Function(BuildContext, String?)? categoryTextControllerValidator;
   // Stores action output result for [Backend Call - Create Document] action in Row widget.
   GoodsRecord? createPayload;
 
@@ -37,16 +37,16 @@ class ItemAddEditModel extends FlutterFlowModel<ItemAddEditWidget> {
   @override
   void dispose() {
     descFocusNode?.dispose();
-    descController?.dispose();
+    descTextController?.dispose();
 
     priceFocusNode?.dispose();
-    priceController?.dispose();
+    priceTextController?.dispose();
 
     quantityFocusNode?.dispose();
-    quantityController?.dispose();
+    quantityTextController?.dispose();
 
     whyFocusNode?.dispose();
-    whyController?.dispose();
+    whyTextController?.dispose();
 
     categoryFocusNode?.dispose();
   }

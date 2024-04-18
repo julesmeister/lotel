@@ -56,8 +56,8 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   FormFieldController<String>? priceChangedescriptionValueController;
   // State field(s) for adjust widget.
   FocusNode? adjustFocusNode;
-  TextEditingController? adjustController;
-  String? Function(BuildContext, String?)? adjustControllerValidator;
+  TextEditingController? adjustTextController;
+  String? Function(BuildContext, String?)? adjustTextControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in saveChangedPrice widget.
   HotelSettingsRecord? hotelSetting;
   // Stores action output result for [Backend Call - Create Document] action in saveChangedPrice widget.
@@ -89,7 +89,7 @@ class CheckedInModel extends FlutterFlowModel<CheckedInWidget> {
   void dispose() {
     unfocusNode.dispose();
     adjustFocusNode?.dispose();
-    adjustController?.dispose();
+    adjustTextController?.dispose();
 
     /// Dispose query cache managers for this widget.
 

@@ -37,11 +37,11 @@ class _PromoWidgetState extends State<PromoWidget> {
       if (_model.settings!.promoOn) {
         // set detail
         setState(() {
-          _model.detailController?.text = _model.settings!.promoDetail;
+          _model.detailTextController?.text = _model.settings!.promoDetail;
         });
         // set percent
         setState(() {
-          _model.percentController?.text =
+          _model.percentTextController?.text =
               _model.settings!.promoPercent.toString();
         });
         // on toggle
@@ -59,10 +59,10 @@ class _PromoWidgetState extends State<PromoWidget> {
       }
     });
 
-    _model.detailController ??= TextEditingController();
+    _model.detailTextController ??= TextEditingController();
     _model.detailFocusNode ??= FocusNode();
 
-    _model.percentController ??= TextEditingController();
+    _model.percentTextController ??= TextEditingController();
     _model.percentFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -200,7 +200,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               TextFormField(
-                                controller: _model.detailController,
+                                controller: _model.detailTextController,
                                 focusNode: _model.detailFocusNode,
                                 autofocus: true,
                                 textCapitalization:
@@ -245,11 +245,11 @@ class _PromoWidgetState extends State<PromoWidget> {
                                       letterSpacing: 0.0,
                                     ),
                                 minLines: 1,
-                                validator: _model.detailControllerValidator
+                                validator: _model.detailTextControllerValidator
                                     .asValidator(context),
                               ),
                               TextFormField(
-                                controller: _model.percentController,
+                                controller: _model.percentTextController,
                                 focusNode: _model.percentFocusNode,
                                 textCapitalization: TextCapitalization.none,
                                 obscureText: false,
@@ -295,7 +295,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                                 keyboardType:
                                     const TextInputType.numberWithOptions(
                                         signed: true, decimal: true),
-                                validator: _model.percentControllerValidator
+                                validator: _model.percentTextControllerValidator
                                     .asValidator(context),
                               ),
                             ],
@@ -328,9 +328,9 @@ class _PromoWidgetState extends State<PromoWidget> {
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   if (_model.promoOn) {
-                                    if ((_model.detailController.text !=
+                                    if ((_model.detailTextController.text !=
                                                 '') &&
-                                        (_model.percentController.text !=
+                                        (_model.percentTextController.text !=
                                                 '')) {
                                       // update promo
 
@@ -342,9 +342,9 @@ class _PromoWidgetState extends State<PromoWidget> {
                                               return !detail.contains("promo")
                                                   ? detail += " Promo"
                                                   : detail;
-                                            }(_model.detailController.text),
-                                            promoPercent: double.tryParse(
-                                                _model.percentController.text),
+                                            }(_model.detailTextController.text),
+                                            promoPercent: double.tryParse(_model
+                                                .percentTextController.text),
                                           ));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

@@ -12,12 +12,12 @@ class NewGroceryModel extends FlutterFlowModel<NewGroceryWidget> {
 
   // State field(s) for remark widget.
   FocusNode? remarkFocusNode;
-  TextEditingController? remarkController;
-  String? Function(BuildContext, String?)? remarkControllerValidator;
+  TextEditingController? remarkTextController;
+  String? Function(BuildContext, String?)? remarkTextControllerValidator;
   // State field(s) for amount widget.
   FocusNode? amountFocusNode;
-  TextEditingController? amountController;
-  String? Function(BuildContext, String?)? amountControllerValidator;
+  TextEditingController? amountTextController;
+  String? Function(BuildContext, String?)? amountTextControllerValidator;
   // State field(s) for Switch widget.
   bool? switchValue;
   // Stores action output result for [Firestore Query - Query a collection] action in Row widget.
@@ -31,9 +31,9 @@ class NewGroceryModel extends FlutterFlowModel<NewGroceryWidget> {
   @override
   void dispose() {
     remarkFocusNode?.dispose();
-    remarkController?.dispose();
+    remarkTextController?.dispose();
 
     amountFocusNode?.dispose();
-    amountController?.dispose();
+    amountTextController?.dispose();
   }
 }

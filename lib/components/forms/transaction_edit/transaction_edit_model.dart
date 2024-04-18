@@ -7,12 +7,12 @@ class TransactionEditModel extends FlutterFlowModel<TransactionEditWidget> {
 
   // State field(s) for desc widget.
   FocusNode? descFocusNode;
-  TextEditingController? descController;
-  String? Function(BuildContext, String?)? descControllerValidator;
+  TextEditingController? descTextController;
+  String? Function(BuildContext, String?)? descTextControllerValidator;
   // State field(s) for price widget.
   FocusNode? priceFocusNode;
-  TextEditingController? priceController;
-  String? Function(BuildContext, String?)? priceControllerValidator;
+  TextEditingController? priceTextController;
+  String? Function(BuildContext, String?)? priceTextControllerValidator;
 
   @override
   void initState(BuildContext context) {}
@@ -20,9 +20,9 @@ class TransactionEditModel extends FlutterFlowModel<TransactionEditWidget> {
   @override
   void dispose() {
     descFocusNode?.dispose();
-    descController?.dispose();
+    descTextController?.dispose();
 
     priceFocusNode?.dispose();
-    priceController?.dispose();
+    priceTextController?.dispose();
   }
 }

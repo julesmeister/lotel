@@ -40,75 +40,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final animationsMap = {
-    'textOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(0.0, -100.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'textFieldOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(-100.0, 0.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'textFieldOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(100.0, 0.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'textFieldOnPageLoadAnimation3': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(-100.0, 0.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(0.0, 110.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -123,14 +55,84 @@ class _BillFormWidgetState extends State<BillFormWidget>
       });
     });
 
-    _model.amountController ??= TextEditingController();
+    _model.amountTextController ??= TextEditingController();
     _model.amountFocusNode ??= FocusNode();
 
-    _model.afterdueController ??= TextEditingController();
+    _model.afterdueTextController ??= TextEditingController();
     _model.afterdueFocusNode ??= FocusNode();
 
-    _model.descriptionController ??= TextEditingController();
+    _model.descriptionTextController ??= TextEditingController();
     _model.descriptionFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'textOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.bounceOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, -100.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'textFieldOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.bounceOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'textFieldOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.bounceOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'textFieldOnPageLoadAnimation3': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.bounceOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 110.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -197,10 +199,11 @@ class _BillFormWidgetState extends State<BillFormWidget>
                     onPressed: _model.disableSubmit
                         ? null
                         : () async {
-                            if ((_model.amountController.text != '') &&
-                                (_model.descriptionController.text != '') &&
+                            if ((_model.amountTextController.text != '') &&
+                                (_model.descriptionTextController.text !=
+                                        '') &&
                                 (functions.stringToDouble(
-                                        _model.amountController.text) >
+                                        _model.amountTextController.text) >
                                     0.0)) {
                               var confirmDialogResponse =
                                   await showDialog<bool>(
@@ -233,15 +236,16 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                     .doc()
                                     .set(createBillsRecordData(
                                       description: functions.startBigLetter(
-                                          _model.descriptionController.text),
+                                          _model
+                                              .descriptionTextController.text),
                                       amount: double.tryParse(
-                                          _model.amountController.text),
+                                          _model.amountTextController.text),
                                       date: _model.date,
                                       hotel: FFAppState().hotel,
                                       staff: currentUserReference,
                                       afterDue: valueOrDefault<double>(
                                         double.tryParse(
-                                            _model.afterdueController.text),
+                                            _model.afterdueTextController.text),
                                         0.0,
                                       ),
                                     ));
@@ -278,8 +282,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                   ...mapToFirestore(
                                     {
                                       'bills': FieldValue.increment(
-                                          double.parse(
-                                              _model.amountController.text)),
+                                          double.parse(_model
+                                              .amountTextController.text)),
                                     },
                                   ),
                                 });
@@ -287,7 +291,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      '${_model.descriptionController.text} bill with an amount of ${_model.amountController.text} has been recorded!',
+                                      '${_model.descriptionTextController.text} bill with an amount of ${_model.amountTextController.text} has been recorded!',
                                       style: TextStyle(
                                         color: FlutterFlowTheme.of(context)
                                             .primaryText,
@@ -304,8 +308,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                 });
                                 // Reset amount/description
                                 setState(() {
-                                  _model.amountController?.clear();
-                                  _model.descriptionController?.clear();
+                                  _model.amountTextController?.clear();
+                                  _model.descriptionTextController?.clear();
                                 });
                                 // reset date
                                 setState(() {
@@ -455,13 +459,13 @@ class _BillFormWidgetState extends State<BillFormWidget>
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       TextFormField(
-                        controller: _model.amountController,
+                        controller: _model.amountTextController,
                         focusNode: _model.amountFocusNode,
                         onChanged: (_) => EasyDebounce.debounce(
-                          '_model.amountController',
+                          '_model.amountTextController',
                           const Duration(milliseconds: 2000),
                           () async {
-                            if (_model.amountController.text == '') {
+                            if (_model.amountTextController.text == '') {
                               // disable
                               setState(() {
                                 _model.disableSubmit = true;
@@ -531,12 +535,12 @@ class _BillFormWidgetState extends State<BillFormWidget>
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                         cursorColor: FlutterFlowTheme.of(context).primary,
-                        validator: _model.amountControllerValidator
+                        validator: _model.amountTextControllerValidator
                             .asValidator(context),
                       ).animateOnPageLoad(
                           animationsMap['textFieldOnPageLoadAnimation1']!),
                       TextFormField(
-                        controller: _model.afterdueController,
+                        controller: _model.afterdueTextController,
                         focusNode: _model.afterdueFocusNode,
                         autofocus: true,
                         obscureText: false,
@@ -595,12 +599,12 @@ class _BillFormWidgetState extends State<BillFormWidget>
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                         cursorColor: FlutterFlowTheme.of(context).primary,
-                        validator: _model.afterdueControllerValidator
+                        validator: _model.afterdueTextControllerValidator
                             .asValidator(context),
                       ).animateOnPageLoad(
                           animationsMap['textFieldOnPageLoadAnimation2']!),
                       TextFormField(
-                        controller: _model.descriptionController,
+                        controller: _model.descriptionTextController,
                         focusNode: _model.descriptionFocusNode,
                         autofocus: true,
                         textCapitalization: TextCapitalization.words,
@@ -655,7 +659,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                         maxLines: 16,
                         minLines: 6,
                         cursorColor: FlutterFlowTheme.of(context).primary,
-                        validator: _model.descriptionControllerValidator
+                        validator: _model.descriptionTextControllerValidator
                             .asValidator(context),
                       ).animateOnPageLoad(
                           animationsMap['textFieldOnPageLoadAnimation3']!),
@@ -714,7 +718,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                 setState(() =>
                                     _model.choicesValue = val?.firstOrNull);
                                 setState(() {
-                                  _model.descriptionController?.text =
+                                  _model.descriptionTextController?.text =
                                       _model.choicesValue!;
                                 });
                               },

@@ -181,64 +181,186 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    if (!functions.isThisMonth(widget.bill!.date!)) {
-                      // which stats belong
-                      _model.statsBillBelong = await queryStatsRecordOnce(
-                        queryBuilder: (statsRecord) => statsRecord
-                            .where(
-                              'hotel',
-                              isEqualTo: FFAppState().hotel,
-                            )
-                            .where(
-                              'month',
-                              isEqualTo:
-                                  dateTimeFormat('MMMM', widget.bill?.date),
-                            )
-                            .where(
-                              'year',
-                              isEqualTo: dateTimeFormat('y', widget.bill?.date),
+                    var confirmDialogResponse = await showDialog<bool>(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: const Text('Bookmark'),
+                              content: const Text(
+                                  'Bookmarking this bill detail will simplify future inputs. It\'ll appear in the choices box, just a click away.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, false),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, true),
+                                  child: const Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          },
+                        ) ??
+                        false;
+                    if (confirmDialogResponse) {
+                      await OptionsRecord.collection
+                          .doc()
+                          .set(createOptionsRecordData(
+                            type: 'bill',
+                            choice: widget.bill?.description,
+                          ));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Bookmark successfully created!',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).primaryText,
                             ),
-                        singleRecord: true,
-                      ).then((s) => s.firstOrNull);
-                      // set stats ref
-                      setState(() {
-                        _model.stats = _model.statsBillBelong?.reference;
-                      });
-                    }
-                    // reduce from stat
-
-                    await _model.stats!.update({
-                      ...mapToFirestore(
-                        {
-                          'bills': FieldValue.increment(-(widget.bill!.amount)),
-                        },
-                      ),
-                    });
-                    await widget.bill!.reference.delete();
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          '${valueOrDefault<String>(
-                            formatNumber(
-                              widget.bill?.amount,
-                              formatType: FormatType.decimal,
-                              decimalType: DecimalType.automatic,
-                              currency: 'Php ',
-                            ),
-                            '0',
-                          )} is deducted from ${dateTimeFormat('MMMM y', widget.bill?.date)} metrics.',
-                          style: TextStyle(
-                            color: FlutterFlowTheme.of(context).primaryText,
                           ),
+                          duration: const Duration(milliseconds: 4000),
+                          backgroundColor:
+                              FlutterFlowTheme.of(context).secondary,
                         ),
-                        duration: const Duration(milliseconds: 4000),
-                        backgroundColor: FlutterFlowTheme.of(context).secondary,
+                      );
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                12.0, 0.0, 0.0, 0.0),
+                            child: Icon(
+                              Icons.star_rate,
+                              color: FlutterFlowTheme.of(context).warning,
+                              size: 20.0,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                'Bookmark this bill for easy access.',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                    context.safePop();
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    var confirmDialogResponse = await showDialog<bool>(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: const Text('Delete'),
+                              content: const Text(
+                                  'This bill will be removed and its impact on the relevant monthly metrics will be deducted.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, false),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, true),
+                                  child: const Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          },
+                        ) ??
+                        false;
+                    if (confirmDialogResponse) {
+                      if (!functions.isThisMonth(widget.bill!.date!)) {
+                        // which stats belong
+                        _model.statsBillBelong = await queryStatsRecordOnce(
+                          queryBuilder: (statsRecord) => statsRecord
+                              .where(
+                                'hotel',
+                                isEqualTo: FFAppState().hotel,
+                              )
+                              .where(
+                                'month',
+                                isEqualTo:
+                                    dateTimeFormat('MMMM', widget.bill?.date),
+                              )
+                              .where(
+                                'year',
+                                isEqualTo:
+                                    dateTimeFormat('y', widget.bill?.date),
+                              ),
+                          singleRecord: true,
+                        ).then((s) => s.firstOrNull);
+                        // set stats ref
+                        setState(() {
+                          _model.stats = _model.statsBillBelong?.reference;
+                        });
+                      }
+                      // reduce from stat
 
-                    context.pushNamed('billsList');
+                      await _model.stats!.update({
+                        ...mapToFirestore(
+                          {
+                            'bills':
+                                FieldValue.increment(-(widget.bill!.amount)),
+                          },
+                        ),
+                      });
+                      await widget.bill!.reference.delete();
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            '${valueOrDefault<String>(
+                              formatNumber(
+                                widget.bill?.amount,
+                                formatType: FormatType.decimal,
+                                decimalType: DecimalType.automatic,
+                                currency: 'Php ',
+                              ),
+                              '0',
+                            )} is deducted from ${dateTimeFormat('MMMM y', widget.bill?.date)} metrics.',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).primaryText,
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 4000),
+                          backgroundColor:
+                              FlutterFlowTheme.of(context).secondary,
+                        ),
+                      );
+                      context.safePop();
+
+                      context.pushNamed('billsList');
+                    }
 
                     setState(() {});
                   },
@@ -267,7 +389,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'Remove',
+                                'Delete',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(

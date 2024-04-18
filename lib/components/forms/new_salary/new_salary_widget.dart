@@ -6,7 +6,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'new_salary_model.dart';
 export 'new_salary_model.dart';
@@ -50,26 +49,27 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
       if (widget.edit) {
         // set rate
         setState(() {
-          _model.rateController?.text = widget.salaryDoc!.rate.toString();
+          _model.rateTextController?.text = widget.salaryDoc!.rate.toString();
         });
         // set sss
         setState(() {
-          _model.sssController?.text = widget.salaryDoc!.sss.toString();
+          _model.sssTextController?.text = widget.salaryDoc!.sss.toString();
         });
         // set ca
         setState(() {
-          _model.caController?.text = widget.salaryDoc!.cashAdvance.toString();
+          _model.caTextController?.text =
+              widget.salaryDoc!.cashAdvance.toString();
         });
         if (widget.salaryDoc?.absences != null) {
           // set absences
           setState(() {
-            _model.absencesController?.text =
+            _model.absencesTextController?.text =
                 widget.salaryDoc!.absences.toString();
           });
         } else {
           // set to 0
           setState(() {
-            _model.absencesController?.text = '0';
+            _model.absencesTextController?.text = '0';
           });
         }
 
@@ -95,19 +95,19 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
       }
     });
 
-    _model.rateController ??= TextEditingController(
+    _model.rateTextController ??= TextEditingController(
         text: _model.edit ? widget.salaryDoc?.rate.toString() : '0');
     _model.rateFocusNode ??= FocusNode();
 
-    _model.sssController ??= TextEditingController(
+    _model.sssTextController ??= TextEditingController(
         text: _model.edit ? widget.salaryDoc?.sss.toString() : '0');
     _model.sssFocusNode ??= FocusNode();
 
-    _model.caController ??= TextEditingController(
+    _model.caTextController ??= TextEditingController(
         text: _model.edit ? widget.salaryDoc?.cashAdvance.toString() : '0');
     _model.caFocusNode ??= FocusNode();
 
-    _model.absencesController ??= TextEditingController(
+    _model.absencesTextController ??= TextEditingController(
         text: _model.edit ? widget.salaryDoc?.absences.toString() : '0');
     _model.absencesFocusNode ??= FocusNode();
 
@@ -237,7 +237,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       });
                                       // set sss
                                       setState(() {
-                                        _model.sssController?.text = widget
+                                        _model.sssTextController?.text = widget
                                             .staffsForSelection!
                                             .where((e) =>
                                                 e.name == _model.dropDownValue)
@@ -248,7 +248,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       });
                                       // set rate
                                       setState(() {
-                                        _model.rateController?.text = widget
+                                        _model.rateTextController?.text = widget
                                             .staffsForSelection!
                                             .where((e) =>
                                                 e.name == _model.dropDownValue)
@@ -291,7 +291,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                         }
                                         // set CAs
                                         setState(() {
-                                          _model.caController?.text = _model
+                                          _model.caTextController?.text = _model
                                               .cashAdvanceTotal
                                               .toString();
                                         });
@@ -334,7 +334,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                         }
                                         // set absences in form
                                         setState(() {
-                                          _model.absencesController?.text =
+                                          _model.absencesTextController?.text =
                                               _model.absencesTotal.toString();
                                         });
                                       }
@@ -387,7 +387,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextFormField(
-                              controller: _model.rateController,
+                              controller: _model.rateTextController,
                               focusNode: _model.rateFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -400,7 +400,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 28.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -418,21 +418,18 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              validator: _model.rateControllerValidator
+                                      signed: true, decimal: true),
+                              validator: _model.rateTextControllerValidator
                                   .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[a-zA-Z0-9]'))
-                              ],
                             ),
                             TextFormField(
-                              controller: _model.sssController,
+                              controller: _model.sssTextController,
                               focusNode: _model.sssFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -444,7 +441,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 28.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -462,21 +459,18 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              validator: _model.sssControllerValidator
+                                      signed: true, decimal: true),
+                              validator: _model.sssTextControllerValidator
                                   .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[a-zA-Z0-9]'))
-                              ],
                             ),
                             TextFormField(
-                              controller: _model.caController,
+                              controller: _model.caTextController,
                               focusNode: _model.caFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -488,7 +482,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 28.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -506,21 +500,18 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              validator: _model.caControllerValidator
+                                      signed: true, decimal: true),
+                              validator: _model.caTextControllerValidator
                                   .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[a-zA-Z0-9]'))
-                              ],
                             ),
                             TextFormField(
-                              controller: _model.absencesController,
+                              controller: _model.absencesTextController,
                               focusNode: _model.absencesFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -532,7 +523,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 28.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -550,18 +541,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              validator: _model.absencesControllerValidator
+                                      signed: true, decimal: true),
+                              validator: _model.absencesTextControllerValidator
                                   .asValidator(context),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[a-zA-Z0-9]'))
-                              ],
                             ),
                           ],
                         ),
@@ -599,14 +587,14 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     ),
                                     TextSpan(
                                       text: formatNumber(
-                                        (double.parse(
-                                                _model.rateController.text) -
+                                        (double.parse(_model
+                                                .rateTextController.text) -
                                             double.parse(
-                                                _model.sssController.text) -
+                                                _model.sssTextController.text) -
                                             double.parse(
-                                                _model.caController.text) -
+                                                _model.caTextController.text) -
                                             double.parse(_model
-                                                .absencesController.text)),
+                                                .absencesTextController.text)),
                                         formatType: FormatType.decimal,
                                         decimalType: DecimalType.automatic,
                                         currency: 'P ',
@@ -649,21 +637,22 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       await widget.salaryDoc!.reference.update({
                                         ...createSalariesRecordData(
                                           sss: double.tryParse(
-                                              _model.sssController.text),
+                                              _model.sssTextController.text),
                                           cashAdvance: double.tryParse(
-                                              _model.caController.text),
-                                          total: (double.parse(
-                                                  _model.rateController.text) -
-                                              double.parse(
-                                                  _model.sssController.text) -
-                                              double.parse(
-                                                  _model.caController.text) -
+                                              _model.caTextController.text),
+                                          total: (double.parse(_model
+                                                  .rateTextController.text) -
                                               double.parse(_model
-                                                  .absencesController.text)),
+                                                  .sssTextController.text) -
+                                              double.parse(_model
+                                                  .caTextController.text) -
+                                              double.parse(_model
+                                                  .absencesTextController
+                                                  .text)),
                                           rate: double.tryParse(
-                                              _model.rateController.text),
-                                          absences: double.tryParse(
-                                              _model.absencesController.text),
+                                              _model.rateTextController.text),
+                                          absences: double.tryParse(_model
+                                              .absencesTextController.text),
                                         ),
                                         ...mapToFirestore(
                                           {
@@ -689,23 +678,24 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       await salariesRecordReference2.set({
                                         ...createSalariesRecordData(
                                           sss: double.parse(
-                                              _model.sssController.text),
+                                              _model.sssTextController.text),
                                           cashAdvance: double.parse(
-                                              _model.caController.text),
-                                          total: (double.parse(
-                                                  _model.rateController.text) -
-                                              double.parse(
-                                                  _model.sssController.text) -
-                                              double.parse(
-                                                  _model.caController.text) -
+                                              _model.caTextController.text),
+                                          total: (double.parse(_model
+                                                  .rateTextController.text) -
                                               double.parse(_model
-                                                  .absencesController.text)),
+                                                  .sssTextController.text) -
+                                              double.parse(_model
+                                                  .caTextController.text) -
+                                              double.parse(_model
+                                                  .absencesTextController
+                                                  .text)),
                                           staff:
                                               _model.selectedStaff?.reference,
                                           rate: double.parse(
-                                              _model.rateController.text),
-                                          absences: double.parse(
-                                              _model.absencesController.text),
+                                              _model.rateTextController.text),
+                                          absences: double.parse(_model
+                                              .absencesTextController.text),
                                         ),
                                         ...mapToFirestore(
                                           {
@@ -724,23 +714,24 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                           SalariesRecord.getDocumentFromData({
                                         ...createSalariesRecordData(
                                           sss: double.parse(
-                                              _model.sssController.text),
+                                              _model.sssTextController.text),
                                           cashAdvance: double.parse(
-                                              _model.caController.text),
-                                          total: (double.parse(
-                                                  _model.rateController.text) -
-                                              double.parse(
-                                                  _model.sssController.text) -
-                                              double.parse(
-                                                  _model.caController.text) -
+                                              _model.caTextController.text),
+                                          total: (double.parse(_model
+                                                  .rateTextController.text) -
                                               double.parse(_model
-                                                  .absencesController.text)),
+                                                  .sssTextController.text) -
+                                              double.parse(_model
+                                                  .caTextController.text) -
+                                              double.parse(_model
+                                                  .absencesTextController
+                                                  .text)),
                                           staff:
                                               _model.selectedStaff?.reference,
                                           rate: double.parse(
-                                              _model.rateController.text),
-                                          absences: double.parse(
-                                              _model.absencesController.text),
+                                              _model.rateTextController.text),
+                                          absences: double.parse(_model
+                                              .absencesTextController.text),
                                         ),
                                         ...mapToFirestore(
                                           {

@@ -48,28 +48,28 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
       if (widget.edit) {
         // set name
         setState(() {
-          _model.nameController?.text = widget.name!;
+          _model.nameTextController?.text = widget.name!;
         });
         // set sss
         setState(() {
-          _model.sssController?.text = widget.sss!.toString();
+          _model.sssTextController?.text = widget.sss!.toString();
         });
         // set rate
         setState(() {
-          _model.rateController?.text = widget.weeklyRate!.toString();
+          _model.rateTextController?.text = widget.weeklyRate!.toString();
         });
       }
     });
 
-    _model.nameController ??=
+    _model.nameTextController ??=
         TextEditingController(text: widget.edit ? widget.name : '');
     _model.nameFocusNode ??= FocusNode();
 
-    _model.sssController ??=
+    _model.sssTextController ??=
         TextEditingController(text: widget.edit ? widget.sss?.toString() : '');
     _model.sssFocusNode ??= FocusNode();
 
-    _model.rateController ??= TextEditingController(
+    _model.rateTextController ??= TextEditingController(
         text: widget.edit ? widget.weeklyRate?.toString() : '');
     _model.rateFocusNode ??= FocusNode();
 
@@ -185,7 +185,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextFormField(
-                              controller: _model.nameController,
+                              controller: _model.nameTextController,
                               focusNode: _model.nameFocusNode,
                               textCapitalization: TextCapitalization.words,
                               obscureText: false,
@@ -199,7 +199,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 28.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -217,14 +217,15 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
-                              validator: _model.nameControllerValidator
+                              validator: _model.nameTextControllerValidator
                                   .asValidator(context),
                             ),
                             TextFormField(
-                              controller: _model.sssController,
+                              controller: _model.sssTextController,
                               focusNode: _model.sssFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -236,7 +237,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 28.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -254,13 +255,14 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
-                              validator: _model.sssControllerValidator
+                              validator: _model.sssTextControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -268,7 +270,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                               ],
                             ),
                             TextFormField(
-                              controller: _model.rateController,
+                              controller: _model.rateTextController,
                               focusNode: _model.rateFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -280,7 +282,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 28.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -298,11 +300,12 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
                               keyboardType: TextInputType.number,
-                              validator: _model.rateControllerValidator
+                              validator: _model.rateTextControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -374,22 +377,23 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                     await staffsRecordReference
                                         .set(createStaffsRecordData(
                                       hotel: FFAppState().hotel,
-                                      name: _model.nameController.text,
+                                      name: _model.nameTextController.text,
                                       weeklyRate: double.tryParse(
-                                          _model.rateController.text),
+                                          _model.rateTextController.text),
                                       sssRate: double.tryParse(
-                                          _model.sssController.text),
+                                          _model.sssTextController.text),
                                       fired: false,
                                     ));
                                     _model.createPayload =
                                         StaffsRecord.getDocumentFromData(
                                             createStaffsRecordData(
                                               hotel: FFAppState().hotel,
-                                              name: _model.nameController.text,
-                                              weeklyRate: double.tryParse(
-                                                  _model.rateController.text),
-                                              sssRate: double.tryParse(
-                                                  _model.sssController.text),
+                                              name: _model
+                                                  .nameTextController.text,
+                                              weeklyRate: double.tryParse(_model
+                                                  .rateTextController.text),
+                                              sssRate: double.tryParse(_model
+                                                  .sssTextController.text),
                                               fired: false,
                                             ),
                                             staffsRecordReference);
@@ -414,10 +418,10 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                     await widget.staffRef!
                                         .update(createStaffsRecordData(
                                       weeklyRate: double.tryParse(
-                                          _model.rateController.text),
+                                          _model.rateTextController.text),
                                       sssRate: double.tryParse(
-                                          _model.sssController.text),
-                                      name: _model.nameController.text,
+                                          _model.sssTextController.text),
+                                      name: _model.nameTextController.text,
                                     ));
                                   }
 

@@ -44,7 +44,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
     super.initState();
     _model = createModel(context, () => CheckedInModel());
 
-    _model.adjustController ??= TextEditingController();
+    _model.adjustTextController ??= TextEditingController();
     _model.adjustFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -1571,7 +1571,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       child:
                                                                           TextFormField(
                                                                         controller:
-                                                                            _model.adjustController,
+                                                                            _model.adjustTextController,
                                                                         focusNode:
                                                                             _model.adjustFocusNode,
                                                                         autofocus:
@@ -1644,7 +1644,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         keyboardType:
                                                                             TextInputType.number,
                                                                         validator: _model
-                                                                            .adjustControllerValidator
+                                                                            .adjustTextControllerValidator
                                                                             .asValidator(context),
                                                                         inputFormatters: [
                                                                           FilteringTextInputFormatter.allow(
@@ -1728,7 +1728,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         checkedInBookingsRecord.total,
                                                                         valueOrDefault<String>(
                                                                           _model
-                                                                              .adjustController
+                                                                              .adjustTextController
                                                                               .text,
                                                                           '0',
                                                                         )),
@@ -1755,7 +1755,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           0.0,
                                                                     ),
                                                               ),
-                                                              if (_model.adjustController
+                                                              if (_model.adjustTextController
                                                                           .text !=
                                                                       '')
                                                                 Padding(
@@ -1785,7 +1785,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     ),
                                                                     onPressed:
                                                                         () async {
-                                                                      if (_model.adjustController.text !=
+                                                                      if (_model.adjustTextController.text !=
                                                                               '') {
                                                                         // update Booking
 
@@ -1799,7 +1799,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               ),
                                                                               checkedInBookingsRecord.total,
                                                                               valueOrDefault<String>(
-                                                                                _model.adjustController.text,
+                                                                                _model.adjustTextController.text,
                                                                                 '0',
                                                                               )),
                                                                         ));
@@ -1833,7 +1833,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                       _model.operator,
                                                                                       checkedInBookingsRecord.total,
                                                                                       valueOrDefault<String>(
-                                                                                        _model.adjustController.text,
+                                                                                        _model.adjustTextController.text,
                                                                                         '0',
                                                                                       ))!),
                                                                               booking: widget.booking,
@@ -1844,7 +1844,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
                                                                                   return priceChange ~/ bedPrice.abs().toString() + " ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
-                                                                                    _model.adjustController.text,
+                                                                                    _model.adjustTextController.text,
                                                                                     '0',
                                                                                   ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
                                                                               remitted: false,
@@ -1866,7 +1866,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                       _model.operator,
                                                                                       checkedInBookingsRecord.total,
                                                                                       valueOrDefault<String>(
-                                                                                        _model.adjustController.text,
+                                                                                        _model.adjustTextController.text,
                                                                                         '0',
                                                                                       ))!),
                                                                               booking: widget.booking,
@@ -1877,7 +1877,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
                                                                                   return priceChange ~/ bedPrice.abs().toString() + " ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
-                                                                                    _model.adjustController.text,
+                                                                                    _model.adjustTextController.text,
                                                                                     '0',
                                                                                   ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
                                                                               remitted: false,
@@ -1908,10 +1908,10 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               .set({
                                                                             ...createHistoryRecordData(
                                                                               description: 'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
-                                                                                    _model.adjustController.text,
+                                                                                    _model.adjustTextController.text,
                                                                                     '0',
                                                                                   ))?.toString()}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
-                                                                                    _model.adjustController.text,
+                                                                                    _model.adjustTextController.text,
                                                                                     '0',
                                                                                   ))!).toString()}.',
                                                                               staff: currentUserReference,
@@ -1939,7 +1939,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                       _model.operator,
                                                                                       checkedInBookingsRecord.total,
                                                                                       valueOrDefault<String>(
-                                                                                        _model.adjustController.text,
+                                                                                        _model.adjustTextController.text,
                                                                                         '0',
                                                                                       ))!),
                                                                               booking: widget.booking,
@@ -1950,7 +1950,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
                                                                                   return "${priceChange ~/ bedPrice.abs()} ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
-                                                                                    _model.adjustController.text,
+                                                                                    _model.adjustTextController.text,
                                                                                     '0',
                                                                                   ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
                                                                               remitted: false,
@@ -1972,7 +1972,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                       _model.operator,
                                                                                       checkedInBookingsRecord.total,
                                                                                       valueOrDefault<String>(
-                                                                                        _model.adjustController.text,
+                                                                                        _model.adjustTextController.text,
                                                                                         '0',
                                                                                       ))!),
                                                                               booking: widget.booking,
@@ -1983,7 +1983,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
                                                                                   return "${priceChange ~/ bedPrice.abs()} ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
-                                                                                    _model.adjustController.text,
+                                                                                    _model.adjustTextController.text,
                                                                                     '0',
                                                                                   ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
                                                                               remitted: false,
@@ -2014,10 +2014,10 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               .set({
                                                                             ...createHistoryRecordData(
                                                                               description: 'There was a change of price from ${checkedInBookingsRecord.total.toString()} to ${functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
-                                                                                    _model.adjustController.text,
+                                                                                    _model.adjustTextController.text,
                                                                                     '0',
                                                                                   ))?.toString()}. For the reason ${_model.priceChangedescriptionValue}. This caused a price change of ${functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
-                                                                                    _model.adjustController.text,
+                                                                                    _model.adjustTextController.text,
                                                                                     '0',
                                                                                   ))!).toString()}. But payment is pending.',
                                                                               staff: currentUserReference,
@@ -2039,7 +2039,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               .booking!
                                                                               .update(createBookingsRecordData(
                                                                             extraBeds:
-                                                                                (functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.adjustController.text)) ~/ _model.hotelSetting!.bedPrice.abs()).toString(),
+                                                                                (functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.adjustTextController.text)) ~/ _model.hotelSetting!.bedPrice.abs()).toString(),
                                                                           ));
                                                                         }
                                                                         context

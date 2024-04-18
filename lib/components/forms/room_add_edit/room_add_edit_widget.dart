@@ -44,15 +44,15 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
     super.initState();
     _model = createModel(context, () => RoomAddEditModel());
 
-    _model.numberController ??= TextEditingController(
+    _model.numberTextController ??= TextEditingController(
         text: widget.edit ? widget.number?.toString() : '');
     _model.numberFocusNode ??= FocusNode();
 
-    _model.priceController ??= TextEditingController(
+    _model.priceTextController ??= TextEditingController(
         text: widget.edit ? widget.price?.toString() : '');
     _model.priceFocusNode ??= FocusNode();
 
-    _model.capacityController ??= TextEditingController(
+    _model.capacityTextController ??= TextEditingController(
         text: widget.edit ? widget.capacity?.toString() : '');
     _model.capacityFocusNode ??= FocusNode();
 
@@ -166,7 +166,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextFormField(
-                              controller: _model.numberController,
+                              controller: _model.numberTextController,
                               focusNode: _model.numberFocusNode,
                               textCapitalization: TextCapitalization.words,
                               obscureText: false,
@@ -202,7 +202,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                   ),
                               minLines: 1,
                               keyboardType: TextInputType.number,
-                              validator: _model.numberControllerValidator
+                              validator: _model.numberTextControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -210,7 +210,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                               ],
                             ),
                             TextFormField(
-                              controller: _model.priceController,
+                              controller: _model.priceTextController,
                               focusNode: _model.priceFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -246,7 +246,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
-                              validator: _model.priceControllerValidator
+                              validator: _model.priceTextControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -254,7 +254,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                               ],
                             ),
                             TextFormField(
-                              controller: _model.capacityController,
+                              controller: _model.capacityTextController,
                               focusNode: _model.capacityFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -288,7 +288,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                   ),
                               minLines: 1,
                               keyboardType: TextInputType.number,
-                              validator: _model.capacityControllerValidator
+                              validator: _model.capacityTextControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -358,11 +358,11 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                     await roomsRecordReference
                                         .set(createRoomsRecordData(
                                       number: int.tryParse(
-                                          _model.numberController.text),
+                                          _model.numberTextController.text),
                                       capacity: int.tryParse(
-                                          _model.capacityController.text),
+                                          _model.capacityTextController.text),
                                       price: double.tryParse(
-                                          _model.priceController.text),
+                                          _model.priceTextController.text),
                                       vacant: true,
                                       guests: 0,
                                       hotel: FFAppState().hotel,
@@ -370,12 +370,12 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                     _model.createRoom =
                                         RoomsRecord.getDocumentFromData(
                                             createRoomsRecordData(
-                                              number: int.tryParse(
-                                                  _model.numberController.text),
+                                              number: int.tryParse(_model
+                                                  .numberTextController.text),
                                               capacity: int.tryParse(_model
-                                                  .capacityController.text),
-                                              price: double.tryParse(
-                                                  _model.priceController.text),
+                                                  .capacityTextController.text),
+                                              price: double.tryParse(_model
+                                                  .priceTextController.text),
                                               vacant: true,
                                               guests: 0,
                                               hotel: FFAppState().hotel,
@@ -420,11 +420,11 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                     await widget.roomRef!
                                         .update(createRoomsRecordData(
                                       number: int.tryParse(
-                                          _model.numberController.text),
+                                          _model.numberTextController.text),
                                       capacity: int.tryParse(
-                                          _model.capacityController.text),
+                                          _model.capacityTextController.text),
                                       price: double.tryParse(
-                                          _model.priceController.text),
+                                          _model.priceTextController.text),
                                     ));
                                     // history update
 
@@ -438,11 +438,12 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                                 widget.price!,
                                                 widget.capacity!,
                                                 int.parse(_model
-                                                    .numberController.text),
+                                                    .numberTextController.text),
                                                 double.parse(_model
-                                                    .priceController.text),
+                                                    .priceTextController.text),
                                                 int.parse(_model
-                                                    .capacityController.text)),
+                                                    .capacityTextController
+                                                    .text)),
                                         staff: currentUserReference,
                                       ),
                                       ...mapToFirestore(

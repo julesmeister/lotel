@@ -42,11 +42,11 @@ class _NameEditWidgetState extends State<NameEditWidget> {
         _model.user = _model.userToEdit;
       });
       setState(() {
-        _model.nameController?.text = _model.userToEdit!.displayName;
+        _model.nameTextController?.text = _model.userToEdit!.displayName;
       });
     });
 
-    _model.nameController ??= TextEditingController();
+    _model.nameTextController ??= TextEditingController();
     _model.nameFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -154,7 +154,7 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
                         child: TextFormField(
-                          controller: _model.nameController,
+                          controller: _model.nameTextController,
                           focusNode: _model.nameFocusNode,
                           textCapitalization: TextCapitalization.words,
                           obscureText: false,
@@ -194,7 +194,7 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                     letterSpacing: 0.0,
                                   ),
                           minLines: 1,
-                          validator: _model.nameControllerValidator
+                          validator: _model.nameTextControllerValidator
                               .asValidator(context),
                         ),
                       ),
@@ -225,7 +225,7 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                 onTap: () async {
                                   await _model.user!.reference
                                       .update(createUsersRecordData(
-                                    displayName: _model.nameController.text,
+                                    displayName: _model.nameTextController.text,
                                   ));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

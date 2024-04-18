@@ -8,16 +8,16 @@ class BillEditModel extends FlutterFlowModel<BillEditWidget> {
 
   // State field(s) for desc widget.
   FocusNode? descFocusNode;
-  TextEditingController? descController;
-  String? Function(BuildContext, String?)? descControllerValidator;
+  TextEditingController? descTextController;
+  String? Function(BuildContext, String?)? descTextControllerValidator;
   // State field(s) for amount widget.
   FocusNode? amountFocusNode;
-  TextEditingController? amountController;
-  String? Function(BuildContext, String?)? amountControllerValidator;
+  TextEditingController? amountTextController;
+  String? Function(BuildContext, String?)? amountTextControllerValidator;
   // State field(s) for afterdue widget.
   FocusNode? afterdueFocusNode;
-  TextEditingController? afterdueController;
-  String? Function(BuildContext, String?)? afterdueControllerValidator;
+  TextEditingController? afterdueTextController;
+  String? Function(BuildContext, String?)? afterdueTextControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in Row widget.
   StatsRecord? rightStats;
 
@@ -27,12 +27,12 @@ class BillEditModel extends FlutterFlowModel<BillEditWidget> {
   @override
   void dispose() {
     descFocusNode?.dispose();
-    descController?.dispose();
+    descTextController?.dispose();
 
     amountFocusNode?.dispose();
-    amountController?.dispose();
+    amountTextController?.dispose();
 
     afterdueFocusNode?.dispose();
-    afterdueController?.dispose();
+    afterdueTextController?.dispose();
   }
 }

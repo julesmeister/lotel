@@ -53,12 +53,12 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
   int? nightsValue;
   // State field(s) for ContactField widget.
   FocusNode? contactFieldFocusNode;
-  TextEditingController? contactFieldController;
-  String? Function(BuildContext, String?)? contactFieldControllerValidator;
+  TextEditingController? contactFieldTextController;
+  String? Function(BuildContext, String?)? contactFieldTextControllerValidator;
   // State field(s) for DetailsField widget.
   FocusNode? detailsFieldFocusNode;
-  TextEditingController? detailsFieldController;
-  String? Function(BuildContext, String?)? detailsFieldControllerValidator;
+  TextEditingController? detailsFieldTextController;
+  String? Function(BuildContext, String?)? detailsFieldTextControllerValidator;
   // State field(s) for beds widget.
   FormFieldController<List<String>>? bedsValueController;
   String? get bedsValue => bedsValueController?.value?.firstOrNull;
@@ -94,9 +94,9 @@ class CheckInModel extends FlutterFlowModel<CheckInWidget> {
   @override
   void dispose() {
     contactFieldFocusNode?.dispose();
-    contactFieldController?.dispose();
+    contactFieldTextController?.dispose();
 
     detailsFieldFocusNode?.dispose();
-    detailsFieldController?.dispose();
+    detailsFieldTextController?.dispose();
   }
 }

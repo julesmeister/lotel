@@ -33,7 +33,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
     super.initState();
     _model = createModel(context, () => HistoryEditModel());
 
-    _model.detailsController ??=
+    _model.detailsTextController ??=
         TextEditingController(text: widget.history?.description);
     _model.detailsFocusNode ??= FocusNode();
 
@@ -142,7 +142,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
                         child: TextFormField(
-                          controller: _model.detailsController,
+                          controller: _model.detailsTextController,
                           focusNode: _model.detailsFocusNode,
                           textCapitalization: TextCapitalization.sentences,
                           obscureText: false,
@@ -182,7 +182,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                     letterSpacing: 0.0,
                                   ),
                           minLines: 1,
-                          validator: _model.detailsControllerValidator
+                          validator: _model.detailsTextControllerValidator
                               .asValidator(context),
                         ),
                       ),
@@ -288,7 +288,8 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                 onTap: () async {
                                   await widget.history!.reference
                                       .update(createHistoryRecordData(
-                                    description: _model.detailsController.text,
+                                    description:
+                                        _model.detailsTextController.text,
                                   ));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

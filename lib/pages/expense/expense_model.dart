@@ -29,12 +29,12 @@ class ExpenseModel extends FlutterFlowModel<ExpenseWidget> {
   GoodsRevenueRatioRecord? lastGrrCopy;
   // State field(s) for amount widget.
   FocusNode? amountFocusNode;
-  TextEditingController? amountController;
-  String? Function(BuildContext, String?)? amountControllerValidator;
+  TextEditingController? amountTextController;
+  String? Function(BuildContext, String?)? amountTextControllerValidator;
   // State field(s) for description widget.
   FocusNode? descriptionFocusNode;
-  TextEditingController? descriptionController;
-  String? Function(BuildContext, String?)? descriptionControllerValidator;
+  TextEditingController? descriptionTextController;
+  String? Function(BuildContext, String?)? descriptionTextControllerValidator;
   // State field(s) for choices widget.
   FormFieldController<List<String>>? choicesValueController;
   String? get choicesValue => choicesValueController?.value?.firstOrNull;
@@ -68,10 +68,10 @@ class ExpenseModel extends FlutterFlowModel<ExpenseWidget> {
   void dispose() {
     unfocusNode.dispose();
     amountFocusNode?.dispose();
-    amountController?.dispose();
+    amountTextController?.dispose();
 
     descriptionFocusNode?.dispose();
-    descriptionController?.dispose();
+    descriptionTextController?.dispose();
 
     /// Dispose query cache managers for this widget.
 

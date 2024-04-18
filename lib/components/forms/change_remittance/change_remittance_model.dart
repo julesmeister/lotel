@@ -132,12 +132,12 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
   List<TransactionsRecord>? toRemit;
   // State field(s) for amount widget.
   FocusNode? amountFocusNode;
-  TextEditingController? amountController;
-  String? Function(BuildContext, String?)? amountControllerValidator;
+  TextEditingController? amountTextController;
+  String? Function(BuildContext, String?)? amountTextControllerValidator;
   // State field(s) for changeExtra widget.
   FocusNode? changeExtraFocusNode;
-  TextEditingController? changeExtraController;
-  String? Function(BuildContext, String?)? changeExtraControllerValidator;
+  TextEditingController? changeExtraTextController;
+  String? Function(BuildContext, String?)? changeExtraTextControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   List<TransactionsRecord>? transactions;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
@@ -157,9 +157,9 @@ class ChangeRemittanceModel extends FlutterFlowModel<ChangeRemittanceWidget> {
   @override
   void dispose() {
     amountFocusNode?.dispose();
-    amountController?.dispose();
+    amountTextController?.dispose();
 
     changeExtraFocusNode?.dispose();
-    changeExtraController?.dispose();
+    changeExtraTextController?.dispose();
   }
 }

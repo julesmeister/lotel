@@ -16,12 +16,12 @@ class PromoModel extends FlutterFlowModel<PromoWidget> {
   bool? switchValue;
   // State field(s) for detail widget.
   FocusNode? detailFocusNode;
-  TextEditingController? detailController;
-  String? Function(BuildContext, String?)? detailControllerValidator;
+  TextEditingController? detailTextController;
+  String? Function(BuildContext, String?)? detailTextControllerValidator;
   // State field(s) for percent widget.
   FocusNode? percentFocusNode;
-  TextEditingController? percentController;
-  String? Function(BuildContext, String?)? percentControllerValidator;
+  TextEditingController? percentTextController;
+  String? Function(BuildContext, String?)? percentTextControllerValidator;
 
   @override
   void initState(BuildContext context) {}
@@ -29,9 +29,9 @@ class PromoModel extends FlutterFlowModel<PromoWidget> {
   @override
   void dispose() {
     detailFocusNode?.dispose();
-    detailController?.dispose();
+    detailTextController?.dispose();
 
     percentFocusNode?.dispose();
-    percentController?.dispose();
+    percentTextController?.dispose();
   }
 }

@@ -56,27 +56,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(0.0, 100.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -160,14 +140,35 @@ class _CheckInWidgetState extends State<CheckInWidget>
       }
     });
 
-    _model.contactFieldController ??= TextEditingController(
+    _model.contactFieldTextController ??= TextEditingController(
         text: widget.extend == true ? widget.bookingToExtend?.contact : '');
     _model.contactFieldFocusNode ??= FocusNode();
 
-    _model.detailsFieldController ??= TextEditingController(
+    _model.detailsFieldTextController ??= TextEditingController(
         text: widget.extend == true ? widget.bookingToExtend?.details : '');
     _model.detailsFieldFocusNode ??= FocusNode();
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 100.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -588,7 +589,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
                                   child: TextFormField(
-                                    controller: _model.contactFieldController,
+                                    controller:
+                                        _model.contactFieldTextController,
                                     focusNode: _model.contactFieldFocusNode,
                                     obscureText: false,
                                     decoration: InputDecoration(
@@ -655,7 +657,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           letterSpacing: 0.0,
                                         ),
                                     validator: _model
-                                        .contactFieldControllerValidator
+                                        .contactFieldTextControllerValidator
                                         .asValidator(context),
                                   ),
                                 ),
@@ -670,7 +672,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
                                   child: TextFormField(
-                                    controller: _model.detailsFieldController,
+                                    controller:
+                                        _model.detailsFieldTextController,
                                     focusNode: _model.detailsFieldFocusNode,
                                     obscureText: false,
                                     decoration: InputDecoration(
@@ -740,7 +743,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     minLines: 3,
                                     keyboardType: TextInputType.multiline,
                                     validator: _model
-                                        .detailsFieldControllerValidator
+                                        .detailsFieldTextControllerValidator
                                         .asValidator(context),
                                   ),
                                 ),
@@ -1792,9 +1795,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         await widget.bookingToExtend!.reference
                                             .update(createBookingsRecordData(
                                           details: _model
-                                              .detailsFieldController.text,
+                                              .detailsFieldTextController.text,
                                           contact: _model
-                                              .contactFieldController.text,
+                                              .contactFieldTextController.text,
                                         ));
                                         // updated
                                         ScaffoldMessenger.of(context)
@@ -2171,10 +2174,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         extraBeds: _model.bedsValue,
                                         status: functions
                                             .paidOrPending(_model.paid),
-                                        details:
-                                            _model.detailsFieldController.text,
-                                        contact:
-                                            _model.contactFieldController.text,
+                                        details: _model
+                                            .detailsFieldTextController.text,
+                                        contact: _model
+                                            .contactFieldTextController.text,
                                         staff: currentUserReference,
                                         guests: _model.guestsValue,
                                         room: widget.ref,
@@ -2211,10 +2214,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     await bookingsRecordReference.set({
                                       ...createBookingsRecordData(
                                         nights: _model.nightsValue,
-                                        details:
-                                            _model.detailsFieldController.text,
-                                        contact:
-                                            _model.contactFieldController.text,
+                                        details: _model
+                                            .detailsFieldTextController.text,
+                                        contact: _model
+                                            .contactFieldTextController.text,
                                         hotel: FFAppState().hotel,
                                         room: widget.ref,
                                         extraBeds: _model.bedsValue,
@@ -2251,10 +2254,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         BookingsRecord.getDocumentFromData({
                                       ...createBookingsRecordData(
                                         nights: _model.nightsValue,
-                                        details:
-                                            _model.detailsFieldController.text,
-                                        contact:
-                                            _model.contactFieldController.text,
+                                        details: _model
+                                            .detailsFieldTextController.text,
+                                        contact: _model
+                                            .contactFieldTextController.text,
                                         hotel: FFAppState().hotel,
                                         room: widget.ref,
                                         extraBeds: _model.bedsValue,
@@ -2463,7 +2466,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           .set({
                                         ...createHistoryRecordData(
                                           description:
-                                              'New check in ${_model.ability != 'normal' ? 'by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''} ' : ''}but pending payment.',
+                                              'New check in ${_model.ability != 'normal' ? 'by a ${_model.ability} ' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''} ' : ''}but pending payment.',
                                           staff: currentUserReference,
                                           booking:
                                               _model.savedBooking?.reference,

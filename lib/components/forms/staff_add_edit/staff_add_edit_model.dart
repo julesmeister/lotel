@@ -28,16 +28,16 @@ class StaffAddEditModel extends FlutterFlowModel<StaffAddEditWidget> {
 
   // State field(s) for name widget.
   FocusNode? nameFocusNode;
-  TextEditingController? nameController;
-  String? Function(BuildContext, String?)? nameControllerValidator;
+  TextEditingController? nameTextController;
+  String? Function(BuildContext, String?)? nameTextControllerValidator;
   // State field(s) for sss widget.
   FocusNode? sssFocusNode;
-  TextEditingController? sssController;
-  String? Function(BuildContext, String?)? sssControllerValidator;
+  TextEditingController? sssTextController;
+  String? Function(BuildContext, String?)? sssTextControllerValidator;
   // State field(s) for rate widget.
   FocusNode? rateFocusNode;
-  TextEditingController? rateController;
-  String? Function(BuildContext, String?)? rateControllerValidator;
+  TextEditingController? rateTextController;
+  String? Function(BuildContext, String?)? rateTextControllerValidator;
   // Stores action output result for [Backend Call - Create Document] action in Row widget.
   StaffsRecord? createPayload;
 
@@ -47,12 +47,12 @@ class StaffAddEditModel extends FlutterFlowModel<StaffAddEditWidget> {
   @override
   void dispose() {
     nameFocusNode?.dispose();
-    nameController?.dispose();
+    nameTextController?.dispose();
 
     sssFocusNode?.dispose();
-    sssController?.dispose();
+    sssTextController?.dispose();
 
     rateFocusNode?.dispose();
-    rateController?.dispose();
+    rateTextController?.dispose();
   }
 }

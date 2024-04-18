@@ -34,27 +34,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
     with TickerProviderStateMixin {
   late MissingInventoryModel _model;
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: const Offset(30.0, 0.0),
-          end: const Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void setState(VoidCallback callback) {
@@ -67,16 +47,39 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
     super.initState();
     _model = createModel(context, () => MissingInventoryModel());
 
-    _model.descController ??= TextEditingController(text: widget.description);
+    _model.descTextController ??=
+        TextEditingController(text: widget.description);
     _model.descFocusNode ??= FocusNode();
 
-    _model.quantityController ??=
+    _model.quantityTextController ??=
         TextEditingController(text: widget.quantity?.toString());
     _model.quantityFocusNode ??= FocusNode();
 
-    _model.whyController ??= TextEditingController(text: 'fills missing data');
+    _model.whyTextController ??=
+        TextEditingController(text: 'fills missing data');
     _model.whyFocusNode ??= FocusNode();
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(30.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -310,7 +313,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextFormField(
-                              controller: _model.descController,
+                              controller: _model.descTextController,
                               focusNode: _model.descFocusNode,
                               textCapitalization: TextCapitalization.words,
                               obscureText: false,
@@ -345,11 +348,11 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
-                              validator: _model.descControllerValidator
+                              validator: _model.descTextControllerValidator
                                   .asValidator(context),
                             ),
                             TextFormField(
-                              controller: _model.quantityController,
+                              controller: _model.quantityTextController,
                               focusNode: _model.quantityFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -383,7 +386,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                   ),
                               minLines: 1,
                               keyboardType: TextInputType.number,
-                              validator: _model.quantityControllerValidator
+                              validator: _model.quantityTextControllerValidator
                                   .asValidator(context),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -391,7 +394,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                               ],
                             ),
                             TextFormField(
-                              controller: _model.whyController,
+                              controller: _model.whyTextController,
                               focusNode: _model.whyFocusNode,
                               obscureText: false,
                               decoration: InputDecoration(
@@ -424,7 +427,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
-                              validator: _model.whyControllerValidator
+                              validator: _model.whyTextControllerValidator
                                   .asValidator(context),
                             ),
                           ],
@@ -506,15 +509,15 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     await inventoriesRecordReference
                                         .set(createInventoriesRecordData(
                                       date: widget.transaction?.date,
-                                      activity: _model.whyController.text,
+                                      activity: _model.whyTextController.text,
                                       hotel: FFAppState().hotel,
                                       staff: currentUserReference,
                                       quantityChange: int.tryParse(
-                                          _model.quantityController.text),
+                                          _model.quantityTextController.text),
                                       previousQuantity: (_model.good!.quantity -
                                               (widget.quantity!))
                                           .abs(),
-                                      item: _model.descController.text,
+                                      item: _model.descTextController.text,
                                       operator: 'minus',
                                       previousPrice: _model.good?.price,
                                       priceChange: _model.good?.price,
@@ -525,17 +528,18 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                             createInventoriesRecordData(
                                               date: widget.transaction?.date,
                                               activity:
-                                                  _model.whyController.text,
+                                                  _model.whyTextController.text,
                                               hotel: FFAppState().hotel,
                                               staff: currentUserReference,
                                               quantityChange: int.tryParse(
-                                                  _model
-                                                      .quantityController.text),
+                                                  _model.quantityTextController
+                                                      .text),
                                               previousQuantity:
                                                   (_model.good!.quantity -
                                                           (widget.quantity!))
                                                       .abs(),
-                                              item: _model.descController.text,
+                                              item: _model
+                                                  .descTextController.text,
                                               operator: 'minus',
                                               previousPrice: _model.good?.price,
                                               priceChange: _model.good?.price,
