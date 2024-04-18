@@ -619,6 +619,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                           hintStyle:
                               FlutterFlowTheme.of(context).labelMedium.override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 24.0,
                                     letterSpacing: 0.0,
                                   ),
                           enabledBorder: UnderlineInputBorder(
@@ -654,6 +655,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
+                              fontSize: 24.0,
                               letterSpacing: 0.0,
                             ),
                         maxLines: 16,

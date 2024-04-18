@@ -112,7 +112,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
                           child: SizedBox(
-                            height: 550.0,
+                            height: double.infinity,
                             child: BillEditWidget(
                               bill: _model.billToChange!,
                               description: _model.billToChange!.description,
@@ -181,50 +181,81 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: const Text('Bookmark'),
-                              content: const Text(
-                                  'Bookmarking this bill detail will simplify future inputs. It\'ll appear in the choices box, just a click away.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      await OptionsRecord.collection
-                          .doc()
-                          .set(createOptionsRecordData(
-                            type: 'bill',
-                            choice: widget.bill?.description,
-                          ));
+                    // find similar
+                    _model.existingBill = await queryOptionsRecordCount(
+                      queryBuilder: (optionsRecord) => optionsRecord
+                          .where(
+                            'type',
+                            isEqualTo: 'bill',
+                          )
+                          .where(
+                            'choice',
+                            isEqualTo: widget.bill?.description,
+                          ),
+                    );
+                    if (_model.existingBill == 1) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            'Bookmark successfully created!',
+                            'This bill option already exists in the bookmarks!',
                             style: TextStyle(
-                              color: FlutterFlowTheme.of(context).primaryText,
+                              color: FlutterFlowTheme.of(context).accent4,
                             ),
                           ),
                           duration: const Duration(milliseconds: 4000),
-                          backgroundColor:
-                              FlutterFlowTheme.of(context).secondary,
+                          backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
+                      Navigator.pop(context);
+                    } else {
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Bookmark'),
+                                content: const Text(
+                                    'Bookmarking this bill detail will simplify future inputs. It\'ll appear in the choices box, just a click away.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        await OptionsRecord.collection
+                            .doc()
+                            .set(createOptionsRecordData(
+                              type: 'bill',
+                              choice: widget.bill?.description,
+                            ));
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Bookmark successfully created!',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
+                          ),
+                        );
+                      }
                     }
+
+                    setState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -251,7 +282,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'Bookmark this bill for easy access.',
+                                'Bookmark this bill for easy access',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(

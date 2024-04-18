@@ -864,6 +864,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                           hintStyle:
                               FlutterFlowTheme.of(context).labelMedium.override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 24.0,
                                     letterSpacing: 0.0,
                                   ),
                           enabledBorder: UnderlineInputBorder(
@@ -899,6 +900,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
+                              fontSize: 24.0,
                               letterSpacing: 0.0,
                             ),
                         maxLines: 16,

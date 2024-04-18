@@ -307,7 +307,7 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
                                               child: SizedBox(
-                                                height: 217.0,
+                                                height: 218.0,
                                                 child: OptionToBillWidget(
                                                   bill: listViewBillsRecord,
                                                 ),

@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -81,6 +82,13 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
         setState(() {
           _model.absencesList =
               _model.occuringAbsences!.toList().cast<AbsencesRecord>();
+        });
+        // fill total
+        setState(() {
+          _model.total = (double.parse(_model.rateTextController.text) -
+              double.parse(_model.sssTextController.text) -
+              double.parse(_model.caTextController.text) -
+              double.parse(_model.absencesTextController.text));
         });
       } else {
         _model.staffs = await queryStaffsRecordOnce(
@@ -389,10 +397,33 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                             TextFormField(
                               controller: _model.rateTextController,
                               focusNode: _model.rateFocusNode,
+                              onChanged: (_) => EasyDebounce.debounce(
+                                '_model.rateTextController',
+                                const Duration(milliseconds: 2000),
+                                () async {
+                                  setState(() {
+                                    _model.total = (double.parse(
+                                            _model.rateTextController.text) -
+                                        double.parse(
+                                            _model.sssTextController.text) -
+                                        double.parse(
+                                            _model.caTextController.text) -
+                                        double.parse(_model
+                                            .absencesTextController.text));
+                                  });
+                                },
+                              ),
                               obscureText: false,
                               decoration: InputDecoration(
                                 isDense: false,
                                 labelText: 'Fortnight Rate',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 24.0,
+                                      letterSpacing: 0.0,
+                                    ),
                                 hintText: 'Fortnight Rate',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
@@ -431,9 +462,32 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                             TextFormField(
                               controller: _model.sssTextController,
                               focusNode: _model.sssFocusNode,
+                              onChanged: (_) => EasyDebounce.debounce(
+                                '_model.sssTextController',
+                                const Duration(milliseconds: 2000),
+                                () async {
+                                  setState(() {
+                                    _model.total = (double.parse(
+                                            _model.rateTextController.text) -
+                                        double.parse(
+                                            _model.sssTextController.text) -
+                                        double.parse(
+                                            _model.caTextController.text) -
+                                        double.parse(_model
+                                            .absencesTextController.text));
+                                  });
+                                },
+                              ),
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelText: 'SSS',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 24.0,
+                                      letterSpacing: 0.0,
+                                    ),
                                 hintText: 'SSS',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
@@ -472,9 +526,32 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                             TextFormField(
                               controller: _model.caTextController,
                               focusNode: _model.caFocusNode,
+                              onChanged: (_) => EasyDebounce.debounce(
+                                '_model.caTextController',
+                                const Duration(milliseconds: 2000),
+                                () async {
+                                  setState(() {
+                                    _model.total = (double.parse(
+                                            _model.rateTextController.text) -
+                                        double.parse(
+                                            _model.sssTextController.text) -
+                                        double.parse(
+                                            _model.caTextController.text) -
+                                        double.parse(_model
+                                            .absencesTextController.text));
+                                  });
+                                },
+                              ),
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelText: 'Cash Advance',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 24.0,
+                                      letterSpacing: 0.0,
+                                    ),
                                 hintText: 'Cash Advance',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
@@ -513,9 +590,32 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                             TextFormField(
                               controller: _model.absencesTextController,
                               focusNode: _model.absencesFocusNode,
+                              onChanged: (_) => EasyDebounce.debounce(
+                                '_model.absencesTextController',
+                                const Duration(milliseconds: 2000),
+                                () async {
+                                  setState(() {
+                                    _model.total = (double.parse(
+                                            _model.rateTextController.text) -
+                                        double.parse(
+                                            _model.sssTextController.text) -
+                                        double.parse(
+                                            _model.caTextController.text) -
+                                        double.parse(_model
+                                            .absencesTextController.text));
+                                  });
+                                },
+                              ),
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelText: 'Absences',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 24.0,
+                                      letterSpacing: 0.0,
+                                    ),
                                 hintText: 'Absences',
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .bodyMedium
@@ -587,17 +687,10 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     ),
                                     TextSpan(
                                       text: formatNumber(
-                                        (double.parse(_model
-                                                .rateTextController.text) -
-                                            double.parse(
-                                                _model.sssTextController.text) -
-                                            double.parse(
-                                                _model.caTextController.text) -
-                                            double.parse(_model
-                                                .absencesTextController.text)),
+                                        _model.total,
                                         formatType: FormatType.decimal,
                                         decimalType: DecimalType.automatic,
-                                        currency: 'P ',
+                                        currency: 'Php ',
                                       ),
                                       style: TextStyle(
                                         color: FlutterFlowTheme.of(context)

@@ -41,6 +41,8 @@ class NewSalaryModel extends FlutterFlowModel<NewSalaryWidget> {
 
   double absencesTotal = 0.0;
 
+  double total = 0.0;
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Firestore Query - Query a collection] action in NewSalary widget.

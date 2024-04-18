@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -302,8 +303,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 await currentUserReference!
                                                     .update(
                                                         createUsersRecordData(
-                                                  displayName: _model
-                                                      .textController.text,
+                                                  displayName: functions
+                                                      .startBigLetter(_model
+                                                          .textController.text),
                                                   role: 'generic',
                                                   hotel:
                                                       _model.radioButtonValue,
@@ -329,8 +331,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                         createUsersRecordData(
                                                   role: FFAppState().role,
                                                   expired: false,
-                                                  displayName: _model
-                                                      .textController.text,
+                                                  displayName: functions
+                                                      .startBigLetter(_model
+                                                          .textController.text),
                                                   hotel:
                                                       containerHotelSettingsRecord
                                                           ?.hotel,
