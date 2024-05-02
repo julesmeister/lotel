@@ -1670,3 +1670,8 @@ double pendingsTotal(List<TransactionsRecord>? transactions) {
 
   return total; // Return the sum of transaction.total values
 }
+
+double absolute(double amount) {
+  // just turn the amount to absolute
+  return amount.abs();
+}

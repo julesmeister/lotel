@@ -50,7 +50,7 @@ class _MonthPickerState extends State<MonthPicker> {
     return // Generated code for this Container Widget...
         // Generated code for this Container Widget...
         Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
       child: InkWell(
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,
@@ -72,10 +72,10 @@ class _MonthPickerState extends State<MonthPicker> {
           });
         },
         child: Container(
-          width: double.infinity,
+          width: 234.0,
           height: 60.0,
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+            padding: EdgeInsetsDirectional.fromSTEB(0, 0.0, 0, 0.0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,

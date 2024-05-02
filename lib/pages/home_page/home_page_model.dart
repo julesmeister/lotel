@@ -90,7 +90,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
   StatsRecord? lifestyleStat;
   // State field(s) for allowRemittanceToBeSeen widget.
-  bool? allowRemittanceToBeSeenValue;
+  bool allowRemittanceToBeSeenValue = true;
   // Stores action output result for [Bottom Sheet - ChangeDate] action in Column widget.
   DateTime? adjustedLastRemit;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.

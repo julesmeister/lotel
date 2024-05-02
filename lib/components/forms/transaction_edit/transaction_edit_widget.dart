@@ -159,6 +159,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                             TextFormField(
                               controller: _model.descTextController,
                               focusNode: _model.descFocusNode,
+                              autofocus: true,
                               textCapitalization: TextCapitalization.sentences,
                               obscureText: false,
                               decoration: InputDecoration(

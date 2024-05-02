@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/change_remittance/change_remittance_widget.dart';
+import '/components/forms/extra_remittance/extra_remittance_widget.dart';
 import '/components/forms/new_grocery/new_grocery_widget.dart';
 import '/components/forms/new_issue/new_issue_widget.dart';
 import '/components/forms/promo/promo_widget.dart';
@@ -12,6 +13,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/room/occupied/occupied_widget.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
@@ -234,18 +236,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
             duration: 600.0.ms,
             begin: 1.0,
             end: 2.0,
-          ),
-        ],
-      ),
-      'columnOnPageLoadAnimation3': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          ShimmerEffect(
-            curve: Curves.easeOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            color: const Color(0x80FFFFFF),
-            angle: 0.593,
           ),
         ],
       ),
@@ -1273,26 +1263,99 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           List<TransactionsRecord>
                                               salesTodayTransactionsRecordList =
                                               snapshot.data!;
-                                          return Text(
-                                            formatNumber(
-                                              functions.totalToRemit(
-                                                  salesTodayTransactionsRecordList
-                                                      .toList()),
-                                              formatType: FormatType.decimal,
-                                              decimalType:
-                                                  DecimalType.automatic,
-                                              currency: 'P ',
+                                          return InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onDoubleTap: () async {
+                                              await showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                enableDrag: false,
+                                                useSafeArea: true,
+                                                context: context,
+                                                builder: (context) {
+                                                  return GestureDetector(
+                                                    onTap: () => _model
+                                                            .unfocusNode
+                                                            .canRequestFocus
+                                                        ? FocusScope.of(context)
+                                                            .requestFocus(_model
+                                                                .unfocusNode)
+                                                        : FocusScope.of(context)
+                                                            .unfocus(),
+                                                    child: Padding(
+                                                      padding: MediaQuery
+                                                          .viewInsetsOf(
+                                                              context),
+                                                      child: const SizedBox(
+                                                        height: double.infinity,
+                                                        child:
+                                                            ExtraRemittanceWidget(),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ).then((value) =>
+                                                  safeSetState(() {}));
+                                            },
+                                            onLongPress: () async {
+                                              await showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                enableDrag: false,
+                                                useSafeArea: true,
+                                                context: context,
+                                                builder: (context) {
+                                                  return GestureDetector(
+                                                    onTap: () => _model
+                                                            .unfocusNode
+                                                            .canRequestFocus
+                                                        ? FocusScope.of(context)
+                                                            .requestFocus(_model
+                                                                .unfocusNode)
+                                                        : FocusScope.of(context)
+                                                            .unfocus(),
+                                                    child: Padding(
+                                                      padding: MediaQuery
+                                                          .viewInsetsOf(
+                                                              context),
+                                                      child: const SizedBox(
+                                                        height: double.infinity,
+                                                        child:
+                                                            ExtraRemittanceWidget(),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ).then((value) =>
+                                                  safeSetState(() {}));
+                                            },
+                                            child: Text(
+                                              formatNumber(
+                                                functions.totalToRemit(
+                                                    salesTodayTransactionsRecordList
+                                                        .toList()),
+                                                formatType: FormatType.decimal,
+                                                decimalType:
+                                                    DecimalType.automatic,
+                                                currency: 'P ',
+                                              ),
+                                              maxLines: 1,
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .displaySmall
+                                                  .override(
+                                                    fontFamily: 'Outfit',
+                                                    color: const Color(0xFF14181B),
+                                                    fontSize: 36.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                             ),
-                                            maxLines: 1,
-                                            style: FlutterFlowTheme.of(context)
-                                                .displaySmall
-                                                .override(
-                                                  fontFamily: 'Outfit',
-                                                  color: const Color(0xFF14181B),
-                                                  fontSize: 36.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
                                           ).animateOnActionTrigger(
                                               animationsMap[
                                                   'textOnActionTriggerAnimation1']!,
@@ -1824,27 +1887,215 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 4.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 8.0, 0.0, 0.0),
-                                    child: ListView(
-                                      padding: EdgeInsets.zero,
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      children: [
-                                        Padding(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 8.0, 0.0, 0.0),
+                                  child: ListView(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      16.0,
+                                      0,
+                                      0,
+                                      0,
+                                    ),
+                                    primary: false,
+                                    scrollDirection: Axis.horizontal,
+                                    children: [
+                                      Builder(
+                                        builder: (context) => Padding(
                                           padding:
                                               const EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 8.0, 8.0),
+                                                  0.0, 0.0, 8.0, 8.0),
+                                          child:
+                                              FutureBuilder<List<RoomsRecord>>(
+                                            future: FFAppState().checkInCount(
+                                              requestFn: () =>
+                                                  queryRoomsRecordOnce(
+                                                queryBuilder: (roomsRecord) =>
+                                                    roomsRecord
+                                                        .where(
+                                                          'hotel',
+                                                          isEqualTo:
+                                                              FFAppState()
+                                                                  .hotel,
+                                                        )
+                                                        .where(
+                                                          'vacant',
+                                                          isEqualTo: false,
+                                                        ),
+                                              ),
+                                            ),
+                                            builder: (context, snapshot) {
+                                              // Customize what your widget looks like when it's loading.
+                                              if (!snapshot.hasData) {
+                                                return Center(
+                                                  child: SizedBox(
+                                                    width: 50.0,
+                                                    height: 50.0,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                              Color>(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                              List<RoomsRecord>
+                                                  checkinStatsRoomsRecordList =
+                                                  snapshot.data!;
+                                              return InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder: (dialogContext) {
+                                                      return Dialog(
+                                                        elevation: 0,
+                                                        insetPadding:
+                                                            EdgeInsets.zero,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        alignment:
+                                                            const AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                        child: GestureDetector(
+                                                          onTap: () => _model
+                                                                  .unfocusNode
+                                                                  .canRequestFocus
+                                                              ? FocusScope.of(
+                                                                      context)
+                                                                  .requestFocus(
+                                                                      _model
+                                                                          .unfocusNode)
+                                                              : FocusScope.of(
+                                                                      context)
+                                                                  .unfocus(),
+                                                          child: SizedBox(
+                                                            height: 280.0,
+                                                            child:
+                                                                OccupiedWidget(
+                                                              rooms:
+                                                                  checkinStatsRoomsRecordList,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      setState(() {}));
+                                                },
+                                                child: Container(
+                                                  width: 130.0,
+                                                  decoration: BoxDecoration(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryBackground,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    border: Border.all(
+                                                      color: const Color(0xFFE0E3E7),
+                                                      width: 2.0,
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(12.0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          checkinStatsRoomsRecordList
+                                                              .length
+                                                              .toString(),
+                                                          maxLines: 1,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .displaySmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Outfit',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ).animateOnActionTrigger(
+                                                            animationsMap[
+                                                                'textOnActionTriggerAnimation3']!,
+                                                            hasBeenTriggered:
+                                                                hasTextTriggered3),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      4.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: Text(
+                                                            'Occupancy',
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .labelMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 8.0, 8.0),
+                                        child: InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context.goNamed(
+                                              'transactions',
+                                              extra: <String, dynamic>{
+                                                kTransitionInfoKey:
+                                                    const TransitionInfo(
+                                                  hasTransition: true,
+                                                  transitionType:
+                                                      PageTransitionType
+                                                          .rightToLeft,
+                                                ),
+                                              },
+                                            );
+                                          },
                                           child: Container(
                                             width: 130.0,
                                             decoration: BoxDecoration(
@@ -1866,13 +2117,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   FutureBuilder<int>(
-                                                    future: FFAppState()
-                                                        .checkInCount(
+                                                    future: _model
+                                                        .totalTransactions(
+                                                      uniqueQueryKey:
+                                                          FFAppState().hotel,
                                                       requestFn: () =>
-                                                          queryRoomsRecordCount(
+                                                          queryTransactionsRecordCount(
                                                         queryBuilder:
-                                                            (roomsRecord) =>
-                                                                roomsRecord
+                                                            (transactionsRecord) =>
+                                                                transactionsRecord
+                                                                    .where(
+                                                                      'remitted',
+                                                                      isEqualTo:
+                                                                          false,
+                                                                    )
                                                                     .where(
                                                                       'hotel',
                                                                       isEqualTo:
@@ -1880,9 +2138,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                               .hotel,
                                                                     )
                                                                     .where(
-                                                                      'vacant',
-                                                                      isEqualTo:
-                                                                          false,
+                                                                      'pending',
+                                                                      isNotEqualTo:
+                                                                          true,
                                                                     ),
                                                       ),
                                                     ),
@@ -1907,10 +2165,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           ),
                                                         );
                                                       }
-                                                      int checkInsCount =
+                                                      int transactionsCountCount =
                                                           snapshot.data!;
                                                       return Text(
-                                                        checkInsCount
+                                                        transactionsCountCount
                                                             .toString(),
                                                         maxLines: 1,
                                                         style:
@@ -1920,14 +2178,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 .override(
                                                                   fontFamily:
                                                                       'Outfit',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
                                                       ).animateOnActionTrigger(
                                                           animationsMap[
-                                                              'textOnActionTriggerAnimation3']!,
+                                                              'textOnActionTriggerAnimation4']!,
                                                           hasBeenTriggered:
-                                                              hasTextTriggered3);
+                                                              hasTextTriggered4);
                                                     },
                                                   ),
                                                   Padding(
@@ -1936,7 +2197,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             .fromSTEB(0.0, 4.0,
                                                                 0.0, 0.0),
                                                     child: Text(
-                                                      'Occupancy',
+                                                      'Transactions',
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .labelMedium
@@ -1952,410 +2213,23 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 8.0, 8.0),
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              context.goNamed(
-                                                'transactions',
-                                                extra: <String, dynamic>{
-                                                  kTransitionInfoKey:
-                                                      const TransitionInfo(
-                                                    hasTransition: true,
-                                                    transitionType:
-                                                        PageTransitionType
-                                                            .rightToLeft,
-                                                  ),
-                                                },
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 130.0,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                  color: const Color(0xFFE0E3E7),
-                                                  width: 2.0,
-                                                ),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(12.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    FutureBuilder<int>(
-                                                      future: _model
-                                                          .totalTransactions(
-                                                        uniqueQueryKey:
-                                                            FFAppState().hotel,
-                                                        requestFn: () =>
-                                                            queryTransactionsRecordCount(
-                                                          queryBuilder:
-                                                              (transactionsRecord) =>
-                                                                  transactionsRecord
-                                                                      .where(
-                                                                        'remitted',
-                                                                        isEqualTo:
-                                                                            false,
-                                                                      )
-                                                                      .where(
-                                                                        'hotel',
-                                                                        isEqualTo:
-                                                                            FFAppState().hotel,
-                                                                      )
-                                                                      .where(
-                                                                        'pending',
-                                                                        isNotEqualTo:
-                                                                            true,
-                                                                      ),
-                                                        ),
-                                                      ),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        // Customize what your widget looks like when it's loading.
-                                                        if (!snapshot.hasData) {
-                                                          return Center(
-                                                            child: SizedBox(
-                                                              width: 50.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                        Color>(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primary,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        int transactionsCountCount =
-                                                            snapshot.data!;
-                                                        return Text(
-                                                          transactionsCountCount
-                                                              .toString(),
-                                                          maxLines: 1,
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .displaySmall
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Outfit',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                        ).animateOnActionTrigger(
-                                                            animationsMap[
-                                                                'textOnActionTriggerAnimation4']!,
-                                                            hasBeenTriggered:
-                                                                hasTextTriggered4);
-                                                      },
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  4.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        'Transactions',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 8.0, 8.0),
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              context.pushNamed('Pendings');
-                                            },
-                                            onDoubleTap: () async {
-                                              _model.clearPendingCountsCache();
-                                            },
-                                            child: Container(
-                                              width: 130.0,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                  color: const Color(0xFFE0E3E7),
-                                                  width: 2.0,
-                                                ),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(12.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    FutureBuilder<int>(
-                                                      future:
-                                                          _model.pendingCounts(
-                                                        uniqueQueryKey:
-                                                            FFAppState().hotel,
-                                                        requestFn: () =>
-                                                            queryTransactionsRecordCount(
-                                                          queryBuilder:
-                                                              (transactionsRecord) =>
-                                                                  transactionsRecord
-                                                                      .where(
-                                                                        'hotel',
-                                                                        isEqualTo:
-                                                                            FFAppState().hotel,
-                                                                      )
-                                                                      .where(
-                                                                        'pending',
-                                                                        isEqualTo:
-                                                                            true,
-                                                                      ),
-                                                        ),
-                                                      ),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        // Customize what your widget looks like when it's loading.
-                                                        if (!snapshot.hasData) {
-                                                          return Center(
-                                                            child: SizedBox(
-                                                              width: 50.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                        Color>(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primary,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        int pendingsCountCount =
-                                                            snapshot.data!;
-                                                        return Text(
-                                                          pendingsCountCount
-                                                              .toString(),
-                                                          maxLines: 1,
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .displaySmall
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Outfit',
-                                                                color: const Color(
-                                                                    0xFFFD949C),
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                        ).animateOnActionTrigger(
-                                                            animationsMap[
-                                                                'textOnActionTriggerAnimation5']!,
-                                                            hasBeenTriggered:
-                                                                hasTextTriggered5);
-                                                      },
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  4.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        'Pendings',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 8.0, 8.0),
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              context.pushNamed('Replenish');
-                                            },
-                                            child: Container(
-                                              width: 130.0,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                  color: const Color(0xFFE0E3E7),
-                                                  width: 2.0,
-                                                ),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(12.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    FutureBuilder<int>(
-                                                      future: FFAppState()
-                                                          .replenishCount(
-                                                        requestFn: () =>
-                                                            queryGoodsRecordCount(
-                                                          queryBuilder:
-                                                              (goodsRecord) =>
-                                                                  goodsRecord
-                                                                      .where(
-                                                                        'replenish',
-                                                                        isEqualTo:
-                                                                            true,
-                                                                      )
-                                                                      .where(
-                                                                        'hotel',
-                                                                        isEqualTo:
-                                                                            FFAppState().hotel,
-                                                                      ),
-                                                        ),
-                                                      ),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        // Customize what your widget looks like when it's loading.
-                                                        if (!snapshot.hasData) {
-                                                          return Center(
-                                                            child: SizedBox(
-                                                              width: 50.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                        Color>(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primary,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        int textCount =
-                                                            snapshot.data!;
-                                                        return Text(
-                                                          textCount.toString(),
-                                                          maxLines: 1,
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .displaySmall
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Outfit',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .tertiary,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                        );
-                                                      },
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  4.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        'To Replenish',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 16.0, 8.0),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 8.0, 8.0),
+                                        child: InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context.pushNamed('Pendings');
+                                          },
+                                          onDoubleTap: () async {
+                                            _model.clearPendingCountsCache();
+                                          },
                                           child: Container(
-                                            width: 150.0,
+                                            width: 130.0,
                                             decoration: BoxDecoration(
                                               color:
                                                   FlutterFlowTheme.of(context)
@@ -2375,14 +2249,15 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   FutureBuilder<int>(
-                                                    future: FFAppState().staffs(
+                                                    future:
+                                                        _model.pendingCounts(
                                                       uniqueQueryKey:
                                                           FFAppState().hotel,
                                                       requestFn: () =>
-                                                          queryStaffsRecordCount(
+                                                          queryTransactionsRecordCount(
                                                         queryBuilder:
-                                                            (staffsRecord) =>
-                                                                staffsRecord
+                                                            (transactionsRecord) =>
+                                                                transactionsRecord
                                                                     .where(
                                                                       'hotel',
                                                                       isEqualTo:
@@ -2390,9 +2265,130 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                               .hotel,
                                                                     )
                                                                     .where(
-                                                                      'fired',
+                                                                      'pending',
                                                                       isEqualTo:
-                                                                          false,
+                                                                          true,
+                                                                    ),
+                                                      ),
+                                                    ),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      // Customize what your widget looks like when it's loading.
+                                                      if (!snapshot.hasData) {
+                                                        return Center(
+                                                          child: SizedBox(
+                                                            width: 50.0,
+                                                            height: 50.0,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              valueColor:
+                                                                  AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primary,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                      int pendingsCountCount =
+                                                          snapshot.data!;
+                                                      return Text(
+                                                        pendingsCountCount
+                                                            .toString(),
+                                                        maxLines: 1,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .displaySmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  color: const Color(
+                                                                      0xFFFD949C),
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
+                                                      ).animateOnActionTrigger(
+                                                          animationsMap[
+                                                              'textOnActionTriggerAnimation5']!,
+                                                          hasBeenTriggered:
+                                                              hasTextTriggered5);
+                                                    },
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 4.0,
+                                                                0.0, 0.0),
+                                                    child: Text(
+                                                      'Pendings',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 8.0, 8.0),
+                                        child: InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context.pushNamed('Replenish');
+                                          },
+                                          child: Container(
+                                            width: 130.0,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              border: Border.all(
+                                                color: const Color(0xFFE0E3E7),
+                                                width: 2.0,
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(12.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  FutureBuilder<int>(
+                                                    future: FFAppState()
+                                                        .replenishCount(
+                                                      requestFn: () =>
+                                                          queryGoodsRecordCount(
+                                                        queryBuilder:
+                                                            (goodsRecord) =>
+                                                                goodsRecord
+                                                                    .where(
+                                                                      'replenish',
+                                                                      isEqualTo:
+                                                                          true,
+                                                                    )
+                                                                    .where(
+                                                                      'hotel',
+                                                                      isEqualTo:
+                                                                          FFAppState()
+                                                                              .hotel,
                                                                     ),
                                                       ),
                                                     ),
@@ -2431,7 +2427,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       'Outfit',
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .secondary,
+                                                                      .tertiary,
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
@@ -2444,7 +2440,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             .fromSTEB(0.0, 4.0,
                                                                 0.0, 0.0),
                                                     child: Text(
-                                                      'Staffs',
+                                                      'To Replenish',
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .labelMedium
@@ -2460,13 +2456,118 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 16.0, 8.0),
+                                        child: Container(
+                                          width: 150.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            border: Border.all(
+                                              color: const Color(0xFFE0E3E7),
+                                              width: 2.0,
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                FutureBuilder<int>(
+                                                  future: FFAppState().staffs(
+                                                    uniqueQueryKey:
+                                                        FFAppState().hotel,
+                                                    requestFn: () =>
+                                                        queryStaffsRecordCount(
+                                                      queryBuilder:
+                                                          (staffsRecord) =>
+                                                              staffsRecord
+                                                                  .where(
+                                                                    'hotel',
+                                                                    isEqualTo:
+                                                                        FFAppState()
+                                                                            .hotel,
+                                                                  )
+                                                                  .where(
+                                                                    'fired',
+                                                                    isEqualTo:
+                                                                        false,
+                                                                  ),
+                                                    ),
+                                                  ),
+                                                  builder: (context, snapshot) {
+                                                    // Customize what your widget looks like when it's loading.
+                                                    if (!snapshot.hasData) {
+                                                      return Center(
+                                                        child: SizedBox(
+                                                          width: 50.0,
+                                                          height: 50.0,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                    int textCount =
+                                                        snapshot.data!;
+                                                    return Text(
+                                                      textCount.toString(),
+                                                      maxLines: 1,
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .displaySmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Outfit',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondary,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                    );
+                                                  },
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 4.0, 0.0, 0.0),
+                                                  child: Text(
+                                                    'Staffs',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ).animateOnPageLoad(
-                                animationsMap['columnOnPageLoadAnimation3']!),
+                              ),
+                            ],
                           ),
                         ),
                         Padding(
@@ -3927,7 +4028,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     return Text(
                                                                       textTransactionsRecord?.total !=
                                                                               0.0
-                                                                          ? 'The remittance received exceeds the expected amount by ${(double change) {
+                                                                          ? 'The remittance received exceeds the predetermined sum by ${(double change) {
                                                                               return "Php ${(change.abs()).toStringAsFixed(1).replaceAllMapped(
                                                                                         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                                                                                         (Match match) => '${match[1]},',

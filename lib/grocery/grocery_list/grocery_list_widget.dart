@@ -1163,7 +1163,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                             0.0),
                                                                         child:
                                                                             Text(
-                                                                          'Breakeven',
+                                                                          'Breakeven (ROI)',
                                                                           textAlign:
                                                                               TextAlign.start,
                                                                           maxLines:
@@ -1179,7 +1179,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       ),
                                                                     ),
                                                                     Expanded(
-                                                                      flex: 3,
+                                                                      flex: 2,
                                                                       child:
                                                                           Text(
                                                                         '${listViewGoodsRevenueRatioRecord.daysToBreakEven.toString()} days',

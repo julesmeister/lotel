@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/new_salary/new_salary_widget.dart';
 import '/components/options/salary_options/salary_options_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -9,6 +10,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -253,18 +255,154 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            AutoSizeText(
-                              dateTimeFormat('EEE M d y h:mm a', _model.date),
-                              maxLines: 1,
-                              style: FlutterFlowTheme.of(context)
-                                  .labelLarge
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    letterSpacing: 0.0,
-                                  ),
-                              minFontSize: 12.0,
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  enableDrag: false,
+                                  useSafeArea: true,
+                                  context: context,
+                                  builder: (context) {
+                                    return GestureDetector(
+                                      onTap: () => _model
+                                              .unfocusNode.canRequestFocus
+                                          ? FocusScope.of(context)
+                                              .requestFocus(_model.unfocusNode)
+                                          : FocusScope.of(context).unfocus(),
+                                      child: Padding(
+                                        padding:
+                                            MediaQuery.viewInsetsOf(context),
+                                        child: SizedBox(
+                                          height: double.infinity,
+                                          child: ChangeDateWidget(
+                                            date: getCurrentTimestamp,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).then((value) => safeSetState(
+                                    () => _model.adjustedDate = value));
+
+                                if (_model.adjustedDate != null) {
+                                  if (_model.settled == true) {
+                                    if (dateTimeFormat(
+                                            'MMMM', _model.adjustedDate) !=
+                                        dateTimeFormat('MMMM', _model.date)) {
+                                      // prevStats
+                                      _model.prevStats =
+                                          await queryStatsRecordOnce(
+                                        queryBuilder: (statsRecord) =>
+                                            statsRecord
+                                                .where(
+                                                  'hotel',
+                                                  isEqualTo: FFAppState().hotel,
+                                                )
+                                                .where(
+                                                  'year',
+                                                  isEqualTo: dateTimeFormat(
+                                                      'y', _model.date),
+                                                )
+                                                .where(
+                                                  'month',
+                                                  isEqualTo: dateTimeFormat(
+                                                      'MMMM', _model.date),
+                                                ),
+                                        singleRecord: true,
+                                      ).then((s) => s.firstOrNull);
+                                      // deduct from prev stats
+
+                                      await _model.prevStats!.reference.update({
+                                        ...mapToFirestore(
+                                          {
+                                            'salaries': FieldValue.increment(
+                                                -(functions.sumOfSalaries(
+                                                    _model.salaries.toList()))),
+                                          },
+                                        ),
+                                      });
+                                      // now stats
+                                      _model.nowStats =
+                                          await queryStatsRecordOnce(
+                                        queryBuilder: (statsRecord) =>
+                                            statsRecord
+                                                .where(
+                                                  'hotel',
+                                                  isEqualTo: FFAppState().hotel,
+                                                )
+                                                .where(
+                                                  'year',
+                                                  isEqualTo: dateTimeFormat(
+                                                      'y', _model.adjustedDate),
+                                                )
+                                                .where(
+                                                  'month',
+                                                  isEqualTo: dateTimeFormat(
+                                                      'MMMM',
+                                                      _model.adjustedDate),
+                                                ),
+                                        singleRecord: true,
+                                      ).then((s) => s.firstOrNull);
+                                      // increment to now stats
+
+                                      await _model.nowStats!.reference.update({
+                                        ...mapToFirestore(
+                                          {
+                                            'salaries': FieldValue.increment(
+                                                functions.sumOfSalaries(
+                                                    _model.salaries.toList())),
+                                          },
+                                        ),
+                                      });
+                                    }
+                                  }
+                                  // update date
+
+                                  await _model.ref!
+                                      .update(createPayrollsRecordData(
+                                    date: _model.adjustedDate,
+                                  ));
+                                  // update date
+                                  setState(() {
+                                    _model.date = _model.adjustedDate;
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Date has been adjusted!',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: const Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondary,
+                                    ),
+                                  );
+                                }
+
+                                setState(() {});
+                              },
+                              child: AutoSizeText(
+                                dateTimeFormat('EEE M d y h:mm a', _model.date),
+                                maxLines: 1,
+                                style: FlutterFlowTheme.of(context)
+                                    .labelLarge
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      letterSpacing: 0.0,
+                                    ),
+                                minFontSize: 12.0,
+                              ),
                             ),
                             Row(
                               mainAxisSize: MainAxisSize.max,
@@ -351,28 +489,28 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         FlutterFlowTheme.of(context).alternate,
                                     width: 2.0,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(0.0),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color: FlutterFlowTheme.of(context).primary,
                                     width: 2.0,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(0.0),
                                 ),
                                 errorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color: FlutterFlowTheme.of(context).error,
                                     width: 2.0,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(0.0),
                                 ),
                                 focusedErrorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color: FlutterFlowTheme.of(context).error,
                                     width: 2.0,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(0.0),
                                 ),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -418,28 +556,28 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         FlutterFlowTheme.of(context).alternate,
                                     width: 2.0,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(0.0),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color: FlutterFlowTheme.of(context).primary,
                                     width: 2.0,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(0.0),
                                 ),
                                 errorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color: FlutterFlowTheme.of(context).error,
                                     width: 2.0,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(0.0),
                                 ),
                                 focusedErrorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color: FlutterFlowTheme.of(context).error,
                                     width: 2.0,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(0.0),
                                 ),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -623,6 +761,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       _model.fortnight = functions
                                           .downOrdinal(_model.fortnight);
                                     });
+                                    // update fortnight
+
+                                    await widget.ref!
+                                        .update(createPayrollsRecordData(
+                                      fortnight: _model.fortnight,
+                                    ));
                                   },
                                 ),
                                 Text(
@@ -657,6 +801,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                           _model.fortnight = functions
                                               .upOrdinal(_model.fortnight);
                                         });
+                                        // update fortnight
+
+                                        await widget.ref!
+                                            .update(createPayrollsRecordData(
+                                          fortnight: _model.fortnight,
+                                        ));
                                       },
                                     ),
                                   ],
@@ -1486,7 +1636,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                           color: Colors.white,
                                           letterSpacing: 0.0,
                                         ),
-                                    elevation: 4.0,
+                                    elevation: 2.0,
                                     borderSide: const BorderSide(
                                       color: Colors.transparent,
                                       width: 1.0,
@@ -1505,7 +1655,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                           'admin'))
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
                       child: AuthUserStreamWidget(
                         builder: (context) => SizedBox(
                           width: double.infinity,
@@ -1531,7 +1681,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                       alignment: const AlignmentDirectional(0.0, 1.0),
                       child: Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
                         child: AuthUserStreamWidget(
                           builder: (context) => FFButtonWidget(
                             onPressed: () async {
@@ -1546,9 +1696,30 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       .sumOfSalaries(_model.salaries.toList()),
                                   fortnight: _model.fortnight,
                                 ));
+                                // appropriate stats
+                                _model.appropriateStats =
+                                    await queryStatsRecordOnce(
+                                  queryBuilder: (statsRecord) => statsRecord
+                                      .where(
+                                        'hotel',
+                                        isEqualTo: FFAppState().hotel,
+                                      )
+                                      .where(
+                                        'year',
+                                        isEqualTo:
+                                            dateTimeFormat('y', _model.date),
+                                      )
+                                      .where(
+                                        'month',
+                                        isEqualTo:
+                                            dateTimeFormat('MMMM', _model.date),
+                                      ),
+                                  singleRecord: true,
+                                ).then((s) => s.firstOrNull);
                                 // Update stats
 
-                                await FFAppState().statsReference!.update({
+                                await _model.appropriateStats!.reference
+                                    .update({
                                   ...mapToFirestore(
                                     {
                                       'salaries': FieldValue.increment(
@@ -1568,6 +1739,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         'date': FieldValue.serverTimestamp(),
                                       },
                                     ),
+                                  });
+                                  // reset loop
+                                  setState(() {
+                                    _model.loopSalariesCounter = 0;
+                                    _model.loopAbsencesCounter = 0;
+                                    _model.loopAdvancesCounter = 0;
                                   });
                                   while (_model.loopSalariesCounter !=
                                       _model.salaries.length) {
@@ -1742,6 +1919,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     color: Colors.white,
+                                    fontSize: 16.0,
                                     letterSpacing: 0.0,
                                   ),
                               elevation: 2.0,
@@ -1755,7 +1933,204 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                         ),
                       ),
                     ),
-                ],
+                  if ((_model.existingPayroll?.status == 'settled') &&
+                      (valueOrDefault(currentUserDocument?.role, '') ==
+                          'admin'))
+                    Align(
+                      alignment: const AlignmentDirectional(0.0, 1.0),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+                        child: AuthUserStreamWidget(
+                          builder: (context) => FFButtonWidget(
+                            onPressed: () async {
+                              var confirmDialogResponse =
+                                  await showDialog<bool>(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: const Text('Settle'),
+                                            content: const Text(
+                                                'All the cash advances will be reset back to zero and marked settled.'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, false),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, true),
+                                                child: const Text('Confirm'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ) ??
+                                      false;
+                              if (confirmDialogResponse) {
+                                // count settled
+                                _model.countUnsettled =
+                                    await queryAdvancesRecordCount(
+                                  queryBuilder: (advancesRecord) =>
+                                      advancesRecord.where(
+                                    'settled',
+                                    isEqualTo: false,
+                                  ),
+                                );
+                                if (_model.countUnsettled! > 0) {
+                                  // reset loop
+                                  setState(() {
+                                    _model.loopSalariesCounter = 0;
+                                    _model.loopAbsencesCounter = 0;
+                                    _model.loopAdvancesCounter = 0;
+                                  });
+                                  while (_model.loopSalariesCounter !=
+                                      _model.salaries.length) {
+                                    // staff
+                                    _model.staffClear =
+                                        await StaffsRecord.getDocumentOnce(
+                                            _model
+                                                .salaries[
+                                                    _model.loopSalariesCounter]
+                                                .staff!);
+                                    // CAs of staff
+                                    _model.unsettledCashAdvanceClear =
+                                        await queryAdvancesRecordOnce(
+                                      parent: _model.staffClear?.reference,
+                                      queryBuilder: (advancesRecord) =>
+                                          advancesRecord.where(
+                                        'settled',
+                                        isEqualTo: false,
+                                      ),
+                                    );
+                                    // reset ca loop counter
+                                    setState(() {
+                                      _model.loopAdvancesCounter = 0;
+                                      _model.loopAbsencesCounter = 0;
+                                    });
+                                    while (_model.loopAdvancesCounter !=
+                                        _model.unsettledCashAdvanceClear
+                                            ?.length) {
+                                      // settle the ca
+
+                                      await _model
+                                          .unsettledCashAdvanceClear![
+                                              _model.loopAdvancesCounter]
+                                          .reference
+                                          .update(createAdvancesRecordData(
+                                        settled: true,
+                                      ));
+                                      // increment advances counter
+                                      setState(() {
+                                        _model.loopAdvancesCounter =
+                                            _model.loopAdvancesCounter + 1;
+                                      });
+                                    }
+                                    // list of absences
+                                    _model.absencesClear =
+                                        await queryAbsencesRecordOnce(
+                                      parent: _model.staffClear?.reference,
+                                    );
+                                    // absences to local
+                                    setState(() {
+                                      _model.absencesToSettle = _model
+                                          .absencesClear!
+                                          .where((e) => !e.settled)
+                                          .toList()
+                                          .cast<AbsencesRecord>();
+                                    });
+                                    while (_model.loopAbsencesCounter !=
+                                        _model.absencesToSettle.length) {
+                                      // settle the absence
+
+                                      await _model
+                                          .absencesToSettle[
+                                              _model.loopAbsencesCounter]
+                                          .reference
+                                          .update(createAbsencesRecordData(
+                                        settled: true,
+                                      ));
+                                      // increment loop
+                                      setState(() {
+                                        _model.loopAbsencesCounter =
+                                            _model.loopAbsencesCounter + 1;
+                                      });
+                                    }
+                                    // increment loopSalaries
+                                    setState(() {
+                                      _model.loopSalariesCounter =
+                                          _model.loopSalariesCounter + 1;
+                                    });
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'All balances are now settled!',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: const Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondary,
+                                    ),
+                                  );
+                                  context.safePop();
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'There are no cash advances to settle!',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                        ),
+                                      ),
+                                      duration: const Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context).error,
+                                    ),
+                                  );
+                                }
+                              }
+
+                              setState(() {});
+                            },
+                            text: 'Clear Cash Advances',
+                            icon: const Icon(
+                              Icons.cleaning_services_outlined,
+                              size: 15.0,
+                            ),
+                            options: FFButtonOptions(
+                              width: MediaQuery.sizeOf(context).width * 1.0,
+                              height: 50.0,
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              iconPadding: const EdgeInsets.all(0.0),
+                              color: FlutterFlowTheme.of(context).primary,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .titleMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                              elevation: 2.0,
+                              borderSide: const BorderSide(
+                                color: Colors.transparent,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ].addToEnd(const SizedBox(height: 20.0)),
               ),
             ),
           ),

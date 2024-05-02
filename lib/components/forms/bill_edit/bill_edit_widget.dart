@@ -164,6 +164,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                             TextFormField(
                               controller: _model.descTextController,
                               focusNode: _model.descFocusNode,
+                              autofocus: true,
                               textCapitalization: TextCapitalization.sentences,
                               obscureText: false,
                               decoration: InputDecoration(

@@ -295,6 +295,16 @@
       ]
     },
     {
+      "collectionGroup": "advances",
+      "fieldPath": "settled",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
       "collectionGroup": "absences",
       "fieldPath": "remitted",
       "indexes": [

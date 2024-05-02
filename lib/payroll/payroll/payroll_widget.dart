@@ -160,6 +160,13 @@ class _PayrollWidgetState extends State<PayrollWidget>
                           letterSpacing: 0.0,
                         ),
                   ),
+                  Text(
+                    FFAppState().hotel,
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Readex Pro',
+                          letterSpacing: 0.0,
+                        ),
+                  ),
                 ],
               ),
               actions: [
@@ -569,225 +576,226 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                   padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 10.0, 0.0),
-                                                  child: InkWell(
-                                                    splashColor:
-                                                        Colors.transparent,
-                                                    focusColor:
-                                                        Colors.transparent,
-                                                    hoverColor:
-                                                        Colors.transparent,
-                                                    highlightColor:
-                                                        Colors.transparent,
-                                                    onTap: () async {
-                                                      context.pushNamed(
-                                                        'IndividualHistory',
-                                                        queryParameters: {
-                                                          'staff':
-                                                              serializeParam(
-                                                            listViewStaffsRecord,
-                                                            ParamType.Document,
-                                                          ),
-                                                        }.withoutNulls,
-                                                        extra: <String,
-                                                            dynamic>{
-                                                          'staff':
-                                                              listViewStaffsRecord,
-                                                        },
-                                                      );
-                                                    },
-                                                    onLongPress: () async {
-                                                      if (valueOrDefault(
-                                                              currentUserDocument
-                                                                  ?.role,
-                                                              '') ==
-                                                          'admin') {
-                                                        await showModalBottomSheet(
-                                                          isScrollControlled:
-                                                              true,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
-                                                                          context)
-                                                                      .unfocus(),
-                                                              child: Padding(
-                                                                padding: MediaQuery
-                                                                    .viewInsetsOf(
-                                                                        context),
-                                                                child:
-                                                                    SizedBox(
-                                                                  height: 170.0,
-                                                                  child:
-                                                                      OptionToStaffWidget(
-                                                                    staffRef:
-                                                                        listViewStaffsRecord
-                                                                            .reference,
-                                                                  ),
-                                                                ),
+                                                  child: FutureBuilder<
+                                                      List<AdvancesRecord>>(
+                                                    future:
+                                                        queryAdvancesRecordOnce(
+                                                      parent:
+                                                          listViewStaffsRecord
+                                                              .reference,
+                                                      queryBuilder:
+                                                          (advancesRecord) =>
+                                                              advancesRecord
+                                                                  .orderBy(
+                                                                      'date',
+                                                                      descending:
+                                                                          true),
+                                                      limit: 5,
+                                                    ),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      // Customize what your widget looks like when it's loading.
+                                                      if (!snapshot.hasData) {
+                                                        return Center(
+                                                          child: SizedBox(
+                                                            width: 50.0,
+                                                            height: 50.0,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              valueColor:
+                                                                  AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primary,
                                                               ),
-                                                            );
-                                                          },
-                                                        ).then((value) =>
-                                                            safeSetState(
-                                                                () {}));
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                      width: 160.0,
-                                                      height: 170.0,
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            const Color(0xFF4B39EF),
-                                                        boxShadow: const [
-                                                          BoxShadow(
-                                                            blurRadius: 5.0,
-                                                            color: Color(
-                                                                0x23000000),
-                                                            offset: Offset(
-                                                              0.0,
-                                                              2.0,
                                                             ),
-                                                          )
-                                                        ],
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(
-                                                            10.0),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          children: [
-                                                            Expanded(
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  AutoSizeText(
-                                                                    listViewStaffsRecord
-                                                                        .name
-                                                                        .maybeHandleOverflow(
-                                                                            maxChars:
-                                                                                15),
-                                                                    maxLines: 1,
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .headlineSmall
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              Colors.white,
-                                                                          fontSize:
-                                                                              24.0,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
-                                                                    minFontSize:
-                                                                        10.0,
+                                                          ),
+                                                        );
+                                                      }
+                                                      List<AdvancesRecord>
+                                                          dashboardMainCardAdvancesRecordList =
+                                                          snapshot.data!;
+                                                      return InkWell(
+                                                        splashColor:
+                                                            Colors.transparent,
+                                                        focusColor:
+                                                            Colors.transparent,
+                                                        hoverColor:
+                                                            Colors.transparent,
+                                                        highlightColor:
+                                                            Colors.transparent,
+                                                        onTap: () async {
+                                                          context.pushNamed(
+                                                            'IndividualHistory',
+                                                            queryParameters: {
+                                                              'staff':
+                                                                  serializeParam(
+                                                                listViewStaffsRecord,
+                                                                ParamType
+                                                                    .Document,
+                                                              ),
+                                                            }.withoutNulls,
+                                                            extra: <String,
+                                                                dynamic>{
+                                                              'staff':
+                                                                  listViewStaffsRecord,
+                                                            },
+                                                          );
+                                                        },
+                                                        onLongPress: () async {
+                                                          if (valueOrDefault(
+                                                                  currentUserDocument
+                                                                      ?.role,
+                                                                  '') ==
+                                                              'admin') {
+                                                            await showModalBottomSheet(
+                                                              isScrollControlled:
+                                                                  true,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return GestureDetector(
+                                                                  onTap: () => _model
+                                                                          .unfocusNode
+                                                                          .canRequestFocus
+                                                                      ? FocusScope.of(
+                                                                              context)
+                                                                          .requestFocus(_model
+                                                                              .unfocusNode)
+                                                                      : FocusScope.of(
+                                                                              context)
+                                                                          .unfocus(),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: MediaQuery
+                                                                        .viewInsetsOf(
+                                                                            context),
+                                                                    child:
+                                                                        SizedBox(
+                                                                      height:
+                                                                          170.0,
+                                                                      child:
+                                                                          OptionToStaffWidget(
+                                                                        staffRef:
+                                                                            listViewStaffsRecord.reference,
+                                                                      ),
+                                                                    ),
                                                                   ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsetsDirectional
-                                                                        .fromSTEB(
+                                                                );
+                                                              },
+                                                            ).then((value) =>
+                                                                safeSetState(
+                                                                    () {}));
+                                                          }
+                                                        },
+                                                        child: Container(
+                                                          width: 160.0,
+                                                          height: 170.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color(
+                                                                0xFF4B39EF),
+                                                            boxShadow: const [
+                                                              BoxShadow(
+                                                                blurRadius: 5.0,
+                                                                color: Color(
+                                                                    0x23000000),
+                                                                offset: Offset(
+                                                                  0.0,
+                                                                  2.0,
+                                                                ),
+                                                              )
+                                                            ],
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets.all(
+                                                                    10.0),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              children: [
+                                                                Expanded(
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      AutoSizeText(
+                                                                        listViewStaffsRecord
+                                                                            .name
+                                                                            .maybeHandleOverflow(maxChars: 15),
+                                                                        maxLines:
+                                                                            1,
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .headlineSmall
+                                                                            .override(
+                                                                              fontFamily: 'Outfit',
+                                                                              color: Colors.white,
+                                                                              fontSize: 24.0,
+                                                                              letterSpacing: 0.0,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                        minFontSize:
+                                                                            10.0,
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             4.0,
                                                                             0.0,
                                                                             0.0),
-                                                                    child: Text(
-                                                                      'Unpaid CAs:',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleSmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Plus Jakarta Sans',
-                                                                            color:
-                                                                                const Color(0x9AFFFFFF),
-                                                                            fontSize:
-                                                                                12.0,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsetsDirectional
-                                                                        .fromSTEB(
+                                                                        child:
+                                                                            Text(
+                                                                          'Unpaid CAs:',
+                                                                          maxLines:
+                                                                              1,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .override(
+                                                                                fontFamily: 'Plus Jakarta Sans',
+                                                                                color: const Color(0x9AFFFFFF),
+                                                                                fontSize: 12.0,
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                        ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             3.0,
                                                                             0.0,
                                                                             0.0),
-                                                                    child: StreamBuilder<
-                                                                        List<
-                                                                            AdvancesRecord>>(
-                                                                      stream:
-                                                                          queryAdvancesRecord(
-                                                                        parent:
-                                                                            listViewStaffsRecord.reference,
-                                                                        queryBuilder:
-                                                                            (advancesRecord) =>
-                                                                                advancesRecord.where(
-                                                                          'settled',
-                                                                          isEqualTo:
-                                                                              false,
-                                                                        ),
-                                                                      ),
-                                                                      builder:
-                                                                          (context,
-                                                                              snapshot) {
-                                                                        // Customize what your widget looks like when it's loading.
-                                                                        if (!snapshot
-                                                                            .hasData) {
-                                                                          return Center(
-                                                                            child:
-                                                                                SizedBox(
-                                                                              width: 50.0,
-                                                                              height: 50.0,
-                                                                              child: CircularProgressIndicator(
-                                                                                valueColor: AlwaysStoppedAnimation<Color>(
-                                                                                  FlutterFlowTheme.of(context).primary,
-                                                                                ),
-                                                                              ),
+                                                                        child:
+                                                                            Text(
+                                                                          valueOrDefault<
+                                                                              String>(
+                                                                            formatNumber(
+                                                                              functions.totalOfCAs(dashboardMainCardAdvancesRecordList.where((e) => e.settled == false).toList()),
+                                                                              formatType: FormatType.decimal,
+                                                                              decimalType: DecimalType.automatic,
+                                                                              currency: 'P ',
                                                                             ),
-                                                                          );
-                                                                        }
-                                                                        List<AdvancesRecord>
-                                                                            textAdvancesRecordList =
-                                                                            snapshot.data!;
-                                                                        return Text(
-                                                                          formatNumber(
-                                                                            functions.totalOfCAs(textAdvancesRecordList.toList()),
-                                                                            formatType:
-                                                                                FormatType.decimal,
-                                                                            decimalType:
-                                                                                DecimalType.automatic,
-                                                                            currency:
-                                                                                'P ',
+                                                                            '0',
                                                                           ),
+                                                                          maxLines:
+                                                                              1,
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .displaySmall
                                                                               .override(
@@ -797,21 +805,22 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                                 letterSpacing: 0.0,
                                                                                 fontWeight: FontWeight.w600,
                                                                               ),
-                                                                        );
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ).animateOnPageLoad(
-                                                                  animationsMap[
-                                                                      'columnOnPageLoadAnimation']!),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ).animateOnPageLoad(
+                                                                      animationsMap[
+                                                                          'columnOnPageLoadAnimation']!),
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ).animateOnPageLoad(animationsMap[
-                                                      'containerOnPageLoadAnimation']!),
+                                                      ).animateOnPageLoad(
+                                                          animationsMap[
+                                                              'containerOnPageLoadAnimation']!);
+                                                    },
+                                                  ),
                                                 );
                                               },
                                             ),

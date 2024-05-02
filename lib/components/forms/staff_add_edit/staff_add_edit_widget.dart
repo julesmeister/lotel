@@ -187,6 +187,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                             TextFormField(
                               controller: _model.nameTextController,
                               focusNode: _model.nameFocusNode,
+                              autofocus: true,
                               textCapitalization: TextCapitalization.words,
                               obscureText: false,
                               decoration: InputDecoration(

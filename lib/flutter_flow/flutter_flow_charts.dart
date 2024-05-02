@@ -365,6 +365,7 @@ class AxisLabelInfo {
     this.labelTextStyle,
     this.labelInterval,
     this.labelFormatter = const LabelFormatter(),
+    this.reservedSize,
   });
 
   final String title;
@@ -373,6 +374,7 @@ class AxisLabelInfo {
   final TextStyle? labelTextStyle;
   final double? labelInterval;
   final LabelFormatter labelFormatter;
+  final double? reservedSize;
 }
 
 class LabelFormatter {
@@ -508,6 +510,7 @@ FlTitlesData getTitlesData(
                 ),
           showTitles: xAxisLabelInfo.showLabels,
           interval: xAxisLabelInfo.labelInterval,
+          reservedSize: xAxisLabelInfo.reservedSize,
         ),
       ),
       rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -529,6 +532,7 @@ FlTitlesData getTitlesData(
           ),
           showTitles: yAxisLabelInfo.showLabels,
           interval: yAxisLabelInfo.labelInterval,
+          reservedSize: yAxisLabelInfo.reservedSize,
         ),
       ),
     );

@@ -123,14 +123,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             ref: params.getParam(
               'ref',
               ParamType.DocumentReference,
-              false,
-              ['rooms'],
+              isList: false,
+              collectionNamePath: ['rooms'],
             ),
             booking: params.getParam(
               'booking',
               ParamType.DocumentReference,
-              false,
-              ['bookings'],
+              isList: false,
+              collectionNamePath: ['bookings'],
             ),
             roomNo: params.getParam(
               'roomNo',
@@ -154,8 +154,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             ref: params.getParam(
               'ref',
               ParamType.DocumentReference,
-              false,
-              ['rooms'],
+              isList: false,
+              collectionNamePath: ['rooms'],
             ),
             totalAmount: params.getParam(
               'totalAmount',
@@ -217,7 +217,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             cart: params.getParam<GoodsRecord>(
               'cart',
               ParamType.Document,
-              true,
+              isList: true,
             ),
           ),
         ),
@@ -255,8 +255,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   remittanceRef: params.getParam(
                     'remittanceRef',
                     ParamType.DocumentReference,
-                    false,
-                    ['remittances'],
+                    isList: false,
+                    collectionNamePath: ['remittances'],
                   ),
                   net: params.getParam(
                     'net',
@@ -278,8 +278,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             ref: params.getParam(
               'ref',
               ParamType.DocumentReference,
-              false,
-              ['payrolls'],
+              isList: false,
+              collectionNamePath: ['payrolls'],
             ),
           ),
         ),
@@ -291,20 +291,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             transactions: params.getParam<DocumentReference>(
               'transactions',
               ParamType.DocumentReference,
-              true,
-              ['transactions'],
+              isList: true,
+              collectionNamePath: ['transactions'],
             ),
             remittanceRef: params.getParam(
               'remittanceRef',
               ParamType.DocumentReference,
-              false,
-              ['remittances'],
+              isList: false,
+              collectionNamePath: ['remittances'],
             ),
             absences: params.getParam<DocumentReference>(
               'absences',
               ParamType.DocumentReference,
-              true,
-              ['staffs', 'absences'],
+              isList: true,
+              collectionNamePath: ['staffs', 'absences'],
             ),
           ),
         ),
@@ -372,8 +372,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             remittanceRef: params.getParam(
               'remittanceRef',
               ParamType.DocumentReference,
-              false,
-              ['remittances'],
+              isList: false,
+              collectionNamePath: ['remittances'],
             ),
             net: params.getParam(
               'net',
@@ -499,7 +499,7 @@ class FFParameters {
   // present is the special extra parameter reserved for the transition info.
   bool get isEmpty =>
       state.allParams.isEmpty ||
-      (state.extraMap.length == 1 &&
+      (state.allParams.length == 1 &&
           state.extraMap.containsKey(kTransitionInfoKey));
   bool isAsyncParam(MapEntry<String, dynamic> param) =>
       asyncParams.containsKey(param.key) && param.value is String;
@@ -520,11 +520,11 @@ class FFParameters {
 
   dynamic getParam<T>(
     String paramName,
-    ParamType type, [
+    ParamType type, {
     bool isList = false,
     List<String>? collectionNamePath,
     StructBuilder<T>? structBuilder,
-  ]) {
+  }) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
     }

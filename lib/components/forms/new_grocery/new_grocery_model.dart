@@ -19,7 +19,7 @@ class NewGroceryModel extends FlutterFlowModel<NewGroceryWidget> {
   TextEditingController? amountTextController;
   String? Function(BuildContext, String?)? amountTextControllerValidator;
   // State field(s) for Switch widget.
-  bool? switchValue;
+  bool switchValue = false;
   // Stores action output result for [Firestore Query - Query a collection] action in Row widget.
   int? countGrr;
   // Stores action output result for [Firestore Query - Query a collection] action in Row widget.

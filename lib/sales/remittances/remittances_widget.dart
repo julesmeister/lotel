@@ -63,7 +63,19 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
     });
 
     animationsMap.addAll({
-      'textOnPageLoadAnimation': AnimationInfo(
+      'iconButtonOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'textOnPageLoadAnimation1': AnimationInfo(
         trigger: AnimationTrigger.onPageLoad,
         effectsBuilder: () => [
           VisibilityEffect(duration: 1.ms),
@@ -74,32 +86,17 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
             begin: 0.0,
             end: 1.0,
           ),
+        ],
+      ),
+      'iconButtonOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
           MoveEffect(
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(-40.0, 0.0),
+            begin: const Offset(100.0, 0.0),
             end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'iconButtonOnPageLoadAnimation': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          VisibilityEffect(duration: 200.ms),
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 200.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          ScaleEffect(
-            curve: Curves.easeInOut,
-            delay: 200.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.7, 0.7),
-            end: const Offset(1.0, 1.0),
           ),
         ],
       ),
@@ -167,13 +164,31 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
           ),
         ],
       ),
+      'textOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, -99.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'iconButtonOnPageLoadAnimation3': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
     });
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -235,18 +250,19 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
               automaticallyImplyLeading: false,
               leading: FlutterFlowIconButton(
-                borderRadius: 20.0,
+                borderRadius: 30.0,
                 borderWidth: 1.0,
-                buttonSize: 40.0,
+                buttonSize: 60.0,
                 icon: Icon(
-                  Icons.chevron_left,
+                  Icons.keyboard_arrow_left_outlined,
                   color: FlutterFlowTheme.of(context).primaryText,
-                  size: 24.0,
+                  size: 30.0,
                 ),
                 onPressed: () async {
                   context.safePop();
                 },
-              ),
+              ).animateOnPageLoad(
+                  animationsMap['iconButtonOnPageLoadAnimation3']!),
               title: Align(
                 alignment: const AlignmentDirectional(-1.0, 0.0),
                 child: Text(
@@ -257,63 +273,9 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                         fontSize: 26.0,
                         letterSpacing: 0.0,
                       ),
-                ),
+                ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation2']!),
               ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
-                        child: FlutterFlowIconButton(
-                          borderRadius: 20.0,
-                          borderWidth: 1.0,
-                          buttonSize: 40.0,
-                          icon: Icon(
-                            Icons.chevron_left,
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            size: 24.0,
-                          ),
-                          onPressed: () async {
-                            setState(() {
-                              _model.date = functions.prevDate(_model.date!);
-                              _model.showLoadButton = true;
-                              _model.showDownloadButton = false;
-                              _model.inventories = [];
-                              _model.bookings = [];
-                              _model.transactions = [];
-                            });
-                          },
-                        ),
-                      ),
-                      FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 20.0,
-                        borderWidth: 1.0,
-                        buttonSize: 40.0,
-                        icon: Icon(
-                          Icons.navigate_next,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          size: 24.0,
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            _model.date = functions.nextDate(_model.date!);
-                            _model.showLoadButton = true;
-                            _model.showDownloadButton = false;
-                            _model.inventories = [];
-                            _model.bookings = [];
-                            _model.transactions = [];
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              actions: const [],
               centerTitle: false,
               elevation: 0.0,
             ),
@@ -331,53 +293,86 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            flex: 5,
-                            child: AutoSizeText(
-                              dateTimeFormat('MMMMEEEEd', _model.date),
-                              maxLines: 1,
-                              style: FlutterFlowTheme.of(context)
-                                  .displaySmall
-                                  .override(
-                                    fontFamily: 'Outfit',
-                                    fontSize: 26.0,
-                                    letterSpacing: 0.0,
-                                  ),
-                              minFontSize: 22.0,
-                            ).animateOnPageLoad(
-                                animationsMap['textOnPageLoadAnimation']!),
-                          ),
-                          if (valueOrDefault(currentUserDocument?.role, '') ==
-                              'admin')
-                            Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 0.0, 0.0, 0.0),
-                                child: AuthUserStreamWidget(
-                                  builder: (context) => FlutterFlowIconButton(
-                                    borderColor:
-                                        FlutterFlowTheme.of(context).alternate,
-                                    borderRadius: 12.0,
-                                    borderWidth: 1.0,
-                                    buttonSize: 44.0,
-                                    icon: Icon(
-                                      Icons.calendar_month,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      size: 24.0,
-                                    ),
-                                    onPressed: () async {
-                                      setState(() {
-                                        _model.showDatePicker =
-                                            !_model.showDatePicker;
-                                      });
-                                    },
-                                  ).animateOnPageLoad(animationsMap[
-                                      'iconButtonOnPageLoadAnimation']!),
-                                ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 10.0, 0.0),
+                            child: FlutterFlowIconButton(
+                              borderRadius: 30.0,
+                              borderWidth: 1.0,
+                              buttonSize: 60.0,
+                              icon: Icon(
+                                Icons.keyboard_arrow_left_outlined,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 30.0,
                               ),
-                            ),
+                              onPressed: () async {
+                                setState(() {
+                                  _model.date =
+                                      functions.prevDate(_model.date!);
+                                  _model.showLoadButton = true;
+                                  _model.showDownloadButton = false;
+                                  _model.inventories = [];
+                                  _model.bookings = [];
+                                  _model.transactions = [];
+                                });
+                              },
+                            ).animateOnPageLoad(animationsMap[
+                                'iconButtonOnPageLoadAnimation1']!),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                setState(() {
+                                  _model.showDatePicker =
+                                      !_model.showDatePicker;
+                                });
+                              },
+                              child: AutoSizeText(
+                                dateTimeFormat('MMMMEEEEd', _model.date),
+                                maxLines: 1,
+                                style: FlutterFlowTheme.of(context)
+                                    .displaySmall
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      fontSize: 26.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                                minFontSize: 22.0,
+                              ),
+                            ).animateOnPageLoad(
+                                animationsMap['textOnPageLoadAnimation1']!),
+                          ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                10.0, 0.0, 0.0, 0.0),
+                            child: FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 30.0,
+                              borderWidth: 1.0,
+                              buttonSize: 60.0,
+                              icon: Icon(
+                                Icons.keyboard_arrow_right_outlined,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 30.0,
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  _model.date =
+                                      functions.nextDate(_model.date!);
+                                  _model.showLoadButton = true;
+                                  _model.showDownloadButton = false;
+                                  _model.inventories = [];
+                                  _model.bookings = [];
+                                  _model.transactions = [];
+                                });
+                              },
+                            ).animateOnPageLoad(animationsMap[
+                                'iconButtonOnPageLoadAnimation2']!),
+                          ),
                         ],
                       ),
                     ),

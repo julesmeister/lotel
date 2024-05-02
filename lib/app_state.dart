@@ -180,11 +180,11 @@ class FFAppState extends ChangeNotifier {
   void clearRoomsCacheKey(String? uniqueKey) =>
       _roomsManager.clearRequest(uniqueKey);
 
-  final _checkInCountManager = FutureRequestManager<int>();
-  Future<int> checkInCount({
+  final _checkInCountManager = FutureRequestManager<List<RoomsRecord>>();
+  Future<List<RoomsRecord>> checkInCount({
     String? uniqueQueryKey,
     bool? overrideCache,
-    required Future<int> Function() requestFn,
+    required Future<List<RoomsRecord>> Function() requestFn,
   }) =>
       _checkInCountManager.performRequest(
         uniqueQueryKey: uniqueQueryKey,

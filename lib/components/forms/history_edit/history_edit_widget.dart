@@ -144,6 +144,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                         child: TextFormField(
                           controller: _model.detailsTextController,
                           focusNode: _model.detailsFocusNode,
+                          autofocus: true,
                           textCapitalization: TextCapitalization.sentences,
                           obscureText: false,
                           decoration: InputDecoration(

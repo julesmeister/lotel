@@ -83,6 +83,12 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
   List<StaffsRecord>? staffsOfThisHotel;
   // Stores action output result for [Bottom Sheet - NewSalary] action in IconButton widget.
   SalariesRecord? salary;
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in Text widget.
+  DateTime? adjustedDate;
+  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
+  StatsRecord? prevStats;
+  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
+  StatsRecord? nowStats;
   // State field(s) for newRate widget.
   FocusNode? newRateFocusNode;
   TextEditingController? newRateTextController;
@@ -95,14 +101,24 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
   List<SalariesRecord>? updatedSalaries;
   // Stores action output result for [Bottom Sheet - NewSalary] action in listContainer widget.
   SalariesRecord? updatedSalary;
-  // Stores action output result for [Backend Call - Read Document] action in Button widget.
+  // Stores action output result for [Firestore Query - Query a collection] action in save widget.
+  StatsRecord? appropriateStats;
+  // Stores action output result for [Backend Call - Read Document] action in save widget.
   StaffsRecord? staff;
-  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
+  // Stores action output result for [Firestore Query - Query a collection] action in save widget.
   List<AdvancesRecord>? unsettledCashAdvance;
-  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
+  // Stores action output result for [Firestore Query - Query a collection] action in save widget.
   List<AbsencesRecord>? absences;
-  // Stores action output result for [Backend Call - Create Document] action in Button widget.
+  // Stores action output result for [Backend Call - Create Document] action in save widget.
   PayrollsRecord? newPayroll;
+  // Stores action output result for [Firestore Query - Query a collection] action in clearCAs widget.
+  int? countUnsettled;
+  // Stores action output result for [Backend Call - Read Document] action in clearCAs widget.
+  StaffsRecord? staffClear;
+  // Stores action output result for [Firestore Query - Query a collection] action in clearCAs widget.
+  List<AdvancesRecord>? unsettledCashAdvanceClear;
+  // Stores action output result for [Firestore Query - Query a collection] action in clearCAs widget.
+  List<AbsencesRecord>? absencesClear;
 
   @override
   void initState(BuildContext context) {}

@@ -3,25 +3,23 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'name_edit_model.dart';
-export 'name_edit_model.dart';
+import 'package:provider/provider.dart';
+import 'extra_remittance_model.dart';
+export 'extra_remittance_model.dart';
 
-class NameEditWidget extends StatefulWidget {
-  const NameEditWidget({
-    super.key,
-    this.ref,
-  });
-
-  final DocumentReference? ref;
+class ExtraRemittanceWidget extends StatefulWidget {
+  const ExtraRemittanceWidget({super.key});
 
   @override
-  State<NameEditWidget> createState() => _NameEditWidgetState();
+  State<ExtraRemittanceWidget> createState() => _ExtraRemittanceWidgetState();
 }
 
-class _NameEditWidgetState extends State<NameEditWidget> {
-  late NameEditModel _model;
+class _ExtraRemittanceWidgetState extends State<ExtraRemittanceWidget> {
+  late ExtraRemittanceModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -32,22 +30,37 @@ class _NameEditWidgetState extends State<NameEditWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => NameEditModel());
+    _model = createModel(context, () => ExtraRemittanceModel());
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.userToEdit = await UsersRecord.getDocumentOnce(
-          widget.ref != null ? widget.ref! : currentUserReference!);
+      _model.change = await queryTransactionsRecordOnce(
+        queryBuilder: (transactionsRecord) => transactionsRecord
+            .where(
+              'remitted',
+              isEqualTo: false,
+            )
+            .where(
+              'hotel',
+              isEqualTo: FFAppState().hotel,
+            )
+            .where(
+              'type',
+              isEqualTo: 'change',
+            ),
+        singleRecord: true,
+      ).then((s) => s.firstOrNull);
       setState(() {
-        _model.user = _model.userToEdit;
+        _model.changeTransaction = _model.change;
       });
       setState(() {
-        _model.nameTextController?.text = _model.userToEdit!.displayName;
+        _model.extraTextController?.text =
+            functions.absolute(_model.change!.total).toString();
       });
     });
 
-    _model.nameTextController ??= TextEditingController();
-    _model.nameFocusNode ??= FocusNode();
+    _model.extraTextController ??= TextEditingController();
+    _model.extraFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -61,6 +74,8 @@ class _NameEditWidgetState extends State<NameEditWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -126,17 +141,19 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                'Edit Name',
-                                style: FlutterFlowTheme.of(context)
-                                    .headlineSmall
-                                    .override(
-                                      fontFamily: 'Outfit',
-                                      letterSpacing: 0.0,
-                                    ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 16.0, 0.0),
+                                child: Text(
+                                  'Edit Excess Amount From Recent Remittance',
+                                  style: FlutterFlowTheme.of(context)
+                                      .headlineSmall
+                                      .override(
+                                        fontFamily: 'Outfit',
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
                               ),
                             ),
                           ],
@@ -154,20 +171,19 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
                         child: TextFormField(
-                          controller: _model.nameTextController,
-                          focusNode: _model.nameFocusNode,
+                          controller: _model.extraTextController,
+                          focusNode: _model.extraFocusNode,
                           autofocus: true,
                           textCapitalization: TextCapitalization.words,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Name',
+                            labelText: 'Excess Amount',
                             labelStyle:
                                 FlutterFlowTheme.of(context).bodySmall.override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 28.0,
                                       letterSpacing: 0.0,
                                     ),
-                            hintText: 'Enter new name here',
                             hintStyle: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -195,7 +211,9 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                     letterSpacing: 0.0,
                                   ),
                           minLines: 1,
-                          validator: _model.nameTextControllerValidator
+                          keyboardType: const TextInputType.numberWithOptions(
+                              signed: true, decimal: true),
+                          validator: _model.extraTextControllerValidator
                               .asValidator(context),
                         ),
                       ),
@@ -224,14 +242,19 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await _model.user!.reference
-                                      .update(createUsersRecordData(
-                                    displayName: _model.nameTextController.text,
+                                  await _model.changeTransaction!.reference
+                                      .update(createTransactionsRecordData(
+                                    total: (String extra) {
+                                      return double.parse(extra.startsWith('-')
+                                          ? extra.substring(1)
+                                          : '-$extra');
+                                    }(_model.extraTextController.text),
+                                    staff: currentUserReference,
                                   ));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'The name is now updated',
+                                        'Excess remitted amount updated!',
                                         style: TextStyle(
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,

@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/components/forms/salary_edit/salary_edit_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_charts.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -325,91 +326,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
-                child: FlutterFlowIconButton(
-                  borderRadius: 20.0,
-                  buttonSize: 40.0,
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: FlutterFlowTheme.of(context).primaryText,
-                    size: 24.0,
-                  ),
-                  onPressed: () async {
-                    // hide month picker
-                    setState(() {
-                      _model.showMonthPicker = false;
-                    });
-                    // set previous year
-                    setState(() {
-                      _model.year =
-                          functions.previousYear(_model.month, _model.year);
-                    });
-                    // set previous month
-                    setState(() {
-                      _model.month = functions.previousMonth(_model.month);
-                    });
-                    await _model.updateStatsByDate(
-                      context,
-                      year: _model.year,
-                      month: _model.month,
-                      hotel: FFAppState().hotel,
-                    );
-                    setState(() {});
-                    // set hotel to all
-                    setState(() {
-                      _model.hotel = 'All';
-                    });
-                    // show month picker
-                    setState(() {
-                      _model.showMonthPicker = true;
-                    });
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
-                child: FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 20.0,
-                  buttonSize: 40.0,
-                  icon: Icon(
-                    Icons.chevron_right,
-                    color: FlutterFlowTheme.of(context).primaryText,
-                    size: 24.0,
-                  ),
-                  onPressed: () async {
-                    // hide month picker
-                    setState(() {
-                      _model.showMonthPicker = false;
-                    });
-                    // next Year
-                    setState(() {
-                      _model.year =
-                          functions.nextYear(_model.year, _model.month);
-                    });
-                    // next month
-                    setState(() {
-                      _model.month = functions.nextMonth(_model.month);
-                    });
-                    await _model.updateStatsByDate(
-                      context,
-                      year: _model.year,
-                      month: _model.month,
-                      hotel: FFAppState().hotel,
-                    );
-                    setState(() {});
-                    // set hotel to all
-                    setState(() {
-                      _model.hotel = 'All';
-                    });
-                    // show month picker
-                    setState(() {
-                      _model.showMonthPicker = true;
-                    });
-                  },
-                ),
-              ),
               if (_model.hotel != 'All')
                 Align(
                   alignment: const AlignmentDirectional(0.0, 0.0),
@@ -722,83 +638,168 @@ class _MetricsWidgetState extends State<MetricsWidget>
                 ),
               ],
             ),
-            if (_model.showMonthPicker)
-              custom_widgets.MonthPicker(
-                width: double.infinity,
-                height: 60.0,
-                initialMonth: ((String month) {
-                  return {
-                    'January': 1,
-                    'February': 2,
-                    'March': 3,
-                    'April': 4,
-                    'May': 5,
-                    'June': 6,
-                    'July': 7,
-                    'August': 8,
-                    'September': 9,
-                    'October': 10,
-                    'November': 11,
-                    'December': 12,
-                  }[month];
-                }(_model.month))!,
-                initialYear: int.parse(_model.year),
-                changeMonthYear: (month, year) async {
-                  // hide month picker
-                  setState(() {
-                    _model.showMonthPicker = false;
-                    _model.month = ((int month) {
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                FlutterFlowIconButton(
+                  borderRadius: 20.0,
+                  buttonSize: 60.0,
+                  icon: Icon(
+                    Icons.keyboard_arrow_left_outlined,
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    size: 30.0,
+                  ),
+                  onPressed: () async {
+                    // hide month picker
+                    setState(() {
+                      _model.showMonthPicker = false;
+                    });
+                    // set previous year
+                    setState(() {
+                      _model.year =
+                          functions.previousYear(_model.month, _model.year);
+                    });
+                    // set previous month
+                    setState(() {
+                      _model.month = functions.previousMonth(_model.month);
+                    });
+                    await _model.updateStatsByDate(
+                      context,
+                      year: _model.year,
+                      month: _model.month,
+                      hotel: FFAppState().hotel,
+                    );
+                    setState(() {});
+                    // set hotel to all
+                    setState(() {
+                      _model.hotel = 'All';
+                    });
+                    // show month picker
+                    setState(() {
+                      _model.showMonthPicker = true;
+                    });
+                  },
+                ),
+                if (_model.showMonthPicker)
+                  custom_widgets.MonthPicker(
+                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    height: 60.0,
+                    initialMonth: ((String month) {
                       return {
-                        1: 'January',
-                        2: 'February',
-                        3: 'March',
-                        4: 'April',
-                        5: 'May',
-                        6: 'June',
-                        7: 'July',
-                        8: 'August',
-                        9: 'September',
-                        10: 'October',
-                        11: 'November',
-                        12: 'December',
+                        'January': 1,
+                        'February': 2,
+                        'March': 3,
+                        'April': 4,
+                        'May': 5,
+                        'June': 6,
+                        'July': 7,
+                        'August': 8,
+                        'September': 9,
+                        'October': 10,
+                        'November': 11,
+                        'December': 12,
                       }[month];
-                    }(month))!;
-                    _model.year = year.toString();
-                  });
-                  // get stats from this month
-                  await _model.updateStatsByDate(
-                    context,
-                    year: year.toString(),
-                    month: (int month) {
-                      return {
-                        1: 'January',
-                        2: 'February',
-                        3: 'March',
-                        4: 'April',
-                        5: 'May',
-                        6: 'June',
-                        7: 'July',
-                        8: 'August',
-                        9: 'September',
-                        10: 'October',
-                        11: 'November',
-                        12: 'December',
-                      }[month];
-                    }(month),
-                    hotel: FFAppState().hotel,
-                  );
-                  setState(() {});
-                  // show month picker
-                  setState(() {
-                    _model.showMonthPicker = true;
-                  });
-                  // set hotel to all
-                  setState(() {
-                    _model.hotel = 'All';
-                  });
-                },
-              ).animateOnPageLoad(
-                  animationsMap['containerOnPageLoadAnimation2']!),
+                    }(_model.month))!,
+                    initialYear: int.parse(_model.year),
+                    changeMonthYear: (month, year) async {
+                      // hide month picker
+                      setState(() {
+                        _model.showMonthPicker = false;
+                        _model.month = ((int month) {
+                          return {
+                            1: 'January',
+                            2: 'February',
+                            3: 'March',
+                            4: 'April',
+                            5: 'May',
+                            6: 'June',
+                            7: 'July',
+                            8: 'August',
+                            9: 'September',
+                            10: 'October',
+                            11: 'November',
+                            12: 'December',
+                          }[month];
+                        }(month))!;
+                        _model.year = year.toString();
+                      });
+                      // get stats from this month
+                      await _model.updateStatsByDate(
+                        context,
+                        year: year.toString(),
+                        month: (int month) {
+                          return {
+                            1: 'January',
+                            2: 'February',
+                            3: 'March',
+                            4: 'April',
+                            5: 'May',
+                            6: 'June',
+                            7: 'July',
+                            8: 'August',
+                            9: 'September',
+                            10: 'October',
+                            11: 'November',
+                            12: 'December',
+                          }[month];
+                        }(month),
+                        hotel: FFAppState().hotel,
+                      );
+                      setState(() {});
+                      // show month picker
+                      setState(() {
+                        _model.showMonthPicker = true;
+                      });
+                      // set hotel to all
+                      setState(() {
+                        _model.hotel = 'All';
+                      });
+                    },
+                  ).animateOnPageLoad(
+                      animationsMap['containerOnPageLoadAnimation2']!),
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 20.0,
+                  buttonSize: 60.0,
+                  icon: Icon(
+                    Icons.keyboard_arrow_right_outlined,
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    size: 30.0,
+                  ),
+                  onPressed: () async {
+                    // hide month picker
+                    setState(() {
+                      _model.showMonthPicker = false;
+                    });
+                    // next Year
+                    setState(() {
+                      _model.year =
+                          functions.nextYear(_model.year, _model.month);
+                    });
+                    // next month
+                    setState(() {
+                      _model.month = functions.nextMonth(_model.month);
+                    });
+                    await _model.updateStatsByDate(
+                      context,
+                      year: _model.year,
+                      month: _model.month,
+                      hotel: FFAppState().hotel,
+                    );
+                    setState(() {});
+                    // set hotel to all
+                    setState(() {
+                      _model.hotel = 'All';
+                    });
+                    // show month picker
+                    setState(() {
+                      _model.showMonthPicker = true;
+                    });
+                  },
+                ),
+              ],
+            ),
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
               child: Row(
@@ -2208,175 +2209,221 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 16.0, 12.0),
-                          child: Container(
-                            width: 230.0,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 4.0,
-                                  color: Color(0x34090F13),
-                                  offset: Offset(
-                                    0.0,
-                                    1.0,
-                                  ),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 4.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: (String change) {
-                                        return change.contains("-");
-                                      }(functions.metricChange(
-                                              _model.salaries,
-                                              'salaries',
-                                              _model.prevMetrics.toList(),
-                                              _model.hotel))
-                                          ? FlutterFlowTheme.of(context).error
-                                          : FlutterFlowTheme.of(context)
-                                              .secondary,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(0.0),
-                                        bottomRight: Radius.circular(0.0),
-                                        topLeft: Radius.circular(12.0),
-                                        topRight: Radius.circular(12.0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              if (_model.hotel != 'All') {
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  enableDrag: false,
+                                  useSafeArea: true,
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding: MediaQuery.viewInsetsOf(context),
+                                      child: SizedBox(
+                                        height: double.infinity,
+                                        child: SalaryEditWidget(
+                                          stats: _model.stat,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).then((value) => safeSetState(() {}));
+
+                                await _model.updateStatsByDate(
+                                  context,
+                                  year: _model.year,
+                                  month: _model.month,
+                                  hotel: FFAppState().hotel,
+                                );
+                                setState(() {});
+                                // set hotel to all
+                                setState(() {
+                                  _model.hotel = 'All';
+                                });
+                              }
+                            },
+                            child: Container(
+                              width: 230.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 4.0,
+                                    color: Color(0x34090F13),
+                                    offset: Offset(
+                                      0.0,
+                                      1.0,
+                                    ),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 4.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: (String change) {
+                                          return change.contains("-");
+                                        }(functions.metricChange(
+                                                _model.salaries,
+                                                'salaries',
+                                                _model.prevMetrics.toList(),
+                                                _model.hotel))
+                                            ? FlutterFlowTheme.of(context).error
+                                            : FlutterFlowTheme.of(context)
+                                                .secondary,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(0.0),
+                                          bottomRight: Radius.circular(0.0),
+                                          topLeft: Radius.circular(12.0),
+                                          topRight: Radius.circular(12.0),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              formatNumber(
+                                                _model.salaries,
+                                                formatType: FormatType.decimal,
+                                                decimalType:
+                                                    DecimalType.automatic,
+                                                currency: 'P ',
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color: Colors.white,
+                                                        fontSize: 20.0,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
+                                            ),
+                                            Text(
+                                              'Salaries',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .titleSmall
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: Colors.white,
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    child: Padding(
+                                    Padding(
                                       padding: const EdgeInsets.all(12.0),
-                                      child: Column(
+                                      child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            formatNumber(
-                                              _model.salaries,
-                                              formatType: FormatType.decimal,
-                                              decimalType:
-                                                  DecimalType.automatic,
-                                              currency: 'P ',
+                                          Container(
+                                            width: 36.0,
+                                            height: 36.0,
+                                            decoration: BoxDecoration(
+                                              color: (String change) {
+                                                return change.contains("-");
+                                              }(functions.metricChange(
+                                                      _model.salaries,
+                                                      'salaries',
+                                                      _model.prevMetrics
+                                                          .toList(),
+                                                      _model.hotel))
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .error
+                                                  : FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
                                             ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 20.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
+                                            alignment:
+                                                const AlignmentDirectional(0.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if ((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.salaries,
+                                                    'salaries',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel)))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretDown,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                                if (!((String change) {
+                                                  return change.contains("-");
+                                                }(functions.metricChange(
+                                                    _model.salaries,
+                                                    'salaries',
+                                                    _model.prevMetrics.toList(),
+                                                    _model.hotel))))
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.caretUp,
+                                                    color: Colors.white,
+                                                    size: 20.0,
+                                                  ),
+                                              ],
+                                            ),
                                           ),
-                                          Text(
-                                            'Salaries',
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleSmall
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: Colors.white,
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 8.0, 0.0),
+                                            child: Text(
+                                              functions.metricChange(
+                                                  _model.salaries,
+                                                  'salaries',
+                                                  _model.prevMetrics.toList(),
+                                                  _model.hotel),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: const Color(0xFF14181B),
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          width: 36.0,
-                                          height: 36.0,
-                                          decoration: BoxDecoration(
-                                            color: (String change) {
-                                              return change.contains("-");
-                                            }(functions.metricChange(
-                                                    _model.salaries,
-                                                    'salaries',
-                                                    _model.prevMetrics.toList(),
-                                                    _model.hotel))
-                                                ? FlutterFlowTheme.of(context)
-                                                    .error
-                                                : FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          alignment:
-                                              const AlignmentDirectional(0.0, 0.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if ((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.salaries,
-                                                  'salaries',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel)))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretDown,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                              if (!((String change) {
-                                                return change.contains("-");
-                                              }(functions.metricChange(
-                                                  _model.salaries,
-                                                  'salaries',
-                                                  _model.prevMetrics.toList(),
-                                                  _model.hotel))))
-                                                const FaIcon(
-                                                  FontAwesomeIcons.caretUp,
-                                                  color: Colors.white,
-                                                  size: 20.0,
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 8.0, 0.0),
-                                          child: Text(
-                                            functions.metricChange(
-                                                _model.salaries,
-                                                'salaries',
-                                                _model.prevMetrics.toList(),
-                                                _model.hotel),
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: const Color(0xFF14181B),
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ).animateOnPageLoad(

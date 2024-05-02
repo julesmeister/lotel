@@ -1,27 +1,26 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'name_edit_model.dart';
-export 'name_edit_model.dart';
+import 'salary_edit_model.dart';
+export 'salary_edit_model.dart';
 
-class NameEditWidget extends StatefulWidget {
-  const NameEditWidget({
+class SalaryEditWidget extends StatefulWidget {
+  const SalaryEditWidget({
     super.key,
-    this.ref,
+    this.stats,
   });
 
-  final DocumentReference? ref;
+  final StatsRecord? stats;
 
   @override
-  State<NameEditWidget> createState() => _NameEditWidgetState();
+  State<SalaryEditWidget> createState() => _SalaryEditWidgetState();
 }
 
-class _NameEditWidgetState extends State<NameEditWidget> {
-  late NameEditModel _model;
+class _SalaryEditWidgetState extends State<SalaryEditWidget> {
+  late SalaryEditModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -32,22 +31,17 @@ class _NameEditWidgetState extends State<NameEditWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => NameEditModel());
+    _model = createModel(context, () => SalaryEditModel());
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.userToEdit = await UsersRecord.getDocumentOnce(
-          widget.ref != null ? widget.ref! : currentUserReference!);
       setState(() {
-        _model.user = _model.userToEdit;
-      });
-      setState(() {
-        _model.nameTextController?.text = _model.userToEdit!.displayName;
+        _model.salaryTextController?.text = widget.stats!.salaries.toString();
       });
     });
 
-    _model.nameTextController ??= TextEditingController();
-    _model.nameFocusNode ??= FocusNode();
+    _model.salaryTextController ??= TextEditingController();
+    _model.salaryFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -130,7 +124,7 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'Edit Name',
+                                'Edit Sum of Total Wages',
                                 style: FlutterFlowTheme.of(context)
                                     .headlineSmall
                                     .override(
@@ -154,20 +148,19 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
                         child: TextFormField(
-                          controller: _model.nameTextController,
-                          focusNode: _model.nameFocusNode,
+                          controller: _model.salaryTextController,
+                          focusNode: _model.salaryFocusNode,
                           autofocus: true,
                           textCapitalization: TextCapitalization.words,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Name',
+                            labelText: 'Total',
                             labelStyle:
                                 FlutterFlowTheme.of(context).bodySmall.override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 28.0,
                                       letterSpacing: 0.0,
                                     ),
-                            hintText: 'Enter new name here',
                             hintStyle: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -195,7 +188,9 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                     letterSpacing: 0.0,
                                   ),
                           minLines: 1,
-                          validator: _model.nameTextControllerValidator
+                          keyboardType: const TextInputType.numberWithOptions(
+                              signed: true, decimal: true),
+                          validator: _model.salaryTextControllerValidator
                               .asValidator(context),
                         ),
                       ),
@@ -224,14 +219,15 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await _model.user!.reference
-                                      .update(createUsersRecordData(
-                                    displayName: _model.nameTextController.text,
+                                  await widget.stats!.reference
+                                      .update(createStatsRecordData(
+                                    salaries: double.tryParse(
+                                        _model.salaryTextController.text),
                                   ));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'The name is now updated',
+                                        'Total compensation sum is now updated!',
                                         style: TextStyle(
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,

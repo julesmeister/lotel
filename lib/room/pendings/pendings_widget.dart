@@ -466,7 +466,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Plus Jakarta Sans',
-                                    color: const Color(0xFF39D2C0),
+                                    color: FlutterFlowTheme.of(context).success,
                                     fontSize: 14.0,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
@@ -487,7 +487,8 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                       .bodyLarge
                                       .override(
                                         fontFamily: 'Plus Jakarta Sans',
-                                        color: const Color(0xFF14181B),
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
                                         fontSize: 14.0,
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
@@ -506,7 +507,8 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                       .labelMedium
                                       .override(
                                         fontFamily: 'Plus Jakarta Sans',
-                                        color: const Color(0xFF57636C),
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
                                         fontSize: 14.0,
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
