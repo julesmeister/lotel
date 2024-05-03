@@ -1269,70 +1269,86 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onDoubleTap: () async {
-                                              await showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                enableDrag: false,
-                                                useSafeArea: true,
-                                                context: context,
-                                                builder: (context) {
-                                                  return GestureDetector(
-                                                    onTap: () => _model
-                                                            .unfocusNode
-                                                            .canRequestFocus
-                                                        ? FocusScope.of(context)
-                                                            .requestFocus(_model
-                                                                .unfocusNode)
-                                                        : FocusScope.of(context)
-                                                            .unfocus(),
-                                                    child: Padding(
-                                                      padding: MediaQuery
-                                                          .viewInsetsOf(
-                                                              context),
-                                                      child: const SizedBox(
-                                                        height: double.infinity,
-                                                        child:
-                                                            ExtraRemittanceWidget(),
+                                              if (valueOrDefault(
+                                                      currentUserDocument?.role,
+                                                      '') ==
+                                                  'admin') {
+                                                await showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  enableDrag: false,
+                                                  useSafeArea: true,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return GestureDetector(
+                                                      onTap: () => _model
+                                                              .unfocusNode
+                                                              .canRequestFocus
+                                                          ? FocusScope.of(
+                                                                  context)
+                                                              .requestFocus(_model
+                                                                  .unfocusNode)
+                                                          : FocusScope.of(
+                                                                  context)
+                                                              .unfocus(),
+                                                      child: Padding(
+                                                        padding: MediaQuery
+                                                            .viewInsetsOf(
+                                                                context),
+                                                        child: const SizedBox(
+                                                          height:
+                                                              double.infinity,
+                                                          child:
+                                                              ExtraRemittanceWidget(),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
-                                              ).then((value) =>
-                                                  safeSetState(() {}));
+                                                    );
+                                                  },
+                                                ).then((value) =>
+                                                    safeSetState(() {}));
+                                              }
                                             },
                                             onLongPress: () async {
-                                              await showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                enableDrag: false,
-                                                useSafeArea: true,
-                                                context: context,
-                                                builder: (context) {
-                                                  return GestureDetector(
-                                                    onTap: () => _model
-                                                            .unfocusNode
-                                                            .canRequestFocus
-                                                        ? FocusScope.of(context)
-                                                            .requestFocus(_model
-                                                                .unfocusNode)
-                                                        : FocusScope.of(context)
-                                                            .unfocus(),
-                                                    child: Padding(
-                                                      padding: MediaQuery
-                                                          .viewInsetsOf(
-                                                              context),
-                                                      child: const SizedBox(
-                                                        height: double.infinity,
-                                                        child:
-                                                            ExtraRemittanceWidget(),
+                                              if (valueOrDefault(
+                                                      currentUserDocument?.role,
+                                                      '') ==
+                                                  'admin') {
+                                                await showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  enableDrag: false,
+                                                  useSafeArea: true,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return GestureDetector(
+                                                      onTap: () => _model
+                                                              .unfocusNode
+                                                              .canRequestFocus
+                                                          ? FocusScope.of(
+                                                                  context)
+                                                              .requestFocus(_model
+                                                                  .unfocusNode)
+                                                          : FocusScope.of(
+                                                                  context)
+                                                              .unfocus(),
+                                                      child: Padding(
+                                                        padding: MediaQuery
+                                                            .viewInsetsOf(
+                                                                context),
+                                                        child: const SizedBox(
+                                                          height:
+                                                              double.infinity,
+                                                          child:
+                                                              ExtraRemittanceWidget(),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
-                                              ).then((value) =>
-                                                  safeSetState(() {}));
+                                                    );
+                                                  },
+                                                ).then((value) =>
+                                                    safeSetState(() {}));
+                                              }
                                             },
                                             child: Text(
                                               formatNumber(
@@ -1960,6 +1976,23 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onTap: () async {
+                                                  _model.vacantRooms =
+                                                      await queryRoomsRecordOnce(
+                                                    queryBuilder:
+                                                        (roomsRecord) =>
+                                                            roomsRecord
+                                                                .where(
+                                                                  'hotel',
+                                                                  isEqualTo:
+                                                                      FFAppState()
+                                                                          .hotel,
+                                                                )
+                                                                .where(
+                                                                  'vacant',
+                                                                  isEqualTo:
+                                                                      true,
+                                                                ),
+                                                  );
                                                   await showDialog(
                                                     context: context,
                                                     builder: (dialogContext) {
@@ -1988,11 +2021,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       context)
                                                                   .unfocus(),
                                                           child: SizedBox(
-                                                            height: 280.0,
+                                                            height: 600.0,
                                                             child:
                                                                 OccupiedWidget(
-                                                              rooms:
+                                                              occupiedRooms:
                                                                   checkinStatsRoomsRecordList,
+                                                              vacantRooms: _model
+                                                                  .vacantRooms!,
                                                             ),
                                                           ),
                                                         ),
@@ -2000,6 +2035,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     },
                                                   ).then((value) =>
                                                       setState(() {}));
+
+                                                  setState(() {});
                                                 },
                                                 child: Container(
                                                   width: 130.0,
@@ -3369,8 +3406,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               height: 220.0,
                                                               child:
                                                                   OptionToIssueWidget(
-                                                                ref: issuesListItem
-                                                                    .reference,
+                                                                issue:
+                                                                    issuesListItem,
                                                               ),
                                                             ),
                                                           ),

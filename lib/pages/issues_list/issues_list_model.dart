@@ -14,7 +14,9 @@ class IssuesListModel extends FlutterFlowModel<IssuesListWidget> {
   Query? listViewPagingQuery;
   List<StreamSubscription?> listViewStreamSubscriptions = [];
 
-  // Stores action output result for [Bottom Sheet - ChangeDate] action in RichText widget.
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in Column widget.
+  DateTime? adjustedFixDateCopy;
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in Text widget.
   DateTime? adjustedFixDate;
 
   @override

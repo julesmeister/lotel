@@ -180,7 +180,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -198,6 +198,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
@@ -222,7 +223,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -240,6 +241,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
@@ -266,7 +268,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -284,6 +286,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,

@@ -260,6 +260,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                               controller: _model.textController,
                                               focusNode:
                                                   _model.textFieldFocusNode,
+                                              autofocus: true,
                                               obscureText: false,
                                               decoration: InputDecoration(
                                                 hintText: 'How much?',
@@ -333,7 +334,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                                                       ),
                                               keyboardType: const TextInputType
                                                   .numberWithOptions(
-                                                  decimal: true),
+                                                  signed: true, decimal: true),
                                               validator: _model
                                                   .textControllerValidator
                                                   .asValidator(context),

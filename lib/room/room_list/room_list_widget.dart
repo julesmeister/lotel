@@ -4,7 +4,6 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'room_list_model.dart';
 export 'room_list_model.dart';
@@ -78,17 +77,17 @@ class _RoomListWidgetState extends State<RoomListWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 7.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
                     borderWidth: 1.0,
-                    buttonSize: 44.0,
+                    buttonSize: 60.0,
                     fillColor: FlutterFlowTheme.of(context).info,
                     icon: Icon(
                       Icons.add,
                       color: FlutterFlowTheme.of(context).primaryText,
-                      size: 20.0,
+                      size: 30.0,
                     ),
                     onPressed: () async {
                       await showModalBottomSheet(
@@ -119,7 +118,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                 if (_model.selectedRooms.length == 1)
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 7.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                     child: StreamBuilder<RoomsRecord>(
                       stream:
                           RoomsRecord.getDocument(_model.selectedRooms.first),
@@ -143,12 +142,12 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                           borderColor: Colors.transparent,
                           borderRadius: 30.0,
                           borderWidth: 1.0,
-                          buttonSize: 44.0,
+                          buttonSize: 60.0,
                           fillColor: FlutterFlowTheme.of(context).info,
-                          icon: FaIcon(
-                            FontAwesomeIcons.edit,
+                          icon: Icon(
+                            Icons.edit_outlined,
                             color: FlutterFlowTheme.of(context).primaryText,
-                            size: 20.0,
+                            size: 30.0,
                           ),
                           onPressed: () async {
                             await showModalBottomSheet(
@@ -184,17 +183,17 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                     ),
                   ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
                     borderWidth: 1.0,
-                    buttonSize: 44.0,
+                    buttonSize: 60.0,
                     fillColor: FlutterFlowTheme.of(context).info,
                     icon: Icon(
                       Icons.delete_outlined,
                       color: FlutterFlowTheme.of(context).primaryText,
-                      size: 24.0,
+                      size: 30.0,
                     ),
                     onPressed: () async {
                       var confirmDialogResponse = await showDialog<bool>(

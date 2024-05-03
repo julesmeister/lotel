@@ -239,7 +239,7 @@ class _SalaryEditWidgetState extends State<SalaryEditWidget> {
                                               .secondary,
                                     ),
                                   );
-                                  Navigator.pop(context);
+                                  Navigator.pop(context, true);
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

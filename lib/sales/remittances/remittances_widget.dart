@@ -291,7 +291,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                           const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
@@ -331,20 +331,55 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                       !_model.showDatePicker;
                                 });
                               },
-                              child: AutoSizeText(
-                                dateTimeFormat('MMMMEEEEd', _model.date),
-                                maxLines: 1,
-                                style: FlutterFlowTheme.of(context)
-                                    .displaySmall
-                                    .override(
-                                      fontFamily: 'Outfit',
-                                      fontSize: 26.0,
-                                      letterSpacing: 0.0,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 16.0, 0.0),
+                                    child: Icon(
+                                      Icons.calendar_month_sharp,
+                                      color: Color(0xFF04B9F9),
+                                      size: 35.0,
                                     ),
-                                minFontSize: 22.0,
+                                  ),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Select Date',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryText,
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
+                                      AutoSizeText(
+                                        dateTimeFormat(
+                                            'MMMMEEEEd', _model.date),
+                                        maxLines: 1,
+                                        style: FlutterFlowTheme.of(context)
+                                            .displaySmall
+                                            .override(
+                                              fontFamily: 'Outfit',
+                                              fontSize: 18.0,
+                                              letterSpacing: 0.0,
+                                            ),
+                                        minFontSize: 18.0,
+                                      ).animateOnPageLoad(animationsMap[
+                                          'textOnPageLoadAnimation1']!),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ).animateOnPageLoad(
-                                animationsMap['textOnPageLoadAnimation1']!),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
@@ -1244,182 +1279,318 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                       16.0, 0.0, 16.0, 15.0),
                                               child: FFButtonWidget(
                                                 onPressed: () async {
-                                                  // reset values
-                                                  setState(() {
-                                                    _model.showLoadButton =
-                                                        true;
-                                                    _model.showDownloadButton =
-                                                        false;
-                                                    _model.inventories = [];
-                                                    _model.bookings = [];
-                                                    _model.transactions = [];
-                                                    _model.rooms = [];
-                                                    _model.loopInvetoryCounter =
-                                                        0;
-                                                    _model.loopBookCounter = 0;
-                                                    _model.loopTransactionCounter =
-                                                        0;
-                                                    _model.isLoading = true;
-                                                  });
-                                                  // roomList
-                                                  _model.roomInThisHotel =
-                                                      await queryRoomsRecordOnce(
-                                                    queryBuilder:
-                                                        (roomsRecord) =>
-                                                            roomsRecord.where(
-                                                      'hotel',
-                                                      isEqualTo:
-                                                          FFAppState().hotel,
-                                                    ),
-                                                  );
-                                                  // rooms to list
-                                                  setState(() {
-                                                    _model.rooms = _model
-                                                        .roomInThisHotel!
-                                                        .toList()
-                                                        .cast<RoomsRecord>();
-                                                  });
-                                                  while (_model
-                                                          .loopInvetoryCounter !=
-                                                      mainCardRemittancesRecord
-                                                          .inventories
-                                                          .length) {
-                                                    // read inventory
-                                                    _model.inventoryToList =
-                                                        await InventoriesRecord
-                                                            .getDocumentOnce(
-                                                                mainCardRemittancesRecord
-                                                                        .inventories[
-                                                                    _model
-                                                                        .loopInvetoryCounter]);
-                                                    // increment loop
+                                                  if (mainCardRemittancesRecord
+                                                      .collected) {
+                                                    // reset values
                                                     setState(() {
-                                                      _model.addToInventories(
-                                                          _model
-                                                              .inventoryToList!);
+                                                      _model.showLoadButton =
+                                                          true;
+                                                      _model.showDownloadButton =
+                                                          false;
+                                                      _model.inventories = [];
+                                                      _model.bookings = [];
+                                                      _model.transactions = [];
+                                                      _model.rooms = [];
                                                       _model.loopInvetoryCounter =
-                                                          _model.loopInvetoryCounter +
-                                                              1;
-                                                    });
-                                                  }
-                                                  while (_model
-                                                          .loopBookCounter !=
-                                                      mainCardRemittancesRecord
-                                                          .bookings.length) {
-                                                    // read book
-                                                    _model.bookToList =
-                                                        await BookingsRecord
-                                                            .getDocumentOnce(
-                                                                mainCardRemittancesRecord
-                                                                        .bookings[
-                                                                    _model
-                                                                        .loopBookCounter]);
-                                                    // increment loop
-                                                    setState(() {
+                                                          0;
                                                       _model.loopBookCounter =
-                                                          _model.loopBookCounter +
-                                                              1;
-                                                      _model.addToBookings(
-                                                          _model.bookToList!);
-                                                    });
-                                                  }
-                                                  while (_model
-                                                          .loopTransactionCounter !=
-                                                      mainCardRemittancesRecord
-                                                          .transactions
-                                                          .length) {
-                                                    // read transactions
-                                                    _model.transactionToList =
-                                                        await TransactionsRecord
-                                                            .getDocumentOnce(
-                                                                mainCardRemittancesRecord
-                                                                        .transactions[
-                                                                    _model
-                                                                        .loopTransactionCounter]);
-                                                    // increment loop
-                                                    setState(() {
+                                                          0;
                                                       _model.loopTransactionCounter =
-                                                          _model.loopTransactionCounter +
-                                                              1;
-                                                      _model.addToTransactions(
-                                                          _model
-                                                              .transactionToList!);
+                                                          0;
+                                                      _model.isLoading = true;
                                                     });
-                                                  }
-                                                  if (functions
-                                                      .isInventoryComplete(
-                                                          _model.transactions
-                                                              .toList(),
-                                                          _model.inventories
-                                                              .toList())) {
+                                                    // roomList
+                                                    _model.roomInThisHotel =
+                                                        await queryRoomsRecordOnce(
+                                                      queryBuilder:
+                                                          (roomsRecord) =>
+                                                              roomsRecord.where(
+                                                        'hotel',
+                                                        isEqualTo:
+                                                            FFAppState().hotel,
+                                                      ),
+                                                    );
+                                                    // rooms to list
+                                                    setState(() {
+                                                      _model.rooms = _model
+                                                          .roomInThisHotel!
+                                                          .toList()
+                                                          .cast<RoomsRecord>();
+                                                    });
                                                     while (_model
-                                                            .loopAbsencesCounter !=
+                                                            .loopInvetoryCounter !=
                                                         mainCardRemittancesRecord
-                                                            .absences
+                                                            .inventories
                                                             .length) {
-                                                      // read absence
-                                                      _model.absenceToList =
-                                                          await AbsencesRecord
+                                                      // read inventory
+                                                      _model.inventoryToList =
+                                                          await InventoriesRecord
                                                               .getDocumentOnce(
                                                                   mainCardRemittancesRecord
-                                                                          .absences[
+                                                                          .inventories[
                                                                       _model
-                                                                          .loopAbsencesCounter]);
+                                                                          .loopInvetoryCounter]);
                                                       // increment loop
                                                       setState(() {
-                                                        _model.addToAbsences(
+                                                        _model.addToInventories(
                                                             _model
-                                                                .absenceToList!);
-                                                        _model.loopAbsencesCounter =
-                                                            _model.loopAbsencesCounter +
+                                                                .inventoryToList!);
+                                                        _model.loopInvetoryCounter =
+                                                            _model.loopInvetoryCounter +
                                                                 1;
                                                       });
                                                     }
-                                                    // preparedBy
-                                                    _model.preparedBy =
-                                                        await UsersRecord
-                                                            .getDocumentOnce(
-                                                                mainCardRemittancesRecord
-                                                                    .preparedBy!);
-                                                    if (mainCardRemittancesRecord
-                                                            .collectedBy !=
-                                                        null) {
-                                                      // collectedBy
-                                                      _model.collectedBy =
-                                                          await queryUsersRecordOnce(
-                                                        queryBuilder:
-                                                            (usersRecord) =>
-                                                                usersRecord
-                                                                    .where(
-                                                          'uid',
-                                                          isEqualTo:
-                                                              mainCardRemittancesRecord
-                                                                  .collectedBy
-                                                                  ?.id,
-                                                        ),
-                                                        singleRecord: true,
-                                                      ).then((s) =>
-                                                              s.firstOrNull);
+                                                    while (_model
+                                                            .loopBookCounter !=
+                                                        mainCardRemittancesRecord
+                                                            .bookings
+                                                            .length) {
+                                                      // read book
+                                                      _model.bookToList =
+                                                          await BookingsRecord
+                                                              .getDocumentOnce(
+                                                                  mainCardRemittancesRecord
+                                                                          .bookings[
+                                                                      _model
+                                                                          .loopBookCounter]);
+                                                      // increment loop
+                                                      setState(() {
+                                                        _model.loopBookCounter =
+                                                            _model.loopBookCounter +
+                                                                1;
+                                                        _model.addToBookings(
+                                                            _model.bookToList!);
+                                                      });
                                                     }
-                                                    setState(() {
-                                                      _model.showDownloadButton =
-                                                          true;
-                                                      _model.showLoadButton =
-                                                          false;
-                                                      _model.isLoading = false;
-                                                    });
+                                                    while (_model
+                                                            .loopTransactionCounter !=
+                                                        mainCardRemittancesRecord
+                                                            .transactions
+                                                            .length) {
+                                                      // read transactions
+                                                      _model.transactionToList =
+                                                          await TransactionsRecord
+                                                              .getDocumentOnce(
+                                                                  mainCardRemittancesRecord
+                                                                          .transactions[
+                                                                      _model
+                                                                          .loopTransactionCounter]);
+                                                      // increment loop
+                                                      setState(() {
+                                                        _model.loopTransactionCounter =
+                                                            _model.loopTransactionCounter +
+                                                                1;
+                                                        _model.addToTransactions(
+                                                            _model
+                                                                .transactionToList!);
+                                                      });
+                                                    }
+                                                    if (functions
+                                                        .isInventoryComplete(
+                                                            _model.transactions
+                                                                .toList(),
+                                                            _model.inventories
+                                                                .toList())) {
+                                                      while (_model
+                                                              .loopAbsencesCounter !=
+                                                          mainCardRemittancesRecord
+                                                              .absences
+                                                              .length) {
+                                                        // read absence
+                                                        _model.absenceToList =
+                                                            await AbsencesRecord
+                                                                .getDocumentOnce(
+                                                                    mainCardRemittancesRecord
+                                                                            .absences[
+                                                                        _model
+                                                                            .loopAbsencesCounter]);
+                                                        // increment loop
+                                                        setState(() {
+                                                          _model.addToAbsences(
+                                                              _model
+                                                                  .absenceToList!);
+                                                          _model.loopAbsencesCounter =
+                                                              _model.loopAbsencesCounter +
+                                                                  1;
+                                                        });
+                                                      }
+                                                      // preparedBy
+                                                      _model.preparedBy =
+                                                          await UsersRecord
+                                                              .getDocumentOnce(
+                                                                  mainCardRemittancesRecord
+                                                                      .preparedBy!);
+                                                      if (mainCardRemittancesRecord
+                                                              .collectedBy !=
+                                                          null) {
+                                                        // collectedBy
+                                                        _model.collectedBy =
+                                                            await queryUsersRecordOnce(
+                                                          queryBuilder:
+                                                              (usersRecord) =>
+                                                                  usersRecord
+                                                                      .where(
+                                                            'uid',
+                                                            isEqualTo:
+                                                                mainCardRemittancesRecord
+                                                                    .collectedBy
+                                                                    ?.id,
+                                                          ),
+                                                          singleRecord: true,
+                                                        ).then((s) =>
+                                                                s.firstOrNull);
+                                                      }
+                                                      setState(() {
+                                                        _model.showDownloadButton =
+                                                            true;
+                                                        _model.showLoadButton =
+                                                            false;
+                                                        _model.isLoading =
+                                                            false;
+                                                      });
+                                                    } else {
+                                                      // missing
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                            'There\'s a missing inventory!',
+                                                            style: TextStyle(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .info,
+                                                            ),
+                                                          ),
+                                                          duration: const Duration(
+                                                              milliseconds:
+                                                                  4000),
+                                                          backgroundColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .error,
+                                                        ),
+                                                      );
+                                                      // not loading anymore
+                                                      setState(() {
+                                                        _model.isLoading =
+                                                            false;
+                                                        _model.showLoadButton =
+                                                            true;
+                                                        _model.showDownloadButton =
+                                                            false;
+                                                      });
+                                                      // reset counter
+                                                      setState(() {
+                                                        _model.loopTransactionCounter =
+                                                            0;
+                                                      });
+                                                      while (functions
+                                                              .transactionWithMissingInventory(
+                                                                  _model
+                                                                      .transactions
+                                                                      .toList(),
+                                                                  _model
+                                                                      .inventories
+                                                                      .toList())
+                                                              ?.goods
+                                                              .length !=
+                                                          _model
+                                                              .loopTransactionCounter) {
+                                                        if (functions.goodThatCannotBeFoundInInventory(
+                                                            _model.inventories
+                                                                .toList(),
+                                                            functions
+                                                                .transactionWithMissingInventory(
+                                                                    _model
+                                                                        .transactions
+                                                                        .toList(),
+                                                                    _model
+                                                                        .inventories
+                                                                        .toList())!
+                                                                .goods[_model.loopTransactionCounter])) {
+                                                          await showModalBottomSheet(
+                                                            isScrollControlled:
+                                                                true,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return GestureDetector(
+                                                                onTap: () => _model
+                                                                        .unfocusNode
+                                                                        .canRequestFocus
+                                                                    ? FocusScope.of(
+                                                                            context)
+                                                                        .requestFocus(_model
+                                                                            .unfocusNode)
+                                                                    : FocusScope.of(
+                                                                            context)
+                                                                        .unfocus(),
+                                                                child: Padding(
+                                                                  padding: MediaQuery
+                                                                      .viewInsetsOf(
+                                                                          context),
+                                                                  child:
+                                                                      SizedBox(
+                                                                    height: double
+                                                                        .infinity,
+                                                                    child:
+                                                                        MissingInventoryWidget(
+                                                                      description: functions
+                                                                          .transactionWithMissingInventory(
+                                                                              _model.transactions.toList(),
+                                                                              _model.inventories.toList())!
+                                                                          .goods[_model.loopTransactionCounter]
+                                                                          .description,
+                                                                      quantity: functions
+                                                                          .transactionWithMissingInventory(
+                                                                              _model.transactions.toList(),
+                                                                              _model.inventories.toList())!
+                                                                          .goods[_model.loopTransactionCounter]
+                                                                          .quantity,
+                                                                      transaction: functions.transactionWithMissingInventory(
+                                                                          _model
+                                                                              .transactions
+                                                                              .toList(),
+                                                                          _model
+                                                                              .inventories
+                                                                              .toList())!,
+                                                                      remittanceRef:
+                                                                          mainCardRemittancesRecord
+                                                                              .reference,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ).then((value) =>
+                                                              safeSetState(
+                                                                  () {}));
+
+                                                          break;
+                                                        }
+                                                        // increment loop
+                                                        setState(() {
+                                                          _model.loopTransactionCounter =
+                                                              _model.loopTransactionCounter +
+                                                                  1;
+                                                        });
+                                                      }
+                                                    }
                                                   } else {
-                                                    // missing
+                                                    // not yet collected
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(
                                                       SnackBar(
                                                         content: Text(
-                                                          'There\'s a missing inventory!',
+                                                          'Remittance has not yet been collected!',
                                                           style: TextStyle(
                                                             color: FlutterFlowTheme
                                                                     .of(context)
-                                                                .info,
+                                                                .secondaryBackground,
                                                           ),
                                                         ),
                                                         duration: const Duration(
@@ -1430,119 +1601,6 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                 .error,
                                                       ),
                                                     );
-                                                    // not loading anymore
-                                                    setState(() {
-                                                      _model.isLoading = false;
-                                                      _model.showLoadButton =
-                                                          true;
-                                                      _model.showDownloadButton =
-                                                          false;
-                                                    });
-                                                    // reset counter
-                                                    setState(() {
-                                                      _model.loopTransactionCounter =
-                                                          0;
-                                                    });
-                                                    while (functions
-                                                            .transactionWithMissingInventory(
-                                                                _model
-                                                                    .transactions
-                                                                    .toList(),
-                                                                _model
-                                                                    .inventories
-                                                                    .toList())
-                                                            ?.goods
-                                                            .length !=
-                                                        _model
-                                                            .loopTransactionCounter) {
-                                                      if (functions.goodThatCannotBeFoundInInventory(
-                                                          _model.inventories
-                                                              .toList(),
-                                                          functions
-                                                              .transactionWithMissingInventory(
-                                                                  _model
-                                                                      .transactions
-                                                                      .toList(),
-                                                                  _model
-                                                                      .inventories
-                                                                      .toList())!
-                                                              .goods[_model.loopTransactionCounter])) {
-                                                        await showModalBottomSheet(
-                                                          isScrollControlled:
-                                                              true,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
-                                                                          context)
-                                                                      .unfocus(),
-                                                              child: Padding(
-                                                                padding: MediaQuery
-                                                                    .viewInsetsOf(
-                                                                        context),
-                                                                child:
-                                                                    SizedBox(
-                                                                  height: double
-                                                                      .infinity,
-                                                                  child:
-                                                                      MissingInventoryWidget(
-                                                                    description: functions
-                                                                        .transactionWithMissingInventory(
-                                                                            _model.transactions
-                                                                                .toList(),
-                                                                            _model.inventories
-                                                                                .toList())!
-                                                                        .goods[_model
-                                                                            .loopTransactionCounter]
-                                                                        .description,
-                                                                    quantity: functions
-                                                                        .transactionWithMissingInventory(
-                                                                            _model.transactions
-                                                                                .toList(),
-                                                                            _model.inventories
-                                                                                .toList())!
-                                                                        .goods[_model
-                                                                            .loopTransactionCounter]
-                                                                        .quantity,
-                                                                    transaction: functions.transactionWithMissingInventory(
-                                                                        _model
-                                                                            .transactions
-                                                                            .toList(),
-                                                                        _model
-                                                                            .inventories
-                                                                            .toList())!,
-                                                                    remittanceRef:
-                                                                        mainCardRemittancesRecord
-                                                                            .reference,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                        ).then((value) =>
-                                                            safeSetState(
-                                                                () {}));
-
-                                                        break;
-                                                      }
-                                                      // increment loop
-                                                      setState(() {
-                                                        _model.loopTransactionCounter =
-                                                            _model.loopTransactionCounter +
-                                                                1;
-                                                      });
-                                                    }
                                                   }
 
                                                   setState(() {});

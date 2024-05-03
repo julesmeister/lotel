@@ -351,27 +351,9 @@ class _BillFormWidgetState extends State<BillFormWidget>
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Type a new bill',
-                    style: FlutterFlowTheme.of(context).headlineMedium.override(
-                          fontFamily: 'Outfit',
-                          letterSpacing: 0.0,
-                        ),
-                  ).animateOnPageLoad(
-                      animationsMap['textOnPageLoadAnimation']!),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
-                    child: Text(
-                      'Fill out the form below to record a bill. Leave after due blank if not applicable.',
-                      style: FlutterFlowTheme.of(context).labelLarge.override(
-                            fontFamily: 'Readex Pro',
-                            letterSpacing: 0.0,
-                          ),
-                    ),
-                  ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
@@ -414,6 +396,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Icon(
                             Icons.calendar_month,
@@ -425,7 +408,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                 16.0, 0.0, 0.0, 0.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
                                   'Select Date',
@@ -455,6 +438,24 @@ class _BillFormWidgetState extends State<BillFormWidget>
                       ),
                     ),
                   ),
+                  Text(
+                    'Type a new bill',
+                    style: FlutterFlowTheme.of(context).headlineMedium.override(
+                          fontFamily: 'Outfit',
+                          letterSpacing: 0.0,
+                        ),
+                  ).animateOnPageLoad(
+                      animationsMap['textOnPageLoadAnimation']!),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                    child: Text(
+                      'Fill out the form below to record a bill. Leave after due blank if not applicable.',
+                      style: FlutterFlowTheme.of(context).labelLarge.override(
+                            fontFamily: 'Readex Pro',
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                  ),
                   Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -478,7 +479,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                             }
                           },
                         ),
-                        autofocus: true,
+                        autofocus: false,
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'How much?',
@@ -542,7 +543,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                       TextFormField(
                         controller: _model.afterdueTextController,
                         focusNode: _model.afterdueFocusNode,
-                        autofocus: true,
+                        autofocus: false,
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'After Due Amount?',
@@ -606,7 +607,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                       TextFormField(
                         controller: _model.descriptionTextController,
                         focusNode: _model.descriptionFocusNode,
-                        autofocus: true,
+                        autofocus: false,
                         textCapitalization: TextCapitalization.words,
                         obscureText: false,
                         decoration: InputDecoration(

@@ -1,5 +1,6 @@
 import '/backend/backend.dart';
 import '/components/options/option_to_remove_book_remittance/option_to_remove_book_remittance_widget.dart';
+import '/components/options/option_to_remove_expense_remittance/option_to_remove_expense_remittance_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -522,42 +523,77 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onLongPress: () async {
-                                                  await showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return GestureDetector(
-                                                        onTap: () => _model
-                                                                .unfocusNode
-                                                                .canRequestFocus
-                                                            ? FocusScope.of(
-                                                                    context)
-                                                                .requestFocus(_model
-                                                                    .unfocusNode)
-                                                            : FocusScope.of(
-                                                                    context)
-                                                                .unfocus(),
-                                                        child: Padding(
-                                                          padding: MediaQuery
-                                                              .viewInsetsOf(
-                                                                  context),
-                                                          child: SizedBox(
-                                                            height: 125.0,
-                                                            child:
-                                                                OptionToRemoveBookRemittanceWidget(
-                                                              remittance: widget
-                                                                  .remittanceRef!,
-                                                              transaction:
-                                                                  bookingsItem,
+                                                  var confirmDialogResponse =
+                                                      await showDialog<bool>(
+                                                            context: context,
+                                                            builder:
+                                                                (alertDialogContext) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    'Remove'),
+                                                                content: const Text(
+                                                                    'This will remove this booking from this remittance as well as adjust the values from its respective remittance.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            false),
+                                                                    child: const Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            true),
+                                                                    child: const Text(
+                                                                        'Confirm'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          ) ??
+                                                          false;
+                                                  if (confirmDialogResponse) {
+                                                    await showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return GestureDetector(
+                                                          onTap: () => _model
+                                                                  .unfocusNode
+                                                                  .canRequestFocus
+                                                              ? FocusScope.of(
+                                                                      context)
+                                                                  .requestFocus(
+                                                                      _model
+                                                                          .unfocusNode)
+                                                              : FocusScope.of(
+                                                                      context)
+                                                                  .unfocus(),
+                                                          child: Padding(
+                                                            padding: MediaQuery
+                                                                .viewInsetsOf(
+                                                                    context),
+                                                            child: SizedBox(
+                                                              height: 125.0,
+                                                              child:
+                                                                  OptionToRemoveBookRemittanceWidget(
+                                                                remittance: widget
+                                                                    .remittanceRef!,
+                                                                transaction:
+                                                                    bookingsItem,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ).then((value) =>
-                                                      safeSetState(() {}));
+                                                        );
+                                                      },
+                                                    ).then((value) =>
+                                                        safeSetState(() {}));
+                                                  }
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
@@ -1155,265 +1191,342 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 (context, expensesIndex) {
                                               final expensesItem =
                                                   expenses[expensesIndex];
-                                              return Container(
-                                                width: double.infinity,
-                                                constraints: const BoxConstraints(
-                                                  maxWidth: 570.0,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryBackground,
-                                                  boxShadow: const [
-                                                    BoxShadow(
-                                                      color: Color(0x33000000),
-                                                      offset: Offset(
-                                                        0.0,
-                                                        1.0,
-                                                      ),
-                                                    )
-                                                  ],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          0.0),
-                                                  border: Border.all(
+                                              return InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  var confirmDialogResponse =
+                                                      await showDialog<bool>(
+                                                            context: context,
+                                                            builder:
+                                                                (alertDialogContext) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    'Delete'),
+                                                                content: const Text(
+                                                                    'This will delete the transaction as well as adjust the values from the respective remittance.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            false),
+                                                                    child: const Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            true),
+                                                                    child: const Text(
+                                                                        'Confirm'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          ) ??
+                                                          false;
+                                                  if (confirmDialogResponse) {
+                                                    await showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      enableDrag: false,
+                                                      useSafeArea: true,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return GestureDetector(
+                                                          onTap: () => _model
+                                                                  .unfocusNode
+                                                                  .canRequestFocus
+                                                              ? FocusScope.of(
+                                                                      context)
+                                                                  .requestFocus(
+                                                                      _model
+                                                                          .unfocusNode)
+                                                              : FocusScope.of(
+                                                                      context)
+                                                                  .unfocus(),
+                                                          child: Padding(
+                                                            padding: MediaQuery
+                                                                .viewInsetsOf(
+                                                                    context),
+                                                            child: SizedBox(
+                                                              height: 125.0,
+                                                              child:
+                                                                  OptionToRemoveExpenseRemittanceWidget(
+                                                                remittance: widget
+                                                                    .remittanceRef!,
+                                                                transaction:
+                                                                    expensesItem,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ).then((value) =>
+                                                        safeSetState(() {}));
+                                                  }
+                                                },
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  constraints: const BoxConstraints(
+                                                    maxWidth: 570.0,
+                                                  ),
+                                                  decoration: BoxDecoration(
                                                     color: FlutterFlowTheme.of(
                                                             context)
-                                                        .alternate,
+                                                        .secondaryBackground,
+                                                    boxShadow: const [
+                                                      BoxShadow(
+                                                        color:
+                                                            Color(0x33000000),
+                                                        offset: Offset(
+                                                          0.0,
+                                                          1.0,
+                                                        ),
+                                                      )
+                                                    ],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            0.0),
+                                                    border: Border.all(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .alternate,
+                                                    ),
                                                   ),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(16.0, 12.0,
-                                                          16.0, 12.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 5,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      0.0,
-                                                                      0.0,
-                                                                      12.0,
-                                                                      0.0),
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                RichText(
-                                                                  textScaler: MediaQuery.of(
-                                                                          context)
-                                                                      .textScaler,
-                                                                  text:
-                                                                      TextSpan(
-                                                                    children: [
-                                                                      TextSpan(
-                                                                        text: functions
-                                                                            .startBigLetter(expensesItem.description),
-                                                                        style:
-                                                                            const TextStyle(),
-                                                                      )
-                                                                    ],
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyLarge
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).primaryText,
-                                                                          fontSize:
-                                                                              16.0,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                        ),
-                                                                  ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          4.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child: StreamBuilder<
-                                                                      UsersRecord>(
-                                                                    stream: UsersRecord.getDocument(
-                                                                        expensesItem
-                                                                            .staff!),
-                                                                    builder:
-                                                                        (context,
-                                                                            snapshot) {
-                                                                      // Customize what your widget looks like when it's loading.
-                                                                      if (!snapshot
-                                                                          .hasData) {
-                                                                        return Center(
-                                                                          child:
-                                                                              SizedBox(
-                                                                            width:
-                                                                                50.0,
-                                                                            height:
-                                                                                50.0,
-                                                                            child:
-                                                                                CircularProgressIndicator(
-                                                                              valueColor: AlwaysStoppedAnimation<Color>(
-                                                                                FlutterFlowTheme.of(context).primary,
-                                                                              ),
-                                                                            ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                16.0,
+                                                                12.0,
+                                                                16.0,
+                                                                12.0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 5,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0.0,
+                                                                        0.0,
+                                                                        12.0,
+                                                                        0.0),
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  RichText(
+                                                                    textScaler:
+                                                                        MediaQuery.of(context)
+                                                                            .textScaler,
+                                                                    text:
+                                                                        TextSpan(
+                                                                      children: [
+                                                                        TextSpan(
+                                                                          text:
+                                                                              functions.startBigLetter(expensesItem.description),
+                                                                          style:
+                                                                              const TextStyle(),
+                                                                        )
+                                                                      ],
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyLarge
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).primaryText,
+                                                                            fontSize:
+                                                                                16.0,
+                                                                            letterSpacing:
+                                                                                0.0,
                                                                           ),
-                                                                        );
-                                                                      }
-                                                                      final textUsersRecord =
-                                                                          snapshot
-                                                                              .data!;
-                                                                      return Text(
-                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', expensesItem.date)}',
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .labelMedium
-                                                                            .override(
-                                                                              fontFamily: 'Readex Pro',
-                                                                              letterSpacing: 0.0,
-                                                                            ),
-                                                                      );
-                                                                    },
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                                if (expensesItem
-                                                                        .goods.isNotEmpty)
                                                                   Padding(
                                                                     padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
-                                                                            5.0,
+                                                                            4.0,
                                                                             0.0,
                                                                             0.0),
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryBackground,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5.0),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).info,
-                                                                          width:
-                                                                              1.0,
-                                                                        ),
-                                                                      ),
-                                                                      alignment:
-                                                                          const AlignmentDirectional(
-                                                                              -1.0,
-                                                                              0.0),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        children: [
-                                                                          Container(
-                                                                            width:
-                                                                                4.0,
-                                                                            height:
-                                                                                (20 * expensesItem.goods.length).toDouble(),
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              color: const Color(0xFF4B39EF),
-                                                                              borderRadius: BorderRadius.circular(4.0),
-                                                                            ),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(10.0),
+                                                                    child: StreamBuilder<
+                                                                        UsersRecord>(
+                                                                      stream: UsersRecord.getDocument(
+                                                                          expensesItem
+                                                                              .staff!),
+                                                                      builder:
+                                                                          (context,
+                                                                              snapshot) {
+                                                                        // Customize what your widget looks like when it's loading.
+                                                                        if (!snapshot
+                                                                            .hasData) {
+                                                                          return Center(
                                                                             child:
-                                                                                Text(
-                                                                              functions.cartToTextSummary(expensesItem.goods.toList())!,
-                                                                              style: FlutterFlowTheme.of(context).labelMedium.override(
-                                                                                    fontFamily: 'Readex Pro',
-                                                                                    letterSpacing: 0.0,
-                                                                                  ),
+                                                                                SizedBox(
+                                                                              width: 50.0,
+                                                                              height: 50.0,
+                                                                              child: CircularProgressIndicator(
+                                                                                valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                  FlutterFlowTheme.of(context).primary,
+                                                                                ),
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
+                                                                          );
+                                                                        }
+                                                                        final textUsersRecord =
+                                                                            snapshot.data!;
+                                                                        return Text(
+                                                                          'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', expensesItem.date)}',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                letterSpacing: 0.0,
+                                                                              ),
+                                                                        );
+                                                                      },
                                                                     ),
                                                                   ),
-                                                              ],
+                                                                  if (expensesItem
+                                                                          .goods.isNotEmpty)
+                                                                    Padding(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          5.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Container(
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryBackground,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(5.0),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).info,
+                                                                            width:
+                                                                                1.0,
+                                                                          ),
+                                                                        ),
+                                                                        alignment: const AlignmentDirectional(
+                                                                            -1.0,
+                                                                            0.0),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            Container(
+                                                                              width: 4.0,
+                                                                              height: (20 * expensesItem.goods.length).toDouble(),
+                                                                              decoration: BoxDecoration(
+                                                                                color: const Color(0xFF4B39EF),
+                                                                                borderRadius: BorderRadius.circular(4.0),
+                                                                              ),
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.all(10.0),
+                                                                              child: Text(
+                                                                                functions.cartToTextSummary(expensesItem.goods.toList())!,
+                                                                                style: FlutterFlowTheme.of(context).labelMedium.override(
+                                                                                      fontFamily: 'Readex Pro',
+                                                                                      letterSpacing: 0.0,
+                                                                                    ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          20.0),
-                                                              child: Text(
-                                                                formatNumber(
-                                                                  expensesItem
-                                                                      .total,
-                                                                  formatType:
-                                                                      FormatType
-                                                                          .decimal,
-                                                                  decimalType:
-                                                                      DecimalType
-                                                                          .automatic,
-                                                                  currency:
-                                                                      'P ',
+                                                        Expanded(
+                                                          flex: 2,
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            20.0),
+                                                                child: Text(
+                                                                  formatNumber(
+                                                                    expensesItem
+                                                                        .total,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .decimal,
+                                                                    decimalType:
+                                                                        DecimalType
+                                                                            .automatic,
+                                                                    currency:
+                                                                        'P ',
+                                                                  ),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .end,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .headlineSmall
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Outfit',
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .error,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
                                                                 ),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .headlineSmall
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Outfit',
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .error,
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               );
@@ -1612,42 +1725,77 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onLongPress: () async {
-                                                  await showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return GestureDetector(
-                                                        onTap: () => _model
-                                                                .unfocusNode
-                                                                .canRequestFocus
-                                                            ? FocusScope.of(
-                                                                    context)
-                                                                .requestFocus(_model
-                                                                    .unfocusNode)
-                                                            : FocusScope.of(
-                                                                    context)
-                                                                .unfocus(),
-                                                        child: Padding(
-                                                          padding: MediaQuery
-                                                              .viewInsetsOf(
-                                                                  context),
-                                                          child: SizedBox(
-                                                            height: 125.0,
-                                                            child:
-                                                                OptionToRemoveBookRemittanceWidget(
-                                                              remittance: widget
-                                                                  .remittanceRef!,
-                                                              transaction:
-                                                                  bookingsItem,
+                                                  var confirmDialogResponse =
+                                                      await showDialog<bool>(
+                                                            context: context,
+                                                            builder:
+                                                                (alertDialogContext) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    'Remove'),
+                                                                content: const Text(
+                                                                    'This will remove this booking from this remittance as well as adjust the values from its respective remittance.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            false),
+                                                                    child: const Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            true),
+                                                                    child: const Text(
+                                                                        'Confirm'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          ) ??
+                                                          false;
+                                                  if (confirmDialogResponse) {
+                                                    await showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return GestureDetector(
+                                                          onTap: () => _model
+                                                                  .unfocusNode
+                                                                  .canRequestFocus
+                                                              ? FocusScope.of(
+                                                                      context)
+                                                                  .requestFocus(
+                                                                      _model
+                                                                          .unfocusNode)
+                                                              : FocusScope.of(
+                                                                      context)
+                                                                  .unfocus(),
+                                                          child: Padding(
+                                                            padding: MediaQuery
+                                                                .viewInsetsOf(
+                                                                    context),
+                                                            child: SizedBox(
+                                                              height: 125.0,
+                                                              child:
+                                                                  OptionToRemoveBookRemittanceWidget(
+                                                                remittance: widget
+                                                                    .remittanceRef!,
+                                                                transaction:
+                                                                    bookingsItem,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ).then((value) =>
-                                                      safeSetState(() {}));
+                                                        );
+                                                      },
+                                                    ).then((value) =>
+                                                        safeSetState(() {}));
+                                                  }
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
@@ -2535,265 +2683,342 @@ class _RemittanceSpecificTransactionsWidgetState
                                             itemBuilder: (context, goodsIndex) {
                                               final goodsItem =
                                                   goods[goodsIndex];
-                                              return Container(
-                                                width: double.infinity,
-                                                constraints: const BoxConstraints(
-                                                  maxWidth: 570.0,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryBackground,
-                                                  boxShadow: const [
-                                                    BoxShadow(
-                                                      color: Color(0x33000000),
-                                                      offset: Offset(
-                                                        0.0,
-                                                        1.0,
-                                                      ),
-                                                    )
-                                                  ],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          0.0),
-                                                  border: Border.all(
+                                              return InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  var confirmDialogResponse =
+                                                      await showDialog<bool>(
+                                                            context: context,
+                                                            builder:
+                                                                (alertDialogContext) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    'Delete'),
+                                                                content: const Text(
+                                                                    'This will delete the transaction as well as adjust the values from the respective remittance.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            false),
+                                                                    child: const Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext,
+                                                                            true),
+                                                                    child: const Text(
+                                                                        'Confirm'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          ) ??
+                                                          false;
+                                                  if (confirmDialogResponse) {
+                                                    await showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      enableDrag: false,
+                                                      useSafeArea: true,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return GestureDetector(
+                                                          onTap: () => _model
+                                                                  .unfocusNode
+                                                                  .canRequestFocus
+                                                              ? FocusScope.of(
+                                                                      context)
+                                                                  .requestFocus(
+                                                                      _model
+                                                                          .unfocusNode)
+                                                              : FocusScope.of(
+                                                                      context)
+                                                                  .unfocus(),
+                                                          child: Padding(
+                                                            padding: MediaQuery
+                                                                .viewInsetsOf(
+                                                                    context),
+                                                            child: SizedBox(
+                                                              height: 125.0,
+                                                              child:
+                                                                  OptionToRemoveExpenseRemittanceWidget(
+                                                                remittance: widget
+                                                                    .remittanceRef!,
+                                                                transaction:
+                                                                    goodsItem,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ).then((value) =>
+                                                        safeSetState(() {}));
+                                                  }
+                                                },
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  constraints: const BoxConstraints(
+                                                    maxWidth: 570.0,
+                                                  ),
+                                                  decoration: BoxDecoration(
                                                     color: FlutterFlowTheme.of(
                                                             context)
-                                                        .alternate,
+                                                        .secondaryBackground,
+                                                    boxShadow: const [
+                                                      BoxShadow(
+                                                        color:
+                                                            Color(0x33000000),
+                                                        offset: Offset(
+                                                          0.0,
+                                                          1.0,
+                                                        ),
+                                                      )
+                                                    ],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            0.0),
+                                                    border: Border.all(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .alternate,
+                                                    ),
                                                   ),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(16.0, 12.0,
-                                                          16.0, 12.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 5,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      0.0,
-                                                                      0.0,
-                                                                      12.0,
-                                                                      0.0),
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                RichText(
-                                                                  textScaler: MediaQuery.of(
-                                                                          context)
-                                                                      .textScaler,
-                                                                  text:
-                                                                      TextSpan(
-                                                                    children: [
-                                                                      TextSpan(
-                                                                        text: functions
-                                                                            .startBigLetter(goodsItem.description),
-                                                                        style:
-                                                                            const TextStyle(),
-                                                                      )
-                                                                    ],
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyLarge
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).primaryText,
-                                                                          fontSize:
-                                                                              16.0,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                        ),
-                                                                  ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          4.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child: FutureBuilder<
-                                                                      UsersRecord>(
-                                                                    future: UsersRecord.getDocumentOnce(
-                                                                        goodsItem
-                                                                            .staff!),
-                                                                    builder:
-                                                                        (context,
-                                                                            snapshot) {
-                                                                      // Customize what your widget looks like when it's loading.
-                                                                      if (!snapshot
-                                                                          .hasData) {
-                                                                        return Center(
-                                                                          child:
-                                                                              SizedBox(
-                                                                            width:
-                                                                                50.0,
-                                                                            height:
-                                                                                50.0,
-                                                                            child:
-                                                                                CircularProgressIndicator(
-                                                                              valueColor: AlwaysStoppedAnimation<Color>(
-                                                                                FlutterFlowTheme.of(context).primary,
-                                                                              ),
-                                                                            ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                16.0,
+                                                                12.0,
+                                                                16.0,
+                                                                12.0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 5,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0.0,
+                                                                        0.0,
+                                                                        12.0,
+                                                                        0.0),
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  RichText(
+                                                                    textScaler:
+                                                                        MediaQuery.of(context)
+                                                                            .textScaler,
+                                                                    text:
+                                                                        TextSpan(
+                                                                      children: [
+                                                                        TextSpan(
+                                                                          text:
+                                                                              functions.startBigLetter(goodsItem.description),
+                                                                          style:
+                                                                              const TextStyle(),
+                                                                        )
+                                                                      ],
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyLarge
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).primaryText,
+                                                                            fontSize:
+                                                                                16.0,
+                                                                            letterSpacing:
+                                                                                0.0,
                                                                           ),
-                                                                        );
-                                                                      }
-                                                                      final textUsersRecord =
-                                                                          snapshot
-                                                                              .data!;
-                                                                      return Text(
-                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .labelMedium
-                                                                            .override(
-                                                                              fontFamily: 'Readex Pro',
-                                                                              letterSpacing: 0.0,
-                                                                            ),
-                                                                      );
-                                                                    },
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                                if (goodsItem
-                                                                        .goods.isNotEmpty)
                                                                   Padding(
                                                                     padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
-                                                                            5.0,
+                                                                            4.0,
                                                                             0.0,
                                                                             0.0),
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryBackground,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5.0),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).info,
-                                                                          width:
-                                                                              1.0,
-                                                                        ),
-                                                                      ),
-                                                                      alignment:
-                                                                          const AlignmentDirectional(
-                                                                              -1.0,
-                                                                              0.0),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        children: [
-                                                                          Container(
-                                                                            width:
-                                                                                4.0,
-                                                                            height:
-                                                                                (20 * goodsItem.goods.length).toDouble(),
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              color: const Color(0xFF4B39EF),
-                                                                              borderRadius: BorderRadius.circular(4.0),
-                                                                            ),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(10.0),
+                                                                    child: FutureBuilder<
+                                                                        UsersRecord>(
+                                                                      future: UsersRecord.getDocumentOnce(
+                                                                          goodsItem
+                                                                              .staff!),
+                                                                      builder:
+                                                                          (context,
+                                                                              snapshot) {
+                                                                        // Customize what your widget looks like when it's loading.
+                                                                        if (!snapshot
+                                                                            .hasData) {
+                                                                          return Center(
                                                                             child:
-                                                                                Text(
-                                                                              functions.cartToTextSummary(goodsItem.goods.toList())!,
-                                                                              style: FlutterFlowTheme.of(context).labelMedium.override(
-                                                                                    fontFamily: 'Readex Pro',
-                                                                                    letterSpacing: 0.0,
-                                                                                  ),
+                                                                                SizedBox(
+                                                                              width: 50.0,
+                                                                              height: 50.0,
+                                                                              child: CircularProgressIndicator(
+                                                                                valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                  FlutterFlowTheme.of(context).primary,
+                                                                                ),
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
+                                                                          );
+                                                                        }
+                                                                        final textUsersRecord =
+                                                                            snapshot.data!;
+                                                                        return Text(
+                                                                          'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                letterSpacing: 0.0,
+                                                                              ),
+                                                                        );
+                                                                      },
                                                                     ),
                                                                   ),
-                                                              ],
+                                                                  if (goodsItem
+                                                                          .goods.isNotEmpty)
+                                                                    Padding(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          5.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Container(
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryBackground,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(5.0),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).info,
+                                                                            width:
+                                                                                1.0,
+                                                                          ),
+                                                                        ),
+                                                                        alignment: const AlignmentDirectional(
+                                                                            -1.0,
+                                                                            0.0),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            Container(
+                                                                              width: 4.0,
+                                                                              height: (20 * goodsItem.goods.length).toDouble(),
+                                                                              decoration: BoxDecoration(
+                                                                                color: const Color(0xFF4B39EF),
+                                                                                borderRadius: BorderRadius.circular(4.0),
+                                                                              ),
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.all(10.0),
+                                                                              child: Text(
+                                                                                functions.cartToTextSummary(goodsItem.goods.toList())!,
+                                                                                style: FlutterFlowTheme.of(context).labelMedium.override(
+                                                                                      fontFamily: 'Readex Pro',
+                                                                                      letterSpacing: 0.0,
+                                                                                    ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          10.0),
-                                                              child: Text(
-                                                                formatNumber(
-                                                                  goodsItem
-                                                                      .total,
-                                                                  formatType:
-                                                                      FormatType
-                                                                          .decimal,
-                                                                  decimalType:
-                                                                      DecimalType
-                                                                          .automatic,
-                                                                  currency:
-                                                                      'P ',
+                                                        Expanded(
+                                                          flex: 2,
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            10.0),
+                                                                child: Text(
+                                                                  formatNumber(
+                                                                    goodsItem
+                                                                        .total,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .decimal,
+                                                                    decimalType:
+                                                                        DecimalType
+                                                                            .automatic,
+                                                                    currency:
+                                                                        'P ',
+                                                                  ),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .end,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .headlineSmall
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Outfit',
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .error,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
                                                                 ),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .headlineSmall
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Outfit',
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .error,
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               );

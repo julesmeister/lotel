@@ -527,10 +527,10 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       builder:
                                                           (alertDialogContext) {
                                                         return AlertDialog(
-                                                          title:
-                                                              const Text('No Extra?'),
+                                                          title: const Text(
+                                                              'No Excess Amount?'),
                                                           content: const Text(
-                                                              'Are you certain it doesn\'t exceed the specified amount?'),
+                                                              'Are you certain remittance doesn\'t exceed the specified amount?'),
                                                           actions: [
                                                             TextButton(
                                                               onPressed: () =>

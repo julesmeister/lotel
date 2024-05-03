@@ -100,7 +100,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
           backgroundColor: FlutterFlowTheme.of(context).info,
           automaticallyImplyLeading: false,
           leading: FlutterFlowIconButton(
-            borderRadius: 20.0,
+            borderRadius: 30.0,
             borderWidth: 1.0,
             buttonSize: 40.0,
             icon: Icon(
@@ -136,9 +136,9 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
               child: FlutterFlowIconButton(
-                borderRadius: 20.0,
+                borderRadius: 30.0,
                 borderWidth: 1.0,
-                buttonSize: 40.0,
+                buttonSize: 60.0,
                 icon: Icon(
                   Icons.add,
                   color: FlutterFlowTheme.of(context).primaryText,

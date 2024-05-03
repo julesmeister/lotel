@@ -465,11 +465,11 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
-                                    fontFamily: 'Plus Jakarta Sans',
+                                    fontFamily: 'Readex Pro',
                                     color: FlutterFlowTheme.of(context).success,
                                     fontSize: 14.0,
                                     letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.normal,
                                   ),
                             ),
                             const Divider(
@@ -486,7 +486,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                   style: FlutterFlowTheme.of(context)
                                       .bodyLarge
                                       .override(
-                                        fontFamily: 'Plus Jakarta Sans',
+                                        fontFamily: 'Readex Pro',
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryText,
                                         fontSize: 14.0,
@@ -506,7 +506,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                   style: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
-                                        fontFamily: 'Plus Jakarta Sans',
+                                        fontFamily: 'Readex Pro',
                                         color: FlutterFlowTheme.of(context)
                                             .primaryText,
                                         fontSize: 14.0,

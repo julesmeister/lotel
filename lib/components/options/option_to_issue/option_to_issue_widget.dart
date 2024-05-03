@@ -9,10 +9,10 @@ export 'option_to_issue_model.dart';
 class OptionToIssueWidget extends StatefulWidget {
   const OptionToIssueWidget({
     super.key,
-    required this.ref,
+    required this.issue,
   });
 
-  final DocumentReference? ref;
+  final IssuesRecord? issue;
 
   @override
   State<OptionToIssueWidget> createState() => _OptionToIssueWidgetState();
@@ -99,7 +99,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                             height: double.infinity,
                             child: NewIssueWidget(
                               edit: true,
-                              ref: widget.ref,
+                              ref: widget.issue?.reference,
                             ),
                           ),
                         );
@@ -181,7 +181,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                         ) ??
                         false;
                     if (confirmDialogResponse) {
-                      await widget.ref!.delete();
+                      await widget.issue!.reference.delete();
                       Navigator.pop(context);
                     } else {
                       return;
@@ -236,43 +236,107 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    // For deletion
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: const Text('Fix This Issue'),
-                              content: const Text('Is this issue resolved?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      await widget.ref!.update({
-                        ...createIssuesRecordData(
-                          status: 'fixed',
-                        ),
-                        ...mapToFirestore(
-                          {
-                            'dateFixed': FieldValue.serverTimestamp(),
-                          },
-                        ),
-                      });
-                      Navigator.pop(context);
+                    if (widget.issue?.status == 'fixed') {
+                      // reopen
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Reopen This Issue'),
+                                content: const Text(
+                                    'Has this issue not been sorted out yet?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        await widget.issue!.reference.update({
+                          ...createIssuesRecordData(
+                            status: 'pending',
+                          ),
+                          ...mapToFirestore(
+                            {
+                              'dateFixed': FieldValue.delete(),
+                            },
+                          ),
+                        });
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Issue reopened!',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
+                          ),
+                        );
+                      }
                     } else {
-                      return;
+                      // resolved?
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Fix This Issue'),
+                                content: const Text('Is this issue resolved?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        await widget.issue!.reference.update({
+                          ...createIssuesRecordData(
+                            status: 'fixed',
+                          ),
+                          ...mapToFirestore(
+                            {
+                              'dateFixed': FieldValue.serverTimestamp(),
+                            },
+                          ),
+                        });
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Issue resolved!',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
+                          ),
+                        );
+                      }
                     }
                   },
                   child: Container(
@@ -300,7 +364,9 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'Fixed',
+                                widget.issue?.status == 'fixed'
+                                    ? 'Reopen the issue as pending'
+                                    : 'Tag the problem as fixed',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(

@@ -96,82 +96,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
           ),
         ],
       ),
-      'containerOnPageLoadAnimation1': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'containerOnPageLoadAnimation2': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'containerOnPageLoadAnimation3': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'containerOnPageLoadAnimation4': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
     });
     setupAnimations(
       animationsMap.values.where((anim) =>
@@ -477,100 +401,73 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        if (!_model.showDatePicker)
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 12.0, 12.0, 12.0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    blurRadius: 4.0,
-                                                    color: Color(0x34090F13),
-                                                    offset: Offset(
-                                                      0.0,
-                                                      2.0,
-                                                    ),
-                                                  )
-                                                ],
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 0.0, 0.0, 4.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Container(
-                                                      width: double.infinity,
-                                                      height: 50.0,
-                                                      decoration: const BoxDecoration(
-                                                        color:
-                                                            Color(0xFF39D2C0),
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  0.0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  0.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  12.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  12.0),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 10.0, 16.0, 10.0),
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 65.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF39D2C0),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(12.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          width: 36.0,
+                                                          height: 36.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color(
+                                                                0x98FFFFFF),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          alignment:
+                                                              const AlignmentDirectional(
+                                                                  0.0, 0.0),
+                                                          child: const Icon(
+                                                            Icons
+                                                                .money_off_sharp,
+                                                            color: Colors.white,
+                                                            size: 20.0,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(
-                                                            12.0),
-                                                        child: Row(
+                                                        Column(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
                                                           children: [
-                                                            Container(
-                                                              width: 36.0,
-                                                              height: 36.0,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: const Color(
-                                                                    0x98FFFFFF),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12.0),
-                                                              ),
-                                                              alignment:
-                                                                  const AlignmentDirectional(
-                                                                      0.0, 0.0),
-                                                              child: const Icon(
-                                                                Icons
-                                                                    .money_off_sharp,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 20.0,
-                                                              ),
-                                                            ),
                                                             Text(
                                                               formatNumber(
                                                                 functions.totalSalesLessExpenses(transactionsTransactionsRecordList
-                                                                    .where((e) => valueOrDefault(
-                                                                                currentUserDocument
-                                                                                    ?.role,
-                                                                                '') ==
+                                                                    .where((e) => valueOrDefault(currentUserDocument?.role, '') ==
                                                                             'admin'
-                                                                        ? (e.pending !=
-                                                                            true)
+                                                                        ? ((e.pending !=
+                                                                                true) &&
+                                                                            (e.remitted ==
+                                                                                false))
                                                                         : ((e.remitted ==
                                                                                 false) &&
                                                                             (e.pending !=
@@ -601,30 +498,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             .normal,
                                                                   ),
                                                             ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        8.0,
-                                                                        0.0),
-                                                            child: Text(
-                                                              'Total Sales Less Expenses',
+                                                            Text(
+                                                              'unremitted',
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -632,26 +507,125 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     fontFamily:
                                                                         'Readex Pro',
                                                                     color: const Color(
-                                                                        0xFF14181B),
-                                                                    fontSize:
-                                                                        14.0,
+                                                                        0x98FFFFFF),
                                                                     letterSpacing:
                                                                         0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
                                                                   ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                          ],
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          Container(
+                                                            width: 36.0,
+                                                            height: 36.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: const Color(
+                                                                  0x98FFFFFF),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.0),
+                                                            ),
+                                                            alignment:
+                                                                const AlignmentDirectional(
+                                                                    0.0, 0.0),
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .attach_money_outlined,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 20.0,
+                                                            ),
+                                                          ),
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Text(
+                                                                formatNumber(
+                                                                  functions.totalSalesLessExpenses(transactionsTransactionsRecordList
+                                                                      .where((e) =>
+                                                                          (e.pending !=
+                                                                              true) &&
+                                                                          (e.remitted ==
+                                                                              true))
+                                                                      .toList()),
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .automatic,
+                                                                  currency:
+                                                                      'P ',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          18.0,
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
+                                                              ),
+                                                              Text(
+                                                                'remitted',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: const Color(
+                                                                          0x98FFFFFF),
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ].divide(const SizedBox(width: 20.0)),
                                               ),
-                                            ).animateOnPageLoad(animationsMap[
-                                                'containerOnPageLoadAnimation1']!),
+                                            ),
                                           ),
+                                        ),
                                         Container(
                                           width:
                                               MediaQuery.sizeOf(context).width *
@@ -1811,101 +1785,172 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        if (!_model.showDatePicker)
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 12.0, 12.0, 12.0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    blurRadius: 4.0,
-                                                    color: Color(0x34090F13),
-                                                    offset: Offset(
-                                                      0.0,
-                                                      2.0,
-                                                    ),
-                                                  )
-                                                ],
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 0.0, 0.0, 4.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Container(
-                                                      width: double.infinity,
-                                                      height: 50.0,
-                                                      decoration: const BoxDecoration(
-                                                        color:
-                                                            Color(0xFF39D2C0),
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  0.0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  0.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  12.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  12.0),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 10.0, 16.0, 10.0),
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 65.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF39D2C0),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(12.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          width: 36.0,
+                                                          height: 36.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color(
+                                                                0x98FFFFFF),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          alignment:
+                                                              const AlignmentDirectional(
+                                                                  0.0, 0.0),
+                                                          child: const Icon(
+                                                            Icons
+                                                                .money_off_sharp,
+                                                            color: Colors.white,
+                                                            size: 20.0,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(
-                                                            12.0),
-                                                        child: Row(
+                                                        Column(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
                                                           children: [
-                                                            if (valueOrDefault(
-                                                                    currentUserDocument
-                                                                        ?.role,
-                                                                    '') ==
-                                                                'admin')
-                                                              Container(
-                                                                width: 36.0,
-                                                                height: 36.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: const Color(
-                                                                      0x98FFFFFF),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              12.0),
-                                                                ),
-                                                                alignment:
-                                                                    const AlignmentDirectional(
-                                                                        0.0,
-                                                                        0.0),
-                                                                child: const Icon(
-                                                                  Icons
-                                                                      .money_off_sharp,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 20.0,
-                                                                ),
+                                                            Text(
+                                                              formatNumber(
+                                                                functions.totalBookedSales(transactionsTransactionsRecordList
+                                                                    .where((e) => valueOrDefault(currentUserDocument?.role, '') ==
+                                                                            'admin'
+                                                                        ? ((e.pending !=
+                                                                                true) &&
+                                                                            (e.remitted ==
+                                                                                false))
+                                                                        : ((e.remitted ==
+                                                                                false) &&
+                                                                            (e.pending !=
+                                                                                true)))
+                                                                    .toList()),
+                                                                formatType:
+                                                                    FormatType
+                                                                        .decimal,
+                                                                decimalType:
+                                                                    DecimalType
+                                                                        .automatic,
+                                                                currency: 'P ',
                                                               ),
-                                                            if (valueOrDefault(
-                                                                    currentUserDocument
-                                                                        ?.role,
-                                                                    '') ==
-                                                                'admin')
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .titleMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        18.0,
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                  ),
+                                                            ),
+                                                            Text(
+                                                              'unremitted',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: const Color(
+                                                                        0x98FFFFFF),
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          Container(
+                                                            width: 36.0,
+                                                            height: 36.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: const Color(
+                                                                  0x98FFFFFF),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.0),
+                                                            ),
+                                                            alignment:
+                                                                const AlignmentDirectional(
+                                                                    0.0, 0.0),
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .attach_money_outlined,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 20.0,
+                                                            ),
+                                                          ),
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
                                                               Text(
                                                                 formatNumber(
                                                                   functions.totalBookedSales(transactionsTransactionsRecordList
@@ -1913,9 +1958,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               'admin'
                                                                           ? ((e.pending != true) &&
                                                                               (e.remitted ==
-                                                                                  false))
-                                                                          : ((e.remitted == false) &&
-                                                                              (e.pending != true)))
+                                                                                  true))
+                                                                          : ((e.pending != true) &&
+                                                                              !e.remitted))
                                                                       .toList()),
                                                                   formatType:
                                                                       FormatType
@@ -1943,119 +1988,30 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               .normal,
                                                                     ),
                                                               ),
-                                                            Container(
-                                                              width: 36.0,
-                                                              height: 36.0,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: const Color(
-                                                                    0x98FFFFFF),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12.0),
+                                                              Text(
+                                                                'remitted',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: const Color(
+                                                                          0x98FFFFFF),
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
                                                               ),
-                                                              alignment:
-                                                                  const AlignmentDirectional(
-                                                                      0.0, 0.0),
-                                                              child: const Icon(
-                                                                Icons
-                                                                    .attach_money_outlined,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 20.0,
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              formatNumber(
-                                                                functions.totalBookedSales(transactionsTransactionsRecordList
-                                                                    .where((e) => valueOrDefault(
-                                                                                currentUserDocument
-                                                                                    ?.role,
-                                                                                '') ==
-                                                                            'admin'
-                                                                        ? (e.pending !=
-                                                                            true)
-                                                                        : ((e.pending !=
-                                                                                true) &&
-                                                                            !e.remitted))
-                                                                    .toList()),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                                currency: 'P ',
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .titleMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        18.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                  ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        8.0,
-                                                                        0.0),
-                                                            child: Text(
-                                                              'Total Booked Sales',
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: const Color(
-                                                                        0xFF14181B),
-                                                                    fontSize:
-                                                                        14.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                            ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ].divide(const SizedBox(width: 20.0)),
                                               ),
-                                            ).animateOnPageLoad(animationsMap[
-                                                'containerOnPageLoadAnimation2']!),
+                                            ),
                                           ),
+                                        ),
                                         if (transactionsTransactionsRecordList
                                                 .where((e) =>
                                                     (e.type == 'book') ||
@@ -2445,106 +2401,172 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        if (!_model.showDatePicker)
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 12.0, 12.0, 12.0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    blurRadius: 4.0,
-                                                    color: Color(0x34090F13),
-                                                    offset: Offset(
-                                                      0.0,
-                                                      2.0,
-                                                    ),
-                                                  )
-                                                ],
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 0.0, 0.0, 4.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Container(
-                                                      width: double.infinity,
-                                                      height: 50.0,
-                                                      decoration: const BoxDecoration(
-                                                        color:
-                                                            Color(0xFF39D2C0),
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  0.0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  0.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  12.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  12.0),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 10.0, 16.0, 10.0),
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 65.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF39D2C0),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(12.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          width: 36.0,
+                                                          height: 36.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color(
+                                                                0x98FFFFFF),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          alignment:
+                                                              const AlignmentDirectional(
+                                                                  0.0, 0.0),
+                                                          child: const Icon(
+                                                            Icons
+                                                                .money_off_sharp,
+                                                            color: Colors.white,
+                                                            size: 20.0,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(
-                                                            12.0),
-                                                        child: Row(
+                                                        Column(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
                                                           children: [
-                                                            if (valueOrDefault(
-                                                                    currentUserDocument
-                                                                        ?.role,
-                                                                    '') ==
-                                                                'admin')
-                                                              Container(
-                                                                width: 36.0,
-                                                                height: 36.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: const Color(
-                                                                      0x98FFFFFF),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              12.0),
-                                                                ),
-                                                                alignment:
-                                                                    const AlignmentDirectional(
-                                                                        0.0,
-                                                                        0.0),
-                                                                child: const Icon(
-                                                                  Icons
-                                                                      .money_off_sharp,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 20.0,
-                                                                ),
+                                                            Text(
+                                                              formatNumber(
+                                                                functions.totalGoodsSales(
+                                                                    transactionsTransactionsRecordList
+                                                                        .where((e) =>
+                                                                            !e.remitted)
+                                                                        .toList()),
+                                                                formatType:
+                                                                    FormatType
+                                                                        .decimal,
+                                                                decimalType:
+                                                                    DecimalType
+                                                                        .automatic,
+                                                                currency: 'P ',
                                                               ),
-                                                            if (valueOrDefault(
-                                                                    currentUserDocument
-                                                                        ?.role,
-                                                                    '') ==
-                                                                'admin')
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .titleMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        18.0,
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                  ),
+                                                            ),
+                                                            Text(
+                                                              'unremitted',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: const Color(
+                                                                        0x98FFFFFF),
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          Container(
+                                                            width: 36.0,
+                                                            height: 36.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: const Color(
+                                                                  0x98FFFFFF),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.0),
+                                                            ),
+                                                            alignment:
+                                                                const AlignmentDirectional(
+                                                                    0.0, 0.0),
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .attach_money_outlined,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 20.0,
+                                                            ),
+                                                          ),
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
                                                               Text(
                                                                 formatNumber(
                                                                   functions.totalGoodsSales(transactionsTransactionsRecordList
-                                                                      .where((e) =>
-                                                                          !e.remitted)
+                                                                      .where((e) => valueOrDefault(currentUserDocument?.role, '') == 'admin'
+                                                                          ? (e.remitted ==
+                                                                              true)
+                                                                          : !e.remitted)
                                                                       .toList()),
                                                                   formatType:
                                                                       FormatType
@@ -2572,114 +2594,30 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               .normal,
                                                                     ),
                                                               ),
-                                                            Container(
-                                                              width: 36.0,
-                                                              height: 36.0,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: const Color(
-                                                                    0x98FFFFFF),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12.0),
+                                                              Text(
+                                                                'remitted',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: const Color(
+                                                                          0x98FFFFFF),
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
                                                               ),
-                                                              alignment:
-                                                                  const AlignmentDirectional(
-                                                                      0.0, 0.0),
-                                                              child: const Icon(
-                                                                Icons
-                                                                    .attach_money_outlined,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 20.0,
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              formatNumber(
-                                                                functions.totalGoodsSales(transactionsTransactionsRecordList
-                                                                    .where((e) => valueOrDefault(currentUserDocument?.role,
-                                                                                '') ==
-                                                                            'admin'
-                                                                        ? true
-                                                                        : !e.remitted)
-                                                                    .toList()),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                                currency: 'P ',
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .titleMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        18.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                  ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        8.0,
-                                                                        0.0),
-                                                            child: Text(
-                                                              'Total Goods Sales',
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: const Color(
-                                                                        0xFF14181B),
-                                                                    fontSize:
-                                                                        14.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                            ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ].divide(const SizedBox(width: 20.0)),
                                               ),
-                                            ).animateOnPageLoad(animationsMap[
-                                                'containerOnPageLoadAnimation3']!),
+                                            ),
                                           ),
+                                        ),
                                         if (transactionsTransactionsRecordList
                                                 .where((e) => e.type == 'goods')
                                                 .toList().isNotEmpty)
@@ -3030,107 +2968,172 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        if (!_model.showDatePicker)
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 12.0, 12.0, 12.0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    blurRadius: 4.0,
-                                                    color: Color(0x34090F13),
-                                                    offset: Offset(
-                                                      0.0,
-                                                      2.0,
-                                                    ),
-                                                  )
-                                                ],
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 0.0, 0.0, 4.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Container(
-                                                      width: double.infinity,
-                                                      height: 50.0,
-                                                      decoration: const BoxDecoration(
-                                                        color:
-                                                            Color(0xFF39D2C0),
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  0.0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  0.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  12.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  12.0),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 10.0, 16.0, 10.0),
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 65.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF39D2C0),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(12.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          width: 36.0,
+                                                          height: 36.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color(
+                                                                0x98FFFFFF),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          alignment:
+                                                              const AlignmentDirectional(
+                                                                  0.0, 0.0),
+                                                          child: const Icon(
+                                                            Icons
+                                                                .money_off_sharp,
+                                                            color: Colors.white,
+                                                            size: 20.0,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(
-                                                            12.0),
-                                                        child: Row(
+                                                        Column(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
                                                           children: [
-                                                            if (valueOrDefault(
-                                                                    currentUserDocument
-                                                                        ?.role,
-                                                                    '') ==
-                                                                'admin')
-                                                              Container(
-                                                                width: 36.0,
-                                                                height: 36.0,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: const Color(
-                                                                      0x98FFFFFF),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              12.0),
-                                                                ),
-                                                                alignment:
-                                                                    const AlignmentDirectional(
-                                                                        0.0,
-                                                                        0.0),
-                                                                child: const Icon(
-                                                                  Icons
-                                                                      .money_off_sharp,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 20.0,
-                                                                ),
+                                                            Text(
+                                                              formatNumber(
+                                                                functions.totalExpenses(transactionsTransactionsRecordList
+                                                                    .where((e) =>
+                                                                        e.remitted ==
+                                                                        false)
+                                                                    .toList()),
+                                                                formatType:
+                                                                    FormatType
+                                                                        .decimal,
+                                                                decimalType:
+                                                                    DecimalType
+                                                                        .automatic,
+                                                                currency: 'P ',
                                                               ),
-                                                            if (valueOrDefault(
-                                                                    currentUserDocument
-                                                                        ?.role,
-                                                                    '') ==
-                                                                'admin')
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .titleMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        18.0,
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                  ),
+                                                            ),
+                                                            Text(
+                                                              'unremitted',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: const Color(
+                                                                        0x98FFFFFF),
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          Container(
+                                                            width: 36.0,
+                                                            height: 36.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: const Color(
+                                                                  0x98FFFFFF),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.0),
+                                                            ),
+                                                            alignment:
+                                                                const AlignmentDirectional(
+                                                                    0.0, 0.0),
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .attach_money_outlined,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 20.0,
+                                                            ),
+                                                          ),
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
                                                               Text(
                                                                 formatNumber(
                                                                   functions.totalExpenses(transactionsTransactionsRecordList
-                                                                      .where((e) =>
-                                                                          e.remitted ==
-                                                                          false)
+                                                                      .where((e) => valueOrDefault(currentUserDocument?.role, '') == 'admin'
+                                                                          ? (e.remitted ==
+                                                                              true)
+                                                                          : !e.remitted)
                                                                       .toList()),
                                                                   formatType:
                                                                       FormatType
@@ -3158,114 +3161,30 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               .normal,
                                                                     ),
                                                               ),
-                                                            Container(
-                                                              width: 36.0,
-                                                              height: 36.0,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: const Color(
-                                                                    0x98FFFFFF),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12.0),
+                                                              Text(
+                                                                'remitted',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: const Color(
+                                                                          0x98FFFFFF),
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
                                                               ),
-                                                              alignment:
-                                                                  const AlignmentDirectional(
-                                                                      0.0, 0.0),
-                                                              child: const Icon(
-                                                                Icons
-                                                                    .attach_money_outlined,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 20.0,
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              formatNumber(
-                                                                functions.totalExpenses(transactionsTransactionsRecordList
-                                                                    .where((e) => valueOrDefault(currentUserDocument?.role,
-                                                                                '') ==
-                                                                            'admin'
-                                                                        ? true
-                                                                        : !e.remitted)
-                                                                    .toList()),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                                currency: 'P ',
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .titleMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        18.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                  ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(12.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        8.0,
-                                                                        0.0),
-                                                            child: Text(
-                                                              'Total Expenses',
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: const Color(
-                                                                        0xFF14181B),
-                                                                    fontSize:
-                                                                        14.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                            ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ].divide(const SizedBox(width: 20.0)),
                                               ),
-                                            ).animateOnPageLoad(animationsMap[
-                                                'containerOnPageLoadAnimation4']!),
+                                            ),
                                           ),
+                                        ),
                                         if (transactionsTransactionsRecordList
                                                 .where(
                                                     (e) => e.type == 'expense')
