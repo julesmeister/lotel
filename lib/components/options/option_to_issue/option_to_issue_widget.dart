@@ -365,8 +365,8 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 widget.issue?.status == 'fixed'
-                                    ? 'Reopen the issue as pending'
-                                    : 'Tag the problem as fixed',
+                                    ? 'Reopen The Issue as Pending'
+                                    : 'Tag The Problem as Fixed',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(

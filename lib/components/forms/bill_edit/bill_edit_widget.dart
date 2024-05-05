@@ -1,7 +1,9 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -373,6 +375,22 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                       ),
                                     });
                                   }
+
+                                  await BillChangesRecord.collection
+                                      .doc()
+                                      .set(createBillChangesRecordData(
+                                        date: getCurrentTimestamp,
+                                        description:
+                                            functions.changesInBillDescription(
+                                                widget.description,
+                                                _model.descTextController.text,
+                                                widget.amount,
+                                                double.tryParse(_model
+                                                    .amountTextController
+                                                    .text)),
+                                        staff: currentUserReference,
+                                        hotel: FFAppState().hotel,
+                                      ));
                                   // update bill
 
                                   await widget.bill!.reference

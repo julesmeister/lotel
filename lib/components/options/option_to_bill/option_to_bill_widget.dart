@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/bill_edit/bill_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -206,6 +207,17 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
+                      // bill changes
+
+                      await BillChangesRecord.collection
+                          .doc()
+                          .set(createBillChangesRecordData(
+                            date: getCurrentTimestamp,
+                            description:
+                                'There was an attempt to create a duplicate bookmark on the bill ${widget.bill?.description}.',
+                            staff: currentUserReference,
+                            hotel: FFAppState().hotel,
+                          ));
                       Navigator.pop(context);
                     } else {
                       var confirmDialogResponse = await showDialog<bool>(
@@ -237,6 +249,17 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                             .set(createOptionsRecordData(
                               type: 'bill',
                               choice: widget.bill?.description,
+                            ));
+                        // bill changes
+
+                        await BillChangesRecord.collection
+                            .doc()
+                            .set(createBillChangesRecordData(
+                              date: getCurrentTimestamp,
+                              description:
+                                  'The bill \"${widget.bill?.description}\" has been bookmarked for easy access.',
+                              staff: currentUserReference,
+                              hotel: FFAppState().hotel,
                             ));
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -282,7 +305,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'Bookmark this bill for easy access',
+                                'Bookmark This Bill For Easy Access',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -365,6 +388,17 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           },
                         ),
                       });
+                      // bill change
+
+                      await BillChangesRecord.collection
+                          .doc()
+                          .set(createBillChangesRecordData(
+                            date: getCurrentTimestamp,
+                            description:
+                                'The bill attributed to ${widget.bill?.description} covered on ${dateTimeFormat('MMMMEEEEd', widget.bill?.date)} was deleted and the bill\'s amount was deducted from the ${dateTimeFormat('MMMM', widget.bill?.date)} records.',
+                            staff: currentUserReference,
+                            hotel: FFAppState().hotel,
+                          ));
                       await widget.bill!.reference.delete();
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(

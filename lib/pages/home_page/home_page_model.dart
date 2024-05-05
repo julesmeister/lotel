@@ -87,8 +87,12 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   HotelSettingsRecord? hotel;
   // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
   StatsRecord? serenityStat;
+  // Stores action output result for [Backend Call - Read Document] action in Container widget.
+  HotelSettingsRecord? hotelSettingSerenity;
   // Stores action output result for [Firestore Query - Query a collection] action in Container widget.
   StatsRecord? lifestyleStat;
+  // Stores action output result for [Backend Call - Read Document] action in Container widget.
+  HotelSettingsRecord? hotelSettingLifestyle;
   // State field(s) for allowRemittanceToBeSeen widget.
   bool allowRemittanceToBeSeenValue = true;
   // Stores action output result for [Bottom Sheet - ChangeDate] action in Column widget.

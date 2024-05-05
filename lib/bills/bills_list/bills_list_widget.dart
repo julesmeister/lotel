@@ -115,21 +115,39 @@ class _BillsListWidgetState extends State<BillsListWidget> {
             ],
           ),
           actions: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
-              child: FlutterFlowIconButton(
-                borderRadius: 20.0,
-                borderWidth: 1.0,
-                buttonSize: 40.0,
-                icon: Icon(
-                  Icons.add,
-                  color: FlutterFlowTheme.of(context).primaryText,
-                  size: 24.0,
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                FlutterFlowIconButton(
+                  borderRadius: 20.0,
+                  borderWidth: 1.0,
+                  buttonSize: 60.0,
+                  icon: Icon(
+                    Icons.list_alt_outlined,
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    size: 24.0,
+                  ),
+                  onPressed: () async {
+                    context.pushNamed('HistoryInBills');
+                  },
                 ),
-                onPressed: () async {
-                  context.pushNamed('BillForm');
-                },
-              ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                  child: FlutterFlowIconButton(
+                    borderRadius: 20.0,
+                    borderWidth: 1.0,
+                    buttonSize: 60.0,
+                    icon: Icon(
+                      Icons.add,
+                      color: FlutterFlowTheme.of(context).primaryText,
+                      size: 24.0,
+                    ),
+                    onPressed: () async {
+                      context.pushNamed('BillForm');
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
           centerTitle: false,
@@ -564,6 +582,28 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                                           return;
                                                         }
 
+                                                        // bill change
+
+                                                        await BillChangesRecord
+                                                            .collection
+                                                            .doc()
+                                                            .set(
+                                                                createBillChangesRecordData(
+                                                              date:
+                                                                  getCurrentTimestamp,
+                                                              description: functions.monthWasChanged(
+                                                                  listViewBillsRecord
+                                                                      .date!,
+                                                                  _model
+                                                                      .adjustedDate!,
+                                                                  listViewBillsRecord
+                                                                      .description),
+                                                              staff:
+                                                                  currentUserReference,
+                                                              hotel:
+                                                                  FFAppState()
+                                                                      .hotel,
+                                                            ));
                                                         // moved month
                                                         ScaffoldMessenger.of(
                                                                 context)
@@ -588,6 +628,27 @@ class _BillsListWidgetState extends State<BillsListWidget> {
                                                         );
                                                       }
 
+                                                      // bill change
+
+                                                      await BillChangesRecord
+                                                          .collection
+                                                          .doc()
+                                                          .set(
+                                                              createBillChangesRecordData(
+                                                            date:
+                                                                getCurrentTimestamp,
+                                                            description: functions.dateWasChanged(
+                                                                listViewBillsRecord
+                                                                    .date!,
+                                                                _model
+                                                                    .adjustedDate!,
+                                                                listViewBillsRecord
+                                                                    .description),
+                                                            staff:
+                                                                currentUserReference,
+                                                            hotel: FFAppState()
+                                                                .hotel,
+                                                          ));
                                                       // adjust the time of this bill
 
                                                       await listViewBillsRecord

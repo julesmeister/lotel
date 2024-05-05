@@ -522,6 +522,25 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             .lateCheckoutFee,
                                                   );
                                                   setState(() {});
+                                                  // hotelSetting
+                                                  _model.hotelSettingSerenity =
+                                                      await HotelSettingsRecord
+                                                          .getDocumentOnce(
+                                                              statusToggleHotelSettingsRecordList
+                                                                  .where((e) =>
+                                                                      statusToggleHotelSettingsRecordList
+                                                                          .first
+                                                                          .hotel ==
+                                                                      'Serenity')
+                                                                  .toList()
+                                                                  .first
+                                                                  .reference);
+                                                  setState(() {
+                                                    _model.allowRemittanceToBeSeenValue =
+                                                        _model
+                                                            .hotelSettingSerenity!
+                                                            .remittable;
+                                                  });
                                                   // sales
                                                   if (animationsMap[
                                                           'textOnActionTriggerAnimation1'] !=
@@ -762,6 +781,23 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             .lateCheckoutFee,
                                                   );
                                                   setState(() {});
+                                                  // hotelSettingLifestyle
+                                                  _model.hotelSettingLifestyle =
+                                                      await HotelSettingsRecord
+                                                          .getDocumentOnce(
+                                                              statusToggleHotelSettingsRecordList
+                                                                  .where((e) =>
+                                                                      e.hotel ==
+                                                                      'My Lifestyle')
+                                                                  .toList()
+                                                                  .first
+                                                                  .reference);
+                                                  setState(() {
+                                                    _model.allowRemittanceToBeSeenValue =
+                                                        _model
+                                                            .hotelSettingLifestyle!
+                                                            .remittable;
+                                                  });
                                                   // sales
                                                   if (animationsMap[
                                                           'textOnActionTriggerAnimation1'] !=
@@ -943,8 +979,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               child: AuthUserStreamWidget(
                                 builder: (context) =>
                                     StreamBuilder<List<HotelSettingsRecord>>(
-                                  stream: _model.hotelSettings(
-                                    requestFn: () => queryHotelSettingsRecord(),
+                                  stream: queryHotelSettingsRecord(
+                                    queryBuilder: (hotelSettingsRecord) =>
+                                        hotelSettingsRecord.where(
+                                      'hotel',
+                                      isEqualTo: FFAppState().hotel,
+                                    ),
+                                    singleRecord: true,
                                   ),
                                   builder: (context, snapshot) {
                                     // Customize what your widget looks like when it's loading.
@@ -966,6 +1007,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     List<HotelSettingsRecord>
                                         remitbuttoncontrolHotelSettingsRecordList =
                                         snapshot.data!;
+                                    // Return an empty Container when the item does not exist.
+                                    if (snapshot.data!.isEmpty) {
+                                      return Container();
+                                    }
+                                    final remitbuttoncontrolHotelSettingsRecord =
+                                        remitbuttoncontrolHotelSettingsRecordList
+                                                .isNotEmpty
+                                            ? remitbuttoncontrolHotelSettingsRecordList
+                                                .first
+                                            : null;
                                     return AnimatedContainer(
                                       duration: const Duration(milliseconds: 600),
                                       curve: Curves.elasticOut,
@@ -1128,7 +1179,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         child: Switch.adaptive(
                                                           value: _model
                                                                   .allowRemittanceToBeSeenValue ??=
-                                                              homePageHotelSettingsRecord!
+                                                              remitbuttoncontrolHotelSettingsRecord!
                                                                   .remittable,
                                                           onChanged:
                                                               (newValue) async {
@@ -3353,10 +3404,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ),
                                       child: Builder(
                                         builder: (context) {
-                                          final issuesList =
-                                              issuedBoxIssuesRecordList
-                                                  .sortedList((e) => e.date!)
-                                                  .toList();
+                                          final issuesList = functions
+                                                  .sortIssueDesc(
+                                                      issuedBoxIssuesRecordList
+                                                          .toList())
+                                                  ?.toList() ??
+                                              [];
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
                                             shrinkWrap: true,

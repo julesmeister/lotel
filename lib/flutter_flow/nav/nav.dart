@@ -230,10 +230,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               : const TransactionsWidget(),
         ),
         FFRoute(
-          name: 'ChangesInInventory',
-          path: '/changesInInventory',
+          name: 'HistoryInInventory',
+          path: '/historyInInventory',
           requireAuth: true,
-          builder: (context, params) => const ChangesInInventoryWidget(),
+          builder: (context, params) => const HistoryInInventoryWidget(),
         ),
         FFRoute(
           name: 'remittances',
@@ -404,6 +404,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/manageOptions',
           requireAuth: true,
           builder: (context, params) => const ManageOptionsWidget(),
+        ),
+        FFRoute(
+          name: 'HistoryInBills',
+          path: '/historyInBills',
+          requireAuth: true,
+          builder: (context, params) => const HistoryInBillsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

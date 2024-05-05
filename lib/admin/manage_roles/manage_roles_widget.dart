@@ -543,7 +543,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                     ),
                                                               ),
                                                               subtitle: Text(
-                                                                '${recentItem.role} last login: ${dateTimeFormat('jm', checkboxListTileLastLoginRecord?.datetime)}',
+                                                                '${recentItem.role} is online ${functions.hoursAgo(checkboxListTileLastLoginRecord!.datetime!)}',
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodySmall
@@ -836,7 +836,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                     ),
                                                               ),
                                                               subtitle: Text(
-                                                                '${othersItem.role} last login: ${dateTimeFormat('M/d H:mm', checkboxListTileLastLoginRecord?.datetime)}',
+                                                                '${othersItem.role} is online ${functions.hoursAgo(checkboxListTileLastLoginRecord!.datetime!)}',
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodySmall
@@ -904,7 +904,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      FlutterFlowTheme.of(context).accent4,
+                                      const Color(0x00FFFFFF),
                                       FlutterFlowTheme.of(context)
                                           .secondaryBackground
                                     ],

@@ -124,7 +124,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                             size: 24.0,
                           ),
                           onPressed: () async {
-                            context.pushNamed('ChangesInInventory');
+                            context.pushNamed('HistoryInInventory');
                           },
                         ),
                       ),

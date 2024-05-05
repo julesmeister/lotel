@@ -300,6 +300,18 @@ bool hasDifferencesInBookings(
   return bedsDifference != 0 || nightsDifference != 0 || lateCheckout;
 }
 
+String dateWasChanged(
+  DateTime prevDate,
+  DateTime currDate,
+  String description,
+) {
+  // The date was changed from _ to _.
+  final DateFormat formatter = DateFormat('MMM d, yyyy');
+  final String prevDateString = formatter.format(prevDate);
+  final String currDateString = formatter.format(currDate);
+  return 'The date associated with the bill named $description was modified from $prevDateString to $currDateString.';
+}
+
 int? prevOperatorChange(
   int prev,
   String operator,
@@ -1674,4 +1686,56 @@ double pendingsTotal(List<TransactionsRecord>? transactions) {
 double absolute(double amount) {
   // just turn the amount to absolute
   return amount.abs();
+}
+
+String changesInBillDescription(
+  String? prevDesc,
+  String? currDesc,
+  double? prevAmount,
+  double? currAmount,
+) {
+  // Check if there are no changes
+  if (prevDesc == currDesc && prevAmount == currAmount) {
+    return 'There are no changes.';
+  }
+
+  // Build the change description
+  String changeDesc = '';
+
+  // Check for description change
+  if (prevDesc != currDesc) {
+    changeDesc +=
+        'Description changed from ${prevDesc ?? 'null'} to ${currDesc ?? 'null'}';
+  }
+
+  // Check for amount change
+  if (prevAmount != currAmount) {
+    if (changeDesc.isNotEmpty) {
+      changeDesc += ', ';
+    }
+    changeDesc +=
+        'Amount changed from ${prevAmount?.toStringAsFixed(2) ?? 'null'} to ${currAmount?.toStringAsFixed(2) ?? 'null'}';
+  }
+
+  return changeDesc;
+}
+
+String monthWasChanged(
+  DateTime prevDate,
+  DateTime currDate,
+  String description,
+) {
+  final DateFormat formatter = DateFormat('MMMM');
+  final String prevMonth = formatter.format(prevDate);
+  final String currMonth = formatter.format(currDate);
+  return 'The date linked to the bill titled $description was shifted from the records of $prevMonth to $currMonth.';
+}
+
+List<IssuesRecord>? sortIssueDesc(List<IssuesRecord>? issues) {
+  // sort issue.date descending
+  if (issues == null || issues.isEmpty) {
+    return null;
+  }
+  issues.sort((a, b) => b.date!.compareTo(a.date!));
+  return issues;
 }

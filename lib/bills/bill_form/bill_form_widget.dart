@@ -287,6 +287,17 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                     },
                                   ),
                                 });
+                                // record bill changes
+
+                                await BillChangesRecord.collection
+                                    .doc()
+                                    .set(createBillChangesRecordData(
+                                      date: getCurrentTimestamp,
+                                      description:
+                                          'The bill for ${_model.descriptionTextController.text} was taken care of on ${dateTimeFormat('MMMMEEEEd', _model.date)}.',
+                                      staff: currentUserReference,
+                                      hotel: FFAppState().hotel,
+                                    ));
                                 // bill recorded
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

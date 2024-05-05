@@ -12,8 +12,8 @@ export '/merchandise/mart/mart_widget.dart' show MartWidget;
 export '/merchandise/inventory/inventory_widget.dart' show InventoryWidget;
 export '/merchandise/check_out/check_out_widget.dart' show CheckOutWidget;
 export '/sales/transactions/transactions_widget.dart' show TransactionsWidget;
-export '/merchandise/changes_in_inventory/changes_in_inventory_widget.dart'
-    show ChangesInInventoryWidget;
+export '/merchandise/history_in_inventory/history_in_inventory_widget.dart'
+    show HistoryInInventoryWidget;
 export '/sales/remittances/remittances_widget.dart' show RemittancesWidget;
 export '/pages/expense/expense_widget.dart' show ExpenseWidget;
 export '/payroll/payroll/payroll_widget.dart' show PayrollWidget;
@@ -35,3 +35,5 @@ export '/grocery/grocery_list/grocery_list_widget.dart' show GroceryListWidget;
 export '/room/pendings/pendings_widget.dart' show PendingsWidget;
 export '/admin/manage_options/manage_options_widget.dart'
     show ManageOptionsWidget;
+export '/bills/history_in_bills/history_in_bills_widget.dart'
+    show HistoryInBillsWidget;

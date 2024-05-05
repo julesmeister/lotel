@@ -95,143 +95,139 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
             children: [
               Expanded(
                 flex: 5,
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 12.0, 12.0, 0.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Occupied Rooms',
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 12.0, 12.0, 0.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Occupied Rooms',
+                                  style: FlutterFlowTheme.of(context)
+                                      .headlineSmall
+                                      .override(
+                                        fontFamily: 'Outfit',
+                                        color: const Color(0xFF14181B),
+                                        fontSize: 24.0,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 4.0, 0.0, 0.0),
+                                  child: Text(
+                                    'These rooms are occupied at the moment.',
                                     style: FlutterFlowTheme.of(context)
-                                        .headlineSmall
+                                        .labelMedium
                                         .override(
-                                          fontFamily: 'Outfit',
-                                          color: const Color(0xFF14181B),
-                                          fontSize: 24.0,
+                                          fontFamily: 'Plus Jakarta Sans',
+                                          color: const Color(0xFF57636C),
+                                          fontSize: 14.0,
                                           letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 4.0, 0.0, 0.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0.0, 10.0, 10.0, 0.0),
+                            child: FlutterFlowIconButton(
+                              borderRadius: 20.0,
+                              borderWidth: 1.0,
+                              buttonSize: 40.0,
+                              icon: Icon(
+                                Icons.close_outlined,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                size: 24.0,
+                              ),
+                              onPressed: () async {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 200.0,
+                      decoration: const BoxDecoration(),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        child: Builder(
+                          builder: (context) {
+                            final rooms = widget.occupiedRooms!
+                                .sortedList((e) => e.number)
+                                .toList();
+                            return GridView.builder(
+                              padding: const EdgeInsets.fromLTRB(
+                                16.0,
+                                0,
+                                10.0,
+                                0,
+                              ),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10.0,
+                                mainAxisSpacing: 10.0,
+                                childAspectRatio: 1.0,
+                              ),
+                              primary: false,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: rooms.length,
+                              itemBuilder: (context, roomsIndex) {
+                                final roomsItem = rooms[roomsIndex];
+                                return Container(
+                                  width: 30.0,
+                                  height: 30.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context).accent3,
+                                    borderRadius: BorderRadius.circular(50.0),
+                                  ),
+                                  child: Align(
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
                                     child: Text(
-                                      'These rooms are occupied at the moment.',
+                                      roomsItem.number
+                                          .toString()
+                                          .maybeHandleOverflow(maxChars: 3),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
                                       style: FlutterFlowTheme.of(context)
-                                          .labelMedium
+                                          .bodyMedium
                                           .override(
-                                            fontFamily: 'Plus Jakarta Sans',
-                                            color: const Color(0xFF57636C),
-                                            fontSize: 14.0,
+                                            fontFamily: 'Readex Pro',
+                                            color: FlutterFlowTheme.of(context)
+                                                .error,
+                                            fontSize: 30.0,
                                             letterSpacing: 0.0,
-                                            fontWeight: FontWeight.w500,
                                           ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 10.0, 0.0, 0.0),
-                              child: FlutterFlowIconButton(
-                                borderRadius: 20.0,
-                                borderWidth: 1.0,
-                                buttonSize: 40.0,
-                                icon: Icon(
-                                  Icons.close_outlined,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  size: 24.0,
-                                ),
-                                onPressed: () async {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ),
-                          ],
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 200.0,
-                        decoration: const BoxDecoration(),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              16.0, 0.0, 12.0, 10.0),
-                          child: Builder(
-                            builder: (context) {
-                              final rooms = widget.occupiedRooms!
-                                  .sortedList((e) => e.number)
-                                  .toList();
-                              return GridView.builder(
-                                padding: const EdgeInsets.fromLTRB(
-                                  0,
-                                  0,
-                                  10.0,
-                                  0,
-                                ),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 10.0,
-                                  mainAxisSpacing: 10.0,
-                                  childAspectRatio: 1.0,
-                                ),
-                                primary: false,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: rooms.length,
-                                itemBuilder: (context, roomsIndex) {
-                                  final roomsItem = rooms[roomsIndex];
-                                  return Container(
-                                    width: 30.0,
-                                    height: 30.0,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          FlutterFlowTheme.of(context).accent3,
-                                      borderRadius: BorderRadius.circular(50.0),
-                                    ),
-                                    child: Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
-                                      child: Text(
-                                        roomsItem.number
-                                            .toString()
-                                            .maybeHandleOverflow(maxChars: 3),
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .error,
-                                              fontSize: 30.0,
-                                              letterSpacing: 0.0,
-                                            ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
@@ -278,7 +274,7 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                         decoration: const BoxDecoration(),
                         child: Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
-                              12.0, 0.0, 12.0, 10.0),
+                              0.0, 0.0, 0.0, 10.0),
                           child: Builder(
                             builder: (context) {
                               final rooms = widget.vacantRooms!
@@ -286,7 +282,7 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                   .toList();
                               return GridView.builder(
                                 padding: const EdgeInsets.fromLTRB(
-                                  0,
+                                  16.0,
                                   0,
                                   10.0,
                                   0,
