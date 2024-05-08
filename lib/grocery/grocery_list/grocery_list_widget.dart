@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/new_grocery/new_grocery_widget.dart';
 import '/components/options/option_to_grocery/option_to_grocery_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -7,6 +8,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -41,6 +43,30 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
       initialIndex: 0,
     )..addListener(() => setState(() {}));
     animationsMap.addAll({
+      'iconButtonOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'iconButtonOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
       'progressBarOnPageLoadAnimation': AnimationInfo(
         trigger: AnimationTrigger.onPageLoad,
         effectsBuilder: () => [
@@ -68,12 +94,6 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
         ],
       ),
     });
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -178,9 +198,61 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FlutterFlowIconButton(
+                      borderRadius: 20.0,
+                      buttonSize: 60.0,
+                      icon: Icon(
+                        Icons.keyboard_arrow_left_outlined,
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        size: 30.0,
+                      ),
+                      onPressed: () async {
+                        // set previous year
+                        setState(() {
+                          _model.year =
+                              functions.previousYear('January', _model.year);
+                        });
+                      },
+                    ).animateOnPageLoad(
+                        animationsMap['iconButtonOnPageLoadAnimation1']!),
+                    Text(
+                      _model.year,
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Readex Pro',
+                            fontSize: 24.0,
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                    FlutterFlowIconButton(
+                      borderColor: Colors.transparent,
+                      borderRadius: 20.0,
+                      buttonSize: 60.0,
+                      icon: Icon(
+                        Icons.keyboard_arrow_right_outlined,
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        size: 30.0,
+                      ),
+                      onPressed: () async {
+                        // set next year
+                        setState(() {
+                          _model.year =
+                              functions.nextYear(_model.year, 'December');
+                        });
+                      },
+                    ).animateOnPageLoad(
+                        animationsMap['iconButtonOnPageLoadAnimation2']!),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                   child: Column(
                     children: [
                       Align(
@@ -280,6 +352,17 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                 'hotel',
                                                 isEqualTo: FFAppState().hotel,
                                               )
+                                              .where(
+                                                'date',
+                                                isGreaterThanOrEqualTo:
+                                                    functions.startOfYear(
+                                                        _model.year),
+                                              )
+                                              .where(
+                                                'date',
+                                                isLessThanOrEqualTo: functions
+                                                    .endOfYear(_model.year),
+                                              )
                                               .orderBy('date',
                                                   descending: true),
                                         ),
@@ -371,11 +454,11 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                               .viewInsetsOf(
                                                                   context),
                                                           child: SizedBox(
-                                                            height: 180.0,
+                                                            height: 215.0,
                                                             child:
                                                                 OptionToGroceryWidget(
-                                                              ref: listViewGroceriesRecord
-                                                                  .reference,
+                                                              grocery:
+                                                                  listViewGroceriesRecord,
                                                             ),
                                                           ),
                                                         ),
@@ -426,58 +509,221 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                             CrossAxisAlignment
                                                                 .center,
                                                         children: [
-                                                          Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              Text(
-                                                                dateTimeFormat(
-                                                                    'MMM',
-                                                                    listViewGroceriesRecord
-                                                                        .date!),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      color: listViewGroceriesRecord.date! >=
-                                                                              functions.startOfDay(columnGoodsRevenueRatioRecord!
-                                                                                  .date!)
-                                                                          ? const Color(
-                                                                              0xFF6758FB)
-                                                                          : FlutterFlowTheme.of(context)
-                                                                              .secondaryText,
-                                                                      letterSpacing:
-                                                                          0.0,
+                                                          InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              await showModalBottomSheet(
+                                                                isScrollControlled:
+                                                                    true,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                enableDrag:
+                                                                    false,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return GestureDetector(
+                                                                    onTap: () => _model
+                                                                            .unfocusNode
+                                                                            .canRequestFocus
+                                                                        ? FocusScope.of(context).requestFocus(_model
+                                                                            .unfocusNode)
+                                                                        : FocusScope.of(context)
+                                                                            .unfocus(),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: MediaQuery
+                                                                          .viewInsetsOf(
+                                                                              context),
+                                                                      child:
+                                                                          SizedBox(
+                                                                        height:
+                                                                            double.infinity,
+                                                                        child:
+                                                                            ChangeDateWidget(
+                                                                          date:
+                                                                              listViewGroceriesRecord.date!,
+                                                                        ),
+                                                                      ),
                                                                     ),
-                                                              ),
-                                                              Text(
-                                                                dateTimeFormat(
-                                                                    'd',
-                                                                    listViewGroceriesRecord
-                                                                        .date!),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      color: listViewGroceriesRecord.date! >=
-                                                                              functions.startOfDay(columnGoodsRevenueRatioRecord
-                                                                                  .date!)
-                                                                          ? FlutterFlowTheme.of(context)
-                                                                              .primary
-                                                                          : FlutterFlowTheme.of(context)
-                                                                              .primaryText,
-                                                                      fontSize:
-                                                                          25.0,
-                                                                      letterSpacing:
-                                                                          0.0,
+                                                                  );
+                                                                },
+                                                              ).then((value) =>
+                                                                  safeSetState(() =>
+                                                                      _model.adjustedDate =
+                                                                          value));
+
+                                                              if (_model
+                                                                      .adjustedDate !=
+                                                                  null) {
+                                                                if (dateTimeFormat(
+                                                                        'MMMM',
+                                                                        listViewGroceriesRecord
+                                                                            .date) !=
+                                                                    dateTimeFormat(
+                                                                        'MMMM',
+                                                                        _model
+                                                                            .adjustedDate)) {
+                                                                  // prevStats
+                                                                  _model.prevStats =
+                                                                      await queryStatsRecordOnce(
+                                                                    queryBuilder: (statsRecord) =>
+                                                                        statsRecord
+                                                                            .where(
+                                                                              'hotel',
+                                                                              isEqualTo: FFAppState().hotel,
+                                                                            )
+                                                                            .where(
+                                                                              'year',
+                                                                              isEqualTo: dateTimeFormat('y', listViewGroceriesRecord.date),
+                                                                            )
+                                                                            .where(
+                                                                              'month',
+                                                                              isEqualTo: dateTimeFormat('MMMM', listViewGroceriesRecord.date),
+                                                                            ),
+                                                                    singleRecord:
+                                                                        true,
+                                                                  ).then((s) =>
+                                                                          s.firstOrNull);
+                                                                  // deduct from previous
+
+                                                                  await _model
+                                                                      .prevStats!
+                                                                      .reference
+                                                                      .update({
+                                                                    ...mapToFirestore(
+                                                                      {
+                                                                        'groceryExpenses':
+                                                                            FieldValue.increment(-(listViewGroceriesRecord.amount)),
+                                                                      },
                                                                     ),
-                                                              ),
-                                                            ],
+                                                                  });
+                                                                  // currStats
+                                                                  _model.currStats =
+                                                                      await queryStatsRecordOnce(
+                                                                    queryBuilder: (statsRecord) =>
+                                                                        statsRecord
+                                                                            .where(
+                                                                              'hotel',
+                                                                              isEqualTo: FFAppState().hotel,
+                                                                            )
+                                                                            .where(
+                                                                              'year',
+                                                                              isEqualTo: dateTimeFormat('y', _model.adjustedDate),
+                                                                            )
+                                                                            .where(
+                                                                              'month',
+                                                                              isEqualTo: dateTimeFormat('MMMM', _model.adjustedDate),
+                                                                            ),
+                                                                    singleRecord:
+                                                                        true,
+                                                                  ).then((s) =>
+                                                                          s.firstOrNull);
+                                                                  // increment to current
+
+                                                                  await _model
+                                                                      .currStats!
+                                                                      .reference
+                                                                      .update({
+                                                                    ...mapToFirestore(
+                                                                      {
+                                                                        'groceryExpenses':
+                                                                            FieldValue.increment(listViewGroceriesRecord.amount),
+                                                                      },
+                                                                    ),
+                                                                  });
+                                                                }
+                                                                // update date
+
+                                                                await listViewGroceriesRecord
+                                                                    .reference
+                                                                    .update(
+                                                                        createGroceriesRecordData(
+                                                                  date: _model
+                                                                      .adjustedDate,
+                                                                ));
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .showSnackBar(
+                                                                  SnackBar(
+                                                                    content:
+                                                                        Text(
+                                                                      'The date for ${listViewGroceriesRecord.remark} is now updated!',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryText,
+                                                                      ),
+                                                                    ),
+                                                                    duration: const Duration(
+                                                                        milliseconds:
+                                                                            4000),
+                                                                    backgroundColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .secondary,
+                                                                  ),
+                                                                );
+                                                              }
+
+                                                              setState(() {});
+                                                            },
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              children: [
+                                                                Text(
+                                                                  dateTimeFormat(
+                                                                      'MMM',
+                                                                      listViewGroceriesRecord
+                                                                          .date!),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        color: listViewGroceriesRecord.date! >=
+                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord!.date!)
+                                                                            ? const Color(0xFF6758FB)
+                                                                            : FlutterFlowTheme.of(context).secondaryText,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                                Text(
+                                                                  dateTimeFormat(
+                                                                      'd',
+                                                                      listViewGroceriesRecord
+                                                                          .date!),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        color: listViewGroceriesRecord.date! >=
+                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord.date!)
+                                                                            ? FlutterFlowTheme.of(context).primary
+                                                                            : FlutterFlowTheme.of(context).primaryText,
+                                                                        fontSize:
+                                                                            25.0,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                           Flexible(
                                                             child: Padding(
@@ -743,6 +989,16 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                           .where(
                                             'hotel',
                                             isEqualTo: FFAppState().hotel,
+                                          )
+                                          .where(
+                                            'date',
+                                            isGreaterThanOrEqualTo: functions
+                                                .startOfYear(_model.year),
+                                          )
+                                          .where(
+                                            'date',
+                                            isLessThanOrEqualTo: functions
+                                                .endOfYear(_model.year),
                                           )
                                           .orderBy('date', descending: true),
                                     ),

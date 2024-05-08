@@ -237,6 +237,26 @@ class _OptionToBookingTransactionWidgetState
                           },
                         ),
                       });
+                      // create history
+
+                      await HistoryRecord.createDoc(_model.bookingNorm!.room!)
+                          .set({
+                        ...createHistoryRecordData(
+                          description: 'Transaction worth ${formatNumber(
+                            widget.price,
+                            formatType: FormatType.decimal,
+                            decimalType: DecimalType.automatic,
+                            currency: 'Php ',
+                          )} now pending.',
+                          staff: currentUserReference,
+                          booking: widget.booking,
+                        ),
+                        ...mapToFirestore(
+                          {
+                            'date': FieldValue.serverTimestamp(),
+                          },
+                        ),
+                      });
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
@@ -388,7 +408,7 @@ class _OptionToBookingTransactionWidgetState
                             .set({
                           ...createHistoryRecordData(
                             description:
-                                'Guest from room ${widget.roomNo?.toString()} is no longer granted discount.',
+                                'Guest from room ${widget.roomNo?.toString()} no longer discounted.',
                             staff: currentUserReference,
                             booking: widget.booking,
                           ),
@@ -536,7 +556,7 @@ class _OptionToBookingTransactionWidgetState
                             .set({
                           ...createHistoryRecordData(
                             description:
-                                'Guest from room ${widget.roomNo?.toString()} is now categorized as senior citizen. Hereby granting a discount.',
+                                'Guest from room ${widget.roomNo?.toString()} now discounted as senior citizen.',
                             staff: currentUserReference,
                             booking: widget.booking,
                           ),
@@ -700,7 +720,7 @@ class _OptionToBookingTransactionWidgetState
                             .set({
                           ...createHistoryRecordData(
                             description:
-                                'Guest from room ${widget.roomNo?.toString()} is now categorized as PWD. Hereby granting a discount.',
+                                'Guest from room ${widget.roomNo?.toString()} now discounted as PWD.',
                             staff: currentUserReference,
                             booking: widget.booking,
                           ),
@@ -852,7 +872,7 @@ class _OptionToBookingTransactionWidgetState
                           .set({
                         ...createHistoryRecordData(
                           description:
-                              'There was a mistake that caused admin to remove a transaction worth Php ${widget.price?.toString()}',
+                              'Removed transaction worth Php ${widget.price?.toString()}',
                           staff: currentUserReference,
                         ),
                         ...mapToFirestore(
@@ -1003,7 +1023,7 @@ class _OptionToBookingTransactionWidgetState
                       await widget.booking!.update(createBookingsRecordData(
                         total: widget.price,
                       ));
-                      // transaction deleted
+                      // duplicate removed
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(

@@ -94,7 +94,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   // Stores action output result for [Backend Call - Read Document] action in Container widget.
   HotelSettingsRecord? hotelSettingLifestyle;
   // State field(s) for allowRemittanceToBeSeen widget.
-  bool allowRemittanceToBeSeenValue = true;
+  bool? allowRemittanceToBeSeenValue;
   // Stores action output result for [Bottom Sheet - ChangeDate] action in Column widget.
   DateTime? adjustedLastRemit;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
@@ -218,6 +218,21 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void clearRemittanceChangeCacheKey(String? uniqueKey) =>
       _remittanceChangeManager.clearRequest(uniqueKey);
 
+  final _pendingBadgeManager = StreamRequestManager<List<TransactionsRecord>>();
+  Stream<List<TransactionsRecord>> pendingBadge({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Stream<List<TransactionsRecord>> Function() requestFn,
+  }) =>
+      _pendingBadgeManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearPendingBadgeCache() => _pendingBadgeManager.clear();
+  void clearPendingBadgeCacheKey(String? uniqueKey) =>
+      _pendingBadgeManager.clearRequest(uniqueKey);
+
   @override
   void initState(BuildContext context) {}
 
@@ -240,6 +255,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     clearPendingCountsCache();
 
     clearRemittanceChangeCache();
+
+    clearPendingBadgeCache();
   }
 
   /// Action blocks.
@@ -288,5 +305,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     // clear staff count
     FFAppState().clearStaffsCacheKey(FFAppState().hotel);
     clearPendingCountsCacheKey(FFAppState().hotel);
+    clearPendingBadgeCacheKey(FFAppState().hotel);
   }
 }

@@ -1739,3 +1739,81 @@ List<IssuesRecord>? sortIssueDesc(List<IssuesRecord>? issues) {
   issues.sort((a, b) => b.date!.compareTo(a.date!));
   return issues;
 }
+
+DateTime startOfYear(String year) {
+  // start of year
+  return DateTime(int.parse(year), 1, 1);
+}
+
+DateTime endOfYear(String year) {
+  // end of year
+  return DateTime(int.parse(year), 12, 31, 23, 59, 59, 999);
+}
+
+double totalOfSpecificBill(List<BillsRecord>? bills) {
+  // total of bill.amount
+  double total = 0.0;
+  if (bills != null) {
+    for (var bill in bills) {
+      total += bill.amount ?? 0.0;
+    }
+  }
+  return total;
+}
+
+DateTime dayFromNow() {
+  // subtract 24 hours from now
+  return DateTime.now().subtract(Duration(hours: 24));
+}
+
+int pendingsLastTwentyFourHours(List<TransactionsRecord>? transactions) {
+  if (transactions == null || transactions.isEmpty) {
+    return 0; // Return 0 if transactions are null or empty
+  }
+
+  final Map<String, RoomPendingStruct> pendingMap = {};
+
+  for (final transaction in transactions) {
+    final booking = transaction.booking.toString();
+    if (pendingMap.containsKey(booking)) {
+      final pending = pendingMap[booking]!;
+      pending.total += transaction.total;
+      pending.since = transaction.date!.isAfter(pending.since!)
+          ? transaction.date
+          : pending.since;
+    } else {
+      final pending = RoomPendingStruct(
+        booking: transaction.booking,
+        room: transaction.room,
+        total: transaction.total,
+        since: transaction.date,
+      );
+      pendingMap[booking] = pending;
+    }
+  }
+
+  // Print the hours ago of the mostRecentDate
+  final now = DateTime.now();
+  final lastTwentyFourHours = now.subtract(Duration(hours: 24));
+  final mostRecentDate = pendingMap.values
+      .map((pending) => pending.since)
+      .reduce((value, element) => value!.isAfter(element!) ? value : element);
+
+  // Count the number of mostRecentDate instances in the pendingMap
+  int countMostRecentDate = 0;
+  for (final pending in pendingMap.values) {
+    if (pending.since != null && pending.since!.isBefore(lastTwentyFourHours)) {
+      countMostRecentDate++;
+    }
+  }
+  return countMostRecentDate;
+}
+
+List<HistoryRecord>? sortRoomHistoryASC(List<HistoryRecord>? history) {
+  // sort history.date ascending
+  if (history == null || history.isEmpty) {
+    return null;
+  }
+  history.sort((a, b) => a.date!.compareTo(b.date!));
+  return history;
+}

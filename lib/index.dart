@@ -26,7 +26,6 @@ export '/payroll/individual_history/individual_history_widget.dart'
 export '/pages/issues_list/issues_list_widget.dart' show IssuesListWidget;
 export '/pages/replenish/replenish_widget.dart' show ReplenishWidget;
 export '/pages/metrics/metrics_widget.dart' show MetricsWidget;
-export '/room/room_history/room_history_widget.dart' show RoomHistoryWidget;
 export '/admin/late_checkout_fee/late_checkout_fee_widget.dart'
     show LateCheckoutFeeWidget;
 export '/bills/bill_form/bill_form_widget.dart' show BillFormWidget;
@@ -37,3 +36,7 @@ export '/admin/manage_options/manage_options_widget.dart'
     show ManageOptionsWidget;
 export '/bills/history_in_bills/history_in_bills_widget.dart'
     show HistoryInBillsWidget;
+export '/room/history_in_room/history_in_room_widget.dart'
+    show HistoryInRoomWidget;
+export '/room/history_in_rooms/history_in_rooms_widget.dart'
+    show HistoryInRoomsWidget;

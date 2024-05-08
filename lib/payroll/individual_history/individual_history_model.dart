@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class IndividualHistoryModel extends FlutterFlowModel<IndividualHistoryWidget> {
+  ///  Local state fields for this page.
+
+  String year = '2024';
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

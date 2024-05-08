@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class GroceryListModel extends FlutterFlowModel<GroceryListWidget> {
+  ///  Local state fields for this page.
+
+  String year = '2024';
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -20,6 +24,12 @@ class GroceryListModel extends FlutterFlowModel<GroceryListWidget> {
   Query? listViewPagingQuery1;
   List<StreamSubscription?> listViewStreamSubscriptions1 = [];
 
+  // Stores action output result for [Bottom Sheet - ChangeDate] action in Column widget.
+  DateTime? adjustedDate;
+  // Stores action output result for [Firestore Query - Query a collection] action in Column widget.
+  StatsRecord? prevStats;
+  // Stores action output result for [Firestore Query - Query a collection] action in Column widget.
+  StatsRecord? currStats;
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, GoodsRevenueRatioRecord>?

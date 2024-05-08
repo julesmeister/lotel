@@ -13,7 +13,7 @@ class PromoModel extends FlutterFlowModel<PromoWidget> {
   // Stores action output result for [Backend Call - Read Document] action in Promo widget.
   HotelSettingsRecord? settings;
   // State field(s) for Switch widget.
-  bool switchValue = true;
+  bool? switchValue;
   // State field(s) for detail widget.
   FocusNode? detailFocusNode;
   TextEditingController? detailTextController;

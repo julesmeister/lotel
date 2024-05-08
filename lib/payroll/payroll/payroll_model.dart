@@ -24,6 +24,8 @@ class PayrollModel extends FlutterFlowModel<PayrollWidget> {
 
   bool isLoading = false;
 
+  String year = '2024';
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

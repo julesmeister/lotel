@@ -5,6 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class IssuesListModel extends FlutterFlowModel<IssuesListWidget> {
+  ///  Local state fields for this page.
+
+  String month = 'February';
+
+  String year = '2024';
+
+  bool showMonthPicker = true;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

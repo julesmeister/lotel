@@ -3,11 +3,15 @@ import '/backend/backend.dart';
 import '/components/forms/change_date/change_date_widget.dart';
 import '/components/options/cash_advance_options/cash_advance_options_widget.dart';
 import '/components/options/salary_options/salary_options_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'individual_history_model.dart';
 export 'individual_history_model.dart';
@@ -31,16 +35,52 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  final animationsMap = <String, AnimationInfo>{};
+
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => IndividualHistoryModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        _model.year = functions.currentYear();
+      });
+    });
 
     _model.tabBarController = TabController(
       vsync: this,
       length: 3,
       initialIndex: 0,
     )..addListener(() => setState(() {}));
+    animationsMap.addAll({
+      'iconButtonOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'iconButtonOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -124,6 +164,60 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                 children: [
                   Padding(
                     padding:
+                        const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FlutterFlowIconButton(
+                          borderRadius: 20.0,
+                          buttonSize: 60.0,
+                          icon: Icon(
+                            Icons.keyboard_arrow_left_outlined,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 30.0,
+                          ),
+                          onPressed: () async {
+                            // set previous year
+                            setState(() {
+                              _model.year = functions.previousYear(
+                                  'January', _model.year);
+                            });
+                          },
+                        ).animateOnPageLoad(
+                            animationsMap['iconButtonOnPageLoadAnimation1']!),
+                        Text(
+                          _model.year,
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 24.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                        ),
+                        FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 20.0,
+                          buttonSize: 60.0,
+                          icon: Icon(
+                            Icons.keyboard_arrow_right_outlined,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 30.0,
+                          ),
+                          onPressed: () async {
+                            // set next year
+                            setState(() {
+                              _model.year =
+                                  functions.nextYear(_model.year, 'December');
+                            });
+                          },
+                        ).animateOnPageLoad(
+                            animationsMap['iconButtonOnPageLoadAnimation2']!),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding:
                         const EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 30.0, 0.0),
                     child: Text(
                       'Below is the summary of ${widget.staff?.name}\'s salary history.',
@@ -205,6 +299,17 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                   'staff',
                                                   isEqualTo:
                                                       widget.staff?.reference,
+                                                )
+                                                .where(
+                                                  'date',
+                                                  isGreaterThanOrEqualTo:
+                                                      functions.startOfYear(
+                                                          _model.year),
+                                                )
+                                                .where(
+                                                  'date',
+                                                  isLessThanOrEqualTo: functions
+                                                      .endOfYear(_model.year),
                                                 )
                                                 .orderBy('date',
                                                     descending: true),
@@ -502,6 +607,18 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                             _model.setListViewController2(
                                                 AdvancesRecord.collection(
                                                         widget.staff?.reference)
+                                                    .where(
+                                                      'date',
+                                                      isGreaterThanOrEqualTo:
+                                                          functions.startOfYear(
+                                                              _model.year),
+                                                    )
+                                                    .where(
+                                                      'date',
+                                                      isLessThanOrEqualTo:
+                                                          functions.endOfYear(
+                                                              _model.year),
+                                                    )
                                                     .orderBy('date',
                                                         descending: true),
                                                 parent:
@@ -857,6 +974,17 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                       _model.setListViewController3(
                                           AbsencesRecord.collection(
                                                   widget.staff?.reference)
+                                              .where(
+                                                'date',
+                                                isGreaterThanOrEqualTo:
+                                                    functions.startOfYear(
+                                                        _model.year),
+                                              )
+                                              .where(
+                                                'date',
+                                                isLessThanOrEqualTo: functions
+                                                    .endOfYear(_model.year),
+                                              )
                                               .orderBy('date',
                                                   descending: true),
                                           parent: widget.staff?.reference),

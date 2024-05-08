@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/components/forms/edit_grocery/edit_grocery_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
@@ -11,10 +12,10 @@ export 'option_to_grocery_model.dart';
 class OptionToGroceryWidget extends StatefulWidget {
   const OptionToGroceryWidget({
     super.key,
-    required this.ref,
+    required this.grocery,
   });
 
-  final DocumentReference? ref;
+  final GroceriesRecord? grocery;
 
   @override
   State<OptionToGroceryWidget> createState() => _OptionToGroceryWidgetState();
@@ -92,6 +93,74 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                     hoverColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     onTap: () async {
+                      await showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        enableDrag: false,
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: MediaQuery.viewInsetsOf(context),
+                            child: SizedBox(
+                              height: double.infinity,
+                              child: EditGroceryWidget(
+                                grocery: widget.grocery!,
+                              ),
+                            ),
+                          );
+                        },
+                      ).then((value) => safeSetState(() {}));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Icon(
+                                Icons.edit_outlined,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 20.0,
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 0.0, 0.0, 0.0),
+                                child: Text(
+                                  'Change Details',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().role == 'admin')
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
                       var confirmDialogResponse = await showDialog<bool>(
                             context: context,
                             builder: (alertDialogContext) {
@@ -118,7 +187,8 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                       if (confirmDialogResponse) {
                         // get grocery
                         _model.groceryToTrack =
-                            await GroceriesRecord.getDocumentOnce(widget.ref!);
+                            await GroceriesRecord.getDocumentOnce(
+                                widget.grocery!.reference);
                         // count grr
                         _model.countGrr =
                             await queryGoodsRevenueRatioRecordCount(
@@ -252,15 +322,15 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    _model.grocery =
-                        await GroceriesRecord.getDocumentOnce(widget.ref!);
+                    _model.grocery = await GroceriesRecord.getDocumentOnce(
+                        widget.grocery!.reference);
                     // reduce from stat
 
                     await FFAppState().statsReference!.update({
                       ...mapToFirestore(
                         {
                           'groceryExpenses':
-                              FieldValue.increment(-(_model.grocery!.amount)),
+                              FieldValue.increment(-(widget.grocery!.amount)),
                         },
                       ),
                     });
@@ -301,7 +371,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                         }
                       }
                     }
-                    await widget.ref!.delete();
+                    await widget.grocery!.reference.delete();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(

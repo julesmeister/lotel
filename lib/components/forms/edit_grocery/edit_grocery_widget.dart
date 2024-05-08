@@ -1,23 +1,26 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'new_grocery_model.dart';
-export 'new_grocery_model.dart';
+import 'edit_grocery_model.dart';
+export 'edit_grocery_model.dart';
 
-class NewGroceryWidget extends StatefulWidget {
-  const NewGroceryWidget({super.key});
+class EditGroceryWidget extends StatefulWidget {
+  const EditGroceryWidget({
+    super.key,
+    required this.grocery,
+  });
+
+  final GroceriesRecord? grocery;
 
   @override
-  State<NewGroceryWidget> createState() => _NewGroceryWidgetState();
+  State<EditGroceryWidget> createState() => _EditGroceryWidgetState();
 }
 
-class _NewGroceryWidgetState extends State<NewGroceryWidget> {
-  late NewGroceryModel _model;
+class _EditGroceryWidgetState extends State<EditGroceryWidget> {
+  late EditGroceryModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -28,12 +31,14 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => NewGroceryModel());
+    _model = createModel(context, () => EditGroceryModel());
 
-    _model.remarkTextController ??= TextEditingController();
+    _model.remarkTextController ??=
+        TextEditingController(text: widget.grocery?.remark);
     _model.remarkFocusNode ??= FocusNode();
 
-    _model.amountTextController ??= TextEditingController();
+    _model.amountTextController ??=
+        TextEditingController(text: widget.grocery?.amount.toString());
     _model.amountFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -118,7 +123,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                'Amount Spent in Grocery',
+                                'Edit Grocery',
                                 style: FlutterFlowTheme.of(context)
                                     .headlineSmall
                                     .override(
@@ -257,74 +262,6 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Expanded(
-                              flex: 5,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    flex: 4,
-                                    child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          10.0, 0.0, 0.0, 0.0),
-                                      child: Text(
-                                        'Start Counting Revenue',
-                                        textAlign: TextAlign.start,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Align(
-                                      alignment:
-                                          const AlignmentDirectional(-1.0, 0.0),
-                                      child: Switch.adaptive(
-                                        value: _model.switchValue ??= false,
-                                        onChanged: (newValue) async {
-                                          setState(() =>
-                                              _model.switchValue = newValue);
-                                          if (newValue) {
-                                            // on
-                                            setState(() {
-                                              _model.startCountingRevenue =
-                                                  true;
-                                            });
-                                          } else {
-                                            // off
-                                            setState(() {
-                                              _model.startCountingRevenue =
-                                                  false;
-                                            });
-                                          }
-                                        },
-                                        activeColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                        activeTrackColor:
-                                            FlutterFlowTheme.of(context)
-                                                .accent1,
-                                        inactiveTrackColor:
-                                            FlutterFlowTheme.of(context)
-                                                .alternate,
-                                        inactiveThumbColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
                               flex: 4,
                               child: Container(
                                 width: 250.0,
@@ -347,7 +284,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                                 builder: (alertDialogContext) {
                                                   return AlertDialog(
                                                     title: const Text(
-                                                        'Have you really spent for grocery?'),
+                                                        'This will alter details for this grocery.'),
                                                     content: Text(
                                                         'You are recording an amount of Php ${_model.amountTextController.text}.'),
                                                     actions: [
@@ -371,133 +308,40 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                               ) ??
                                               false;
                                       if (confirmDialogResponse) {
-                                        await GroceriesRecord.collection
-                                            .doc()
-                                            .set({
-                                          ...createGroceriesRecordData(
-                                            hotel: FFAppState().hotel,
-                                            recordedBy: currentUserReference,
-                                            amount: double.tryParse(_model
-                                                .amountTextController.text),
-                                            remark: _model
-                                                .remarkTextController.text,
-                                          ),
-                                          ...mapToFirestore(
-                                            {
-                                              'date':
-                                                  FieldValue.serverTimestamp(),
-                                            },
-                                          ),
-                                        });
-                                        if (_model.startCountingRevenue) {
-                                          // create goods revenue ratio
+                                        // update grocery
 
-                                          await GoodsRevenueRatioRecord
-                                              .collection
-                                              .doc()
-                                              .set({
-                                            ...createGoodsRevenueRatioRecordData(
-                                              grocery: double.tryParse(_model
-                                                  .amountTextController.text),
-                                              revenue: 0.0,
-                                              hotel: FFAppState().hotel,
-                                              daysToBreakEven: 0,
-                                              daysPassed: 0,
-                                            ),
+                                        await widget.grocery!.reference
+                                            .update(createGroceriesRecordData(
+                                          remark:
+                                              _model.remarkTextController.text,
+                                          amount: double.tryParse(
+                                              _model.amountTextController.text),
+                                        ));
+                                        if (widget.grocery?.amount.toString() !=
+                                            _model.amountTextController.text) {
+                                          // increment grocery expense
+
+                                          await FFAppState()
+                                              .statsReference!
+                                              .update({
                                             ...mapToFirestore(
                                               {
-                                                'date': FieldValue
-                                                    .serverTimestamp(),
+                                                'groceryExpenses':
+                                                    FieldValue.increment(
+                                                        double.parse(_model
+                                                            .amountTextController
+                                                            .text)),
                                               },
                                             ),
                                           });
-                                        } else {
-                                          // count grr
-                                          _model.countGrr =
-                                              await queryGoodsRevenueRatioRecordCount(
-                                            queryBuilder:
-                                                (goodsRevenueRatioRecord) =>
-                                                    goodsRevenueRatioRecord
-                                                        .where(
-                                                          'hotel',
-                                                          isEqualTo:
-                                                              FFAppState()
-                                                                  .hotel,
-                                                        )
-                                                        .orderBy('date',
-                                                            descending: true),
-                                          );
-                                          if (_model.countGrr! > 0) {
-                                            // last grr
-                                            _model.lastGrr =
-                                                await queryGoodsRevenueRatioRecordOnce(
-                                              queryBuilder:
-                                                  (goodsRevenueRatioRecord) =>
-                                                      goodsRevenueRatioRecord
-                                                          .where(
-                                                            'hotel',
-                                                            isEqualTo:
-                                                                FFAppState()
-                                                                    .hotel,
-                                                          )
-                                                          .orderBy('date',
-                                                              descending: true),
-                                              singleRecord: true,
-                                            ).then((s) => s.firstOrNull);
-                                            // increment grocery
-
-                                            await _model.lastGrr!.reference
-                                                .update({
-                                              ...mapToFirestore(
-                                                {
-                                                  'grocery': FieldValue.increment(
-                                                      double.parse(_model
-                                                          .amountTextController
-                                                          .text)),
-                                                },
-                                              ),
-                                            });
-                                            if (_model.lastGrr!.revenue <=
-                                                valueOrDefault<double>(
-                                                  _model.lastGrr!.grocery +
-                                                      double.parse(_model
-                                                          .amountTextController
-                                                          .text),
-                                                  0.0,
-                                                )) {
-                                              // reset daysToBreakEven
-
-                                              await _model.lastGrr!.reference
-                                                  .update(
-                                                      createGoodsRevenueRatioRecordData(
-                                                daysToBreakEven: 0,
-                                              ));
-                                            }
-                                          }
                                         }
-
-                                        // increment grocery expense in stats
-
-                                        await FFAppState()
-                                            .statsReference!
-                                            .update({
-                                          ...mapToFirestore(
-                                            {
-                                              'groceryExpenses':
-                                                  FieldValue.increment(
-                                                      double.parse(_model
-                                                          .amountTextController
-                                                          .text)),
-                                            },
-                                          ),
-                                        });
                                         // clear groceryHome
                                         FFAppState().clearGroceryHomeCache();
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              'You have recorded a spending in grocery.',
+                                              'Grocery updated!',
                                               style: TextStyle(
                                                 color:
                                                     FlutterFlowTheme.of(context)
@@ -533,8 +377,6 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                         ),
                                       );
                                     }
-
-                                    setState(() {});
                                   },
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -547,7 +389,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                               const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 5.0, 0.0),
                                           child: Text(
-                                            'Add to Grocery Grand Total',
+                                            'Save Details',
                                             textAlign: TextAlign.end,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium

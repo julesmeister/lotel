@@ -28,6 +28,8 @@ class BillsListModel extends FlutterFlowModel<BillsListWidget> {
   void updateShowInListAtIndex(int index, Function(String) updateFn) =>
       showInList[index] = updateFn(showInList[index]);
 
+  String year = '2024';
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

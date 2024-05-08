@@ -341,20 +341,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const MetricsWidget(),
         ),
         FFRoute(
-          name: 'RoomHistory',
-          path: '/roomHistory',
-          requireAuth: true,
-          asyncParams: {
-            'room': getDoc(['rooms'], RoomsRecord.fromSnapshot),
-          },
-          builder: (context, params) => RoomHistoryWidget(
-            room: params.getParam(
-              'room',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
           name: 'LateCheckoutFee',
           path: '/lateCheckoutFee',
           requireAuth: true,
@@ -410,6 +396,35 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/historyInBills',
           requireAuth: true,
           builder: (context, params) => const HistoryInBillsWidget(),
+        ),
+        FFRoute(
+          name: 'HistoryInRoom',
+          path: '/historyInRoom',
+          requireAuth: true,
+          asyncParams: {
+            'room': getDoc(['rooms'], RoomsRecord.fromSnapshot),
+          },
+          builder: (context, params) => HistoryInRoomWidget(
+            room: params.getParam(
+              'room',
+              ParamType.Document,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'HistoryInRooms',
+          path: '/historyInRooms',
+          requireAuth: true,
+          asyncParams: {
+            'room': getDocList(['rooms'], RoomsRecord.fromSnapshot),
+          },
+          builder: (context, params) => HistoryInRoomsWidget(
+            room: params.getParam<RoomsRecord>(
+              'room',
+              ParamType.Document,
+              isList: true,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

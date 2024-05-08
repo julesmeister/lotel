@@ -11,6 +11,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +37,13 @@ class _PayrollWidgetState extends State<PayrollWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => PayrollModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        _model.year = functions.currentYear();
+      });
+    });
 
     animationsMap.addAll({
       'containerOnPageLoadAnimation': AnimationInfo(
@@ -76,13 +84,31 @@ class _PayrollWidgetState extends State<PayrollWidget>
           ),
         ],
       ),
+      'iconButtonOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'iconButtonOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
     });
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -896,7 +922,65 @@ class _PayrollWidgetState extends State<PayrollWidget>
                               ),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 12.0, 16.0, 0.0),
+                                    16.0, 10.0, 16.0, 0.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    FlutterFlowIconButton(
+                                      borderRadius: 20.0,
+                                      buttonSize: 60.0,
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_left_outlined,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        size: 30.0,
+                                      ),
+                                      onPressed: () async {
+                                        // set previous year
+                                        setState(() {
+                                          _model.year = functions.previousYear(
+                                              'January', _model.year);
+                                        });
+                                      },
+                                    ).animateOnPageLoad(animationsMap[
+                                        'iconButtonOnPageLoadAnimation1']!),
+                                    Text(
+                                      _model.year,
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            fontSize: 24.0,
+                                            letterSpacing: 0.0,
+                                          ),
+                                    ),
+                                    FlutterFlowIconButton(
+                                      borderColor: Colors.transparent,
+                                      borderRadius: 20.0,
+                                      buttonSize: 60.0,
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_right_outlined,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        size: 30.0,
+                                      ),
+                                      onPressed: () async {
+                                        // set next year
+                                        setState(() {
+                                          _model.year = functions.nextYear(
+                                              _model.year, 'December');
+                                        });
+                                      },
+                                    ).animateOnPageLoad(animationsMap[
+                                        'iconButtonOnPageLoadAnimation2']!),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 8.0, 16.0, 0.0),
                                 child: Container(
                                   width: double.infinity,
                                   constraints: const BoxConstraints(
@@ -966,6 +1050,16 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                             .where(
                                               'hotel',
                                               isEqualTo: FFAppState().hotel,
+                                            )
+                                            .where(
+                                              'date',
+                                              isGreaterThanOrEqualTo: functions
+                                                  .startOfYear(_model.year),
+                                            )
+                                            .where(
+                                              'date',
+                                              isLessThanOrEqualTo: functions
+                                                  .endOfYear(_model.year),
                                             )
                                             .orderBy('date', descending: true),
                                       ),

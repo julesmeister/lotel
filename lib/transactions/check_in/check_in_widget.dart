@@ -1780,7 +1780,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             .set({
                                           ...createHistoryRecordData(
                                             description:
-                                                'Something other than the price have been updated with this booking. Probably entered data of guest\'s ID or contact number.',
+                                                'ID or contact number updated!',
                                             staff: currentUserReference,
                                           ),
                                           ...mapToFirestore(
@@ -2466,7 +2466,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           .set({
                                         ...createHistoryRecordData(
                                           description:
-                                              'New check in ${_model.ability != 'normal' ? 'by a ${_model.ability} ' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''} ' : ''}but pending payment.',
+                                              'New check in ${_model.ability != 'normal' ? 'by a ${_model.ability} ' : ''}${_model.bedsValue != '0' ? 'with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''} ' : ''}but pending payment.',
                                           staff: currentUserReference,
                                           booking:
                                               _model.savedBooking?.reference,
