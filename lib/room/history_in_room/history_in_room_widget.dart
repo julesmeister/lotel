@@ -175,7 +175,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
                       ),
-                  minFontSize: 18.0,
+                  minFontSize: 12.0,
                 ),
               ),
               actions: [

@@ -227,6 +227,12 @@ class _OptionToBookingTransactionWidgetState
 
                       await widget.ref!.update(createTransactionsRecordData(
                         pending: true,
+                        description: (String description) {
+                          return description.replaceAll(
+                              RegExp(
+                                  r'Guest paid the outstanding balance since \d+ hours ago for'),
+                              '');
+                        }(widget.description!),
                       ));
                       // add to pending
 

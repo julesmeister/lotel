@@ -819,7 +819,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ChipData('7'),
                                     ChipData('8'),
                                     ChipData('9'),
-                                    ChipData('10')
+                                    ChipData('10'),
+                                    ChipData('+')
                                   ],
                                   onChanged: (val) => setState(() =>
                                       _model.bedsValue = val?.firstOrNull),
@@ -864,9 +865,25 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   controller: _model.bedsValueController ??=
                                       FormFieldController<List<String>>(
                                     [
-                                      widget.extend
-                                          ? widget.bookingToExtend!.extraBeds
-                                          : '0'
+                                      valueOrDefault<String>(
+                                        widget.extend
+                                            ? valueOrDefault<String>(
+                                                (String? beds) {
+                                                  return int.parse(
+                                                              beds ?? "0") >
+                                                          10
+                                                      ? "+"
+                                                      : beds;
+                                                }(valueOrDefault<String>(
+                                                  widget.bookingToExtend
+                                                      ?.extraBeds,
+                                                  '0',
+                                                )),
+                                                '0',
+                                              )
+                                            : '0',
+                                        '0',
+                                      )
                                     ],
                                   ),
                                   wrapped: true,
@@ -1598,7 +1615,16 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                         '0',
                                                       )))
                                                   : 0.0,
-                                              _model.transactions.toList()),
+                                              _model.transactions.toList(),
+                                              valueOrDefault<int>(
+                                                int.parse(
+                                                    valueOrDefault<String>(
+                                                  widget.bookingToExtend
+                                                      ?.extraBeds,
+                                                  '0',
+                                                )),
+                                                0,
+                                              )),
                                           formatType: FormatType.decimal,
                                           decimalType: DecimalType.automatic,
                                           currency: 'P ',
@@ -1681,7 +1707,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           '0',
                                                         )))
                                                     : 0.0,
-                                                _model.transactions.toList()),
+                                                _model.transactions.toList(),
+                                                int.parse(widget
+                                                    .bookingToExtend!
+                                                    .extraBeds)),
                                             type: 'book',
                                             hotel: FFAppState().hotel,
                                             booking: widget
@@ -1730,7 +1759,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           '0',
                                                         )))
                                                     : 0.0,
-                                                _model.transactions.toList()),
+                                                _model.transactions.toList(),
+                                                int.parse(widget
+                                                    .bookingToExtend!
+                                                    .extraBeds)),
                                             type: 'book',
                                             hotel: FFAppState().hotel,
                                             booking: widget
@@ -1869,7 +1901,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 FFAppState().extPricePerHr *
                                                     int.parse((_model
                                                         .hoursLateCheckoutValue!)),
-                                                _model.transactions.toList())! >
+                                                _model.transactions.toList(),
+                                                int.parse(widget
+                                                    .bookingToExtend!
+                                                    .extraBeds))! >
                                             0.0) {
                                           // New Pending Transaction
 
@@ -1899,7 +1934,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                             '0',
                                                           )))
                                                       : 0.0,
-                                                  _model.transactions.toList()),
+                                                  _model.transactions.toList(),
+                                                  int.parse(widget
+                                                      .bookingToExtend!
+                                                      .extraBeds)),
                                               type: 'book',
                                               hotel: FFAppState().hotel,
                                               booking: widget
@@ -1943,7 +1981,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                             '0',
                                                           )))
                                                       : 0.0,
-                                                  _model.transactions.toList()),
+                                                  _model.transactions.toList(),
+                                                  int.parse(widget
+                                                      .bookingToExtend!
+                                                      .extraBeds)),
                                               type: 'book',
                                               hotel: FFAppState().hotel,
                                               booking: widget
@@ -1998,8 +2039,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   FFAppState().extPricePerHr *
                                                       int.parse((_model
                                                           .hoursLateCheckoutValue!)),
-                                                  _model.transactions
-                                                      .toList())! <
+                                                  _model.transactions.toList(),
+                                                  int.parse(widget
+                                                      .bookingToExtend!
+                                                      .extraBeds))! <
                                               0.0) {
                                             // New Pending Transaction
 
@@ -2030,7 +2073,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                             )))
                                                         : 0.0,
                                                     _model.transactions
-                                                        .toList()),
+                                                        .toList(),
+                                                    int.parse(widget
+                                                        .bookingToExtend!
+                                                        .extraBeds)),
                                                 type: 'book',
                                                 hotel: FFAppState().hotel,
                                                 booking: widget
@@ -2075,7 +2121,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                             )))
                                                         : 0.0,
                                                     _model.transactions
-                                                        .toList()),
+                                                        .toList(),
+                                                    int.parse(widget
+                                                        .bookingToExtend!
+                                                        .extraBeds)),
                                                 type: 'book',
                                                 hotel: FFAppState().hotel,
                                                 booking: widget
@@ -2168,7 +2217,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               FFAppState().extPricePerHr *
                                                   int.parse((_model
                                                       .hoursLateCheckoutValue!)),
-                                              _model.transactions.toList()),
+                                              _model.transactions.toList(),
+                                              int.parse(widget
+                                                  .bookingToExtend!.extraBeds)),
                                           0.0,
                                         ),
                                         extraBeds: _model.bedsValue,
@@ -2231,7 +2282,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               '-1',
                                               0,
                                               0.0,
-                                              _model.transactions.toList()),
+                                              _model.transactions.toList(),
+                                              0),
                                           0.0,
                                         ),
                                         status: functions
@@ -2271,7 +2323,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               '-1',
                                               0,
                                               0.0,
-                                              _model.transactions.toList()),
+                                              _model.transactions.toList(),
+                                              0),
                                           0.0,
                                         ),
                                         status: functions
@@ -2306,7 +2359,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               _model.startingBeds!,
                                               _model.startingNights!,
                                               0.0,
-                                              _model.transactions.toList()),
+                                              _model.transactions.toList(),
+                                              0),
                                           type: 'book',
                                           hotel: FFAppState().hotel,
                                           booking:
@@ -2338,7 +2392,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               _model.startingBeds!,
                                               _model.startingNights!,
                                               0.0,
-                                              _model.transactions.toList()),
+                                              _model.transactions.toList(),
+                                              0),
                                           type: 'book',
                                           hotel: FFAppState().hotel,
                                           booking:
@@ -2397,7 +2452,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               _model.startingBeds!,
                                               _model.startingNights!,
                                               0.0,
-                                              _model.transactions.toList()),
+                                              _model.transactions.toList(),
+                                              0),
                                           type: 'book',
                                           hotel: FFAppState().hotel,
                                           booking:
@@ -2429,7 +2485,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               _model.startingBeds!,
                                               _model.startingNights!,
                                               0.0,
-                                              _model.transactions.toList()),
+                                              _model.transactions.toList(),
+                                              0),
                                           type: 'book',
                                           hotel: FFAppState().hotel,
                                           booking:

@@ -2,10 +2,13 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_autocomplete_options_list.dart';
+import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -123,7 +126,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                     borderColor: FlutterFlowTheme.of(context).primaryBackground,
                     borderRadius: 20.0,
                     borderWidth: 1.0,
-                    buttonSize: 40.0,
+                    buttonSize: 60.0,
                     fillColor: FlutterFlowTheme.of(context).primaryBackground,
                     disabledIconColor: const Color(0xFFDADBDC),
                     icon: Icon(
@@ -151,6 +154,47 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     duration: const Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).secondary,
+                                  ),
+                                );
+                                if (shouldSetState) setState(() {});
+                                return;
+                              }
+                            }
+                            if (_model.pending) {
+                              if (_model.choiceChipsValue != null &&
+                                  _model.choiceChipsValue != '') {
+                                // room
+                                _model.room = await queryRoomsRecordOnce(
+                                  queryBuilder: (roomsRecord) => roomsRecord
+                                      .where(
+                                        'number',
+                                        isEqualTo: int.parse(
+                                            (_model.choiceChipsValue!)),
+                                      )
+                                      .where(
+                                        'hotel',
+                                        isEqualTo: FFAppState().hotel,
+                                      ),
+                                  singleRecord: true,
+                                ).then((s) => s.firstOrNull);
+                                shouldSetState = true;
+                                // booking
+                                setState(() {
+                                  _model.booking = _model.room?.currentBooking;
+                                });
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'A room must be selected!',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                      ),
+                                    ),
+                                    duration: const Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).error,
                                   ),
                                 );
                                 if (shouldSetState) setState(() {});
@@ -203,7 +247,11 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         'deducted for some reason',
                                       )
                                     : 'sold',
-                                pending: false,
+                                pending: _model.pending,
+                                booking: _model.pending ? _model.booking : null,
+                                room: _model.pending
+                                    ? (int.parse((_model.choiceChipsValue!)))
+                                    : null,
                               ),
                               ...mapToFirestore(
                                 {
@@ -236,7 +284,11 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         'deducted for some reason',
                                       )
                                     : 'sold',
-                                pending: false,
+                                pending: _model.pending,
+                                booking: _model.pending ? _model.booking : null,
+                                room: _model.pending
+                                    ? (int.parse((_model.choiceChipsValue!)))
+                                    : null,
                               ),
                               ...mapToFirestore(
                                 {
@@ -357,6 +409,20 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 },
                               ),
                             });
+                            if ((_model.choiceChipsValue != null &&
+                                    _model.choiceChipsValue != '') &&
+                                _model.pending) {
+                              // add transaction to pending
+
+                              await _model.booking!.update({
+                                ...mapToFirestore(
+                                  {
+                                    'pendings': FieldValue.arrayUnion(
+                                        [_model.newTransaction?.reference]),
+                                  },
+                                ),
+                              });
+                            }
                             // finish loading
                             setState(() {
                               _model.isLoading = false;
@@ -718,11 +784,78 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                         child: Align(
                           alignment: const AlignmentDirectional(0.0, -1.0),
                           child: SwitchListTile.adaptive(
-                            value: _model.switchListTileValue ??=
+                            value: _model.switchListTileValue1 ??=
+                                _model.pending,
+                            onChanged: (newValue) async {
+                              setState(() =>
+                                  _model.switchListTileValue1 = newValue);
+                              if (newValue) {
+                                setState(() {
+                                  _model.pending = true;
+                                });
+                              } else {
+                                setState(() {
+                                  _model.pending = false;
+                                });
+                              }
+                            },
+                            title: Text(
+                              'Pending',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyLarge
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                            ),
+                            subtitle: Text(
+                              'Has the guest not paid yet?',
+                              style: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                            ),
+                            tileColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            activeColor: FlutterFlowTheme.of(context).primary,
+                            activeTrackColor:
+                                FlutterFlowTheme.of(context).accent1,
+                            dense: true,
+                            controlAffinity: ListTileControlAffinity.trailing,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 60.0,
+                        decoration: BoxDecoration(
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          boxShadow: [
+                            BoxShadow(
+                              color: FlutterFlowTheme.of(context)
+                                  .primaryBackground,
+                              offset: const Offset(
+                                0.0,
+                                1.0,
+                              ),
+                            )
+                          ],
+                        ),
+                        child: Align(
+                          alignment: const AlignmentDirectional(0.0, -1.0),
+                          child: SwitchListTile.adaptive(
+                            value: _model.switchListTileValue2 ??=
                                 _model.expense,
                             onChanged: (newValue) async {
-                              setState(
-                                  () => _model.switchListTileValue = newValue);
+                              setState(() =>
+                                  _model.switchListTileValue2 = newValue);
                               if (newValue) {
                                 setState(() {
                                   _model.expense = true;
@@ -791,68 +924,6 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  setState(() {
-                                    _model.whichExpense = 'consumedBy';
-                                  });
-                                },
-                                child: Container(
-                                  width: 145.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    color: _model.whichExpense == 'consumedBy'
-                                        ? FlutterFlowTheme.of(context)
-                                            .secondaryBackground
-                                        : FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(
-                                      color: valueOrDefault<Color>(
-                                        _model.whichExpense == 'consumedBy'
-                                            ? FlutterFlowTheme.of(context)
-                                                .alternate
-                                            : FlutterFlowTheme.of(context)
-                                                .primaryBackground,
-                                        FlutterFlowTheme.of(context).alternate,
-                                      ),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.emoji_people_rounded,
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        size: 16.0,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            4.0, 0.0, 0.0, 0.0),
-                                        child: Text(
-                                          'Consumed By',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                letterSpacing: 0.0,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
                               Expanded(
                                 child: InkWell(
                                   splashColor: Colors.transparent,
@@ -861,25 +932,29 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
                                     setState(() {
-                                      _model.whichExpense = 'spoilage';
+                                      _model.whichExpense = 'consumedBy';
                                     });
                                   },
                                   child: Container(
-                                    width: 115.0,
+                                    width: 145.0,
                                     height: 100.0,
                                     decoration: BoxDecoration(
-                                      color: _model.whichExpense == 'spoilage'
+                                      color: _model.whichExpense == 'consumedBy'
                                           ? FlutterFlowTheme.of(context)
                                               .secondaryBackground
                                           : FlutterFlowTheme.of(context)
                                               .primaryBackground,
                                       borderRadius: BorderRadius.circular(10.0),
                                       border: Border.all(
-                                        color: _model.whichExpense == 'spoilage'
-                                            ? FlutterFlowTheme.of(context)
-                                                .alternate
-                                            : FlutterFlowTheme.of(context)
-                                                .primaryBackground,
+                                        color: valueOrDefault<Color>(
+                                          _model.whichExpense == 'consumedBy'
+                                              ? FlutterFlowTheme.of(context)
+                                                  .alternate
+                                              : FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
+                                          FlutterFlowTheme.of(context)
+                                              .alternate,
+                                        ),
                                         width: 1.0,
                                       ),
                                     ),
@@ -889,7 +964,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                           MainAxisAlignment.center,
                                       children: [
                                         Icon(
-                                          Icons.no_food_outlined,
+                                          Icons.emoji_people_rounded,
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,
                                           size: 16.0,
@@ -899,7 +974,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                               const EdgeInsetsDirectional.fromSTEB(
                                                   4.0, 0.0, 0.0, 0.0),
                                           child: Text(
-                                            'Spoilage',
+                                            'Consumed By',
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -913,6 +988,65 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         ),
                                       ],
                                     ),
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  setState(() {
+                                    _model.whichExpense = 'spoilage';
+                                  });
+                                },
+                                child: Container(
+                                  width: 115.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                    color: _model.whichExpense == 'spoilage'
+                                        ? FlutterFlowTheme.of(context)
+                                            .secondaryBackground
+                                        : FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: _model.whichExpense == 'spoilage'
+                                          ? FlutterFlowTheme.of(context)
+                                              .alternate
+                                          : FlutterFlowTheme.of(context)
+                                              .primaryBackground,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.no_food_outlined,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        size: 16.0,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            4.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          'Spoilage',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                                letterSpacing: 0.0,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -1163,6 +1297,105 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                           ),
                       validator: _model.priceTextController2Validator
                           .asValidator(context),
+                    ),
+                  ),
+                if (_model.pending)
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 0.0, 6.0),
+                    child: Text(
+                      'Room',
+                      style: FlutterFlowTheme.of(context).labelMedium.override(
+                            fontFamily: 'Readex Pro',
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                  ),
+                if (_model.pending)
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
+                    child: FutureBuilder<List<RoomsRecord>>(
+                      future: queryRoomsRecordOnce(
+                        queryBuilder: (roomsRecord) => roomsRecord
+                            .where(
+                              'hotel',
+                              isEqualTo: FFAppState().hotel,
+                            )
+                            .where(
+                              'vacant',
+                              isEqualTo: false,
+                            )
+                            .orderBy('number'),
+                      ),
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  FlutterFlowTheme.of(context).primary,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        List<RoomsRecord> choiceChipsRoomsRecordList =
+                            snapshot.data!;
+                        return FlutterFlowChoiceChips(
+                          options: functions
+                              .intListToStringList(choiceChipsRoomsRecordList
+                                  .map((e) => e.number)
+                                  .toList())
+                              .map((label) => ChipData(label))
+                              .toList(),
+                          onChanged: (val) => setState(
+                              () => _model.choiceChipsValue = val?.firstOrNull),
+                          selectedChipStyle: ChipStyle(
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).primary,
+                            textStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  color: FlutterFlowTheme.of(context).info,
+                                  letterSpacing: 0.0,
+                                ),
+                            iconColor: FlutterFlowTheme.of(context).accent4,
+                            iconSize: 18.0,
+                            elevation: 4.0,
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          unselectedChipStyle: ChipStyle(
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).alternate,
+                            textStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  letterSpacing: 0.0,
+                                ),
+                            iconColor: FlutterFlowTheme.of(context).info,
+                            iconSize: 18.0,
+                            elevation: 0.0,
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          chipSpacing: 12.0,
+                          rowSpacing: 12.0,
+                          multiselect: false,
+                          alignment: WrapAlignment.start,
+                          controller: _model.choiceChipsValueController ??=
+                              FormFieldController<List<String>>(
+                            [],
+                          ),
+                          wrapped: true,
+                        );
+                      },
                     ),
                   ),
               ],

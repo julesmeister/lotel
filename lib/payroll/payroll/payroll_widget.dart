@@ -391,10 +391,13 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                 _model.loopSalariesCounter!]
                                             .staff,
                                         queryBuilder: (advancesRecord) =>
-                                            advancesRecord.where(
-                                          'settled',
-                                          isEqualTo: false,
-                                        ),
+                                            advancesRecord
+                                                .where(
+                                                  'settled',
+                                                  isNotEqualTo: true,
+                                                )
+                                                .orderBy('settled')
+                                                .orderBy('date'),
                                       );
                                       // Unsettled absences
                                       _model.absencesRaw =
@@ -1160,7 +1163,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                             .viewInsetsOf(
                                                                 context),
                                                         child: SizedBox(
-                                                          height: 180.0,
+                                                          height: 125.0,
                                                           child:
                                                               OptionToPayrollWidget(
                                                             payroll:
@@ -1270,11 +1273,13 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                             4.0,
                                                                             0.0,
                                                                             0.0),
-                                                                child: Text(
+                                                                child:
+                                                                    AutoSizeText(
                                                                   dateTimeFormat(
                                                                       'EEE MMM d y h:mm a',
                                                                       listViewPayrollsRecord
                                                                           .date!),
+                                                                  maxLines: 1,
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
                                                                       .labelMedium
@@ -1284,6 +1289,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                         letterSpacing:
                                                                             0.0,
                                                                       ),
+                                                                  minFontSize:
+                                                                      12.0,
                                                                 ),
                                                               ),
                                                             ],

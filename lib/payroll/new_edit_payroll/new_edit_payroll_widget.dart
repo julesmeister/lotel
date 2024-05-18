@@ -1760,10 +1760,13 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         await queryAdvancesRecordOnce(
                                       parent: _model.staff?.reference,
                                       queryBuilder: (advancesRecord) =>
-                                          advancesRecord.where(
-                                        'settled',
-                                        isEqualTo: false,
-                                      ),
+                                          advancesRecord
+                                              .where(
+                                                'settled',
+                                                isNotEqualTo: true,
+                                              )
+                                              .orderBy('settled')
+                                              .orderBy('date'),
                                     );
                                     // reset ca loop counter
                                     setState(() {
@@ -1999,10 +2002,13 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         await queryAdvancesRecordOnce(
                                       parent: _model.staffClear?.reference,
                                       queryBuilder: (advancesRecord) =>
-                                          advancesRecord.where(
-                                        'settled',
-                                        isEqualTo: false,
-                                      ),
+                                          advancesRecord
+                                              .where(
+                                                'settled',
+                                                isNotEqualTo: true,
+                                              )
+                                              .orderBy('settled')
+                                              .orderBy('date'),
                                     );
                                     // reset ca loop counter
                                     setState(() {

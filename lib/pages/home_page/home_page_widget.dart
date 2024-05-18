@@ -1259,213 +1259,223 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Sales',
-                                    maxLines: 1,
-                                    style: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .override(
-                                          fontFamily: 'Plus Jakarta Sans',
-                                          color: const Color(0xFF57636C),
-                                          fontSize: 14.0,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                  ),
-                                  if (valueOrDefault(
-                                          currentUserDocument?.role, '') !=
-                                      'generic')
-                                    AuthUserStreamWidget(
-                                      builder: (context) => StreamBuilder<
-                                          List<TransactionsRecord>>(
-                                        stream: _model.salesTotal(
-                                          uniqueQueryKey: FFAppState().hotel,
-                                          requestFn: () =>
-                                              queryTransactionsRecord(
-                                            queryBuilder:
-                                                (transactionsRecord) =>
-                                                    transactionsRecord
-                                                        .where(
-                                                          'hotel',
-                                                          isEqualTo:
-                                                              FFAppState()
-                                                                  .hotel,
-                                                        )
-                                                        .where(
-                                                          'remitted',
-                                                          isEqualTo: false,
-                                                        )
-                                                        .where(
-                                                          'pending',
-                                                          isNotEqualTo: true,
-                                                        ),
-                                          ),
-                                        ),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 50.0,
-                                                height: 50.0,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          List<TransactionsRecord>
-                                              salesTodayTransactionsRecordList =
-                                              snapshot.data!;
-                                          return InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onDoubleTap: () async {
-                                              if (valueOrDefault(
-                                                      currentUserDocument?.role,
-                                                      '') ==
-                                                  'admin') {
-                                                await showModalBottomSheet(
-                                                  isScrollControlled: true,
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  enableDrag: false,
-                                                  useSafeArea: true,
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return GestureDetector(
-                                                      onTap: () => _model
-                                                              .unfocusNode
-                                                              .canRequestFocus
-                                                          ? FocusScope.of(
-                                                                  context)
-                                                              .requestFocus(_model
-                                                                  .unfocusNode)
-                                                          : FocusScope.of(
-                                                                  context)
-                                                              .unfocus(),
-                                                      child: Padding(
-                                                        padding: MediaQuery
-                                                            .viewInsetsOf(
-                                                                context),
-                                                        child: const SizedBox(
-                                                          height:
-                                                              double.infinity,
-                                                          child:
-                                                              ExtraRemittanceWidget(),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ).then((value) =>
-                                                    safeSetState(() {}));
-                                              }
-                                            },
-                                            onLongPress: () async {
-                                              if (valueOrDefault(
-                                                      currentUserDocument?.role,
-                                                      '') ==
-                                                  'admin') {
-                                                await showModalBottomSheet(
-                                                  isScrollControlled: true,
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  enableDrag: false,
-                                                  useSafeArea: true,
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return GestureDetector(
-                                                      onTap: () => _model
-                                                              .unfocusNode
-                                                              .canRequestFocus
-                                                          ? FocusScope.of(
-                                                                  context)
-                                                              .requestFocus(_model
-                                                                  .unfocusNode)
-                                                          : FocusScope.of(
-                                                                  context)
-                                                              .unfocus(),
-                                                      child: Padding(
-                                                        padding: MediaQuery
-                                                            .viewInsetsOf(
-                                                                context),
-                                                        child: const SizedBox(
-                                                          height:
-                                                              double.infinity,
-                                                          child:
-                                                              ExtraRemittanceWidget(),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ).then((value) =>
-                                                    safeSetState(() {}));
-                                              }
-                                            },
-                                            child: Text(
-                                              formatNumber(
-                                                functions.totalToRemit(
-                                                    salesTodayTransactionsRecordList
-                                                        .toList()),
-                                                formatType: FormatType.decimal,
-                                                decimalType:
-                                                    DecimalType.automatic,
-                                                currency: 'P ',
-                                              ),
-                                              maxLines: 1,
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .displaySmall
-                                                  .override(
-                                                    fontFamily: 'Outfit',
-                                                    color: const Color(0xFF14181B),
-                                                    fontSize: 36.0,
-                                                    letterSpacing: 0.0,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                            ),
-                                          ).animateOnActionTrigger(
-                                              animationsMap[
-                                                  'textOnActionTriggerAnimation1']!,
-                                              hasBeenTriggered:
-                                                  hasTextTriggered1);
-                                        },
-                                      ),
-                                    ),
-                                  Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 4.0, 0.0, 0.0),
-                                    child: Text(
-                                      dateTimeFormat(
-                                          'yMMMd', getCurrentTimestamp),
-                                      textAlign: TextAlign.start,
+                              Expanded(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Sales',
                                       maxLines: 1,
                                       style: FlutterFlowTheme.of(context)
-                                          .labelSmall
+                                          .labelMedium
                                           .override(
                                             fontFamily: 'Plus Jakarta Sans',
                                             color: const Color(0xFF57636C),
-                                            fontSize: 12.0,
+                                            fontSize: 14.0,
                                             letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
                                           ),
                                     ),
-                                  ),
-                                ],
-                              ).animateOnPageLoad(
-                                  animationsMap['columnOnPageLoadAnimation1']!),
+                                    if (valueOrDefault(
+                                            currentUserDocument?.role, '') !=
+                                        'generic')
+                                      AuthUserStreamWidget(
+                                        builder: (context) => StreamBuilder<
+                                            List<TransactionsRecord>>(
+                                          stream: _model.salesTotal(
+                                            uniqueQueryKey: FFAppState().hotel,
+                                            requestFn: () =>
+                                                queryTransactionsRecord(
+                                              queryBuilder:
+                                                  (transactionsRecord) =>
+                                                      transactionsRecord
+                                                          .where(
+                                                            'hotel',
+                                                            isEqualTo:
+                                                                FFAppState()
+                                                                    .hotel,
+                                                          )
+                                                          .where(
+                                                            'remitted',
+                                                            isEqualTo: false,
+                                                          )
+                                                          .where(
+                                                            'pending',
+                                                            isNotEqualTo: true,
+                                                          ),
+                                            ),
+                                          ),
+                                          builder: (context, snapshot) {
+                                            // Customize what your widget looks like when it's loading.
+                                            if (!snapshot.hasData) {
+                                              return Center(
+                                                child: SizedBox(
+                                                  width: 50.0,
+                                                  height: 50.0,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .primary,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                            List<TransactionsRecord>
+                                                salesTodayTransactionsRecordList =
+                                                snapshot.data!;
+                                            return InkWell(
+                                              splashColor: Colors.transparent,
+                                              focusColor: Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              onDoubleTap: () async {
+                                                if (valueOrDefault(
+                                                        currentUserDocument
+                                                            ?.role,
+                                                        '') ==
+                                                    'admin') {
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    enableDrag: false,
+                                                    useSafeArea: true,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return GestureDetector(
+                                                        onTap: () => _model
+                                                                .unfocusNode
+                                                                .canRequestFocus
+                                                            ? FocusScope.of(
+                                                                    context)
+                                                                .requestFocus(_model
+                                                                    .unfocusNode)
+                                                            : FocusScope.of(
+                                                                    context)
+                                                                .unfocus(),
+                                                        child: Padding(
+                                                          padding: MediaQuery
+                                                              .viewInsetsOf(
+                                                                  context),
+                                                          child: const SizedBox(
+                                                            height:
+                                                                double.infinity,
+                                                            child:
+                                                                ExtraRemittanceWidget(),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      safeSetState(() {}));
+                                                }
+                                              },
+                                              onLongPress: () async {
+                                                if (valueOrDefault(
+                                                        currentUserDocument
+                                                            ?.role,
+                                                        '') ==
+                                                    'admin') {
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    enableDrag: false,
+                                                    useSafeArea: true,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return GestureDetector(
+                                                        onTap: () => _model
+                                                                .unfocusNode
+                                                                .canRequestFocus
+                                                            ? FocusScope.of(
+                                                                    context)
+                                                                .requestFocus(_model
+                                                                    .unfocusNode)
+                                                            : FocusScope.of(
+                                                                    context)
+                                                                .unfocus(),
+                                                        child: Padding(
+                                                          padding: MediaQuery
+                                                              .viewInsetsOf(
+                                                                  context),
+                                                          child: const SizedBox(
+                                                            height:
+                                                                double.infinity,
+                                                            child:
+                                                                ExtraRemittanceWidget(),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      safeSetState(() {}));
+                                                }
+                                              },
+                                              child: AutoSizeText(
+                                                formatNumber(
+                                                  functions.totalToRemit(
+                                                      salesTodayTransactionsRecordList
+                                                          .toList()),
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.automatic,
+                                                  currency: 'P ',
+                                                ),
+                                                maxLines: 1,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .displaySmall
+                                                        .override(
+                                                          fontFamily: 'Outfit',
+                                                          color:
+                                                              const Color(0xFF14181B),
+                                                          fontSize: 36.0,
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                minFontSize: 24.0,
+                                              ),
+                                            ).animateOnActionTrigger(
+                                                animationsMap[
+                                                    'textOnActionTriggerAnimation1']!,
+                                                hasBeenTriggered:
+                                                    hasTextTriggered1);
+                                          },
+                                        ),
+                                      ),
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 4.0, 0.0, 0.0),
+                                      child: Text(
+                                        dateTimeFormat(
+                                            'yMMMd', getCurrentTimestamp),
+                                        textAlign: TextAlign.start,
+                                        maxLines: 1,
+                                        style: FlutterFlowTheme.of(context)
+                                            .labelSmall
+                                            .override(
+                                              fontFamily: 'Plus Jakarta Sans',
+                                              color: const Color(0xFF57636C),
+                                              fontSize: 12.0,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ).animateOnPageLoad(animationsMap[
+                                    'columnOnPageLoadAnimation1']!),
+                              ),
                               Column(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1603,6 +1613,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         letterSpacing: 0.0,
                                                       ),
                                             ),
+                                            maxLines: 1,
                                           ),
                                           Text(
                                             dateTimeFormat(
@@ -1961,7 +1972,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           width: double.infinity,
                           height: 120.0,
                           constraints: const BoxConstraints(
-                            maxHeight: 140.0,
+                            maxHeight: 160.0,
                           ),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
@@ -1984,6 +1995,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       0,
                                     ),
                                     primary: false,
+                                    shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
                                     children: [
                                       Builder(
@@ -2122,11 +2134,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Text(
+                                                        AutoSizeText(
                                                           checkinStatsRoomsRecordList
                                                               .length
                                                               .toString(),
@@ -2140,6 +2155,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 letterSpacing:
                                                                     0.0,
                                                               ),
+                                                          minFontSize: 10.0,
                                                         ).animateOnActionTrigger(
                                                             animationsMap[
                                                                 'textOnActionTriggerAnimation3']!,
@@ -2153,8 +2169,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       4.0,
                                                                       0.0,
                                                                       0.0),
-                                                          child: Text(
+                                                          child: AutoSizeText(
                                                             'Occupancy',
+                                                            maxLines: 1,
                                                             style: FlutterFlowTheme
                                                                     .of(context)
                                                                 .labelMedium
@@ -2164,6 +2181,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
+                                                            minFontSize: 10.0,
                                                           ),
                                                         ),
                                                       ],
@@ -2214,6 +2232,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               padding: const EdgeInsets.all(12.0),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
@@ -2268,7 +2288,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       }
                                                       int transactionsCountCount =
                                                           snapshot.data!;
-                                                      return Text(
+                                                      return AutoSizeText(
                                                         transactionsCountCount
                                                             .toString(),
                                                         maxLines: 1,
@@ -2285,6 +2305,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
+                                                        minFontSize: 10.0,
                                                       ).animateOnActionTrigger(
                                                           animationsMap[
                                                               'textOnActionTriggerAnimation4']!,
@@ -2297,8 +2318,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 4.0,
                                                                 0.0, 0.0),
-                                                    child: Text(
+                                                    child: AutoSizeText(
                                                       'Transactions',
+                                                      maxLines: 1,
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .labelMedium
@@ -2307,6 +2329,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 'Readex Pro',
                                                             letterSpacing: 0.0,
                                                           ),
+                                                      minFontSize: 10.0,
                                                     ),
                                                   ),
                                                 ],
@@ -2320,7 +2343,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             0.0, 0.0, 8.0, 8.0),
                                         child: StreamBuilder<
                                             List<TransactionsRecord>>(
-                                          stream: _model.pendingBadge(
+                                          stream: FFAppState().pendingBadge(
                                             uniqueQueryKey: FFAppState().hotel,
                                             requestFn: () =>
                                                 queryTransactionsRecord(
@@ -2372,8 +2395,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 context.pushNamed('Pendings');
                                               },
                                               onDoubleTap: () async {
-                                                _model
-                                                    .clearPendingCountsCache();
+                                                FFAppState()
+                                                    .clearPendingBadgeCacheKey(
+                                                        FFAppState().hotel);
+                                                FFAppState()
+                                                    .clearPendingsCountCacheKey(
+                                                        FFAppState().hotel);
                                               },
                                               child: Container(
                                                 width: 130.0,
@@ -2394,162 +2421,167 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Expanded(
-                                                        child: Align(
-                                                          alignment:
-                                                              const AlignmentDirectional(
-                                                                  -1.0, 0.0),
-                                                          child: badges.Badge(
-                                                            badgeContent: Text(
-                                                              functions
+                                                      Align(
+                                                        alignment:
+                                                            const AlignmentDirectional(
+                                                                -1.0, 0.0),
+                                                        child: badges.Badge(
+                                                          badgeContent: Text(
+                                                            functions
+                                                                .pendingsLastTwentyFourHours(
+                                                                    pendingsStatsTransactionsRecordList
+                                                                        .toList())
+                                                                .toString(),
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .titleSmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  color: Colors
+                                                                      .white,
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
+                                                          ),
+                                                          showBadge: functions
                                                                   .pendingsLastTwentyFourHours(
                                                                       pendingsStatsTransactionsRecordList
-                                                                          .toList())
-                                                                  .toString(),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .start,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .titleSmall
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: Colors
-                                                                        .white,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
-                                                            showBadge: functions
-                                                                    .pendingsLastTwentyFourHours(
-                                                                        pendingsStatsTransactionsRecordList
-                                                                            .toList()) >
-                                                                0,
-                                                            shape: badges
-                                                                .BadgeShape
-                                                                .circle,
-                                                            badgeColor:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .error,
-                                                            elevation: 4.0,
-                                                            padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        8.0,
-                                                                        8.0,
-                                                                        8.0,
-                                                                        8.0),
-                                                            position: badges
-                                                                    .BadgePosition
-                                                                .topEnd(),
-                                                            animationType: badges
-                                                                .BadgeAnimationType
-                                                                .scale,
-                                                            toAnimate: false,
-                                                            child:
-                                                                FutureBuilder<
-                                                                    int>(
-                                                              future: _model
-                                                                  .pendingCounts(
-                                                                uniqueQueryKey:
-                                                                    FFAppState()
-                                                                        .hotel,
-                                                                requestFn: () =>
-                                                                    queryTransactionsRecordCount(
-                                                                  queryBuilder: (transactionsRecord) =>
-                                                                      transactionsRecord
-                                                                          .where(
-                                                                            'hotel',
-                                                                            isEqualTo:
-                                                                                FFAppState().hotel,
-                                                                          )
-                                                                          .where(
-                                                                            'pending',
-                                                                            isEqualTo:
-                                                                                true,
-                                                                          ),
-                                                                ),
+                                                                          .toList()) >
+                                                              0,
+                                                          shape: badges
+                                                              .BadgeShape
+                                                              .circle,
+                                                          badgeColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .error,
+                                                          elevation: 4.0,
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      8.0,
+                                                                      8.0,
+                                                                      8.0,
+                                                                      8.0),
+                                                          position: badges
+                                                                  .BadgePosition
+                                                              .topEnd(),
+                                                          animationType: badges
+                                                              .BadgeAnimationType
+                                                              .scale,
+                                                          toAnimate: false,
+                                                          child: FutureBuilder<
+                                                              int>(
+                                                            future: FFAppState()
+                                                                .pendingsCount(
+                                                              uniqueQueryKey:
+                                                                  FFAppState()
+                                                                      .hotel,
+                                                              requestFn: () =>
+                                                                  queryTransactionsRecordCount(
+                                                                queryBuilder:
+                                                                    (transactionsRecord) =>
+                                                                        transactionsRecord
+                                                                            .where(
+                                                                              'hotel',
+                                                                              isEqualTo: FFAppState().hotel,
+                                                                            )
+                                                                            .where(
+                                                                              'pending',
+                                                                              isEqualTo: true,
+                                                                            ),
                                                               ),
-                                                              builder: (context,
-                                                                  snapshot) {
-                                                                // Customize what your widget looks like when it's loading.
-                                                                if (!snapshot
-                                                                    .hasData) {
-                                                                  return Center(
+                                                            ),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              // Customize what your widget looks like when it's loading.
+                                                              if (!snapshot
+                                                                  .hasData) {
+                                                                return Center(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    width: 50.0,
+                                                                    height:
+                                                                        50.0,
                                                                     child:
-                                                                        SizedBox(
-                                                                      width:
-                                                                          50.0,
-                                                                      height:
-                                                                          50.0,
-                                                                      child:
-                                                                          CircularProgressIndicator(
-                                                                        valueColor:
-                                                                            AlwaysStoppedAnimation<Color>(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .primary,
-                                                                        ),
+                                                                        CircularProgressIndicator(
+                                                                      valueColor:
+                                                                          AlwaysStoppedAnimation<
+                                                                              Color>(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .primary,
                                                                       ),
                                                                     ),
-                                                                  );
-                                                                }
-                                                                int pendingsCountCount =
-                                                                    snapshot
-                                                                        .data!;
-                                                                return Text(
-                                                                  '${pendingsCountCount.toString()}  '
-                                                                      .maybeHandleOverflow(
-                                                                          maxChars:
-                                                                              3),
-                                                                  maxLines: 1,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .displaySmall
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Outfit',
-                                                                        color: const Color(
-                                                                            0xFFFD949C),
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                      ),
-                                                                ).animateOnActionTrigger(
-                                                                    animationsMap[
-                                                                        'textOnActionTriggerAnimation5']!,
-                                                                    hasBeenTriggered:
-                                                                        hasTextTriggered5);
-                                                              },
-                                                            ),
-                                                          ).animateOnPageLoad(
-                                                              animationsMap[
-                                                                  'badgeOnPageLoadAnimation']!),
-                                                        ),
+                                                                  ),
+                                                                );
+                                                              }
+                                                              int pendingsCountCount =
+                                                                  snapshot
+                                                                      .data!;
+                                                              return AutoSizeText(
+                                                                '${pendingsCountCount.toString()}  '
+                                                                    .maybeHandleOverflow(
+                                                                        maxChars:
+                                                                            3),
+                                                                maxLines: 1,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .displaySmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: const Color(
+                                                                          0xFFFD949C),
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
+                                                                minFontSize:
+                                                                    10.0,
+                                                              ).animateOnActionTrigger(
+                                                                  animationsMap[
+                                                                      'textOnActionTriggerAnimation5']!,
+                                                                  hasBeenTriggered:
+                                                                      hasTextTriggered5);
+                                                            },
+                                                          ),
+                                                        ).animateOnPageLoad(
+                                                            animationsMap[
+                                                                'badgeOnPageLoadAnimation']!),
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    4.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          'Pendings',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .labelMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
+                                                      Align(
+                                                        alignment:
+                                                            const AlignmentDirectional(
+                                                                -1.0, -1.0),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      4.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: Text(
+                                                            'Pendings',
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .labelMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ],
@@ -2584,94 +2616,107 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 width: 2.0,
                                               ),
                                             ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(12.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  FutureBuilder<int>(
-                                                    future: FFAppState()
-                                                        .replenishCount(
-                                                      requestFn: () =>
-                                                          queryGoodsRecordCount(
-                                                        queryBuilder:
-                                                            (goodsRecord) =>
-                                                                goodsRecord
-                                                                    .where(
-                                                                      'replenish',
-                                                                      isEqualTo:
-                                                                          true,
-                                                                    )
-                                                                    .where(
-                                                                      'hotel',
-                                                                      isEqualTo:
-                                                                          FFAppState()
-                                                                              .hotel,
-                                                                    ),
+                                            child: Align(
+                                              alignment: const AlignmentDirectional(
+                                                  0.0, 0.0),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(12.0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    FutureBuilder<int>(
+                                                      future: FFAppState()
+                                                          .replenishCount(
+                                                        requestFn: () =>
+                                                            queryGoodsRecordCount(
+                                                          queryBuilder:
+                                                              (goodsRecord) =>
+                                                                  goodsRecord
+                                                                      .where(
+                                                                        'replenish',
+                                                                        isEqualTo:
+                                                                            true,
+                                                                      )
+                                                                      .where(
+                                                                        'hotel',
+                                                                        isEqualTo:
+                                                                            FFAppState().hotel,
+                                                                      ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      // Customize what your widget looks like when it's loading.
-                                                      if (!snapshot.hasData) {
-                                                        return Center(
-                                                          child: SizedBox(
-                                                            width: 50.0,
-                                                            height: 50.0,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              valueColor:
-                                                                  AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        // Customize what your widget looks like when it's loading.
+                                                        if (!snapshot.hasData) {
+                                                          return Center(
+                                                            child: SizedBox(
+                                                              width: 50.0,
+                                                              height: 50.0,
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                valueColor:
+                                                                    AlwaysStoppedAnimation<
+                                                                        Color>(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
+                                                          );
+                                                        }
+                                                        int textCount =
+                                                            snapshot.data!;
+                                                        return AutoSizeText(
+                                                          textCount.toString(),
+                                                          maxLines: 1,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .displaySmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Outfit',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .tertiary,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                          minFontSize: 10.0,
                                                         );
-                                                      }
-                                                      int textCount =
-                                                          snapshot.data!;
-                                                      return Text(
-                                                        textCount.toString(),
+                                                      },
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  4.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: AutoSizeText(
+                                                        'To Replenish',
                                                         maxLines: 1,
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .displaySmall
+                                                                .labelMedium
                                                                 .override(
                                                                   fontFamily:
-                                                                      'Outfit',
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .tertiary,
+                                                                      'Readex Pro',
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
-                                                      );
-                                                    },
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 4.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      'To Replenish',
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .labelMedium
-                                                          .override(
-                                                            fontFamily:
-                                                                'Readex Pro',
-                                                            letterSpacing: 0.0,
-                                                          ),
+                                                        minFontSize: 10.0,
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -2696,6 +2741,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             padding: const EdgeInsets.all(12.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
@@ -2743,7 +2790,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     }
                                                     int textCount =
                                                         snapshot.data!;
-                                                    return Text(
+                                                    return AutoSizeText(
                                                       textCount.toString(),
                                                       maxLines: 1,
                                                       style:
@@ -2759,6 +2806,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 letterSpacing:
                                                                     0.0,
                                                               ),
+                                                      minFontSize: 10.0,
                                                     );
                                                   },
                                                 ),
@@ -2824,7 +2872,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   snapshot.data!;
                               return Container(
                                 width: double.infinity,
-                                height: 230.0,
+                                constraints: const BoxConstraints(
+                                  minHeight: 230.0,
+                                  maxHeight: 260.0,
+                                ),
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF4B39EF),
                                   borderRadius: BorderRadius.circular(0.0),
@@ -2988,7 +3039,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                       ],
                                     ),
-                                    Expanded(
+                                    Flexible(
                                       child: Builder(
                                         builder: (context) {
                                           final rooms =
@@ -3161,174 +3212,163 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               ),
                                                             ],
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        20.0,
-                                                                        0.0,
-                                                                        0.0),
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Expanded(
-                                                                  flex: 8,
-                                                                  child:
-                                                                      AutoSizeText(
-                                                                    homePageHotelSettingsRecord!
-                                                                            .promoOn
-                                                                        ? formatNumber(
-                                                                            roomsItem.price -
-                                                                                (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100),
-                                                                            formatType:
-                                                                                FormatType.decimal,
-                                                                            decimalType:
-                                                                                DecimalType.automatic,
-                                                                            currency:
-                                                                                'P ',
-                                                                          )
-                                                                        : formatNumber(
-                                                                            roomsItem.price,
-                                                                            formatType:
-                                                                                FormatType.decimal,
-                                                                            decimalType:
-                                                                                DecimalType.automatic,
-                                                                            currency:
-                                                                                'P ',
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          20.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                              child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Expanded(
+                                                                    flex: 8,
+                                                                    child:
+                                                                        AutoSizeText(
+                                                                      homePageHotelSettingsRecord!
+                                                                              .promoOn
+                                                                          ? formatNumber(
+                                                                              roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100),
+                                                                              formatType: FormatType.decimal,
+                                                                              decimalType: DecimalType.automatic,
+                                                                              currency: 'P ',
+                                                                            )
+                                                                          : formatNumber(
+                                                                              roomsItem.price,
+                                                                              formatType: FormatType.decimal,
+                                                                              decimalType: DecimalType.automatic,
+                                                                              currency: 'P ',
+                                                                            ),
+                                                                      maxLines:
+                                                                          1,
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .displaySmall
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                const Color(0xFF14181B),
+                                                                            fontSize:
+                                                                                36.0,
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
                                                                           ),
-                                                                    maxLines: 1,
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .displaySmall
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              const Color(0xFF14181B),
-                                                                          fontSize:
-                                                                              36.0,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
-                                                                        ),
-                                                                    minFontSize:
-                                                                        30.0,
-                                                                  ),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 3,
-                                                                  child:
-                                                                      FlutterFlowIconButton(
-                                                                    borderColor:
-                                                                        const Color(
-                                                                            0xFFF1F4F8),
-                                                                    borderRadius:
-                                                                        30.0,
-                                                                    borderWidth:
-                                                                        2.0,
-                                                                    buttonSize:
-                                                                        44.0,
-                                                                    icon: const Icon(
-                                                                      Icons
-                                                                          .arrow_forward_rounded,
-                                                                      color: Color(
-                                                                          0xFF57636C),
-                                                                      size:
+                                                                      minFontSize:
                                                                           24.0,
                                                                     ),
-                                                                    onPressed:
-                                                                        () async {
-                                                                      if (roomsItem
-                                                                              .vacant ==
-                                                                          true) {
-                                                                        context
-                                                                            .pushNamed(
-                                                                          'CheckIn',
-                                                                          queryParameters:
-                                                                              {
-                                                                            'ref': serializeParam(
-                                                                              roomsItem.reference,
-                                                                              ParamType.DocumentReference,
-                                                                            ),
-                                                                            'price': serializeParam(
-                                                                              homePageHotelSettingsRecord.promoOn ? (roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)) : roomsItem.price,
-                                                                              ParamType.double,
-                                                                            ),
-                                                                            'roomNo': serializeParam(
-                                                                              roomsItem.number,
-                                                                              ParamType.int,
-                                                                            ),
-                                                                            'extend': serializeParam(
-                                                                              false,
-                                                                              ParamType.bool,
-                                                                            ),
-                                                                            'promoOn': serializeParam(
-                                                                              homePageHotelSettingsRecord.promoOn,
-                                                                              ParamType.bool,
-                                                                            ),
-                                                                            'promoDetail': serializeParam(
-                                                                              homePageHotelSettingsRecord.promoDetail,
-                                                                              ParamType.String,
-                                                                            ),
-                                                                            'promoDiscount': serializeParam(
-                                                                              homePageHotelSettingsRecord.promoPercent,
-                                                                              ParamType.double,
-                                                                            ),
-                                                                          }.withoutNulls,
-                                                                          extra: <String,
-                                                                              dynamic>{
-                                                                            kTransitionInfoKey: const TransitionInfo(
-                                                                              hasTransition: true,
-                                                                              transitionType: PageTransitionType.rightToLeft,
-                                                                            ),
-                                                                          },
-                                                                        );
-                                                                                                                                            } else {
-                                                                        context
-                                                                            .pushNamed(
-                                                                          'CheckedIn',
-                                                                          queryParameters:
-                                                                              {
-                                                                            'ref':
-                                                                                serializeParam(
-                                                                              roomsItem.reference,
-                                                                              ParamType.DocumentReference,
-                                                                            ),
-                                                                            'booking':
-                                                                                serializeParam(
-                                                                              roomsItem.currentBooking,
-                                                                              ParamType.DocumentReference,
-                                                                            ),
-                                                                            'roomNo':
-                                                                                serializeParam(
-                                                                              roomsItem.number,
-                                                                              ParamType.int,
-                                                                            ),
-                                                                          }.withoutNulls,
-                                                                          extra: <String,
-                                                                              dynamic>{
-                                                                            kTransitionInfoKey:
-                                                                                const TransitionInfo(
-                                                                              hasTransition: true,
-                                                                              transitionType: PageTransitionType.rightToLeft,
-                                                                            ),
-                                                                          },
-                                                                        );
-                                                                      }
-                                                                    },
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                  Expanded(
+                                                                    flex: 3,
+                                                                    child:
+                                                                        FlutterFlowIconButton(
+                                                                      borderColor:
+                                                                          const Color(
+                                                                              0xFFF1F4F8),
+                                                                      borderRadius:
+                                                                          30.0,
+                                                                      borderWidth:
+                                                                          2.0,
+                                                                      buttonSize:
+                                                                          44.0,
+                                                                      icon:
+                                                                          const Icon(
+                                                                        Icons
+                                                                            .arrow_forward_rounded,
+                                                                        color: Color(
+                                                                            0xFF57636C),
+                                                                        size:
+                                                                            24.0,
+                                                                      ),
+                                                                      onPressed:
+                                                                          () async {
+                                                                        if (roomsItem.vacant ==
+                                                                            true) {
+                                                                          context.pushNamed(
+                                                                            'CheckIn',
+                                                                            queryParameters: {
+                                                                              'ref': serializeParam(
+                                                                                roomsItem.reference,
+                                                                                ParamType.DocumentReference,
+                                                                              ),
+                                                                              'price': serializeParam(
+                                                                                homePageHotelSettingsRecord.promoOn ? (roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)) : roomsItem.price,
+                                                                                ParamType.double,
+                                                                              ),
+                                                                              'roomNo': serializeParam(
+                                                                                roomsItem.number,
+                                                                                ParamType.int,
+                                                                              ),
+                                                                              'extend': serializeParam(
+                                                                                false,
+                                                                                ParamType.bool,
+                                                                              ),
+                                                                              'promoOn': serializeParam(
+                                                                                homePageHotelSettingsRecord.promoOn,
+                                                                                ParamType.bool,
+                                                                              ),
+                                                                              'promoDetail': serializeParam(
+                                                                                homePageHotelSettingsRecord.promoDetail,
+                                                                                ParamType.String,
+                                                                              ),
+                                                                              'promoDiscount': serializeParam(
+                                                                                homePageHotelSettingsRecord.promoPercent,
+                                                                                ParamType.double,
+                                                                              ),
+                                                                            }.withoutNulls,
+                                                                            extra: <String, dynamic>{
+                                                                              kTransitionInfoKey: const TransitionInfo(
+                                                                                hasTransition: true,
+                                                                                transitionType: PageTransitionType.rightToLeft,
+                                                                              ),
+                                                                            },
+                                                                          );
+                                                                                                                                                } else {
+                                                                          context
+                                                                              .pushNamed(
+                                                                            'CheckedIn',
+                                                                            queryParameters:
+                                                                                {
+                                                                              'ref': serializeParam(
+                                                                                roomsItem.reference,
+                                                                                ParamType.DocumentReference,
+                                                                              ),
+                                                                              'booking': serializeParam(
+                                                                                roomsItem.currentBooking,
+                                                                                ParamType.DocumentReference,
+                                                                              ),
+                                                                              'roomNo': serializeParam(
+                                                                                roomsItem.number,
+                                                                                ParamType.int,
+                                                                              ),
+                                                                            }.withoutNulls,
+                                                                            extra: <String,
+                                                                                dynamic>{
+                                                                              kTransitionInfoKey: const TransitionInfo(
+                                                                                hasTransition: true,
+                                                                                transitionType: PageTransitionType.rightToLeft,
+                                                                              ),
+                                                                            },
+                                                                          );
+                                                                        }
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ),
                                                           Padding(

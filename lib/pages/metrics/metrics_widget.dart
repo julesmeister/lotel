@@ -523,8 +523,9 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           padding:
                                               const EdgeInsetsDirectional.fromSTEB(
                                                   4.0, 0.0, 0.0, 0.0),
-                                          child: Text(
+                                          child: AutoSizeText(
                                             'Serenity',
+                                            maxLines: 1,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -534,6 +535,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       .primaryText,
                                                   letterSpacing: 0.0,
                                                 ),
+                                            minFontSize: 10.0,
                                           ),
                                         ),
                                       ],
@@ -610,8 +612,9 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           padding:
                                               const EdgeInsetsDirectional.fromSTEB(
                                                   4.0, 0.0, 0.0, 0.0),
-                                          child: Text(
+                                          child: AutoSizeText(
                                             'My Lifestyle',
+                                            maxLines: 1,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -621,6 +624,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       .primaryText,
                                                   letterSpacing: 0.0,
                                                 ),
+                                            minFontSize: 10.0,
                                           ),
                                         ),
                                       ],
@@ -1019,7 +1023,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
+                                            AutoSizeText(
                                               formatNumber(
                                                 _model.rooms,
                                                 formatType: FormatType.decimal,
@@ -1027,6 +1031,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     DecimalType.automatic,
                                                 currency: 'P ',
                                               ),
+                                              maxLines: 1,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -1039,9 +1044,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
+                                              minFontSize: 18.0,
                                             ),
-                                            Text(
+                                            AutoSizeText(
                                               'Rooms Income',
+                                              maxLines: 1,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .titleSmall
@@ -1049,15 +1056,16 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     fontFamily: 'Readex Pro',
                                                     color: Colors.white,
                                                     fontSize: 14.0,
-                                                    letterSpacing: 0.0,
+                                                    letterSpacing: 1.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
+                                              minFontSize: 10.0,
                                             ),
                                             Padding(
                                               padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       0.0, 10.0, 0.0, 0.0),
-                                              child: Text(
+                                              child: AutoSizeText(
                                                 formatNumber(
                                                   functions.avgYData(_model
                                                       .roomLine!.yData
@@ -1068,6 +1076,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       DecimalType.automatic,
                                                   currency: 'P ',
                                                 ),
+                                                maxLines: 1,
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .titleMedium
@@ -1080,6 +1089,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
+                                                minFontSize: 18.0,
                                               ),
                                             ),
                                             AutoSizeText(
@@ -1401,7 +1411,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
+                                            AutoSizeText(
                                               formatNumber(
                                                 _model.expenses,
                                                 formatType: FormatType.decimal,
@@ -1409,6 +1419,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     DecimalType.automatic,
                                                 currency: 'P ',
                                               ),
+                                              maxLines: 1,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -1421,6 +1432,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
+                                              minFontSize: 18.0,
                                             ),
                                             Text(
                                               'Expenses',
@@ -1684,7 +1696,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
+                                            AutoSizeText(
                                               formatNumber(
                                                 _model.bills,
                                                 formatType: FormatType.decimal,
@@ -1692,6 +1704,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     DecimalType.automatic,
                                                 currency: 'P ',
                                               ),
+                                              maxLines: 1,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -1704,6 +1717,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
+                                              minFontSize: 18.0,
                                             ),
                                             Text(
                                               'Bills',
@@ -2030,7 +2044,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
+                                            AutoSizeText(
                                               formatNumber(
                                                 _model.goods,
                                                 formatType: FormatType.decimal,
@@ -2038,6 +2052,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     DecimalType.automatic,
                                                 currency: 'P ',
                                               ),
+                                              maxLines: 1,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -2050,9 +2065,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
+                                              minFontSize: 18.0,
                                             ),
-                                            Text(
+                                            AutoSizeText(
                                               'Goods Income',
+                                              maxLines: 1,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .titleSmall
@@ -2063,12 +2080,13 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
+                                              minFontSize: 10.0,
                                             ),
                                             Padding(
                                               padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       0.0, 10.0, 0.0, 0.0),
-                                              child: Text(
+                                              child: AutoSizeText(
                                                 formatNumber(
                                                   functions.avgYData(_model
                                                       .goodsLine!.yData
@@ -2079,6 +2097,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       DecimalType.automatic,
                                                   currency: 'P ',
                                                 ),
+                                                maxLines: 1,
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .titleMedium
@@ -2091,6 +2110,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
+                                                minFontSize: 18.0,
                                               ),
                                             ),
                                             AutoSizeText(
@@ -2299,7 +2319,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
+                                            AutoSizeText(
                                               formatNumber(
                                                 _model.salaries,
                                                 formatType: FormatType.decimal,
@@ -2307,6 +2327,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     DecimalType.automatic,
                                                 currency: 'P ',
                                               ),
+                                              maxLines: 1,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -2319,6 +2340,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
+                                              minFontSize: 18.0,
                                             ),
                                             Text(
                                               'Salaries',
@@ -2483,7 +2505,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
+                                          AutoSizeText(
                                             formatNumber(
                                               _model.rooms +
                                                   _model.goods -
@@ -2495,6 +2517,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   DecimalType.automatic,
                                               currency: 'P ',
                                             ),
+                                            maxLines: 1,
                                             style: FlutterFlowTheme.of(context)
                                                 .titleMedium
                                                 .override(
@@ -2504,6 +2527,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   letterSpacing: 0.0,
                                                   fontWeight: FontWeight.normal,
                                                 ),
+                                            minFontSize: 18.0,
                                           ),
                                           Text(
                                             'Net',

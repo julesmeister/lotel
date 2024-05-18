@@ -521,6 +521,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             16.0, 16.0, 16.0, 20.0),
                                         child: FFButtonWidget(
                                           onPressed: () async {
+                                            var shouldSetState = false;
                                             var confirmDialogResponse =
                                                 await showDialog<bool>(
                                                       context: context,
@@ -558,42 +559,49 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               setState(() {
                                                 _model.isLoading = true;
                                               });
-                                              // unremitted transactions
-                                              _model.transactions =
-                                                  await queryTransactionsRecordOnce(
-                                                queryBuilder:
-                                                    (transactionsRecord) =>
-                                                        transactionsRecord
-                                                            .where(
-                                                              'remitted',
-                                                              isEqualTo: false,
-                                                            )
-                                                            .where(
-                                                              'hotel',
-                                                              isEqualTo:
-                                                                  FFAppState()
-                                                                      .hotel,
-                                                            )
-                                                            .where(
-                                                              'pending',
-                                                              isEqualTo: false,
-                                                            ),
-                                              );
-                                              // all Unremitted Transactions
-                                              setState(() {
-                                                _model.allUnremittedTransactions =
-                                                    _model.transactions!
-                                                        .toList()
-                                                        .cast<
-                                                            TransactionsRecord>();
-                                              });
-                                              if (_model.transactions.isNotEmpty) {
-                                                // unremitted inventories of this hotel
-                                                _model.inventoriesToRemitFirestore =
-                                                    await queryInventoriesRecordOnce(
+                                              if ((_model.toRemitAmount !=
+                                                      (double.parse(_model
+                                                          .amountTextController
+                                                          .text))) &&
+                                                  (_model.changeExtraTextController
+                                                          .text ==
+                                                      '0')) {
+                                                // Wait for change
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'Wait for change to reflect!',
+                                                      style: TextStyle(
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryBackground,
+                                                      ),
+                                                    ),
+                                                    duration: const Duration(
+                                                        milliseconds: 4000),
+                                                    backgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .error,
+                                                  ),
+                                                );
+                                                if (shouldSetState) {
+                                                  setState(() {});
+                                                }
+                                                return;
+                                              } else {
+                                                // unremitted transactions
+                                                _model.transactions =
+                                                    await queryTransactionsRecordOnce(
                                                   queryBuilder:
-                                                      (inventoriesRecord) =>
-                                                          inventoriesRecord
+                                                      (transactionsRecord) =>
+                                                          transactionsRecord
+                                                              .where(
+                                                                'remitted',
+                                                                isEqualTo:
+                                                                    false,
+                                                              )
                                                               .where(
                                                                 'hotel',
                                                                 isEqualTo:
@@ -601,82 +609,136 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                         .hotel,
                                                               )
                                                               .where(
-                                                                'remitted',
+                                                                'pending',
                                                                 isEqualTo:
                                                                     false,
                                                               ),
                                                 );
-                                                // reset loop variables
+                                                shouldSetState = true;
+                                                // all Unremitted Transactions
                                                 setState(() {
-                                                  _model.loopTransactionsCounter =
-                                                      0;
-                                                  _model.transactionsToRemit =
-                                                      [];
-                                                  _model.loopInventoryCounter =
-                                                      0;
-                                                  _model.inventoriesToRemit =
-                                                      [];
-                                                  _model.bookingsToRemit = [];
+                                                  _model.allUnremittedTransactions =
+                                                      _model.transactions!
+                                                          .toList()
+                                                          .cast<
+                                                              TransactionsRecord>();
                                                 });
-                                                while (_model
-                                                        .loopTransactionsCounter !=
-                                                    _model
-                                                        .allUnremittedTransactions
-                                                        .length) {
-                                                  // Add to TransactionToRemit
+                                                if (_model
+                                                        .transactions.isNotEmpty) {
+                                                  // unremitted inventories of this hotel
+                                                  _model.inventoriesToRemitFirestore =
+                                                      await queryInventoriesRecordOnce(
+                                                    queryBuilder:
+                                                        (inventoriesRecord) =>
+                                                            inventoriesRecord
+                                                                .where(
+                                                                  'hotel',
+                                                                  isEqualTo:
+                                                                      FFAppState()
+                                                                          .hotel,
+                                                                )
+                                                                .where(
+                                                                  'remitted',
+                                                                  isEqualTo:
+                                                                      false,
+                                                                ),
+                                                  );
+                                                  shouldSetState = true;
+                                                  // reset loop variables
                                                   setState(() {
-                                                    _model.addToTransactionsToRemit(
-                                                        _model.allUnremittedTransactions[
-                                                            _model
-                                                                .loopTransactionsCounter]);
+                                                    _model.loopTransactionsCounter =
+                                                        0;
+                                                    _model.transactionsToRemit =
+                                                        [];
+                                                    _model.loopInventoryCounter =
+                                                        0;
+                                                    _model.inventoriesToRemit =
+                                                        [];
+                                                    _model.bookingsToRemit = [];
                                                   });
-                                                  if (_model
-                                                          .allUnremittedTransactions[
-                                                              _model
-                                                                  .loopTransactionsCounter]
-                                                          .type ==
-                                                      'book') {
-                                                    // book to remit add to queue
-                                                    setState(() {
-                                                      _model.addToBookingsToRemit(_model
-                                                          .allUnremittedTransactions[
-                                                              _model
-                                                                  .loopTransactionsCounter]
-                                                          .booking!);
-                                                    });
-                                                    // update use of room local
-                                                    setState(() {
+                                                  while (_model
+                                                          .loopTransactionsCounter !=
                                                       _model
-                                                          .updateRoomUsageAtIndex(
-                                                        functions.indexOfRoomInRoomUsage(
-                                                            _model.roomUsage
-                                                                .toList(),
-                                                            _model
-                                                                .allUnremittedTransactions[
-                                                                    _model
-                                                                        .loopTransactionsCounter]
-                                                                .room),
-                                                        (e) =>
-                                                            e..incrementUse(1),
-                                                      );
-                                                    });
-                                                    // what's happening
+                                                          .allUnremittedTransactions
+                                                          .length) {
+                                                    // Add to TransactionToRemit
                                                     setState(() {
-                                                      _model.happening =
-                                                          'Remitting room ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].room.toString()}\'s transaction';
+                                                      _model.addToTransactionsToRemit(
+                                                          _model.allUnremittedTransactions[
+                                                              _model
+                                                                  .loopTransactionsCounter]);
                                                     });
-                                                  } else {
-                                                    // what's happening
-                                                    setState(() {
-                                                      _model.happening =
-                                                          'Remitting ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].type}';
-                                                    });
-                                                  }
+                                                    if (_model
+                                                            .allUnremittedTransactions[
+                                                                _model
+                                                                    .loopTransactionsCounter]
+                                                            .type ==
+                                                        'book') {
+                                                      // book to remit add to queue
+                                                      setState(() {
+                                                        _model.addToBookingsToRemit(_model
+                                                            .allUnremittedTransactions[
+                                                                _model
+                                                                    .loopTransactionsCounter]
+                                                            .booking!);
+                                                      });
+                                                      // update use of room local
+                                                      setState(() {
+                                                        _model
+                                                            .updateRoomUsageAtIndex(
+                                                          functions.indexOfRoomInRoomUsage(
+                                                              _model.roomUsage
+                                                                  .toList(),
+                                                              _model
+                                                                  .allUnremittedTransactions[
+                                                                      _model
+                                                                          .loopTransactionsCounter]
+                                                                  .room),
+                                                          (e) => e
+                                                            ..incrementUse(1),
+                                                        );
+                                                      });
+                                                      // what's happening
+                                                      setState(() {
+                                                        _model.happening =
+                                                            'Remitting room ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].room.toString()}\'s transaction';
+                                                      });
+                                                    } else {
+                                                      // what's happening
+                                                      setState(() {
+                                                        _model.happening =
+                                                            'Remitting ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].type}';
+                                                      });
+                                                    }
 
-                                                  if (_model
-                                                          .loopTransactionsCounter ==
-                                                      0) {
-                                                    // create field of failed
+                                                    if (_model
+                                                            .loopTransactionsCounter ==
+                                                        0) {
+                                                      // create field of failed
+
+                                                      await FFAppState()
+                                                          .settingRef!
+                                                          .update({
+                                                        ...mapToFirestore(
+                                                          {
+                                                            'failedToRemitTransactions':
+                                                                _model
+                                                                    .failedToRemitTransactions,
+                                                          },
+                                                        ),
+                                                      });
+                                                    }
+                                                    // remitted true including change transactions
+
+                                                    await _model
+                                                        .transactionsToRemit[_model
+                                                            .loopTransactionsCounter]
+                                                        .reference
+                                                        .update(
+                                                            createTransactionsRecordData(
+                                                      remitted: true,
+                                                    ));
+                                                    // append to failed list
 
                                                     await FFAppState()
                                                         .settingRef!
@@ -684,177 +746,137 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       ...mapToFirestore(
                                                         {
                                                           'failedToRemitTransactions':
-                                                              _model
-                                                                  .failedToRemitTransactions,
+                                                              FieldValue
+                                                                  .arrayUnion([
+                                                            _model
+                                                                .transactionsToRemit[
+                                                                    _model
+                                                                        .loopTransactionsCounter]
+                                                                .reference
+                                                          ]),
                                                         },
                                                       ),
                                                     });
+                                                    // increment loop
+                                                    setState(() {
+                                                      _model.loopTransactionsCounter =
+                                                          _model.loopTransactionsCounter +
+                                                              1;
+                                                    });
                                                   }
-                                                  // remitted true including change transactions
-
-                                                  await _model
-                                                      .transactionsToRemit[_model
-                                                          .loopTransactionsCounter]
-                                                      .reference
-                                                      .update(
-                                                          createTransactionsRecordData(
-                                                    remitted: true,
-                                                  ));
-                                                  // append to failed list
+                                                  // update roomUsage firestore
 
                                                   await FFAppState()
-                                                      .settingRef!
+                                                      .statsReference!
                                                       .update({
                                                     ...mapToFirestore(
                                                       {
-                                                        'failedToRemitTransactions':
-                                                            FieldValue
-                                                                .arrayUnion([
-                                                          _model
-                                                              .transactionsToRemit[
-                                                                  _model
-                                                                      .loopTransactionsCounter]
-                                                              .reference
-                                                        ]),
+                                                        'roomUsage':
+                                                            getRoomUsageListFirestoreData(
+                                                          _model.roomUsage,
+                                                        ),
                                                       },
                                                     ),
                                                   });
-                                                  // increment loop
+                                                  // UnremittedAbsences
+                                                  _model.unremittedAbsences =
+                                                      await queryAbsencesRecordOnce(
+                                                    queryBuilder:
+                                                        (absencesRecord) =>
+                                                            absencesRecord
+                                                                .where(
+                                                                  'remitted',
+                                                                  isEqualTo:
+                                                                      false,
+                                                                )
+                                                                .where(
+                                                                  'hotel',
+                                                                  isEqualTo:
+                                                                      FFAppState()
+                                                                          .hotel,
+                                                                ),
+                                                  );
+                                                  shouldSetState = true;
+                                                  // what's happening
                                                   setState(() {
-                                                    _model.loopTransactionsCounter =
-                                                        _model.loopTransactionsCounter +
-                                                            1;
+                                                    _model.happening =
+                                                        'Remitting absences if any';
                                                   });
-                                                }
-                                                // update roomUsage firestore
+                                                  while (_model
+                                                          .loopAbsencesCounter !=
+                                                      _model.unremittedAbsences
+                                                          ?.length) {
+                                                    // add to to remit
+                                                    setState(() {
+                                                      _model.addToAbsencesToRemit(
+                                                          _model.unremittedAbsences![
+                                                              _model
+                                                                  .loopAbsencesCounter]);
+                                                    });
+                                                    // remit absence
 
-                                                await FFAppState()
-                                                    .statsReference!
-                                                    .update({
-                                                  ...mapToFirestore(
-                                                    {
-                                                      'roomUsage':
-                                                          getRoomUsageListFirestoreData(
-                                                        _model.roomUsage,
-                                                      ),
-                                                    },
-                                                  ),
-                                                });
-                                                // UnremittedAbsences
-                                                _model.unremittedAbsences =
-                                                    await queryAbsencesRecordOnce(
-                                                  queryBuilder:
-                                                      (absencesRecord) =>
-                                                          absencesRecord
-                                                              .where(
-                                                                'remitted',
-                                                                isEqualTo:
-                                                                    false,
-                                                              )
-                                                              .where(
-                                                                'hotel',
-                                                                isEqualTo:
-                                                                    FFAppState()
-                                                                        .hotel,
-                                                              ),
-                                                );
-                                                // what's happening
-                                                setState(() {
-                                                  _model.happening =
-                                                      'Remitting absences if any';
-                                                });
-                                                while (_model
-                                                        .loopAbsencesCounter !=
-                                                    _model.unremittedAbsences
-                                                        ?.length) {
-                                                  // add to to remit
+                                                    await _model
+                                                        .unremittedAbsences![_model
+                                                            .loopAbsencesCounter]
+                                                        .reference
+                                                        .update(
+                                                            createAbsencesRecordData(
+                                                      remitted: true,
+                                                    ));
+                                                    // increment loop
+                                                    setState(() {
+                                                      _model.loopAbsencesCounter =
+                                                          _model.loopAbsencesCounter +
+                                                              1;
+                                                    });
+                                                  }
+                                                  // what's happening
                                                   setState(() {
-                                                    _model.addToAbsencesToRemit(
-                                                        _model.unremittedAbsences![
-                                                            _model
-                                                                .loopAbsencesCounter]);
+                                                    _model.happening =
+                                                        'Remitting inventories';
                                                   });
-                                                  // remit absence
+                                                  while (_model
+                                                          .loopInventoryCounter !=
+                                                      valueOrDefault<int>(
+                                                        _model
+                                                            .inventoriesToRemitFirestore
+                                                            ?.length,
+                                                        0,
+                                                      )) {
+                                                    // remit all inventory
 
-                                                  await _model
-                                                      .unremittedAbsences![_model
-                                                          .loopAbsencesCounter]
-                                                      .reference
-                                                      .update(
-                                                          createAbsencesRecordData(
-                                                    remitted: true,
-                                                  ));
-                                                  // increment loop
-                                                  setState(() {
-                                                    _model.loopAbsencesCounter =
-                                                        _model.loopAbsencesCounter +
-                                                            1;
-                                                  });
-                                                }
-                                                // what's happening
-                                                setState(() {
-                                                  _model.happening =
-                                                      'Remitting inventories';
-                                                });
-                                                while (_model
-                                                        .loopInventoryCounter !=
-                                                    valueOrDefault<int>(
-                                                      _model
-                                                          .inventoriesToRemitFirestore
-                                                          ?.length,
-                                                      0,
-                                                    )) {
-                                                  // remit all inventory
-
-                                                  await _model
-                                                      .inventoriesToRemitFirestore![
-                                                          _model
-                                                              .loopInventoryCounter]
-                                                      .reference
-                                                      .update(
-                                                          createInventoriesRecordData(
-                                                    remitted: true,
-                                                  ));
-                                                  // inventories to list
-                                                  setState(() {
-                                                    _model.addToInventoriesToRemit(_model
+                                                    await _model
                                                         .inventoriesToRemitFirestore![
                                                             _model
                                                                 .loopInventoryCounter]
-                                                        .reference);
-                                                  });
-                                                  // increment counter only
+                                                        .reference
+                                                        .update(
+                                                            createInventoriesRecordData(
+                                                      remitted: true,
+                                                    ));
+                                                    // inventories to list
+                                                    setState(() {
+                                                      _model.addToInventoriesToRemit(_model
+                                                          .inventoriesToRemitFirestore![
+                                                              _model
+                                                                  .loopInventoryCounter]
+                                                          .reference);
+                                                    });
+                                                    // increment counter only
+                                                    setState(() {
+                                                      _model.loopInventoryCounter =
+                                                          _model.loopInventoryCounter +
+                                                              1;
+                                                    });
+                                                  }
+                                                  // what's happening
                                                   setState(() {
-                                                    _model.loopInventoryCounter =
-                                                        _model.loopInventoryCounter +
-                                                            1;
+                                                    _model.happening =
+                                                        'Updating grocery values';
                                                   });
-                                                }
-                                                // what's happening
-                                                setState(() {
-                                                  _model.happening =
-                                                      'Updating grocery values';
-                                                });
-                                                // count grr
-                                                _model.countGrr =
-                                                    await queryGoodsRevenueRatioRecordCount(
-                                                  queryBuilder:
-                                                      (goodsRevenueRatioRecord) =>
-                                                          goodsRevenueRatioRecord
-                                                              .where(
-                                                                'hotel',
-                                                                isEqualTo:
-                                                                    FFAppState()
-                                                                        .hotel,
-                                                              )
-                                                              .orderBy('date',
-                                                                  descending:
-                                                                      true),
-                                                );
-                                                if (_model.countGrr! > 0) {
-                                                  // last grr
-                                                  _model.lastGrr =
-                                                      await queryGoodsRevenueRatioRecordOnce(
+                                                  // count grr
+                                                  _model.countGrr =
+                                                      await queryGoodsRevenueRatioRecordCount(
                                                     queryBuilder:
                                                         (goodsRevenueRatioRecord) =>
                                                             goodsRevenueRatioRecord
@@ -867,346 +889,369 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                 .orderBy('date',
                                                                     descending:
                                                                         true),
-                                                    singleRecord: true,
-                                                  ).then((s) => s.firstOrNull);
-                                                  // increment grr revenue
+                                                  );
+                                                  shouldSetState = true;
+                                                  if (_model.countGrr! > 0) {
+                                                    // last grr
+                                                    _model.lastGrr =
+                                                        await queryGoodsRevenueRatioRecordOnce(
+                                                      queryBuilder:
+                                                          (goodsRevenueRatioRecord) =>
+                                                              goodsRevenueRatioRecord
+                                                                  .where(
+                                                                    'hotel',
+                                                                    isEqualTo:
+                                                                        FFAppState()
+                                                                            .hotel,
+                                                                  )
+                                                                  .orderBy(
+                                                                      'date',
+                                                                      descending:
+                                                                          true),
+                                                      singleRecord: true,
+                                                    ).then((s) =>
+                                                            s.firstOrNull);
+                                                    shouldSetState = true;
+                                                    // increment grr revenue
 
-                                                  await _model
-                                                      .lastGrr!.reference
+                                                    await _model
+                                                        .lastGrr!.reference
+                                                        .update({
+                                                      ...mapToFirestore(
+                                                        {
+                                                          'revenue': FieldValue
+                                                              .increment(functions
+                                                                  .sumOfGoodsIncome(_model
+                                                                      .transactionsToRemit
+                                                                      .toList())),
+                                                        },
+                                                      ),
+                                                    });
+                                                    if (_model.lastGrr
+                                                            ?.daysToBreakEven ==
+                                                        0) {
+                                                      if (functions.add(
+                                                              _model.lastGrr!
+                                                                  .revenue,
+                                                              valueOrDefault<
+                                                                  double>(
+                                                                functions.sumOfGoodsIncome(_model
+                                                                    .transactionsToRemit
+                                                                    .toList()),
+                                                                0.0,
+                                                              )) >
+                                                          _model.lastGrr!
+                                                              .grocery) {
+                                                        // set daysToBreakeven
+
+                                                        await _model
+                                                            .lastGrr!.reference
+                                                            .update(
+                                                                createGoodsRevenueRatioRecordData(
+                                                          daysToBreakEven: _model
+                                                                  .lastGrr!
+                                                                  .daysPassed +
+                                                              1,
+                                                        ));
+                                                      } else {
+                                                        // increment daysPassed
+
+                                                        await _model
+                                                            .lastGrr!.reference
+                                                            .update({
+                                                          ...mapToFirestore(
+                                                            {
+                                                              'daysPassed':
+                                                                  FieldValue
+                                                                      .increment(
+                                                                          1),
+                                                            },
+                                                          ),
+                                                        });
+                                                      }
+                                                    }
+                                                  }
+                                                  // what's happening
+                                                  setState(() {
+                                                    _model.happening =
+                                                        'Updating metrics';
+                                                  });
+                                                  // update stats and graph
+
+                                                  await FFAppState()
+                                                      .statsReference!
                                                       .update({
+                                                    ...createStatsRecordData(
+                                                      roomLine:
+                                                          updateLineGraphStruct(
+                                                        functions.newLineGraph(
+                                                            functions.sumOfRoomsIncome(
+                                                                _model
+                                                                    .transactionsToRemit
+                                                                    .toList()),
+                                                            _model.initStat!
+                                                                .roomLine),
+                                                        clearUnsetFields: false,
+                                                      ),
+                                                      goodsLine:
+                                                          updateLineGraphStruct(
+                                                        functions.newLineGraph(
+                                                            functions.sumOfGoodsIncome(
+                                                                _model
+                                                                    .transactionsToRemit
+                                                                    .toList()),
+                                                            _model.initStat!
+                                                                .goodsLine),
+                                                        clearUnsetFields: false,
+                                                      ),
+                                                    ),
                                                     ...mapToFirestore(
                                                       {
-                                                        'revenue': FieldValue
+                                                        'roomsIncome': FieldValue
+                                                            .increment(functions
+                                                                .sumOfRoomsIncome(_model
+                                                                    .transactionsToRemit
+                                                                    .toList())),
+                                                        'goodsIncome': FieldValue
                                                             .increment(functions
                                                                 .sumOfGoodsIncome(_model
+                                                                    .transactionsToRemit
+                                                                    .toList())),
+                                                        'expenses': FieldValue
+                                                            .increment(functions
+                                                                .sumOfExpenses(_model
                                                                     .transactionsToRemit
                                                                     .toList())),
                                                       },
                                                     ),
                                                   });
-                                                  if (_model.lastGrr
-                                                          ?.daysToBreakEven ==
-                                                      0) {
-                                                    if (functions.add(
-                                                            _model.lastGrr!
-                                                                .revenue,
-                                                            valueOrDefault<
-                                                                double>(
-                                                              functions.sumOfGoodsIncome(
-                                                                  _model
-                                                                      .transactionsToRemit
-                                                                      .toList()),
-                                                              0.0,
-                                                            )) >
-                                                        _model
-                                                            .lastGrr!.grocery) {
-                                                      // set daysToBreakeven
+                                                  // what's happening
+                                                  setState(() {
+                                                    _model.happening =
+                                                        'Finishing remittance!';
+                                                  });
+                                                  // Create Remittance
 
-                                                      await _model
-                                                          .lastGrr!.reference
-                                                          .update(
-                                                              createGoodsRevenueRatioRecordData(
-                                                        daysToBreakEven: _model
-                                                                .lastGrr!
-                                                                .daysPassed +
-                                                            1,
+                                                  var remittancesRecordReference =
+                                                      RemittancesRecord
+                                                          .collection
+                                                          .doc();
+                                                  await remittancesRecordReference
+                                                      .set({
+                                                    ...createRemittancesRecordData(
+                                                      collected: false,
+                                                      preparedBy:
+                                                          currentUserReference,
+                                                      hotel: FFAppState().hotel,
+                                                      gross: functions
+                                                          .grossTransactions(_model
+                                                              .transactionsToRemit
+                                                              .toList()),
+                                                      net: functions
+                                                          .netOfTransactions(_model
+                                                              .transactionsToRemit
+                                                              .toList()),
+                                                      expenses: functions
+                                                          .sumOfExpenses(_model
+                                                              .transactionsToRemit
+                                                              .toList()),
+                                                    ),
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'date': FieldValue
+                                                            .serverTimestamp(),
+                                                        'transactions': _model
+                                                            .transactionsToRemit
+                                                            .map((e) =>
+                                                                e.reference)
+                                                            .toList(),
+                                                        'bookings': _model
+                                                            .bookingsToRemit,
+                                                        'inventories': _model
+                                                            .inventoriesToRemit,
+                                                        'absences': _model
+                                                            .absencesToRemit
+                                                            .map((e) =>
+                                                                e.reference)
+                                                            .toList(),
+                                                      },
+                                                    ),
+                                                  });
+                                                  _model.newRemittanceCopyCopy =
+                                                      RemittancesRecord
+                                                          .getDocumentFromData({
+                                                    ...createRemittancesRecordData(
+                                                      collected: false,
+                                                      preparedBy:
+                                                          currentUserReference,
+                                                      hotel: FFAppState().hotel,
+                                                      gross: functions
+                                                          .grossTransactions(_model
+                                                              .transactionsToRemit
+                                                              .toList()),
+                                                      net: functions
+                                                          .netOfTransactions(_model
+                                                              .transactionsToRemit
+                                                              .toList()),
+                                                      expenses: functions
+                                                          .sumOfExpenses(_model
+                                                              .transactionsToRemit
+                                                              .toList()),
+                                                    ),
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'date': DateTime.now(),
+                                                        'transactions': _model
+                                                            .transactionsToRemit
+                                                            .map((e) =>
+                                                                e.reference)
+                                                            .toList(),
+                                                        'bookings': _model
+                                                            .bookingsToRemit,
+                                                        'inventories': _model
+                                                            .inventoriesToRemit,
+                                                        'absences': _model
+                                                            .absencesToRemit
+                                                            .map((e) =>
+                                                                e.reference)
+                                                            .toList(),
+                                                      },
+                                                    ),
+                                                  }, remittancesRecordReference);
+                                                  shouldSetState = true;
+                                                  // ready for collection admin
+
+                                                  await FFAppState()
+                                                      .settingRef!
+                                                      .update(
+                                                          createHotelSettingsRecordData(
+                                                        collectable: true,
+                                                        remittable: false,
                                                       ));
-                                                    } else {
-                                                      // increment daysPassed
+                                                  // delete all failed transactions incase remittance comes thru
 
-                                                      await _model
-                                                          .lastGrr!.reference
-                                                          .update({
-                                                        ...mapToFirestore(
-                                                          {
-                                                            'daysPassed':
-                                                                FieldValue
-                                                                    .increment(
-                                                                        1),
-                                                          },
+                                                  await FFAppState()
+                                                      .settingRef!
+                                                      .update({
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'failedToRemitTransactions':
+                                                            FieldValue.delete(),
+                                                      },
+                                                    ),
+                                                  });
+                                                  // Clear Lists To Remit
+                                                  setState(() {
+                                                    _model.transactionsToRemit =
+                                                        [];
+                                                    _model.inventoriesToRemit =
+                                                        [];
+                                                    _model.bookingsToRemit = [];
+                                                    _model.isLoading = false;
+                                                  });
+                                                  // carryover change transaction
+
+                                                  await TransactionsRecord
+                                                      .collection
+                                                      .doc()
+                                                      .set({
+                                                    ...createTransactionsRecordData(
+                                                      staff:
+                                                          currentUserReference,
+                                                      total: _model.changeExtraTextController
+                                                                      .text !=
+                                                                  ''
+                                                          ? (-double.parse(_model
+                                                              .changeExtraTextController
+                                                              .text))
+                                                          : 0.0,
+                                                      type: 'change',
+                                                      description: 'Change',
+                                                      hotel: FFAppState().hotel,
+                                                      remitted: false,
+                                                      pending: false,
+                                                    ),
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'date': FieldValue
+                                                            .serverTimestamp(),
+                                                      },
+                                                    ),
+                                                  });
+                                                  // update last remit firestore
+
+                                                  await FFAppState()
+                                                      .settingRef!
+                                                      .update({
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'lastRemit': FieldValue
+                                                            .serverTimestamp(),
+                                                      },
+                                                    ),
+                                                  });
+                                                  // last remit update
+                                                  setState(() {
+                                                    FFAppState().lastRemit =
+                                                        functions.today();
+                                                  });
+                                                  Navigator.pop(context);
+                                                  // Remitted
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'Remitted. Awaiting for endorsement.',
+                                                        style: TextStyle(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
                                                         ),
-                                                      });
-                                                    }
-                                                  }
+                                                      ),
+                                                      duration: const Duration(
+                                                          milliseconds: 4000),
+                                                      backgroundColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondary,
+                                                    ),
+                                                  );
+                                                } else {
+                                                  // no transactions
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'There are no transactions to remit!',
+                                                        style: TextStyle(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .info,
+                                                        ),
+                                                      ),
+                                                      duration: const Duration(
+                                                          milliseconds: 4000),
+                                                      backgroundColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .error,
+                                                    ),
+                                                  );
+                                                  // not remittable
+
+                                                  await FFAppState()
+                                                      .settingRef!
+                                                      .update(
+                                                          createHotelSettingsRecordData(
+                                                        remittable: false,
+                                                      ));
+                                                  Navigator.pop(context);
                                                 }
-                                                // what's happening
-                                                setState(() {
-                                                  _model.happening =
-                                                      'Updating metrics';
-                                                });
-                                                // update stats and graph
-
-                                                await FFAppState()
-                                                    .statsReference!
-                                                    .update({
-                                                  ...createStatsRecordData(
-                                                    roomLine:
-                                                        updateLineGraphStruct(
-                                                      functions.newLineGraph(
-                                                          functions.sumOfRoomsIncome(
-                                                              _model
-                                                                  .transactionsToRemit
-                                                                  .toList()),
-                                                          _model.initStat!
-                                                              .roomLine),
-                                                      clearUnsetFields: false,
-                                                    ),
-                                                    goodsLine:
-                                                        updateLineGraphStruct(
-                                                      functions.newLineGraph(
-                                                          functions.sumOfGoodsIncome(
-                                                              _model
-                                                                  .transactionsToRemit
-                                                                  .toList()),
-                                                          _model.initStat!
-                                                              .goodsLine),
-                                                      clearUnsetFields: false,
-                                                    ),
-                                                  ),
-                                                  ...mapToFirestore(
-                                                    {
-                                                      'roomsIncome': FieldValue
-                                                          .increment(functions
-                                                              .sumOfRoomsIncome(_model
-                                                                  .transactionsToRemit
-                                                                  .toList())),
-                                                      'goodsIncome': FieldValue
-                                                          .increment(functions
-                                                              .sumOfGoodsIncome(_model
-                                                                  .transactionsToRemit
-                                                                  .toList())),
-                                                      'expenses': FieldValue
-                                                          .increment(functions
-                                                              .sumOfExpenses(_model
-                                                                  .transactionsToRemit
-                                                                  .toList())),
-                                                    },
-                                                  ),
-                                                });
-                                                // what's happening
-                                                setState(() {
-                                                  _model.happening =
-                                                      'Finishing remittance!';
-                                                });
-                                                // Create Remittance
-
-                                                var remittancesRecordReference =
-                                                    RemittancesRecord.collection
-                                                        .doc();
-                                                await remittancesRecordReference
-                                                    .set({
-                                                  ...createRemittancesRecordData(
-                                                    collected: false,
-                                                    preparedBy:
-                                                        currentUserReference,
-                                                    hotel: FFAppState().hotel,
-                                                    gross: functions
-                                                        .grossTransactions(_model
-                                                            .transactionsToRemit
-                                                            .toList()),
-                                                    net: functions
-                                                        .netOfTransactions(_model
-                                                            .transactionsToRemit
-                                                            .toList()),
-                                                    expenses: functions
-                                                        .sumOfExpenses(_model
-                                                            .transactionsToRemit
-                                                            .toList()),
-                                                  ),
-                                                  ...mapToFirestore(
-                                                    {
-                                                      'date': FieldValue
-                                                          .serverTimestamp(),
-                                                      'transactions': _model
-                                                          .transactionsToRemit
-                                                          .map((e) =>
-                                                              e.reference)
-                                                          .toList(),
-                                                      'bookings': _model
-                                                          .bookingsToRemit,
-                                                      'inventories': _model
-                                                          .inventoriesToRemit,
-                                                      'absences': _model
-                                                          .absencesToRemit
-                                                          .map((e) =>
-                                                              e.reference)
-                                                          .toList(),
-                                                    },
-                                                  ),
-                                                });
-                                                _model.newRemittanceCopyCopy =
-                                                    RemittancesRecord
-                                                        .getDocumentFromData({
-                                                  ...createRemittancesRecordData(
-                                                    collected: false,
-                                                    preparedBy:
-                                                        currentUserReference,
-                                                    hotel: FFAppState().hotel,
-                                                    gross: functions
-                                                        .grossTransactions(_model
-                                                            .transactionsToRemit
-                                                            .toList()),
-                                                    net: functions
-                                                        .netOfTransactions(_model
-                                                            .transactionsToRemit
-                                                            .toList()),
-                                                    expenses: functions
-                                                        .sumOfExpenses(_model
-                                                            .transactionsToRemit
-                                                            .toList()),
-                                                  ),
-                                                  ...mapToFirestore(
-                                                    {
-                                                      'date': DateTime.now(),
-                                                      'transactions': _model
-                                                          .transactionsToRemit
-                                                          .map((e) =>
-                                                              e.reference)
-                                                          .toList(),
-                                                      'bookings': _model
-                                                          .bookingsToRemit,
-                                                      'inventories': _model
-                                                          .inventoriesToRemit,
-                                                      'absences': _model
-                                                          .absencesToRemit
-                                                          .map((e) =>
-                                                              e.reference)
-                                                          .toList(),
-                                                    },
-                                                  ),
-                                                }, remittancesRecordReference);
-                                                // ready for collection admin
-
-                                                await FFAppState()
-                                                    .settingRef!
-                                                    .update(
-                                                        createHotelSettingsRecordData(
-                                                      collectable: true,
-                                                      remittable: false,
-                                                    ));
-                                                // delete all failed transactions incase remittance comes thru
-
-                                                await FFAppState()
-                                                    .settingRef!
-                                                    .update({
-                                                  ...mapToFirestore(
-                                                    {
-                                                      'failedToRemitTransactions':
-                                                          FieldValue.delete(),
-                                                    },
-                                                  ),
-                                                });
-                                                // Clear Lists To Remit
-                                                setState(() {
-                                                  _model.transactionsToRemit =
-                                                      [];
-                                                  _model.inventoriesToRemit =
-                                                      [];
-                                                  _model.bookingsToRemit = [];
-                                                  _model.isLoading = false;
-                                                });
-                                                // carryover change transaction
-
-                                                await TransactionsRecord
-                                                    .collection
-                                                    .doc()
-                                                    .set({
-                                                  ...createTransactionsRecordData(
-                                                    staff: currentUserReference,
-                                                    total: _model.changeExtraTextController
-                                                                    .text !=
-                                                                ''
-                                                        ? (-double.parse(_model
-                                                            .changeExtraTextController
-                                                            .text))
-                                                        : 0.0,
-                                                    type: 'change',
-                                                    description: 'Change',
-                                                    hotel: FFAppState().hotel,
-                                                    remitted: false,
-                                                    pending: false,
-                                                  ),
-                                                  ...mapToFirestore(
-                                                    {
-                                                      'date': FieldValue
-                                                          .serverTimestamp(),
-                                                    },
-                                                  ),
-                                                });
-                                                // update last remit firestore
-
-                                                await FFAppState()
-                                                    .settingRef!
-                                                    .update({
-                                                  ...mapToFirestore(
-                                                    {
-                                                      'lastRemit': FieldValue
-                                                          .serverTimestamp(),
-                                                    },
-                                                  ),
-                                                });
-                                                // last remit update
-                                                setState(() {
-                                                  FFAppState().lastRemit =
-                                                      functions.today();
-                                                });
-                                                Navigator.pop(context);
-                                                // Remitted
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      'Remitted. Awaiting for endorsement.',
-                                                      style: TextStyle(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                      ),
-                                                    ),
-                                                    duration: const Duration(
-                                                        milliseconds: 4000),
-                                                    backgroundColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .secondary,
-                                                  ),
-                                                );
-                                              } else {
-                                                // no transactions
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      'There are no transactions to remit!',
-                                                      style: TextStyle(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .info,
-                                                      ),
-                                                    ),
-                                                    duration: const Duration(
-                                                        milliseconds: 4000),
-                                                    backgroundColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .error,
-                                                  ),
-                                                );
-                                                // not remittable
-
-                                                await FFAppState()
-                                                    .settingRef!
-                                                    .update(
-                                                        createHotelSettingsRecordData(
-                                                      remittable: false,
-                                                    ));
-                                                Navigator.pop(context);
                                               }
                                             }
-
-                                            setState(() {});
+                                            if (shouldSetState) {
+                                              setState(() {});
+                                            }
                                           },
                                           text: 'Continue Remitting',
                                           options: FFButtonOptions(

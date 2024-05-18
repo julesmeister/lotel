@@ -157,7 +157,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
                                   child: SizedBox(
-                                    height: 554.0,
+                                    height: double.infinity,
                                     child: ItemAddEditWidget(
                                       edit: false,
                                       categories: inventoryGoodsRecordList

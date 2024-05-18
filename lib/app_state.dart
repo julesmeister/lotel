@@ -271,6 +271,36 @@ class FFAppState extends ChangeNotifier {
   void clearStatsSettingsCache() => _statsSettingsManager.clear();
   void clearStatsSettingsCacheKey(String? uniqueKey) =>
       _statsSettingsManager.clearRequest(uniqueKey);
+
+  final _pendingsCountManager = FutureRequestManager<int>();
+  Future<int> pendingsCount({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<int> Function() requestFn,
+  }) =>
+      _pendingsCountManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearPendingsCountCache() => _pendingsCountManager.clear();
+  void clearPendingsCountCacheKey(String? uniqueKey) =>
+      _pendingsCountManager.clearRequest(uniqueKey);
+
+  final _pendingBadgeManager = StreamRequestManager<List<TransactionsRecord>>();
+  Stream<List<TransactionsRecord>> pendingBadge({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Stream<List<TransactionsRecord>> Function() requestFn,
+  }) =>
+      _pendingBadgeManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearPendingBadgeCache() => _pendingBadgeManager.clear();
+  void clearPendingBadgeCacheKey(String? uniqueKey) =>
+      _pendingBadgeManager.clearRequest(uniqueKey);
 }
 
 void _safeInit(Function() initializeField) {

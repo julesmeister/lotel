@@ -407,7 +407,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                   16.0, 10.0, 16.0, 10.0),
                                           child: Container(
                                             width: double.infinity,
-                                            height: 65.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xFF39D2C0),
                                               borderRadius:
@@ -459,7 +458,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               CrossAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Text(
+                                                            AutoSizeText(
                                                               formatNumber(
                                                                 functions.totalSalesLessExpenses(transactionsTransactionsRecordList
                                                                     .where((e) => valueOrDefault(currentUserDocument?.role, '') ==
@@ -481,6 +480,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         .automatic,
                                                                 currency: 'P ',
                                                               ),
+                                                              maxLines: 1,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .titleMedium
@@ -497,9 +497,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
+                                                              minFontSize: 10.0,
                                                             ),
-                                                            Text(
+                                                            AutoSizeText(
                                                               'unremitted',
+                                                              maxLines: 1,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -511,6 +513,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
+                                                              minFontSize: 10.0,
                                                             ),
                                                           ],
                                                         ),
@@ -567,7 +570,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 CrossAxisAlignment
                                                                     .end,
                                                             children: [
-                                                              Text(
+                                                              AutoSizeText(
                                                                 formatNumber(
                                                                   functions.totalSalesLessExpenses(transactionsTransactionsRecordList
                                                                       .where((e) =>
@@ -585,6 +588,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   currency:
                                                                       'P ',
                                                                 ),
+                                                                maxLines: 1,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
@@ -601,9 +605,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           FontWeight
                                                                               .normal,
                                                                     ),
+                                                                minFontSize:
+                                                                    10.0,
                                                               ),
-                                                              Text(
+                                                              AutoSizeText(
                                                                 'remitted',
+                                                                maxLines: 1,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -615,6 +622,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
+                                                                minFontSize:
+                                                                    10.0,
                                                               ),
                                                             ],
                                                           ),
@@ -1791,7 +1800,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                   16.0, 10.0, 16.0, 10.0),
                                           child: Container(
                                             width: double.infinity,
-                                            height: 65.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xFF39D2C0),
                                               borderRadius:
@@ -1843,7 +1851,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               CrossAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Text(
+                                                            AutoSizeText(
                                                               formatNumber(
                                                                 functions.totalBookedSales(transactionsTransactionsRecordList
                                                                     .where((e) => valueOrDefault(currentUserDocument?.role, '') ==
@@ -1865,6 +1873,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         .automatic,
                                                                 currency: 'P ',
                                                               ),
+                                                              maxLines: 1,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .titleMedium
@@ -1881,9 +1890,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
+                                                              minFontSize: 10.0,
                                                             ),
-                                                            Text(
+                                                            AutoSizeText(
                                                               'unremitted',
+                                                              maxLines: 1,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -1895,6 +1906,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
+                                                              minFontSize: 10.0,
                                                             ),
                                                           ],
                                                         ),
@@ -1951,7 +1963,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 CrossAxisAlignment
                                                                     .end,
                                                             children: [
-                                                              Text(
+                                                              AutoSizeText(
                                                                 formatNumber(
                                                                   functions.totalBookedSales(transactionsTransactionsRecordList
                                                                       .where((e) => valueOrDefault(currentUserDocument?.role, '') ==
@@ -1971,6 +1983,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   currency:
                                                                       'P ',
                                                                 ),
+                                                                maxLines: 1,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
@@ -1987,9 +2000,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           FontWeight
                                                                               .normal,
                                                                     ),
+                                                                minFontSize:
+                                                                    10.0,
                                                               ),
-                                                              Text(
+                                                              AutoSizeText(
                                                                 'remitted',
+                                                                maxLines: 1,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -2001,6 +2017,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
+                                                                minFontSize:
+                                                                    10.0,
                                                               ),
                                                             ],
                                                           ),
@@ -2407,7 +2425,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                   16.0, 10.0, 16.0, 10.0),
                                           child: Container(
                                             width: double.infinity,
-                                            height: 65.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xFF39D2C0),
                                               borderRadius:
@@ -2459,7 +2476,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               CrossAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Text(
+                                                            AutoSizeText(
                                                               formatNumber(
                                                                 functions.totalGoodsSales(
                                                                     transactionsTransactionsRecordList
@@ -2474,6 +2491,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         .automatic,
                                                                 currency: 'P ',
                                                               ),
+                                                              maxLines: 1,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .titleMedium
@@ -2490,9 +2508,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
+                                                              minFontSize: 10.0,
                                                             ),
-                                                            Text(
+                                                            AutoSizeText(
                                                               'unremitted',
+                                                              maxLines: 1,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -2504,6 +2524,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
+                                                              minFontSize: 10.0,
                                                             ),
                                                           ],
                                                         ),
@@ -2560,7 +2581,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 CrossAxisAlignment
                                                                     .end,
                                                             children: [
-                                                              Text(
+                                                              AutoSizeText(
                                                                 formatNumber(
                                                                   functions.totalGoodsSales(transactionsTransactionsRecordList
                                                                       .where((e) => valueOrDefault(currentUserDocument?.role, '') == 'admin'
@@ -2577,6 +2598,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   currency:
                                                                       'P ',
                                                                 ),
+                                                                maxLines: 1,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
@@ -2593,9 +2615,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           FontWeight
                                                                               .normal,
                                                                     ),
+                                                                minFontSize:
+                                                                    10.0,
                                                               ),
-                                                              Text(
+                                                              AutoSizeText(
                                                                 'remitted',
+                                                                maxLines: 1,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -2607,6 +2632,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
+                                                                minFontSize:
+                                                                    10.0,
                                                               ),
                                                             ],
                                                           ),
@@ -2974,7 +3001,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                   16.0, 10.0, 16.0, 10.0),
                                           child: Container(
                                             width: double.infinity,
-                                            height: 65.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xFF39D2C0),
                                               borderRadius:
@@ -3026,7 +3052,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               CrossAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Text(
+                                                            AutoSizeText(
                                                               formatNumber(
                                                                 functions.totalExpenses(transactionsTransactionsRecordList
                                                                     .where((e) =>
@@ -3041,6 +3067,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         .automatic,
                                                                 currency: 'P ',
                                                               ),
+                                                              maxLines: 1,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .titleMedium
@@ -3057,9 +3084,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
+                                                              minFontSize: 10.0,
                                                             ),
-                                                            Text(
+                                                            AutoSizeText(
                                                               'unremitted',
+                                                              maxLines: 1,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -3071,6 +3100,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
+                                                              minFontSize: 10.0,
                                                             ),
                                                           ],
                                                         ),
@@ -3127,7 +3157,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 CrossAxisAlignment
                                                                     .end,
                                                             children: [
-                                                              Text(
+                                                              AutoSizeText(
                                                                 formatNumber(
                                                                   functions.totalExpenses(transactionsTransactionsRecordList
                                                                       .where((e) => valueOrDefault(currentUserDocument?.role, '') == 'admin'
@@ -3144,6 +3174,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   currency:
                                                                       'P ',
                                                                 ),
+                                                                maxLines: 1,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
@@ -3160,9 +3191,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           FontWeight
                                                                               .normal,
                                                                     ),
+                                                                minFontSize:
+                                                                    10.0,
                                                               ),
-                                                              Text(
+                                                              AutoSizeText(
                                                                 'remitted',
+                                                                maxLines: 1,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -3174,6 +3208,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
+                                                                minFontSize:
+                                                                    10.0,
                                                               ),
                                                             ],
                                                           ),

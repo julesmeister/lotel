@@ -187,21 +187,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void clearHotelSettingsCacheKey(String? uniqueKey) =>
       _hotelSettingsManager.clearRequest(uniqueKey);
 
-  final _pendingCountsManager = FutureRequestManager<int>();
-  Future<int> pendingCounts({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Future<int> Function() requestFn,
-  }) =>
-      _pendingCountsManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearPendingCountsCache() => _pendingCountsManager.clear();
-  void clearPendingCountsCacheKey(String? uniqueKey) =>
-      _pendingCountsManager.clearRequest(uniqueKey);
-
   final _remittanceChangeManager =
       FutureRequestManager<List<TransactionsRecord>>();
   Future<List<TransactionsRecord>> remittanceChange({
@@ -217,21 +202,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   void clearRemittanceChangeCache() => _remittanceChangeManager.clear();
   void clearRemittanceChangeCacheKey(String? uniqueKey) =>
       _remittanceChangeManager.clearRequest(uniqueKey);
-
-  final _pendingBadgeManager = StreamRequestManager<List<TransactionsRecord>>();
-  Stream<List<TransactionsRecord>> pendingBadge({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Stream<List<TransactionsRecord>> Function() requestFn,
-  }) =>
-      _pendingBadgeManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearPendingBadgeCache() => _pendingBadgeManager.clear();
-  void clearPendingBadgeCacheKey(String? uniqueKey) =>
-      _pendingBadgeManager.clearRequest(uniqueKey);
 
   @override
   void initState(BuildContext context) {}
@@ -252,11 +222,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
     clearHotelSettingsCache();
 
-    clearPendingCountsCache();
-
     clearRemittanceChangeCache();
-
-    clearPendingBadgeCache();
   }
 
   /// Action blocks.
@@ -304,7 +270,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     FFAppState().clearReplenishCountCache();
     // clear staff count
     FFAppState().clearStaffsCacheKey(FFAppState().hotel);
-    clearPendingCountsCacheKey(FFAppState().hotel);
-    clearPendingBadgeCacheKey(FFAppState().hotel);
+    FFAppState().clearPendingsCountCacheKey(FFAppState().hotel);
+    FFAppState().clearPendingBadgeCacheKey(FFAppState().hotel);
   }
 }

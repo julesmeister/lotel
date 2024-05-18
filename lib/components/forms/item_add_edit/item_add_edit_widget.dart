@@ -191,7 +191,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -209,6 +209,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
@@ -228,7 +229,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -246,6 +247,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
@@ -272,7 +274,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                       fontFamily: 'Lexend Deca',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
-                                      fontSize: 14.0,
+                                      fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -290,6 +292,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
                                     letterSpacing: 0.0,
                                   ),
                               minLines: 1,
@@ -315,7 +318,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                         fontFamily: 'Lexend Deca',
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryText,
-                                        fontSize: 14.0,
+                                        fontSize: 24.0,
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.normal,
                                       ),
@@ -334,6 +337,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
+                                      fontSize: 28.0,
                                       letterSpacing: 0.0,
                                     ),
                                 minLines: 1,
@@ -412,7 +416,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                           fontFamily: 'Lexend Deca',
                                           color: FlutterFlowTheme.of(context)
                                               .secondaryText,
-                                          fontSize: 14.0,
+                                          fontSize: 24.0,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.normal,
                                         ),
@@ -431,6 +435,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                       .bodyMedium
                                       .override(
                                         fontFamily: 'Readex Pro',
+                                        fontSize: 28.0,
                                         letterSpacing: 0.0,
                                       ),
                                   minLines: 1,
@@ -511,10 +516,10 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                         hotel: FFAppState().hotel,
                                         quantity: int.tryParse(
                                             _model.quantityTextController.text),
-                                        description:
-                                            _model.descTextController.text,
-                                        category:
-                                            _model.categoryTextController.text,
+                                        description: functions.startBigLetter(
+                                            _model.descTextController.text),
+                                        category: functions.startBigLetter(
+                                            _model.categoryTextController.text),
                                         replenish: false,
                                       ));
                                       _model.createPayload =
@@ -526,11 +531,14 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                                 quantity: int.tryParse(_model
                                                     .quantityTextController
                                                     .text),
-                                                description: _model
-                                                    .descTextController.text,
-                                                category: _model
-                                                    .categoryTextController
-                                                    .text,
+                                                description: functions
+                                                    .startBigLetter(_model
+                                                        .descTextController
+                                                        .text),
+                                                category: functions
+                                                    .startBigLetter(_model
+                                                        .categoryTextController
+                                                        .text),
                                                 replenish: false,
                                               ),
                                               goodsRecordReference);
@@ -546,8 +554,8 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                             quantityChange: int.tryParse(_model
                                                 .quantityTextController.text),
                                             previousQuantity: 0,
-                                            item:
-                                                _model.descTextController.text,
+                                            item: functions.startBigLetter(
+                                                _model.descTextController.text),
                                             operator: 'add',
                                             previousPrice: widget.price,
                                             priceChange: double.tryParse(_model
@@ -599,12 +607,12 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                         .update(createGoodsRecordData(
                                       price: double.tryParse(
                                           _model.priceTextController.text),
-                                      description:
-                                          _model.descTextController.text,
+                                      description: functions.startBigLetter(
+                                          _model.descTextController.text),
                                       quantity: int.tryParse(
                                           _model.quantityTextController.text),
-                                      category:
-                                          _model.categoryTextController.text,
+                                      category: functions.startBigLetter(
+                                          _model.categoryTextController.text),
                                     ));
                                     // Saving inventory
 

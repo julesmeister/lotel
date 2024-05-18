@@ -24,6 +24,8 @@ class PendingsModel extends FlutterFlowModel<PendingsWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  // Stores action output result for [Bottom Sheet - PayPendingPartially] action in clearBalance widget.
+  bool? isSuccess;
   // Stores action output result for [Backend Call - Read Document] action in clearBalance widget.
   BookingsRecord? booking;
   // State field(s) for CheckboxListTile widget.

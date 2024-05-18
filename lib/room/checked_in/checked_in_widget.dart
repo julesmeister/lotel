@@ -1,5 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/add_extra_bed/add_extra_bed_widget.dart';
+import '/components/forms/add_stay/add_stay_widget.dart';
 import '/components/options/option_to_booking/option_to_booking_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
@@ -275,7 +277,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       .move_down,
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .secondaryText,
+                                                                      .primaryText,
                                                                   size: 14.0,
                                                                 ),
                                                               ),
@@ -647,17 +649,20 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       0.0,
                                                                 ),
                                                       ),
-                                                      Text(
-                                                        (String extraBeds) {
-                                                          return extraBeds ==
-                                                                  "0"
-                                                              ? "There are no extra beds"
-                                                              : "There's $extraBeds extra bed${extraBeds != "1" ? 's' : ''}";
-                                                        }(checkedInBookingsRecord
-                                                            .extraBeds),
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
+                                                      Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          Text(
+                                                            (String extraBeds) {
+                                                              return extraBeds ==
+                                                                      "0"
+                                                                  ? "There are no extra beds"
+                                                                  : "There's $extraBeds extra bed${extraBeds != "1" ? 's' : ''}";
+                                                            }(checkedInBookingsRecord
+                                                                .extraBeds),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
                                                                 .bodyMedium
                                                                 .override(
                                                                   fontFamily:
@@ -665,6 +670,79 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        5.0,
+                                                                        0.0,
+                                                                        0.0,
+                                                                        0.0),
+                                                            child: InkWell(
+                                                              splashColor: Colors
+                                                                  .transparent,
+                                                              focusColor: Colors
+                                                                  .transparent,
+                                                              hoverColor: Colors
+                                                                  .transparent,
+                                                              highlightColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              onTap: () async {
+                                                                await showModalBottomSheet(
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  enableDrag:
+                                                                      false,
+                                                                  useSafeArea:
+                                                                      true,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return GestureDetector(
+                                                                      onTap: () => _model
+                                                                              .unfocusNode
+                                                                              .canRequestFocus
+                                                                          ? FocusScope.of(context).requestFocus(_model
+                                                                              .unfocusNode)
+                                                                          : FocusScope.of(context)
+                                                                              .unfocus(),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            MediaQuery.viewInsetsOf(context),
+                                                                        child:
+                                                                            SizedBox(
+                                                                          height:
+                                                                              double.infinity,
+                                                                          child:
+                                                                              AddExtraBedWidget(
+                                                                            booking:
+                                                                                checkedInBookingsRecord,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                ).then((value) =>
+                                                                    safeSetState(
+                                                                        () {}));
+                                                              },
+                                                              child: Icon(
+                                                                Icons.add,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                size: 14.0,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
@@ -791,14 +869,17 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           .normal,
                                                                 ),
                                                       ),
-                                                      Text(
-                                                        (int nights) {
-                                                          return '$nights night${nights != 1 ? 's' : ''} stay';
-                                                        }(checkedInBookingsRecord
-                                                            .nights),
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
+                                                      Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          Text(
+                                                            (int nights) {
+                                                              return '$nights night${nights != 1 ? 's' : ''} stay';
+                                                            }(checkedInBookingsRecord
+                                                                .nights),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
                                                                 .bodyMedium
                                                                 .override(
                                                                   fontFamily:
@@ -806,6 +887,79 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        5.0,
+                                                                        0.0,
+                                                                        0.0,
+                                                                        0.0),
+                                                            child: InkWell(
+                                                              splashColor: Colors
+                                                                  .transparent,
+                                                              focusColor: Colors
+                                                                  .transparent,
+                                                              hoverColor: Colors
+                                                                  .transparent,
+                                                              highlightColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              onTap: () async {
+                                                                await showModalBottomSheet(
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  enableDrag:
+                                                                      false,
+                                                                  useSafeArea:
+                                                                      true,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return GestureDetector(
+                                                                      onTap: () => _model
+                                                                              .unfocusNode
+                                                                              .canRequestFocus
+                                                                          ? FocusScope.of(context).requestFocus(_model
+                                                                              .unfocusNode)
+                                                                          : FocusScope.of(context)
+                                                                              .unfocus(),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            MediaQuery.viewInsetsOf(context),
+                                                                        child:
+                                                                            SizedBox(
+                                                                          height:
+                                                                              double.infinity,
+                                                                          child:
+                                                                              AddStayWidget(
+                                                                            booking:
+                                                                                checkedInBookingsRecord,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                ).then((value) =>
+                                                                    safeSetState(
+                                                                        () {}));
+                                                              },
+                                                              child: Icon(
+                                                                Icons.add,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                size: 14.0,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
@@ -1948,7 +2102,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
                                                                               room: widget.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return "${priceChange ~/ bedPrice.abs()} ";
+                                                                                  return priceChange ~/ bedPrice.abs().toString() + " ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',
@@ -1981,7 +2135,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
                                                                               room: widget.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return "${priceChange ~/ bedPrice.abs()} ";
+                                                                                  return priceChange ~/ bedPrice.abs().toString() + " ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',

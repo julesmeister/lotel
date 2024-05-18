@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/components/forms/pay_pending_partially/pay_pending_partially_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -125,6 +126,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                             size: 24.0,
                           ),
                           onPressed: () async {
+                            var shouldSetState = false;
                             // confirm
                             var confirmDialogResponse = await showDialog<bool>(
                                   context: context,
@@ -155,21 +157,124 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                     _model.selectedTransaction.length,
                                     0,
                                   )) {
-                                // get booking
-                                _model.booking =
-                                    await BookingsRecord.getDocumentOnce(_model
-                                        .selectedTransaction[
-                                            FFAppState().loopCounter]
-                                        .booking!);
-                                await action_blocks.payBalanceOfPending(
-                                  context,
-                                  booking: _model.booking,
-                                );
+                                // partial?
+                                confirmDialogResponse = await showDialog<bool>(
+                                      context: context,
+                                      builder: (alertDialogContext) {
+                                        return AlertDialog(
+                                          title: const Text('Partial Payment'),
+                                          content: Text(
+                                              'Did the guest from room ${_model.selectedTransaction[FFAppState().loopCounter].room.toString()} owing an amount of ${formatNumber(
+                                            _model
+                                                .selectedTransaction[
+                                                    FFAppState().loopCounter]
+                                                .total,
+                                            formatType: FormatType.decimal,
+                                            decimalType: DecimalType.automatic,
+                                            currency: 'Php ',
+                                          )} paid the amount partially?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext, false),
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext, true),
+                                              child: const Text('Confirm'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ) ??
+                                    false;
+                                if (confirmDialogResponse) {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    enableDrag: false,
+                                    useSafeArea: true,
+                                    context: context,
+                                    builder: (context) {
+                                      return GestureDetector(
+                                        onTap: () => _model
+                                                .unfocusNode.canRequestFocus
+                                            ? FocusScope.of(context)
+                                                .requestFocus(
+                                                    _model.unfocusNode)
+                                            : FocusScope.of(context).unfocus(),
+                                        child: Padding(
+                                          padding:
+                                              MediaQuery.viewInsetsOf(context),
+                                          child: SizedBox(
+                                            height: double.infinity,
+                                            child: PayPendingPartiallyWidget(
+                                              transactions:
+                                                  pendingsTransactionsRecordList
+                                                      .where((e) =>
+                                                          e.booking ==
+                                                          _model
+                                                              .selectedTransaction[
+                                                                  FFAppState()
+                                                                      .loopCounter]
+                                                              .booking)
+                                                      .toList(),
+                                              booking: _model
+                                                  .selectedTransaction[
+                                                      FFAppState().loopCounter]
+                                                  .booking!,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ).then((value) => safeSetState(
+                                      () => _model.isSuccess = value));
+
+                                  shouldSetState = true;
+                                  if (!(_model.isSuccess != null)) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Something went wrong!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .info,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
+                                      ),
+                                    );
+                                    if (shouldSetState) setState(() {});
+                                    return;
+                                  }
+                                } else {
+                                  // get booking
+                                  _model.booking =
+                                      await BookingsRecord.getDocumentOnce(
+                                          _model
+                                              .selectedTransaction[
+                                                  FFAppState().loopCounter]
+                                              .booking!);
+                                  shouldSetState = true;
+                                  await action_blocks.payBalanceOfPending(
+                                    context,
+                                    booking: _model.booking,
+                                  );
+                                }
+
                                 // increment counter
                                 setState(() {
                                   _model.loopCounter = _model.loopCounter + 1;
                                 });
                               }
+                              FFAppState().clearPendingsCountCacheKey(
+                                  FFAppState().hotel);
+                              FFAppState().clearPendingBadgeCacheKey(
+                                  FFAppState().hotel);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -187,8 +292,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                               // Go back home
                               context.safePop();
                             }
-
-                            setState(() {});
+                            if (shouldSetState) setState(() {});
                           },
                         ),
                       ),

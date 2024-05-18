@@ -510,7 +510,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                     : null;
                             return Container(
                               width: double.infinity,
-                              height: 589.0,
+                              height: 628.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: const [

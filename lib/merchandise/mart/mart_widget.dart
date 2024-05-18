@@ -125,7 +125,7 @@ class _MartWidgetState extends State<MartWidget> {
                                     letterSpacing: 0.0,
                                   ),
                         ),
-                        showBadge: true,
+                        showBadge: _model.cart.isNotEmpty,
                         shape: badges.BadgeShape.circle,
                         badgeColor: FlutterFlowTheme.of(context).primary,
                         elevation: 4.0,

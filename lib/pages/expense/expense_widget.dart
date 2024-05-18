@@ -434,229 +434,327 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                           return;
                                         }
                                       } else {
-                                        // Not cash advance
-                                        var confirmDialogResponse =
-                                            await showDialog<bool>(
-                                                  context: context,
-                                                  builder:
-                                                      (alertDialogContext) {
-                                                    return AlertDialog(
-                                                      title:
-                                                          const Text('Are you sure?'),
-                                                      content: const Text(
-                                                          'You are submitting a new expense.'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  false),
-                                                          child: const Text('Cancel'),
+                                        if (_model.descriptionTextController
+                                                    .text !=
+                                                '') {
+                                          // is there a duplicate within the last hour
+                                          _model.duplicatewithin1hour =
+                                              await queryTransactionsRecordCount(
+                                            queryBuilder:
+                                                (transactionsRecord) =>
+                                                    transactionsRecord
+                                                        .where(
+                                                          'description',
+                                                          isEqualTo: functions
+                                                              .resetFont(functions
+                                                                  .startBigLetter(_model
+                                                                      .descriptionTextController
+                                                                      .text)),
+                                                        )
+                                                        .where(
+                                                          'hotel',
+                                                          isEqualTo:
+                                                              FFAppState()
+                                                                  .hotel,
+                                                        )
+                                                        .where(
+                                                          'type',
+                                                          isEqualTo: 'expense',
+                                                        )
+                                                        .where(
+                                                          'total',
+                                                          isEqualTo: double
+                                                              .parse(_model
+                                                                  .amountTextController
+                                                                  .text),
+                                                        )
+                                                        .where(
+                                                          'remitted',
+                                                          isEqualTo: false,
                                                         ),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  true),
-                                                          child:
-                                                              const Text('Confirm'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                ) ??
-                                                false;
-                                        if (confirmDialogResponse) {
-                                          // Create transaction expense
-
-                                          var transactionsRecordReference2 =
-                                              TransactionsRecord.collection
-                                                  .doc();
-                                          await transactionsRecordReference2
-                                              .set({
-                                            ...createTransactionsRecordData(
-                                              staff: currentUserReference,
-                                              total: double.tryParse(_model
-                                                  .amountTextController.text),
-                                              type: 'expense',
-                                              hotel: FFAppState().hotel,
-                                              description: functions.resetFont(
-                                                  functions.startBigLetter(_model
-                                                      .descriptionTextController
-                                                      .text)),
-                                              remitted: widget.additional
-                                                  ? true
-                                                  : false,
-                                              pending: false,
-                                            ),
-                                            ...mapToFirestore(
-                                              {
-                                                'date': FieldValue
-                                                    .serverTimestamp(),
-                                              },
-                                            ),
-                                          });
-                                          _model.newExpCopy = TransactionsRecord
-                                              .getDocumentFromData({
-                                            ...createTransactionsRecordData(
-                                              staff: currentUserReference,
-                                              total: double.tryParse(_model
-                                                  .amountTextController.text),
-                                              type: 'expense',
-                                              hotel: FFAppState().hotel,
-                                              description: functions.resetFont(
-                                                  functions.startBigLetter(_model
-                                                      .descriptionTextController
-                                                      .text)),
-                                              remitted: widget.additional
-                                                  ? true
-                                                  : false,
-                                              pending: false,
-                                            ),
-                                            ...mapToFirestore(
-                                              {
-                                                'date': DateTime.now(),
-                                              },
-                                            ),
-                                          }, transactionsRecordReference2);
-                                          shouldSetState = true;
-                                          // Saved
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Expense saved!',
-                                                style: TextStyle(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
-                                                ),
-                                              ),
-                                              duration:
-                                                  const Duration(milliseconds: 4000),
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondary,
-                                            ),
                                           );
-                                          // exp to expenseRef
-                                          setState(() {
-                                            _model.expenseRef =
-                                                _model.newExpCopy?.reference;
-                                          });
-                                          if (functions.findTextsInString(
-                                              _model.choicesValue,
-                                              'Softdrinks')) {
-                                            // also creating grocery
+                                          shouldSetState = true;
+                                          if (_model.duplicatewithin1hour ==
+                                              0) {
+                                            // Not cash advance
+                                            var confirmDialogResponse =
+                                                await showDialog<bool>(
+                                                      context: context,
+                                                      builder:
+                                                          (alertDialogContext) {
+                                                        return AlertDialog(
+                                                          title: const Text(
+                                                              'Are you sure?'),
+                                                          content: const Text(
+                                                              'You are submitting a new expense.'),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      alertDialogContext,
+                                                                      false),
+                                                              child: const Text(
+                                                                  'Cancel'),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      alertDialogContext,
+                                                                      true),
+                                                              child: const Text(
+                                                                  'Confirm'),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    ) ??
+                                                    false;
+                                            if (confirmDialogResponse) {
+                                              // Create transaction expense
+
+                                              var transactionsRecordReference2 =
+                                                  TransactionsRecord.collection
+                                                      .doc();
+                                              await transactionsRecordReference2
+                                                  .set({
+                                                ...createTransactionsRecordData(
+                                                  staff: currentUserReference,
+                                                  total: double.tryParse(_model
+                                                      .amountTextController
+                                                      .text),
+                                                  type: 'expense',
+                                                  hotel: FFAppState().hotel,
+                                                  description: functions
+                                                      .resetFont(functions
+                                                          .startBigLetter(_model
+                                                              .descriptionTextController
+                                                              .text)),
+                                                  remitted: widget.additional
+                                                      ? true
+                                                      : false,
+                                                  pending: false,
+                                                ),
+                                                ...mapToFirestore(
+                                                  {
+                                                    'date': FieldValue
+                                                        .serverTimestamp(),
+                                                  },
+                                                ),
+                                              });
+                                              _model.newExpCopy =
+                                                  TransactionsRecord
+                                                      .getDocumentFromData({
+                                                ...createTransactionsRecordData(
+                                                  staff: currentUserReference,
+                                                  total: double.tryParse(_model
+                                                      .amountTextController
+                                                      .text),
+                                                  type: 'expense',
+                                                  hotel: FFAppState().hotel,
+                                                  description: functions
+                                                      .resetFont(functions
+                                                          .startBigLetter(_model
+                                                              .descriptionTextController
+                                                              .text)),
+                                                  remitted: widget.additional
+                                                      ? true
+                                                      : false,
+                                                  pending: false,
+                                                ),
+                                                ...mapToFirestore(
+                                                  {
+                                                    'date': DateTime.now(),
+                                                  },
+                                                ),
+                                              }, transactionsRecordReference2);
+                                              shouldSetState = true;
+                                              // Saved
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Expense saved!',
+                                                    style: TextStyle(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                    ),
+                                                  ),
+                                                  duration: const Duration(
+                                                      milliseconds: 4000),
+                                                  backgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondary,
+                                                ),
+                                              );
+                                              // exp to expenseRef
+                                              setState(() {
+                                                _model.expenseRef = _model
+                                                    .newExpCopy?.reference;
+                                              });
+                                              if (functions.findTextsInString(
+                                                  _model.choicesValue,
+                                                  'Softdrinks')) {
+                                                // also creating grocery
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'Also creating grocery!',
+                                                      style: TextStyle(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                      ),
+                                                    ),
+                                                    duration: const Duration(
+                                                        milliseconds: 4000),
+                                                    backgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondary,
+                                                  ),
+                                                );
+                                                // create grocery
+
+                                                await GroceriesRecord.collection
+                                                    .doc()
+                                                    .set({
+                                                  ...createGroceriesRecordData(
+                                                    hotel: FFAppState().hotel,
+                                                    recordedBy:
+                                                        currentUserReference,
+                                                    amount: double.tryParse(
+                                                        _model
+                                                            .amountTextController
+                                                            .text),
+                                                    remark: _model
+                                                        .descriptionTextController
+                                                        .text,
+                                                  ),
+                                                  ...mapToFirestore(
+                                                    {
+                                                      'date': FieldValue
+                                                          .serverTimestamp(),
+                                                    },
+                                                  ),
+                                                });
+                                                // increment stats grocery
+
+                                                await FFAppState()
+                                                    .statsReference!
+                                                    .update({
+                                                  ...mapToFirestore(
+                                                    {
+                                                      'groceryExpenses':
+                                                          FieldValue.increment(
+                                                              double.parse(_model
+                                                                  .amountTextController
+                                                                  .text)),
+                                                    },
+                                                  ),
+                                                });
+                                                // count grr
+                                                _model.countGrrCopy =
+                                                    await queryGoodsRevenueRatioRecordCount(
+                                                  queryBuilder:
+                                                      (goodsRevenueRatioRecord) =>
+                                                          goodsRevenueRatioRecord
+                                                              .where(
+                                                                'hotel',
+                                                                isEqualTo:
+                                                                    FFAppState()
+                                                                        .hotel,
+                                                              )
+                                                              .orderBy('date',
+                                                                  descending:
+                                                                      true),
+                                                );
+                                                shouldSetState = true;
+                                                if (_model.countGrrCopy! > 0) {
+                                                  // last grr
+                                                  _model.lastGrrCopy =
+                                                      await queryGoodsRevenueRatioRecordOnce(
+                                                    queryBuilder:
+                                                        (goodsRevenueRatioRecord) =>
+                                                            goodsRevenueRatioRecord
+                                                                .where(
+                                                                  'hotel',
+                                                                  isEqualTo:
+                                                                      FFAppState()
+                                                                          .hotel,
+                                                                )
+                                                                .orderBy('date',
+                                                                    descending:
+                                                                        true),
+                                                    singleRecord: true,
+                                                  ).then((s) => s.firstOrNull);
+                                                  shouldSetState = true;
+                                                  // increment grocery
+
+                                                  await _model
+                                                      .lastGrrCopy!.reference
+                                                      .update({
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'grocery': FieldValue
+                                                            .increment(double
+                                                                .parse(_model
+                                                                    .amountTextController
+                                                                    .text)),
+                                                      },
+                                                    ),
+                                                  });
+                                                }
+                                              }
+                                            } else {
+                                              if (shouldSetState) {
+                                                setState(() {});
+                                              }
+                                              return;
+                                            }
+                                          } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               SnackBar(
                                                 content: Text(
-                                                  'Also creating grocery!',
+                                                  'You have submitted another duplicate expense!',
                                                   style: TextStyle(
                                                     color: FlutterFlowTheme.of(
                                                             context)
-                                                        .primaryText,
+                                                        .info,
                                                   ),
                                                 ),
                                                 duration: const Duration(
                                                     milliseconds: 4000),
                                                 backgroundColor:
                                                     FlutterFlowTheme.of(context)
-                                                        .secondary,
+                                                        .error,
                                               ),
                                             );
-                                            // create grocery
-
-                                            await GroceriesRecord.collection
-                                                .doc()
-                                                .set({
-                                              ...createGroceriesRecordData(
-                                                hotel: FFAppState().hotel,
-                                                recordedBy:
-                                                    currentUserReference,
-                                                amount: double.tryParse(_model
-                                                    .amountTextController.text),
-                                                remark: _model
-                                                    .descriptionTextController
-                                                    .text,
-                                              ),
-                                              ...mapToFirestore(
-                                                {
-                                                  'date': FieldValue
-                                                      .serverTimestamp(),
-                                                },
-                                              ),
-                                            });
-                                            // increment stats grocery
-
-                                            await FFAppState()
-                                                .statsReference!
-                                                .update({
-                                              ...mapToFirestore(
-                                                {
-                                                  'groceryExpenses':
-                                                      FieldValue.increment(
-                                                          double.parse(_model
-                                                              .amountTextController
-                                                              .text)),
-                                                },
-                                              ),
-                                            });
-                                            // count grr
-                                            _model.countGrrCopy =
-                                                await queryGoodsRevenueRatioRecordCount(
-                                              queryBuilder:
-                                                  (goodsRevenueRatioRecord) =>
-                                                      goodsRevenueRatioRecord
-                                                          .where(
-                                                            'hotel',
-                                                            isEqualTo:
-                                                                FFAppState()
-                                                                    .hotel,
-                                                          )
-                                                          .orderBy('date',
-                                                              descending: true),
-                                            );
-                                            shouldSetState = true;
-                                            if (_model.countGrrCopy! > 0) {
-                                              // last grr
-                                              _model.lastGrrCopy =
-                                                  await queryGoodsRevenueRatioRecordOnce(
-                                                queryBuilder:
-                                                    (goodsRevenueRatioRecord) =>
-                                                        goodsRevenueRatioRecord
-                                                            .where(
-                                                              'hotel',
-                                                              isEqualTo:
-                                                                  FFAppState()
-                                                                      .hotel,
-                                                            )
-                                                            .orderBy('date',
-                                                                descending:
-                                                                    true),
-                                                singleRecord: true,
-                                              ).then((s) => s.firstOrNull);
-                                              shouldSetState = true;
-                                              // increment grocery
-
-                                              await _model
-                                                  .lastGrrCopy!.reference
-                                                  .update({
-                                                ...mapToFirestore(
-                                                  {
-                                                    'grocery': FieldValue.increment(
-                                                        double.parse(_model
-                                                            .amountTextController
-                                                            .text)),
-                                                  },
-                                                ),
-                                              });
-                                            }
                                           }
                                         } else {
-                                          if (shouldSetState) setState(() {});
-                                          return;
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Kindly provide a description!',
+                                                style: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .info,
+                                                ),
+                                              ),
+                                              duration:
+                                                  const Duration(milliseconds: 4000),
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                            ),
+                                          );
                                         }
                                       }
                                     }

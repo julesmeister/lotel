@@ -22,17 +22,22 @@ double? getTotalAmount(
   int startingNights,
   double? lateCheckoutFee,
   List<TransactionsRecord>? transactions,
+  int excessiveBeds,
 ) {
   double totalAmount = 0.0;
 
-  int parsedStartingBeds = int.tryParse(startingBeds) ?? 0;
-  int parsedBeds = int.tryParse(beds) ?? 0;
+  if (beds != "+") {
+    int parsedStartingBeds = int.tryParse(startingBeds) ?? 0;
+    int parsedBeds = int.tryParse(beds) ?? 0;
 
-  if (parsedStartingBeds == -1) {
-    totalAmount += parsedBeds * bedPrice;
+    if (parsedStartingBeds == -1) {
+      totalAmount += parsedBeds * bedPrice;
+    } else {
+      int bedDifference = parsedBeds - parsedStartingBeds;
+      totalAmount += bedDifference * bedPrice;
+    }
   } else {
-    int bedDifference = parsedBeds - parsedStartingBeds;
-    totalAmount += bedDifference * bedPrice;
+    totalAmount += excessiveBeds * bedPrice;
   }
 
   if (startingNights != 0) {
@@ -246,22 +251,23 @@ String quantityDescriptionForBookings(
   int room,
   String lateCheckoutHours,
 ) {
-  int bedsDifference =
-      (int.tryParse(currentBeds) ?? 0) - (int.tryParse(startingBeds) ?? 0);
-  int nightsDifference = (currentNights ?? 0) - (startingNights ?? 0);
-
-  String bedsAction = (bedsDifference > 0) ? 'added' : 'removed';
-  bedsDifference = bedsDifference.abs();
-
-  String nightsAction = (nightsDifference > 0) ? 'extended' : 'refunded';
-  nightsDifference = nightsDifference.abs();
-
   List<String> descriptions = [];
 
-  if (bedsDifference > 0) {
-    descriptions.add(
-        '$bedsDifference ${bedsDifference == 1 ? 'bed' : 'beds'} $bedsAction');
+  if (currentBeds != "+") {
+    int bedsDifference =
+        (int.tryParse(currentBeds) ?? 0) - (int.tryParse(startingBeds) ?? 0);
+    String bedsAction = (bedsDifference > 0) ? 'added' : 'removed';
+    bedsDifference = bedsDifference.abs();
+
+    if (bedsDifference > 0) {
+      descriptions.add(
+          '$bedsDifference ${bedsDifference == 1 ? 'bed' : 'beds'} $bedsAction');
+    }
   }
+
+  int nightsDifference = (currentNights ?? 0) - (startingNights ?? 0);
+  String nightsAction = (nightsDifference > 0) ? 'extended' : 'refunded';
+  nightsDifference = nightsDifference.abs();
 
   if (nightsDifference > 0) {
     descriptions.add(
@@ -270,7 +276,6 @@ String quantityDescriptionForBookings(
 
   if (lateCheckoutHours != "0") {
     String pluralization = lateCheckoutHours == "1" ? 'hour' : 'hours';
-
     descriptions.add(
         'charged extra for checking out late for $lateCheckoutHours $pluralization');
   }
@@ -1816,4 +1821,9 @@ List<HistoryRecord>? sortRoomHistoryASC(List<HistoryRecord>? history) {
   }
   history.sort((a, b) => a.date!.compareTo(b.date!));
   return history;
+}
+
+DateTime lastHour() {
+  // last hour from this time
+  return DateTime.now().subtract(Duration(hours: 1));
 }

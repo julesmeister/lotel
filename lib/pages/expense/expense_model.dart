@@ -16,11 +16,15 @@ class ExpenseModel extends FlutterFlowModel<ExpenseWidget> {
 
   bool disableSubmit = true;
 
+  int loop = 0;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
   TransactionsRecord? newCACopy;
+  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
+  int? duplicatewithin1hour;
   // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
   TransactionsRecord? newExpCopy;
   // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.

@@ -332,10 +332,6 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                                     0.0, 0.0, 0.0, 1.0),
                                 child: Container(
                                   width: 100.0,
-                                  constraints: const BoxConstraints(
-                                    minHeight: 100.0,
-                                    maxHeight: 120.0,
-                                  ),
                                   decoration: BoxDecoration(
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
@@ -360,6 +356,7 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                                       children: [
                                         SizedBox(
                                           width: 24.0,
+                                          height: 160.0,
                                           child: Stack(
                                             alignment:
                                                 const AlignmentDirectional(0.0, 0.0),
@@ -506,7 +503,6 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                                                                                 0.0,
                                                                           ),
                                                                     ),
-                                                                    maxLines: 3,
                                                                   ),
                                                                 ),
                                                               ],
