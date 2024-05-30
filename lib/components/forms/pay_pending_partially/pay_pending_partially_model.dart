@@ -22,16 +22,13 @@ class PayPendingPartiallyModel
 
   ///  State fields for stateful widgets in this component.
 
-  // Stores action output result for [Bottom Sheet - ChangeAmount] action in messageBox widget.
-  double? newAmount;
-  // State field(s) for CheckboxListTile widget.
+  // Stores action output result for [Bottom Sheet - ChangeAmount] action in Row widget.
+  double? amount;
+  // State field(s) for Checkbox widget.
 
-  Map<PayPendingStruct, bool> checkboxListTileValueMap = {};
-  List<PayPendingStruct> get checkboxListTileCheckedItems =>
-      checkboxListTileValueMap.entries
-          .where((e) => e.value)
-          .map((e) => e.key)
-          .toList();
+  Map<PayPendingStruct, bool> checkboxValueMap = {};
+  List<PayPendingStruct> get checkboxCheckedItems =>
+      checkboxValueMap.entries.where((e) => e.value).map((e) => e.key).toList();
 
   // Stores action output result for [Backend Call - Read Document] action in Row widget.
   BookingsRecord? booking;

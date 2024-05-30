@@ -326,6 +326,30 @@ class _MetricsWidgetState extends State<MetricsWidget>
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                child: FlutterFlowIconButton(
+                  borderRadius: 20.0,
+                  borderWidth: 1.0,
+                  buttonSize: 40.0,
+                  icon: Icon(
+                    Icons.stacked_line_chart,
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    size: 24.0,
+                  ),
+                  onPressed: () async {
+                    context.pushNamed(
+                      'MetricsYearly',
+                      extra: <String, dynamic>{
+                        kTransitionInfoKey: const TransitionInfo(
+                          hasTransition: true,
+                          transitionType: PageTransitionType.rightToLeft,
+                        ),
+                      },
+                    );
+                  },
+                ),
+              ),
               if (_model.hotel != 'All')
                 Align(
                   alignment: const AlignmentDirectional(0.0, 0.0),
@@ -386,71 +410,66 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    _model.hotelName =
-                                        await _model.updateStatsByHotel(
-                                      context,
-                                      hotel: 'All',
-                                    );
-                                    setState(() {
-                                      _model.hotel = _model.hotelName!;
-                                    });
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  _model.hotelName =
+                                      await _model.updateStatsByHotel(
+                                    context,
+                                    hotel: 'All',
+                                  );
+                                  setState(() {
+                                    _model.hotel = _model.hotelName!;
+                                  });
 
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    width: 50.0,
-                                    height: 100.0,
-                                    decoration: BoxDecoration(
-                                      color: _model.hotel == 'All'
-                                          ? FlutterFlowTheme.of(context)
-                                              .secondaryBackground
-                                          : FlutterFlowTheme.of(context)
-                                              .primaryBackground,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      border: Border.all(
-                                        color: valueOrDefault<Color>(
-                                          _model.hotel == 'All'
-                                              ? FlutterFlowTheme.of(context)
-                                                  .alternate
-                                              : FlutterFlowTheme.of(context)
-                                                  .primaryBackground,
-                                          FlutterFlowTheme.of(context)
-                                              .alternate,
-                                        ),
-                                        width: 1.0,
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  width: 50.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                    color: _model.hotel == 'All'
+                                        ? FlutterFlowTheme.of(context)
+                                            .secondaryBackground
+                                        : FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      color: valueOrDefault<Color>(
+                                        _model.hotel == 'All'
+                                            ? FlutterFlowTheme.of(context)
+                                                .alternate
+                                            : FlutterFlowTheme.of(context)
+                                                .primaryBackground,
+                                        FlutterFlowTheme.of(context).alternate,
                                       ),
+                                      width: 1.0,
                                     ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  4.0, 0.0, 0.0, 0.0),
-                                          child: Text(
-                                            'All',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
-                                                  letterSpacing: 0.0,
-                                                ),
-                                          ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            4.0, 0.0, 4.0, 0.0),
+                                        child: Text(
+                                          'All',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                                letterSpacing: 0.0,
+                                              ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -1044,7 +1063,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 18.0,
+                                              minFontSize: 14.0,
                                             ),
                                             AutoSizeText(
                                               'Rooms Income',
@@ -1089,7 +1108,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
-                                                minFontSize: 18.0,
+                                                minFontSize: 14.0,
                                               ),
                                             ),
                                             AutoSizeText(
@@ -1432,7 +1451,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 18.0,
+                                              minFontSize: 14.0,
                                             ),
                                             Text(
                                               'Expenses',
@@ -1717,7 +1736,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 18.0,
+                                              minFontSize: 14.0,
                                             ),
                                             Text(
                                               'Bills',
@@ -2065,7 +2084,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 18.0,
+                                              minFontSize: 14.0,
                                             ),
                                             AutoSizeText(
                                               'Goods Income',
@@ -2110,7 +2129,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
-                                                minFontSize: 18.0,
+                                                minFontSize: 14.0,
                                               ),
                                             ),
                                             AutoSizeText(
@@ -2253,20 +2272,25 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       ),
                                     );
                                   },
-                                ).then((value) => safeSetState(() {}));
+                                ).then((value) => safeSetState(
+                                    () => _model.salaryEdited = value));
 
-                                await _model.updateStatsByDate(
-                                  context,
-                                  year: _model.year,
-                                  month: _model.month,
-                                  hotel: FFAppState().hotel,
-                                );
-                                setState(() {});
-                                // set hotel to all
-                                setState(() {
-                                  _model.hotel = 'All';
-                                });
+                                if (_model.salaryEdited != null) {
+                                  await _model.updateStatsByDate(
+                                    context,
+                                    year: _model.year,
+                                    month: _model.month,
+                                    hotel: FFAppState().hotel,
+                                  );
+                                  setState(() {});
+                                  // set hotel to all
+                                  setState(() {
+                                    _model.hotel = 'All';
+                                  });
+                                }
                               }
+
+                              setState(() {});
                             },
                             child: Container(
                               width: 230.0,
@@ -2340,7 +2364,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 18.0,
+                                              minFontSize: 14.0,
                                             ),
                                             Text(
                                               'Salaries',
@@ -2507,15 +2531,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         children: [
                                           AutoSizeText(
                                             formatNumber(
-                                              _model.rooms +
-                                                  _model.goods -
-                                                  _model.expenses -
-                                                  _model.salaries -
-                                                  _model.bills,
+                                              _model.net,
                                               formatType: FormatType.decimal,
                                               decimalType:
                                                   DecimalType.automatic,
-                                              currency: 'P ',
+                                              currency: 'Php ',
                                             ),
                                             maxLines: 1,
                                             style: FlutterFlowTheme.of(context)
@@ -2527,7 +2547,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   letterSpacing: 0.0,
                                                   fontWeight: FontWeight.normal,
                                                 ),
-                                            minFontSize: 18.0,
+                                            minFontSize: 14.0,
                                           ),
                                           Text(
                                             'Net',

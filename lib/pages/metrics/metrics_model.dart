@@ -115,6 +115,8 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
   TransactionsRecord? transactionFromRemittanceGoods;
   // Stores action output result for [Firestore Query - Query a collection] action in goodsCard widget.
   List<TransactionsRecord>? goodSales;
+  // Stores action output result for [Bottom Sheet - SalaryEdit] action in salariesCard widget.
+  bool? salaryEdited;
   // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.
   StatsRecord? statO;
   // Stores action output result for [Firestore Query - Query a collection] action in Icon widget.
@@ -374,6 +376,16 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
           stat!.groceryExpenses;
       groceryExpenses = stat!.groceryExpenses;
       bills = stat!.bills;
+      // update net
+
+      await stat!.reference.update(createStatsRecordData(
+        net: stat!.roomsIncome +
+            stat!.goodsIncome -
+            stat!.salaries -
+            stat!.expenses -
+            stat!.bills -
+            stat!.groceryExpenses,
+      ));
     }
 
     return hotel;

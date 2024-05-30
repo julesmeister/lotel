@@ -6,28 +6,15 @@ import 'package:flutter/material.dart';
 class PendingsModel extends FlutterFlowModel<PendingsWidget> {
   ///  Local state fields for this page.
 
-  List<RoomPendingStruct> selectedTransaction = [];
-  void addToSelectedTransaction(RoomPendingStruct item) =>
-      selectedTransaction.add(item);
-  void removeFromSelectedTransaction(RoomPendingStruct item) =>
-      selectedTransaction.remove(item);
-  void removeAtIndexFromSelectedTransaction(int index) =>
-      selectedTransaction.removeAt(index);
-  void insertAtIndexInSelectedTransaction(int index, RoomPendingStruct item) =>
-      selectedTransaction.insert(index, item);
-  void updateSelectedTransactionAtIndex(
-          int index, Function(RoomPendingStruct) updateFn) =>
-      selectedTransaction[index] = updateFn(selectedTransaction[index]);
-
   int loopCounter = 0;
 
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
-  // Stores action output result for [Bottom Sheet - PayPendingPartially] action in clearBalance widget.
-  bool? isSuccess;
   // Stores action output result for [Backend Call - Read Document] action in clearBalance widget.
   BookingsRecord? booking;
+  // Stores action output result for [Bottom Sheet - PayPendingPartially] action in clearBalance widget.
+  bool? paidPartially;
   // State field(s) for CheckboxListTile widget.
 
   Map<RoomPendingStruct, bool> checkboxListTileValueMap = {};

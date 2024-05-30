@@ -7,3 +7,4 @@ export 'metrics_holder_struct.dart';
 export 'pay_pending_struct.dart';
 export 'room_pending_struct.dart';
 export 'room_usage_struct.dart';
+export 'yearly_sales_struct.dart';

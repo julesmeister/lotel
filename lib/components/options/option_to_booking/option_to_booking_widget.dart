@@ -2,6 +2,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'option_to_booking_model.dart';
 export 'option_to_booking_model.dart';
 
@@ -49,6 +50,8 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
@@ -92,8 +95,13 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    // return false
-                    Navigator.pop(context, false);
+                    // hotelSetting
+                    _model.hotelSettings =
+                        await HotelSettingsRecord.getDocumentOnce(
+                            FFAppState().settingRef!);
+                    // room
+                    _model.room = await RoomsRecord.getDocumentOnce(
+                        widget.bookingToExtend!.room!);
                     // go to check in
 
                     context.pushNamed(
@@ -104,7 +112,10 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                           ParamType.bool,
                         ),
                         'roomNo': serializeParam(
-                          widget.roomNo,
+                          valueOrDefault<int>(
+                            _model.room?.number,
+                            1,
+                          ),
                           ParamType.int,
                         ),
                         'bookingToExtend': serializeParam(
@@ -112,8 +123,60 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                           ParamType.Document,
                         ),
                         'ref': serializeParam(
-                          widget.ref,
+                          widget.bookingToExtend?.room,
                           ParamType.DocumentReference,
+                        ),
+                        'promoOn': serializeParam(
+                          _model.hotelSettings?.promoOn,
+                          ParamType.bool,
+                        ),
+                        'promoDetail': serializeParam(
+                          _model.hotelSettings?.promoDetail,
+                          ParamType.String,
+                        ),
+                        'promoDiscount': serializeParam(
+                          valueOrDefault<double>(
+                            _model.hotelSettings?.promoPercent,
+                            0.0,
+                          ),
+                          ParamType.double,
+                        ),
+                        'price': serializeParam(
+                          valueOrDefault<double>(
+                            _model.hotelSettings!.promoOn
+                                ? ((valueOrDefault<double>(
+                                          _model.room?.price,
+                                          900.0,
+                                        ) -
+                                        (valueOrDefault<double>(
+                                              _model.room?.price,
+                                              900.0,
+                                            ) *
+                                            valueOrDefault<double>(
+                                              _model
+                                                  .hotelSettings?.promoPercent,
+                                              0.0,
+                                            ) /
+                                            100))
+                                    .toInt()
+                                    .toDouble())
+                                : ((double price, String ability) {
+                                    return (ability != "normal")
+                                        ? (price * 0.8)
+                                        : (price);
+                                  }(
+                                    valueOrDefault<double>(
+                                      _model.room?.price,
+                                      900.0,
+                                    ),
+                                    widget.bookingToExtend!.ability)),
+                            900.0,
+                          ),
+                          ParamType.double,
+                        ),
+                        'totalAmount': serializeParam(
+                          widget.bookingToExtend?.total,
+                          ParamType.double,
                         ),
                       }.withoutNulls,
                       extra: <String, dynamic>{
@@ -124,6 +187,11 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                         ),
                       },
                     );
+
+                    // return false
+                    Navigator.pop(context, false);
+
+                    setState(() {});
                   },
                   child: Container(
                     width: double.infinity,

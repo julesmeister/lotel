@@ -1260,6 +1260,7 @@ List<RoomPendingStruct>? allPendings(List<TransactionsRecord>? transactions) {
     if (pendingMap.containsKey(booking)) {
       final pending = pendingMap[booking]!;
       pending.total += transaction.total;
+      pending.quantity += 1;
       pending.since = transaction.date!.isAfter(pending.since!)
           ? transaction.date
           : pending.since;
@@ -1269,6 +1270,7 @@ List<RoomPendingStruct>? allPendings(List<TransactionsRecord>? transactions) {
         room: transaction.room,
         total: transaction.total,
         since: transaction.date,
+        quantity: 1,
       );
       pendingMap[booking] = pending;
     }
@@ -1826,4 +1828,85 @@ List<HistoryRecord>? sortRoomHistoryASC(List<HistoryRecord>? history) {
 DateTime lastHour() {
   // last hour from this time
   return DateTime.now().subtract(Duration(hours: 1));
+}
+
+List<YearlySalesStruct> generateYearlySales(
+  List<StatsRecord>? stats,
+  String hotel,
+  String category,
+) {
+  List<YearlySalesStruct> yearlySales = [];
+  // Custom function to sort months
+  int _sortMonths(String month) {
+    final months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+    return months.indexOf(month);
+  }
+
+  if (stats != null) {
+    Map<String, double> salesByMonth = {}; // Map to store sales by month
+
+    for (var stat in stats) {
+      if (hotel == 'All' || stat.hotel == hotel) {
+        var month = stat.month;
+        var sales = 0.0;
+
+        if (category == 'Rooms') {
+          sales = stat.roomsIncome ?? 0.0;
+        } else if (category == 'Goods') {
+          sales = stat.goodsIncome ?? 0.0;
+        } else if (category == 'Net') {
+          sales = stat.net ?? 0.0;
+        }
+
+        // Aggregate sales for the same month
+        salesByMonth[month] = (salesByMonth[month] ?? 0.0) + sales;
+      }
+    }
+
+    // Convert aggregated sales to YearlySalesStruct objects
+    salesByMonth.forEach((month, sales) {
+      yearlySales.add(YearlySalesStruct(
+        month: month,
+        sales: sales,
+      ));
+    });
+    // Sort the list by month
+    yearlySales
+        .sort((a, b) => _sortMonths(a.month).compareTo(_sortMonths(b.month)));
+  }
+
+  return yearlySales;
+}
+
+double saleProgress(
+  List<double>? sales,
+  double? sale,
+) {
+  if (sales == null || sales.isEmpty || sale == null) {
+    return 0.25; // Default return value if sales list is empty or sale is null
+  }
+
+  // Find the minimum and maximum sales in the list
+  double minSale =
+      sales.reduce((min, currentSale) => math.min(min, currentSale));
+  double maxSale =
+      sales.reduce((max, currentSale) => math.max(max, currentSale));
+
+  // Calculate the percentage based on the sale and the range of sales
+  double percentage = (sale - minSale) / (maxSale - minSale);
+  return math.min(math.max(percentage, 0.25),
+      1.0); // Ensure percentage is between 0.25 and 1.0
 }

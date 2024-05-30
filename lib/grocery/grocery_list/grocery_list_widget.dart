@@ -181,7 +181,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                         child: Padding(
                           padding: MediaQuery.viewInsetsOf(context),
                           child: const SizedBox(
-                            height: 420.0,
+                            height: double.infinity,
                             child: NewGroceryWidget(),
                           ),
                         ),

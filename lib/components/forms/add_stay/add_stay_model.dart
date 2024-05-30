@@ -25,18 +25,24 @@ class AddStayModel extends FlutterFlowModel<AddStayWidget> {
 
   int loop = 0;
 
+  double promoPercent = 0.0;
+
+  double roomPrice = 0.0;
+
+  int number = 0;
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Read Document] action in AddStay widget.
   HotelSettingsRecord? hotelSetting;
   // Stores action output result for [Backend Call - Read Document] action in AddStay widget.
   TransactionsRecord? bookingTrans;
+  // Stores action output result for [Backend Call - Read Document] action in AddStay widget.
+  RoomsRecord? room;
   // State field(s) for number widget.
   FocusNode? numberFocusNode;
   TextEditingController? numberTextController;
   String? Function(BuildContext, String?)? numberTextControllerValidator;
-  // Stores action output result for [Backend Call - Read Document] action in Row widget.
-  RoomsRecord? room;
   // Stores action output result for [Backend Call - Create Document] action in Row widget.
   TransactionsRecord? trans;
 

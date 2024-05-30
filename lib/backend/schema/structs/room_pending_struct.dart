@@ -14,11 +14,13 @@ class RoomPendingStruct extends FFFirebaseStruct {
     int? room,
     double? total,
     DateTime? since,
+    int? quantity,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _booking = booking,
         _room = room,
         _total = total,
         _since = since,
+        _quantity = quantity,
         super(firestoreUtilData);
 
   // "booking" field.
@@ -47,12 +49,20 @@ class RoomPendingStruct extends FFFirebaseStruct {
   set since(DateTime? val) => _since = val;
   bool hasSince() => _since != null;
 
+  // "quantity" field.
+  int? _quantity;
+  int get quantity => _quantity ?? 1;
+  set quantity(int? val) => _quantity = val;
+  void incrementQuantity(int amount) => _quantity = quantity + amount;
+  bool hasQuantity() => _quantity != null;
+
   static RoomPendingStruct fromMap(Map<String, dynamic> data) =>
       RoomPendingStruct(
         booking: data['booking'] as DocumentReference?,
         room: castToType<int>(data['room']),
         total: castToType<double>(data['total']),
         since: data['since'] as DateTime?,
+        quantity: castToType<int>(data['quantity']),
       );
 
   static RoomPendingStruct? maybeFromMap(dynamic data) => data is Map
@@ -64,6 +74,7 @@ class RoomPendingStruct extends FFFirebaseStruct {
         'room': _room,
         'total': _total,
         'since': _since,
+        'quantity': _quantity,
       }.withoutNulls;
 
   @override
@@ -83,6 +94,10 @@ class RoomPendingStruct extends FFFirebaseStruct {
         'since': serializeParam(
           _since,
           ParamType.DateTime,
+        ),
+        'quantity': serializeParam(
+          _quantity,
+          ParamType.int,
         ),
       }.withoutNulls;
 
@@ -109,6 +124,11 @@ class RoomPendingStruct extends FFFirebaseStruct {
           ParamType.DateTime,
           false,
         ),
+        quantity: deserializeParam(
+          data['quantity'],
+          ParamType.int,
+          false,
+        ),
       );
 
   @override
@@ -120,11 +140,13 @@ class RoomPendingStruct extends FFFirebaseStruct {
         booking == other.booking &&
         room == other.room &&
         total == other.total &&
-        since == other.since;
+        since == other.since &&
+        quantity == other.quantity;
   }
 
   @override
-  int get hashCode => const ListEquality().hash([booking, room, total, since]);
+  int get hashCode =>
+      const ListEquality().hash([booking, room, total, since, quantity]);
 }
 
 RoomPendingStruct createRoomPendingStruct({
@@ -132,6 +154,7 @@ RoomPendingStruct createRoomPendingStruct({
   int? room,
   double? total,
   DateTime? since,
+  int? quantity,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -142,6 +165,7 @@ RoomPendingStruct createRoomPendingStruct({
       room: room,
       total: total,
       since: since,
+      quantity: quantity,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,

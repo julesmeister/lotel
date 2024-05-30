@@ -3239,7 +3239,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       homePageHotelSettingsRecord!
                                                                               .promoOn
                                                                           ? formatNumber(
-                                                                              roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100),
+                                                                              (roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)).toInt().toDouble(),
                                                                               formatType: FormatType.decimal,
                                                                               decimalType: DecimalType.automatic,
                                                                               currency: 'P ',
@@ -3305,7 +3305,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                                 ParamType.DocumentReference,
                                                                               ),
                                                                               'price': serializeParam(
-                                                                                homePageHotelSettingsRecord.promoOn ? (roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)) : roomsItem.price,
+                                                                                homePageHotelSettingsRecord.promoOn ? ((roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)).toInt().toDouble()) : roomsItem.price,
                                                                                 ParamType.double,
                                                                               ),
                                                                               'roomNo': serializeParam(
@@ -4872,7 +4872,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           child:
                                                                               const SizedBox(
                                                                             height:
-                                                                                420.0,
+                                                                                double.infinity,
                                                                             child:
                                                                                 NewGroceryWidget(),
                                                                           ),

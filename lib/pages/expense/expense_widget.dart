@@ -1161,10 +1161,15 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                       child: StreamBuilder<List<StaffsRecord>>(
                         stream: _model.staffsCashAdvance(
                           requestFn: () => queryStaffsRecord(
-                            queryBuilder: (staffsRecord) => staffsRecord.where(
-                              'hotel',
-                              isEqualTo: FFAppState().hotel,
-                            ),
+                            queryBuilder: (staffsRecord) => staffsRecord
+                                .where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                )
+                                .where(
+                                  'fired',
+                                  isNotEqualTo: true,
+                                ),
                           ),
                         ),
                         builder: (context, snapshot) {

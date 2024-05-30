@@ -1768,7 +1768,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           fontFamily:
                                                                               'Outfit',
                                                                           color:
-                                                                              FlutterFlowTheme.of(context).primaryText,
+                                                                              FlutterFlowTheme.of(context).error,
                                                                           letterSpacing:
                                                                               0.0,
                                                                         ),

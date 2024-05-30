@@ -826,106 +826,110 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                               if (listViewIssuesRecord
                                                       .dateFixed !=
                                                   null)
-                                                InkWell(
-                                                  splashColor:
-                                                      Colors.transparent,
-                                                  focusColor:
-                                                      Colors.transparent,
-                                                  hoverColor:
-                                                      Colors.transparent,
-                                                  highlightColor:
-                                                      Colors.transparent,
-                                                  onTap: () async {
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
-                                                                      context)
-                                                                  .unfocus(),
-                                                          child: Padding(
-                                                            padding: MediaQuery
-                                                                .viewInsetsOf(
-                                                                    context),
-                                                            child: SizedBox(
-                                                              height: double
-                                                                  .infinity,
-                                                              child:
-                                                                  ChangeDateWidget(
-                                                                date: listViewIssuesRecord
-                                                                            .dateFixed ==
-                                                                        null
-                                                                    ? getCurrentTimestamp
-                                                                    : listViewIssuesRecord
-                                                                        .dateFixed!,
+                                                Expanded(
+                                                  child: InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      await showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return GestureDetector(
+                                                            onTap: () => _model
+                                                                    .unfocusNode
+                                                                    .canRequestFocus
+                                                                ? FocusScope.of(
+                                                                        context)
+                                                                    .requestFocus(
+                                                                        _model
+                                                                            .unfocusNode)
+                                                                : FocusScope.of(
+                                                                        context)
+                                                                    .unfocus(),
+                                                            child: Padding(
+                                                              padding: MediaQuery
+                                                                  .viewInsetsOf(
+                                                                      context),
+                                                              child: SizedBox(
+                                                                height: double
+                                                                    .infinity,
+                                                                child:
+                                                                    ChangeDateWidget(
+                                                                  date: listViewIssuesRecord
+                                                                              .dateFixed ==
+                                                                          null
+                                                                      ? getCurrentTimestamp
+                                                                      : listViewIssuesRecord
+                                                                          .dateFixed!,
+                                                                ),
                                                               ),
                                                             ),
+                                                          );
+                                                        },
+                                                      ).then((value) =>
+                                                          safeSetState(() =>
+                                                              _model.adjustedFixDate =
+                                                                  value));
+
+                                                      if (_model
+                                                              .adjustedFixDate !=
+                                                          null) {
+                                                        // change date fixed
+
+                                                        await listViewIssuesRecord
+                                                            .reference
+                                                            .update(
+                                                                createIssuesRecordData(
+                                                          dateFixed: _model
+                                                              .adjustedFixDate,
+                                                        ));
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          SnackBar(
+                                                            content: Text(
+                                                              'Fix date modified!',
+                                                              style: TextStyle(
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                              ),
+                                                            ),
+                                                            duration: const Duration(
+                                                                milliseconds:
+                                                                    4000),
+                                                            backgroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondary,
                                                           ),
                                                         );
-                                                      },
-                                                    ).then((value) =>
-                                                        safeSetState(() => _model
-                                                                .adjustedFixDate =
-                                                            value));
+                                                      }
 
-                                                    if (_model
-                                                            .adjustedFixDate !=
-                                                        null) {
-                                                      // change date fixed
-
-                                                      await listViewIssuesRecord
-                                                          .reference
-                                                          .update(
-                                                              createIssuesRecordData(
-                                                        dateFixed: _model
-                                                            .adjustedFixDate,
-                                                      ));
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        SnackBar(
-                                                          content: Text(
-                                                            'Fix date modified!',
-                                                            style: TextStyle(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .primaryText,
-                                                            ),
+                                                      setState(() {});
+                                                    },
+                                                    child: Text(
+                                                      'Solved on ${dateTimeFormat('MMM d h:mm a', listViewIssuesRecord.dateFixed)} ${functions.daysSolved(listViewIssuesRecord.date!, listViewIssuesRecord.dateFixed)}',
+                                                      maxLines: 2,
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
                                                           ),
-                                                          duration: const Duration(
-                                                              milliseconds:
-                                                                  4000),
-                                                          backgroundColor:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .secondary,
-                                                        ),
-                                                      );
-                                                    }
-
-                                                    setState(() {});
-                                                  },
-                                                  child: Text(
-                                                    'Solved on ${dateTimeFormat('EEE MMM d y h:mm a', listViewIssuesRecord.dateFixed)} ${functions.daysSolved(listViewIssuesRecord.date!, listViewIssuesRecord.dateFixed)}',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
+                                                    ),
                                                   ),
                                                 ),
                                             ],

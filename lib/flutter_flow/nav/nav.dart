@@ -425,6 +425,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               isList: true,
             ),
           ),
+        ),
+        FFRoute(
+          name: 'MetricsYearly',
+          path: '/metricsYearly',
+          requireAuth: true,
+          builder: (context, params) => const MetricsYearlyWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

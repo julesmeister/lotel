@@ -40,3 +40,5 @@ export '/room/history_in_room/history_in_room_widget.dart'
     show HistoryInRoomWidget;
 export '/room/history_in_rooms/history_in_rooms_widget.dart'
     show HistoryInRoomsWidget;
+export '/pages/metrics_yearly/metrics_yearly_widget.dart'
+    show MetricsYearlyWidget;

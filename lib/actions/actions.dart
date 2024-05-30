@@ -66,6 +66,7 @@ Future createNewStats(BuildContext context) async {
         create: true,
       ),
       groceryExpenses: 0.0,
+      net: 0.0,
     ),
     ...mapToFirestore(
       {
@@ -99,6 +100,7 @@ Future createNewStats(BuildContext context) async {
         create: true,
       ),
       groceryExpenses: 0.0,
+      net: 0.0,
     ),
     ...mapToFirestore(
       {

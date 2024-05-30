@@ -41,6 +41,13 @@ class _AddStayWidgetState extends State<AddStayWidget> {
       // hotelSetting
       _model.hotelSetting =
           await HotelSettingsRecord.getDocumentOnce(FFAppState().settingRef!);
+      // promoPercent set
+      setState(() {
+        _model.promoPercent = valueOrDefault<double>(
+          _model.hotelSetting?.promoPercent,
+          0.0,
+        );
+      });
       while (widget.booking?.transactions.length != _model.loop) {
         // bookingTrans
         _model.bookingTrans = await TransactionsRecord.getDocumentOnce(
@@ -58,6 +65,13 @@ class _AddStayWidgetState extends State<AddStayWidget> {
       setState(() {
         _model.bedPrice = _model.hotelSetting!.bedPrice;
         _model.lateCheckOutFee = _model.hotelSetting!.lateCheckoutFee;
+      });
+      // room
+      _model.room = await RoomsRecord.getDocumentOnce(widget.booking!.room!);
+      // room price
+      setState(() {
+        _model.roomPrice = _model.room!.price;
+        _model.number = _model.room!.number;
       });
     });
 
@@ -431,6 +445,43 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                             : ' nights';
                                       }(_model.numberTextController.text),
                                       style: const TextStyle(),
+                                    ),
+                                    const TextSpan(
+                                      text: ' ',
+                                      style: TextStyle(),
+                                    ),
+                                    TextSpan(
+                                      text: (double price, String quantity) {
+                                        return " +${price * int.parse(quantity)}";
+                                      }(
+                                          (_model.promoPercent != 0.0
+                                              ? ((_model.roomPrice -
+                                                      (_model.roomPrice *
+                                                          _model.promoPercent /
+                                                          100))
+                                                  .toInt()
+                                                  .toDouble())
+                                              : ((double price,
+                                                      String ability) {
+                                                  return (ability != "normal")
+                                                      ? (price * 0.8)
+                                                      : (price);
+                                                }(
+                                                  _model.roomPrice,
+                                                  valueOrDefault<String>(
+                                                    widget.booking?.ability,
+                                                    'normal',
+                                                  )))),
+                                          _model.numberTextController.text),
+                                      style: TextStyle(
+                                        color: (int.parse(_model
+                                                    .numberTextController
+                                                    .text)) >=
+                                                1
+                                            ? FlutterFlowTheme.of(context)
+                                                .secondary
+                                            : FlutterFlowTheme.of(context).info,
+                                      ),
                                     )
                                   ],
                                   style: FlutterFlowTheme.of(context)
@@ -483,10 +534,6 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                         },
                                       ),
                                     });
-                                    // room
-                                    _model.room =
-                                        await RoomsRecord.getDocumentOnce(
-                                            widget.booking!.room!);
                                     // create transaction
 
                                     var transactionsRecordReference =
@@ -494,27 +541,31 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                     await transactionsRecordReference.set({
                                       ...createTransactionsRecordData(
                                         staff: currentUserReference,
-                                        total: (double price, String quantity,
-                                                String ability) {
-                                          return (ability != "normal")
-                                              ? (price *
-                                                  double.parse(quantity) *
-                                                  0.8)
-                                              : (price *
-                                                  double.parse(quantity));
-                                        }(
-                                            _model.room!.price,
-                                            _model.numberTextController.text,
-                                            valueOrDefault<String>(
-                                              widget.booking?.ability,
-                                              'normal',
-                                            )),
+                                        total: _model.promoPercent != 0.0
+                                            ? ((_model.roomPrice -
+                                                    (_model.roomPrice *
+                                                        _model.promoPercent /
+                                                        100))
+                                                .toInt()
+                                                .toDouble())
+                                            : ((double price, String ability) {
+                                                  return (ability != "normal")
+                                                      ? (price * 0.8)
+                                                      : (price);
+                                                }(
+                                                    _model.roomPrice,
+                                                    valueOrDefault<String>(
+                                                      widget.booking?.ability,
+                                                      'normal',
+                                                    ))) *
+                                                double.parse(_model
+                                                    .numberTextController.text),
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
                                         pending:
                                             widget.booking?.status == 'pending',
-                                        room: _model.room?.number,
+                                        room: _model.number,
                                         booking: widget.booking?.reference,
                                         description: (String additional,
                                                 String existing, int room) {
@@ -526,7 +577,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                         }(
                                             _model.numberTextController.text,
                                             widget.booking!.extraBeds,
-                                            _model.room!.number),
+                                            _model.number),
                                         guests:
                                             int.parse(widget.booking!.guests),
                                       ),
@@ -540,27 +591,31 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                         TransactionsRecord.getDocumentFromData({
                                       ...createTransactionsRecordData(
                                         staff: currentUserReference,
-                                        total: (double price, String quantity,
-                                                String ability) {
-                                          return (ability != "normal")
-                                              ? (price *
-                                                  double.parse(quantity) *
-                                                  0.8)
-                                              : (price *
-                                                  double.parse(quantity));
-                                        }(
-                                            _model.room!.price,
-                                            _model.numberTextController.text,
-                                            valueOrDefault<String>(
-                                              widget.booking?.ability,
-                                              'normal',
-                                            )),
+                                        total: _model.promoPercent != 0.0
+                                            ? ((_model.roomPrice -
+                                                    (_model.roomPrice *
+                                                        _model.promoPercent /
+                                                        100))
+                                                .toInt()
+                                                .toDouble())
+                                            : ((double price, String ability) {
+                                                  return (ability != "normal")
+                                                      ? (price * 0.8)
+                                                      : (price);
+                                                }(
+                                                    _model.roomPrice,
+                                                    valueOrDefault<String>(
+                                                      widget.booking?.ability,
+                                                      'normal',
+                                                    ))) *
+                                                double.parse(_model
+                                                    .numberTextController.text),
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
                                         pending:
                                             widget.booking?.status == 'pending',
-                                        room: _model.room?.number,
+                                        room: _model.number,
                                         booking: widget.booking?.reference,
                                         description: (String additional,
                                                 String existing, int room) {
@@ -572,7 +627,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                         }(
                                             _model.numberTextController.text,
                                             widget.booking!.extraBeds,
-                                            _model.room!.number),
+                                            _model.number),
                                         guests:
                                             int.parse(widget.booking!.guests),
                                       ),
@@ -598,16 +653,25 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                             widget.booking!.nights +
                                                 int.parse(_model
                                                     .numberTextController.text),
-                                            (double price, String ability) {
-                                              return (ability != "normal")
-                                                  ? (price * 0.8)
-                                                  : (price);
-                                            }(
-                                                _model.room!.price,
-                                                valueOrDefault<String>(
-                                                  widget.booking?.ability,
-                                                  'normal',
-                                                )),
+                                            _model.promoPercent != 0.0
+                                                ? ((_model.roomPrice -
+                                                        (_model.roomPrice *
+                                                            _model
+                                                                .promoPercent /
+                                                            100))
+                                                    .toInt()
+                                                    .toDouble())
+                                                : ((double price,
+                                                        String ability) {
+                                                    return (ability != "normal")
+                                                        ? (price * 0.8)
+                                                        : (price);
+                                                  }(
+                                                    _model.roomPrice,
+                                                    valueOrDefault<String>(
+                                                      widget.booking?.ability,
+                                                      'normal',
+                                                    ))),
                                             _model.bedPrice,
                                             '-1',
                                             widget.booking!.nights,

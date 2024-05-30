@@ -145,7 +145,7 @@ class _OptionToBookingTransactionWidgetState
                       },
                     ).then((value) => safeSetState(() {}));
 
-                    // close
+                    // close first
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -230,22 +230,28 @@ class _OptionToBookingTransactionWidgetState
                         description: (String description) {
                           return description.replaceAll(
                               RegExp(
-                                  r'Guest paid the outstanding balance since \d+ hours ago for'),
+                                  r'Guest paid the outstanding balance since \d+ hours ago for '),
                               '');
                         }(widget.description!),
                       ));
                       // add to pending
 
                       await widget.booking!.update({
+                        ...createBookingsRecordData(
+                          status: 'pending',
+                        ),
                         ...mapToFirestore(
                           {
                             'pendings': FieldValue.arrayUnion([widget.ref]),
                           },
                         ),
                       });
+                      // bookingRef
+                      _model.bookingRef =
+                          await BookingsRecord.getDocumentOnce(widget.booking!);
                       // create history
 
-                      await HistoryRecord.createDoc(_model.bookingNorm!.room!)
+                      await HistoryRecord.createDoc(_model.bookingRef!.room!)
                           .set({
                         ...createHistoryRecordData(
                           description: 'Transaction worth ${formatNumber(
@@ -277,6 +283,8 @@ class _OptionToBookingTransactionWidgetState
                         ),
                       );
                     }
+
+                    setState(() {});
                   },
                   child: Container(
                     width: double.infinity,

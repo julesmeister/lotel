@@ -338,11 +338,8 @@ class _PromoWidgetState extends State<PromoWidget> {
                                           .settingRef!
                                           .update(createHotelSettingsRecordData(
                                             promoOn: _model.promoOn,
-                                            promoDetail: (String detail) {
-                                              return !detail.contains("promo")
-                                                  ? detail += " Promo"
-                                                  : detail;
-                                            }(_model.detailTextController.text),
+                                            promoDetail: _model
+                                                .detailTextController.text,
                                             promoPercent: double.tryParse(_model
                                                 .percentTextController.text),
                                           ));

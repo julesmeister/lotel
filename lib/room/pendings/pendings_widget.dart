@@ -1,5 +1,7 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/pay_pending_partially/pay_pending_partially_widget.dart';
+import '/components/options/option_to_pending_transaction/option_to_pending_transaction_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -110,16 +112,74 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    if (_model.selectedTransaction.isNotEmpty)
+                    if ((_model.checkboxListTileCheckedItems.length == 1) &&
+                        (valueOrDefault(currentUserDocument?.role, '') ==
+                            'admin'))
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                        child: AuthUserStreamWidget(
+                          builder: (context) => FlutterFlowIconButton(
+                            borderRadius: 30.0,
+                            borderWidth: 1.0,
+                            buttonSize: 40.0,
+                            icon: Icon(
+                              Icons.menu,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 24.0,
+                            ),
+                            onPressed: () async {
+                              await showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                enableDrag: false,
+                                useSafeArea: true,
+                                context: context,
+                                builder: (context) {
+                                  return GestureDetector(
+                                    onTap: () => _model
+                                            .unfocusNode.canRequestFocus
+                                        ? FocusScope.of(context)
+                                            .requestFocus(_model.unfocusNode)
+                                        : FocusScope.of(context).unfocus(),
+                                    child: Padding(
+                                      padding: MediaQuery.viewInsetsOf(context),
+                                      child: SizedBox(
+                                        height: 170.0,
+                                        child: OptionToPendingTransactionWidget(
+                                          booking: _model
+                                              .checkboxListTileCheckedItems
+                                              .first
+                                              .booking!,
+                                          transactions:
+                                              pendingsTransactionsRecordList
+                                                  .where((e) =>
+                                                      e.booking ==
+                                                      _model
+                                                          .checkboxListTileCheckedItems
+                                                          .first
+                                                          .booking)
+                                                  .toList()
+                                                  .map((e) => e.reference)
+                                                  .toList(),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ).then((value) => safeSetState(() {}));
+                            },
+                          ),
+                        ),
+                      ),
+                    if (_model.checkboxListTileCheckedItems.isNotEmpty)
                       Padding(
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
                         child: FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
                           borderRadius: 30.0,
                           borderWidth: 1.0,
-                          buttonSize: 44.0,
-                          fillColor: FlutterFlowTheme.of(context).info,
+                          buttonSize: 40.0,
                           icon: Icon(
                             Icons.approval_outlined,
                             color: FlutterFlowTheme.of(context).primaryText,
@@ -153,113 +213,127 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                 false;
                             if (confirmDialogResponse) {
                               while (_model.loopCounter !=
-                                  valueOrDefault<int>(
-                                    _model.selectedTransaction.length,
-                                    0,
-                                  )) {
-                                // partial?
-                                confirmDialogResponse = await showDialog<bool>(
+                                  _model.checkboxListTileCheckedItems.length) {
+                                // get booking
+                                _model.booking =
+                                    await BookingsRecord.getDocumentOnce(_model
+                                        .checkboxListTileCheckedItems[
+                                            _model.loopCounter]
+                                        .booking!);
+                                shouldSetState = true;
+                                if (_model
+                                        .checkboxListTileCheckedItems[
+                                            _model.loopCounter]
+                                        .quantity >
+                                    1) {
+                                  // partial?
+                                  confirmDialogResponse = await showDialog<
+                                          bool>(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: const Text('Partial Payment'),
+                                            content: Text(
+                                                'Did the guest from room ${_model.checkboxListTileCheckedItems[_model.loopCounter].room.toString()} owing an amount of ${formatNumber(
+                                              _model
+                                                  .checkboxListTileCheckedItems[
+                                                      _model.loopCounter]
+                                                  .total,
+                                              formatType: FormatType.decimal,
+                                              decimalType:
+                                                  DecimalType.automatic,
+                                              currency: 'Php ',
+                                            )} paid the amount partially? If no, all balance from room ${_model.checkboxListTileCheckedItems[_model.loopCounter].room.toString()} will be settled.'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, false),
+                                                child: const Text('NO'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, true),
+                                                child: const Text('YES'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ) ??
+                                      false;
+                                  if (confirmDialogResponse) {
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      enableDrag: false,
+                                      useSafeArea: true,
                                       context: context,
-                                      builder: (alertDialogContext) {
-                                        return AlertDialog(
-                                          title: const Text('Partial Payment'),
-                                          content: Text(
-                                              'Did the guest from room ${_model.selectedTransaction[FFAppState().loopCounter].room.toString()} owing an amount of ${formatNumber(
-                                            _model
-                                                .selectedTransaction[
-                                                    FFAppState().loopCounter]
-                                                .total,
-                                            formatType: FormatType.decimal,
-                                            decimalType: DecimalType.automatic,
-                                            currency: 'Php ',
-                                          )} paid the amount partially?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(
-                                                  alertDialogContext, false),
-                                              child: const Text('Cancel'),
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () => _model
+                                                  .unfocusNode.canRequestFocus
+                                              ? FocusScope.of(context)
+                                                  .requestFocus(
+                                                      _model.unfocusNode)
+                                              : FocusScope.of(context)
+                                                  .unfocus(),
+                                          child: Padding(
+                                            padding: MediaQuery.viewInsetsOf(
+                                                context),
+                                            child: SizedBox(
+                                              height: double.infinity,
+                                              child: PayPendingPartiallyWidget(
+                                                transactions:
+                                                    pendingsTransactionsRecordList
+                                                        .where((e) =>
+                                                            e.booking ==
+                                                            _model
+                                                                .checkboxListTileCheckedItems[
+                                                                    _model
+                                                                        .loopCounter]
+                                                                .booking)
+                                                        .toList(),
+                                                booking: _model
+                                                    .checkboxListTileCheckedItems[
+                                                        _model.loopCounter]
+                                                    .booking!,
+                                              ),
                                             ),
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(
-                                                  alertDialogContext, true),
-                                              child: const Text('Confirm'),
-                                            ),
-                                          ],
+                                          ),
                                         );
                                       },
-                                    ) ??
-                                    false;
-                                if (confirmDialogResponse) {
-                                  await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    enableDrag: false,
-                                    useSafeArea: true,
-                                    context: context,
-                                    builder: (context) {
-                                      return GestureDetector(
-                                        onTap: () => _model
-                                                .unfocusNode.canRequestFocus
-                                            ? FocusScope.of(context)
-                                                .requestFocus(
-                                                    _model.unfocusNode)
-                                            : FocusScope.of(context).unfocus(),
-                                        child: Padding(
-                                          padding:
-                                              MediaQuery.viewInsetsOf(context),
-                                          child: SizedBox(
-                                            height: double.infinity,
-                                            child: PayPendingPartiallyWidget(
-                                              transactions:
-                                                  pendingsTransactionsRecordList
-                                                      .where((e) =>
-                                                          e.booking ==
-                                                          _model
-                                                              .selectedTransaction[
-                                                                  FFAppState()
-                                                                      .loopCounter]
-                                                              .booking)
-                                                      .toList(),
-                                              booking: _model
-                                                  .selectedTransaction[
-                                                      FFAppState().loopCounter]
-                                                  .booking!,
+                                    ).then((value) => safeSetState(
+                                        () => _model.paidPartially = value));
+
+                                    shouldSetState = true;
+                                    if (!(_model.paidPartially != null)) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Partial payment cancelled!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .info,
                                             ),
                                           ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .error,
                                         ),
                                       );
-                                    },
-                                  ).then((value) => safeSetState(
-                                      () => _model.isSuccess = value));
-
-                                  shouldSetState = true;
-                                  if (!(_model.isSuccess != null)) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Something went wrong!',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .info,
-                                          ),
-                                        ),
-                                        duration: const Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context).error,
-                                      ),
+                                      if (shouldSetState) setState(() {});
+                                      return;
+                                    }
+                                  } else {
+                                    await action_blocks.payBalanceOfPending(
+                                      context,
+                                      booking: _model.booking,
                                     );
-                                    if (shouldSetState) setState(() {});
-                                    return;
                                   }
                                 } else {
-                                  // get booking
-                                  _model.booking =
-                                      await BookingsRecord.getDocumentOnce(
-                                          _model
-                                              .selectedTransaction[
-                                                  FFAppState().loopCounter]
-                                              .booking!);
-                                  shouldSetState = true;
                                   await action_blocks.payBalanceOfPending(
                                     context,
                                     booking: _model.booking,
@@ -278,7 +352,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    'Balance${_model.selectedTransaction.length == 1 ? ' has ' : 's have '}been cleared!',
+                                    'Balance${_model.checkboxListTileCheckedItems.length == 1 ? ' has ' : 's have '}been cleared!',
                                     style: TextStyle(
                                       color: FlutterFlowTheme.of(context)
                                           .primaryText,
@@ -341,7 +415,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 12.0, 0.0, 0.0),
                                   child: Text(
-                                    _model.selectedTransaction.length
+                                    _model.checkboxListTileCheckedItems.length
                                         .toString(),
                                     style: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -385,156 +459,93 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                     ),
                                   );
                                 }
-                                return RefreshIndicator(
-                                  onRefresh: () async {
-                                    await queryUsersRecordOnce(
-                                      queryBuilder: (usersRecord) =>
-                                          usersRecord.orderBy('role'),
-                                    );
-                                  },
-                                  child: ListView.builder(
-                                    padding: const EdgeInsets.fromLTRB(
-                                      0,
-                                      0,
-                                      0,
-                                      5.0,
-                                    ),
-                                    primary: false,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: pendings.length,
-                                    itemBuilder: (context, pendingsIndex) {
-                                      final pendingsItem =
-                                          pendings[pendingsIndex];
-                                      return Padding(
+                                return ListView.builder(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    0,
+                                    0,
+                                    0,
+                                    5.0,
+                                  ),
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: pendings.length,
+                                  itemBuilder: (context, pendingsIndex) {
+                                    final pendingsItem =
+                                        pendings[pendingsIndex];
+                                    return Align(
+                                      alignment:
+                                          const AlignmentDirectional(0.0, -1.0),
+                                      child: Padding(
                                         padding: const EdgeInsetsDirectional.fromSTEB(
-                                            16.0, 0.0, 16.0, 8.0),
-                                        child: Container(
-                                          width: 100.0,
-                                          height: 70.0,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            border: Border.all(
-                                              color:
+                                            10.0, 0.0, 10.0, 0.0),
+                                        child: Theme(
+                                          data: ThemeData(
+                                            unselectedWidgetColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryText,
+                                          ),
+                                          child: CheckboxListTile(
+                                            value:
+                                                _model.checkboxListTileValueMap[
+                                                    pendingsItem] ??= false,
+                                            onChanged: (newValue) async {
+                                              setState(() => _model
+                                                      .checkboxListTileValueMap[
+                                                  pendingsItem] = newValue!);
+                                            },
+                                            title: Text(
+                                              'Room ${pendingsItem.room.toString()}',
+                                              style:
                                                   FlutterFlowTheme.of(context)
-                                                      .alternate,
-                                              width: 1.0,
+                                                      .bodyLarge
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                            ),
+                                            subtitle: Text(
+                                              'Balance: Php ${formatNumber(
+                                                pendingsItem.total,
+                                                formatType: FormatType.decimal,
+                                                decimalType:
+                                                    DecimalType.automatic,
+                                              )} - ${functions.hoursAgo(pendingsItem.since!)}',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .success,
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                            ),
+                                            tileColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryBackground,
+                                            activeColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                            checkColor: Colors.white,
+                                            dense: false,
+                                            controlAffinity:
+                                                ListTileControlAffinity
+                                                    .trailing,
+                                            contentPadding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    8.0, 0.0, 0.0, 0.0),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                             ),
                                           ),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: Align(
-                                                  alignment:
-                                                      const AlignmentDirectional(
-                                                          0.0, -1.0),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(10.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Theme(
-                                                      data: ThemeData(
-                                                        unselectedWidgetColor:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                      ),
-                                                      child: CheckboxListTile(
-                                                        value: _model
-                                                                .checkboxListTileValueMap[
-                                                            pendingsItem] ??= false,
-                                                        onChanged:
-                                                            (newValue) async {
-                                                          setState(() => _model
-                                                                      .checkboxListTileValueMap[
-                                                                  pendingsItem] =
-                                                              newValue!);
-                                                          if (newValue!) {
-                                                            _model.addToSelectedTransaction(
-                                                                pendingsItem);
-                                                          } else {
-                                                            _model.removeFromSelectedTransaction(
-                                                                pendingsItem);
-                                                          }
-                                                        },
-                                                        title: Text(
-                                                          'Room ${pendingsItem.room.toString()}',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyLarge
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                        ),
-                                                        subtitle: Text(
-                                                          'Balance: Php ${formatNumber(
-                                                            pendingsItem.total,
-                                                            formatType:
-                                                                FormatType
-                                                                    .decimal,
-                                                            decimalType:
-                                                                DecimalType
-                                                                    .automatic,
-                                                          )} - ${functions.hoursAgo(pendingsItem.since!)}',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodySmall
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .success,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                        ),
-                                                        tileColor: FlutterFlowTheme
-                                                                .of(context)
-                                                            .secondaryBackground,
-                                                        activeColor:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primary,
-                                                        checkColor:
-                                                            Colors.white,
-                                                        dense: false,
-                                                        controlAffinity:
-                                                            ListTileControlAffinity
-                                                                .trailing,
-                                                        contentPadding:
-                                                            const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    8.0,
-                                                                    0.0,
-                                                                    8.0,
-                                                                    0.0),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
                                         ),
-                                      );
-                                    },
-                                  ),
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             ),
@@ -545,7 +556,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(

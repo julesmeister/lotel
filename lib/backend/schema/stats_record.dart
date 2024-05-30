@@ -80,6 +80,11 @@ class StatsRecord extends FirestoreRecord {
   double get bills => _bills ?? 0.0;
   bool hasBills() => _bills != null;
 
+  // "net" field.
+  double? _net;
+  double get net => _net ?? 0.0;
+  bool hasNet() => _net != null;
+
   void _initializeFields() {
     _hotel = snapshotData['hotel'] as String?;
     _year = snapshotData['year'] as String?;
@@ -97,6 +102,7 @@ class StatsRecord extends FirestoreRecord {
     _goodsLine = LineGraphStruct.maybeFromMap(snapshotData['goodsLine']);
     _groceryExpenses = castToType<double>(snapshotData['groceryExpenses']);
     _bills = castToType<double>(snapshotData['bills']);
+    _net = castToType<double>(snapshotData['net']);
   }
 
   static CollectionReference get collection =>
@@ -145,6 +151,7 @@ Map<String, dynamic> createStatsRecordData({
   LineGraphStruct? goodsLine,
   double? groceryExpenses,
   double? bills,
+  double? net,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -160,6 +167,7 @@ Map<String, dynamic> createStatsRecordData({
       'goodsLine': LineGraphStruct().toMap(),
       'groceryExpenses': groceryExpenses,
       'bills': bills,
+      'net': net,
     }.withoutNulls,
   );
 
@@ -190,7 +198,8 @@ class StatsRecordDocumentEquality implements Equality<StatsRecord> {
         e1?.roomLine == e2?.roomLine &&
         e1?.goodsLine == e2?.goodsLine &&
         e1?.groceryExpenses == e2?.groceryExpenses &&
-        e1?.bills == e2?.bills;
+        e1?.bills == e2?.bills &&
+        e1?.net == e2?.net;
   }
 
   @override
@@ -207,7 +216,8 @@ class StatsRecordDocumentEquality implements Equality<StatsRecord> {
         e?.roomLine,
         e?.goodsLine,
         e?.groceryExpenses,
-        e?.bills
+        e?.bills,
+        e?.net
       ]);
 
   @override

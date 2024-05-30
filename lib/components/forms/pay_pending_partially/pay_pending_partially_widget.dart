@@ -195,130 +195,153 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                             itemBuilder: (context, pendingTransactionsIndex) {
                               final pendingTransactionsItem =
                                   pendingTransactions[pendingTransactionsIndex];
-                              return InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onLongPress: () async {
-                                  await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    enableDrag: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return Padding(
-                                        padding:
-                                            MediaQuery.viewInsetsOf(context),
-                                        child: SizedBox(
-                                          height: double.infinity,
-                                          child: ChangeAmountWidget(
-                                            amount:
-                                                pendingTransactionsItem.amount,
+                              return Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    20.0, 5.0, 16.0, 5.0),
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (context) {
+                                        return Padding(
+                                          padding:
+                                              MediaQuery.viewInsetsOf(context),
+                                          child: SizedBox(
+                                            height: double.infinity,
+                                            child: ChangeAmountWidget(
+                                              amount: pendingTransactionsItem
+                                                  .amount,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ).then((value) => safeSetState(
-                                      () => _model.newAmount = value));
+                                        );
+                                      },
+                                    ).then((value) => safeSetState(
+                                        () => _model.amount = value));
 
-                                  if ((_model.newAmount != null) &&
-                                      (_model.newAmount! > 0.0)) {
-                                    // update amount
-                                    setState(() {
-                                      _model.updatePendingsAtIndex(
-                                        pendingTransactionsIndex,
-                                        (e) => e..amount = _model.newAmount,
-                                      );
-                                    });
-                                  }
+                                    if (_model.amount != null) {
+                                      // update amount
+                                      setState(() {
+                                        _model.updatePendingsAtIndex(
+                                          pendingTransactionsIndex,
+                                          (e) => e..amount = _model.amount,
+                                        );
+                                      });
+                                    }
 
-                                  setState(() {});
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  child: Theme(
-                                    data: ThemeData(
-                                      checkboxTheme: const CheckboxThemeData(
-                                        visualDensity: VisualDensity.compact,
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
+                                    setState(() {});
+                                  },
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            formatNumber(
+                                              pendingTransactionsItem.amount,
+                                              formatType: FormatType.decimal,
+                                              decimalType:
+                                                  DecimalType.automatic,
+                                              currency: 'Php ',
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  fontSize: 22.0,
+                                                  letterSpacing: 0.0,
+                                                ),
+                                          ),
+                                          Text(
+                                            dateTimeFormat(
+                                                'EEEE MMMM d y h:mm a',
+                                                widget.transactions!
+                                                    .where((e) =>
+                                                        e.reference ==
+                                                        pendingTransactionsItem
+                                                            .ref)
+                                                    .toList()
+                                                    .first
+                                                    .date!),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  letterSpacing: 0.0,
+                                                ),
+                                          ),
+                                        ],
                                       ),
-                                      unselectedWidgetColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondaryText,
-                                    ),
-                                    child: CheckboxListTile(
-                                      value: _model.checkboxListTileValueMap[
-                                          pendingTransactionsItem] ??= true,
-                                      onChanged: (newValue) async {
-                                        setState(() =>
-                                            _model.checkboxListTileValueMap[
+                                      Theme(
+                                        data: ThemeData(
+                                          checkboxTheme: CheckboxThemeData(
+                                            visualDensity:
+                                                VisualDensity.compact,
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                          ),
+                                          unselectedWidgetColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryText,
+                                        ),
+                                        child: Checkbox(
+                                          value: _model.checkboxValueMap[
+                                                  pendingTransactionsItem] ??=
+                                              !pendingTransactionsItem.pending,
+                                          onChanged: (newValue) async {
+                                            setState(() => _model
+                                                        .checkboxValueMap[
                                                     pendingTransactionsItem] =
                                                 newValue!);
-                                        if (newValue!) {
-                                          // paid
-                                          setState(() {
-                                            _model.updatePendingsAtIndex(
-                                              pendingTransactionsIndex,
-                                              (e) => e..pending = false,
-                                            );
-                                          });
-                                        } else {
-                                          // pending
-                                          setState(() {
-                                            _model.updatePendingsAtIndex(
-                                              pendingTransactionsIndex,
-                                              (e) => e..pending = true,
-                                            );
-                                          });
-                                        }
-                                      },
-                                      title: Text(
-                                        formatNumber(
-                                          pendingTransactionsItem.amount,
-                                          formatType: FormatType.decimal,
-                                          decimalType: DecimalType.automatic,
-                                          currency: 'Php ',
+                                            if (newValue!) {
+                                              // paid
+                                              setState(() {
+                                                _model.updatePendingsAtIndex(
+                                                  pendingTransactionsIndex,
+                                                  (e) => e..pending = false,
+                                                );
+                                              });
+                                            } else {
+                                              // pending
+                                              setState(() {
+                                                _model.updatePendingsAtIndex(
+                                                  pendingTransactionsIndex,
+                                                  (e) => e..pending = true,
+                                                );
+                                              });
+                                            }
+                                          },
+                                          side: BorderSide(
+                                            width: 2,
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                          ),
+                                          activeColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                          checkColor:
+                                              FlutterFlowTheme.of(context).info,
                                         ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .override(
-                                              fontFamily: 'Outfit',
-                                              letterSpacing: 0.0,
-                                            ),
                                       ),
-                                      subtitle: Text(
-                                        dateTimeFormat(
-                                            'MMMMEEEEd',
-                                            widget.transactions!
-                                                .where((e) =>
-                                                    e.reference ==
-                                                    pendingTransactionsItem.ref)
-                                                .toList()
-                                                .first
-                                                .date!),
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              letterSpacing: 0.0,
-                                            ),
-                                      ),
-                                      tileColor: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      activeColor:
-                                          FlutterFlowTheme.of(context).primary,
-                                      checkColor:
-                                          FlutterFlowTheme.of(context).info,
-                                      dense: false,
-                                      controlAffinity:
-                                          ListTileControlAffinity.trailing,
-                                    ),
+                                    ],
                                   ),
                                 ),
                               );

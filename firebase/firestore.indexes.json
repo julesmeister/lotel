@@ -135,6 +135,20 @@
       ]
     },
     {
+      "collectionGroup": "staffs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hotel",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fired",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "payrolls",
       "queryScope": "COLLECTION",
       "fields": [

@@ -12,6 +12,8 @@ class OptionToBookingTransactionModel
   RoomsRecord? room;
   // Stores action output result for [Backend Call - Read Document] action in OptionToBookingTransaction widget.
   HotelSettingsRecord? settings;
+  // Stores action output result for [Backend Call - Read Document] action in pending widget.
+  BookingsRecord? bookingRef;
   // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
   BookingsRecord? bookingNorm;
   // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
