@@ -41,11 +41,10 @@ class _MetricsWidgetState extends State<MetricsWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // hide month picker
-      setState(() {
-        _model.showMonthPicker = false;
-        _model.month = functions.currentMonth();
-        _model.year = functions.currentYear();
-      });
+      _model.showMonthPicker = false;
+      _model.month = functions.currentMonth();
+      _model.year = functions.currentYear();
+      setState(() {});
       await _model.updateStatsByDate(
         context,
         year: functions.currentYear(),
@@ -54,9 +53,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
       );
       setState(() {});
       // show month picker
-      setState(() {
-        _model.showMonthPicker = true;
-      });
+      _model.showMonthPicker = true;
+      setState(() {});
     });
 
     animationsMap.addAll({
@@ -421,9 +419,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     context,
                                     hotel: 'All',
                                   );
-                                  setState(() {
-                                    _model.hotel = _model.hotelName!;
-                                  });
+                                  _model.hotel = _model.hotelName!;
+                                  setState(() {});
 
                                   setState(() {});
                                 },
@@ -487,9 +484,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         hotel: 'Serenity',
                                       );
                                       // set hotel name
-                                      setState(() {
-                                        _model.hotel = _model.hotelName1!;
-                                      });
+                                      _model.hotel = _model.hotelName1!;
+                                      setState(() {});
                                     } else {
                                       // No data
                                       ScaffoldMessenger.of(context)
@@ -545,6 +541,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           child: AutoSizeText(
                                             'Serenity',
                                             maxLines: 1,
+                                            minFontSize: 10.0,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -554,7 +551,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       .primaryText,
                                                   letterSpacing: 0.0,
                                                 ),
-                                            minFontSize: 10.0,
                                           ),
                                         ),
                                       ],
@@ -576,9 +572,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         hotel: 'My Lifestyle',
                                       );
                                       // set hotel
-                                      setState(() {
-                                        _model.hotel = _model.hotelName2!;
-                                      });
+                                      _model.hotel = _model.hotelName2!;
+                                      setState(() {});
                                     } else {
                                       // No data
                                       ScaffoldMessenger.of(context)
@@ -634,6 +629,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           child: AutoSizeText(
                                             'My Lifestyle',
                                             maxLines: 1,
+                                            minFontSize: 10.0,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -643,7 +639,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       .primaryText,
                                                   letterSpacing: 0.0,
                                                 ),
-                                            minFontSize: 10.0,
                                           ),
                                         ),
                                       ],
@@ -675,18 +670,15 @@ class _MetricsWidgetState extends State<MetricsWidget>
                   ),
                   onPressed: () async {
                     // hide month picker
-                    setState(() {
-                      _model.showMonthPicker = false;
-                    });
+                    _model.showMonthPicker = false;
+                    setState(() {});
                     // set previous year
-                    setState(() {
-                      _model.year =
-                          functions.previousYear(_model.month, _model.year);
-                    });
+                    _model.year =
+                        functions.previousYear(_model.month, _model.year);
+                    setState(() {});
                     // set previous month
-                    setState(() {
-                      _model.month = functions.previousMonth(_model.month);
-                    });
+                    _model.month = functions.previousMonth(_model.month);
+                    setState(() {});
                     await _model.updateStatsByDate(
                       context,
                       year: _model.year,
@@ -695,13 +687,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                     );
                     setState(() {});
                     // set hotel to all
-                    setState(() {
-                      _model.hotel = 'All';
-                    });
+                    _model.hotel = 'All';
+                    setState(() {});
                     // show month picker
-                    setState(() {
-                      _model.showMonthPicker = true;
-                    });
+                    _model.showMonthPicker = true;
+                    setState(() {});
                   },
                 ),
                 if (_model.showMonthPicker)
@@ -727,26 +717,25 @@ class _MetricsWidgetState extends State<MetricsWidget>
                     initialYear: int.parse(_model.year),
                     changeMonthYear: (month, year) async {
                       // hide month picker
-                      setState(() {
-                        _model.showMonthPicker = false;
-                        _model.month = ((int month) {
-                          return {
-                            1: 'January',
-                            2: 'February',
-                            3: 'March',
-                            4: 'April',
-                            5: 'May',
-                            6: 'June',
-                            7: 'July',
-                            8: 'August',
-                            9: 'September',
-                            10: 'October',
-                            11: 'November',
-                            12: 'December',
-                          }[month];
-                        }(month))!;
-                        _model.year = year.toString();
-                      });
+                      _model.showMonthPicker = false;
+                      _model.month = ((int month) {
+                        return {
+                          1: 'January',
+                          2: 'February',
+                          3: 'March',
+                          4: 'April',
+                          5: 'May',
+                          6: 'June',
+                          7: 'July',
+                          8: 'August',
+                          9: 'September',
+                          10: 'October',
+                          11: 'November',
+                          12: 'December',
+                        }[month];
+                      }(month))!;
+                      _model.year = year.toString();
+                      setState(() {});
                       // get stats from this month
                       await _model.updateStatsByDate(
                         context,
@@ -771,13 +760,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                       );
                       setState(() {});
                       // show month picker
-                      setState(() {
-                        _model.showMonthPicker = true;
-                      });
+                      _model.showMonthPicker = true;
+                      setState(() {});
                       // set hotel to all
-                      setState(() {
-                        _model.hotel = 'All';
-                      });
+                      _model.hotel = 'All';
+                      setState(() {});
                     },
                   ).animateOnPageLoad(
                       animationsMap['containerOnPageLoadAnimation2']!),
@@ -792,18 +779,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                   ),
                   onPressed: () async {
                     // hide month picker
-                    setState(() {
-                      _model.showMonthPicker = false;
-                    });
+                    _model.showMonthPicker = false;
+                    setState(() {});
                     // next Year
-                    setState(() {
-                      _model.year =
-                          functions.nextYear(_model.year, _model.month);
-                    });
+                    _model.year = functions.nextYear(_model.year, _model.month);
+                    setState(() {});
                     // next month
-                    setState(() {
-                      _model.month = functions.nextMonth(_model.month);
-                    });
+                    _model.month = functions.nextMonth(_model.month);
+                    setState(() {});
                     await _model.updateStatsByDate(
                       context,
                       year: _model.year,
@@ -812,13 +795,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                     );
                     setState(() {});
                     // set hotel to all
-                    setState(() {
-                      _model.hotel = 'All';
-                    });
+                    _model.hotel = 'All';
+                    setState(() {});
                     // show month picker
-                    setState(() {
-                      _model.showMonthPicker = true;
-                    });
+                    _model.showMonthPicker = true;
+                    setState(() {});
                   },
                 ),
               ],
@@ -875,10 +856,9 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         false;
                                 if (confirmDialogResponse) {
                                   // reset loop and temp
-                                  setState(() {
-                                    _model.loopCounter = 0;
-                                    _model.transactionsTemp = [];
-                                  });
+                                  _model.loopCounter = 0;
+                                  _model.transactionsTemp = [];
+                                  setState(() {});
                                   // remittance first day of month
                                   _model.remittanceForRooms =
                                       await queryRemittancesRecordOnce(
@@ -920,16 +900,13 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ?.type ==
                                         'book') {
                                       // add to temp
-                                      setState(() {
-                                        _model.addToTransactionsTemp(_model
-                                            .transactionFromRemittanceRooms!);
-                                      });
+                                      _model.addToTransactionsTemp(_model
+                                          .transactionFromRemittanceRooms!);
+                                      setState(() {});
                                     }
                                     // + loop
-                                    setState(() {
-                                      _model.loopCounter =
-                                          _model.loopCounter + 1;
-                                    });
+                                    _model.loopCounter = _model.loopCounter + 1;
+                                    setState(() {});
                                   }
                                   // room  sales
                                   _model.roomSales =
@@ -983,9 +960,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   );
                                   setState(() {});
                                   // set hotel to all
-                                  setState(() {
-                                    _model.hotel = 'All';
-                                  });
+                                  _model.hotel = 'All';
+                                  setState(() {});
                                 }
                               }
 
@@ -1051,6 +1027,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                 currency: 'P ',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 14.0,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -1063,11 +1040,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 14.0,
                                             ),
                                             AutoSizeText(
                                               'Rooms Income',
                                               maxLines: 1,
+                                              minFontSize: 10.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .titleSmall
@@ -1078,7 +1055,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     letterSpacing: 1.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
-                                              minFontSize: 10.0,
                                             ),
                                             Padding(
                                               padding: const EdgeInsetsDirectional
@@ -1096,6 +1072,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   currency: 'P ',
                                                 ),
                                                 maxLines: 1,
+                                                minFontSize: 14.0,
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .titleMedium
@@ -1108,12 +1085,12 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
-                                                minFontSize: 14.0,
                                               ),
                                             ),
                                             AutoSizeText(
                                               'Daily Average',
                                               maxLines: 1,
+                                              minFontSize: 10.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .labelMedium
@@ -1126,7 +1103,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
-                                              minFontSize: 10.0,
                                             ),
                                           ],
                                         ),
@@ -1264,10 +1240,9 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         false;
                                 if (confirmDialogResponse) {
                                   // reset loop and temp
-                                  setState(() {
-                                    _model.loopCounter = 0;
-                                    _model.transactionsTemp = [];
-                                  });
+                                  _model.loopCounter = 0;
+                                  _model.transactionsTemp = [];
+                                  setState(() {});
                                   // remittance first day of month
                                   _model.remittanceForExpenses =
                                       await queryRemittancesRecordOnce(
@@ -1309,16 +1284,13 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ?.type ==
                                         'expense') {
                                       // add to temp
-                                      setState(() {
-                                        _model.addToTransactionsTemp(_model
-                                            .transactionFromRemittanceExpenses!);
-                                      });
+                                      _model.addToTransactionsTemp(_model
+                                          .transactionFromRemittanceExpenses!);
+                                      setState(() {});
                                     }
                                     // + loop
-                                    setState(() {
-                                      _model.loopCounter =
-                                          _model.loopCounter + 1;
-                                    });
+                                    _model.loopCounter = _model.loopCounter + 1;
+                                    setState(() {});
                                   }
                                   // expenses recalculate
                                   _model.expensesRecalculate =
@@ -1371,9 +1343,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   );
                                   setState(() {});
                                   // set hotel to all
-                                  setState(() {
-                                    _model.hotel = 'All';
-                                  });
+                                  _model.hotel = 'All';
+                                  setState(() {});
                                 }
                               }
 
@@ -1439,6 +1410,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                 currency: 'P ',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 14.0,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -1451,7 +1423,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 14.0,
                                             ),
                                             Text(
                                               'Expenses',
@@ -1640,9 +1611,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   );
                                   setState(() {});
                                   // set hotel to all
-                                  setState(() {
-                                    _model.hotel = 'All';
-                                  });
+                                  _model.hotel = 'All';
+                                  setState(() {});
                                   // recalculated
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -1724,6 +1694,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                 currency: 'P ',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 14.0,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -1736,7 +1707,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 14.0,
                                             ),
                                             Text(
                                               'Bills',
@@ -1896,10 +1866,9 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         false;
                                 if (confirmDialogResponse) {
                                   // reset loop and temp
-                                  setState(() {
-                                    _model.loopCounter = 0;
-                                    _model.transactionsTemp = [];
-                                  });
+                                  _model.loopCounter = 0;
+                                  _model.transactionsTemp = [];
+                                  setState(() {});
                                   // remittance first day of month
                                   _model.remittanceForGoods =
                                       await queryRemittancesRecordOnce(
@@ -1941,16 +1910,13 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ?.type ==
                                         'goods') {
                                       // add to temp
-                                      setState(() {
-                                        _model.addToTransactionsTemp(_model
-                                            .transactionFromRemittanceGoods!);
-                                      });
+                                      _model.addToTransactionsTemp(_model
+                                          .transactionFromRemittanceGoods!);
+                                      setState(() {});
                                     }
                                     // + loop
-                                    setState(() {
-                                      _model.loopCounter =
-                                          _model.loopCounter + 1;
-                                    });
+                                    _model.loopCounter = _model.loopCounter + 1;
+                                    setState(() {});
                                   }
                                   // goods sales
                                   _model.goodSales =
@@ -2004,9 +1970,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   );
                                   setState(() {});
                                   // set hotel to all
-                                  setState(() {
-                                    _model.hotel = 'All';
-                                  });
+                                  _model.hotel = 'All';
+                                  setState(() {});
                                 }
                               }
 
@@ -2072,6 +2037,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                 currency: 'P ',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 14.0,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -2084,11 +2050,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 14.0,
                                             ),
                                             AutoSizeText(
                                               'Goods Income',
                                               maxLines: 1,
+                                              minFontSize: 10.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .titleSmall
@@ -2099,7 +2065,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
-                                              minFontSize: 10.0,
                                             ),
                                             Padding(
                                               padding: const EdgeInsetsDirectional
@@ -2117,6 +2082,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   currency: 'P ',
                                                 ),
                                                 maxLines: 1,
+                                                minFontSize: 14.0,
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .titleMedium
@@ -2129,12 +2095,12 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
-                                                minFontSize: 14.0,
                                               ),
                                             ),
                                             AutoSizeText(
                                               'Daily Average',
                                               maxLines: 1,
+                                              minFontSize: 10.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .labelMedium
@@ -2147,7 +2113,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
-                                              minFontSize: 10.0,
                                             ),
                                           ],
                                         ),
@@ -2284,9 +2249,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   );
                                   setState(() {});
                                   // set hotel to all
-                                  setState(() {
-                                    _model.hotel = 'All';
-                                  });
+                                  _model.hotel = 'All';
+                                  setState(() {});
                                 }
                               }
 
@@ -2352,6 +2316,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                 currency: 'P ',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 14.0,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -2364,7 +2329,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                              minFontSize: 14.0,
                                             ),
                                             Text(
                                               'Salaries',
@@ -2538,6 +2502,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                               currency: 'Php ',
                                             ),
                                             maxLines: 1,
+                                            minFontSize: 14.0,
                                             style: FlutterFlowTheme.of(context)
                                                 .titleMedium
                                                 .override(
@@ -2547,7 +2512,6 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   letterSpacing: 0.0,
                                                   fontWeight: FontWeight.normal,
                                                 ),
-                                            minFontSize: 14.0,
                                           ),
                                           Text(
                                             'Net',
@@ -2679,7 +2643,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                           barWidth: 2.0,
                           isCurved: true,
                           preventCurveOverShooting: true,
-                          dotData: FlDotData(show: false),
+                          dotData: const FlDotData(show: false),
                           belowBarData: BarAreaData(
                             show: true,
                             color: const Color(0xFFFCF3D5),
@@ -2693,7 +2657,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                           color: FlutterFlowTheme.of(context).secondary,
                           barWidth: 2.0,
                           isCurved: true,
-                          dotData: FlDotData(show: false),
+                          dotData: const FlDotData(show: false),
                           belowBarData: BarAreaData(
                             show: true,
                             color: FlutterFlowTheme.of(context).accent2,
@@ -2998,6 +2962,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             .highestRoomUtilityOrderUsage(
                                 _model.roomUsage.toList())
                             .toList();
+
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           primary: false,

@@ -11,7 +11,6 @@ class GroceryListModel extends FlutterFlowModel<GroceryListWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for TabBar widget.
   TabController? tabBarController;
   int get tabBarCurrentIndex =>
@@ -42,7 +41,6 @@ class GroceryListModel extends FlutterFlowModel<GroceryListWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     tabBarController?.dispose();
     for (var s in listViewStreamSubscriptions1) {
       s?.cancel();

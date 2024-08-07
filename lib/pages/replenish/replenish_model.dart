@@ -10,11 +10,9 @@ class ReplenishModel extends FlutterFlowModel<ReplenishWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Firestore Query - Query a collection] action in Replenish widget.
   int? replenishNeeded;
   // State field(s) for CheckboxListTile widget.
-
   Map<GoodsRecord, bool> checkboxListTileValueMap1 = {};
   List<GoodsRecord> get checkboxListTileCheckedItems1 =>
       checkboxListTileValueMap1.entries
@@ -23,7 +21,6 @@ class ReplenishModel extends FlutterFlowModel<ReplenishWidget> {
           .toList();
 
   // State field(s) for CheckboxListTile widget.
-
   Map<GoodsRecord, bool> checkboxListTileValueMap2 = {};
   List<GoodsRecord> get checkboxListTileCheckedItems2 =>
       checkboxListTileValueMap2.entries
@@ -32,7 +29,6 @@ class ReplenishModel extends FlutterFlowModel<ReplenishWidget> {
           .toList();
 
   // State field(s) for CheckboxListTile widget.
-
   Map<GoodsRecord, bool> checkboxListTileValueMap3 = {};
   List<GoodsRecord> get checkboxListTileCheckedItems3 =>
       checkboxListTileValueMap3.entries
@@ -41,7 +37,6 @@ class ReplenishModel extends FlutterFlowModel<ReplenishWidget> {
           .toList();
 
   // State field(s) for CheckboxListTile widget.
-
   Map<GoodsRecord, bool> checkboxListTileValueMap4 = {};
   List<GoodsRecord> get checkboxListTileCheckedItems4 =>
       checkboxListTileValueMap4.entries
@@ -50,7 +45,6 @@ class ReplenishModel extends FlutterFlowModel<ReplenishWidget> {
           .toList();
 
   // State field(s) for CheckboxListTile widget.
-
   Map<GoodsRecord, bool> checkboxListTileValueMap5 = {};
   List<GoodsRecord> get checkboxListTileCheckedItems5 =>
       checkboxListTileValueMap5.entries
@@ -65,7 +59,5 @@ class ReplenishModel extends FlutterFlowModel<ReplenishWidget> {
   void initState(BuildContext context) {}
 
   @override
-  void dispose() {
-    unfocusNode.dispose();
-  }
+  void dispose() {}
 }

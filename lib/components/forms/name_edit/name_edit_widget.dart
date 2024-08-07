@@ -38,11 +38,12 @@ class _NameEditWidgetState extends State<NameEditWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.userToEdit = await UsersRecord.getDocumentOnce(
           widget.ref != null ? widget.ref! : currentUserReference!);
-      setState(() {
-        _model.user = _model.userToEdit;
-      });
+      _model.user = _model.userToEdit;
+      setState(() {});
       setState(() {
         _model.nameTextController?.text = _model.userToEdit!.displayName;
+        _model.nameTextController?.selection = TextSelection.collapsed(
+            offset: _model.nameTextController!.text.length);
       });
     });
 

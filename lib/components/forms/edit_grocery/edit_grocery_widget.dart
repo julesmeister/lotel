@@ -317,7 +317,8 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                           amount: double.tryParse(
                                               _model.amountTextController.text),
                                         ));
-                                        if (widget.grocery?.amount.toString() !=
+                                        if (widget.grocery?.amount
+                                                .toString() !=
                                             _model.amountTextController.text) {
                                           // increment grocery expense
 

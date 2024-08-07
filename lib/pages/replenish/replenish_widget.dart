@@ -71,10 +71,9 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
           );
         }
         List<GoodsRecord> replenishGoodsRecordList = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -142,9 +141,8 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                             ),
                       );
                       // reset loop
-                      setState(() {
-                        _model.loopCounter = 0;
-                      });
+                      _model.loopCounter = 0;
+                      setState(() {});
                       while (_model.loopCounter != _model.replenished?.length) {
                         // unreplenish
 
@@ -153,9 +151,8 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                           replenish: false,
                         ));
                         // increment
-                        setState(() {
-                          _model.loopCounter = _model.loopCounter + 1;
-                        });
+                        _model.loopCounter = _model.loopCounter + 1;
+                        setState(() {});
                       }
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -267,6 +264,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                                   .toList()
                                   .map((e) => e)
                                   .toList();
+
                               return ListView.builder(
                                 padding: EdgeInsets.zero,
                                 primary: false,

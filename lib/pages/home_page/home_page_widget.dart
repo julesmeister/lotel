@@ -78,10 +78,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
           singleRecord: true,
         ).then((s) => s.firstOrNull);
         // set extPricePerHr
-        setState(() {
-          FFAppState().extPricePerHr =
-              _model.hotelSettingForLates!.lateCheckoutFee;
-        });
+        FFAppState().extPricePerHr =
+            _model.hotelSettingForLates!.lateCheckoutFee;
+        setState(() {});
       }
     
       if (!(FFAppState().settingRef != null)) {
@@ -94,24 +93,21 @@ class _HomePageWidgetState extends State<HomePageWidget>
           singleRecord: true,
         ).then((s) => s.firstOrNull);
         // set settingsRef
-        setState(() {
-          FFAppState().settingRef = _model.hotelSettingsHome?.reference;
-        });
+        FFAppState().settingRef = _model.hotelSettingsHome?.reference;
+        setState(() {});
       }
       if (FFAppState().lastRemit == null) {
         // update last remit
-        setState(() {
-          FFAppState().lastRemit = functions.yesterdayDate();
-        });
+        FFAppState().lastRemit = functions.yesterdayDate();
+        setState(() {});
       } else {
         // check if last remit changed
         _model.settings =
             await HotelSettingsRecord.getDocumentOnce(FFAppState().settingRef!);
         if (_model.settings?.lastRemit != FFAppState().lastRemit) {
           // update last remit
-          setState(() {
-            FFAppState().lastRemit = _model.settings?.lastRemit;
-          });
+          FFAppState().lastRemit = _model.settings?.lastRemit;
+          setState(() {});
         }
       }
 
@@ -135,9 +131,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
         }
 
         // clear stats reference
-        setState(() {
-          FFAppState().statsReference = null;
-        });
+        FFAppState().statsReference = null;
+        setState(() {});
         // proceed new month
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -170,10 +165,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
       );
       if (_model.fireStat!.isNotEmpty) {
         // save new ref stat
-        setState(() {
-          FFAppState().statsReference = _model.fireStat?.first.reference;
-          FFAppState().currentStats = functions.currentMonthYear()!;
-        });
+        FFAppState().statsReference = _model.fireStat?.first.reference;
+        FFAppState().currentStats = functions.currentMonthYear()!;
+        setState(() {});
         return;
       } else {
         // create a new stat
@@ -323,7 +317,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
           ),
           singleRecord: true,
         ),
-      )..listen((snapshot) async {
+      )..listen((snapshot) {
           List<HotelSettingsRecord> homePageHotelSettingsRecordList = snapshot;
           final homePageHotelSettingsRecord =
               homePageHotelSettingsRecordList.isNotEmpty
@@ -333,14 +327,15 @@ class _HomePageWidgetState extends State<HomePageWidget>
               !const ListEquality(HotelSettingsRecordDocumentEquality()).equals(
                   homePageHotelSettingsRecordList,
                   _model.homePagePreviousSnapshot)) {
-            // Get Hotel
-            _model.hotel = await HotelSettingsRecord.getDocumentOnce(
-                homePageHotelSettingsRecord!.reference);
-            setState(() {
+            () async {
+              // Get Hotel
+              _model.hotel = await HotelSettingsRecord.getDocumentOnce(
+                  homePageHotelSettingsRecord!.reference);
               FFAppState().lastRemit = _model.hotel?.lastRemit;
-            });
+              setState(() {});
 
-            setState(() {});
+              setState(() {});
+            }();
           }
           _model.homePagePreviousSnapshot = snapshot;
         }),
@@ -367,10 +362,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
             homePageHotelSettingsRecordList.isNotEmpty
                 ? homePageHotelSettingsRecordList.first
                 : null;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             body: SafeArea(
@@ -430,6 +424,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     List<HotelSettingsRecord>
                                         statusToggleHotelSettingsRecordList =
                                         snapshot.data!;
+
                                     return Container(
                                       width: double.infinity,
                                       height: 50.0,
@@ -1030,6 +1025,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             ? remitbuttoncontrolHotelSettingsRecordList
                                                 .first
                                             : null;
+
                                     return AnimatedContainer(
                                       duration: const Duration(milliseconds: 600),
                                       curve: Curves.elasticOut,
@@ -1062,11 +1058,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               highlightColor:
                                                   Colors.transparent,
                                               onTap: () async {
-                                                setState(() {
-                                                  _model.showRemitController =
-                                                      !_model
-                                                          .showRemitController;
-                                                });
+                                                _model.showRemitController =
+                                                    !_model.showRemitController;
+                                                setState(() {});
                                               },
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
@@ -1329,6 +1323,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             List<TransactionsRecord>
                                                 salesTodayTransactionsRecordList =
                                                 snapshot.data!;
+
                                             return InkWell(
                                               splashColor: Colors.transparent,
                                               focusColor: Colors.transparent,
@@ -1350,14 +1345,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     context: context,
                                                     builder: (context) {
                                                       return GestureDetector(
-                                                        onTap: () => _model
-                                                                .unfocusNode
-                                                                .canRequestFocus
-                                                            ? FocusScope.of(
-                                                                    context)
-                                                                .requestFocus(_model
-                                                                    .unfocusNode)
-                                                            : FocusScope.of(
+                                                        onTap: () =>
+                                                            FocusScope.of(
                                                                     context)
                                                                 .unfocus(),
                                                         child: Padding(
@@ -1392,14 +1381,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     context: context,
                                                     builder: (context) {
                                                       return GestureDetector(
-                                                        onTap: () => _model
-                                                                .unfocusNode
-                                                                .canRequestFocus
-                                                            ? FocusScope.of(
-                                                                    context)
-                                                                .requestFocus(_model
-                                                                    .unfocusNode)
-                                                            : FocusScope.of(
+                                                        onTap: () =>
+                                                            FocusScope.of(
                                                                     context)
                                                                 .unfocus(),
                                                         child: Padding(
@@ -1431,6 +1414,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   currency: 'P ',
                                                 ),
                                                 maxLines: 1,
+                                                minFontSize: 24.0,
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .displaySmall
@@ -1443,7 +1427,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           fontWeight:
                                                               FontWeight.w600,
                                                         ),
-                                                minFontSize: 24.0,
                                               ),
                                             ).animateOnActionTrigger(
                                                 animationsMap[
@@ -1458,7 +1441,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           0.0, 4.0, 0.0, 0.0),
                                       child: Text(
                                         dateTimeFormat(
-                                            'yMMMd', getCurrentTimestamp),
+                                            "yMMMd", getCurrentTimestamp),
                                         textAlign: TextAlign.start,
                                         maxLines: 1,
                                         style: FlutterFlowTheme.of(context)
@@ -1501,12 +1484,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             context: context,
                                             builder: (context) {
                                               return GestureDetector(
-                                                onTap: () => _model.unfocusNode
-                                                        .canRequestFocus
-                                                    ? FocusScope.of(context)
-                                                        .requestFocus(
-                                                            _model.unfocusNode)
-                                                    : FocusScope.of(context)
+                                                onTap: () =>
+                                                    FocusScope.of(context)
                                                         .unfocus(),
                                                 child: Padding(
                                                   padding:
@@ -1529,6 +1508,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           if (_model.adjustedLastRemit !=
                                               null) {
                                             // set local date
+
                                             setState(() {});
                                             // update hotel setting
 
@@ -1540,10 +1520,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       _model.adjustedLastRemit,
                                                 ));
                                             // set appstate date
-                                            setState(() {
-                                              FFAppState().lastRemit =
-                                                  _model.adjustedLastRemit;
-                                            });
+                                            FFAppState().lastRemit =
+                                                _model.adjustedLastRemit;
+                                            setState(() {});
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               SnackBar(
@@ -1596,7 +1575,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       ),
                                                 ),
                                                 TextSpan(
-                                                  text: dateTimeFormat('yMMMd',
+                                                  text: dateTimeFormat("yMMMd",
                                                       FFAppState().lastRemit),
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.w600,
@@ -1617,7 +1596,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           ),
                                           Text(
                                             dateTimeFormat(
-                                                'jm', FFAppState().lastRemit),
+                                                "jm", FFAppState().lastRemit),
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -1658,12 +1637,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             context: context,
                                             builder: (context) {
                                               return GestureDetector(
-                                                onTap: () => _model.unfocusNode
-                                                        .canRequestFocus
-                                                    ? FocusScope.of(context)
-                                                        .requestFocus(
-                                                            _model.unfocusNode)
-                                                    : FocusScope.of(context)
+                                                onTap: () =>
+                                                    FocusScope.of(context)
                                                         .unfocus(),
                                                 child: Padding(
                                                   padding:
@@ -1761,10 +1736,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       remittable: false,
                                                     ));
                                                 // hide remit controller
-                                                setState(() {
-                                                  _model.showRemitController =
-                                                      false;
-                                                });
+                                                _model.showRemitController =
+                                                    false;
+                                                setState(() {});
                                                 // toggle off remit controller
                                                 setState(() {
                                                   _model.allowRemittanceToBeSeenValue =
@@ -1806,13 +1780,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 context: context,
                                                 builder: (context) {
                                                   return GestureDetector(
-                                                    onTap: () => _model
-                                                            .unfocusNode
-                                                            .canRequestFocus
-                                                        ? FocusScope.of(context)
-                                                            .requestFocus(_model
-                                                                .unfocusNode)
-                                                        : FocusScope.of(context)
+                                                    onTap: () =>
+                                                        FocusScope.of(context)
                                                             .unfocus(),
                                                     child: Padding(
                                                       padding: MediaQuery
@@ -2045,6 +2014,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               List<RoomsRecord>
                                                   checkinStatsRoomsRecordList =
                                                   snapshot.data!;
+
                                               return InkWell(
                                                 splashColor: Colors.transparent,
                                                 focusColor: Colors.transparent,
@@ -2085,16 +2055,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     Directionality.of(
                                                                         context)),
                                                         child: GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
-                                                                      context)
+                                                          onTap: () =>
+                                                              FocusScope.of(
+                                                                      dialogContext)
                                                                   .unfocus(),
                                                           child: SizedBox(
                                                             height: 600.0,
@@ -2109,8 +2072,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         ),
                                                       );
                                                     },
-                                                  ).then((value) =>
-                                                      setState(() {}));
+                                                  );
 
                                                   setState(() {});
                                                 },
@@ -2146,6 +2108,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               .length
                                                               .toString(),
                                                           maxLines: 1,
+                                                          minFontSize: 10.0,
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .displaySmall
@@ -2155,7 +2118,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 letterSpacing:
                                                                     0.0,
                                                               ),
-                                                          minFontSize: 10.0,
                                                         ).animateOnActionTrigger(
                                                             animationsMap[
                                                                 'textOnActionTriggerAnimation3']!,
@@ -2172,6 +2134,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           child: AutoSizeText(
                                                             'Occupancy',
                                                             maxLines: 1,
+                                                            minFontSize: 10.0,
                                                             style: FlutterFlowTheme
                                                                     .of(context)
                                                                 .labelMedium
@@ -2181,7 +2144,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
-                                                            minFontSize: 10.0,
                                                           ),
                                                         ),
                                                       ],
@@ -2288,10 +2250,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       }
                                                       int transactionsCountCount =
                                                           snapshot.data!;
+
                                                       return AutoSizeText(
                                                         transactionsCountCount
                                                             .toString(),
                                                         maxLines: 1,
+                                                        minFontSize: 10.0,
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -2305,7 +2269,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
-                                                        minFontSize: 10.0,
                                                       ).animateOnActionTrigger(
                                                           animationsMap[
                                                               'textOnActionTriggerAnimation4']!,
@@ -2321,6 +2284,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     child: AutoSizeText(
                                                       'Transactions',
                                                       maxLines: 1,
+                                                      minFontSize: 10.0,
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .labelMedium
@@ -2329,7 +2293,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 'Readex Pro',
                                                             letterSpacing: 0.0,
                                                           ),
-                                                      minFontSize: 10.0,
                                                     ),
                                                   ),
                                                 ],
@@ -2385,6 +2348,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             List<TransactionsRecord>
                                                 pendingsStatsTransactionsRecordList =
                                                 snapshot.data!;
+
                                             return InkWell(
                                               splashColor: Colors.transparent,
                                               focusColor: Colors.transparent,
@@ -2528,12 +2492,15 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               int pendingsCountCount =
                                                                   snapshot
                                                                       .data!;
+
                                                               return AutoSizeText(
                                                                 '${pendingsCountCount.toString()}  '
                                                                     .maybeHandleOverflow(
                                                                         maxChars:
                                                                             3),
                                                                 maxLines: 1,
+                                                                minFontSize:
+                                                                    10.0,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .displaySmall
@@ -2545,8 +2512,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
-                                                                minFontSize:
-                                                                    10.0,
                                                               ).animateOnActionTrigger(
                                                                   animationsMap[
                                                                       'textOnActionTriggerAnimation5']!,
@@ -2672,9 +2637,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         }
                                                         int textCount =
                                                             snapshot.data!;
+
                                                         return AutoSizeText(
                                                           textCount.toString(),
                                                           maxLines: 1,
+                                                          minFontSize: 10.0,
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .displaySmall
@@ -2687,7 +2654,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 letterSpacing:
                                                                     0.0,
                                                               ),
-                                                          minFontSize: 10.0,
                                                         );
                                                       },
                                                     ),
@@ -2702,6 +2668,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       child: AutoSizeText(
                                                         'To Replenish',
                                                         maxLines: 1,
+                                                        minFontSize: 10.0,
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -2712,7 +2679,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   letterSpacing:
                                                                       0.0,
                                                                 ),
-                                                        minFontSize: 10.0,
                                                       ),
                                                     ),
                                                   ],
@@ -2790,9 +2756,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     }
                                                     int textCount =
                                                         snapshot.data!;
+
                                                     return AutoSizeText(
                                                       textCount.toString(),
                                                       maxLines: 1,
+                                                      minFontSize: 10.0,
                                                       style:
                                                           FlutterFlowTheme.of(
                                                                   context)
@@ -2806,7 +2774,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 letterSpacing:
                                                                     0.0,
                                                               ),
-                                                      minFontSize: 10.0,
                                                     );
                                                   },
                                                 ),
@@ -2870,6 +2837,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               }
                               List<RoomsRecord> roomContainerRoomsRecordList =
                                   snapshot.data!;
+
                               return Container(
                                 width: double.infinity,
                                 constraints: const BoxConstraints(
@@ -2935,7 +2903,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       'room': serializeParam(
                                                         roomContainerRoomsRecordList,
                                                         ParamType.Document,
-                                                        true,
+                                                        isList: true,
                                                       ),
                                                     }.withoutNulls,
                                                     extra: <String, dynamic>{
@@ -2973,14 +2941,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     context: context,
                                                     builder: (context) {
                                                       return GestureDetector(
-                                                        onTap: () => _model
-                                                                .unfocusNode
-                                                                .canRequestFocus
-                                                            ? FocusScope.of(
-                                                                    context)
-                                                                .requestFocus(_model
-                                                                    .unfocusNode)
-                                                            : FocusScope.of(
+                                                        onTap: () =>
+                                                            FocusScope.of(
                                                                     context)
                                                                 .unfocus(),
                                                         child: Padding(
@@ -3046,6 +3008,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               roomContainerRoomsRecordList
                                                   .map((e) => e)
                                                   .toList();
+
                                           return ListView.builder(
                                             padding: const EdgeInsets.fromLTRB(
                                               0,
@@ -3213,228 +3176,234 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             ],
                                                           ),
                                                           Expanded(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          20.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                              child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Expanded(
-                                                                    flex: 8,
-                                                                    child:
-                                                                        AutoSizeText(
-                                                                      homePageHotelSettingsRecord!
-                                                                              .promoOn
-                                                                          ? formatNumber(
-                                                                              (roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)).toInt().toDouble(),
-                                                                              formatType: FormatType.decimal,
-                                                                              decimalType: DecimalType.automatic,
-                                                                              currency: 'P ',
-                                                                            )
-                                                                          : formatNumber(
-                                                                              roomsItem.price,
-                                                                              formatType: FormatType.decimal,
-                                                                              decimalType: DecimalType.automatic,
-                                                                              currency: 'P ',
-                                                                            ),
-                                                                      maxLines:
-                                                                          1,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .displaySmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Outfit',
-                                                                            color:
-                                                                                const Color(0xFF14181B),
-                                                                            fontSize:
-                                                                                36.0,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
-                                                                          ),
-                                                                      minFontSize:
-                                                                          24.0,
-                                                                    ),
-                                                                  ),
-                                                                  Expanded(
-                                                                    flex: 3,
-                                                                    child:
-                                                                        FlutterFlowIconButton(
-                                                                      borderColor:
-                                                                          const Color(
-                                                                              0xFFF1F4F8),
-                                                                      borderRadius:
-                                                                          30.0,
-                                                                      borderWidth:
-                                                                          2.0,
-                                                                      buttonSize:
-                                                                          44.0,
-                                                                      icon:
-                                                                          const Icon(
-                                                                        Icons
-                                                                            .arrow_forward_rounded,
-                                                                        color: Color(
-                                                                            0xFF57636C),
-                                                                        size:
-                                                                            24.0,
-                                                                      ),
-                                                                      onPressed:
-                                                                          () async {
-                                                                        if (roomsItem.vacant ==
-                                                                            true) {
-                                                                          context.pushNamed(
-                                                                            'CheckIn',
-                                                                            queryParameters: {
-                                                                              'ref': serializeParam(
-                                                                                roomsItem.reference,
-                                                                                ParamType.DocumentReference,
-                                                                              ),
-                                                                              'price': serializeParam(
-                                                                                homePageHotelSettingsRecord.promoOn ? ((roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)).toInt().toDouble()) : roomsItem.price,
-                                                                                ParamType.double,
-                                                                              ),
-                                                                              'roomNo': serializeParam(
-                                                                                roomsItem.number,
-                                                                                ParamType.int,
-                                                                              ),
-                                                                              'extend': serializeParam(
-                                                                                false,
-                                                                                ParamType.bool,
-                                                                              ),
-                                                                              'promoOn': serializeParam(
-                                                                                homePageHotelSettingsRecord.promoOn,
-                                                                                ParamType.bool,
-                                                                              ),
-                                                                              'promoDetail': serializeParam(
-                                                                                homePageHotelSettingsRecord.promoDetail,
-                                                                                ParamType.String,
-                                                                              ),
-                                                                              'promoDiscount': serializeParam(
-                                                                                homePageHotelSettingsRecord.promoPercent,
-                                                                                ParamType.double,
-                                                                              ),
-                                                                            }.withoutNulls,
-                                                                            extra: <String, dynamic>{
-                                                                              kTransitionInfoKey: const TransitionInfo(
-                                                                                hasTransition: true,
-                                                                                transitionType: PageTransitionType.rightToLeft,
-                                                                              ),
-                                                                            },
-                                                                          );
-                                                                                                                                                } else {
-                                                                          context
-                                                                              .pushNamed(
-                                                                            'CheckedIn',
-                                                                            queryParameters:
-                                                                                {
-                                                                              'ref': serializeParam(
-                                                                                roomsItem.reference,
-                                                                                ParamType.DocumentReference,
-                                                                              ),
-                                                                              'booking': serializeParam(
-                                                                                roomsItem.currentBooking,
-                                                                                ParamType.DocumentReference,
-                                                                              ),
-                                                                              'roomNo': serializeParam(
-                                                                                roomsItem.number,
-                                                                                ParamType.int,
-                                                                              ),
-                                                                            }.withoutNulls,
-                                                                            extra: <String,
-                                                                                dynamic>{
-                                                                              kTransitionInfoKey: const TransitionInfo(
-                                                                                hasTransition: true,
-                                                                                transitionType: PageTransitionType.rightToLeft,
-                                                                              ),
-                                                                            },
-                                                                          );
-                                                                        }
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0.0,
-                                                                        15.0,
-                                                                        0.0,
-                                                                        0.0),
                                                             child: Row(
                                                               mainAxisSize:
                                                                   MainAxisSize
                                                                       .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
                                                               children: [
                                                                 Expanded(
-                                                                  flex: 1,
-                                                                  child: Icon(
-                                                                    Icons
-                                                                        .meeting_room_outlined,
-                                                                    color: roomsItem.vacant ==
-                                                                            true
-                                                                        ? FlutterFlowTheme.of(context)
-                                                                            .secondary
-                                                                        : const Color(
-                                                                            0xFFFF5963),
-                                                                    size: 24.0,
-                                                                  ),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 6,
+                                                                  flex: 8,
                                                                   child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            10.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      roomsItem.vacant ==
-                                                                              true
-                                                                          ? 'Vacant'
-                                                                          : 'Occupied',
-                                                                      maxLines:
-                                                                          1,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Plus Jakarta Sans',
-                                                                            color:
-                                                                                const Color(0xFF14181B),
-                                                                            fontSize:
-                                                                                14.0,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
+                                                                      AutoSizeText(
+                                                                    homePageHotelSettingsRecord!
+                                                                            .promoOn
+                                                                        ? formatNumber(
+                                                                            (roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)).toInt().toDouble(),
+                                                                            formatType:
+                                                                                FormatType.decimal,
+                                                                            decimalType:
+                                                                                DecimalType.automatic,
+                                                                            currency:
+                                                                                'P ',
+                                                                          )
+                                                                        : formatNumber(
+                                                                            roomsItem.price,
+                                                                            formatType:
+                                                                                FormatType.decimal,
+                                                                            decimalType:
+                                                                                DecimalType.automatic,
+                                                                            currency:
+                                                                                'P ',
                                                                           ),
-                                                                    ),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                    maxLines: 1,
+                                                                    minFontSize:
+                                                                        24.0,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .displaySmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Outfit',
+                                                                          color:
+                                                                              const Color(0xFF14181B),
+                                                                          fontSize:
+                                                                              36.0,
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                        ),
                                                                   ),
                                                                 ),
                                                               ],
                                                             ),
+                                                          ),
+                                                          Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              Expanded(
+                                                                flex: 1,
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .meeting_room_outlined,
+                                                                  color: roomsItem
+                                                                              .vacant ==
+                                                                          true
+                                                                      ? FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary
+                                                                      : const Color(
+                                                                          0xFFFF5963),
+                                                                  size: 24.0,
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                flex: 6,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          10.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  child: Text(
+                                                                    roomsItem.vacant ==
+                                                                            true
+                                                                        ? 'Vacant'
+                                                                        : 'Occupied',
+                                                                    maxLines: 1,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Plus Jakarta Sans',
+                                                                          color:
+                                                                              const Color(0xFF14181B),
+                                                                          fontSize:
+                                                                              14.0,
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                flex: 3,
+                                                                child:
+                                                                    FlutterFlowIconButton(
+                                                                  borderColor:
+                                                                      const Color(
+                                                                          0xFFF1F4F8),
+                                                                  borderRadius:
+                                                                      30.0,
+                                                                  borderWidth:
+                                                                      2.0,
+                                                                  buttonSize:
+                                                                      44.0,
+                                                                  icon: const Icon(
+                                                                    Icons
+                                                                        .arrow_forward_rounded,
+                                                                    color: Color(
+                                                                        0xFF57636C),
+                                                                    size: 24.0,
+                                                                  ),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    if (roomsItem
+                                                                            .vacant ==
+                                                                        true) {
+                                                                      context
+                                                                          .pushNamed(
+                                                                        'CheckIn',
+                                                                        queryParameters:
+                                                                            {
+                                                                          'ref':
+                                                                              serializeParam(
+                                                                            roomsItem.reference,
+                                                                            ParamType.DocumentReference,
+                                                                          ),
+                                                                          'price':
+                                                                              serializeParam(
+                                                                            homePageHotelSettingsRecord.promoOn ? ((roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)).toInt().toDouble()) : roomsItem.price,
+                                                                            ParamType.double,
+                                                                          ),
+                                                                          'roomNo':
+                                                                              serializeParam(
+                                                                            roomsItem.number,
+                                                                            ParamType.int,
+                                                                          ),
+                                                                          'extend':
+                                                                              serializeParam(
+                                                                            false,
+                                                                            ParamType.bool,
+                                                                          ),
+                                                                          'promoOn':
+                                                                              serializeParam(
+                                                                            homePageHotelSettingsRecord.promoOn,
+                                                                            ParamType.bool,
+                                                                          ),
+                                                                          'promoDetail':
+                                                                              serializeParam(
+                                                                            homePageHotelSettingsRecord.promoDetail,
+                                                                            ParamType.String,
+                                                                          ),
+                                                                          'promoDiscount':
+                                                                              serializeParam(
+                                                                            homePageHotelSettingsRecord.promoPercent,
+                                                                            ParamType.double,
+                                                                          ),
+                                                                        }.withoutNulls,
+                                                                        extra: <String,
+                                                                            dynamic>{
+                                                                          kTransitionInfoKey:
+                                                                              const TransitionInfo(
+                                                                            hasTransition: true,
+                                                                            transitionType: PageTransitionType.rightToLeft,
+                                                                          ),
+                                                                        },
+                                                                      );
+                                                                                                                                        } else {
+                                                                      context
+                                                                          .pushNamed(
+                                                                        'CheckedIn',
+                                                                        queryParameters:
+                                                                            {
+                                                                          'ref':
+                                                                              serializeParam(
+                                                                            roomsItem.reference,
+                                                                            ParamType.DocumentReference,
+                                                                          ),
+                                                                          'booking':
+                                                                              serializeParam(
+                                                                            roomsItem.currentBooking,
+                                                                            ParamType.DocumentReference,
+                                                                          ),
+                                                                          'roomNo':
+                                                                              serializeParam(
+                                                                            roomsItem.number,
+                                                                            ParamType.int,
+                                                                          ),
+                                                                        }.withoutNulls,
+                                                                        extra: <String,
+                                                                            dynamic>{
+                                                                          kTransitionInfoKey:
+                                                                              const TransitionInfo(
+                                                                            hasTransition:
+                                                                                true,
+                                                                            transitionType:
+                                                                                PageTransitionType.rightToLeft,
+                                                                          ),
+                                                                        },
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
@@ -3486,6 +3455,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             }
                             List<IssuesRecord> issuedBoxIssuesRecordList =
                                 snapshot.data!;
+
                             return Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -3521,6 +3491,32 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
+                                                Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 10.0, 0.0),
+                                                  child: FlutterFlowIconButton(
+                                                    borderColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .alternate,
+                                                    borderRadius: 10.0,
+                                                    borderWidth: 1.0,
+                                                    buttonSize: 40.0,
+                                                    icon: Icon(
+                                                      Icons.checklist_rounded,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      size: 24.0,
+                                                    ),
+                                                    onPressed: () async {
+                                                      context.pushNamed(
+                                                          'RecordsList');
+                                                    },
+                                                  ),
+                                                ),
                                                 Padding(
                                                   padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
@@ -3572,15 +3568,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       context: context,
                                                       builder: (context) {
                                                         return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
+                                                          onTap: () =>
+                                                              FocusScope.of(
                                                                       context)
                                                                   .unfocus(),
                                                           child: Padding(
@@ -3619,6 +3608,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           .toList())
                                                   ?.toList() ??
                                               [];
+
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
                                             shrinkWrap: true,
@@ -3649,15 +3639,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       context: context,
                                                       builder: (context) {
                                                         return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
+                                                          onTap: () =>
+                                                              FocusScope.of(
                                                                       context)
                                                                   .unfocus(),
                                                           child: Padding(
@@ -3665,7 +3648,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 .viewInsetsOf(
                                                                     context),
                                                             child: SizedBox(
-                                                              height: 220.0,
+                                                              height: 362.0,
                                                               child:
                                                                   OptionToIssueWidget(
                                                                 issue:
@@ -3795,67 +3778,44 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           3.0,
                                                                           0.0,
                                                                           0.0),
-                                                                      child: StreamBuilder<
-                                                                          UsersRecord>(
-                                                                        stream:
-                                                                            UsersRecord.getDocument(issuesListItem.staff!),
-                                                                        builder:
-                                                                            (context,
-                                                                                snapshot) {
-                                                                          // Customize what your widget looks like when it's loading.
-                                                                          if (!snapshot
-                                                                              .hasData) {
-                                                                            return Center(
-                                                                              child: SizedBox(
-                                                                                width: 50.0,
-                                                                                height: 50.0,
-                                                                                child: CircularProgressIndicator(
-                                                                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                                                                    FlutterFlowTheme.of(context).primary,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            );
-                                                                          }
-                                                                          final richTextUsersRecord =
-                                                                              snapshot.data!;
-                                                                          return RichText(
-                                                                            textScaler:
-                                                                                MediaQuery.of(context).textScaler,
-                                                                            text:
-                                                                                TextSpan(
-                                                                              children: [
-                                                                                TextSpan(
-                                                                                  text: 'Reported by ',
-                                                                                  style: FlutterFlowTheme.of(context).labelMedium.override(
-                                                                                        fontFamily: 'Plus Jakarta Sans',
-                                                                                        letterSpacing: 0.0,
-                                                                                      ),
-                                                                                ),
-                                                                                TextSpan(
-                                                                                  text: richTextUsersRecord.displayName,
-                                                                                  style: const TextStyle(),
-                                                                                ),
-                                                                                const TextSpan(
-                                                                                  text: ' on ',
-                                                                                  style: TextStyle(),
-                                                                                ),
-                                                                                TextSpan(
-                                                                                  text: dateTimeFormat('MMM d h:mm a', issuesListItem.date!),
-                                                                                  style: const TextStyle(),
-                                                                                )
-                                                                              ],
+                                                                      child:
+                                                                          RichText(
+                                                                        textScaler:
+                                                                            MediaQuery.of(context).textScaler,
+                                                                        text:
+                                                                            TextSpan(
+                                                                          children: [
+                                                                            TextSpan(
+                                                                              text: 'Reported by ',
                                                                               style: FlutterFlowTheme.of(context).labelMedium.override(
                                                                                     fontFamily: 'Plus Jakarta Sans',
-                                                                                    color: const Color(0xFF57636C),
                                                                                     letterSpacing: 0.0,
-                                                                                    fontWeight: FontWeight.w500,
                                                                                   ),
                                                                             ),
-                                                                            maxLines:
-                                                                                1,
-                                                                          );
-                                                                        },
+                                                                            TextSpan(
+                                                                              text: issuesListItem.staffName,
+                                                                              style: const TextStyle(),
+                                                                            ),
+                                                                            const TextSpan(
+                                                                              text: ' on ',
+                                                                              style: TextStyle(),
+                                                                            ),
+                                                                            TextSpan(
+                                                                              text: dateTimeFormat("MMM d h:mm a", issuesListItem.date!),
+                                                                              style: const TextStyle(),
+                                                                            )
+                                                                          ],
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .override(
+                                                                                fontFamily: 'Plus Jakarta Sans',
+                                                                                color: const Color(0xFF57636C),
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                        ),
+                                                                        maxLines:
+                                                                            1,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -3871,6 +3831,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           AutoSizeText(
                                                                         issuesListItem
                                                                             .detail,
+                                                                        minFontSize:
+                                                                            12.0,
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .headlineSmall
                                                                             .override(
@@ -3880,8 +3842,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                               letterSpacing: 0.0,
                                                                               fontWeight: FontWeight.w500,
                                                                             ),
-                                                                        minFontSize:
-                                                                            12.0,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -4014,6 +3974,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         ? currentRemittancesRecordList
                                                             .first
                                                         : null;
+
                                                 return Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -4122,6 +4083,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       ? yesterdayRemittancesRecordList
                                                                           .first
                                                                       : null;
+
                                                               return Row(
                                                                 mainAxisSize:
                                                                     MainAxisSize
@@ -4324,6 +4286,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                         ? textTransactionsRecordList
                                                                             .first
                                                                         : null;
+
                                                                     return Text(
                                                                       textTransactionsRecord?.total !=
                                                                               0.0
@@ -4522,6 +4485,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 ? groceryColumnGoodsRevenueRatioRecordList
                                                     .first
                                                 : null;
+
                                         return Column(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
@@ -4862,9 +4826,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     builder:
                                                                         (context) {
                                                                       return GestureDetector(
-                                                                        onTap: () => _model.unfocusNode.canRequestFocus
-                                                                            ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-                                                                            : FocusScope.of(context).unfocus(),
+                                                                        onTap: () =>
+                                                                            FocusScope.of(context).unfocus(),
                                                                         child:
                                                                             Padding(
                                                                           padding:

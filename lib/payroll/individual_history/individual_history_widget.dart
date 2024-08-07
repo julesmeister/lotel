@@ -44,9 +44,8 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        _model.year = functions.currentYear();
-      });
+      _model.year = functions.currentYear();
+      setState(() {});
     });
 
     _model.tabBarController = TabController(
@@ -119,10 +118,9 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
           );
         }
         int individualHistoryCount = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).info,
@@ -179,10 +177,9 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                           ),
                           onPressed: () async {
                             // set previous year
-                            setState(() {
-                              _model.year = functions.previousYear(
-                                  'January', _model.year);
-                            });
+                            _model.year =
+                                functions.previousYear('January', _model.year);
+                            setState(() {});
                           },
                         ).animateOnPageLoad(
                             animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -206,10 +203,9 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                           ),
                           onPressed: () async {
                             // set next year
-                            setState(() {
-                              _model.year =
-                                  functions.nextYear(_model.year, 'December');
-                            });
+                            _model.year =
+                                functions.nextYear(_model.year, 'December');
+                            setState(() {});
                           },
                         ).animateOnPageLoad(
                             animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -387,15 +383,8 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                       context: context,
                                                       builder: (context) {
                                                         return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
+                                                          onTap: () =>
+                                                              FocusScope.of(
                                                                       context)
                                                                   .unfocus(),
                                                           child: Padding(
@@ -544,7 +533,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                   children: [
                                                                     Text(
                                                                       dateTimeFormat(
-                                                                          'MMM d y h:mm a',
+                                                                          "MMM d y h:mm a",
                                                                           listViewSalariesRecord
                                                                               .date!),
                                                                       style: FlutterFlowTheme.of(
@@ -606,7 +595,8 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                         pagingController:
                                             _model.setListViewController2(
                                                 AdvancesRecord.collection(
-                                                        widget.staff?.reference)
+                                                        widget
+                                                            .staff?.reference)
                                                     .where(
                                                       'date',
                                                       isGreaterThanOrEqualTo:
@@ -693,14 +683,8 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                     context: context,
                                                     builder: (context) {
                                                       return GestureDetector(
-                                                        onTap: () => _model
-                                                                .unfocusNode
-                                                                .canRequestFocus
-                                                            ? FocusScope.of(
-                                                                    context)
-                                                                .requestFocus(_model
-                                                                    .unfocusNode)
-                                                            : FocusScope.of(
+                                                        onTap: () =>
+                                                            FocusScope.of(
                                                                     context)
                                                                 .unfocus(),
                                                         child: Padding(
@@ -844,9 +828,11 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                         ),
                                                                       );
                                                                     }
+
                                                                     final columnUsersRecord =
                                                                         snapshot
                                                                             .data!;
+
                                                                     return Column(
                                                                       mainAxisSize:
                                                                           MainAxisSize
@@ -860,7 +846,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                       children: [
                                                                         Text(
                                                                           dateTimeFormat(
-                                                                              'MMM d y h:mm a',
+                                                                              "MMM d y h:mm a",
                                                                               listViewAdvancesRecord.date!),
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .bodyLarge
@@ -1150,8 +1136,10 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                 ),
                                                               );
                                                             }
+
                                                             final columnUsersRecord =
                                                                 snapshot.data!;
+
                                                             return InkWell(
                                                               splashColor: Colors
                                                                   .transparent,
@@ -1179,9 +1167,8 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                     builder:
                                                                         (context) {
                                                                       return GestureDetector(
-                                                                        onTap: () => _model.unfocusNode.canRequestFocus
-                                                                            ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-                                                                            : FocusScope.of(context).unfocus(),
+                                                                        onTap: () =>
+                                                                            FocusScope.of(context).unfocus(),
                                                                         child:
                                                                             Padding(
                                                                           padding:
@@ -1227,7 +1214,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                 children: [
                                                                   Text(
                                                                     dateTimeFormat(
-                                                                        'MMM d y h:mm a',
+                                                                        "MMM d y h:mm a",
                                                                         listViewAbsencesRecord
                                                                             .date!),
                                                                     style: FlutterFlowTheme.of(

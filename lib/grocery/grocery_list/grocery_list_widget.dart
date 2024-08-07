@@ -111,9 +111,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).info,
@@ -140,11 +138,11 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
               AutoSizeText(
                 'Recorded Groceries',
                 maxLines: 1,
+                minFontSize: 18.0,
                 style: FlutterFlowTheme.of(context).headlineMedium.override(
                       fontFamily: 'Outfit',
                       letterSpacing: 0.0,
                     ),
-                minFontSize: 18.0,
               ),
               Text(
                 FFAppState().hotel,
@@ -174,10 +172,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                     context: context,
                     builder: (context) {
                       return GestureDetector(
-                        onTap: () => _model.unfocusNode.canRequestFocus
-                            ? FocusScope.of(context)
-                                .requestFocus(_model.unfocusNode)
-                            : FocusScope.of(context).unfocus(),
+                        onTap: () => FocusScope.of(context).unfocus(),
                         child: Padding(
                           padding: MediaQuery.viewInsetsOf(context),
                           child: const SizedBox(
@@ -217,10 +212,9 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                       ),
                       onPressed: () async {
                         // set previous year
-                        setState(() {
-                          _model.year =
-                              functions.previousYear('January', _model.year);
-                        });
+                        _model.year =
+                            functions.previousYear('January', _model.year);
+                        setState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -243,10 +237,9 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                       ),
                       onPressed: () async {
                         // set next year
-                        setState(() {
-                          _model.year =
-                              functions.nextYear(_model.year, 'December');
-                        });
+                        _model.year =
+                            functions.nextYear(_model.year, 'December');
+                        setState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -340,6 +333,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                         ? columnGoodsRevenueRatioRecordList
                                             .first
                                         : null;
+
                                 return Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -442,14 +436,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                     context: context,
                                                     builder: (context) {
                                                       return GestureDetector(
-                                                        onTap: () => _model
-                                                                .unfocusNode
-                                                                .canRequestFocus
-                                                            ? FocusScope.of(
-                                                                    context)
-                                                                .requestFocus(_model
-                                                                    .unfocusNode)
-                                                            : FocusScope.of(
+                                                        onTap: () =>
+                                                            FocusScope.of(
                                                                     context)
                                                                 .unfocus(),
                                                         child: Padding(
@@ -457,7 +445,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                               .viewInsetsOf(
                                                                   context),
                                                           child: SizedBox(
-                                                            height: 215.0,
+                                                            height: 266.0,
                                                             child:
                                                                 OptionToGroceryWidget(
                                                               grocery:
@@ -536,12 +524,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                 builder:
                                                                     (context) {
                                                                   return GestureDetector(
-                                                                    onTap: () => _model
-                                                                            .unfocusNode
-                                                                            .canRequestFocus
-                                                                        ? FocusScope.of(context).requestFocus(_model
-                                                                            .unfocusNode)
-                                                                        : FocusScope.of(context)
+                                                                    onTap: () =>
+                                                                        FocusScope.of(context)
                                                                             .unfocus(),
                                                                     child:
                                                                         Padding(
@@ -570,11 +554,11 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       .adjustedDate !=
                                                                   null) {
                                                                 if (dateTimeFormat(
-                                                                        'MMMM',
+                                                                        "MMMM",
                                                                         listViewGroceriesRecord
                                                                             .date) !=
                                                                     dateTimeFormat(
-                                                                        'MMMM',
+                                                                        "MMMM",
                                                                         _model
                                                                             .adjustedDate)) {
                                                                   // prevStats
@@ -588,11 +572,11 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                             )
                                                                             .where(
                                                                               'year',
-                                                                              isEqualTo: dateTimeFormat('y', listViewGroceriesRecord.date),
+                                                                              isEqualTo: dateTimeFormat("y", listViewGroceriesRecord.date),
                                                                             )
                                                                             .where(
                                                                               'month',
-                                                                              isEqualTo: dateTimeFormat('MMMM', listViewGroceriesRecord.date),
+                                                                              isEqualTo: dateTimeFormat("MMMM", listViewGroceriesRecord.date),
                                                                             ),
                                                                     singleRecord:
                                                                         true,
@@ -622,11 +606,11 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                             )
                                                                             .where(
                                                                               'year',
-                                                                              isEqualTo: dateTimeFormat('y', _model.adjustedDate),
+                                                                              isEqualTo: dateTimeFormat("y", _model.adjustedDate),
                                                                             )
                                                                             .where(
                                                                               'month',
-                                                                              isEqualTo: dateTimeFormat('MMMM', _model.adjustedDate),
+                                                                              isEqualTo: dateTimeFormat("MMMM", _model.adjustedDate),
                                                                             ),
                                                                     singleRecord:
                                                                         true,
@@ -687,7 +671,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                               children: [
                                                                 Text(
                                                                   dateTimeFormat(
-                                                                      'MMM',
+                                                                      "MMM",
                                                                       listViewGroceriesRecord
                                                                           .date!),
                                                                   style: FlutterFlowTheme.of(
@@ -706,7 +690,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                 ),
                                                                 Text(
                                                                   dateTimeFormat(
-                                                                      'd',
+                                                                      "d",
                                                                       listViewGroceriesRecord
                                                                           .date!),
                                                                   style: FlutterFlowTheme.of(
@@ -887,9 +871,11 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                   ),
                                                                 );
                                                               }
+
                                                               final richTextUsersRecord =
                                                                   snapshot
                                                                       .data!;
+
                                                               return RichText(
                                                                 textScaler: MediaQuery.of(
                                                                         context)
@@ -940,7 +926,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           ),
                                                           Text(
                                                             dateTimeFormat(
-                                                                'h:mm a y',
+                                                                "h:mm a y",
                                                                 listViewGroceriesRecord
                                                                     .date!),
                                                             style: FlutterFlowTheme
@@ -1608,7 +1594,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                       ),
                                                       TextSpan(
                                                         text: dateTimeFormat(
-                                                            'EEEE MMMM d y',
+                                                            "EEEE MMMM d y",
                                                             listViewGoodsRevenueRatioRecord
                                                                 .date!),
                                                         style: const TextStyle(

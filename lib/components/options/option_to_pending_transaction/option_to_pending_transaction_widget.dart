@@ -126,9 +126,8 @@ class _OptionToPendingTransactionWidgetState
                           ),
                         });
                         // + loop
-                        setState(() {
-                          _model.loop = _model.loop + 1;
-                        });
+                        _model.loop = _model.loop + 1;
+                        setState(() {});
                       }
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -240,9 +239,8 @@ class _OptionToPendingTransactionWidgetState
                           pending: false,
                         ));
                         // + loop
-                        setState(() {
-                          _model.loop = _model.loop + 1;
-                        });
+                        _model.loop = _model.loop + 1;
+                        setState(() {});
                       }
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

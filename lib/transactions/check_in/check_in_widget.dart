@@ -67,53 +67,48 @@ class _CheckInWidgetState extends State<CheckInWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // default status
-      setState(() {
-        _model.paid = true;
-        _model.loop = 0;
-      });
+      _model.paid = true;
+      _model.loop = 0;
+      setState(() {});
       if (widget.extend) {
         // room
         _model.room = await RoomsRecord.getDocumentOnce(widget.ref!);
         // set price, nights, beds, paid
-        setState(() {
-          _model.price = valueOrDefault<double>(
-            (widget.bookingToExtend?.ability == 'senior') ||
-                    (widget.bookingToExtend?.ability == 'pwd')
-                ? (_model.room!.price - _model.room!.price * 0.2)
-                : ((_model.room!.price -
-                        (_model.room!.price * widget.promoDiscount / 100))
-                    .toInt()
-                    .toDouble()),
-            0.0,
-          );
-          _model.startingNights = widget.bookingToExtend?.nights;
-          _model.startingBeds = widget.bookingToExtend?.extraBeds;
-          _model.paid = widget.bookingToExtend?.status == 'paid';
-          _model.pendings = widget.bookingToExtend!.pendings
-              .toList()
-              .cast<DocumentReference>();
-          _model.ability = widget.bookingToExtend!.ability;
-        });
+        _model.price = valueOrDefault<double>(
+          (widget.bookingToExtend?.ability == 'senior') ||
+                  (widget.bookingToExtend?.ability == 'pwd')
+              ? (_model.room!.price - _model.room!.price * 0.2)
+              : ((_model.room!.price -
+                      (_model.room!.price * widget.promoDiscount / 100))
+                  .toInt()
+                  .toDouble()),
+          0.0,
+        );
+        _model.startingNights = widget.bookingToExtend?.nights;
+        _model.startingBeds = widget.bookingToExtend?.extraBeds;
+        _model.paid = widget.bookingToExtend?.status == 'paid';
+        _model.pendings = widget.bookingToExtend!.pendings
+            .toList()
+            .cast<DocumentReference>();
+        _model.ability = widget.bookingToExtend!.ability;
+        setState(() {});
         if (widget.bookingToExtend!.transactions.isNotEmpty) {
           while (_model.loop != widget.bookingToExtend?.transactions.length) {
             // trans
             _model.trans = await TransactionsRecord.getDocumentOnce(
                 widget.bookingToExtend!.transactions[_model.loop]);
             // add trans to list
-            setState(() {
-              _model.addToTransactions(_model.trans!);
-            });
+            _model.addToTransactions(_model.trans!);
+            setState(() {});
             // + loop
-            setState(() {
-              _model.loop = _model.loop + 1;
-            });
+            _model.loop = _model.loop + 1;
+            setState(() {});
           }
         }
         if (widget.bookingToExtend!.pendings.isNotEmpty) {
           // reset loop
-          setState(() {
-            _model.loop = 0;
-          });
+          _model.loop = 0;
+          setState(() {});
           while (_model.loop !=
               valueOrDefault<int>(
                 widget.bookingToExtend?.pendings.length,
@@ -123,24 +118,21 @@ class _CheckInWidgetState extends State<CheckInWidget>
             _model.pendingsToTrans = await TransactionsRecord.getDocumentOnce(
                 widget.bookingToExtend!.pendings[_model.loop]);
             // add trans to list
-            setState(() {
-              _model.addToTransactions(_model.pendingsToTrans!);
-            });
+            _model.addToTransactions(_model.pendingsToTrans!);
+            setState(() {});
             // + loop
-            setState(() {
-              _model.loop = _model.loop + 1;
-            });
+            _model.loop = _model.loop + 1;
+            setState(() {});
           }
         }
       } else {
-        setState(() {
-          _model.price = valueOrDefault<double>(
-            widget.price,
-            0.0,
-          );
-          _model.startingNights = 0;
-          _model.startingBeds = '-1';
-        });
+        _model.price = valueOrDefault<double>(
+          widget.price,
+          0.0,
+        );
+        _model.startingNights = 0;
+        _model.startingBeds = '-1';
+        setState(() {});
       }
     });
 
@@ -329,6 +321,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                               widget
                                                                   .promoDetail,
                                                               maxLines: 1,
+                                                              minFontSize: 14.0,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .titleLarge
@@ -341,7 +334,6 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
-                                                              minFontSize: 14.0,
                                                             ),
                                                           ],
                                                         ),
@@ -1085,9 +1077,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         if (_model.hoursLateCheckoutValue !=
                                             '0') {
                                           // make status paid
-                                          setState(() {
-                                            _model.paid = true;
-                                          });
+                                          _model.paid = true;
+                                          setState(() {});
                                         }
                                       }
                                     },
@@ -1176,9 +1167,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
-                                      setState(() {
-                                        _model.paid = true;
-                                      });
+                                      _model.paid = true;
+                                      setState(() {});
                                     },
                                     child: Container(
                                       width: 115.0,
@@ -1245,9 +1235,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
-                                      setState(() {
-                                        _model.paid = false;
-                                      });
+                                      _model.paid = false;
+                                      setState(() {});
                                     },
                                     child: Container(
                                       width: 115.0,
@@ -1343,10 +1332,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        setState(() {
-                                          _model.ability = 'normal';
-                                          _model.price = widget.price!;
-                                        });
+                                        _model.ability = 'normal';
+                                        _model.price = widget.price!;
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -1414,15 +1402,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        setState(() {
-                                          _model.ability = 'senior';
-                                          _model.price =
-                                              (double roomPrice, bool promoOn) {
-                                            return roomPrice -
-                                                roomPrice *
-                                                    (promoOn ? 0.1 : 0.2);
-                                          }(widget.price!, widget.promoOn);
-                                        });
+                                        _model.ability = 'senior';
+                                        _model.price =
+                                            (double roomPrice, bool promoOn) {
+                                          return roomPrice -
+                                              roomPrice * (promoOn ? 0.1 : 0.2);
+                                        }(widget.price!, widget.promoOn);
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -1486,15 +1472,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        setState(() {
-                                          _model.ability = 'pwd';
-                                          _model.price =
-                                              (double roomPrice, bool promoOn) {
-                                            return roomPrice -
-                                                roomPrice *
-                                                    (promoOn ? 0.1 : 0.2);
-                                          }(widget.price!, widget.promoOn);
-                                        });
+                                        _model.ability = 'pwd';
+                                        _model.price =
+                                            (double roomPrice, bool promoOn) {
+                                          return roomPrice -
+                                              roomPrice * (promoOn ? 0.1 : 0.2);
+                                        }(widget.price!, widget.promoOn);
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -1797,10 +1781,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         }, transactionsRecordReference1);
                                         shouldSetState = true;
                                         // add to trans list
-                                        setState(() {
-                                          _model.addToTransactions(
-                                              _model.refundTrans!);
-                                        });
+                                        _model.addToTransactions(
+                                            _model.refundTrans!);
+                                        setState(() {});
                                         // add this change to history
 
                                         await HistoryRecord.createDoc(
@@ -2019,10 +2002,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           }, transactionsRecordReference2);
                                           shouldSetState = true;
                                           // add to pendings list
-                                          setState(() {
-                                            _model.addToPendings(_model
-                                                .newExtPending!.reference);
-                                          });
+                                          _model.addToPendings(
+                                              _model.newExtPending!.reference);
+                                          setState(() {});
                                           // add this change to history
 
                                           await HistoryRecord.createDoc(
@@ -2159,10 +2141,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             }, transactionsRecordReference3);
                                             shouldSetState = true;
                                             // add to pendings list
-                                            setState(() {
-                                              _model.addToPendings(_model
-                                                  .newRefundPending!.reference);
-                                            });
+                                            _model.addToPendings(_model
+                                                .newRefundPending!.reference);
+                                            setState(() {});
                                             // add this change to history
 
                                             await HistoryRecord.createDoc(
@@ -2428,13 +2409,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       }, transactionsRecordReference4);
                                       shouldSetState = true;
                                       // add to trans list
-                                      setState(() {
-                                        _model.addToTransactions(
-                                            _model.checkin1!);
-                                      });
+                                      _model
+                                          .addToTransactions(_model.checkin1!);
+                                      setState(() {});
                                       // Check In To History
 
-                                      await HistoryRecord.createDoc(widget.ref!)
+                                      await HistoryRecord.createDoc(
+                                              widget.ref!)
                                           .set({
                                         ...createHistoryRecordData(
                                           description:
@@ -2533,7 +2514,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       });
                                       // add this change to history
 
-                                      await HistoryRecord.createDoc(widget.ref!)
+                                      await HistoryRecord.createDoc(
+                                              widget.ref!)
                                           .set({
                                         ...createHistoryRecordData(
                                           description:
@@ -2597,8 +2579,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   context.safePop();
                                   if (shouldSetState) setState(() {});
                                 },
-                                text:
-                                    widget.extend == true ? 'Save' : 'Check In',
+                                text: widget.extend == true
+                                    ? 'Save'
+                                    : 'Check In',
                                 options: FFButtonOptions(
                                   width: 130.0,
                                   height: 50.0,

@@ -3,9 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
-import '/backend/schema/util/schema_util.dart';
 
-import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 class CartGoodsStruct extends FFFirebaseStruct {
@@ -25,28 +23,35 @@ class CartGoodsStruct extends FFFirebaseStruct {
   String? _description;
   String get description => _description ?? '';
   set description(String? val) => _description = val;
+
   bool hasDescription() => _description != null;
 
   // "quantity" field.
   int? _quantity;
   int get quantity => _quantity ?? 0;
   set quantity(int? val) => _quantity = val;
-  void incrementQuantity(int amount) => _quantity = quantity + amount;
+
+  void incrementQuantity(int amount) => quantity = quantity + amount;
+
   bool hasQuantity() => _quantity != null;
 
   // "price" field.
   double? _price;
   double get price => _price ?? 0.0;
   set price(double? val) => _price = val;
-  void incrementPrice(double amount) => _price = price + amount;
+
+  void incrementPrice(double amount) => price = price + amount;
+
   bool hasPrice() => _price != null;
 
   // "previousQuantity" field.
   int? _previousQuantity;
   int get previousQuantity => _previousQuantity ?? 0;
   set previousQuantity(int? val) => _previousQuantity = val;
+
   void incrementPreviousQuantity(int amount) =>
-      _previousQuantity = previousQuantity + amount;
+      previousQuantity = previousQuantity + amount;
+
   bool hasPreviousQuantity() => _previousQuantity != null;
 
   static CartGoodsStruct fromMap(Map<String, dynamic> data) => CartGoodsStruct(

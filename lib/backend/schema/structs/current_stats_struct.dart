@@ -19,12 +19,14 @@ class CurrentStatsStruct extends FFFirebaseStruct {
   String? _year;
   String get year => _year ?? '';
   set year(String? val) => _year = val;
+
   bool hasYear() => _year != null;
 
   // "month" field.
   String? _month;
   String get month => _month ?? '';
   set month(String? val) => _month = val;
+
   bool hasMonth() => _month != null;
 
   static CurrentStatsStruct fromMap(Map<String, dynamic> data) =>

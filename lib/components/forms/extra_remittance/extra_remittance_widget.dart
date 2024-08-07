@@ -50,12 +50,13 @@ class _ExtraRemittanceWidgetState extends State<ExtraRemittanceWidget> {
             ),
         singleRecord: true,
       ).then((s) => s.firstOrNull);
-      setState(() {
-        _model.changeTransaction = _model.change;
-      });
+      _model.changeTransaction = _model.change;
+      setState(() {});
       setState(() {
         _model.extraTextController?.text =
             functions.absolute(_model.change!.total).toString();
+        _model.extraTextController?.selection = TextSelection.collapsed(
+            offset: _model.extraTextController!.text.length);
       });
     });
 

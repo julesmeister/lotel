@@ -36,9 +36,8 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        _model.date = functions.today();
-      });
+      _model.date = functions.today();
+      setState(() {});
     });
 
     animationsMap.addAll({
@@ -139,10 +138,9 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
         }
         List<BillChangesRecord> historyInBillsBillChangesRecordList =
             snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -169,13 +167,13 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                   'History of Bills',
                   textAlign: TextAlign.start,
                   maxLines: 1,
+                  minFontSize: 18.0,
                   style: FlutterFlowTheme.of(context).headlineLarge.override(
                         fontFamily: 'Outfit',
                         fontSize: 24.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
                       ),
-                  minFontSize: 18.0,
                 ),
               ),
               actions: [
@@ -201,10 +199,8 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                                 size: 24.0,
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  _model.date =
-                                      functions.prevDate(_model.date!);
-                                });
+                                _model.date = functions.prevDate(_model.date!);
+                                setState(() {});
                               },
                             ),
                           ),
@@ -219,9 +215,8 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                             size: 24.0,
                           ),
                           onPressed: () async {
-                            setState(() {
-                              _model.showDatePicker = !_model.showDatePicker;
-                            });
+                            _model.showDatePicker = !_model.showDatePicker;
+                            setState(() {});
                           },
                         ),
                         if (valueOrDefault(currentUserDocument?.role, '') ==
@@ -238,10 +233,8 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                                 size: 24.0,
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  _model.date =
-                                      functions.nextDate(_model.date!);
-                                });
+                                _model.date = functions.nextDate(_model.date!);
+                                setState(() {});
                               },
                             ),
                           ),
@@ -275,9 +268,8 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                             return;
                           }
                           _model.calendarSelectedDay = newSelectedDate;
-                          setState(() {
-                            _model.date = _model.calendarSelectedDay?.start;
-                          });
+                          _model.date = _model.calendarSelectedDay?.start;
+                          setState(() {});
                           setState(() {});
                         },
                         titleStyle:
@@ -313,6 +305,7 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                         builder: (context) {
                           final billChanges =
                               historyInBillsBillChangesRecordList.toList();
+
                           return ListView.builder(
                             padding: const EdgeInsets.fromLTRB(
                               0,
@@ -431,8 +424,10 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                                                             ),
                                                           );
                                                         }
+
                                                         final textUsersRecord =
                                                             snapshot.data!;
+
                                                         return Text(
                                                           textUsersRecord
                                                               .displayName,
@@ -520,7 +515,7 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                                                                           0.0),
                                                               child: Text(
                                                                 dateTimeFormat(
-                                                                    'jm',
+                                                                    "jm",
                                                                     billChangesItem
                                                                         .date!),
                                                                 textAlign:

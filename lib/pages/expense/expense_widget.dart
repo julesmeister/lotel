@@ -22,12 +22,14 @@ class ExpenseWidget extends StatefulWidget {
     bool? additional,
     this.remittanceRef,
     double? net,
+    this.issue,
   })  : additional = additional ?? false,
         net = net ?? 0.0;
 
   final bool additional;
   final DocumentReference? remittanceRef;
   final double net;
+  final String? issue;
 
   @override
   State<ExpenseWidget> createState() => _ExpenseWidgetState();
@@ -49,7 +51,9 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
     _model.amountTextController ??= TextEditingController();
     _model.amountFocusNode ??= FocusNode();
 
-    _model.descriptionTextController ??= TextEditingController();
+    _model.descriptionTextController ??= TextEditingController(
+        text:
+            widget.issue != null && widget.issue != '' ? widget.issue : '');
     _model.descriptionFocusNode ??= FocusNode();
 
     animationsMap.addAll({
@@ -137,9 +141,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -304,10 +306,9 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                         }, transactionsRecordReference1);
                                         shouldSetState = true;
                                         // CA to expenseRef
-                                        setState(() {
-                                          _model.expenseRef =
-                                              _model.newCACopy?.reference;
-                                        });
+                                        _model.expenseRef =
+                                            _model.newCACopy?.reference;
+                                        setState(() {});
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -590,10 +591,9 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                 ),
                                               );
                                               // exp to expenseRef
-                                              setState(() {
-                                                _model.expenseRef = _model
-                                                    .newExpCopy?.reference;
-                                              });
+                                              _model.expenseRef =
+                                                  _model.newExpCopy?.reference;
+                                              setState(() {});
                                               if (functions.findTextsInString(
                                                   _model.choicesValue,
                                                   'Softdrinks')) {
@@ -801,7 +801,11 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                     // Reset amount/description
                                     setState(() {
                                       _model.amountTextController?.clear();
-                                      _model.descriptionTextController?.clear();
+                                      _model.descriptionTextController?.text =
+                                          widget.issue != null &&
+                                                  widget.issue != ''
+                                              ? widget.issue!
+                                              : '';
                                     });
                                     // Reset selected staff
                                     setState(() {
@@ -874,14 +878,12 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                           () async {
                             if (_model.amountTextController.text == '') {
                               // disable
-                              setState(() {
-                                _model.disableSubmit = true;
-                              });
+                              _model.disableSubmit = true;
+                              setState(() {});
                             } else {
                               // enable
-                              setState(() {
-                                _model.disableSubmit = false;
-                              });
+                              _model.disableSubmit = false;
+                              setState(() {});
                             }
                           },
                         ),
@@ -1039,6 +1041,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                         }
                         List<OptionsRecord> containerOptionsRecordList =
                             snapshot.data!;
+
                         return Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -1067,41 +1070,68 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                   setState(() {
                                     _model.descriptionTextController?.text =
                                         'Food Allowance for Staff';
+                                    _model.descriptionTextController
+                                            ?.selection =
+                                        TextSelection.collapsed(
+                                            offset: _model
+                                                .descriptionTextController!
+                                                .text
+                                                .length);
                                   });
                                   // 150 amount
                                   setState(() {
                                     _model.amountTextController?.text = '150';
+                                    _model.amountTextController?.selection =
+                                        TextSelection.collapsed(
+                                            offset: _model.amountTextController!
+                                                .text.length);
                                   });
                                   // enable submit
-                                  setState(() {
-                                    _model.disableSubmit = false;
-                                  });
+                                  _model.disableSubmit = false;
+                                  setState(() {});
                                 } else {
                                   // choice
                                   setState(() {
                                     _model.descriptionTextController?.text =
                                         _model.choicesValue!;
+                                    _model.descriptionTextController
+                                            ?.selection =
+                                        TextSelection.collapsed(
+                                            offset: _model
+                                                .descriptionTextController!
+                                                .text
+                                                .length);
                                   });
                                   if (_model.choicesValue == 'Pamasahe') {
                                     // 100 pamasahe
                                     setState(() {
                                       _model.amountTextController?.text = '100';
+                                      _model.amountTextController?.selection =
+                                          TextSelection.collapsed(
+                                              offset: _model
+                                                  .amountTextController!
+                                                  .text
+                                                  .length);
                                     });
                                     // enable submit
-                                    setState(() {
-                                      _model.disableSubmit = false;
-                                    });
+                                    _model.disableSubmit = false;
+                                    setState(() {});
                                   } else {
                                     if (_model.choicesValue == 'Sako') {
                                       // 10 sako
                                       setState(() {
                                         _model.amountTextController?.text =
                                             '10';
+                                        _model.amountTextController?.selection =
+                                            TextSelection.collapsed(
+                                                offset: _model
+                                                    .amountTextController!
+                                                    .text
+                                                    .length);
                                       });
                                       // enable submit
-                                      setState(() {
-                                        _model.disableSubmit = false;
-                                      });
+                                      _model.disableSubmit = false;
+                                      setState(() {});
                                     }
                                   }
                                 }
@@ -1189,6 +1219,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                           }
                           List<StaffsRecord> selectedNameStaffsRecordList =
                               snapshot.data!;
+
                           return FlutterFlowDropDown<String>(
                             controller: _model.selectedNameValueController ??=
                                 FormFieldController<String>(null),
@@ -1197,15 +1228,14 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                 .toList(),
                             onChanged: (val) async {
                               setState(() => _model.selectedNameValue = val);
-                              setState(() {
-                                _model.staffSelected =
-                                    selectedNameStaffsRecordList
-                                        .where((e) =>
-                                            e.name == _model.selectedNameValue)
-                                        .toList()
-                                        .first
-                                        .reference;
-                              });
+                              _model.staffSelected =
+                                  selectedNameStaffsRecordList
+                                      .where((e) =>
+                                          e.name == _model.selectedNameValue)
+                                      .toList()
+                                      .first
+                                      .reference;
+                              setState(() {});
                             },
                             height: 60.0,
                             textStyle: FlutterFlowTheme.of(context)

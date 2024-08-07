@@ -132,6 +132,7 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                     child: AutoSizeText(
                                       'These rooms are currently occupied.',
                                       maxLines: 1,
+                                      minFontSize: 12.0,
                                       style: FlutterFlowTheme.of(context)
                                           .labelMedium
                                           .override(
@@ -141,7 +142,6 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                             letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
                                           ),
-                                      minFontSize: 12.0,
                                     ),
                                   ),
                                 ],
@@ -182,8 +182,9 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                         child: Builder(
                           builder: (context) {
                             final rooms = widget.occupiedRooms!
-                                .sortedList((e) => e.number)
+                                .sortedList(keyOf: (e) => e.number, desc: false)
                                 .toList();
+
                             return GridView.builder(
                               padding: const EdgeInsets.fromLTRB(
                                 16.0,
@@ -287,8 +288,10 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                           child: Builder(
                             builder: (context) {
                               final rooms = widget.vacantRooms!
-                                  .sortedList((e) => e.number)
+                                  .sortedList(
+                                      keyOf: (e) => e.number, desc: false)
                                   .toList();
+
                               return GridView.builder(
                                 padding: const EdgeInsets.fromLTRB(
                                   16.0,

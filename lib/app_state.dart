@@ -143,26 +143,26 @@ class FFAppState extends ChangeNotifier {
   }
 
   void addToRoomUsages(RoomUsageStruct value) {
-    _roomUsages.add(value);
+    roomUsages.add(value);
   }
 
   void removeFromRoomUsages(RoomUsageStruct value) {
-    _roomUsages.remove(value);
+    roomUsages.remove(value);
   }
 
   void removeAtIndexFromRoomUsages(int index) {
-    _roomUsages.removeAt(index);
+    roomUsages.removeAt(index);
   }
 
   void updateRoomUsagesAtIndex(
     int index,
     RoomUsageStruct Function(RoomUsageStruct) updateFn,
   ) {
-    _roomUsages[index] = updateFn(_roomUsages[index]);
+    roomUsages[index] = updateFn(_roomUsages[index]);
   }
 
   void insertAtIndexInRoomUsages(int index, RoomUsageStruct value) {
-    _roomUsages.insert(index, value);
+    roomUsages.insert(index, value);
   }
 
   final _roomsManager = StreamRequestManager<List<RoomsRecord>>();

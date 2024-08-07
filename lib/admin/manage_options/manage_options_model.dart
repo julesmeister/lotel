@@ -26,9 +26,7 @@ class ManageOptionsModel extends FlutterFlowModel<ManageOptionsWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for CheckboxListTile widget.
-
   Map<OptionsRecord, bool> checkboxListTileValueMap1 = {};
   List<OptionsRecord> get checkboxListTileCheckedItems1 =>
       checkboxListTileValueMap1.entries
@@ -37,7 +35,6 @@ class ManageOptionsModel extends FlutterFlowModel<ManageOptionsWidget> {
           .toList();
 
   // State field(s) for CheckboxListTile widget.
-
   Map<OptionsRecord, bool> checkboxListTileValueMap2 = {};
   List<OptionsRecord> get checkboxListTileCheckedItems2 =>
       checkboxListTileValueMap2.entries
@@ -49,7 +46,5 @@ class ManageOptionsModel extends FlutterFlowModel<ManageOptionsWidget> {
   void initState(BuildContext context) {}
 
   @override
-  void dispose() {
-    unfocusNode.dispose();
-  }
+  void dispose() {}
 }

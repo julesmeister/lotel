@@ -262,6 +262,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     'net',
                     ParamType.double,
                   ),
+                  issue: params.getParam(
+                    'issue',
+                    ParamType.String,
+                  ),
                 ),
         ),
         FFRoute(
@@ -431,6 +435,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/metricsYearly',
           requireAuth: true,
           builder: (context, params) => const MetricsYearlyWidget(),
+        ),
+        FFRoute(
+          name: 'RecordsList',
+          path: '/recordsList',
+          requireAuth: true,
+          builder: (context, params) => const RecordsListWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

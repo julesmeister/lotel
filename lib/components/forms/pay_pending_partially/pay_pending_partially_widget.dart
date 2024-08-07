@@ -42,22 +42,19 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // reset
-      setState(() {
-        _model.loop = 0;
-      });
+      _model.loop = 0;
+      setState(() {});
       while (widget.transactions?.length != _model.loop) {
         // add transaction to list
-        setState(() {
-          _model.addToPendings(PayPendingStruct(
-            amount: widget.transactions?[_model.loop].total,
-            pending: false,
-            ref: widget.transactions?[_model.loop].reference,
-          ));
-        });
+        _model.addToPendings(PayPendingStruct(
+          amount: widget.transactions?[_model.loop].total,
+          pending: false,
+          ref: widget.transactions?[_model.loop].reference,
+        ));
+        setState(() {});
         // + loop
-        setState(() {
-          _model.loop = _model.loop + 1;
-        });
+        _model.loop = _model.loop + 1;
+        setState(() {});
       }
     });
 
@@ -186,6 +183,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                       Builder(
                         builder: (context) {
                           final pendingTransactions = _model.pendings.toList();
+
                           return ListView.builder(
                             padding: EdgeInsets.zero,
                             primary: false,
@@ -226,12 +224,11 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
 
                                     if (_model.amount != null) {
                                       // update amount
-                                      setState(() {
-                                        _model.updatePendingsAtIndex(
-                                          pendingTransactionsIndex,
-                                          (e) => e..amount = _model.amount,
-                                        );
-                                      });
+                                      _model.updatePendingsAtIndex(
+                                        pendingTransactionsIndex,
+                                        (e) => e..amount = _model.amount,
+                                      );
+                                      setState(() {});
                                     }
 
                                     setState(() {});
@@ -264,7 +261,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                           ),
                                           Text(
                                             dateTimeFormat(
-                                                'EEEE MMMM d y h:mm a',
+                                                "EEEE MMMM d y h:mm a",
                                                 widget.transactions!
                                                     .where((e) =>
                                                         e.reference ==
@@ -313,20 +310,18 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                                 newValue!);
                                             if (newValue!) {
                                               // paid
-                                              setState(() {
-                                                _model.updatePendingsAtIndex(
-                                                  pendingTransactionsIndex,
-                                                  (e) => e..pending = false,
-                                                );
-                                              });
+                                              _model.updatePendingsAtIndex(
+                                                pendingTransactionsIndex,
+                                                (e) => e..pending = false,
+                                              );
+                                              setState(() {});
                                             } else {
                                               // pending
-                                              setState(() {
-                                                _model.updatePendingsAtIndex(
-                                                  pendingTransactionsIndex,
-                                                  (e) => e..pending = true,
-                                                );
-                                              });
+                                              _model.updatePendingsAtIndex(
+                                                pendingTransactionsIndex,
+                                                (e) => e..pending = true,
+                                              );
+                                              setState(() {});
                                             }
                                           },
                                           side: BorderSide(
@@ -435,9 +430,8 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                       await RoomsRecord.getDocumentOnce(
                                           _model.booking!.room!);
                                   // reset
-                                  setState(() {
-                                    _model.loop = 0;
-                                  });
+                                  _model.loop = 0;
+                                  setState(() {});
                                   while (
                                       _model.pendings.length != _model.loop) {
                                     if (_model.pendings[_model.loop].pending) {
@@ -487,9 +481,8 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                     }
 
                                     // + loop
-                                    setState(() {
-                                      _model.loop = _model.loop + 1;
-                                    });
+                                    _model.loop = _model.loop + 1;
+                                    setState(() {});
                                   }
                                   // set history
 

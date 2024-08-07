@@ -49,14 +49,13 @@ class _BillsListWidgetState extends State<BillsListWidget>
         limit: 50,
       );
       // set all descriptions
-      setState(() {
-        _model.allDescriptions = functions
-            .billsChoices(
-                _model.allBills?.map((e) => e.description).toList().toList())
-            .toList()
-            .cast<String>();
-        _model.year = functions.currentYear();
-      });
+      _model.allDescriptions = functions
+          .billsChoices(
+              _model.allBills?.map((e) => e.description).toList().toList())
+          .toList()
+          .cast<String>();
+      _model.year = functions.currentYear();
+      setState(() {});
     });
 
     animationsMap.addAll({
@@ -101,9 +100,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -138,12 +135,38 @@ class _BillsListWidgetState extends State<BillsListWidget>
                       letterSpacing: 0.0,
                     ),
               ),
-              Text(
-                FFAppState().hotel,
-                style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Readex Pro',
-                      letterSpacing: 0.0,
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    FFAppState().hotel,
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Readex Pro',
+                          letterSpacing: 0.0,
+                        ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        FFAppState().hotel =
+                            functions.nextHotel(FFAppState().hotel);
+                        setState(() {});
+                      },
+                      child: Icon(
+                        Icons.switch_left,
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                        size: 18.0,
+                      ),
                     ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -207,10 +230,9 @@ class _BillsListWidgetState extends State<BillsListWidget>
                       ),
                       onPressed: () async {
                         // set previous year
-                        setState(() {
-                          _model.year =
-                              functions.previousYear('January', _model.year);
-                        });
+                        _model.year =
+                            functions.previousYear('January', _model.year);
+                        setState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -233,10 +255,9 @@ class _BillsListWidgetState extends State<BillsListWidget>
                       ),
                       onPressed: () async {
                         // set next year
-                        setState(() {
-                          _model.year =
-                              functions.nextYear(_model.year, 'December');
-                        });
+                        _model.year =
+                            functions.nextYear(_model.year, 'December');
+                        setState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -252,20 +273,17 @@ class _BillsListWidgetState extends State<BillsListWidget>
                   onChanged: (val) async {
                     setState(() => _model.choiceChipsValue =
                         val?.firstOrNull); // reset showInList
-                    setState(() {
-                      _model.showInList = [];
-                    });
+                    _model.showInList = [];
+                    setState(() {});
                     if (_model.choiceChipsValue == 'All') {
                       // all
-                      setState(() {
-                        _model.showInList =
-                            _model.allDescriptions.toList().cast<String>();
-                      });
+                      _model.showInList =
+                          _model.allDescriptions.toList().cast<String>();
+                      setState(() {});
                     } else {
                       // choice only
-                      setState(() {
-                        _model.addToShowInList(_model.choiceChipsValue!);
-                      });
+                      _model.addToShowInList(_model.choiceChipsValue!);
+                      setState(() {});
                     }
                   },
                   selectedChipStyle: ChipStyle(
@@ -407,6 +425,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                     }
                                     List<BillsRecord> textBillsRecordList =
                                         snapshot.data!;
+
                                     return Text(
                                       formatNumber(
                                         functions.totalOfSpecificBill(
@@ -505,11 +524,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                               context: context,
                               builder: (context) {
                                 return GestureDetector(
-                                  onTap: () =>
-                                      _model.unfocusNode.canRequestFocus
-                                          ? FocusScope.of(context)
-                                              .requestFocus(_model.unfocusNode)
-                                          : FocusScope.of(context).unfocus(),
+                                  onTap: () => FocusScope.of(context).unfocus(),
                                   child: Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
                                     child: SizedBox(
@@ -526,14 +541,12 @@ class _BillsListWidgetState extends State<BillsListWidget>
                         },
                         onDoubleTap: () async {
                           // reset
-                          setState(() {
-                            _model.showInList = [];
-                          });
+                          _model.showInList = [];
+                          setState(() {});
                           // add to showInList
-                          setState(() {
-                            _model.addToShowInList(
-                                listViewBillsRecord.description);
-                          });
+                          _model
+                              .addToShowInList(listViewBillsRecord.description);
+                          setState(() {});
                         },
                         child: Container(
                           width: 100.0,
@@ -579,12 +592,8 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                             context: context,
                                             builder: (context) {
                                               return GestureDetector(
-                                                onTap: () => _model.unfocusNode
-                                                        .canRequestFocus
-                                                    ? FocusScope.of(context)
-                                                        .requestFocus(
-                                                            _model.unfocusNode)
-                                                    : FocusScope.of(context)
+                                                onTap: () =>
+                                                    FocusScope.of(context)
                                                         .unfocus(),
                                                 child: Padding(
                                                   padding:
@@ -605,10 +614,10 @@ class _BillsListWidgetState extends State<BillsListWidget>
 
                                           shouldSetState = true;
                                           if (_model.adjustedDate != null) {
-                                            if (dateTimeFormat('M',
+                                            if (dateTimeFormat("M",
                                                     listViewBillsRecord.date) ==
                                                 dateTimeFormat(
-                                                    'M', _model.adjustedDate)) {
+                                                    "M", _model.adjustedDate)) {
                                               // adjusted
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
@@ -639,14 +648,14 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                         .where(
                                                           'month',
                                                           isEqualTo: dateTimeFormat(
-                                                              'MMMM',
+                                                              "MMMM",
                                                               listViewBillsRecord
                                                                   .date),
                                                         )
                                                         .where(
                                                           'year',
                                                           isEqualTo: dateTimeFormat(
-                                                              'y',
+                                                              "y",
                                                               listViewBillsRecord
                                                                   .date),
                                                         )
@@ -680,14 +689,14 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                         .where(
                                                           'month',
                                                           isEqualTo: dateTimeFormat(
-                                                              'MMMM',
+                                                              "MMMM",
                                                               _model
                                                                   .adjustedDate),
                                                         )
                                                         .where(
                                                           'year',
                                                           isEqualTo: dateTimeFormat(
-                                                              'y',
+                                                              "y",
                                                               _model
                                                                   .adjustedDate),
                                                         )
@@ -767,7 +776,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                   .showSnackBar(
                                                 SnackBar(
                                                   content: Text(
-                                                    'Bill has been moved to ${dateTimeFormat('MMMM', _model.adjustedDate)}!',
+                                                    'Bill has been moved to ${dateTimeFormat("MMMM", _model.adjustedDate)}!',
                                                     style: TextStyle(
                                                       color:
                                                           FlutterFlowTheme.of(
@@ -836,7 +845,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Text(
-                                            dateTimeFormat('MMM',
+                                            dateTimeFormat("MMM",
                                                 listViewBillsRecord.date!),
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
@@ -854,7 +863,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                           ),
                                           Text(
                                             dateTimeFormat(
-                                                'd', listViewBillsRecord.date!),
+                                                "d", listViewBillsRecord.date!),
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -1126,7 +1135,9 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                             ),
                                           );
                                         }
+
                                         final textUsersRecord = snapshot.data!;
+
                                         return Text(
                                           'Recorded by ${textUsersRecord.displayName}',
                                           style: FlutterFlowTheme.of(context)
@@ -1168,9 +1179,11 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                             ),
                                           );
                                         }
+
                                         final textUsersRecord = snapshot.data!;
+
                                         return Text(
-                                          dateTimeFormat('y', listViewBillsRecord.date),
+                                          dateTimeFormat("y", listViewBillsRecord.date),
                                           style: FlutterFlowTheme.of(context)
                                               .labelMedium
                                               .override(

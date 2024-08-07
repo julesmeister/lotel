@@ -10,7 +10,12 @@ import 'new_grocery_model.dart';
 export 'new_grocery_model.dart';
 
 class NewGroceryWidget extends StatefulWidget {
-  const NewGroceryWidget({super.key});
+  const NewGroceryWidget({
+    super.key,
+    this.duplicate,
+  });
+
+  final String? duplicate;
 
   @override
   State<NewGroceryWidget> createState() => _NewGroceryWidgetState();
@@ -30,12 +35,16 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
     super.initState();
     _model = createModel(context, () => NewGroceryModel());
 
-    _model.remarkTextController ??= TextEditingController();
+    _model.remarkTextController ??= TextEditingController(
+        text: widget.duplicate != null && widget.duplicate != ''
+            ? widget.duplicate
+            : '');
     _model.remarkFocusNode ??= FocusNode();
 
     _model.amountTextController ??= TextEditingController();
     _model.amountFocusNode ??= FocusNode();
 
+    _model.switchValue = false;
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -288,22 +297,18 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                       alignment:
                                           const AlignmentDirectional(-1.0, 0.0),
                                       child: Switch.adaptive(
-                                        value: _model.switchValue ??= false,
+                                        value: _model.switchValue!,
                                         onChanged: (newValue) async {
                                           setState(() =>
                                               _model.switchValue = newValue);
                                           if (newValue) {
                                             // on
-                                            setState(() {
-                                              _model.startCountingRevenue =
-                                                  true;
-                                            });
+                                            _model.startCountingRevenue = true;
+                                            setState(() {});
                                           } else {
                                             // off
-                                            setState(() {
-                                              _model.startCountingRevenue =
-                                                  false;
-                                            });
+                                            _model.startCountingRevenue = false;
+                                            setState(() {});
                                           }
                                         },
                                         activeColor:

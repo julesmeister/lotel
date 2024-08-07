@@ -71,10 +71,9 @@ class _MartWidgetState extends State<MartWidget> {
           );
         }
         List<GoodsRecord> martGoodsRecordList = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -92,6 +91,27 @@ class _MartWidgetState extends State<MartWidget> {
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
+                    if (FFAppState().role == 'admin')
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                        child: FlutterFlowIconButton(
+                          borderColor: FlutterFlowTheme.of(context).alternate,
+                          borderRadius: 12.0,
+                          borderWidth: 2.0,
+                          buttonSize: 40.0,
+                          fillColor:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          icon: Icon(
+                            Icons.shelves,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            context.pushNamed('HistoryInInventory');
+                          },
+                        ),
+                      ),
                     Padding(
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(12.0, 8.0, 10.0, 8.0),
@@ -155,7 +175,7 @@ class _MartWidgetState extends State<MartWidget> {
                                   'cart': serializeParam(
                                     _model.cart,
                                     ParamType.Document,
-                                    true,
+                                    isList: true,
                                   ),
                                 }.withoutNulls,
                                 extra: <String, dynamic>{
@@ -406,6 +426,7 @@ class _MartWidgetState extends State<MartWidget> {
                                               e.category) ||
                                           (_model.categoriesValue == 'All'))
                                       .toList();
+
                                   return ListView.separated(
                                     padding: const EdgeInsets.fromLTRB(
                                       0,
@@ -522,6 +543,10 @@ class _MartWidgetState extends State<MartWidget> {
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .info,
+                                                      disabledIconColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .alternate,
                                                       icon: FaIcon(
                                                         FontAwesomeIcons
                                                             .angleDown,
@@ -539,10 +564,9 @@ class _MartWidgetState extends State<MartWidget> {
                                                                   .toList().isEmpty)
                                                           ? null
                                                           : () async {
-                                                              setState(() {
-                                                                _model.removeFromCart(
-                                                                    goodsListItem);
-                                                              });
+                                                              _model.removeFromCart(
+                                                                  goodsListItem);
+                                                              setState(() {});
                                                             },
                                                     ),
                                                     FlutterFlowIconButton(
@@ -557,6 +581,10 @@ class _MartWidgetState extends State<MartWidget> {
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .info,
+                                                      disabledIconColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .alternate,
                                                       icon: FaIcon(
                                                         FontAwesomeIcons
                                                             .angleUp,
@@ -577,10 +605,9 @@ class _MartWidgetState extends State<MartWidget> {
                                                                   .quantity)
                                                           ? null
                                                           : () async {
-                                                              setState(() {
-                                                                _model.addToCart(
-                                                                    goodsListItem);
-                                                              });
+                                                              _model.addToCart(
+                                                                  goodsListItem);
+                                                              setState(() {});
                                                             },
                                                     ),
                                                   ],

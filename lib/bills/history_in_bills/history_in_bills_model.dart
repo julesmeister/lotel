@@ -12,7 +12,6 @@ class HistoryInBillsModel extends FlutterFlowModel<HistoryInBillsWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for Calendar widget.
   DateTimeRange? calendarSelectedDay;
 
@@ -25,7 +24,5 @@ class HistoryInBillsModel extends FlutterFlowModel<HistoryInBillsWidget> {
   }
 
   @override
-  void dispose() {
-    unfocusNode.dispose();
-  }
+  void dispose() {}
 }

@@ -42,37 +42,32 @@ class _AddStayWidgetState extends State<AddStayWidget> {
       _model.hotelSetting =
           await HotelSettingsRecord.getDocumentOnce(FFAppState().settingRef!);
       // promoPercent set
-      setState(() {
-        _model.promoPercent = valueOrDefault<double>(
-          _model.hotelSetting?.promoPercent,
-          0.0,
-        );
-      });
+      _model.promoPercent = valueOrDefault<double>(
+        _model.hotelSetting?.promoPercent,
+        0.0,
+      );
+      setState(() {});
       while (widget.booking?.transactions.length != _model.loop) {
         // bookingTrans
         _model.bookingTrans = await TransactionsRecord.getDocumentOnce(
             widget.booking!.transactions[_model.loop]);
         // add to trans list
-        setState(() {
-          _model.addToTransactions(_model.bookingTrans!);
-        });
+        _model.addToTransactions(_model.bookingTrans!);
+        setState(() {});
         // + loop
-        setState(() {
-          _model.loop = _model.loop + 1;
-        });
+        _model.loop = _model.loop + 1;
+        setState(() {});
       }
       // set bed price
-      setState(() {
-        _model.bedPrice = _model.hotelSetting!.bedPrice;
-        _model.lateCheckOutFee = _model.hotelSetting!.lateCheckoutFee;
-      });
+      _model.bedPrice = _model.hotelSetting!.bedPrice;
+      _model.lateCheckOutFee = _model.hotelSetting!.lateCheckoutFee;
+      setState(() {});
       // room
       _model.room = await RoomsRecord.getDocumentOnce(widget.booking!.room!);
       // room price
-      setState(() {
-        _model.roomPrice = _model.room!.price;
-        _model.number = _model.room!.number;
-      });
+      _model.roomPrice = _model.room!.price;
+      _model.number = _model.room!.number;
+      setState(() {});
     });
 
     _model.numberTextController ??= TextEditingController(text: '0');
@@ -209,10 +204,16 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                             .text) -
                                                         1)
                                                     .toString());
+                                                _model.numberTextController
+                                                        ?.selection =
+                                                    TextSelection.collapsed(
+                                                        offset: _model
+                                                            .numberTextController!
+                                                            .text
+                                                            .length);
                                               });
-                                              setState(() {
-                                                _model.operator = '-';
-                                              });
+                                              _model.operator = '-';
+                                              setState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -278,10 +279,16 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                             .text) +
                                                         1)
                                                     .toString());
+                                                _model.numberTextController
+                                                        ?.selection =
+                                                    TextSelection.collapsed(
+                                                        offset: _model
+                                                            .numberTextController!
+                                                            .text
+                                                            .length);
                                               });
-                                              setState(() {
-                                                _model.operator = '+';
-                                              });
+                                              _model.operator = '+';
+                                              setState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -541,30 +548,32 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                     await transactionsRecordReference.set({
                                       ...createTransactionsRecordData(
                                         staff: currentUserReference,
-                                        total: _model.promoPercent != 0.0
-                                            ? ((_model.roomPrice -
-                                                    (_model.roomPrice *
-                                                        _model.promoPercent /
-                                                        100))
-                                                .toInt()
-                                                .toDouble())
-                                            : ((double price, String ability) {
-                                                  return (ability != "normal")
-                                                      ? (price * 0.8)
-                                                      : (price);
-                                                }(
+                                        total: (_model.promoPercent != 0.0
+                                                ? ((_model.roomPrice -
+                                                        (_model.roomPrice *
+                                                            _model
+                                                                .promoPercent /
+                                                            100))
+                                                    .toInt()
+                                                    .toDouble())
+                                                : ((double price,
+                                                        String ability) {
+                                                    return (ability != "normal")
+                                                        ? (price * 0.8)
+                                                        : (price);
+                                                  }(
                                                     _model.roomPrice,
                                                     valueOrDefault<String>(
                                                       widget.booking?.ability,
                                                       'normal',
-                                                    ))) *
-                                                double.parse(_model
-                                                    .numberTextController.text),
+                                                    )))) *
+                                            double.parse(_model
+                                                .numberTextController.text),
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
-                                        pending:
-                                            widget.booking?.status == 'pending',
+                                        pending: widget.booking?.status ==
+                                            'pending',
                                         room: _model.number,
                                         booking: widget.booking?.reference,
                                         description: (String additional,
@@ -591,30 +600,32 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                         TransactionsRecord.getDocumentFromData({
                                       ...createTransactionsRecordData(
                                         staff: currentUserReference,
-                                        total: _model.promoPercent != 0.0
-                                            ? ((_model.roomPrice -
-                                                    (_model.roomPrice *
-                                                        _model.promoPercent /
-                                                        100))
-                                                .toInt()
-                                                .toDouble())
-                                            : ((double price, String ability) {
-                                                  return (ability != "normal")
-                                                      ? (price * 0.8)
-                                                      : (price);
-                                                }(
+                                        total: (_model.promoPercent != 0.0
+                                                ? ((_model.roomPrice -
+                                                        (_model.roomPrice *
+                                                            _model
+                                                                .promoPercent /
+                                                            100))
+                                                    .toInt()
+                                                    .toDouble())
+                                                : ((double price,
+                                                        String ability) {
+                                                    return (ability != "normal")
+                                                        ? (price * 0.8)
+                                                        : (price);
+                                                  }(
                                                     _model.roomPrice,
                                                     valueOrDefault<String>(
                                                       widget.booking?.ability,
                                                       'normal',
-                                                    ))) *
-                                                double.parse(_model
-                                                    .numberTextController.text),
+                                                    )))) *
+                                            double.parse(_model
+                                                .numberTextController.text),
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
-                                        pending:
-                                            widget.booking?.status == 'pending',
+                                        pending: widget.booking?.status ==
+                                            'pending',
                                         room: _model.number,
                                         booking: widget.booking?.reference,
                                         description: (String additional,
@@ -638,9 +649,8 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                       ),
                                     }, transactionsRecordReference);
                                     // add to transactions
-                                    setState(() {
-                                      _model.addToTransactions(_model.trans!);
-                                    });
+                                    _model.addToTransactions(_model.trans!);
+                                    setState(() {});
                                     // update booking total + transactions
 
                                     await widget.booking!.reference.update({

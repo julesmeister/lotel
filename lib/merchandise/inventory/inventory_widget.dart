@@ -70,10 +70,9 @@ class _InventoryWidgetState extends State<InventoryWidget> {
           );
         }
         List<GoodsRecord> inventoryGoodsRecordList = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -150,10 +149,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                             context: context,
                             builder: (context) {
                               return GestureDetector(
-                                onTap: () => _model.unfocusNode.canRequestFocus
-                                    ? FocusScope.of(context)
-                                        .requestFocus(_model.unfocusNode)
-                                    : FocusScope.of(context).unfocus(),
+                                onTap: () => FocusScope.of(context).unfocus(),
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
                                   child: SizedBox(
@@ -407,6 +403,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                   e.category) ||
                                               (_model.categoriesValue == 'All'))
                                           .toList();
+
                                   return ListView.separated(
                                     padding: const EdgeInsets.fromLTRB(
                                       0,
@@ -544,15 +541,8 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                           context: context,
                                                           builder: (context) {
                                                             return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
+                                                              onTap: () =>
+                                                                  FocusScope.of(
                                                                           context)
                                                                       .unfocus(),
                                                               child: Padding(

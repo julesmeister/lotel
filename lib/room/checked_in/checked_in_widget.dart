@@ -85,11 +85,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
             ),
           );
         }
+
         final checkedInBookingsRecord = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -266,11 +266,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .transparent,
                                                                 onTap:
                                                                     () async {
-                                                                  setState(() {
-                                                                    _model.showMoveRoom =
-                                                                        !_model
-                                                                            .showMoveRoom;
-                                                                  });
+                                                                  _model.showMoveRoom =
+                                                                      !_model
+                                                                          .showMoveRoom;
+                                                                  setState(
+                                                                      () {});
                                                                 },
                                                                 child: Icon(
                                                                   Icons
@@ -338,6 +338,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         List<RoomsRecord>
                                                             choiceChipsRoomsRecordList =
                                                             snapshot.data!;
+
                                                         return FlutterFlowChoiceChips(
                                                           options: functions
                                                               .intListToStringList(
@@ -541,10 +542,9 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               ),
                                                             );
                                                             // hide move room again
-                                                            setState(() {
-                                                              _model.showMoveRoom =
-                                                                  false;
-                                                            });
+                                                            _model.showMoveRoom =
+                                                                false;
+                                                            setState(() {});
 
                                                             setState(() {});
                                                           },
@@ -705,12 +705,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   builder:
                                                                       (context) {
                                                                     return GestureDetector(
-                                                                      onTap: () => _model
-                                                                              .unfocusNode
-                                                                              .canRequestFocus
-                                                                          ? FocusScope.of(context).requestFocus(_model
-                                                                              .unfocusNode)
-                                                                          : FocusScope.of(context)
+                                                                      onTap: () =>
+                                                                          FocusScope.of(context)
                                                                               .unfocus(),
                                                                       child:
                                                                           Padding(
@@ -922,12 +918,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   builder:
                                                                       (context) {
                                                                     return GestureDetector(
-                                                                      onTap: () => _model
-                                                                              .unfocusNode
-                                                                              .canRequestFocus
-                                                                          ? FocusScope.of(context).requestFocus(_model
-                                                                              .unfocusNode)
-                                                                          : FocusScope.of(context)
+                                                                      onTap: () =>
+                                                                          FocusScope.of(context)
                                                                               .unfocus(),
                                                                       child:
                                                                           Padding(
@@ -1153,12 +1145,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   builder:
                                                                       (context) {
                                                                     return GestureDetector(
-                                                                      onTap: () => _model
-                                                                              .unfocusNode
-                                                                              .canRequestFocus
-                                                                          ? FocusScope.of(context).requestFocus(_model
-                                                                              .unfocusNode)
-                                                                          : FocusScope.of(context)
+                                                                      onTap: () =>
+                                                                          FocusScope.of(context)
                                                                               .unfocus(),
                                                                       child:
                                                                           Padding(
@@ -1191,12 +1179,12 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 if (_model
                                                                     .toChangePrice!) {
                                                                   // showChangePrice
-                                                                  setState(() {
-                                                                    _model.showChangePrice =
-                                                                        true;
-                                                                    _model.operator =
-                                                                        '-';
-                                                                  });
+                                                                  _model.showChangePrice =
+                                                                      true;
+                                                                  _model.operator =
+                                                                      '-';
+                                                                  setState(
+                                                                      () {});
                                                                 }
 
                                                                 setState(() {});
@@ -1638,9 +1626,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                   highlightColor: Colors.transparent,
                                                                                   onTap: () async {
                                                                                     // minus operator
-                                                                                    setState(() {
-                                                                                      _model.operator = '-';
-                                                                                    });
+                                                                                    _model.operator = '-';
+                                                                                    setState(() {});
                                                                                   },
                                                                                   child: AnimatedContainer(
                                                                                     duration: const Duration(milliseconds: 100),
@@ -1680,9 +1667,8 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                   highlightColor: Colors.transparent,
                                                                                   onTap: () async {
                                                                                     // operator plus
-                                                                                    setState(() {
-                                                                                      _model.operator = '+';
-                                                                                    });
+                                                                                    _model.operator = '+';
+                                                                                    setState(() {});
                                                                                   },
                                                                                   child: AnimatedContainer(
                                                                                     duration: const Duration(milliseconds: 100),
@@ -1996,7 +1982,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
                                                                               room: widget.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return priceChange ~/ bedPrice.abs().toString() + " ";
+                                                                                  return "${(priceChange / bedPrice).toInt().abs()} ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',
@@ -2029,7 +2015,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
                                                                               room: widget.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return priceChange ~/ bedPrice.abs().toString() + " ";
+                                                                                  return "${(priceChange / bedPrice).toInt().abs()} ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',
@@ -2102,7 +2088,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
                                                                               room: widget.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return priceChange ~/ bedPrice.abs().toString() + " ";
+                                                                                  return "${(priceChange / bedPrice).toInt().abs()} ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',
@@ -2135,7 +2121,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
                                                                               room: widget.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return priceChange ~/ bedPrice.abs().toString() + " ";
+                                                                                  return "${(priceChange / bedPrice).toInt().abs()} ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',
@@ -2193,7 +2179,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               .booking!
                                                                               .update(createBookingsRecordData(
                                                                             extraBeds:
-                                                                                (functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.adjustTextController.text)) ~/ _model.hotelSetting!.bedPrice.abs()).toString(),
+                                                                                ((functions.priceHasChanged(checkedInBookingsRecord.total, double.parse(_model.adjustTextController.text)) / _model.hotelSetting!.bedPrice).toInt().abs()).toString(),
                                                                           ));
                                                                         }
                                                                         context
@@ -2321,9 +2307,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   ),
                                                                 );
                                                               }
+
                                                               final containerUsersRecord =
                                                                   snapshot
                                                                       .data!;
+
                                                               return Container(
                                                                 width: double
                                                                     .infinity,
@@ -2447,7 +2435,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         child:
                                                                             Text(
                                                                           dateTimeFormat(
-                                                                              'MMMM EEEE d h:mm a',
+                                                                              "MMMM EEEE d h:mm a",
                                                                               checkedInBookingsRecord.dateIn!),
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .bodyMedium

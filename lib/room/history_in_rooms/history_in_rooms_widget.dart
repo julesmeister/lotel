@@ -42,9 +42,8 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // set date
-      setState(() {
-        _model.date = functions.today();
-      });
+      _model.date = functions.today();
+      setState(() {});
       await _model.getHistoriesOfAllRooms(context);
       setState(() {});
     });
@@ -110,9 +109,7 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -139,13 +136,13 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
               'History of All Rooms',
               textAlign: TextAlign.start,
               maxLines: 1,
+              minFontSize: 12.0,
               style: FlutterFlowTheme.of(context).headlineLarge.override(
                     fontFamily: 'Outfit',
                     fontSize: 24.0,
                     letterSpacing: 0.0,
                     fontWeight: FontWeight.normal,
                   ),
-              minFontSize: 12.0,
             ),
           ),
           actions: [
@@ -171,9 +168,8 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                           ),
                           onPressed: () async {
                             // set date
-                            setState(() {
-                              _model.date = functions.prevDate(_model.date!);
-                            });
+                            _model.date = functions.prevDate(_model.date!);
+                            setState(() {});
                             // update histories
                             await _model.getHistoriesOfAllRooms(context);
                             setState(() {});
@@ -191,9 +187,8 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                         size: 24.0,
                       ),
                       onPressed: () async {
-                        setState(() {
-                          _model.showDatePicker = !_model.showDatePicker;
-                        });
+                        _model.showDatePicker = !_model.showDatePicker;
+                        setState(() {});
                       },
                     ),
                     if (valueOrDefault(currentUserDocument?.role, '') ==
@@ -211,9 +206,8 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                           ),
                           onPressed: () async {
                             // set date
-                            setState(() {
-                              _model.date = functions.nextDate(_model.date!);
-                            });
+                            _model.date = functions.nextDate(_model.date!);
+                            setState(() {});
                             // update histories
                             await _model.getHistoriesOfAllRooms(context);
                             setState(() {});
@@ -251,9 +245,8 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                       }
                       _model.calendarSelectedDay = newSelectedDate;
                       // set date
-                      setState(() {
-                        _model.date = _model.calendarSelectedDay?.start;
-                      });
+                      _model.date = _model.calendarSelectedDay?.start;
+                      setState(() {});
                       // update histories
                       await _model.getHistoriesOfAllRooms(context);
                       setState(() {});
@@ -305,6 +298,7 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                 ),
                               );
                             }
+
                             return ListView.builder(
                               padding: const EdgeInsets.fromLTRB(
                                 0,
@@ -359,13 +353,8 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                         context: context,
                                         builder: (context) {
                                           return GestureDetector(
-                                            onTap: () => _model
-                                                    .unfocusNode.canRequestFocus
-                                                ? FocusScope.of(context)
-                                                    .requestFocus(
-                                                        _model.unfocusNode)
-                                                : FocusScope.of(context)
-                                                    .unfocus(),
+                                            onTap: () => FocusScope.of(context)
+                                                .unfocus(),
                                             child: Padding(
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
@@ -459,7 +448,7 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    dateTimeFormat('MMM',
+                                                    dateTimeFormat("MMM",
                                                         historyItem.date!),
                                                     style:
                                                         FlutterFlowTheme.of(
@@ -482,7 +471,7 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                                   ),
                                                   Text(
                                                     dateTimeFormat(
-                                                        'd', historyItem.date!),
+                                                        "d", historyItem.date!),
                                                     style:
                                                         FlutterFlowTheme.of(
                                                                 context)
@@ -524,6 +513,7 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                                     AutoSizeText(
                                                       historyItem.description,
                                                       maxLines: 2,
+                                                      minFontSize: 12.0,
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .bodyLarge
@@ -533,7 +523,6 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                                             fontSize: 20.0,
                                                             letterSpacing: 0.0,
                                                           ),
-                                                      minFontSize: 12.0,
                                                     ),
                                                     StreamBuilder<UsersRecord>(
                                                       stream: UsersRecord
@@ -561,8 +550,10 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                                             ),
                                                           );
                                                         }
+
                                                         final rowUsersRecord =
                                                             snapshot.data!;
+
                                                         return Row(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
@@ -625,7 +616,7 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                                       children: [
                                                         Text(
                                                           dateTimeFormat(
-                                                              'h:mm a y',
+                                                              "h:mm a y",
                                                               historyItem
                                                                   .date!),
                                                           style: FlutterFlowTheme

@@ -40,10 +40,9 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
       _model.initStat =
           await StatsRecord.getDocumentOnce(FFAppState().statsReference!);
       // roomUsage init
-      setState(() {
-        _model.roomUsage =
-            _model.initStat!.roomUsage.toList().cast<RoomUsageStruct>();
-      });
+      _model.roomUsage =
+          _model.initStat!.roomUsage.toList().cast<RoomUsageStruct>();
+      setState(() {});
       // transactionsToRemit
       _model.toRemit = await queryTransactionsRecordOnce(
         queryBuilder: (transactionsRecord) => transactionsRecord
@@ -64,11 +63,12 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
       setState(() {
         _model.amountTextController?.text =
             functions.netOfTransactions(_model.toRemit!.toList()).toString();
+        _model.amountTextController?.selection = TextSelection.collapsed(
+            offset: _model.amountTextController!.text.length);
       });
-      setState(() {
-        _model.toRemitAmount =
-            functions.netOfTransactions(_model.toRemit!.toList());
-      });
+      _model.toRemitAmount =
+          functions.netOfTransactions(_model.toRemit!.toList());
+      setState(() {});
     });
 
     _model.amountTextController ??=
@@ -148,7 +148,9 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                           ),
                         );
                       }
+
                       final columnHotelSettingsRecord = snapshot.data!;
+
                       return Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,11 +229,10 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   remitted: false,
                                                 ));
                                                 // increment loop
-                                                setState(() {
-                                                  _model.loopFailedCounter =
-                                                      _model.loopFailedCounter +
-                                                          1;
-                                                });
+                                                _model.loopFailedCounter =
+                                                    _model.loopFailedCounter +
+                                                        1;
+                                                setState(() {});
                                               }
                                               // clear failed transactions and bookings
 
@@ -319,6 +320,13 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                             .text))
                                                     .abs()
                                                     .toString());
+                                                _model.changeExtraTextController
+                                                        ?.selection =
+                                                    TextSelection.collapsed(
+                                                        offset: _model
+                                                            .changeExtraTextController!
+                                                            .text
+                                                            .length);
                                               });
                                             },
                                           ),
@@ -376,6 +384,13 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                     .text))
                                                             .abs()
                                                             .toString());
+                                                        _model.changeExtraTextController
+                                                                ?.selection =
+                                                            TextSelection.collapsed(
+                                                                offset: _model
+                                                                    .changeExtraTextController!
+                                                                    .text
+                                                                    .length);
                                                       });
                                                       setState(() {});
                                                     },
@@ -429,6 +444,13 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                 .text)
                                                             .abs())
                                                     .toString());
+                                                _model.amountTextController
+                                                        ?.selection =
+                                                    TextSelection.collapsed(
+                                                        offset: _model
+                                                            .amountTextController!
+                                                            .text
+                                                            .length);
                                               });
                                             },
                                           ),
@@ -487,6 +509,13 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                         .text)
                                                                     .abs())
                                                             .toString());
+                                                        _model.amountTextController
+                                                                ?.selection =
+                                                            TextSelection.collapsed(
+                                                                offset: _model
+                                                                    .amountTextController!
+                                                                    .text
+                                                                    .length);
                                                       });
                                                       setState(() {});
                                                     },
@@ -556,9 +585,8 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     false;
                                             if (confirmDialogResponse) {
                                               // is loading
-                                              setState(() {
-                                                _model.isLoading = true;
-                                              });
+                                              _model.isLoading = true;
+                                              setState(() {});
                                               if ((_model.toRemitAmount !=
                                                       (double.parse(_model
                                                           .amountTextController
@@ -616,15 +644,15 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                 );
                                                 shouldSetState = true;
                                                 // all Unremitted Transactions
-                                                setState(() {
-                                                  _model.allUnremittedTransactions =
-                                                      _model.transactions!
-                                                          .toList()
-                                                          .cast<
-                                                              TransactionsRecord>();
-                                                });
+                                                _model.allUnremittedTransactions =
+                                                    _model.transactions!
+                                                        .toList()
+                                                        .cast<
+                                                            TransactionsRecord>();
+                                                setState(() {});
                                                 if (_model
-                                                        .transactions.isNotEmpty) {
+                                                        .transactions?.length !=
+                                                    0) {
                                                   // unremitted inventories of this hotel
                                                   _model.inventoriesToRemitFirestore =
                                                       await queryInventoriesRecordOnce(
@@ -645,29 +673,27 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   );
                                                   shouldSetState = true;
                                                   // reset loop variables
-                                                  setState(() {
-                                                    _model.loopTransactionsCounter =
-                                                        0;
-                                                    _model.transactionsToRemit =
-                                                        [];
-                                                    _model.loopInventoryCounter =
-                                                        0;
-                                                    _model.inventoriesToRemit =
-                                                        [];
-                                                    _model.bookingsToRemit = [];
-                                                  });
+                                                  _model.loopTransactionsCounter =
+                                                      0;
+                                                  _model.transactionsToRemit =
+                                                      [];
+                                                  _model.loopInventoryCounter =
+                                                      0;
+                                                  _model.inventoriesToRemit =
+                                                      [];
+                                                  _model.bookingsToRemit = [];
+                                                  setState(() {});
                                                   while (_model
                                                           .loopTransactionsCounter !=
                                                       _model
                                                           .allUnremittedTransactions
                                                           .length) {
                                                     // Add to TransactionToRemit
-                                                    setState(() {
-                                                      _model.addToTransactionsToRemit(
-                                                          _model.allUnremittedTransactions[
-                                                              _model
-                                                                  .loopTransactionsCounter]);
-                                                    });
+                                                    _model.addToTransactionsToRemit(
+                                                        _model.allUnremittedTransactions[
+                                                            _model
+                                                                .loopTransactionsCounter]);
+                                                    setState(() {});
                                                     if (_model
                                                             .allUnremittedTransactions[
                                                                 _model
@@ -675,40 +701,36 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                             .type ==
                                                         'book') {
                                                       // book to remit add to queue
-                                                      setState(() {
-                                                        _model.addToBookingsToRemit(_model
-                                                            .allUnremittedTransactions[
-                                                                _model
-                                                                    .loopTransactionsCounter]
-                                                            .booking!);
-                                                      });
-                                                      // update use of room local
-                                                      setState(() {
-                                                        _model
-                                                            .updateRoomUsageAtIndex(
-                                                          functions.indexOfRoomInRoomUsage(
-                                                              _model.roomUsage
-                                                                  .toList(),
+                                                      _model.addToBookingsToRemit(_model
+                                                          .allUnremittedTransactions[
                                                               _model
-                                                                  .allUnremittedTransactions[
-                                                                      _model
-                                                                          .loopTransactionsCounter]
-                                                                  .room),
-                                                          (e) => e
-                                                            ..incrementUse(1),
-                                                        );
-                                                      });
+                                                                  .loopTransactionsCounter]
+                                                          .booking!);
+                                                      setState(() {});
+                                                      // update use of room local
+                                                      _model
+                                                          .updateRoomUsageAtIndex(
+                                                        functions.indexOfRoomInRoomUsage(
+                                                            _model.roomUsage
+                                                                .toList(),
+                                                            _model
+                                                                .allUnremittedTransactions[
+                                                                    _model
+                                                                        .loopTransactionsCounter]
+                                                                .room),
+                                                        (e) =>
+                                                            e..incrementUse(1),
+                                                      );
+                                                      setState(() {});
                                                       // what's happening
-                                                      setState(() {
-                                                        _model.happening =
-                                                            'Remitting room ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].room.toString()}\'s transaction';
-                                                      });
+                                                      _model.happening =
+                                                          'Remitting room ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].room.toString()}\'s transaction';
+                                                      setState(() {});
                                                     } else {
                                                       // what's happening
-                                                      setState(() {
-                                                        _model.happening =
-                                                            'Remitting ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].type}';
-                                                      });
+                                                      _model.happening =
+                                                          'Remitting ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].type}';
+                                                      setState(() {});
                                                     }
 
                                                     if (_model
@@ -758,11 +780,10 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       ),
                                                     });
                                                     // increment loop
-                                                    setState(() {
-                                                      _model.loopTransactionsCounter =
-                                                          _model.loopTransactionsCounter +
-                                                              1;
-                                                    });
+                                                    _model.loopTransactionsCounter =
+                                                        _model.loopTransactionsCounter +
+                                                            1;
+                                                    setState(() {});
                                                   }
                                                   // update roomUsage firestore
 
@@ -798,21 +819,19 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   );
                                                   shouldSetState = true;
                                                   // what's happening
-                                                  setState(() {
-                                                    _model.happening =
-                                                        'Remitting absences if any';
-                                                  });
+                                                  _model.happening =
+                                                      'Remitting absences if any';
+                                                  setState(() {});
                                                   while (_model
                                                           .loopAbsencesCounter !=
                                                       _model.unremittedAbsences
                                                           ?.length) {
                                                     // add to to remit
-                                                    setState(() {
-                                                      _model.addToAbsencesToRemit(
-                                                          _model.unremittedAbsences![
-                                                              _model
-                                                                  .loopAbsencesCounter]);
-                                                    });
+                                                    _model.addToAbsencesToRemit(
+                                                        _model.unremittedAbsences![
+                                                            _model
+                                                                .loopAbsencesCounter]);
+                                                    setState(() {});
                                                     // remit absence
 
                                                     await _model
@@ -824,17 +843,15 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       remitted: true,
                                                     ));
                                                     // increment loop
-                                                    setState(() {
-                                                      _model.loopAbsencesCounter =
-                                                          _model.loopAbsencesCounter +
-                                                              1;
-                                                    });
+                                                    _model.loopAbsencesCounter =
+                                                        _model.loopAbsencesCounter +
+                                                            1;
+                                                    setState(() {});
                                                   }
                                                   // what's happening
-                                                  setState(() {
-                                                    _model.happening =
-                                                        'Remitting inventories';
-                                                  });
+                                                  _model.happening =
+                                                      'Remitting inventories';
+                                                  setState(() {});
                                                   while (_model
                                                           .loopInventoryCounter !=
                                                       valueOrDefault<int>(
@@ -855,25 +872,22 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       remitted: true,
                                                     ));
                                                     // inventories to list
-                                                    setState(() {
-                                                      _model.addToInventoriesToRemit(_model
-                                                          .inventoriesToRemitFirestore![
-                                                              _model
-                                                                  .loopInventoryCounter]
-                                                          .reference);
-                                                    });
+                                                    _model.addToInventoriesToRemit(_model
+                                                        .inventoriesToRemitFirestore![
+                                                            _model
+                                                                .loopInventoryCounter]
+                                                        .reference);
+                                                    setState(() {});
                                                     // increment counter only
-                                                    setState(() {
-                                                      _model.loopInventoryCounter =
-                                                          _model.loopInventoryCounter +
-                                                              1;
-                                                    });
+                                                    _model.loopInventoryCounter =
+                                                        _model.loopInventoryCounter +
+                                                            1;
+                                                    setState(() {});
                                                   }
                                                   // what's happening
-                                                  setState(() {
-                                                    _model.happening =
-                                                        'Updating grocery values';
-                                                  });
+                                                  _model.happening =
+                                                      'Updating grocery values';
+                                                  setState(() {});
                                                   // count grr
                                                   _model.countGrr =
                                                       await queryGoodsRevenueRatioRecordCount(
@@ -972,10 +986,9 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     }
                                                   }
                                                   // what's happening
-                                                  setState(() {
-                                                    _model.happening =
-                                                        'Updating metrics';
-                                                  });
+                                                  _model.happening =
+                                                      'Updating metrics';
+                                                  setState(() {});
                                                   // update stats and graph
 
                                                   await FFAppState()
@@ -1026,10 +1039,9 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     ),
                                                   });
                                                   // what's happening
-                                                  setState(() {
-                                                    _model.happening =
-                                                        'Finishing remittance!';
-                                                  });
+                                                  _model.happening =
+                                                      'Finishing remittance!';
+                                                  setState(() {});
                                                   // Create Remittance
 
                                                   var remittancesRecordReference =
@@ -1141,14 +1153,13 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     ),
                                                   });
                                                   // Clear Lists To Remit
-                                                  setState(() {
-                                                    _model.transactionsToRemit =
-                                                        [];
-                                                    _model.inventoriesToRemit =
-                                                        [];
-                                                    _model.bookingsToRemit = [];
-                                                    _model.isLoading = false;
-                                                  });
+                                                  _model.transactionsToRemit =
+                                                      [];
+                                                  _model.inventoriesToRemit =
+                                                      [];
+                                                  _model.bookingsToRemit = [];
+                                                  _model.isLoading = false;
+                                                  setState(() {});
                                                   // carryover change transaction
 
                                                   await TransactionsRecord
@@ -1191,10 +1202,9 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     ),
                                                   });
                                                   // last remit update
-                                                  setState(() {
-                                                    FFAppState().lastRemit =
-                                                        functions.today();
-                                                  });
+                                                  FFAppState().lastRemit =
+                                                      functions.today();
+                                                  setState(() {});
                                                   Navigator.pop(context);
                                                   // Remitted
                                                   ScaffoldMessenger.of(context)

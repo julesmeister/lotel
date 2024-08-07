@@ -22,9 +22,7 @@ class RoomListModel extends FlutterFlowModel<RoomListWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for CheckboxListTile widget.
-
   Map<RoomsRecord, bool> checkboxListTileValueMap1 = {};
   List<RoomsRecord> get checkboxListTileCheckedItems1 =>
       checkboxListTileValueMap1.entries
@@ -33,7 +31,6 @@ class RoomListModel extends FlutterFlowModel<RoomListWidget> {
           .toList();
 
   // State field(s) for CheckboxListTile widget.
-
   Map<RoomsRecord, bool> checkboxListTileValueMap2 = {};
   List<RoomsRecord> get checkboxListTileCheckedItems2 =>
       checkboxListTileValueMap2.entries
@@ -45,7 +42,5 @@ class RoomListModel extends FlutterFlowModel<RoomListWidget> {
   void initState(BuildContext context) {}
 
   @override
-  void dispose() {
-    unfocusNode.dispose();
-  }
+  void dispose() {}
 }

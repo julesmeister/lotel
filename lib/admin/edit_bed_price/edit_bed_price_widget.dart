@@ -82,6 +82,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
             editBedPriceHotelSettingsRecordList.isNotEmpty
                 ? editBedPriceHotelSettingsRecordList.first
                 : null;
+
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -121,10 +122,9 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                   size: 24.0,
                 ),
                 onPressed: () async {
-                  setState(() {
-                    FFAppState().bedPrice =
-                        editBedPriceHotelSettingsRecord!.bedPrice;
-                  });
+                  FFAppState().bedPrice =
+                      editBedPriceHotelSettingsRecord!.bedPrice;
+                  setState(() {});
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
@@ -381,10 +381,9 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                               ));
                         }
 
-                        setState(() {
-                          FFAppState().bedPrice =
-                              double.parse(_model.textController.text);
-                        });
+                        FFAppState().bedPrice =
+                            double.parse(_model.textController.text);
+                        setState(() {});
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(

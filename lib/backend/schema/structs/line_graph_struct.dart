@@ -21,14 +21,22 @@ class LineGraphStruct extends FFFirebaseStruct {
   List<int>? _xData;
   List<int> get xData => _xData ?? const [];
   set xData(List<int>? val) => _xData = val;
-  void updateXData(Function(List<int>) updateFn) => updateFn(_xData ??= []);
+
+  void updateXData(Function(List<int>) updateFn) {
+    updateFn(_xData ??= []);
+  }
+
   bool hasXData() => _xData != null;
 
   // "yData" field.
   List<int>? _yData;
   List<int> get yData => _yData ?? const [];
   set yData(List<int>? val) => _yData = val;
-  void updateYData(Function(List<int>) updateFn) => updateFn(_yData ??= []);
+
+  void updateYData(Function(List<int>) updateFn) {
+    updateFn(_yData ??= []);
+  }
+
   bool hasYData() => _yData != null;
 
   static LineGraphStruct fromMap(Map<String, dynamic> data) => LineGraphStruct(
@@ -50,12 +58,12 @@ class LineGraphStruct extends FFFirebaseStruct {
         'xData': serializeParam(
           _xData,
           ParamType.int,
-          true,
+          isList: true,
         ),
         'yData': serializeParam(
           _yData,
           ParamType.int,
-          true,
+          isList: true,
         ),
       }.withoutNulls;
 

@@ -75,10 +75,9 @@ class _PendingsWidgetState extends State<PendingsWidget> {
         }
         List<TransactionsRecord> pendingsTransactionsRecordList =
             snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -137,11 +136,8 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                 context: context,
                                 builder: (context) {
                                   return GestureDetector(
-                                    onTap: () => _model
-                                            .unfocusNode.canRequestFocus
-                                        ? FocusScope.of(context)
-                                            .requestFocus(_model.unfocusNode)
-                                        : FocusScope.of(context).unfocus(),
+                                    onTap: () =>
+                                        FocusScope.of(context).unfocus(),
                                     child: Padding(
                                       padding: MediaQuery.viewInsetsOf(context),
                                       child: SizedBox(
@@ -269,13 +265,8 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                       context: context,
                                       builder: (context) {
                                         return GestureDetector(
-                                          onTap: () => _model
-                                                  .unfocusNode.canRequestFocus
-                                              ? FocusScope.of(context)
-                                                  .requestFocus(
-                                                      _model.unfocusNode)
-                                              : FocusScope.of(context)
-                                                  .unfocus(),
+                                          onTap: () =>
+                                              FocusScope.of(context).unfocus(),
                                           child: Padding(
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
@@ -341,9 +332,8 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                 }
 
                                 // increment counter
-                                setState(() {
-                                  _model.loopCounter = _model.loopCounter + 1;
-                                });
+                                _model.loopCounter = _model.loopCounter + 1;
+                                setState(() {});
                               }
                               FFAppState().clearPendingsCountCacheKey(
                                   FFAppState().hotel);
@@ -459,6 +449,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                     ),
                                   );
                                 }
+
                                 return ListView.builder(
                                   padding: const EdgeInsets.fromLTRB(
                                     0,

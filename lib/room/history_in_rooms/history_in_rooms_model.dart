@@ -29,7 +29,6 @@ class HistoryInRoomsModel extends FlutterFlowModel<HistoryInRoomsWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for Calendar widget.
   DateTimeRange? calendarSelectedDay;
 
@@ -42,9 +41,7 @@ class HistoryInRoomsModel extends FlutterFlowModel<HistoryInRoomsWidget> {
   }
 
   @override
-  void dispose() {
-    unfocusNode.dispose();
-  }
+  void dispose() {}
 
   /// Action blocks.
   Future getHistoriesOfAllRooms(BuildContext context) async {
@@ -54,10 +51,10 @@ class HistoryInRoomsModel extends FlutterFlowModel<HistoryInRoomsWidget> {
     histories = [];
     loop = 0;
     loading = true;
-    while (loop != widget.room?.length) {
+    while (loop != widget!.room?.length) {
       // histories
       historiesOfRoom = await queryHistoryRecordOnce(
-        parent: widget.room?[loop].reference,
+        parent: widget!.room?[loop].reference,
         queryBuilder: (historyRecord) => historyRecord
             .where(
               'date',

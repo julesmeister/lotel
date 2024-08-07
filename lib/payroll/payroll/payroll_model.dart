@@ -28,7 +28,6 @@ class PayrollModel extends FlutterFlowModel<PayrollWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, StaffsRecord>? listViewPagingController1;
@@ -64,7 +63,6 @@ class PayrollModel extends FlutterFlowModel<PayrollWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     for (var s in listViewStreamSubscriptions1) {
       s?.cancel();
     }

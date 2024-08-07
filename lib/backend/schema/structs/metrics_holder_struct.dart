@@ -3,9 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
-import '/backend/schema/util/schema_util.dart';
 
-import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 class MetricsHolderStruct extends FFFirebaseStruct {
@@ -31,48 +29,61 @@ class MetricsHolderStruct extends FFFirebaseStruct {
   double? _rooms;
   double get rooms => _rooms ?? 0.0;
   set rooms(double? val) => _rooms = val;
-  void incrementRooms(double amount) => _rooms = rooms + amount;
+
+  void incrementRooms(double amount) => rooms = rooms + amount;
+
   bool hasRooms() => _rooms != null;
 
   // "goods" field.
   double? _goods;
   double get goods => _goods ?? 0.0;
   set goods(double? val) => _goods = val;
-  void incrementGoods(double amount) => _goods = goods + amount;
+
+  void incrementGoods(double amount) => goods = goods + amount;
+
   bool hasGoods() => _goods != null;
 
   // "expenses" field.
   double? _expenses;
   double get expenses => _expenses ?? 0.0;
   set expenses(double? val) => _expenses = val;
-  void incrementExpenses(double amount) => _expenses = expenses + amount;
+
+  void incrementExpenses(double amount) => expenses = expenses + amount;
+
   bool hasExpenses() => _expenses != null;
 
   // "salaries" field.
   double? _salaries;
   double get salaries => _salaries ?? 0.0;
   set salaries(double? val) => _salaries = val;
-  void incrementSalaries(double amount) => _salaries = salaries + amount;
+
+  void incrementSalaries(double amount) => salaries = salaries + amount;
+
   bool hasSalaries() => _salaries != null;
 
   // "bills" field.
   double? _bills;
   double get bills => _bills ?? 0.0;
   set bills(double? val) => _bills = val;
-  void incrementBills(double amount) => _bills = bills + amount;
+
+  void incrementBills(double amount) => bills = bills + amount;
+
   bool hasBills() => _bills != null;
 
   // "net" field.
   double? _net;
   double get net => _net ?? 0.0;
   set net(double? val) => _net = val;
-  void incrementNet(double amount) => _net = net + amount;
+
+  void incrementNet(double amount) => net = net + amount;
+
   bool hasNet() => _net != null;
 
   // "hotel" field.
   String? _hotel;
   String get hotel => _hotel ?? '';
   set hotel(String? val) => _hotel = val;
+
   bool hasHotel() => _hotel != null;
 
   static MetricsHolderStruct fromMap(Map<String, dynamic> data) =>

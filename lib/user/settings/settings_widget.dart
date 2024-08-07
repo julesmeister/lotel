@@ -178,7 +178,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             ),
                           );
                         }
+
                         final iconButtonUsersRecord = snapshot.data!;
+
                         return FlutterFlowIconButton(
                           borderColor: FlutterFlowTheme.of(context).info,
                           borderRadius: 0.0,
@@ -191,9 +193,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             size: 24.0,
                           ),
                           onPressed: () async {
-                            FFAppState().update(() {
-                              FFAppState().role = iconButtonUsersRecord.role;
-                            });
+                            FFAppState().role = iconButtonUsersRecord.role;
+                            FFAppState().update(() {});
                           },
                         );
                       },
@@ -360,7 +361,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     ),
                                   );
                                 }
+
                                 final textStatsRecord = snapshot.data!;
+
                                 return Text(
                                   '${textStatsRecord.hotel} - ${textStatsRecord.month}\'s Stats',
                                   style: FlutterFlowTheme.of(context)
@@ -391,7 +394,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     ),
                                   );
                                 }
+
                                 final iconButtonUsersRecord = snapshot.data!;
+
                                 return FlutterFlowIconButton(
                                   borderColor:
                                       FlutterFlowTheme.of(context).info,
@@ -438,14 +443,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       ).then((s) => s.firstOrNull);
                                       shouldSetState = true;
                                       // save new ref stat
-                                      setState(() {
-                                        FFAppState().statsReference =
-                                            _model.fireStat?.first.reference;
-                                        FFAppState().currentStats =
-                                            functions.currentMonthYear()!;
-                                        FFAppState().settingRef =
-                                            _model.hotelSetting?.reference;
-                                      });
+                                      FFAppState().statsReference =
+                                          _model.fireStat?.first.reference;
+                                      FFAppState().currentStats =
+                                          functions.currentMonthYear()!;
+                                      FFAppState().settingRef =
+                                          _model.hotelSetting?.reference;
+                                      setState(() {});
                                       // clear statsSettings
                                       FFAppState().clearStatsSettingsCache();
                                       ScaffoldMessenger.of(context)
@@ -532,6 +536,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         adminAreaHotelSettingsRecordList.isNotEmpty
                             ? adminAreaHotelSettingsRecordList.first
                             : null;
+
                     return Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -964,8 +969,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                               ),
                                             );
                                           }
+
                                           final iconButtonUsersRecord =
                                               snapshot.data!;
+
                                           return FlutterFlowIconButton(
                                             borderColor:
                                                 FlutterFlowTheme.of(context)

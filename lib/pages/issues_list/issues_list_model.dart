@@ -13,9 +13,10 @@ class IssuesListModel extends FlutterFlowModel<IssuesListWidget> {
 
   bool showMonthPicker = true;
 
+  int loop = 0;
+
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, IssuesRecord>? listViewPagingController;
@@ -32,7 +33,6 @@ class IssuesListModel extends FlutterFlowModel<IssuesListWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     for (var s in listViewStreamSubscriptions) {
       s?.cancel();
     }

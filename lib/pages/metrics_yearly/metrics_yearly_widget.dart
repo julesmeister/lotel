@@ -35,9 +35,8 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // current year
-      setState(() {
-        _model.year = functions.currentYear();
-      });
+      _model.year = functions.currentYear();
+      setState(() {});
     });
 
     animationsMap.addAll({
@@ -105,6 +104,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
           );
         }
         List<StatsRecord> metricsYearlyStatsRecordList = snapshot.data!;
+
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).info,
@@ -179,9 +179,8 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
-                                      setState(() {
-                                        _model.hotel = 'All';
-                                      });
+                                      _model.hotel = 'All';
+                                      setState(() {});
                                     },
                                     child: Container(
                                       width: 50.0,
@@ -242,9 +241,8 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         // set hotel name
-                                        setState(() {
-                                          _model.hotel = 'Serenity';
-                                        });
+                                        _model.hotel = 'Serenity';
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -277,6 +275,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                               child: AutoSizeText(
                                                 'Serenity',
                                                 maxLines: 1,
+                                                minFontSize: 10.0,
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .bodyMedium
@@ -288,7 +287,6 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                                               .primaryText,
                                                       letterSpacing: 0.0,
                                                     ),
-                                                minFontSize: 10.0,
                                               ),
                                             ),
                                           ],
@@ -304,9 +302,8 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         // set hotel
-                                        setState(() {
-                                          _model.hotel = 'My Lifestyle';
-                                        });
+                                        _model.hotel = 'My Lifestyle';
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -340,6 +337,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                               child: AutoSizeText(
                                                 'My Lifestyle',
                                                 maxLines: 1,
+                                                minFontSize: 10.0,
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .bodyMedium
@@ -351,7 +349,6 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                                               .primaryText,
                                                       letterSpacing: 0.0,
                                                     ),
-                                                minFontSize: 10.0,
                                               ),
                                             ),
                                           ],
@@ -408,9 +405,8 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         // set category
-                                        setState(() {
-                                          _model.category = 'Rooms';
-                                        });
+                                        _model.category = 'Rooms';
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 50.0,
@@ -472,9 +468,8 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         // set category
-                                        setState(() {
-                                          _model.category = 'Goods';
-                                        });
+                                        _model.category = 'Goods';
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -507,6 +502,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                               child: AutoSizeText(
                                                 'Goods',
                                                 maxLines: 1,
+                                                minFontSize: 10.0,
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .bodyMedium
@@ -518,7 +514,6 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                                               .primaryText,
                                                       letterSpacing: 0.0,
                                                     ),
-                                                minFontSize: 10.0,
                                               ),
                                             ),
                                           ],
@@ -534,9 +529,8 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         // set category
-                                        setState(() {
-                                          _model.category = 'Net';
-                                        });
+                                        _model.category = 'Net';
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -569,6 +563,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                               child: AutoSizeText(
                                                 'Net',
                                                 maxLines: 1,
+                                                minFontSize: 10.0,
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .bodyMedium
@@ -580,7 +575,6 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                                               .primaryText,
                                                       letterSpacing: 0.0,
                                                     ),
-                                                minFontSize: 10.0,
                                               ),
                                             ),
                                           ],
@@ -612,10 +606,9 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                       ),
                       onPressed: () async {
                         // set previous year
-                        setState(() {
-                          _model.year =
-                              functions.previousYear('January', _model.year);
-                        });
+                        _model.year =
+                            functions.previousYear('January', _model.year);
+                        setState(() {});
                       },
                     ),
                     Text(
@@ -637,10 +630,9 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                       ),
                       onPressed: () async {
                         // next Year
-                        setState(() {
-                          _model.year =
-                              functions.nextYear(_model.year, 'December');
-                        });
+                        _model.year =
+                            functions.nextYear(_model.year, 'December');
+                        setState(() {});
                       },
                     ),
                   ],
@@ -655,6 +647,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                               _model.hotel,
                               _model.category)
                           .toList();
+
                       return ListView.builder(
                         padding: EdgeInsets.zero,
                         primary: false,
@@ -707,9 +700,20 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                         lineHeight: 24.0,
                                         animation: true,
                                         animateFromLastPercent: true,
-                                        progressColor:
-                                            FlutterFlowTheme.of(context)
-                                                .accent1,
+                                        progressColor: colorFromCssString(
+                                          functions.percentageMeterColor(
+                                              functions.saleProgress(
+                                                  functions
+                                                      .generateYearlySales(
+                                                          metricsYearlyStatsRecordList
+                                                              .toList(),
+                                                          _model.hotel,
+                                                          _model.category)
+                                                      .map((e) => e.sales)
+                                                      .toList(),
+                                                  salesItem.sales))!,
+                                          defaultColor: const Color(0x5839D2C0),
+                                        ),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .accent4,
@@ -741,6 +745,75 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                         },
                       );
                     },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(4.0, 10.0, 4.0, 4.0),
+                  child: Container(
+                    width: 370.0,
+                    height: 90.0,
+                    decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          blurRadius: 6.0,
+                          color: Color(0x4B1A1F24),
+                          offset: Offset(
+                            0.0,
+                            2.0,
+                          ),
+                        )
+                      ],
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFEE8B60), Color(0xFF4B39EF)],
+                        stops: [0.0, 1.0],
+                        begin: AlignmentDirectional(0.94, -1.0),
+                        end: AlignmentDirectional(-0.94, 1.0),
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Total',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  color: Colors.white,
+                                  fontSize: 14.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
+                          Text(
+                            formatNumber(
+                              functions.generateYearlySalesTotal(
+                                  metricsYearlyStatsRecordList.toList(),
+                                  _model.hotel,
+                                  _model.category),
+                              formatType: FormatType.decimal,
+                              decimalType: DecimalType.automatic,
+                              currency: 'Php ',
+                            ),
+                            maxLines: 1,
+                            style: FlutterFlowTheme.of(context)
+                                .displaySmall
+                                .override(
+                                  fontFamily: 'Outfit',
+                                  color: Colors.white,
+                                  fontSize: 32.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],

@@ -352,12 +352,12 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                           .where(
                                             'month',
                                             isEqualTo: dateTimeFormat(
-                                                'MMMM', widget.bill?.date),
+                                                "MMMM", widget.bill?.date),
                                           )
                                           .where(
                                             'year',
                                             isEqualTo: dateTimeFormat(
-                                                'y', widget.bill?.date),
+                                                "y", widget.bill?.date),
                                           ),
                                       singleRecord: true,
                                     ).then((s) => s.firstOrNull);

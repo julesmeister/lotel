@@ -247,8 +247,8 @@ class _OptionToBookingTransactionWidgetState
                         ),
                       });
                       // bookingRef
-                      _model.bookingRef =
-                          await BookingsRecord.getDocumentOnce(widget.booking!);
+                      _model.bookingRef = await BookingsRecord.getDocumentOnce(
+                          widget.booking!);
                       // create history
 
                       await HistoryRecord.createDoc(_model.bookingRef!.room!)
@@ -359,8 +359,8 @@ class _OptionToBookingTransactionWidgetState
                         false;
                     if (confirmDialogResponse) {
                       // read booking
-                      _model.bookingNorm =
-                          await BookingsRecord.getDocumentOnce(widget.booking!);
+                      _model.bookingNorm = await BookingsRecord.getDocumentOnce(
+                          widget.booking!);
                       if (_model.bookingNorm?.ability == 'normal') {
                         // no further discount
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -525,8 +525,8 @@ class _OptionToBookingTransactionWidgetState
                         false;
                     if (confirmDialogResponse) {
                       // read booking
-                      _model.booking =
-                          await BookingsRecord.getDocumentOnce(widget.booking!);
+                      _model.booking = await BookingsRecord.getDocumentOnce(
+                          widget.booking!);
                       if (_model.booking?.ability == 'normal') {
                         // make senior in booking
 
@@ -687,8 +687,8 @@ class _OptionToBookingTransactionWidgetState
                         false;
                     if (confirmDialogResponse) {
                       // read booking
-                      _model.bookingPWD =
-                          await BookingsRecord.getDocumentOnce(widget.booking!);
+                      _model.bookingPWD = await BookingsRecord.getDocumentOnce(
+                          widget.booking!);
                       if (_model.bookingNorm?.ability == 'normal') {
                         // make pwd in booking
 
@@ -853,8 +853,8 @@ class _OptionToBookingTransactionWidgetState
                         false;
                     if (confirmDialogResponse) {
                       // transaction action output
-                      _model.trans =
-                          await TransactionsRecord.getDocumentOnce(widget.ref!);
+                      _model.trans = await TransactionsRecord.getDocumentOnce(
+                          widget.ref!);
                       if (functions.findTextsInString(
                           widget.description, 'checkin')) {
                         if (!_model.room!.vacant) {
@@ -875,6 +875,7 @@ class _OptionToBookingTransactionWidgetState
                           ...mapToFirestore(
                             {
                               'total': FieldValue.increment(-(widget.price!)),
+                              'nights': FieldValue.increment(-(1)),
                             },
                           ),
                         });
@@ -1002,7 +1003,8 @@ class _OptionToBookingTransactionWidgetState
                     if (confirmDialogResponse) {
                       // transaction action output
                       _model.duplicateTrans =
-                          await TransactionsRecord.getDocumentOnce(widget.ref!);
+                          await TransactionsRecord.getDocumentOnce(
+                              widget.ref!);
                       // history taking
 
                       await HistoryRecord.createDoc(_model.room!.reference)

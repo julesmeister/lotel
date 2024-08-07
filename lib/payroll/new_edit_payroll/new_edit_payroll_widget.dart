@@ -43,14 +43,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // Set edit boolean
-      setState(() {
-        _model.edit = widget.ref?.id != null && widget.ref?.id != '';
-      });
+      _model.edit = widget.ref?.id != null && widget.ref?.id != '';
+      setState(() {});
       if (_model.edit) {
         // set ref
-        setState(() {
-          _model.ref = widget.ref;
-        });
+        _model.ref = widget.ref;
+        setState(() {});
         // old payroll
         _model.existingPayroll =
             await PayrollsRecord.getDocumentOnce(widget.ref!);
@@ -59,20 +57,18 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
           parent: widget.ref,
         );
         // initialize payroll
-        setState(() {
-          _model.date = _model.existingPayroll?.date;
-          _model.fortnight = _model.existingPayroll!.fortnight;
-          _model.settled = _model.existingPayroll?.status == 'settled';
-          _model.salaries =
-              _model.existingSalaries!.toList().cast<SalariesRecord>();
-        });
+        _model.date = _model.existingPayroll?.date;
+        _model.fortnight = _model.existingPayroll!.fortnight;
+        _model.settled = _model.existingPayroll?.status == 'settled';
+        _model.salaries =
+            _model.existingSalaries!.toList().cast<SalariesRecord>();
+        setState(() {});
       } else {
         // new payroll
-        setState(() {
-          _model.date = functions.today();
-          _model.fortnight = functions.generateFortnight(functions.today()!);
-          _model.settled = false;
-        });
+        _model.date = functions.today();
+        _model.fortnight = functions.generateFortnight(functions.today()!);
+        _model.settled = false;
+        setState(() {});
       }
 
       _model.staffsOfThisHotel = await queryStaffsRecordOnce(
@@ -81,9 +77,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
           isEqualTo: FFAppState().hotel,
         ),
       );
-      setState(() {
-        _model.staffs = _model.staffsOfThisHotel!.toList().cast<StaffsRecord>();
-      });
+      _model.staffs = _model.staffsOfThisHotel!.toList().cast<StaffsRecord>();
+      setState(() {});
     });
 
     _model.newRateTextController ??= TextEditingController();
@@ -107,9 +102,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -162,10 +155,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                       context: context,
                       builder: (context) {
                         return GestureDetector(
-                          onTap: () => _model.unfocusNode.canRequestFocus
-                              ? FocusScope.of(context)
-                                  .requestFocus(_model.unfocusNode)
-                              : FocusScope.of(context).unfocus(),
+                          onTap: () => FocusScope.of(context).unfocus(),
                           child: Padding(
                             padding: MediaQuery.viewInsetsOf(context),
                             child: SizedBox(
@@ -184,9 +174,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                         (value) => safeSetState(() => _model.salary = value));
 
                     // add salary to list
-                    setState(() {
-                      _model.addToSalaries(_model.salary!);
-                    });
+                    _model.addToSalaries(_model.salary!);
+                    setState(() {});
 
                     setState(() {});
                   },
@@ -237,13 +226,13 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   currency: 'P ',
                                 ),
                                 maxLines: 1,
+                                minFontSize: 22.0,
                                 style: FlutterFlowTheme.of(context)
                                     .headlineMedium
                                     .override(
                                       fontFamily: 'Outfit',
                                       letterSpacing: 0.0,
                                     ),
-                                minFontSize: 22.0,
                               ),
                             ),
                           ],
@@ -269,11 +258,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   context: context,
                                   builder: (context) {
                                     return GestureDetector(
-                                      onTap: () => _model
-                                              .unfocusNode.canRequestFocus
-                                          ? FocusScope.of(context)
-                                              .requestFocus(_model.unfocusNode)
-                                          : FocusScope.of(context).unfocus(),
+                                      onTap: () =>
+                                          FocusScope.of(context).unfocus(),
                                       child: Padding(
                                         padding:
                                             MediaQuery.viewInsetsOf(context),
@@ -292,8 +278,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 if (_model.adjustedDate != null) {
                                   if (_model.settled == true) {
                                     if (dateTimeFormat(
-                                            'MMMM', _model.adjustedDate) !=
-                                        dateTimeFormat('MMMM', _model.date)) {
+                                            "MMMM", _model.adjustedDate) !=
+                                        dateTimeFormat("MMMM", _model.date)) {
                                       // prevStats
                                       _model.prevStats =
                                           await queryStatsRecordOnce(
@@ -306,12 +292,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                 .where(
                                                   'year',
                                                   isEqualTo: dateTimeFormat(
-                                                      'y', _model.date),
+                                                      "y", _model.date),
                                                 )
                                                 .where(
                                                   'month',
                                                   isEqualTo: dateTimeFormat(
-                                                      'MMMM', _model.date),
+                                                      "MMMM", _model.date),
                                                 ),
                                         singleRecord: true,
                                       ).then((s) => s.firstOrNull);
@@ -338,12 +324,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                 .where(
                                                   'year',
                                                   isEqualTo: dateTimeFormat(
-                                                      'y', _model.adjustedDate),
+                                                      "y", _model.adjustedDate),
                                                 )
                                                 .where(
                                                   'month',
                                                   isEqualTo: dateTimeFormat(
-                                                      'MMMM',
+                                                      "MMMM",
                                                       _model.adjustedDate),
                                                 ),
                                         singleRecord: true,
@@ -368,9 +354,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     date: _model.adjustedDate,
                                   ));
                                   // update date
-                                  setState(() {
-                                    _model.date = _model.adjustedDate;
-                                  });
+                                  _model.date = _model.adjustedDate;
+                                  setState(() {});
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
@@ -391,8 +376,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 setState(() {});
                               },
                               child: AutoSizeText(
-                                dateTimeFormat('EEE M d y h:mm a', _model.date),
+                                dateTimeFormat("EEE M d y h:mm a", _model.date),
                                 maxLines: 1,
+                                minFontSize: 12.0,
                                 style: FlutterFlowTheme.of(context)
                                     .labelLarge
                                     .override(
@@ -401,7 +387,6 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                           .primaryText,
                                       letterSpacing: 0.0,
                                     ),
-                                minFontSize: 12.0,
                               ),
                             ),
                             Row(
@@ -415,10 +400,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         0.0, 5.0, 0.0, 0.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
-                                        setState(() {
-                                          _model.showChangeRate =
-                                              !_model.showChangeRate;
-                                        });
+                                        _model.showChangeRate =
+                                            !_model.showChangeRate;
+                                        setState(() {});
                                       },
                                       text: 'Change Rate',
                                       options: FFButtonOptions(
@@ -629,9 +613,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 false;
                             if (confirmDialogResponse) {
                               // reset loop counter
-                              setState(() {
-                                _model.loopSalariesCounter = 0;
-                              });
+                              _model.loopSalariesCounter = 0;
+                              setState(() {});
                               while (_model.loopSalariesCounter !=
                                   _model.salaries.length) {
                                 if (_model.newRateTextController.text != '') {
@@ -690,10 +673,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                           .absences),
                                 ));
                                 // increment loop
-                                setState(() {
-                                  _model.loopSalariesCounter =
-                                      _model.loopSalariesCounter + 1;
-                                });
+                                _model.loopSalariesCounter =
+                                    _model.loopSalariesCounter + 1;
+                                setState(() {});
                               }
                               // updated salaries
                               _model.updatedSalaries =
@@ -701,12 +683,11 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 parent: widget.ref,
                               );
                               // initialize payroll
-                              setState(() {
-                                _model.salaries = _model.updatedSalaries!
-                                    .toList()
-                                    .cast<SalariesRecord>();
-                                _model.showChangeRate = false;
-                              });
+                              _model.salaries = _model.updatedSalaries!
+                                  .toList()
+                                  .cast<SalariesRecord>();
+                              _model.showChangeRate = false;
+                              setState(() {});
                             }
                             // reset form fields
                             setState(() {
@@ -757,10 +738,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     size: 16.0,
                                   ),
                                   onPressed: () async {
-                                    setState(() {
-                                      _model.fortnight = functions
-                                          .downOrdinal(_model.fortnight);
-                                    });
+                                    _model.fortnight =
+                                        functions.downOrdinal(_model.fortnight);
+                                    setState(() {});
                                     // update fortnight
 
                                     await widget.ref!
@@ -797,10 +777,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         size: 16.0,
                                       ),
                                       onPressed: () async {
-                                        setState(() {
-                                          _model.fortnight = functions
-                                              .upOrdinal(_model.fortnight);
-                                        });
+                                        _model.fortnight = functions
+                                            .upOrdinal(_model.fortnight);
+                                        setState(() {});
                                         // update fortnight
 
                                         await widget.ref!
@@ -854,9 +833,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        setState(() {
-                                          _model.settled = true;
-                                        });
+                                        _model.settled = true;
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -924,9 +902,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        setState(() {
-                                          _model.settled = false;
-                                        });
+                                        _model.settled = false;
+                                        setState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -997,6 +974,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                       builder: (context) {
                         final salariesList =
                             _model.salaries.map((e) => e).toList();
+
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           primary: false,
@@ -1029,8 +1007,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       ),
                                     );
                                   }
+
                                   final listContainerStaffsRecord =
                                       snapshot.data!;
+
                                   return InkWell(
                                     splashColor: Colors.transparent,
                                     focusColor: Colors.transparent,
@@ -1044,13 +1024,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         context: context,
                                         builder: (context) {
                                           return GestureDetector(
-                                            onTap: () => _model
-                                                    .unfocusNode.canRequestFocus
-                                                ? FocusScope.of(context)
-                                                    .requestFocus(
-                                                        _model.unfocusNode)
-                                                : FocusScope.of(context)
-                                                    .unfocus(),
+                                            onTap: () => FocusScope.of(context)
+                                                .unfocus(),
                                             child: Padding(
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
@@ -1073,12 +1048,11 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       if (_model.updatedSalary?.reference !=
                                           null) {
                                         // update the salary in list
-                                        setState(() {
-                                          _model.updateSalariesAtIndex(
-                                            salariesListIndex,
-                                            (_) => _model.updatedSalary!,
-                                          );
-                                        });
+                                        _model.updateSalariesAtIndex(
+                                          salariesListIndex,
+                                          (_) => _model.updatedSalary!,
+                                        );
+                                        setState(() {});
                                       }
 
                                       setState(() {});
@@ -1090,13 +1064,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         context: context,
                                         builder: (context) {
                                           return GestureDetector(
-                                            onTap: () => _model
-                                                    .unfocusNode.canRequestFocus
-                                                ? FocusScope.of(context)
-                                                    .requestFocus(
-                                                        _model.unfocusNode)
-                                                : FocusScope.of(context)
-                                                    .unfocus(),
+                                            onTap: () => FocusScope.of(context)
+                                                .unfocus(),
                                             child: Padding(
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
@@ -1512,16 +1481,14 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                             false;
                                     if (confirmDialogResponse) {
                                       // reset salary loop counter
-                                      setState(() {
-                                        _model.loopSalariesCounter = 0;
-                                      });
+                                      _model.loopSalariesCounter = 0;
+                                      setState(() {});
                                       while (_model.loopSalariesCounter !=
                                           _model.salaries.length) {
                                         // reset ca counter loop
-                                        setState(() {
-                                          _model.loopCACounterUnsettle = 0;
-                                          _model.loopAbsencesCounter = 0;
-                                        });
+                                        _model.loopCACounterUnsettle = 0;
+                                        _model.loopAbsencesCounter = 0;
+                                        setState(() {});
                                         while (_model.loopCACounterUnsettle !=
                                             _model
                                                 .salaries[
@@ -1539,11 +1506,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                             settled: false,
                                           ));
                                           // increment loop ca counter
-                                          setState(() {
-                                            _model.loopCACounterUnsettle =
-                                                _model.loopCACounterUnsettle +
-                                                    1;
-                                          });
+                                          _model.loopCACounterUnsettle =
+                                              _model.loopCACounterUnsettle + 1;
+                                          setState(() {});
                                         }
                                         while (_model.loopAbsencesCounter !=
                                             _model
@@ -1562,10 +1527,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                             settled: false,
                                           ));
                                           // increment loop absence  counter
-                                          setState(() {
-                                            _model.loopAbsencesCounter =
-                                                _model.loopAbsencesCounter + 1;
-                                          });
+                                          _model.loopAbsencesCounter =
+                                              _model.loopAbsencesCounter + 1;
+                                          setState(() {});
                                         }
                                         // delete each salary
                                         await _model
@@ -1574,10 +1538,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                             .reference
                                             .delete();
                                         // increment loop salaries
-                                        setState(() {
-                                          _model.loopSalariesCounter =
-                                              _model.loopSalariesCounter + 1;
-                                        });
+                                        _model.loopSalariesCounter =
+                                            _model.loopSalariesCounter + 1;
+                                        setState(() {});
                                       }
                                       // deduct from stats
 
@@ -1707,12 +1670,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       .where(
                                         'year',
                                         isEqualTo:
-                                            dateTimeFormat('y', _model.date),
+                                            dateTimeFormat("y", _model.date),
                                       )
                                       .where(
                                         'month',
                                         isEqualTo:
-                                            dateTimeFormat('MMMM', _model.date),
+                                            dateTimeFormat("MMMM", _model.date),
                                       ),
                                   singleRecord: true,
                                 ).then((s) => s.firstOrNull);
@@ -1741,11 +1704,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     ),
                                   });
                                   // reset loop
-                                  setState(() {
-                                    _model.loopSalariesCounter = 0;
-                                    _model.loopAbsencesCounter = 0;
-                                    _model.loopAdvancesCounter = 0;
-                                  });
+                                  _model.loopSalariesCounter = 0;
+                                  _model.loopAbsencesCounter = 0;
+                                  _model.loopAdvancesCounter = 0;
+                                  setState(() {});
                                   while (_model.loopSalariesCounter !=
                                       _model.salaries.length) {
                                     // staff
@@ -1769,10 +1731,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                               .orderBy('date'),
                                     );
                                     // reset ca loop counter
-                                    setState(() {
-                                      _model.loopAdvancesCounter = 0;
-                                      _model.loopAbsencesCounter = 0;
-                                    });
+                                    _model.loopAdvancesCounter = 0;
+                                    _model.loopAbsencesCounter = 0;
+                                    setState(() {});
                                     while (_model.loopAdvancesCounter !=
                                         _model.unsettledCashAdvance?.length) {
                                       // settle the ca
@@ -1785,10 +1746,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         settled: true,
                                       ));
                                       // increment advances counter
-                                      setState(() {
-                                        _model.loopAdvancesCounter =
-                                            _model.loopAdvancesCounter + 1;
-                                      });
+                                      _model.loopAdvancesCounter =
+                                          _model.loopAdvancesCounter + 1;
+                                      setState(() {});
                                     }
                                     // list of absences
                                     _model.absences =
@@ -1796,12 +1756,11 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       parent: _model.staff?.reference,
                                     );
                                     // absences to local
-                                    setState(() {
-                                      _model.absencesToSettle = _model.absences!
-                                          .where((e) => !e.settled)
-                                          .toList()
-                                          .cast<AbsencesRecord>();
-                                    });
+                                    _model.absencesToSettle = _model.absences!
+                                        .where((e) => !e.settled)
+                                        .toList()
+                                        .cast<AbsencesRecord>();
+                                    setState(() {});
                                     while (_model.loopAbsencesCounter !=
                                         _model.absencesToSettle.length) {
                                       // settle the absence
@@ -1814,16 +1773,14 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         settled: true,
                                       ));
                                       // increment loop
-                                      setState(() {
-                                        _model.loopAbsencesCounter =
-                                            _model.loopAbsencesCounter + 1;
-                                      });
+                                      _model.loopAbsencesCounter =
+                                          _model.loopAbsencesCounter + 1;
+                                      setState(() {});
                                     }
                                     // increment loopSalaries
-                                    setState(() {
-                                      _model.loopSalariesCounter =
-                                          _model.loopSalariesCounter + 1;
-                                    });
+                                    _model.loopSalariesCounter =
+                                        _model.loopSalariesCounter + 1;
+                                    setState(() {});
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -1983,11 +1940,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 );
                                 if (_model.countUnsettled! > 0) {
                                   // reset loop
-                                  setState(() {
-                                    _model.loopSalariesCounter = 0;
-                                    _model.loopAbsencesCounter = 0;
-                                    _model.loopAdvancesCounter = 0;
-                                  });
+                                  _model.loopSalariesCounter = 0;
+                                  _model.loopAbsencesCounter = 0;
+                                  _model.loopAdvancesCounter = 0;
+                                  setState(() {});
                                   while (_model.loopSalariesCounter !=
                                       _model.salaries.length) {
                                     // staff
@@ -2011,10 +1967,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                               .orderBy('date'),
                                     );
                                     // reset ca loop counter
-                                    setState(() {
-                                      _model.loopAdvancesCounter = 0;
-                                      _model.loopAbsencesCounter = 0;
-                                    });
+                                    _model.loopAdvancesCounter = 0;
+                                    _model.loopAbsencesCounter = 0;
+                                    setState(() {});
                                     while (_model.loopAdvancesCounter !=
                                         _model.unsettledCashAdvanceClear
                                             ?.length) {
@@ -2028,10 +1983,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         settled: true,
                                       ));
                                       // increment advances counter
-                                      setState(() {
-                                        _model.loopAdvancesCounter =
-                                            _model.loopAdvancesCounter + 1;
-                                      });
+                                      _model.loopAdvancesCounter =
+                                          _model.loopAdvancesCounter + 1;
+                                      setState(() {});
                                     }
                                     // list of absences
                                     _model.absencesClear =
@@ -2039,13 +1993,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       parent: _model.staffClear?.reference,
                                     );
                                     // absences to local
-                                    setState(() {
-                                      _model.absencesToSettle = _model
-                                          .absencesClear!
-                                          .where((e) => !e.settled)
-                                          .toList()
-                                          .cast<AbsencesRecord>();
-                                    });
+                                    _model.absencesToSettle = _model
+                                        .absencesClear!
+                                        .where((e) => !e.settled)
+                                        .toList()
+                                        .cast<AbsencesRecord>();
+                                    setState(() {});
                                     while (_model.loopAbsencesCounter !=
                                         _model.absencesToSettle.length) {
                                       // settle the absence
@@ -2058,16 +2011,14 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         settled: true,
                                       ));
                                       // increment loop
-                                      setState(() {
-                                        _model.loopAbsencesCounter =
-                                            _model.loopAbsencesCounter + 1;
-                                      });
+                                      _model.loopAbsencesCounter =
+                                          _model.loopAbsencesCounter + 1;
+                                      setState(() {});
                                     }
                                     // increment loopSalaries
-                                    setState(() {
-                                      _model.loopSalariesCounter =
-                                          _model.loopSalariesCounter + 1;
-                                    });
+                                    _model.loopSalariesCounter =
+                                        _model.loopSalariesCounter + 1;
+                                    setState(() {});
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

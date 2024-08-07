@@ -40,9 +40,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -96,10 +94,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                         context: context,
                         builder: (context) {
                           return GestureDetector(
-                            onTap: () => _model.unfocusNode.canRequestFocus
-                                ? FocusScope.of(context)
-                                    .requestFocus(_model.unfocusNode)
-                                : FocusScope.of(context).unfocus(),
+                            onTap: () => FocusScope.of(context).unfocus(),
                             child: Padding(
                               padding: MediaQuery.viewInsetsOf(context),
                               child: const SizedBox(
@@ -137,7 +132,9 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                             ),
                           );
                         }
+
                         final editRoomRoomsRecord = snapshot.data!;
+
                         return FlutterFlowIconButton(
                           borderColor: Colors.transparent,
                           borderRadius: 30.0,
@@ -156,11 +153,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                               context: context,
                               builder: (context) {
                                 return GestureDetector(
-                                  onTap: () =>
-                                      _model.unfocusNode.canRequestFocus
-                                          ? FocusScope.of(context)
-                                              .requestFocus(_model.unfocusNode)
-                                          : FocusScope.of(context).unfocus(),
+                                  onTap: () => FocusScope.of(context).unfocus(),
                                   child: Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
                                     child: SizedBox(
@@ -182,56 +175,57 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                       },
                     ),
                   ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
-                  child: FlutterFlowIconButton(
-                    borderColor: Colors.transparent,
-                    borderRadius: 30.0,
-                    borderWidth: 1.0,
-                    buttonSize: 60.0,
-                    fillColor: FlutterFlowTheme.of(context).info,
-                    icon: Icon(
-                      Icons.delete_outlined,
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      size: 30.0,
-                    ),
-                    onPressed: () async {
-                      var confirmDialogResponse = await showDialog<bool>(
-                            context: context,
-                            builder: (alertDialogContext) {
-                              return AlertDialog(
-                                title: const Text('Are you sure?'),
-                                content:
-                                    const Text('The selected rooms will be deleted.'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(
-                                        alertDialogContext, false),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(alertDialogContext, true),
-                                    child: const Text('Confirm'),
-                                  ),
-                                ],
-                              );
-                            },
-                          ) ??
-                          false;
-                      if (confirmDialogResponse) {
-                        while (
-                            _model.loopCounter != _model.selectedRooms.length) {
-                          await _model.selectedRooms[_model.loopCounter]
-                              .delete();
-                          setState(() {
+                if (_model.selectedRooms.isNotEmpty)
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                    child: FlutterFlowIconButton(
+                      borderColor: Colors.transparent,
+                      borderRadius: 30.0,
+                      borderWidth: 1.0,
+                      buttonSize: 60.0,
+                      fillColor: FlutterFlowTheme.of(context).info,
+                      icon: Icon(
+                        Icons.delete_outlined,
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        size: 30.0,
+                      ),
+                      onPressed: () async {
+                        var confirmDialogResponse = await showDialog<bool>(
+                              context: context,
+                              builder: (alertDialogContext) {
+                                return AlertDialog(
+                                  title: const Text('Are you sure?'),
+                                  content: const Text(
+                                      'The selected rooms will be deleted.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, false),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, true),
+                                      child: const Text('Confirm'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ) ??
+                            false;
+                        if (confirmDialogResponse) {
+                          while (_model.loopCounter !=
+                              _model.selectedRooms.length) {
+                            await _model.selectedRooms[_model.loopCounter]
+                                .delete();
                             _model.loopCounter = _model.loopCounter + 1;
-                          });
+                            setState(() {});
+                          }
                         }
-                      }
-                    },
+                      },
+                    ),
                   ),
-                ),
               ],
             ),
           ],
@@ -334,6 +328,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                             ),
                           );
                         }
+
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           primary: false,
@@ -430,18 +425,16 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                                             allRoomsRoomsRecord] =
                                                         newValue!);
                                                 if (newValue!) {
-                                                  setState(() {
-                                                    _model.addToSelectedRooms(
-                                                        allRoomsRoomsRecord
-                                                            .reference);
-                                                  });
+                                                  _model.addToSelectedRooms(
+                                                      allRoomsRoomsRecord
+                                                          .reference);
+                                                  setState(() {});
                                                 } else {
-                                                  setState(() {
-                                                    _model
-                                                        .removeFromSelectedRooms(
-                                                            allRoomsRoomsRecord
-                                                                .reference);
-                                                  });
+                                                  _model
+                                                      .removeFromSelectedRooms(
+                                                          allRoomsRoomsRecord
+                                                              .reference);
+                                                  setState(() {});
                                                 }
                                               },
                                               title: Text(
@@ -479,7 +472,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                                       color:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .secondary,
+                                                              .tertiary,
                                                       letterSpacing: 0.0,
                                                     ),
                                               ),

@@ -25,7 +25,6 @@ class PayPendingPartiallyModel
   // Stores action output result for [Bottom Sheet - ChangeAmount] action in Row widget.
   double? amount;
   // State field(s) for Checkbox widget.
-
   Map<PayPendingStruct, bool> checkboxValueMap = {};
   List<PayPendingStruct> get checkboxCheckedItems =>
       checkboxValueMap.entries.where((e) => e.value).map((e) => e.key).toList();

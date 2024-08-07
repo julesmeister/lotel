@@ -43,10 +43,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        _model.loopCounter = 0;
-        _model.loopGoodsCounter = 0;
-      });
+      _model.loopCounter = 0;
+      _model.loopGoodsCounter = 0;
+      setState(() {});
     });
 
     _model.priceTextController1 ??= TextEditingController();
@@ -84,9 +83,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -134,7 +131,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                       color: FlutterFlowTheme.of(context).primaryText,
                       size: 24.0,
                     ),
-                    onPressed: (widget.cart.isEmpty)
+                    onPressed: (widget.cart?.length == 0)
                         ? null
                         : () async {
                             var shouldSetState = false;
@@ -179,9 +176,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 ).then((s) => s.firstOrNull);
                                 shouldSetState = true;
                                 // booking
-                                setState(() {
-                                  _model.booking = _model.room?.currentBooking;
-                                });
+                                _model.booking = _model.room?.currentBooking;
+                                setState(() {});
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -202,9 +198,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                               }
                             }
                             // loading
-                            setState(() {
-                              _model.isLoading = true;
-                            });
+                            _model.isLoading = true;
+                            setState(() {});
                             while (_model.loopCounter !=
                                 valueOrDefault<int>(
                                   widget.cart?.length,
@@ -362,16 +357,16 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                             : 'sold',
                                         hotel: FFAppState().hotel,
                                         staff: currentUserReference,
-                                        quantityChange:
-                                            (functions.summarizeCart(
-                                                        widget.cart?.toList())?[
-                                                    _model.loopGoodsCounter])
-                                                ?.quantity,
-                                        previousQuantity:
-                                            (functions.summarizeCart(
-                                                        widget.cart?.toList())?[
-                                                    _model.loopGoodsCounter])
-                                                ?.previousQuantity,
+                                        quantityChange: (functions
+                                                    .summarizeCart(widget.cart
+                                                        ?.toList())?[
+                                                _model.loopGoodsCounter])
+                                            ?.quantity,
+                                        previousQuantity: (functions
+                                                    .summarizeCart(widget.cart
+                                                        ?.toList())?[
+                                                _model.loopGoodsCounter])
+                                            ?.previousQuantity,
                                         item: (functions.summarizeCart(
                                                     widget.cart?.toList())?[
                                                 _model.loopGoodsCounter])
@@ -390,15 +385,13 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                       inventoriesRecordReference);
                               shouldSetState = true;
                               // collect inventories to list
-                              setState(() {
-                                _model.addToInventories(
-                                    _model.newInventory!.reference);
-                              });
+                              _model.addToInventories(
+                                  _model.newInventory!.reference);
+                              setState(() {});
                               // Increment loopGoodsCounter
-                              setState(() {
-                                _model.loopGoodsCounter =
-                                    _model.loopGoodsCounter + 1;
-                              });
+                              _model.loopGoodsCounter =
+                                  _model.loopGoodsCounter + 1;
+                              setState(() {});
                             }
                             // add inventories to transaction
 
@@ -424,9 +417,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                               });
                             }
                             // finish loading
-                            setState(() {
-                              _model.isLoading = false;
-                            });
+                            _model.isLoading = false;
+                            setState(() {});
                             if (Navigator.of(context).canPop()) {
                               context.pop();
                             }
@@ -492,6 +484,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                   .summarizeCart(widget.cart?.toList())
                                   ?.toList() ??
                               [];
+
                           return ListView.builder(
                             padding: EdgeInsets.zero,
                             primary: false,
@@ -790,13 +783,11 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                               setState(() =>
                                   _model.switchListTileValue1 = newValue);
                               if (newValue) {
-                                setState(() {
-                                  _model.pending = true;
-                                });
+                                _model.pending = true;
+                                setState(() {});
                               } else {
-                                setState(() {
-                                  _model.pending = false;
-                                });
+                                _model.pending = false;
+                                setState(() {});
                               }
                             },
                             title: Text(
@@ -857,13 +848,11 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                               setState(() =>
                                   _model.switchListTileValue2 = newValue);
                               if (newValue) {
-                                setState(() {
-                                  _model.expense = true;
-                                });
+                                _model.expense = true;
+                                setState(() {});
                               } else {
-                                setState(() {
-                                  _model.expense = false;
-                                });
+                                _model.expense = false;
+                                setState(() {});
                               }
                             },
                             title: Text(
@@ -931,9 +920,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    setState(() {
-                                      _model.whichExpense = 'consumedBy';
-                                    });
+                                    _model.whichExpense = 'consumedBy';
+                                    setState(() {});
                                   },
                                   child: Container(
                                     width: 145.0,
@@ -997,9 +985,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  setState(() {
-                                    _model.whichExpense = 'spoilage';
-                                  });
+                                  _model.whichExpense = 'spoilage';
+                                  setState(() {});
                                 },
                                 child: Container(
                                   width: 115.0,
@@ -1056,9 +1043,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  setState(() {
-                                    _model.whichExpense = 'other';
-                                  });
+                                  _model.whichExpense = 'other';
+                                  setState(() {});
                                 },
                                 child: Container(
                                   width: 80.0,
@@ -1345,6 +1331,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                         }
                         List<RoomsRecord> choiceChipsRoomsRecordList =
                             snapshot.data!;
+
                         return FlutterFlowChoiceChips(
                           options: functions
                               .intListToStringList(choiceChipsRoomsRecordList

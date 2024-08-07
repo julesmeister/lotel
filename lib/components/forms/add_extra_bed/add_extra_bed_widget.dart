@@ -41,9 +41,8 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
       _model.hotelSetting =
           await HotelSettingsRecord.getDocumentOnce(FFAppState().settingRef!);
       // set bed price
-      setState(() {
-        _model.bedPrice = _model.hotelSetting!.bedPrice;
-      });
+      _model.bedPrice = _model.hotelSetting!.bedPrice;
+      setState(() {});
     });
 
     _model.numberTextController ??= TextEditingController(text: '0');
@@ -180,10 +179,16 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                             .text) -
                                                         1)
                                                     .toString());
+                                                _model.numberTextController
+                                                        ?.selection =
+                                                    TextSelection.collapsed(
+                                                        offset: _model
+                                                            .numberTextController!
+                                                            .text
+                                                            .length);
                                               });
-                                              setState(() {
-                                                _model.operator = '-';
-                                              });
+                                              _model.operator = '-';
+                                              setState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -249,10 +254,16 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                             .text) +
                                                         1)
                                                     .toString());
+                                                _model.numberTextController
+                                                        ?.selection =
+                                                    TextSelection.collapsed(
+                                                        offset: _model
+                                                            .numberTextController!
+                                                            .text
+                                                            .length);
                                               });
-                                              setState(() {
-                                                _model.operator = '+';
-                                              });
+                                              _model.operator = '+';
+                                              setState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -485,8 +496,8 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
-                                        pending:
-                                            widget.booking?.status == 'pending',
+                                        pending: widget.booking?.status ==
+                                            'pending',
                                         room: _model.room?.number,
                                         booking: widget.booking?.reference,
                                         description: (String additional,
@@ -519,8 +530,8 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
-                                        pending:
-                                            widget.booking?.status == 'pending',
+                                        pending: widget.booking?.status ==
+                                            'pending',
                                         room: _model.room?.number,
                                         booking: widget.booking?.reference,
                                         description: (String additional,

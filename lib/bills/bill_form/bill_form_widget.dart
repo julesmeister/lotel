@@ -49,10 +49,9 @@ class _BillFormWidgetState extends State<BillFormWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        _model.date = getCurrentTimestamp;
-        _model.stats = FFAppState().statsReference;
-      });
+      _model.date = getCurrentTimestamp;
+      _model.stats = FFAppState().statsReference;
+      setState(() {});
     });
 
     _model.amountTextController ??= TextEditingController();
@@ -149,9 +148,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -261,20 +258,19 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                         .where(
                                           'month',
                                           isEqualTo: dateTimeFormat(
-                                              'MMMM', _model.date),
+                                              "MMMM", _model.date),
                                         )
                                         .where(
                                           'year',
                                           isEqualTo:
-                                              dateTimeFormat('y', _model.date),
+                                              dateTimeFormat("y", _model.date),
                                         ),
                                     singleRecord: true,
                                   ).then((s) => s.firstOrNull);
                                   // set stats ref
-                                  setState(() {
-                                    _model.stats =
-                                        _model.statsBillBelong?.reference;
-                                  });
+                                  _model.stats =
+                                      _model.statsBillBelong?.reference;
+                                  setState(() {});
                                 }
                                 // increment bills stats
 
@@ -294,7 +290,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                     .set(createBillChangesRecordData(
                                       date: getCurrentTimestamp,
                                       description:
-                                          'The bill for ${_model.descriptionTextController.text} was taken care of on ${dateTimeFormat('MMMMEEEEd', _model.date)}.',
+                                          'The bill for ${_model.descriptionTextController.text} was taken care of on ${dateTimeFormat("MMMMEEEEd", _model.date)}.',
                                       staff: currentUserReference,
                                       hotel: FFAppState().hotel,
                                     ));
@@ -323,9 +319,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                   _model.descriptionTextController?.clear();
                                 });
                                 // reset date
-                                setState(() {
-                                  _model.date = getCurrentTimestamp;
-                                });
+                                _model.date = getCurrentTimestamp;
+                                setState(() {});
                               }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -379,10 +374,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                           context: context,
                           builder: (context) {
                             return GestureDetector(
-                              onTap: () => _model.unfocusNode.canRequestFocus
-                                  ? FocusScope.of(context)
-                                      .requestFocus(_model.unfocusNode)
-                                  : FocusScope.of(context).unfocus(),
+                              onTap: () => FocusScope.of(context).unfocus(),
                               child: Padding(
                                 padding: MediaQuery.viewInsetsOf(context),
                                 child: SizedBox(
@@ -398,9 +390,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
                             safeSetState(() => _model.adjustedDate = value));
 
                         if (_model.adjustedDate != null) {
-                          setState(() {
-                            _model.date = _model.adjustedDate;
-                          });
+                          _model.date = _model.adjustedDate;
+                          setState(() {});
                         }
 
                         setState(() {});
@@ -433,7 +424,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                       ),
                                 ),
                                 Text(
-                                  dateTimeFormat('MMMM d, y', _model.date),
+                                  dateTimeFormat("MMMM d, y", _model.date),
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -479,14 +470,12 @@ class _BillFormWidgetState extends State<BillFormWidget>
                           () async {
                             if (_model.amountTextController.text == '') {
                               // disable
-                              setState(() {
-                                _model.disableSubmit = true;
-                              });
+                              _model.disableSubmit = true;
+                              setState(() {});
                             } else {
                               // enable
-                              setState(() {
-                                _model.disableSubmit = false;
-                              });
+                              _model.disableSubmit = false;
+                              setState(() {});
                             }
                           },
                         ),
@@ -708,6 +697,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                         }
                         List<OptionsRecord> containerOptionsRecordList =
                             snapshot.data!;
+
                         return Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -734,6 +724,12 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                 setState(() {
                                   _model.descriptionTextController?.text =
                                       _model.choicesValue!;
+                                  _model.descriptionTextController?.selection =
+                                      TextSelection.collapsed(
+                                          offset: _model
+                                              .descriptionTextController!
+                                              .text
+                                              .length);
                                 });
                               },
                               selectedChipStyle: ChipStyle(

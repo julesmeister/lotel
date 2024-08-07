@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import '/backend/schema/util/firestore_util.dart';
 
 import 'index.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
 class IssuesRecord extends FirestoreRecord {
   IssuesRecord._(
@@ -34,23 +35,23 @@ class IssuesRecord extends FirestoreRecord {
   String get hotel => _hotel ?? '';
   bool hasHotel() => _hotel != null;
 
-  // "staff" field.
-  DocumentReference? _staff;
-  DocumentReference? get staff => _staff;
-  bool hasStaff() => _staff != null;
-
   // "dateFixed" field.
   DateTime? _dateFixed;
   DateTime? get dateFixed => _dateFixed;
   bool hasDateFixed() => _dateFixed != null;
+
+  // "staffName" field.
+  String? _staffName;
+  String get staffName => _staffName ?? '';
+  bool hasStaffName() => _staffName != null;
 
   void _initializeFields() {
     _date = snapshotData['date'] as DateTime?;
     _detail = snapshotData['detail'] as String?;
     _status = snapshotData['status'] as String?;
     _hotel = snapshotData['hotel'] as String?;
-    _staff = snapshotData['staff'] as DocumentReference?;
     _dateFixed = snapshotData['dateFixed'] as DateTime?;
+    _staffName = snapshotData['staffName'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -91,8 +92,8 @@ Map<String, dynamic> createIssuesRecordData({
   String? detail,
   String? status,
   String? hotel,
-  DocumentReference? staff,
   DateTime? dateFixed,
+  String? staffName,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -100,8 +101,8 @@ Map<String, dynamic> createIssuesRecordData({
       'detail': detail,
       'status': status,
       'hotel': hotel,
-      'staff': staff,
       'dateFixed': dateFixed,
+      'staffName': staffName,
     }.withoutNulls,
   );
 
@@ -117,13 +118,13 @@ class IssuesRecordDocumentEquality implements Equality<IssuesRecord> {
         e1?.detail == e2?.detail &&
         e1?.status == e2?.status &&
         e1?.hotel == e2?.hotel &&
-        e1?.staff == e2?.staff &&
-        e1?.dateFixed == e2?.dateFixed;
+        e1?.dateFixed == e2?.dateFixed &&
+        e1?.staffName == e2?.staffName;
   }
 
   @override
-  int hash(IssuesRecord? e) => const ListEquality()
-      .hash([e?.date, e?.detail, e?.status, e?.hotel, e?.staff, e?.dateFixed]);
+  int hash(IssuesRecord? e) => const ListEquality().hash(
+      [e?.date, e?.detail, e?.status, e?.hotel, e?.dateFixed, e?.staffName]);
 
   @override
   bool isValidKey(Object? o) => o is IssuesRecord;

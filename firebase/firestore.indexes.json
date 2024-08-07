@@ -241,20 +241,6 @@
       ]
     },
     {
-      "collectionGroup": "users",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "expired",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "role",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
       "collectionGroup": "billChanges",
       "queryScope": "COLLECTION",
       "fields": [
@@ -279,6 +265,20 @@
         {
           "fieldPath": "description",
           "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "records",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hotel",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
         }
       ]
     },

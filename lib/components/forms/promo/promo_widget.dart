@@ -38,19 +38,22 @@ class _PromoWidgetState extends State<PromoWidget> {
         // set detail
         setState(() {
           _model.detailTextController?.text = _model.settings!.promoDetail;
+          _model.detailTextController?.selection = TextSelection.collapsed(
+              offset: _model.detailTextController!.text.length);
         });
         // set percent
         setState(() {
           _model.percentTextController?.text =
               _model.settings!.promoPercent.toString();
+          _model.percentTextController?.selection = TextSelection.collapsed(
+              offset: _model.percentTextController!.text.length);
         });
         // on toggle
         setState(() {
           _model.switchValue = true;
         });
-        setState(() {
-          _model.promoOn = true;
-        });
+        _model.promoOn = true;
+        setState(() {});
       } else {
         // off toggle
         setState(() {
@@ -59,6 +62,7 @@ class _PromoWidgetState extends State<PromoWidget> {
       }
     });
 
+    _model.switchValue = true;
     _model.detailTextController ??= TextEditingController();
     _model.detailFocusNode ??= FocusNode();
 
@@ -158,19 +162,17 @@ class _PromoWidgetState extends State<PromoWidget> {
                               ),
                             ),
                             Switch.adaptive(
-                              value: _model.switchValue ??= true,
+                              value: _model.switchValue!,
                               onChanged: (newValue) async {
                                 setState(() => _model.switchValue = newValue);
                                 if (newValue) {
                                   // promoOn
-                                  setState(() {
-                                    _model.promoOn = true;
-                                  });
+                                  _model.promoOn = true;
+                                  setState(() {});
                                 } else {
                                   // promoOff
-                                  setState(() {
-                                    _model.promoOn = false;
-                                  });
+                                  _model.promoOn = false;
+                                  setState(() {});
                                 }
                               },
                               activeColor: FlutterFlowTheme.of(context).primary,

@@ -75,6 +75,16 @@ class RemittancesRecord extends FirestoreRecord {
   List<DocumentReference> get absences => _absences ?? const [];
   bool hasAbsences() => _absences != null;
 
+  // "preparedByName" field.
+  String? _preparedByName;
+  String get preparedByName => _preparedByName ?? '';
+  bool hasPreparedByName() => _preparedByName != null;
+
+  // "collectedByName" field.
+  String? _collectedByName;
+  String get collectedByName => _collectedByName ?? '';
+  bool hasCollectedByName() => _collectedByName != null;
+
   void _initializeFields() {
     _date = snapshotData['date'] as DateTime?;
     _transactions = getDataList(snapshotData['transactions']);
@@ -88,6 +98,8 @@ class RemittancesRecord extends FirestoreRecord {
     _bookings = getDataList(snapshotData['bookings']);
     _inventories = getDataList(snapshotData['inventories']);
     _absences = getDataList(snapshotData['absences']);
+    _preparedByName = snapshotData['preparedByName'] as String?;
+    _collectedByName = snapshotData['collectedByName'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -133,6 +145,8 @@ Map<String, dynamic> createRemittancesRecordData({
   double? expenses,
   double? net,
   bool? collected,
+  String? preparedByName,
+  String? collectedByName,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -144,6 +158,8 @@ Map<String, dynamic> createRemittancesRecordData({
       'expenses': expenses,
       'net': net,
       'collected': collected,
+      'preparedByName': preparedByName,
+      'collectedByName': collectedByName,
     }.withoutNulls,
   );
 
@@ -167,7 +183,9 @@ class RemittancesRecordDocumentEquality implements Equality<RemittancesRecord> {
         e1?.collected == e2?.collected &&
         listEquality.equals(e1?.bookings, e2?.bookings) &&
         listEquality.equals(e1?.inventories, e2?.inventories) &&
-        listEquality.equals(e1?.absences, e2?.absences);
+        listEquality.equals(e1?.absences, e2?.absences) &&
+        e1?.preparedByName == e2?.preparedByName &&
+        e1?.collectedByName == e2?.collectedByName;
   }
 
   @override
@@ -183,7 +201,9 @@ class RemittancesRecordDocumentEquality implements Equality<RemittancesRecord> {
         e?.collected,
         e?.bookings,
         e?.inventories,
-        e?.absences
+        e?.absences,
+        e?.preparedByName,
+        e?.collectedByName
       ]);
 
   @override

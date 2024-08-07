@@ -453,7 +453,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: dateTimeFormat('M/d h:mm a',
+                                      text: dateTimeFormat("M/d h:mm a",
                                           widget.transaction!.date!),
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium

@@ -37,6 +37,8 @@ class _SalaryEditWidgetState extends State<SalaryEditWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       setState(() {
         _model.salaryTextController?.text = widget.stats!.salaries.toString();
+        _model.salaryTextController?.selection = TextSelection.collapsed(
+            offset: _model.salaryTextController!.text.length);
       });
     });
 

@@ -93,9 +93,8 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                     _model.salaryToGetTotal =
                         await SalariesRecord.getDocumentOnce(widget.salary!);
                     // reset loop counter
-                    setState(() {
-                      _model.loopCACounter = 0;
-                    });
+                    _model.loopCACounter = 0;
+                    setState(() {});
                     while (_model.loopCACounter !=
                         _model.salaryToGetTotal?.caRefs.length) {
                       // unsettle ca
@@ -106,9 +105,8 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                         settled: false,
                       ));
                       // increment loop
-                      setState(() {
-                        _model.loopCACounter = _model.loopCACounter + 1;
-                      });
+                      _model.loopCACounter = _model.loopCACounter + 1;
+                      setState(() {});
                     }
                     // decrement salary in stats
 

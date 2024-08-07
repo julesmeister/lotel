@@ -67,7 +67,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   List<HotelSettingsRecord>? homePagePreviousSnapshot;
   // Stores action output result for [Firestore Query - Query a collection] action in HomePage widget.
   LastLoginRecord? log;
@@ -208,8 +207,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
-
     /// Dispose query cache managers for this widget.
 
     clearSalesTotalCache();

@@ -346,7 +346,8 @@ class _OptionToTransactionOnlyWidgetState
                     if (confirmDialogResponse) {
                       // transaction action output
                       _model.transaction =
-                          await TransactionsRecord.getDocumentOnce(widget.ref!);
+                          await TransactionsRecord.getDocumentOnce(
+                              widget.ref!);
                       if ((_model.transaction!.inventories.isNotEmpty) &&
                           (_model.transaction?.type != 'book')) {
                         while (_model.loopInvetoryCounter !=
@@ -387,10 +388,9 @@ class _OptionToTransactionOnlyWidgetState
                               .inventories[_model.loopInvetoryCounter]
                               .delete();
                           // increment loop
-                          setState(() {
-                            _model.loopInvetoryCounter =
-                                _model.loopInvetoryCounter + 1;
-                          });
+                          _model.loopInvetoryCounter =
+                              _model.loopInvetoryCounter + 1;
+                          setState(() {});
                         }
                       }
                       // delete transactions

@@ -135,6 +135,7 @@ class _CollectRemittanceUserWidgetState
                     }
                     List<UsersRecord> selectWidgetUsersRecordList =
                         snapshot.data!;
+
                     return SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.max,

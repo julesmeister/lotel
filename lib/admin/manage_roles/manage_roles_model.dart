@@ -23,9 +23,7 @@ class ManageRolesModel extends FlutterFlowModel<ManageRolesWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for CheckboxListTile widget.
-
   Map<UsersRecord, bool> checkboxListTileValueMap1 = {};
   List<UsersRecord> get checkboxListTileCheckedItems1 =>
       checkboxListTileValueMap1.entries
@@ -34,7 +32,6 @@ class ManageRolesModel extends FlutterFlowModel<ManageRolesWidget> {
           .toList();
 
   // State field(s) for CheckboxListTile widget.
-
   Map<UsersRecord, bool> checkboxListTileValueMap2 = {};
   List<UsersRecord> get checkboxListTileCheckedItems2 =>
       checkboxListTileValueMap2.entries
@@ -50,7 +47,5 @@ class ManageRolesModel extends FlutterFlowModel<ManageRolesWidget> {
   void initState(BuildContext context) {}
 
   @override
-  void dispose() {
-    unfocusNode.dispose();
-  }
+  void dispose() {}
 }

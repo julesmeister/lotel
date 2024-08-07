@@ -39,9 +39,8 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        _model.stats = FFAppState().statsReference;
-      });
+      _model.stats = FFAppState().statsReference;
+      setState(() {});
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -364,19 +363,18 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                               .where(
                                 'month',
                                 isEqualTo:
-                                    dateTimeFormat('MMMM', widget.bill?.date),
+                                    dateTimeFormat("MMMM", widget.bill?.date),
                               )
                               .where(
                                 'year',
                                 isEqualTo:
-                                    dateTimeFormat('y', widget.bill?.date),
+                                    dateTimeFormat("y", widget.bill?.date),
                               ),
                           singleRecord: true,
                         ).then((s) => s.firstOrNull);
                         // set stats ref
-                        setState(() {
-                          _model.stats = _model.statsBillBelong?.reference;
-                        });
+                        _model.stats = _model.statsBillBelong?.reference;
+                        setState(() {});
                       }
                       // reduce from stat
 
@@ -395,7 +393,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           .set(createBillChangesRecordData(
                             date: getCurrentTimestamp,
                             description:
-                                'The bill attributed to ${widget.bill?.description} covered on ${dateTimeFormat('MMMMEEEEd', widget.bill?.date)} was deleted and the bill\'s amount was deducted from the ${dateTimeFormat('MMMM', widget.bill?.date)} records.',
+                                'The bill attributed to ${widget.bill?.description} covered on ${dateTimeFormat("MMMMEEEEd", widget.bill?.date)} was deleted and the bill\'s amount was deducted from the ${dateTimeFormat("MMMM", widget.bill?.date)} records.',
                             staff: currentUserReference,
                             hotel: FFAppState().hotel,
                           ));
@@ -412,7 +410,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                                 currency: 'Php ',
                               ),
                               '0',
-                            )} is deducted from ${dateTimeFormat('MMMM y', widget.bill?.date)} metrics.',
+                            )} is deducted from ${dateTimeFormat("MMMM y", widget.bill?.date)} metrics.',
                             style: TextStyle(
                               color: FlutterFlowTheme.of(context).primaryText,
                             ),

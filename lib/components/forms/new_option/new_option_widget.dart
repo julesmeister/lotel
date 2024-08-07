@@ -221,9 +221,8 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                                     Colors.transparent,
                                                 onTap: () async {
                                                   // type expense
-                                                  setState(() {
-                                                    _model.type = 'expense';
-                                                  });
+                                                  _model.type = 'expense';
+                                                  setState(() {});
                                                 },
                                                 child: AnimatedContainer(
                                                   duration: const Duration(
@@ -305,9 +304,8 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                                     Colors.transparent,
                                                 onTap: () async {
                                                   // type bill
-                                                  setState(() {
-                                                    _model.type = 'bill';
-                                                  });
+                                                  _model.type = 'bill';
+                                                  setState(() {});
                                                 },
                                                 child: AnimatedContainer(
                                                   duration: const Duration(

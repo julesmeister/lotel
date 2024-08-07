@@ -49,14 +49,20 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
         // set name
         setState(() {
           _model.nameTextController?.text = widget.name!;
+          _model.nameTextController?.selection = TextSelection.collapsed(
+              offset: _model.nameTextController!.text.length);
         });
         // set sss
         setState(() {
           _model.sssTextController?.text = widget.sss!.toString();
+          _model.sssTextController?.selection = TextSelection.collapsed(
+              offset: _model.sssTextController!.text.length);
         });
         // set rate
         setState(() {
           _model.rateTextController?.text = widget.weeklyRate!.toString();
+          _model.rateTextController?.selection = TextSelection.collapsed(
+              offset: _model.rateTextController!.text.length);
         });
       }
     });
@@ -65,8 +71,8 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
         TextEditingController(text: widget.edit ? widget.name : '');
     _model.nameFocusNode ??= FocusNode();
 
-    _model.sssTextController ??=
-        TextEditingController(text: widget.edit ? widget.sss?.toString() : '');
+    _model.sssTextController ??= TextEditingController(
+        text: widget.edit ? widget.sss?.toString() : '');
     _model.sssFocusNode ??= FocusNode();
 
     _model.rateTextController ??= TextEditingController(
@@ -427,6 +433,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                   }
 
                                   Navigator.pop(context);
+
                                   setState(() {});
 
                                   setState(() {});

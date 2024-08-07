@@ -1,7 +1,8 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/change_date/change_date_widget.dart';
-import '/components/options/issuer/issuer_widget.dart';
+import '/components/forms/new_issue/new_issue_widget.dart';
+import '/components/options/list_of_names/list_of_names_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -40,19 +41,16 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // hide
-      setState(() {
-        _model.showMonthPicker = false;
-      });
+      _model.showMonthPicker = false;
+      setState(() {});
       await Future.delayed(const Duration(milliseconds: 500));
       // set month year
-      setState(() {
-        _model.month = functions.currentMonth();
-        _model.year = functions.currentYear();
-      });
+      _model.month = functions.currentMonth();
+      _model.year = functions.currentYear();
+      setState(() {});
       // show
-      setState(() {
-        _model.showMonthPicker = true;
-      });
+      _model.showMonthPicker = true;
+      setState(() {});
     });
 
     animationsMap.addAll({
@@ -121,9 +119,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -167,7 +163,40 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
               ),
             ],
           ),
-          actions: const [],
+          actions: [
+            FlutterFlowIconButton(
+              borderRadius: 20.0,
+              borderWidth: 1.0,
+              buttonSize: 60.0,
+              icon: Icon(
+                Icons.add,
+                color: FlutterFlowTheme.of(context).primaryText,
+                size: 24.0,
+              ),
+              onPressed: () async {
+                await showModalBottomSheet(
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  enableDrag: false,
+                  context: context,
+                  builder: (context) {
+                    return GestureDetector(
+                      onTap: () => FocusScope.of(context).unfocus(),
+                      child: Padding(
+                        padding: MediaQuery.viewInsetsOf(context),
+                        child: const SizedBox(
+                          height: double.infinity,
+                          child: NewIssueWidget(
+                            edit: false,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ).then((value) => safeSetState(() {}));
+              },
+            ),
+          ],
           centerTitle: false,
           elevation: 0.0,
         ),
@@ -191,23 +220,19 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                     ),
                     onPressed: () async {
                       // hide month picker
-                      setState(() {
-                        _model.showMonthPicker = false;
-                      });
+                      _model.showMonthPicker = false;
+                      setState(() {});
                       await Future.delayed(const Duration(milliseconds: 500));
                       // set previous year
-                      setState(() {
-                        _model.year =
-                            functions.previousYear(_model.month, _model.year);
-                      });
+                      _model.year =
+                          functions.previousYear(_model.month, _model.year);
+                      setState(() {});
                       // set previous month
-                      setState(() {
-                        _model.month = functions.previousMonth(_model.month);
-                      });
+                      _model.month = functions.previousMonth(_model.month);
+                      setState(() {});
                       // show month picker
-                      setState(() {
-                        _model.showMonthPicker = true;
-                      });
+                      _model.showMonthPicker = true;
+                      setState(() {});
                     },
                   ).animateOnPageLoad(
                       animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -234,34 +259,31 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                       initialYear: int.parse(_model.year),
                       changeMonthYear: (month, year) async {
                         // hide
-                        setState(() {
-                          _model.showMonthPicker = false;
-                        });
+                        _model.showMonthPicker = false;
+                        setState(() {});
                         await Future.delayed(const Duration(milliseconds: 500));
                         // hide
-                        setState(() {
-                          _model.month = ((int month) {
-                            return {
-                              1: 'January',
-                              2: 'February',
-                              3: 'March',
-                              4: 'April',
-                              5: 'May',
-                              6: 'June',
-                              7: 'July',
-                              8: 'August',
-                              9: 'September',
-                              10: 'October',
-                              11: 'November',
-                              12: 'December',
-                            }[month];
-                          }(month))!;
-                          _model.year = year.toString();
-                        });
+                        _model.month = ((int month) {
+                          return {
+                            1: 'January',
+                            2: 'February',
+                            3: 'March',
+                            4: 'April',
+                            5: 'May',
+                            6: 'June',
+                            7: 'July',
+                            8: 'August',
+                            9: 'September',
+                            10: 'October',
+                            11: 'November',
+                            12: 'December',
+                          }[month];
+                        }(month))!;
+                        _model.year = year.toString();
+                        setState(() {});
                         // show
-                        setState(() {
-                          _model.showMonthPicker = true;
-                        });
+                        _model.showMonthPicker = true;
+                        setState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['containerOnPageLoadAnimation']!),
@@ -276,23 +298,19 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                     ),
                     onPressed: () async {
                       // hide month picker
-                      setState(() {
-                        _model.showMonthPicker = false;
-                      });
+                      _model.showMonthPicker = false;
+                      setState(() {});
                       await Future.delayed(const Duration(milliseconds: 500));
                       // set next year
-                      setState(() {
-                        _model.year =
-                            functions.nextYear(_model.year, _model.month);
-                      });
+                      _model.year =
+                          functions.nextYear(_model.year, _model.month);
+                      setState(() {});
                       // set next month
-                      setState(() {
-                        _model.month = functions.nextMonth(_model.month);
-                      });
+                      _model.month = functions.nextMonth(_model.month);
+                      setState(() {});
                       // show month picker
-                      setState(() {
-                        _model.showMonthPicker = true;
-                      });
+                      _model.showMonthPicker = true;
+                      setState(() {});
                     },
                   ).animateOnPageLoad(
                       animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -366,14 +384,11 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                             context: context,
                             builder: (context) {
                               return GestureDetector(
-                                onTap: () => _model.unfocusNode.canRequestFocus
-                                    ? FocusScope.of(context)
-                                        .requestFocus(_model.unfocusNode)
-                                    : FocusScope.of(context).unfocus(),
+                                onTap: () => FocusScope.of(context).unfocus(),
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
                                   child: SizedBox(
-                                    height: 220.0,
+                                    height: 362.0,
                                     child: OptionToIssueWidget(
                                       issue: listViewIssuesRecord,
                                     ),
@@ -404,7 +419,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                 16.0, 12.0, 16.0, 12.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 InkWell(
                                   splashColor: Colors.transparent,
@@ -418,13 +433,8 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                       context: context,
                                       builder: (context) {
                                         return GestureDetector(
-                                          onTap: () => _model
-                                                  .unfocusNode.canRequestFocus
-                                              ? FocusScope.of(context)
-                                                  .requestFocus(
-                                                      _model.unfocusNode)
-                                              : FocusScope.of(context)
-                                                  .unfocus(),
+                                          onTap: () =>
+                                              FocusScope.of(context).unfocus(),
                                           child: Padding(
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
@@ -479,7 +489,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                     children: [
                                       Text(
                                         dateTimeFormat(
-                                            'MMM', listViewIssuesRecord.date!),
+                                            "MMM", listViewIssuesRecord.date!),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -494,7 +504,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                       ),
                                       Text(
                                         dateTimeFormat(
-                                            'd', listViewIssuesRecord.date!),
+                                            "d", listViewIssuesRecord.date!),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -512,7 +522,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                       ),
                                       Text(
                                         dateTimeFormat(
-                                            'y', listViewIssuesRecord.date!),
+                                            "y", listViewIssuesRecord.date!),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -550,221 +560,149 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                             children: [
                                               Expanded(
                                                 flex: 5,
-                                                child:
-                                                    StreamBuilder<UsersRecord>(
-                                                  stream:
-                                                      UsersRecord.getDocument(
-                                                          listViewIssuesRecord
-                                                              .staff!),
-                                                  builder: (context, snapshot) {
-                                                    // Customize what your widget looks like when it's loading.
-                                                    if (!snapshot.hasData) {
-                                                      return Center(
-                                                        child: SizedBox(
-                                                          width: 50.0,
-                                                          height: 50.0,
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            valueColor:
-                                                                AlwaysStoppedAnimation<
-                                                                    Color>(
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .primary,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }
-                                                    final richTextUsersRecord =
-                                                        snapshot.data!;
-                                                    return InkWell(
-                                                      splashColor:
-                                                          Colors.transparent,
-                                                      focusColor:
-                                                          Colors.transparent,
-                                                      hoverColor:
-                                                          Colors.transparent,
-                                                      highlightColor:
-                                                          Colors.transparent,
-                                                      onTap: () async {
-                                                        if (valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.role,
-                                                                '') ==
-                                                            'admin') {
-                                                          await showModalBottomSheet(
-                                                            isScrollControlled:
-                                                                true,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            enableDrag: false,
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return GestureDetector(
-                                                                onTap: () => _model
-                                                                        .unfocusNode
-                                                                        .canRequestFocus
-                                                                    ? FocusScope.of(
-                                                                            context)
-                                                                        .requestFocus(_model
-                                                                            .unfocusNode)
-                                                                    : FocusScope.of(
-                                                                            context)
-                                                                        .unfocus(),
-                                                                child: Padding(
-                                                                  padding: MediaQuery
-                                                                      .viewInsetsOf(
-                                                                          context),
-                                                                  child:
-                                                                      SizedBox(
-                                                                    height:
-                                                                        300.0,
-                                                                    child:
-                                                                        IssuerWidget(
-                                                                      issue: listViewIssuesRecord
-                                                                          .reference,
-                                                                    ),
-                                                                  ),
+                                                child: InkWell(
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  focusColor:
+                                                      Colors.transparent,
+                                                  hoverColor:
+                                                      Colors.transparent,
+                                                  highlightColor:
+                                                      Colors.transparent,
+                                                  onTap: () async {
+                                                    if (valueOrDefault(
+                                                            currentUserDocument
+                                                                ?.role,
+                                                            '') ==
+                                                        'admin') {
+                                                      await showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        enableDrag: false,
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return GestureDetector(
+                                                            onTap: () =>
+                                                                FocusScope.of(
+                                                                        context)
+                                                                    .unfocus(),
+                                                            child: Padding(
+                                                              padding: MediaQuery
+                                                                  .viewInsetsOf(
+                                                                      context),
+                                                              child: SizedBox(
+                                                                height: 300.0,
+                                                                child:
+                                                                    ListOfNamesWidget(
+                                                                  issues: listViewIssuesRecord
+                                                                      .reference,
                                                                 ),
-                                                              );
-                                                            },
-                                                          ).then((value) =>
-                                                              safeSetState(
-                                                                  () {}));
-                                                        }
-                                                      },
-                                                      child: RichText(
-                                                        textScaler:
-                                                            MediaQuery.of(
-                                                                    context)
-                                                                .textScaler,
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: richTextUsersRecord
-                                                                  .displayName,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyLarge
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: listViewIssuesRecord.status ==
-                                                                            'pending'
-                                                                        ? FlutterFlowTheme.of(context)
-                                                                            .error
-                                                                        : FlutterFlowTheme.of(context)
-                                                                            .secondary,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ),
+                                                              ),
                                                             ),
-                                                            const TextSpan(
-                                                              text: ' reported',
-                                                              style:
-                                                                  TextStyle(),
-                                                            )
-                                                          ],
+                                                          );
+                                                        },
+                                                      ).then((value) =>
+                                                          safeSetState(() {}));
+                                                    }
+                                                  },
+                                                  child: RichText(
+                                                    textScaler:
+                                                        MediaQuery.of(context)
+                                                            .textScaler,
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text:
+                                                              listViewIssuesRecord
+                                                                  .staffName,
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .bodyLarge
                                                               .override(
                                                                 fontFamily:
                                                                     'Readex Pro',
+                                                                color: listViewIssuesRecord
+                                                                            .status ==
+                                                                        'pending'
+                                                                    ? FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .error
+                                                                    : FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                 letterSpacing:
                                                                     0.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
                                                               ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
+                                                        const TextSpan(
+                                                          text: ' reported',
+                                                          style: TextStyle(),
+                                                        )
+                                                      ],
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyLarge
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               Expanded(
                                                 flex: 5,
-                                                child:
-                                                    StreamBuilder<UsersRecord>(
-                                                  stream:
-                                                      UsersRecord.getDocument(
-                                                          listViewIssuesRecord
-                                                              .staff!),
-                                                  builder: (context, snapshot) {
-                                                    // Customize what your widget looks like when it's loading.
-                                                    if (!snapshot.hasData) {
-                                                      return Center(
-                                                        child: SizedBox(
-                                                          width: 50.0,
-                                                          height: 50.0,
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            valueColor:
-                                                                AlwaysStoppedAnimation<
-                                                                    Color>(
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .primary,
+                                                child: RichText(
+                                                  textScaler:
+                                                      MediaQuery.of(context)
+                                                          .textScaler,
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: functions.daysOfIssue(
+                                                            listViewIssuesRecord
+                                                                .date!,
+                                                            listViewIssuesRecord
+                                                                .dateFixed),
+                                                        style: FlutterFlowTheme
+                                                                .of(context)
+                                                            .bodyLarge
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Readex Pro',
+                                                              color: listViewIssuesRecord.status ==
+                                                                      'pending'
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .error
+                                                                  : FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondary,
+                                                              letterSpacing:
+                                                                  0.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
                                                             ),
-                                                          ),
+                                                      )
+                                                    ],
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyLarge
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
                                                         ),
-                                                      );
-                                                    }
-                                                    final richTextUsersRecord =
-                                                        snapshot.data!;
-                                                    return RichText(
-                                                      textScaler:
-                                                          MediaQuery.of(context)
-                                                              .textScaler,
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: functions.daysOfIssue(
-                                                                listViewIssuesRecord
-                                                                    .date!,
-                                                                listViewIssuesRecord
-                                                                    .dateFixed),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyLarge
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  color: listViewIssuesRecord
-                                                                              .status ==
-                                                                          'pending'
-                                                                      ? FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .error
-                                                                      : FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondary,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                ),
-                                                          )
-                                                        ],
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyLarge
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                      ),
-                                                      textAlign: TextAlign.end,
-                                                      maxLines: 1,
-                                                    );
-                                                  },
+                                                  ),
+                                                  textAlign: TextAlign.end,
+                                                  maxLines: 1,
                                                 ),
                                               ),
                                             ],
@@ -845,15 +783,8 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                                         context: context,
                                                         builder: (context) {
                                                           return GestureDetector(
-                                                            onTap: () => _model
-                                                                    .unfocusNode
-                                                                    .canRequestFocus
-                                                                ? FocusScope.of(
-                                                                        context)
-                                                                    .requestFocus(
-                                                                        _model
-                                                                            .unfocusNode)
-                                                                : FocusScope.of(
+                                                            onTap: () =>
+                                                                FocusScope.of(
                                                                         context)
                                                                     .unfocus(),
                                                             child: Padding(
@@ -919,7 +850,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                                       setState(() {});
                                                     },
                                                     child: Text(
-                                                      'Solved on ${dateTimeFormat('MMM d h:mm a', listViewIssuesRecord.dateFixed)} ${functions.daysSolved(listViewIssuesRecord.date!, listViewIssuesRecord.dateFixed)}',
+                                                      'Solved on ${dateTimeFormat("MMM d h:mm a", listViewIssuesRecord.dateFixed)} ${functions.daysSolved(listViewIssuesRecord.date!, listViewIssuesRecord.dateFixed)}',
                                                       maxLines: 2,
                                                       style: FlutterFlowTheme
                                                               .of(context)

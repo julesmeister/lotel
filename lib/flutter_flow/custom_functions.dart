@@ -11,6 +11,7 @@ import 'uploaded_file.dart';
 import '/backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/backend/schema/structs/index.dart';
+import '/backend/schema/enums/enums.dart';
 import '/auth/firebase_auth/auth_util.dart';
 
 double? getTotalAmount(
@@ -584,6 +585,30 @@ double sumOfSalaries(List<SalariesRecord> salaries) {
     total += salary.total;
   }
   return total;
+}
+
+double generateYearlySalesTotal(
+  List<StatsRecord>? stats,
+  String hotel,
+  String category,
+) {
+  double totalSales = 0.0;
+
+  if (stats != null) {
+    for (var stat in stats) {
+      if (hotel == 'All' || stat.hotel == hotel) {
+        if (category == 'Rooms') {
+          totalSales += stat.roomsIncome ?? 0.0;
+        } else if (category == 'Goods') {
+          totalSales += stat.goodsIncome ?? 0.0;
+        } else if (category == 'Net') {
+          totalSales += stat.net ?? 0.0;
+        }
+      }
+    }
+  }
+
+  return totalSales;
 }
 
 double totalExpenses(List<TransactionsRecord> transactions) {
@@ -1909,4 +1934,86 @@ double saleProgress(
   double percentage = (sale - minSale) / (maxSale - minSale);
   return math.min(math.max(percentage, 0.25),
       1.0); // Ensure percentage is between 0.25 and 1.0
+}
+
+String? percentageMeterColor(double percent) {
+  // gradient from light red if 25% then light green if 100%
+  if (percent >= 0.25 && percent < 0.45) {
+    return '#FFA07A'; // light salmon
+  } else if (percent >= 0.45 && percent < 0.75) {
+    return '#fffdaf'; // peach puff
+  } else if (percent >= 0.75 && percent <= 1.0) {
+    return '#90EE90'; // light green
+  }
+}
+
+String nextHotel(String currentHotel) {
+  // hotel that isn't the currentHotel
+  String addSpaceBetweenLowerAndUpper(String text) {
+    final buffer = StringBuffer();
+
+    for (int i = 0; i < text.length; i++) {
+      buffer.write(text[i]);
+
+      // Check if the current character is lowercase and the next one is uppercase
+      if (i < text.length - 1 &&
+          text[i].toLowerCase() == text[i] &&
+          text[i + 1].toUpperCase() == text[i + 1]) {
+        buffer.write(' ');
+      }
+    }
+
+    return buffer.toString();
+  }
+
+  switch (
+      deserializeEnum<Hotels>(currentHotel.replaceAll(RegExp(r'\s+'), ''))) {
+    case Hotels.Serenity:
+      return addSpaceBetweenLowerAndUpper(Hotels.MyLifestyle.serialize());
+    case Hotels.MyLifestyle:
+      return addSpaceBetweenLowerAndUpper(Hotels.Serenity.serialize());
+    default:
+      return '';
+  }
+}
+
+List<String> concatNames(
+  List<String>? staffs,
+  List<String>? users,
+) {
+  // merge both list of strings and remove strings that are the same
+  List<String> result = [];
+  if (staffs != null) {
+    result.addAll(staffs);
+  }
+  if (users != null) {
+    result.addAll(users);
+  }
+  return result.toSet().toList();
+}
+
+String whoInListOfNames(
+  bool remittance,
+  bool? preparedBy,
+  bool issue,
+  bool record,
+  bool? issuer,
+) {
+  if (remittance) {
+    if (preparedBy != null && preparedBy) {
+      return "Who prepared this remittance?";
+    } else {
+      return "Who collected this remittance?";
+    }
+  } else if (issue) {
+    return "Who issued this?";
+  } else if (record) {
+    if (issuer != null && issuer) {
+      return "Who issued this record?";
+    } else {
+      return "Who received the item in this record?";
+    }
+  } else {
+    return "Invalid input.";
+  }
 }

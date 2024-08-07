@@ -115,9 +115,8 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                         false;
                     if (confirmDialogResponse) {
                       // reset salary loop counter
-                      setState(() {
-                        _model.loopCounter = 0;
-                      });
+                      _model.loopCounter = 0;
+                      setState(() {});
                       // salaries
                       _model.salaries = await querySalariesRecordOnce(
                         parent: widget.payroll?.reference,
@@ -128,9 +127,8 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                         await _model.salaries![_model.loopCounter].reference
                             .delete();
                         // increment loop salaries
-                        setState(() {
-                          _model.loopCounter = _model.loopCounter + 1;
-                        });
+                        _model.loopCounter = _model.loopCounter + 1;
+                        setState(() {});
                       }
                       // deduct from stats
 

@@ -76,6 +76,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
             lateCheckoutFeeHotelSettingsRecordList.isNotEmpty
                 ? lateCheckoutFeeHotelSettingsRecordList.first
                 : null;
+
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -115,10 +116,9 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                   size: 24.0,
                 ),
                 onPressed: () async {
-                  setState(() {
-                    FFAppState().extPricePerHr =
-                        lateCheckoutFeeHotelSettingsRecord!.lateCheckoutFee;
-                  });
+                  FFAppState().extPricePerHr =
+                      lateCheckoutFeeHotelSettingsRecord!.lateCheckoutFee;
+                  setState(() {});
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
@@ -379,10 +379,9 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                               ));
                         }
 
-                        setState(() {
-                          FFAppState().extPricePerHr =
-                              double.parse(_model.textController.text);
-                        });
+                        FFAppState().extPricePerHr =
+                            double.parse(_model.textController.text);
+                        setState(() {});
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(

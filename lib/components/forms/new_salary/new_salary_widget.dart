@@ -51,26 +51,36 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
         // set rate
         setState(() {
           _model.rateTextController?.text = widget.salaryDoc!.rate.toString();
+          _model.rateTextController?.selection = TextSelection.collapsed(
+              offset: _model.rateTextController!.text.length);
         });
         // set sss
         setState(() {
           _model.sssTextController?.text = widget.salaryDoc!.sss.toString();
+          _model.sssTextController?.selection = TextSelection.collapsed(
+              offset: _model.sssTextController!.text.length);
         });
         // set ca
         setState(() {
           _model.caTextController?.text =
               widget.salaryDoc!.cashAdvance.toString();
+          _model.caTextController?.selection = TextSelection.collapsed(
+              offset: _model.caTextController!.text.length);
         });
         if (widget.salaryDoc?.absences != null) {
           // set absences
           setState(() {
             _model.absencesTextController?.text =
                 widget.salaryDoc!.absences.toString();
+            _model.absencesTextController?.selection = TextSelection.collapsed(
+                offset: _model.absencesTextController!.text.length);
           });
         } else {
           // set to 0
           setState(() {
             _model.absencesTextController?.text = '0';
+            _model.absencesTextController?.selection = TextSelection.collapsed(
+                offset: _model.absencesTextController!.text.length);
           });
         }
 
@@ -79,17 +89,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
           parent: widget.staffDoc?.reference,
         );
         // add absences to list
-        setState(() {
-          _model.absencesList =
-              _model.occuringAbsences!.toList().cast<AbsencesRecord>();
-        });
+        _model.absencesList =
+            _model.occuringAbsences!.toList().cast<AbsencesRecord>();
+        setState(() {});
         // fill total
-        setState(() {
-          _model.total = (double.parse(_model.rateTextController.text) -
-              double.parse(_model.sssTextController.text) -
-              double.parse(_model.caTextController.text) -
-              double.parse(_model.absencesTextController.text));
-        });
+        _model.total = (double.parse(_model.rateTextController.text) -
+            double.parse(_model.sssTextController.text) -
+            double.parse(_model.caTextController.text) -
+            double.parse(_model.absencesTextController.text));
+        setState(() {});
       } else {
         _model.staffs = await queryStaffsRecordOnce(
           queryBuilder: (staffsRecord) => staffsRecord.where(
@@ -97,9 +105,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
             isEqualTo: FFAppState().hotel,
           ),
         );
-        setState(() {
-          _model.selectedStaff = widget.staffDoc;
-        });
+        _model.selectedStaff = widget.staffDoc;
+        setState(() {});
       }
     });
 
@@ -231,8 +238,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       setState(
                                           () => _model.dropDownValue = val);
                                       var shouldSetState = false;
-                                      // reset values and set staff
-                                      setState(() {
+                                      if (!widget.edit) {
+                                        // reset values and set staff
                                         _model.selectedStaff = widget
                                             .staffsForSelection
                                             ?.where((e) =>
@@ -242,45 +249,59 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                         _model.cashAdvanceTotal = 0.0;
                                         _model.loopAdvancesCounter = 0;
                                         _model.cashAdvancesList = [];
-                                      });
-                                      // set sss
-                                      setState(() {
-                                        _model.sssTextController?.text = widget
-                                            .staffsForSelection!
-                                            .where((e) =>
-                                                e.name == _model.dropDownValue)
-                                            .toList()
-                                            .first
-                                            .sssRate
-                                            .toString();
-                                      });
-                                      // set rate
-                                      setState(() {
-                                        _model.rateTextController?.text = widget
-                                            .staffsForSelection!
-                                            .where((e) =>
-                                                e.name == _model.dropDownValue)
-                                            .toList()
-                                            .first
-                                            .weeklyRate
-                                            .toString();
-                                      });
-                                      // advances
-                                      _model.cashAdvances =
-                                          await queryAdvancesRecordOnce(
-                                        parent: _model.selectedStaff?.reference,
-                                        queryBuilder: (advancesRecord) =>
-                                            advancesRecord.where(
-                                          'settled',
-                                          isEqualTo: false,
-                                        ),
-                                      );
-                                      shouldSetState = true;
-                                      if (_model.cashAdvances!.isNotEmpty) {
-                                        while (_model.loopAdvancesCounter !=
-                                            _model.cashAdvances?.length) {
-                                          // add ca to list
-                                          setState(() {
+                                        setState(() {});
+                                        // set sss
+                                        setState(() {
+                                          _model.sssTextController?.text =
+                                              widget.staffsForSelection!
+                                                  .where((e) =>
+                                                      e.name ==
+                                                      _model.dropDownValue)
+                                                  .toList()
+                                                  .first
+                                                  .sssRate
+                                                  .toString();
+                                          _model.sssTextController?.selection =
+                                              TextSelection.collapsed(
+                                                  offset: _model
+                                                      .sssTextController!
+                                                      .text
+                                                      .length);
+                                        });
+                                        // set rate
+                                        setState(() {
+                                          _model.rateTextController?.text =
+                                              widget.staffsForSelection!
+                                                  .where((e) =>
+                                                      e.name ==
+                                                      _model.dropDownValue)
+                                                  .toList()
+                                                  .first
+                                                  .weeklyRate
+                                                  .toString();
+                                          _model.rateTextController?.selection =
+                                              TextSelection.collapsed(
+                                                  offset: _model
+                                                      .rateTextController!
+                                                      .text
+                                                      .length);
+                                        });
+                                        // advances
+                                        _model.cashAdvances =
+                                            await queryAdvancesRecordOnce(
+                                          parent:
+                                              _model.selectedStaff?.reference,
+                                          queryBuilder: (advancesRecord) =>
+                                              advancesRecord.where(
+                                            'settled',
+                                            isEqualTo: false,
+                                          ),
+                                        );
+                                        shouldSetState = true;
+                                        if (_model.cashAdvances!.isNotEmpty) {
+                                          while (_model.loopAdvancesCounter !=
+                                              _model.cashAdvances?.length) {
+                                            // add ca to list
                                             _model.cashAdvanceTotal = _model
                                                     .cashAdvanceTotal +
                                                 _model
@@ -290,40 +311,45 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                             _model.addToCashAdvancesList(_model
                                                     .cashAdvances![
                                                 _model.loopAdvancesCounter]);
-                                          });
-                                          // increment loop
-                                          setState(() {
+                                            setState(() {});
+                                            // increment loop
                                             _model.loopAdvancesCounter =
                                                 _model.loopAdvancesCounter + 1;
-                                          });
-                                        }
-                                        // set CAs
-                                        setState(() {
-                                          _model.caTextController?.text = _model
-                                              .cashAdvanceTotal
-                                              .toString();
-                                        });
-                                      } else {
-                                        if (shouldSetState) setState(() {});
-                                        return;
-                                      }
-
-                                      // absences
-                                      _model.absences =
-                                          await queryAbsencesRecordOnce(
-                                        parent: _model.selectedStaff?.reference,
-                                        queryBuilder: (absencesRecord) =>
-                                            absencesRecord.where(
-                                          'settled',
-                                          isEqualTo: false,
-                                        ),
-                                      );
-                                      shouldSetState = true;
-                                      if (_model.absences!.isNotEmpty) {
-                                        while (_model.loopAdvancesCounter !=
-                                            _model.absences?.length) {
-                                          // add absences to list
+                                            setState(() {});
+                                          }
+                                          // set CAs
                                           setState(() {
+                                            _model.caTextController?.text =
+                                                _model.cashAdvanceTotal
+                                                    .toString();
+                                            _model.caTextController?.selection =
+                                                TextSelection.collapsed(
+                                                    offset: _model
+                                                        .caTextController!
+                                                        .text
+                                                        .length);
+                                          });
+                                        } else {
+                                          if (shouldSetState) setState(() {});
+                                          return;
+                                        }
+
+                                        // absences
+                                        _model.absences =
+                                            await queryAbsencesRecordOnce(
+                                          parent:
+                                              _model.selectedStaff?.reference,
+                                          queryBuilder: (absencesRecord) =>
+                                              absencesRecord.where(
+                                            'settled',
+                                            isEqualTo: false,
+                                          ),
+                                        );
+                                        shouldSetState = true;
+                                        if (_model.absences!.isNotEmpty) {
+                                          while (_model.loopAdvancesCounter !=
+                                              _model.absences?.length) {
+                                            // add absences to list
                                             _model.absencesTotal = _model
                                                     .absencesTotal +
                                                 _model
@@ -333,18 +359,26 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                             _model.addToAbsencesList(_model
                                                     .absences![
                                                 _model.loopAbsencesCounter]);
-                                          });
-                                          // increment loop
-                                          setState(() {
+                                            setState(() {});
+                                            // increment loop
                                             _model.loopAbsencesCounter =
                                                 _model.loopAbsencesCounter + 1;
+                                            setState(() {});
+                                          }
+                                          // set absences in form
+                                          setState(() {
+                                            _model.absencesTextController
+                                                    ?.text =
+                                                _model.absencesTotal.toString();
+                                            _model.absencesTextController
+                                                    ?.selection =
+                                                TextSelection.collapsed(
+                                                    offset: _model
+                                                        .absencesTextController!
+                                                        .text
+                                                        .length);
                                           });
                                         }
-                                        // set absences in form
-                                        setState(() {
-                                          _model.absencesTextController?.text =
-                                              _model.absencesTotal.toString();
-                                        });
                                       }
                                       if (shouldSetState) setState(() {});
                                     },
@@ -401,16 +435,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 '_model.rateTextController',
                                 const Duration(milliseconds: 2000),
                                 () async {
-                                  setState(() {
-                                    _model.total = (double.parse(
-                                            _model.rateTextController.text) -
-                                        double.parse(
-                                            _model.sssTextController.text) -
-                                        double.parse(
-                                            _model.caTextController.text) -
-                                        double.parse(_model
-                                            .absencesTextController.text));
-                                  });
+                                  _model.total = (double.parse(
+                                          _model.rateTextController.text) -
+                                      double.parse(
+                                          _model.sssTextController.text) -
+                                      double.parse(
+                                          _model.caTextController.text) -
+                                      double.parse(
+                                          _model.absencesTextController.text));
+                                  setState(() {});
                                 },
                               ),
                               obscureText: false,
@@ -421,6 +454,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
                                       fontSize: 24.0,
                                       letterSpacing: 0.0,
                                     ),
@@ -466,16 +501,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 '_model.sssTextController',
                                 const Duration(milliseconds: 2000),
                                 () async {
-                                  setState(() {
-                                    _model.total = (double.parse(
-                                            _model.rateTextController.text) -
-                                        double.parse(
-                                            _model.sssTextController.text) -
-                                        double.parse(
-                                            _model.caTextController.text) -
-                                        double.parse(_model
-                                            .absencesTextController.text));
-                                  });
+                                  _model.total = (double.parse(
+                                          _model.rateTextController.text) -
+                                      double.parse(
+                                          _model.sssTextController.text) -
+                                      double.parse(
+                                          _model.caTextController.text) -
+                                      double.parse(
+                                          _model.absencesTextController.text));
+                                  setState(() {});
                                 },
                               ),
                               obscureText: false,
@@ -485,6 +519,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
                                       fontSize: 24.0,
                                       letterSpacing: 0.0,
                                     ),
@@ -530,16 +566,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 '_model.caTextController',
                                 const Duration(milliseconds: 2000),
                                 () async {
-                                  setState(() {
-                                    _model.total = (double.parse(
-                                            _model.rateTextController.text) -
-                                        double.parse(
-                                            _model.sssTextController.text) -
-                                        double.parse(
-                                            _model.caTextController.text) -
-                                        double.parse(_model
-                                            .absencesTextController.text));
-                                  });
+                                  _model.total = (double.parse(
+                                          _model.rateTextController.text) -
+                                      double.parse(
+                                          _model.sssTextController.text) -
+                                      double.parse(
+                                          _model.caTextController.text) -
+                                      double.parse(
+                                          _model.absencesTextController.text));
+                                  setState(() {});
                                 },
                               ),
                               obscureText: false,
@@ -549,6 +584,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
                                       fontSize: 24.0,
                                       letterSpacing: 0.0,
                                     ),
@@ -594,16 +631,15 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 '_model.absencesTextController',
                                 const Duration(milliseconds: 2000),
                                 () async {
-                                  setState(() {
-                                    _model.total = (double.parse(
-                                            _model.rateTextController.text) -
-                                        double.parse(
-                                            _model.sssTextController.text) -
-                                        double.parse(
-                                            _model.caTextController.text) -
-                                        double.parse(_model
-                                            .absencesTextController.text));
-                                  });
+                                  _model.total = (double.parse(
+                                          _model.rateTextController.text) -
+                                      double.parse(
+                                          _model.sssTextController.text) -
+                                      double.parse(
+                                          _model.caTextController.text) -
+                                      double.parse(
+                                          _model.absencesTextController.text));
+                                  setState(() {});
                                 },
                               ),
                               obscureText: false,
@@ -613,6 +649,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
                                       fontSize: 24.0,
                                       letterSpacing: 0.0,
                                     ),
@@ -727,7 +765,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     if (widget.edit) {
                                       // update values from form
 
-                                      await widget.salaryDoc!.reference.update({
+                                      await widget.salaryDoc!.reference
+                                          .update({
                                         ...createSalariesRecordData(
                                           sss: double.tryParse(
                                               _model.sssTextController.text),

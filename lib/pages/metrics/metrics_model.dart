@@ -27,12 +27,14 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
       roomUsage[index] = updateFn(roomUsage[index]);
 
   LineGraphStruct? goodsLine;
-  void updateGoodsLineStruct(Function(LineGraphStruct) updateFn) =>
-      updateFn(goodsLine ??= LineGraphStruct());
+  void updateGoodsLineStruct(Function(LineGraphStruct) updateFn) {
+    updateFn(goodsLine ??= LineGraphStruct());
+  }
 
   LineGraphStruct? roomLine;
-  void updateRoomLineStruct(Function(LineGraphStruct) updateFn) =>
-      updateFn(roomLine ??= LineGraphStruct());
+  void updateRoomLineStruct(Function(LineGraphStruct) updateFn) {
+    updateFn(roomLine ??= LineGraphStruct());
+  }
 
   double rooms = 0.0;
 

@@ -35,7 +35,6 @@ class CheckOutModel extends FlutterFlowModel<CheckOutWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for SwitchListTile widget.
   bool? switchListTileValue1;
   // State field(s) for SwitchListTile widget.
@@ -68,7 +67,6 @@ class CheckOutModel extends FlutterFlowModel<CheckOutWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     priceFocusNode1?.dispose();
 
     priceFocusNode2?.dispose();

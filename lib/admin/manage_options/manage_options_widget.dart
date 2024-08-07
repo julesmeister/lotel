@@ -62,10 +62,9 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
           );
         }
         List<UsersRecord> manageOptionsUsersRecordList = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -120,10 +119,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                             context: context,
                             builder: (context) {
                               return GestureDetector(
-                                onTap: () => _model.unfocusNode.canRequestFocus
-                                    ? FocusScope.of(context)
-                                        .requestFocus(_model.unfocusNode)
-                                    : FocusScope.of(context).unfocus(),
+                                onTap: () => FocusScope.of(context).unfocus(),
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
                                   child: const SizedBox(
@@ -184,9 +180,8 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                   )) {
                                 await _model.selectedChoice[_model.loop]
                                     .delete();
-                                setState(() {
-                                  _model.loop = _model.loop + 1;
-                                });
+                                _model.loop = _model.loop + 1;
+                                setState(() {});
                               }
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -282,9 +277,8 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
-                          setState(() {
-                            _model.showExpenses = !_model.showExpenses;
-                          });
+                          _model.showExpenses = !_model.showExpenses;
+                          setState(() {});
                         },
                         child: Container(
                           width: MediaQuery.sizeOf(context).width * 1.0,
@@ -378,6 +372,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                               ),
                             );
                           }
+
                           return RefreshIndicator(
                             onRefresh: () async {
                               await queryUsersRecordOnce(
@@ -521,9 +516,8 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                       hoverColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () async {
-                        setState(() {
-                          _model.showBills = !_model.showBills;
-                        });
+                        _model.showBills = !_model.showBills;
+                        setState(() {});
                       },
                       child: Container(
                         width: MediaQuery.sizeOf(context).width * 1.0,
@@ -615,6 +609,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                               ),
                             );
                           }
+
                           return RefreshIndicator(
                             onRefresh: () async {
                               await queryUsersRecordOnce(

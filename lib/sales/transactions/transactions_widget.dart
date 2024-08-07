@@ -42,9 +42,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (_model.date == null) {
-        setState(() {
-          _model.date = functions.today();
-        });
+        _model.date = functions.today();
+        setState(() {});
       } else {
         return;
       }
@@ -164,10 +163,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
           }
           List<TransactionsRecord> transactionsTransactionsRecordList =
               snapshot.data!;
+
           return GestureDetector(
-            onTap: () => _model.unfocusNode.canRequestFocus
-                ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-                : FocusScope.of(context).unfocus(),
+            onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
               key: scaffoldKey,
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -206,8 +204,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                           Expanded(
                             flex: 5,
                             child: AutoSizeText(
-                              dateTimeFormat('MMMMEEEEd', _model.date),
+                              dateTimeFormat("MMMMEEEEd", _model.date),
                               maxLines: 1,
+                              minFontSize: 18.0,
                               style: FlutterFlowTheme.of(context)
                                   .displaySmall
                                   .override(
@@ -215,7 +214,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                     fontSize: 26.0,
                                     letterSpacing: 0.0,
                                   ),
-                              minFontSize: 18.0,
                             ).animateOnPageLoad(
                                 animationsMap['textOnPageLoadAnimation']!),
                           ),
@@ -232,10 +230,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                 size: 24.0,
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  _model.date =
-                                      functions.prevDate(_model.date!);
-                                });
+                                _model.date = functions.prevDate(_model.date!);
+                                setState(() {});
                               },
                             ),
                           if (valueOrDefault(currentUserDocument?.role, '') ==
@@ -253,10 +249,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                   size: 24.0,
                                 ),
                                 onPressed: () async {
-                                  setState(() {
-                                    _model.showDatePicker =
-                                        !_model.showDatePicker;
-                                  });
+                                  _model.showDatePicker =
+                                      !_model.showDatePicker;
+                                  setState(() {});
                                 },
                               ).animateOnPageLoad(animationsMap[
                                   'iconButtonOnPageLoadAnimation']!),
@@ -274,10 +269,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                 size: 24.0,
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  _model.date =
-                                      functions.nextDate(_model.date!);
-                                });
+                                _model.date = functions.nextDate(_model.date!);
+                                setState(() {});
                               },
                             ),
                         ],
@@ -296,9 +289,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                             return;
                           }
                           _model.calendarSelectedDay = newSelectedDate;
-                          setState(() {
-                            _model.date = _model.calendarSelectedDay?.start;
-                          });
+                          _model.date = _model.calendarSelectedDay?.start;
+                          setState(() {});
                           setState(() {});
                         },
                         titleStyle:
@@ -481,6 +473,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 currency: 'P ',
                                                               ),
                                                               maxLines: 1,
+                                                              minFontSize: 10.0,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .titleMedium
@@ -497,11 +490,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
-                                                              minFontSize: 10.0,
                                                             ),
                                                             AutoSizeText(
                                                               'unremitted',
                                                               maxLines: 1,
+                                                              minFontSize: 10.0,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -513,7 +506,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
-                                                              minFontSize: 10.0,
                                                             ),
                                                           ],
                                                         ),
@@ -589,6 +581,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       'P ',
                                                                 ),
                                                                 maxLines: 1,
+                                                                minFontSize:
+                                                                    10.0,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
@@ -605,12 +599,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           FontWeight
                                                                               .normal,
                                                                     ),
-                                                                minFontSize:
-                                                                    10.0,
                                                               ),
                                                               AutoSizeText(
                                                                 'remitted',
                                                                 maxLines: 1,
+                                                                minFontSize:
+                                                                    10.0,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -622,8 +616,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
-                                                                minFontSize:
-                                                                    10.0,
                                                               ),
                                                             ],
                                                           ),
@@ -718,6 +710,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       false)))
                                                           .toList())
                                                   .toList();
+
                                               return ListView.builder(
                                                 padding: EdgeInsets.zero,
                                                 primary: false,
@@ -752,15 +745,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           context: context,
                                                           builder: (context) {
                                                             return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
+                                                              onTap: () =>
+                                                                  FocusScope.of(
                                                                           context)
                                                                       .unfocus(),
                                                               child: Padding(
@@ -893,7 +879,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       child:
                                                                           Text(
                                                                         dateTimeFormat(
-                                                                            'h:mm a',
+                                                                            "h:mm a",
                                                                             bookingsItem.date!),
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .labelMedium
@@ -1109,6 +1095,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       false)))
                                                           .toList())
                                                   .toList();
+
                                               return ListView.builder(
                                                 padding: EdgeInsets.zero,
                                                 primary: false,
@@ -1143,15 +1130,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           context: context,
                                                           builder: (context) {
                                                             return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
+                                                              onTap: () =>
+                                                                  FocusScope.of(
                                                                           context)
                                                                       .unfocus(),
                                                               child: Padding(
@@ -1298,10 +1278,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                             );
                                                                           }
+
                                                                           final textUsersRecord =
                                                                               snapshot.data!;
+
                                                                           return Text(
-                                                                            'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('h:mm a', goodsItem.date)}',
+                                                                            'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("h:mm a", goodsItem.date)}',
                                                                             style: FlutterFlowTheme.of(context).labelMedium.override(
                                                                                   fontFamily: 'Readex Pro',
                                                                                   letterSpacing: 0.0,
@@ -1466,6 +1448,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       false)))
                                                           .toList())
                                                   .toList();
+
                                               return ListView.builder(
                                                 padding: EdgeInsets.zero,
                                                 primary: false,
@@ -1500,15 +1483,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           context: context,
                                                           builder: (context) {
                                                             return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
+                                                              onTap: () =>
+                                                                  FocusScope.of(
                                                                           context)
                                                                       .unfocus(),
                                                               child: Padding(
@@ -1654,10 +1630,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                                 ),
                                                                               );
                                                                             }
+
                                                                             final textUsersRecord =
                                                                                 snapshot.data!;
+
                                                                             return Text(
-                                                                              'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('h:mm a', expensesItem.date)}',
+                                                                              'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("h:mm a", expensesItem.date)}',
                                                                               style: FlutterFlowTheme.of(context).labelMedium.override(
                                                                                     fontFamily: 'Readex Pro',
                                                                                     letterSpacing: 0.0,
@@ -1874,6 +1852,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 currency: 'P ',
                                                               ),
                                                               maxLines: 1,
+                                                              minFontSize: 10.0,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .titleMedium
@@ -1890,11 +1869,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
-                                                              minFontSize: 10.0,
                                                             ),
                                                             AutoSizeText(
                                                               'unremitted',
                                                               maxLines: 1,
+                                                              minFontSize: 10.0,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -1906,7 +1885,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
-                                                              minFontSize: 10.0,
                                                             ),
                                                           ],
                                                         ),
@@ -1984,6 +1962,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       'P ',
                                                                 ),
                                                                 maxLines: 1,
+                                                                minFontSize:
+                                                                    10.0,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
@@ -2000,12 +1980,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           FontWeight
                                                                               .normal,
                                                                     ),
-                                                                minFontSize:
-                                                                    10.0,
                                                               ),
                                                               AutoSizeText(
                                                                 'remitted',
                                                                 maxLines: 1,
+                                                                minFontSize:
+                                                                    10.0,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -2017,8 +1997,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
-                                                                minFontSize:
-                                                                    10.0,
                                                               ),
                                                             ],
                                                           ),
@@ -2055,6 +2033,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       false)))
                                                           .toList())
                                                   .toList();
+
                                               return ListView.builder(
                                                 padding: const EdgeInsets.fromLTRB(
                                                   0,
@@ -2095,15 +2074,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           context: context,
                                                           builder: (context) {
                                                             return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
+                                                              onTap: () =>
+                                                                  FocusScope.of(
                                                                           context)
                                                                       .unfocus(),
                                                               child: Padding(
@@ -2242,7 +2214,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       child:
                                                                           Text(
                                                                         dateTimeFormat(
-                                                                            'h:mm a',
+                                                                            "h:mm a",
                                                                             bookingsOnlyItem.date!),
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .labelMedium
@@ -2492,6 +2464,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 currency: 'P ',
                                                               ),
                                                               maxLines: 1,
+                                                              minFontSize: 10.0,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .titleMedium
@@ -2508,11 +2481,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
-                                                              minFontSize: 10.0,
                                                             ),
                                                             AutoSizeText(
                                                               'unremitted',
                                                               maxLines: 1,
+                                                              minFontSize: 10.0,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -2524,7 +2497,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
-                                                              minFontSize: 10.0,
                                                             ),
                                                           ],
                                                         ),
@@ -2599,6 +2571,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       'P ',
                                                                 ),
                                                                 maxLines: 1,
+                                                                minFontSize:
+                                                                    10.0,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
@@ -2615,12 +2589,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           FontWeight
                                                                               .normal,
                                                                     ),
-                                                                minFontSize:
-                                                                    10.0,
                                                               ),
                                                               AutoSizeText(
                                                                 'remitted',
                                                                 maxLines: 1,
+                                                                minFontSize:
+                                                                    10.0,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -2632,8 +2606,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
-                                                                minFontSize:
-                                                                    10.0,
                                                               ),
                                                             ],
                                                           ),
@@ -2665,6 +2637,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   : !e.remitted))
                                                           .toList())
                                                   .toList();
+
                                               return ListView.builder(
                                                 padding: EdgeInsets.zero,
                                                 primary: false,
@@ -2699,15 +2672,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           context: context,
                                                           builder: (context) {
                                                             return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
+                                                              onTap: () =>
+                                                                  FocusScope.of(
                                                                           context)
                                                                       .unfocus(),
                                                               child: Padding(
@@ -2854,10 +2820,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                             );
                                                                           }
+
                                                                           final textUsersRecord =
                                                                               snapshot.data!;
+
                                                                           return Text(
-                                                                            'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('h:mm a', goodsItem.date)}',
+                                                                            'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("h:mm a", goodsItem.date)}',
                                                                             style: FlutterFlowTheme.of(context).labelMedium.override(
                                                                                   fontFamily: 'Readex Pro',
                                                                                   letterSpacing: 0.0,
@@ -3068,6 +3036,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 currency: 'P ',
                                                               ),
                                                               maxLines: 1,
+                                                              minFontSize: 10.0,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .titleMedium
@@ -3084,11 +3053,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
-                                                              minFontSize: 10.0,
                                                             ),
                                                             AutoSizeText(
                                                               'unremitted',
                                                               maxLines: 1,
+                                                              minFontSize: 10.0,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -3100,7 +3069,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
-                                                              minFontSize: 10.0,
                                                             ),
                                                           ],
                                                         ),
@@ -3175,6 +3143,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       'P ',
                                                                 ),
                                                                 maxLines: 1,
+                                                                minFontSize:
+                                                                    10.0,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
@@ -3191,12 +3161,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           FontWeight
                                                                               .normal,
                                                                     ),
-                                                                minFontSize:
-                                                                    10.0,
                                                               ),
                                                               AutoSizeText(
                                                                 'remitted',
                                                                 maxLines: 1,
+                                                                minFontSize:
+                                                                    10.0,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -3208,8 +3178,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
-                                                                minFontSize:
-                                                                    10.0,
                                                               ),
                                                             ],
                                                           ),
@@ -3242,6 +3210,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   : !e.remitted))
                                                           .toList())
                                                   .toList();
+
                                               return ListView.builder(
                                                 padding: const EdgeInsets.fromLTRB(
                                                   0,
@@ -3281,15 +3250,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           context: context,
                                                           builder: (context) {
                                                             return GestureDetector(
-                                                              onTap: () => _model
-                                                                      .unfocusNode
-                                                                      .canRequestFocus
-                                                                  ? FocusScope.of(
-                                                                          context)
-                                                                      .requestFocus(
-                                                                          _model
-                                                                              .unfocusNode)
-                                                                  : FocusScope.of(
+                                                              onTap: () =>
+                                                                  FocusScope.of(
                                                                           context)
                                                                       .unfocus(),
                                                               child: Padding(
@@ -3437,10 +3399,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                                 ),
                                                                               );
                                                                             }
+
                                                                             final textUsersRecord =
                                                                                 snapshot.data!;
+
                                                                             return Text(
-                                                                              'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('h:mm a', expenseItem.date)}',
+                                                                              'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("h:mm a", expenseItem.date)}',
                                                                               style: FlutterFlowTheme.of(context).labelMedium.override(
                                                                                     fontFamily: 'Readex Pro',
                                                                                     letterSpacing: 0.0,
@@ -3656,15 +3620,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                   context: context,
                                                   builder: (context) {
                                                     return GestureDetector(
-                                                      onTap: () => _model
-                                                              .unfocusNode
-                                                              .canRequestFocus
-                                                          ? FocusScope.of(
-                                                                  context)
-                                                              .requestFocus(_model
-                                                                  .unfocusNode)
-                                                          : FocusScope.of(
-                                                                  context)
+                                                      onTap: () =>
+                                                          FocusScope.of(context)
                                                               .unfocus(),
                                                       child: Padding(
                                                         padding: MediaQuery
@@ -3779,8 +3736,10 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                 ),
                                                               );
                                                             }
+
                                                             final columnStaffsRecord =
                                                                 snapshot.data!;
+
                                                             return SingleChildScrollView(
                                                               child: Column(
                                                                 mainAxisSize:
@@ -3854,10 +3813,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             ),
                                                                           );
                                                                         }
+
                                                                         final textUsersRecord =
                                                                             snapshot.data!;
+
                                                                         return Text(
-                                                                          'Encodeed by ${textUsersRecord.displayName} on ${dateTimeFormat('MMMMEEEEd', listViewAbsencesRecord.date)}',
+                                                                          'Encodeed by ${textUsersRecord.displayName} on ${dateTimeFormat("MMMMEEEEd", listViewAbsencesRecord.date)}',
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .labelMedium
                                                                               .override(
@@ -3931,8 +3892,10 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               ),
                                                             );
                                                           }
+
                                                           final columnUsersRecord =
                                                               snapshot.data!;
+
                                                           return Column(
                                                             mainAxisSize:
                                                                 MainAxisSize

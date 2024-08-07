@@ -85,10 +85,9 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
           );
         }
         List<UsersRecord> manageRolesUsersRecordList = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -144,11 +143,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                               context: context,
                               builder: (context) {
                                 return GestureDetector(
-                                  onTap: () =>
-                                      _model.unfocusNode.canRequestFocus
-                                          ? FocusScope.of(context)
-                                              .requestFocus(_model.unfocusNode)
-                                          : FocusScope.of(context).unfocus(),
+                                  onTap: () => FocusScope.of(context).unfocus(),
                                   child: Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
                                     child: SizedBox(
@@ -187,9 +182,8 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                 )) {
                               await _model.selectedUsers[_model.loopCounter]
                                   .delete();
-                              setState(() {
-                                _model.loopCounter = _model.loopCounter + 1;
-                              });
+                              _model.loopCounter = _model.loopCounter + 1;
+                              setState(() {});
                             }
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -248,6 +242,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                         );
                       }
                       int columnCount = snapshot.data!;
+
                       return Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -359,6 +354,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       ),
                                     );
                                   }
+
                                   return RefreshIndicator(
                                     onRefresh: () async {
                                       await queryUsersRecordOnce(
@@ -501,6 +497,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                   ? checkboxListTileLastLoginRecordList
                                                                       .first
                                                                   : null;
+
                                                           return Theme(
                                                             data: ThemeData(
                                                               unselectedWidgetColor:
@@ -652,6 +649,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       ),
                                     );
                                   }
+
                                   return RefreshIndicator(
                                     onRefresh: () async {
                                       await queryUsersRecordOnce(
@@ -794,6 +792,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                   ? checkboxListTileLastLoginRecordList
                                                                       .first
                                                                   : null;
+
                                                           return Theme(
                                                             data: ThemeData(
                                                               unselectedWidgetColor:

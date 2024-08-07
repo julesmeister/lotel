@@ -35,7 +35,6 @@ class RemittanceSpecificTransactionsModel
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - Read Document] action in remittanceSpecificTransactions widget.
   TransactionsRecord? transactionToList;
   // Stores action output result for [Backend Call - Read Document] action in remittanceSpecificTransactions widget.
@@ -50,7 +49,6 @@ class RemittanceSpecificTransactionsModel
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     tabBarController?.dispose();
   }
 }

@@ -3,9 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
-import '/backend/schema/util/schema_util.dart';
 
-import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 class YearlySalesStruct extends FFFirebaseStruct {
@@ -21,13 +19,16 @@ class YearlySalesStruct extends FFFirebaseStruct {
   String? _month;
   String get month => _month ?? 'January';
   set month(String? val) => _month = val;
+
   bool hasMonth() => _month != null;
 
   // "sales" field.
   double? _sales;
   double get sales => _sales ?? 0.0;
   set sales(double? val) => _sales = val;
-  void incrementSales(double amount) => _sales = sales + amount;
+
+  void incrementSales(double amount) => sales = sales + amount;
+
   bool hasSales() => _sales != null;
 
   static YearlySalesStruct fromMap(Map<String, dynamic> data) =>

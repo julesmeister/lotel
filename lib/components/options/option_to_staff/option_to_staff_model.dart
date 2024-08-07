@@ -8,6 +8,14 @@ class OptionToStaffModel extends FlutterFlowModel<OptionToStaffWidget> {
 
   // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
   StaffsRecord? staff;
+  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
+  StaffsRecord? thisSaff;
+  // Stores action output result for [Firestore Query - Query a collection] action in replaceWidget widget.
+  int? isUserAlready;
+  // Stores action output result for [Backend Call - Read Document] action in replaceWidget widget.
+  StaffsRecord? stafftoFire;
+  // Stores action output result for [Firestore Query - Query a collection] action in replaceWidget widget.
+  UsersRecord? userToFire;
 
   @override
   void initState(BuildContext context) {}

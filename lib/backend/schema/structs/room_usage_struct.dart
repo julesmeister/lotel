@@ -3,9 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
-import '/backend/schema/util/schema_util.dart';
 
-import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 class RoomUsageStruct extends FFFirebaseStruct {
@@ -21,14 +19,18 @@ class RoomUsageStruct extends FFFirebaseStruct {
   int? _number;
   int get number => _number ?? 0;
   set number(int? val) => _number = val;
-  void incrementNumber(int amount) => _number = number + amount;
+
+  void incrementNumber(int amount) => number = number + amount;
+
   bool hasNumber() => _number != null;
 
   // "use" field.
   int? _use;
   int get use => _use ?? 0;
   set use(int? val) => _use = val;
-  void incrementUse(int amount) => _use = use + amount;
+
+  void incrementUse(int amount) => use = use + amount;
+
   bool hasUse() => _use != null;
 
   static RoomUsageStruct fromMap(Map<String, dynamic> data) => RoomUsageStruct(

@@ -168,6 +168,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                             TextFormField(
                               controller: _model.numberTextController,
                               focusNode: _model.numberFocusNode,
+                              autofocus: false,
                               textCapitalization: TextCapitalization.words,
                               obscureText: false,
                               decoration: InputDecoration(

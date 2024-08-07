@@ -40,9 +40,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        _model.year = functions.currentYear();
-      });
+      _model.year = functions.currentYear();
+      setState(() {});
     });
 
     animationsMap.addAll({
@@ -150,10 +149,9 @@ class _PayrollWidgetState extends State<PayrollWidget>
           );
         }
         int payrollCount = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -254,9 +252,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                 );
                                 if (payrollCount > 0) {
                                   // isLoading
-                                  setState(() {
-                                    _model.isLoading = true;
-                                  });
+                                  _model.isLoading = true;
+                                  setState(() {});
                                   // get sample payroll
                                   _model.firstExistingPayroll =
                                       await queryPayrollsRecordOnce(
@@ -276,10 +273,9 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                         _model.firstExistingPayroll?.reference,
                                   );
                                   // reset loop counter
-                                  setState(() {
-                                    _model.loopSalariesCounter = 0;
-                                    _model.loopAdvancesCounter = 0;
-                                  });
+                                  _model.loopSalariesCounter = 0;
+                                  _model.loopAdvancesCounter = 0;
+                                  setState(() {});
                                   // create new payroll
 
                                   var payrollsRecordReference =
@@ -460,15 +456,13 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                       });
                                     }
                                     // increment salaries counter
-                                    setState(() {
-                                      _model.loopSalariesCounter =
-                                          _model.loopSalariesCounter! + 1;
-                                    });
+                                    _model.loopSalariesCounter =
+                                        _model.loopSalariesCounter! + 1;
+                                    setState(() {});
                                   }
                                   // is not Loading
-                                  setState(() {
-                                    _model.isLoading = false;
-                                  });
+                                  _model.isLoading = false;
+                                  setState(() {});
 
                                   context.pushNamed(
                                     'NewEditPayroll',
@@ -645,6 +639,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                       List<AdvancesRecord>
                                                           dashboardMainCardAdvancesRecordList =
                                                           snapshot.data!;
+
                                                       return InkWell(
                                                         splashColor:
                                                             Colors.transparent,
@@ -688,14 +683,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                               builder:
                                                                   (context) {
                                                                 return GestureDetector(
-                                                                  onTap: () => _model
-                                                                          .unfocusNode
-                                                                          .canRequestFocus
-                                                                      ? FocusScope.of(
-                                                                              context)
-                                                                          .requestFocus(_model
-                                                                              .unfocusNode)
-                                                                      : FocusScope.of(
+                                                                  onTap: () =>
+                                                                      FocusScope.of(
                                                                               context)
                                                                           .unfocus(),
                                                                   child:
@@ -706,7 +695,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                     child:
                                                                         SizedBox(
                                                                       height:
-                                                                          170.0,
+                                                                          218.0,
                                                                       child:
                                                                           OptionToStaffWidget(
                                                                         staffRef:
@@ -771,6 +760,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                             .maybeHandleOverflow(maxChars: 15),
                                                                         maxLines:
                                                                             1,
+                                                                        minFontSize:
+                                                                            10.0,
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .headlineSmall
                                                                             .override(
@@ -780,8 +771,6 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                               letterSpacing: 0.0,
                                                                               fontWeight: FontWeight.w500,
                                                                             ),
-                                                                        minFontSize:
-                                                                            10.0,
                                                                       ),
                                                                       Padding(
                                                                         padding: const EdgeInsetsDirectional.fromSTEB(
@@ -890,15 +879,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                   context: context,
                                                   builder: (context) {
                                                     return GestureDetector(
-                                                      onTap: () => _model
-                                                              .unfocusNode
-                                                              .canRequestFocus
-                                                          ? FocusScope.of(
-                                                                  context)
-                                                              .requestFocus(_model
-                                                                  .unfocusNode)
-                                                          : FocusScope.of(
-                                                                  context)
+                                                      onTap: () =>
+                                                          FocusScope.of(context)
                                                               .unfocus(),
                                                       child: Padding(
                                                         padding: MediaQuery
@@ -942,10 +924,9 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                       ),
                                       onPressed: () async {
                                         // set previous year
-                                        setState(() {
-                                          _model.year = functions.previousYear(
-                                              'January', _model.year);
-                                        });
+                                        _model.year = functions.previousYear(
+                                            'January', _model.year);
+                                        setState(() {});
                                       },
                                     ).animateOnPageLoad(animationsMap[
                                         'iconButtonOnPageLoadAnimation1']!),
@@ -971,10 +952,9 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                       ),
                                       onPressed: () async {
                                         // set next year
-                                        setState(() {
-                                          _model.year = functions.nextYear(
-                                              _model.year, 'December');
-                                        });
+                                        _model.year = functions.nextYear(
+                                            _model.year, 'December');
+                                        setState(() {});
                                       },
                                     ).animateOnPageLoad(animationsMap[
                                         'iconButtonOnPageLoadAnimation2']!),
@@ -1148,15 +1128,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                   context: context,
                                                   builder: (context) {
                                                     return GestureDetector(
-                                                      onTap: () => _model
-                                                              .unfocusNode
-                                                              .canRequestFocus
-                                                          ? FocusScope.of(
-                                                                  context)
-                                                              .requestFocus(_model
-                                                                  .unfocusNode)
-                                                          : FocusScope.of(
-                                                                  context)
+                                                      onTap: () =>
+                                                          FocusScope.of(context)
                                                               .unfocus(),
                                                       child: Padding(
                                                         padding: MediaQuery
@@ -1276,10 +1249,12 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                 child:
                                                                     AutoSizeText(
                                                                   dateTimeFormat(
-                                                                      'EEE MMM d y h:mm a',
+                                                                      "EEE MMM d y h:mm a",
                                                                       listViewPayrollsRecord
                                                                           .date!),
                                                                   maxLines: 1,
+                                                                  minFontSize:
+                                                                      12.0,
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
                                                                       .labelMedium
@@ -1289,8 +1264,6 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                         letterSpacing:
                                                                             0.0,
                                                                       ),
-                                                                  minFontSize:
-                                                                      12.0,
                                                                 ),
                                                               ),
                                                             ],

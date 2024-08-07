@@ -1,6 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/options/prepared_remittance_user/prepared_remittance_user_widget.dart';
+import '/components/options/list_of_names/list_of_names_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -54,9 +54,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
           singleRecord: true,
         ).then((s) => s.firstOrNull);
         // today
-        setState(() {
-          _model.date = functions.startOfDay(_model.latestRemittance!.date!);
-        });
+        _model.date = functions.startOfDay(_model.latestRemittance!.date!);
+        setState(() {});
       } else {
         return;
       }
@@ -239,10 +238,9 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
           );
         }
         int remittancesCount = snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -306,15 +304,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                 size: 30.0,
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  _model.date =
-                                      functions.prevDate(_model.date!);
-                                  _model.showLoadButton = true;
-                                  _model.showDownloadButton = false;
-                                  _model.inventories = [];
-                                  _model.bookings = [];
-                                  _model.transactions = [];
-                                });
+                                _model.date = functions.prevDate(_model.date!);
+                                _model.showLoadButton = true;
+                                _model.showDownloadButton = false;
+                                _model.inventories = [];
+                                _model.bookings = [];
+                                _model.transactions = [];
+                                setState(() {});
                               },
                             ).animateOnPageLoad(animationsMap[
                                 'iconButtonOnPageLoadAnimation1']!),
@@ -326,10 +322,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
-                                setState(() {
-                                  _model.showDatePicker =
-                                      !_model.showDatePicker;
-                                });
+                                _model.showDatePicker = !_model.showDatePicker;
+                                setState(() {});
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
@@ -363,8 +357,9 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                       ),
                                       AutoSizeText(
                                         dateTimeFormat(
-                                            'MMMMEEEEd', _model.date),
+                                            "MMMMEEEEd", _model.date),
                                         maxLines: 1,
+                                        minFontSize: 18.0,
                                         style: FlutterFlowTheme.of(context)
                                             .displaySmall
                                             .override(
@@ -372,7 +367,6 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                               fontSize: 18.0,
                                               letterSpacing: 0.0,
                                             ),
-                                        minFontSize: 18.0,
                                       ).animateOnPageLoad(animationsMap[
                                           'textOnPageLoadAnimation1']!),
                                     ],
@@ -395,15 +389,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                 size: 30.0,
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  _model.date =
-                                      functions.nextDate(_model.date!);
-                                  _model.showLoadButton = true;
-                                  _model.showDownloadButton = false;
-                                  _model.inventories = [];
-                                  _model.bookings = [];
-                                  _model.transactions = [];
-                                });
+                                _model.date = functions.nextDate(_model.date!);
+                                _model.showLoadButton = true;
+                                _model.showDownloadButton = false;
+                                _model.inventories = [];
+                                _model.bookings = [];
+                                _model.transactions = [];
+                                setState(() {});
                               },
                             ).animateOnPageLoad(animationsMap[
                                 'iconButtonOnPageLoadAnimation2']!),
@@ -423,14 +415,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                             return;
                           }
                           _model.calendarSelectedDay = newSelectedDate;
-                          setState(() {
-                            _model.date = _model.calendarSelectedDay?.start;
-                            _model.showLoadButton = true;
-                            _model.showDownloadButton = false;
-                            _model.inventories = [];
-                            _model.bookings = [];
-                            _model.transactions = [];
-                          });
+                          _model.date = _model.calendarSelectedDay?.start;
+                          _model.showLoadButton = true;
+                          _model.showDownloadButton = false;
+                          _model.inventories = [];
+                          _model.bookings = [];
+                          _model.transactions = [];
+                          setState(() {});
                           setState(() {});
                         },
                         titleStyle:
@@ -508,6 +499,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                 mainCardRemittancesRecordList.isNotEmpty
                                     ? mainCardRemittancesRecordList.first
                                     : null;
+
                             return Container(
                               width: double.infinity,
                               height: 628.0,
@@ -560,7 +552,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                           ),
                                           Text(
                                             dateTimeFormat(
-                                                'jm',
+                                                "jm",
                                                 mainCardRemittancesRecord!
                                                     .date!),
                                             style: FlutterFlowTheme.of(context)
@@ -948,14 +940,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                               builder:
                                                                   (context) {
                                                                 return GestureDetector(
-                                                                  onTap: () => _model
-                                                                          .unfocusNode
-                                                                          .canRequestFocus
-                                                                      ? FocusScope.of(
-                                                                              context)
-                                                                          .requestFocus(_model
-                                                                              .unfocusNode)
-                                                                      : FocusScope.of(
+                                                                  onTap: () =>
+                                                                      FocusScope.of(
                                                                               context)
                                                                           .unfocus(),
                                                                   child:
@@ -968,7 +954,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                       height:
                                                                           300.0,
                                                                       child:
-                                                                          PreparedRemittanceUserWidget(
+                                                                          ListOfNamesWidget(
                                                                         remittance:
                                                                             mainCardRemittancesRecord.reference,
                                                                         preparedBy:
@@ -1008,51 +994,18 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                               if (mainCardRemittancesRecord
                                                                       .hasPreparedBy() ??
                                                                   true)
-                                                                StreamBuilder<
-                                                                    UsersRecord>(
-                                                                  stream: UsersRecord
-                                                                      .getDocument(
-                                                                          mainCardRemittancesRecord
-                                                                              .preparedBy!),
-                                                                  builder: (context,
-                                                                      snapshot) {
-                                                                    // Customize what your widget looks like when it's loading.
-                                                                    if (!snapshot
-                                                                        .hasData) {
-                                                                      return Center(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              50.0,
-                                                                          height:
-                                                                              50.0,
-                                                                          child:
-                                                                              CircularProgressIndicator(
-                                                                            valueColor:
-                                                                                AlwaysStoppedAnimation<Color>(
-                                                                              FlutterFlowTheme.of(context).primary,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    }
-                                                                    final textUsersRecord =
-                                                                        snapshot
-                                                                            .data!;
-                                                                    return Text(
-                                                                      textUsersRecord
-                                                                          .displayName,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                          ),
-                                                                    );
-                                                                  },
+                                                                Text(
+                                                                  mainCardRemittancesRecord
+                                                                      .preparedByName,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
                                                                 ),
                                                             ],
                                                           ),
@@ -1078,14 +1031,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                               builder:
                                                                   (context) {
                                                                 return GestureDetector(
-                                                                  onTap: () => _model
-                                                                          .unfocusNode
-                                                                          .canRequestFocus
-                                                                      ? FocusScope.of(
-                                                                              context)
-                                                                          .requestFocus(_model
-                                                                              .unfocusNode)
-                                                                      : FocusScope.of(
+                                                                  onTap: () =>
+                                                                      FocusScope.of(
                                                                               context)
                                                                           .unfocus(),
                                                                   child:
@@ -1098,7 +1045,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                       height:
                                                                           300.0,
                                                                       child:
-                                                                          PreparedRemittanceUserWidget(
+                                                                          ListOfNamesWidget(
                                                                         remittance:
                                                                             mainCardRemittancesRecord.reference,
                                                                         preparedBy:
@@ -1138,55 +1085,18 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                               if (mainCardRemittancesRecord
                                                                       .hasCollectedBy() ??
                                                                   true)
-                                                                StreamBuilder<
-                                                                    UsersRecord>(
-                                                                  stream: UsersRecord
-                                                                      .getDocument(
-                                                                          mainCardRemittancesRecord
-                                                                              .collectedBy!),
-                                                                  builder: (context,
-                                                                      snapshot) {
-                                                                    // Customize what your widget looks like when it's loading.
-                                                                    if (!snapshot
-                                                                        .hasData) {
-                                                                      return Center(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              50.0,
-                                                                          height:
-                                                                              50.0,
-                                                                          child:
-                                                                              CircularProgressIndicator(
-                                                                            valueColor:
-                                                                                AlwaysStoppedAnimation<Color>(
-                                                                              FlutterFlowTheme.of(context).primary,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    }
-                                                                    final textUsersRecord =
-                                                                        snapshot
-                                                                            .data!;
-                                                                    return Text(
-                                                                      valueOrDefault<
-                                                                          String>(
-                                                                        textUsersRecord
-                                                                            .displayName,
-                                                                        'Not yet collected',
+                                                                Text(
+                                                                  mainCardRemittancesRecord
+                                                                      .collectedByName,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
                                                                       ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                          ),
-                                                                    );
-                                                                  },
                                                                 ),
                                                             ],
                                                           ),
@@ -1223,7 +1133,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     mainCardRemittancesRecord
                                                         .transactions,
                                                     ParamType.DocumentReference,
-                                                    true,
+                                                    isList: true,
                                                   ),
                                                   'remittanceRef':
                                                       serializeParam(
@@ -1235,7 +1145,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     mainCardRemittancesRecord
                                                         .absences,
                                                     ParamType.DocumentReference,
-                                                    true,
+                                                    isList: true,
                                                   ),
                                                 }.withoutNulls,
                                               );
@@ -1282,23 +1192,21 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                   if (mainCardRemittancesRecord
                                                       .collected) {
                                                     // reset values
-                                                    setState(() {
-                                                      _model.showLoadButton =
-                                                          true;
-                                                      _model.showDownloadButton =
-                                                          false;
-                                                      _model.inventories = [];
-                                                      _model.bookings = [];
-                                                      _model.transactions = [];
-                                                      _model.rooms = [];
-                                                      _model.loopInvetoryCounter =
-                                                          0;
-                                                      _model.loopBookCounter =
-                                                          0;
-                                                      _model.loopTransactionCounter =
-                                                          0;
-                                                      _model.isLoading = true;
-                                                    });
+                                                    _model.showLoadButton =
+                                                        true;
+                                                    _model.showDownloadButton =
+                                                        false;
+                                                    _model.inventories = [];
+                                                    _model.bookings = [];
+                                                    _model.transactions = [];
+                                                    _model.rooms = [];
+                                                    _model.loopInvetoryCounter =
+                                                        0;
+                                                    _model.loopBookCounter = 0;
+                                                    _model.loopTransactionCounter =
+                                                        0;
+                                                    _model.isLoading = true;
+                                                    setState(() {});
                                                     // roomList
                                                     _model.roomInThisHotel =
                                                         await queryRoomsRecordOnce(
@@ -1311,12 +1219,11 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                       ),
                                                     );
                                                     // rooms to list
-                                                    setState(() {
-                                                      _model.rooms = _model
-                                                          .roomInThisHotel!
-                                                          .toList()
-                                                          .cast<RoomsRecord>();
-                                                    });
+                                                    _model.rooms = _model
+                                                        .roomInThisHotel!
+                                                        .toList()
+                                                        .cast<RoomsRecord>();
+                                                    setState(() {});
                                                     while (_model
                                                             .loopInvetoryCounter !=
                                                         mainCardRemittancesRecord
@@ -1331,14 +1238,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                       _model
                                                                           .loopInvetoryCounter]);
                                                       // increment loop
-                                                      setState(() {
-                                                        _model.addToInventories(
-                                                            _model
-                                                                .inventoryToList!);
-                                                        _model.loopInvetoryCounter =
-                                                            _model.loopInvetoryCounter +
-                                                                1;
-                                                      });
+                                                      _model.addToInventories(
+                                                          _model
+                                                              .inventoryToList!);
+                                                      _model.loopInvetoryCounter =
+                                                          _model.loopInvetoryCounter +
+                                                              1;
+                                                      setState(() {});
                                                     }
                                                     while (_model
                                                             .loopBookCounter !=
@@ -1354,13 +1260,12 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                       _model
                                                                           .loopBookCounter]);
                                                       // increment loop
-                                                      setState(() {
-                                                        _model.loopBookCounter =
-                                                            _model.loopBookCounter +
-                                                                1;
-                                                        _model.addToBookings(
-                                                            _model.bookToList!);
-                                                      });
+                                                      _model.loopBookCounter =
+                                                          _model.loopBookCounter +
+                                                              1;
+                                                      _model.addToBookings(
+                                                          _model.bookToList!);
+                                                      setState(() {});
                                                     }
                                                     while (_model
                                                             .loopTransactionCounter !=
@@ -1376,14 +1281,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                       _model
                                                                           .loopTransactionCounter]);
                                                       // increment loop
-                                                      setState(() {
-                                                        _model.loopTransactionCounter =
-                                                            _model.loopTransactionCounter +
-                                                                1;
-                                                        _model.addToTransactions(
-                                                            _model
-                                                                .transactionToList!);
-                                                      });
+                                                      _model.loopTransactionCounter =
+                                                          _model.loopTransactionCounter +
+                                                              1;
+                                                      _model.addToTransactions(
+                                                          _model
+                                                              .transactionToList!);
+                                                      setState(() {});
                                                     }
                                                     if (functions
                                                         .isInventoryComplete(
@@ -1405,49 +1309,21 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                         _model
                                                                             .loopAbsencesCounter]);
                                                         // increment loop
-                                                        setState(() {
-                                                          _model.addToAbsences(
-                                                              _model
-                                                                  .absenceToList!);
-                                                          _model.loopAbsencesCounter =
-                                                              _model.loopAbsencesCounter +
-                                                                  1;
-                                                        });
+                                                        _model.addToAbsences(
+                                                            _model
+                                                                .absenceToList!);
+                                                        _model.loopAbsencesCounter =
+                                                            _model.loopAbsencesCounter +
+                                                                1;
+                                                        setState(() {});
                                                       }
-                                                      // preparedBy
-                                                      _model.preparedBy =
-                                                          await UsersRecord
-                                                              .getDocumentOnce(
-                                                                  mainCardRemittancesRecord
-                                                                      .preparedBy!);
-                                                      if (mainCardRemittancesRecord
-                                                              .collectedBy !=
-                                                          null) {
-                                                        // collectedBy
-                                                        _model.collectedBy =
-                                                            await queryUsersRecordOnce(
-                                                          queryBuilder:
-                                                              (usersRecord) =>
-                                                                  usersRecord
-                                                                      .where(
-                                                            'uid',
-                                                            isEqualTo:
-                                                                mainCardRemittancesRecord
-                                                                    .collectedBy
-                                                                    ?.id,
-                                                          ),
-                                                          singleRecord: true,
-                                                        ).then((s) =>
-                                                                s.firstOrNull);
-                                                      }
-                                                      setState(() {
-                                                        _model.showDownloadButton =
-                                                            true;
-                                                        _model.showLoadButton =
-                                                            false;
-                                                        _model.isLoading =
-                                                            false;
-                                                      });
+                                                      // remove loading button
+                                                      _model.showDownloadButton =
+                                                          true;
+                                                      _model.showLoadButton =
+                                                          false;
+                                                      _model.isLoading = false;
+                                                      setState(() {});
                                                     } else {
                                                       // missing
                                                       ScaffoldMessenger.of(
@@ -1472,19 +1348,16 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                         ),
                                                       );
                                                       // not loading anymore
-                                                      setState(() {
-                                                        _model.isLoading =
-                                                            false;
-                                                        _model.showLoadButton =
-                                                            true;
-                                                        _model.showDownloadButton =
-                                                            false;
-                                                      });
+                                                      _model.isLoading = false;
+                                                      _model.showLoadButton =
+                                                          true;
+                                                      _model.showDownloadButton =
+                                                          false;
+                                                      setState(() {});
                                                       // reset counter
-                                                      setState(() {
-                                                        _model.loopTransactionCounter =
-                                                            0;
-                                                      });
+                                                      _model.loopTransactionCounter =
+                                                          0;
+                                                      setState(() {});
                                                       while (functions
                                                               .transactionWithMissingInventory(
                                                                   _model
@@ -1518,14 +1391,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                             context: context,
                                                             builder: (context) {
                                                               return GestureDetector(
-                                                                onTap: () => _model
-                                                                        .unfocusNode
-                                                                        .canRequestFocus
-                                                                    ? FocusScope.of(
-                                                                            context)
-                                                                        .requestFocus(_model
-                                                                            .unfocusNode)
-                                                                    : FocusScope.of(
+                                                                onTap: () =>
+                                                                    FocusScope.of(
                                                                             context)
                                                                         .unfocus(),
                                                                 child: Padding(
@@ -1572,11 +1439,10 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           break;
                                                         }
                                                         // increment loop
-                                                        setState(() {
-                                                          _model.loopTransactionCounter =
-                                                              _model.loopTransactionCounter +
-                                                                  1;
-                                                        });
+                                                        _model.loopTransactionCounter =
+                                                            _model.loopTransactionCounter +
+                                                                1;
+                                                        setState(() {});
                                                       }
                                                     }
                                                   } else {
@@ -1661,15 +1527,15 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                 hotel: FFAppState().hotel,
                                                 bookings: _model.bookings,
                                                 rooms: _model.rooms,
-                                                preparedBy: _model
-                                                    .preparedBy?.displayName,
-                                                collectedBy:
+                                                preparedBy:
                                                     mainCardRemittancesRecord
-                                                                .collectedBy !=
-                                                            null
-                                                        ? _model.collectedBy
-                                                            ?.displayName
-                                                        : '',
+                                                        .preparedByName,
+                                                collectedBy: mainCardRemittancesRecord
+                                                                .collectedByName !=
+                                                            ''
+                                                    ? mainCardRemittancesRecord
+                                                        .collectedByName
+                                                    : '',
                                               ),
                                             ),
                                           ),

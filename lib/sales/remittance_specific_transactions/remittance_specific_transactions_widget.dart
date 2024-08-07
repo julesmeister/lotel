@@ -51,26 +51,22 @@ class _RemittanceSpecificTransactionsWidgetState
         _model.transactionToList = await TransactionsRecord.getDocumentOnce(
             widget.transactions![_model.loopTransactionsCounter]);
         // Add to list
-        setState(() {
-          _model.addToTransactions(_model.transactionToList!);
-        });
+        _model.addToTransactions(_model.transactionToList!);
+        setState(() {});
         // increment loop
-        setState(() {
-          _model.loopTransactionsCounter = _model.loopTransactionsCounter + 1;
-        });
+        _model.loopTransactionsCounter = _model.loopTransactionsCounter + 1;
+        setState(() {});
       }
       while (_model.loopAbsencesCounter != widget.absences?.length) {
         // read absence
         _model.absenceToList = await AbsencesRecord.getDocumentOnce(
             widget.absences![_model.loopAbsencesCounter]);
         // add to list
-        setState(() {
-          _model.addToAbsencesDocs(_model.absenceToList!);
-        });
+        _model.addToAbsencesDocs(_model.absenceToList!);
+        setState(() {});
         // increment loop
-        setState(() {
-          _model.loopAbsencesCounter = _model.loopAbsencesCounter + 1;
-        });
+        _model.loopAbsencesCounter = _model.loopAbsencesCounter + 1;
+        setState(() {});
       }
     });
 
@@ -177,9 +173,7 @@ class _RemittanceSpecificTransactionsWidgetState
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -506,6 +500,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           final bookings = _model.transactions
                                               .where((e) => e.type == 'book')
                                               .toList();
+
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
                                             primary: false,
@@ -563,15 +558,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                       context: context,
                                                       builder: (context) {
                                                         return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
+                                                          onTap: () =>
+                                                              FocusScope.of(
                                                                       context)
                                                                   .unfocus(),
                                                           child: Padding(
@@ -702,7 +690,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           0.0),
                                                                   child: Text(
                                                                     dateTimeFormat(
-                                                                        'MMM d y h:mm a',
+                                                                        "MMM d y h:mm a",
                                                                         bookingsItem
                                                                             .date!),
                                                                     style: FlutterFlowTheme.of(
@@ -885,6 +873,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           final goods = _model.transactions
                                               .where((e) => e.type == 'goods')
                                               .toList();
+
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
                                             primary: false,
@@ -1018,11 +1007,13 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           ),
                                                                         );
                                                                       }
+
                                                                       final textUsersRecord =
                                                                           snapshot
                                                                               .data!;
+
                                                                       return Text(
-                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
+                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("MMM d y h:mm a", goodsItem.date)}',
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .labelMedium
                                                                             .override(
@@ -1181,6 +1172,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           final expenses = _model.transactions
                                               .where((e) => e.type == 'expense')
                                               .toList();
+
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
                                             primary: false,
@@ -1240,15 +1232,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                       context: context,
                                                       builder: (context) {
                                                         return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
+                                                          onTap: () =>
+                                                              FocusScope.of(
                                                                       context)
                                                                   .unfocus(),
                                                           child: Padding(
@@ -1402,10 +1387,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             ),
                                                                           );
                                                                         }
+
                                                                         final textUsersRecord =
                                                                             snapshot.data!;
+
                                                                         return Text(
-                                                                          'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', expensesItem.date)}',
+                                                                          'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("MMM d y h:mm a", expensesItem.date)}',
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .labelMedium
                                                                               .override(
@@ -1703,6 +1690,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           final bookings = _model.transactions
                                               .where((e) => e.type == 'book')
                                               .toList();
+
                                           return ListView.builder(
                                             padding: const EdgeInsets.fromLTRB(
                                               0,
@@ -1765,15 +1753,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                       context: context,
                                                       builder: (context) {
                                                         return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
+                                                          onTap: () =>
+                                                              FocusScope.of(
                                                                       context)
                                                                   .unfocus(),
                                                           child: Padding(
@@ -1904,7 +1885,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           0.0),
                                                                   child: Text(
                                                                     dateTimeFormat(
-                                                                        'MMM d y h:mm a',
+                                                                        "MMM d y h:mm a",
                                                                         bookingsItem
                                                                             .date!),
                                                                     style: FlutterFlowTheme.of(
@@ -2226,6 +2207,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           final goods = _model.transactions
                                               .where((e) => e.type == 'goods')
                                               .toList();
+
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
                                             primary: false,
@@ -2359,11 +2341,13 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           ),
                                                                         );
                                                                       }
+
                                                                       final textUsersRecord =
                                                                           snapshot
                                                                               .data!;
+
                                                                       return Text(
-                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
+                                                                        'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("MMM d y h:mm a", goodsItem.date)}',
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .labelMedium
                                                                             .override(
@@ -2669,6 +2653,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           final goods = _model.transactions
                                               .where((e) => e.type == 'expense')
                                               .toList();
+
                                           return ListView.builder(
                                             padding: const EdgeInsets.fromLTRB(
                                               0,
@@ -2732,15 +2717,8 @@ class _RemittanceSpecificTransactionsWidgetState
                                                       context: context,
                                                       builder: (context) {
                                                         return GestureDetector(
-                                                          onTap: () => _model
-                                                                  .unfocusNode
-                                                                  .canRequestFocus
-                                                              ? FocusScope.of(
-                                                                      context)
-                                                                  .requestFocus(
-                                                                      _model
-                                                                          .unfocusNode)
-                                                              : FocusScope.of(
+                                                          onTap: () =>
+                                                              FocusScope.of(
                                                                       context)
                                                                   .unfocus(),
                                                           child: Padding(
@@ -2894,10 +2872,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             ),
                                                                           );
                                                                         }
+
                                                                         final textUsersRecord =
                                                                             snapshot.data!;
+
                                                                         return Text(
-                                                                          'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat('MMM d y h:mm a', goodsItem.date)}',
+                                                                          'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("MMM d y h:mm a", goodsItem.date)}',
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .labelMedium
                                                                               .override(
@@ -3036,6 +3016,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                   builder: (context) {
                                     final absences =
                                         _model.absencesDocs.toList();
+
                                     return ListView.builder(
                                       padding: const EdgeInsets.fromLTRB(
                                         0,
@@ -3120,8 +3101,10 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             ),
                                                           );
                                                         }
+
                                                         final columnStaffsRecord =
                                                             snapshot.data!;
+
                                                         return SingleChildScrollView(
                                                           child: Column(
                                                             mainAxisSize:
@@ -3200,11 +3183,13 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         ),
                                                                       );
                                                                     }
+
                                                                     final textUsersRecord =
                                                                         snapshot
                                                                             .data!;
+
                                                                     return Text(
-                                                                      'Encoded by ${textUsersRecord.displayName} on ${dateTimeFormat('MMMMEEEEd', absencesItem.date)}',
+                                                                      'Encoded by ${textUsersRecord.displayName} on ${dateTimeFormat("MMMMEEEEd", absencesItem.date)}',
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .labelMedium

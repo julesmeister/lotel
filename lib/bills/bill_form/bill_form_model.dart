@@ -20,7 +20,6 @@ class BillFormModel extends FlutterFlowModel<BillFormWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
   StatsRecord? statsBillBelong;
   // Stores action output result for [Bottom Sheet - ChangeDate] action in Row widget.
@@ -48,7 +47,6 @@ class BillFormModel extends FlutterFlowModel<BillFormWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     amountFocusNode?.dispose();
     amountTextController?.dispose();
 

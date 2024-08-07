@@ -1,6 +1,7 @@
 // Automatic FlutterFlow imports
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
+import '/backend/schema/enums/enums.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -190,7 +191,7 @@ class _ShareStatsState extends State<ShareStats> {
       },
       child: Icon(
         Icons.share_outlined,
-        color: FlutterFlowTheme.of(context).secondaryText,
+        color: FlutterFlowTheme.of(context).primaryText,
         size: 24,
       ),
     );

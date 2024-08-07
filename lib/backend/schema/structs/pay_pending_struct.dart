@@ -3,9 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
-import '/backend/schema/util/schema_util.dart';
 
-import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 class PayPendingStruct extends FFFirebaseStruct {
@@ -23,19 +21,23 @@ class PayPendingStruct extends FFFirebaseStruct {
   double? _amount;
   double get amount => _amount ?? 0.0;
   set amount(double? val) => _amount = val;
-  void incrementAmount(double amount) => _amount = amount + amount;
+
+  void incrementAmount(double amount) => amount = amount + amount;
+
   bool hasAmount() => _amount != null;
 
   // "pending" field.
   bool? _pending;
   bool get pending => _pending ?? true;
   set pending(bool? val) => _pending = val;
+
   bool hasPending() => _pending != null;
 
   // "ref" field.
   DocumentReference? _ref;
   DocumentReference? get ref => _ref;
   set ref(DocumentReference? val) => _ref = val;
+
   bool hasRef() => _ref != null;
 
   static PayPendingStruct fromMap(Map<String, dynamic> data) =>

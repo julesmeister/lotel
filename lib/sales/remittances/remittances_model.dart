@@ -74,9 +74,10 @@ class RemittancesModel extends FlutterFlowModel<RemittancesWidget> {
 
   bool isLoading = false;
 
+  int loop = 0;
+
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Firestore Query - Query a collection] action in remittances widget.
   RemittancesRecord? latestRemittance;
   // State field(s) for Calendar widget.
@@ -91,10 +92,6 @@ class RemittancesModel extends FlutterFlowModel<RemittancesWidget> {
   TransactionsRecord? transactionToList;
   // Stores action output result for [Backend Call - Read Document] action in Button widget.
   AbsencesRecord? absenceToList;
-  // Stores action output result for [Backend Call - Read Document] action in Button widget.
-  UsersRecord? preparedBy;
-  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
-  UsersRecord? collectedBy;
 
   @override
   void initState(BuildContext context) {
@@ -105,7 +102,5 @@ class RemittancesModel extends FlutterFlowModel<RemittancesWidget> {
   }
 
   @override
-  void dispose() {
-    unfocusNode.dispose();
-  }
+  void dispose() {}
 }

@@ -32,7 +32,6 @@ class BillsListModel extends FlutterFlowModel<BillsListWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Firestore Query - Query a collection] action in billsList widget.
   List<BillsRecord>? allBills;
   // State field(s) for ChoiceChips widget.
@@ -59,7 +58,6 @@ class BillsListModel extends FlutterFlowModel<BillsListWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     for (var s in listViewStreamSubscriptions) {
       s?.cancel();
     }

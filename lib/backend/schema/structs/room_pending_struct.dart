@@ -3,9 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
-import '/backend/schema/util/schema_util.dart';
 
-import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 class RoomPendingStruct extends FFFirebaseStruct {
@@ -27,33 +25,41 @@ class RoomPendingStruct extends FFFirebaseStruct {
   DocumentReference? _booking;
   DocumentReference? get booking => _booking;
   set booking(DocumentReference? val) => _booking = val;
+
   bool hasBooking() => _booking != null;
 
   // "room" field.
   int? _room;
   int get room => _room ?? 0;
   set room(int? val) => _room = val;
-  void incrementRoom(int amount) => _room = room + amount;
+
+  void incrementRoom(int amount) => room = room + amount;
+
   bool hasRoom() => _room != null;
 
   // "total" field.
   double? _total;
   double get total => _total ?? 0.0;
   set total(double? val) => _total = val;
-  void incrementTotal(double amount) => _total = total + amount;
+
+  void incrementTotal(double amount) => total = total + amount;
+
   bool hasTotal() => _total != null;
 
   // "since" field.
   DateTime? _since;
   DateTime? get since => _since;
   set since(DateTime? val) => _since = val;
+
   bool hasSince() => _since != null;
 
   // "quantity" field.
   int? _quantity;
   int get quantity => _quantity ?? 1;
   set quantity(int? val) => _quantity = val;
-  void incrementQuantity(int amount) => _quantity = quantity + amount;
+
+  void incrementQuantity(int amount) => quantity = quantity + amount;
+
   bool hasQuantity() => _quantity != null;
 
   static RoomPendingStruct fromMap(Map<String, dynamic> data) =>

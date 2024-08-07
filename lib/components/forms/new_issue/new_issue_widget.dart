@@ -1,8 +1,10 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/record_add_edit/record_add_edit_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -46,6 +48,8 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
         // set form with detail
         setState(() {
           _model.detailTextController?.text = _model.issueToEdit!.detail;
+          _model.detailTextController?.selection = TextSelection.collapsed(
+              offset: _model.detailTextController!.text.length);
         });
       }
     });
@@ -132,17 +136,67 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Expanded(
+                              flex: 5,
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 0.0, 0.0),
+                                child: Text(
+                                  widget.edit ? 'Edit Issue' : 'New Issue',
+                                  style: FlutterFlowTheme.of(context)
+                                      .headlineSmall
+                                      .override(
+                                        fontFamily: 'Outfit',
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                              ),
+                            ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                widget.edit ? 'Edit Issue' : 'New Issue',
-                                style: FlutterFlowTheme.of(context)
-                                    .headlineSmall
-                                    .override(
-                                      fontFamily: 'Outfit',
-                                      letterSpacing: 0.0,
-                                    ),
+                                  0.0, 0.0, 10.0, 0.0),
+                              child: FFButtonWidget(
+                                onPressed: () async {
+                                  Navigator.pop(context);
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    enableDrag: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:
+                                            MediaQuery.viewInsetsOf(context),
+                                        child: const SizedBox(
+                                          height: double.infinity,
+                                          child: RecordAddEditWidget(),
+                                        ),
+                                      );
+                                    },
+                                  ).then((value) => safeSetState(() {}));
+                                },
+                                text: '+ Record',
+                                options: FFButtonOptions(
+                                  height: 40.0,
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      24.0, 0.0, 24.0, 0.0),
+                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 0.0),
+                                  color: FlutterFlowTheme.of(context).tertiary,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        color: Colors.white,
+                                        letterSpacing: 0.0,
+                                      ),
+                                  elevation: 3.0,
+                                  borderSide: const BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
                               ),
                             ),
                           ],
@@ -275,9 +329,8 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   // isLoading
-                                  setState(() {
-                                    _model.isLoading = true;
-                                  });
+                                  _model.isLoading = true;
+                                  setState(() {});
                                   if (widget.edit) {
                                     await widget.ref!
                                         .update(createIssuesRecordData(
@@ -303,11 +356,11 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                   } else {
                                     await IssuesRecord.collection.doc().set({
                                       ...createIssuesRecordData(
-                                        staff: currentUserReference,
                                         detail: functions.startBigLetter(
                                             _model.detailTextController.text),
                                         status: 'pending',
                                         hotel: FFAppState().hotel,
+                                        staffName: currentUserDisplayName,
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -334,9 +387,8 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                   }
 
                                   // unLoad
-                                  setState(() {
-                                    _model.isLoading = false;
-                                  });
+                                  _model.isLoading = false;
+                                  setState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
