@@ -6,7 +6,7 @@ import '/components/forms/extra_remittance/extra_remittance_widget.dart';
 import '/components/forms/new_grocery/new_grocery_widget.dart';
 import '/components/forms/new_issue/new_issue_widget.dart';
 import '/components/forms/promo/promo_widget.dart';
-import '/components/options/collect_remittance_user/collect_remittance_user_widget.dart';
+import '/components/options/list_of_names/list_of_names_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -1630,6 +1630,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         hoverColor: Colors.transparent,
                                         highlightColor: Colors.transparent,
                                         onLongPress: () async {
+                                          // latest remit
+                                          _model.latestRemittance =
+                                              await queryRemittancesRecordOnce(
+                                            queryBuilder: (remittancesRecord) =>
+                                                remittancesRecord
+                                                    .where(
+                                                      'hotel',
+                                                      isEqualTo:
+                                                          FFAppState().hotel,
+                                                    )
+                                                    .orderBy('date',
+                                                        descending: true),
+                                            singleRecord: true,
+                                          ).then((s) => s.firstOrNull);
                                           await showModalBottomSheet(
                                             isScrollControlled: true,
                                             backgroundColor: Colors.transparent,
@@ -1648,15 +1662,21 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     height: MediaQuery.sizeOf(
                                                                 context)
                                                             .height *
-                                                        0.9,
-                                                    child:
-                                                        const CollectRemittanceUserWidget(),
+                                                        3.0,
+                                                    child: ListOfNamesWidget(
+                                                      remittance: _model
+                                                          .latestRemittance
+                                                          ?.reference,
+                                                      preparedBy: false,
+                                                    ),
                                                   ),
                                                 ),
                                               );
                                             },
                                           ).then(
                                               (value) => safeSetState(() {}));
+
+                                          setState(() {});
                                         },
                                         child: FFButtonWidget(
                                           onPressed: () async {
@@ -1723,8 +1743,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     .update(
                                                         createRemittancesRecordData(
                                                   collected: true,
-                                                  collectedBy:
-                                                      currentUserReference,
+                                                  collectedByName:
+                                                      currentUserDisplayName,
                                                 ));
                                                 // not collectable anymore
 
@@ -3504,6 +3524,32 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     borderWidth: 1.0,
                                                     buttonSize: 40.0,
                                                     icon: Icon(
+                                                      Icons.lightbulb_outlined,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      size: 24.0,
+                                                    ),
+                                                    onPressed: () async {
+                                                      context.pushNamed(
+                                                          'Locations');
+                                                    },
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 10.0, 0.0),
+                                                  child: FlutterFlowIconButton(
+                                                    borderColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .alternate,
+                                                    borderRadius: 10.0,
+                                                    borderWidth: 1.0,
+                                                    buttonSize: 40.0,
+                                                    icon: Icon(
                                                       Icons.checklist_rounded,
                                                       color:
                                                           FlutterFlowTheme.of(
@@ -3611,6 +3657,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
+                                            primary: false,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
                                             itemCount: issuesList.length,

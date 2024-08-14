@@ -21,6 +21,8 @@ class BillFormModel extends FlutterFlowModel<BillFormWidget> {
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
+  List<OptionsRecord>? choices;
+  // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
   StatsRecord? statsBillBelong;
   // Stores action output result for [Bottom Sheet - ChangeDate] action in Row widget.
   DateTime? adjustedDate;

@@ -43,3 +43,10 @@ export '/room/history_in_rooms/history_in_rooms_widget.dart'
 export '/pages/metrics_yearly/metrics_yearly_widget.dart'
     show MetricsYearlyWidget;
 export '/pages/records_list/records_list_widget.dart' show RecordsListWidget;
+export '/bulbs/locations/locations_widget.dart' show LocationsWidget;
+export '/bulbs/room_replacements/room_replacements_widget.dart'
+    show RoomReplacementsWidget;
+export '/bulbs/c_r_replacements/c_r_replacements_widget.dart'
+    show CRReplacementsWidget;
+export '/bulbs/all_replacements/all_replacements_widget.dart'
+    show AllReplacementsWidget;

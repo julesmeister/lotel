@@ -98,6 +98,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   DateTime? adjustedLastRemit;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   RemittancesRecord? unRemitted;
+  // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
+  RemittancesRecord? latestRemittance;
   // Stores action output result for [Firestore Query - Query a collection] action in checkinStats widget.
   List<RoomsRecord>? vacantRooms;
   // Stores action output result for [Firestore Query - Query a collection] action in Container widget.

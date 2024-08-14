@@ -1052,8 +1052,6 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       .set({
                                                     ...createRemittancesRecordData(
                                                       collected: false,
-                                                      preparedBy:
-                                                          currentUserReference,
                                                       hotel: FFAppState().hotel,
                                                       gross: functions
                                                           .grossTransactions(_model
@@ -1067,6 +1065,8 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                           .sumOfExpenses(_model
                                                               .transactionsToRemit
                                                               .toList()),
+                                                      preparedByName:
+                                                          currentUserDisplayName,
                                                     ),
                                                     ...mapToFirestore(
                                                       {
@@ -1094,8 +1094,6 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                           .getDocumentFromData({
                                                     ...createRemittancesRecordData(
                                                       collected: false,
-                                                      preparedBy:
-                                                          currentUserReference,
                                                       hotel: FFAppState().hotel,
                                                       gross: functions
                                                           .grossTransactions(_model
@@ -1109,6 +1107,8 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                           .sumOfExpenses(_model
                                                               .transactionsToRemit
                                                               .toList()),
+                                                      preparedByName:
+                                                          currentUserDisplayName,
                                                     ),
                                                     ...mapToFirestore(
                                                       {

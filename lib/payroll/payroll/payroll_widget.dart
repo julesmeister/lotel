@@ -695,7 +695,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                     child:
                                                                         SizedBox(
                                                                       height:
-                                                                          218.0,
+                                                                          180.0,
                                                                       child:
                                                                           OptionToStaffWidget(
                                                                         staffRef:

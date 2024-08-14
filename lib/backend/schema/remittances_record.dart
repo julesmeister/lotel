@@ -25,16 +25,6 @@ class RemittancesRecord extends FirestoreRecord {
   List<DocumentReference> get transactions => _transactions ?? const [];
   bool hasTransactions() => _transactions != null;
 
-  // "collectedBy" field.
-  DocumentReference? _collectedBy;
-  DocumentReference? get collectedBy => _collectedBy;
-  bool hasCollectedBy() => _collectedBy != null;
-
-  // "preparedBy" field.
-  DocumentReference? _preparedBy;
-  DocumentReference? get preparedBy => _preparedBy;
-  bool hasPreparedBy() => _preparedBy != null;
-
   // "hotel" field.
   String? _hotel;
   String get hotel => _hotel ?? '';
@@ -88,8 +78,6 @@ class RemittancesRecord extends FirestoreRecord {
   void _initializeFields() {
     _date = snapshotData['date'] as DateTime?;
     _transactions = getDataList(snapshotData['transactions']);
-    _collectedBy = snapshotData['collectedBy'] as DocumentReference?;
-    _preparedBy = snapshotData['preparedBy'] as DocumentReference?;
     _hotel = snapshotData['hotel'] as String?;
     _gross = castToType<double>(snapshotData['gross']);
     _expenses = castToType<double>(snapshotData['expenses']);
@@ -138,8 +126,6 @@ class RemittancesRecord extends FirestoreRecord {
 
 Map<String, dynamic> createRemittancesRecordData({
   DateTime? date,
-  DocumentReference? collectedBy,
-  DocumentReference? preparedBy,
   String? hotel,
   double? gross,
   double? expenses,
@@ -151,8 +137,6 @@ Map<String, dynamic> createRemittancesRecordData({
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'date': date,
-      'collectedBy': collectedBy,
-      'preparedBy': preparedBy,
       'hotel': hotel,
       'gross': gross,
       'expenses': expenses,
@@ -174,8 +158,6 @@ class RemittancesRecordDocumentEquality implements Equality<RemittancesRecord> {
     const listEquality = ListEquality();
     return e1?.date == e2?.date &&
         listEquality.equals(e1?.transactions, e2?.transactions) &&
-        e1?.collectedBy == e2?.collectedBy &&
-        e1?.preparedBy == e2?.preparedBy &&
         e1?.hotel == e2?.hotel &&
         e1?.gross == e2?.gross &&
         e1?.expenses == e2?.expenses &&
@@ -192,8 +174,6 @@ class RemittancesRecordDocumentEquality implements Equality<RemittancesRecord> {
   int hash(RemittancesRecord? e) => const ListEquality().hash([
         e?.date,
         e?.transactions,
-        e?.collectedBy,
-        e?.preparedBy,
         e?.hotel,
         e?.gross,
         e?.expenses,

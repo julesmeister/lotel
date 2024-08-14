@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_autocomplete_options_list.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'record_add_edit_model.dart';
@@ -73,7 +74,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
 
     return Container(
       width: double.infinity,
-      height: 285.0,
+      height: double.infinity,
       decoration: const BoxDecoration(),
       child: Align(
         alignment: const AlignmentDirectional(0.0, 1.0),
@@ -160,19 +161,220 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      16.0, 0.0, 0.0, 0.0),
-                                  child: Text(
-                                    widget.record != null
-                                        ? 'Edit Record'
-                                        : 'Add Record',
-                                    style: FlutterFlowTheme.of(context)
-                                        .headlineSmall
-                                        .override(
-                                          fontFamily: 'Outfit',
-                                          letterSpacing: 0.0,
+                                Expanded(
+                                  flex: 6,
+                                  child: Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      widget.record != null
+                                          ? 'Edit Record'
+                                          : 'Add Record',
+                                      style: FlutterFlowTheme.of(context)
+                                          .headlineSmall
+                                          .override(
+                                            fontFamily: 'Outfit',
+                                            letterSpacing: 0.0,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                                if (valueOrDefault(
+                                        currentUserDocument?.role, '') ==
+                                    'admin')
+                                  Expanded(
+                                    flex: 2,
+                                    child: AuthUserStreamWidget(
+                                      builder: (context) =>
+                                          FlutterFlowIconButton(
+                                        borderRadius: 20.0,
+                                        borderWidth: 1.0,
+                                        buttonSize: 40.0,
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: (valueOrDefault(
+                                                          currentUserDocument
+                                                              ?.role,
+                                                          '') ==
+                                                      'admin') &&
+                                                  (widget.record != null)
+                                              ? FlutterFlowTheme.of(context)
+                                                  .error
+                                              : const Color(0x00000000),
+                                          size: 24.0,
                                         ),
+                                        onPressed: () async {
+                                          var confirmDialogResponse =
+                                              await showDialog<bool>(
+                                                    context: context,
+                                                    builder:
+                                                        (alertDialogContext) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                            'Delete Record'),
+                                                        content: const Text(
+                                                            'Are you certain you want to delete this?'),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext,
+                                                                    false),
+                                                            child:
+                                                                const Text('Cancel'),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext,
+                                                                    true),
+                                                            child:
+                                                                const Text('Confirm'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ) ??
+                                                  false;
+                                          if (confirmDialogResponse) {
+                                            await widget.record!.reference
+                                                .delete();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Record deleted!',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                  ),
+                                                ),
+                                                duration: const Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                              ),
+                                            );
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 16.0, 0.0),
+                                    child: Container(
+                                      width: 150.0,
+                                      height: 44.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                      ),
+                                      child: InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          if (widget.record != null) {
+                                            await widget.record!.reference
+                                                .update(createRecordsRecordData(
+                                              detail: functions.startBigLetter(
+                                                  _model.detailsTextController1
+                                                      .text),
+                                              hotel: FFAppState().hotel,
+                                              issuedBy: _model
+                                                  .detailsTextController2.text,
+                                              receivedBy: _model
+                                                  .detailsTextController3.text,
+                                            ));
+                                          } else {
+                                            await RecordsRecord.collection
+                                                .doc()
+                                                .set({
+                                              ...createRecordsRecordData(
+                                                detail: functions
+                                                    .startBigLetter(_model
+                                                        .detailsTextController1
+                                                        .text),
+                                                issuedBy: _model
+                                                    .detailsTextController2
+                                                    .text,
+                                                hotel: FFAppState().hotel,
+                                              ),
+                                              ...mapToFirestore(
+                                                {
+                                                  'date': FieldValue
+                                                      .serverTimestamp(),
+                                                },
+                                              ),
+                                            });
+                                          }
+
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                widget.record != null
+                                                    ? 'Record updated!'
+                                                    : 'Record saved!',
+                                                style: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                ),
+                                              ),
+                                              duration:
+                                                  const Duration(milliseconds: 4000),
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        },
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      0.0, 0.0, 12.0, 0.0),
+                                              child: Text(
+                                                'Save',
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .bodyMedium
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondary,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.send_rounded,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              size: 28.0,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -495,196 +697,6 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                             height: 4.0,
                             thickness: 1.0,
                             color: Color(0xFFE0E3E7),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                8.0, 4.0, 16.0, 10.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                AuthUserStreamWidget(
-                                  builder: (context) => FlutterFlowIconButton(
-                                    borderRadius: 20.0,
-                                    borderWidth: 1.0,
-                                    buttonSize: 40.0,
-                                    icon: Icon(
-                                      Icons.delete_outline,
-                                      color: (valueOrDefault(
-                                                      currentUserDocument?.role,
-                                                      '') ==
-                                                  'admin') &&
-                                              (widget.record != null)
-                                          ? FlutterFlowTheme.of(context).error
-                                          : const Color(0x00000000),
-                                      size: 24.0,
-                                    ),
-                                    onPressed: () async {
-                                      var confirmDialogResponse =
-                                          await showDialog<bool>(
-                                                context: context,
-                                                builder: (alertDialogContext) {
-                                                  return AlertDialog(
-                                                    title:
-                                                        const Text('Delete Record'),
-                                                    content: const Text(
-                                                        'Are you certain you want to delete this?'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                false),
-                                                        child: const Text('Cancel'),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                true),
-                                                        child: const Text('Confirm'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              ) ??
-                                              false;
-                                      if (confirmDialogResponse) {
-                                        await widget.record!.reference
-                                            .delete();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              'Record deleted!',
-                                              style: TextStyle(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                              ),
-                                            ),
-                                            duration:
-                                                const Duration(milliseconds: 4000),
-                                            backgroundColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                          ),
-                                        );
-                                        Navigator.pop(context);
-                                      }
-                                    },
-                                  ),
-                                ),
-                                if (valueOrDefault(
-                                        currentUserDocument?.role, '') !=
-                                    'admin')
-                                  AuthUserStreamWidget(
-                                    builder: (context) => Icon(
-                                      Icons.settings_outlined,
-                                      color: FlutterFlowTheme.of(context).info,
-                                      size: 24.0,
-                                    ),
-                                  ),
-                                Container(
-                                  width: 150.0,
-                                  height: 44.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  child: InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      if (widget.record != null) {
-                                        await widget.record!.reference
-                                            .update(createRecordsRecordData(
-                                          detail: _model
-                                              .detailsTextController1.text,
-                                          hotel: FFAppState().hotel,
-                                          issuedBy: _model
-                                              .detailsTextController2.text,
-                                          receivedBy: _model
-                                              .detailsTextController3.text,
-                                        ));
-                                      } else {
-                                        await RecordsRecord.collection
-                                            .doc()
-                                            .set({
-                                          ...createRecordsRecordData(
-                                            detail: _model
-                                                .detailsTextController1.text,
-                                            issuedBy: _model
-                                                .detailsTextController2.text,
-                                            hotel: FFAppState().hotel,
-                                          ),
-                                          ...mapToFirestore(
-                                            {
-                                              'date':
-                                                  FieldValue.serverTimestamp(),
-                                            },
-                                          ),
-                                        });
-                                      }
-
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            widget.record != null
-                                                ? 'Record updated!'
-                                                : 'Record saved!',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                            ),
-                                          ),
-                                          duration:
-                                              const Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                      );
-                                      Navigator.pop(context);
-                                    },
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 12.0, 0.0),
-                                          child: Text(
-                                            'Save',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondary,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.send_rounded,
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondary,
-                                          size: 28.0,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ],
                       ),

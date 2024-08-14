@@ -2,7 +2,6 @@ import '/backend/backend.dart';
 import '/components/forms/staff_add_edit/staff_add_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'option_to_staff_model.dart';
 export 'option_to_staff_model.dart';
@@ -163,97 +162,6 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    _model.thisSaff =
-                        await StaffsRecord.getDocumentOnce(widget.staffRef!);
-                    _model.isUserAlready = await queryUsersRecordCount(
-                      queryBuilder: (usersRecord) => usersRecord.where(
-                        'display_name',
-                        isEqualTo: _model.thisSaff?.name,
-                      ),
-                    );
-                    if (_model.isUserAlready! > 0) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'This saff is already authorized to submit remittance.',
-                            style: TextStyle(
-                              color: FlutterFlowTheme.of(context).info,
-                            ),
-                          ),
-                          duration: const Duration(milliseconds: 4000),
-                          backgroundColor: FlutterFlowTheme.of(context).error,
-                        ),
-                      );
-                    } else {
-                      // authorized
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            '${_model.thisSaff?.name} can now submit remittance and issue records!',
-                            style: TextStyle(
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                          ),
-                          duration: const Duration(milliseconds: 4000),
-                          backgroundColor:
-                              FlutterFlowTheme.of(context).secondary,
-                        ),
-                      );
-                    }
-
-                    Navigator.pop(context);
-
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                12.0, 0.0, 0.0, 0.0),
-                            child: Icon(
-                              Icons.edit_outlined,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20.0,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                'Authorize Remittance Submission',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
                     var confirmDialogResponse = await showDialog<bool>(
                           context: context,
                           builder: (alertDialogContext) {
@@ -283,31 +191,8 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                       await widget.staffRef!.update(createStaffsRecordData(
                         fired: true,
                       ));
-                      // staff
-                      _model.stafftoFire =
-                          await StaffsRecord.getDocumentOnce(widget.staffRef!);
-                      // find user
-                      _model.userToFire = await queryUsersRecordOnce(
-                        queryBuilder: (usersRecord) => usersRecord.where(
-                          'display_name',
-                          isEqualTo: _model.stafftoFire?.name,
-                        ),
-                        singleRecord: true,
-                      ).then((s) => s.firstOrNull);
-                      if (_model.userToFire?.reference != null) {
-                        // expire user
-
-                        await _model.userToFire!.reference
-                            .update(createUsersRecordData(
-                          expired: true,
-                        ));
-                        // delete user
-                        await _model.userToFire!.reference.delete();
-                      }
                     }
                     Navigator.pop(context);
-
-                    setState(() {});
                   },
                   child: Container(
                     width: double.infinity,

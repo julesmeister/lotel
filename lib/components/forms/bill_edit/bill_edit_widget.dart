@@ -146,6 +146,142 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                     ),
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 16.0, 0.0),
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  if (widget.amount !=
+                                      (double.parse(
+                                          _model.amountTextController.text))) {
+                                    // statsThisBillBelongsTo
+                                    _model.rightStats =
+                                        await queryStatsRecordOnce(
+                                      queryBuilder: (statsRecord) => statsRecord
+                                          .where(
+                                            'hotel',
+                                            isEqualTo: FFAppState().hotel,
+                                          )
+                                          .where(
+                                            'month',
+                                            isEqualTo: dateTimeFormat(
+                                                "MMMM", widget.bill?.date),
+                                          )
+                                          .where(
+                                            'year',
+                                            isEqualTo: dateTimeFormat(
+                                                "y", widget.bill?.date),
+                                          ),
+                                      singleRecord: true,
+                                    ).then((s) => s.firstOrNull);
+                                    // update bill stat
+
+                                    await _model.rightStats!.reference.update({
+                                      ...mapToFirestore(
+                                        {
+                                          'bills': FieldValue.increment(
+                                              double.parse(_model
+                                                      .amountTextController
+                                                      .text) -
+                                                  (widget.amount!)),
+                                        },
+                                      ),
+                                    });
+                                  }
+
+                                  await BillChangesRecord.collection
+                                      .doc()
+                                      .set(createBillChangesRecordData(
+                                        date: getCurrentTimestamp,
+                                        description:
+                                            functions.changesInBillDescription(
+                                                widget.description,
+                                                _model.descTextController.text,
+                                                widget.amount,
+                                                double.tryParse(_model
+                                                    .amountTextController
+                                                    .text)),
+                                        staff: currentUserReference,
+                                        hotel: FFAppState().hotel,
+                                      ));
+                                  // choices
+                                  _model.choices = await queryOptionsRecordOnce(
+                                    queryBuilder: (optionsRecord) =>
+                                        optionsRecord.where(
+                                      'type',
+                                      isEqualTo: 'bill',
+                                    ),
+                                  );
+                                  // update bill
+
+                                  await widget.bill!.reference
+                                      .update(createBillsRecordData(
+                                    description: functions
+                                        .replaceBillWithConventionalString(
+                                            functions.startBigLetter(
+                                                _model.descTextController.text),
+                                            _model.choices!
+                                                .map((e) => e.choice)
+                                                .toList()),
+                                    amount: double.tryParse(
+                                        _model.amountTextController.text),
+                                    afterDue: double.tryParse(
+                                        _model.afterdueTextController.text),
+                                  ));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Bill is now updated!',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: const Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondary,
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+
+                                  setState(() {});
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 12.0, 0.0),
+                                      child: Text(
+                                        'Save',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.send_rounded,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondary,
+                                      size: 28.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -309,147 +445,6 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                       signed: true, decimal: true),
                               validator: _model.afterdueTextControllerValidator
                                   .asValidator(context),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        height: 4.0,
-                        thickness: 1.0,
-                        color: Color(0xFFE0E3E7),
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            8.0, 4.0, 16.0, 10.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              width: 150.0,
-                              height: 44.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  if (widget.amount !=
-                                      (double.parse(
-                                          _model.amountTextController.text))) {
-                                    // statsThisBillBelongsTo
-                                    _model.rightStats =
-                                        await queryStatsRecordOnce(
-                                      queryBuilder: (statsRecord) => statsRecord
-                                          .where(
-                                            'hotel',
-                                            isEqualTo: FFAppState().hotel,
-                                          )
-                                          .where(
-                                            'month',
-                                            isEqualTo: dateTimeFormat(
-                                                "MMMM", widget.bill?.date),
-                                          )
-                                          .where(
-                                            'year',
-                                            isEqualTo: dateTimeFormat(
-                                                "y", widget.bill?.date),
-                                          ),
-                                      singleRecord: true,
-                                    ).then((s) => s.firstOrNull);
-                                    // update bill stat
-
-                                    await _model.rightStats!.reference.update({
-                                      ...mapToFirestore(
-                                        {
-                                          'bills': FieldValue.increment(
-                                              double.parse(_model
-                                                      .amountTextController
-                                                      .text) -
-                                                  (widget.amount!)),
-                                        },
-                                      ),
-                                    });
-                                  }
-
-                                  await BillChangesRecord.collection
-                                      .doc()
-                                      .set(createBillChangesRecordData(
-                                        date: getCurrentTimestamp,
-                                        description:
-                                            functions.changesInBillDescription(
-                                                widget.description,
-                                                _model.descTextController.text,
-                                                widget.amount,
-                                                double.tryParse(_model
-                                                    .amountTextController
-                                                    .text)),
-                                        staff: currentUserReference,
-                                        hotel: FFAppState().hotel,
-                                      ));
-                                  // update bill
-
-                                  await widget.bill!.reference
-                                      .update(createBillsRecordData(
-                                    description: _model.descTextController.text,
-                                    amount: double.tryParse(
-                                        _model.amountTextController.text),
-                                    afterDue: double.tryParse(
-                                        _model.afterdueTextController.text),
-                                  ));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Bill is now updated!',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                        ),
-                                      ),
-                                      duration: const Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-
-                                  setState(() {});
-                                },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 12.0, 0.0),
-                                      child: Text(
-                                        'Save',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondary,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.send_rounded,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondary,
-                                      size: 28.0,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
                           ],
                         ),

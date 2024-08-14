@@ -1416,6 +1416,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                               .primaryText,
                                                           fontSize: 16.0,
                                                           letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.w500,
                                                         ),
                                                   ),
                                                 ],
@@ -1622,10 +1624,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                       child: AuthUserStreamWidget(
                         builder: (context) => SizedBox(
                           width: double.infinity,
-                          height: 48.0,
+                          height: 54.0,
                           child: custom_widgets.PrintPayroll(
                             width: double.infinity,
-                            height: 48.0,
+                            height: 54.0,
                             hotel: FFAppState().hotel,
                             salaries: _model.salaries,
                             staffs: _model.staffs,
@@ -1881,6 +1883,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     color: Colors.white,
                                     fontSize: 16.0,
                                     letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w500,
                                   ),
                               elevation: 2.0,
                               borderSide: const BorderSide(
@@ -2075,6 +2078,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     color: Colors.white,
                                     fontSize: 16.0,
                                     letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w500,
                                   ),
                               elevation: 2.0,
                               borderSide: const BorderSide(

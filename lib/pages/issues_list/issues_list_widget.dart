@@ -427,59 +427,63 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    await showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (context) {
-                                        return GestureDetector(
-                                          onTap: () =>
-                                              FocusScope.of(context).unfocus(),
-                                          child: Padding(
-                                            padding: MediaQuery.viewInsetsOf(
-                                                context),
-                                            child: SizedBox(
-                                              height: double.infinity,
-                                              child: ChangeDateWidget(
-                                                date: listViewIssuesRecord
-                                                            .dateFixed ==
-                                                        null
-                                                    ? getCurrentTimestamp
-                                                    : listViewIssuesRecord
-                                                        .dateFixed!,
+                                    if (valueOrDefault(
+                                            currentUserDocument?.role, '') ==
+                                        'admin') {
+                                      await showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) {
+                                          return GestureDetector(
+                                            onTap: () => FocusScope.of(context)
+                                                .unfocus(),
+                                            child: Padding(
+                                              padding: MediaQuery.viewInsetsOf(
+                                                  context),
+                                              child: SizedBox(
+                                                height: double.infinity,
+                                                child: ChangeDateWidget(
+                                                  date: listViewIssuesRecord
+                                                              .dateFixed ==
+                                                          null
+                                                      ? getCurrentTimestamp
+                                                      : listViewIssuesRecord
+                                                          .dateFixed!,
+                                                ),
                                               ),
                                             ),
+                                          );
+                                        },
+                                      ).then((value) => safeSetState(() =>
+                                          _model.adjustedFixDateCopy = value));
+
+                                      if (_model.adjustedFixDateCopy != null) {
+                                        // start date fixed
+
+                                        await listViewIssuesRecord.reference
+                                            .update(createIssuesRecordData(
+                                          date: _model.adjustedFixDateCopy,
+                                        ));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Issue start date modified!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                            ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondary,
                                           ),
                                         );
-                                      },
-                                    ).then((value) => safeSetState(() =>
-                                        _model.adjustedFixDateCopy = value));
-
-                                    if (_model.adjustedFixDateCopy != null) {
-                                      // start date fixed
-
-                                      await listViewIssuesRecord.reference
-                                          .update(createIssuesRecordData(
-                                        date: _model.adjustedFixDateCopy,
-                                      ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Issue start date modified!',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                            ),
-                                          ),
-                                          duration:
-                                              const Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                      );
+                                      }
                                     }
 
                                     setState(() {});

@@ -227,14 +227,28 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                       ) ??
                                       false;
                               if (confirmDialogResponse) {
+                                // choices
+                                _model.choices = await queryOptionsRecordOnce(
+                                  queryBuilder: (optionsRecord) =>
+                                      optionsRecord.where(
+                                    'type',
+                                    isEqualTo: 'bill',
+                                  ),
+                                );
                                 // bill creation
 
                                 await BillsRecord.collection
                                     .doc()
                                     .set(createBillsRecordData(
                                       description: functions.startBigLetter(
-                                          _model
-                                              .descriptionTextController.text),
+                                          functions
+                                              .replaceBillWithConventionalString(
+                                                  _model
+                                                      .descriptionTextController
+                                                      .text,
+                                                  _model.choices!
+                                                      .map((e) => e.choice)
+                                                      .toList())),
                                       amount: double.tryParse(
                                           _model.amountTextController.text),
                                       date: _model.date,

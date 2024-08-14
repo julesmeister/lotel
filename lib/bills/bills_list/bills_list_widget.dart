@@ -135,39 +135,42 @@ class _BillsListWidgetState extends State<BillsListWidget>
                       letterSpacing: 0.0,
                     ),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    FFAppState().hotel,
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily: 'Readex Pro',
-                          letterSpacing: 0.0,
-                        ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
-                    child: InkWell(
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () async {
-                        FFAppState().hotel =
-                            functions.nextHotel(FFAppState().hotel);
-                        setState(() {});
-                      },
-                      child: Icon(
-                        Icons.switch_left,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                        size: 18.0,
+              if (valueOrDefault(currentUserDocument?.role, '') == 'admin')
+                AuthUserStreamWidget(
+                  builder: (context) => Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        FFAppState().hotel,
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              letterSpacing: 0.0,
+                            ),
                       ),
-                    ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            FFAppState().hotel =
+                                functions.nextHotel(FFAppState().hotel);
+                            setState(() {});
+                          },
+                          child: Icon(
+                            Icons.switch_left,
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            size: 18.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
             ],
           ),
           actions: [

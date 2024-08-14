@@ -16,6 +16,7 @@ class ListOfNamesWidget extends StatefulWidget {
     this.issues,
     this.records,
     bool? issuer,
+    this.replacement,
   })  : preparedBy = preparedBy ?? true,
         issuer = issuer ?? true;
 
@@ -24,6 +25,7 @@ class ListOfNamesWidget extends StatefulWidget {
   final DocumentReference? issues;
   final DocumentReference? records;
   final bool issuer;
+  final DocumentReference? replacement;
 
   @override
   State<ListOfNamesWidget> createState() => _ListOfNamesWidgetState();
@@ -80,15 +82,10 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
       padding: const EdgeInsets.all(16.0),
       child: FutureBuilder<List<UsersRecord>>(
         future: queryUsersRecordOnce(
-          queryBuilder: (usersRecord) => usersRecord
-              .where(
-                'expired',
-                isEqualTo: false,
-              )
-              .where(
-                'role',
-                isEqualTo: widget.preparedBy ? 'staff' : 'admin',
-              ),
+          queryBuilder: (usersRecord) => usersRecord.where(
+            'expired',
+            isEqualTo: false,
+          ),
         ),
         builder: (context, snapshot) {
           // Customize what your widget looks like when it's loading.
@@ -142,7 +139,8 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                               widget.preparedBy,
                               widget.issues != null,
                               widget.records != null,
-                              widget.issuer),
+                              widget.issuer,
+                              widget.replacement != null),
                           textAlign: TextAlign.start,
                           style:
                               FlutterFlowTheme.of(context).labelMedium.override(
@@ -242,24 +240,33 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                                             ));
                                           }
                                         } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Something went wrong!',
-                                                style: TextStyle(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .info,
+                                          if (widget.replacement != null) {
+                                            // updated requested by
+
+                                            await widget.replacement!.update(
+                                                createReplacementRecordData(
+                                              requestedBy: allNamesItem,
+                                            ));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Something went wrong!',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .info,
+                                                  ),
                                                 ),
+                                                duration: const Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
                                               ),
-                                              duration:
-                                                  const Duration(milliseconds: 4000),
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .error,
-                                            ),
-                                          );
+                                            );
+                                          }
                                         }
                                       }
                                     }

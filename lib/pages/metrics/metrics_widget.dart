@@ -2499,7 +2499,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                               formatType: FormatType.decimal,
                                               decimalType:
                                                   DecimalType.automatic,
-                                              currency: 'Php ',
+                                              currency: 'P ',
                                             ),
                                             maxLines: 1,
                                             minFontSize: 14.0,

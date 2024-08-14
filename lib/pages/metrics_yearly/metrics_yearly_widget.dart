@@ -748,9 +748,10 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(4.0, 10.0, 4.0, 4.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 16.0, 4.0),
                   child: Container(
-                    width: 370.0,
+                    width: double.infinity,
                     height: 90.0,
                     decoration: BoxDecoration(
                       boxShadow: const [
@@ -763,11 +764,14 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                           ),
                         )
                       ],
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFFEE8B60), Color(0xFF4B39EF)],
-                        stops: [0.0, 1.0],
-                        begin: AlignmentDirectional(0.94, -1.0),
-                        end: AlignmentDirectional(-0.94, 1.0),
+                      gradient: LinearGradient(
+                        colors: [
+                          FlutterFlowTheme.of(context).primary,
+                          FlutterFlowTheme.of(context).tertiary
+                        ],
+                        stops: const [0.0, 1.0],
+                        begin: const AlignmentDirectional(0.94, -1.0),
+                        end: const AlignmentDirectional(-0.94, 1.0),
                       ),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -776,7 +780,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
                             'Total',
@@ -790,7 +794,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                   fontWeight: FontWeight.w500,
                                 ),
                           ),
-                          Text(
+                          AutoSizeText(
                             formatNumber(
                               functions.generateYearlySalesTotal(
                                   metricsYearlyStatsRecordList.toList(),
@@ -801,6 +805,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                               currency: 'Php ',
                             ),
                             maxLines: 1,
+                            minFontSize: 24.0,
                             style: FlutterFlowTheme.of(context)
                                 .displaySmall
                                 .override(

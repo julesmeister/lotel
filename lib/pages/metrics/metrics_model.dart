@@ -182,7 +182,7 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
               isEqualTo: functions.previousYear(month, year!),
             ),
       );
-      // initialize all stats
+      // initialize stats list
       stats = foundMonthDoc.toList().cast<StatsRecord>();
       // initialize all page vars
       month = month!;
@@ -243,7 +243,7 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
       loopCounter = 0;
       prevMetrics = [];
       // set net only
-      net = rooms + goods - expenses - salaries - bills;
+      net = rooms + goods - expenses - salaries - bills - groceryExpenses;
       while (foundPrevMonthDoc.length != loopCounter) {
         // create hotel Metric
         addToPrevMetrics(MetricsHolderStruct(

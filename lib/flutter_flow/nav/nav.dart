@@ -441,6 +441,45 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/recordsList',
           requireAuth: true,
           builder: (context, params) => const RecordsListWidget(),
+        ),
+        FFRoute(
+          name: 'Locations',
+          path: '/locations',
+          builder: (context, params) => const LocationsWidget(),
+        ),
+        FFRoute(
+          name: 'RoomReplacements',
+          path: '/roomReplacements',
+          requireAuth: true,
+          asyncParams: {
+            'location': getDoc(['locations'], LocationsRecord.fromSnapshot),
+          },
+          builder: (context, params) => RoomReplacementsWidget(
+            location: params.getParam(
+              'location',
+              ParamType.Document,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'CRReplacements',
+          path: '/cRReplacements',
+          requireAuth: true,
+          asyncParams: {
+            'location': getDoc(['locations'], LocationsRecord.fromSnapshot),
+          },
+          builder: (context, params) => CRReplacementsWidget(
+            location: params.getParam(
+              'location',
+              ParamType.Document,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'AllReplacements',
+          path: '/allReplacements',
+          requireAuth: true,
+          builder: (context, params) => const AllReplacementsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

@@ -930,43 +930,49 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           highlightColor: Colors
                                                               .transparent,
                                                           onTap: () async {
-                                                            await showModalBottomSheet(
-                                                              isScrollControlled:
-                                                                  true,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent,
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                return GestureDetector(
-                                                                  onTap: () =>
-                                                                      FocusScope.of(
-                                                                              context)
-                                                                          .unfocus(),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: MediaQuery
-                                                                        .viewInsetsOf(
-                                                                            context),
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin') {
+                                                              await showModalBottomSheet(
+                                                                isScrollControlled:
+                                                                    true,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return GestureDetector(
+                                                                    onTap: () =>
+                                                                        FocusScope.of(context)
+                                                                            .unfocus(),
                                                                     child:
-                                                                        SizedBox(
-                                                                      height:
-                                                                          300.0,
+                                                                        Padding(
+                                                                      padding: MediaQuery
+                                                                          .viewInsetsOf(
+                                                                              context),
                                                                       child:
-                                                                          ListOfNamesWidget(
-                                                                        remittance:
-                                                                            mainCardRemittancesRecord.reference,
-                                                                        preparedBy:
-                                                                            true,
+                                                                          SizedBox(
+                                                                        height:
+                                                                            300.0,
+                                                                        child:
+                                                                            ListOfNamesWidget(
+                                                                          remittance:
+                                                                              mainCardRemittancesRecord.reference,
+                                                                          preparedBy:
+                                                                              true,
+                                                                        ),
                                                                       ),
                                                                     ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                            ).then((value) =>
-                                                                safeSetState(
-                                                                    () {}));
+                                                                  );
+                                                                },
+                                                              ).then((value) =>
+                                                                  safeSetState(
+                                                                      () {}));
+                                                            }
                                                           },
                                                           child: Column(
                                                             mainAxisSize:
@@ -992,8 +998,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                     ),
                                                               ),
                                                               if (mainCardRemittancesRecord
-                                                                      .hasPreparedBy() ??
-                                                                  true)
+                                                                          .preparedByName !=
+                                                                      '')
                                                                 Text(
                                                                   mainCardRemittancesRecord
                                                                       .preparedByName,
@@ -1020,44 +1026,51 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           highlightColor: Colors
                                                               .transparent,
                                                           onTap: () async {
-                                                            await showModalBottomSheet(
-                                                              isScrollControlled:
-                                                                  true,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent,
-                                                              useSafeArea: true,
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                return GestureDetector(
-                                                                  onTap: () =>
-                                                                      FocusScope.of(
-                                                                              context)
-                                                                          .unfocus(),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: MediaQuery
-                                                                        .viewInsetsOf(
-                                                                            context),
+                                                            if (valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.role,
+                                                                    '') ==
+                                                                'admin') {
+                                                              await showModalBottomSheet(
+                                                                isScrollControlled:
+                                                                    true,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                useSafeArea:
+                                                                    true,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return GestureDetector(
+                                                                    onTap: () =>
+                                                                        FocusScope.of(context)
+                                                                            .unfocus(),
                                                                     child:
-                                                                        SizedBox(
-                                                                      height:
-                                                                          300.0,
+                                                                        Padding(
+                                                                      padding: MediaQuery
+                                                                          .viewInsetsOf(
+                                                                              context),
                                                                       child:
-                                                                          ListOfNamesWidget(
-                                                                        remittance:
-                                                                            mainCardRemittancesRecord.reference,
-                                                                        preparedBy:
-                                                                            false,
+                                                                          SizedBox(
+                                                                        height:
+                                                                            300.0,
+                                                                        child:
+                                                                            ListOfNamesWidget(
+                                                                          remittance:
+                                                                              mainCardRemittancesRecord.reference,
+                                                                          preparedBy:
+                                                                              false,
+                                                                        ),
                                                                       ),
                                                                     ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                            ).then((value) =>
-                                                                safeSetState(
-                                                                    () {}));
+                                                                  );
+                                                                },
+                                                              ).then((value) =>
+                                                                  safeSetState(
+                                                                      () {}));
+                                                            }
                                                           },
                                                           child: Column(
                                                             mainAxisSize:
@@ -1083,8 +1096,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                                     ),
                                                               ),
                                                               if (mainCardRemittancesRecord
-                                                                      .hasCollectedBy() ??
-                                                                  true)
+                                                                          .collectedByName !=
+                                                                      '')
                                                                 Text(
                                                                   mainCardRemittancesRecord
                                                                       .collectedByName,

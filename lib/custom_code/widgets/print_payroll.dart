@@ -193,12 +193,13 @@ class _PrintPayrollState extends State<PrintPayroll> {
       ),
       child: Text(
         'Share Payroll',
-        style: TextStyle(
-          fontFamily: 'Plus Jakarta Sans',
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-        ),
+        style: FlutterFlowTheme.of(context).titleMedium.override(
+              fontFamily: 'Readex Pro',
+              color: Colors.white,
+              fontSize: 16.0,
+              letterSpacing: 0.0,
+              fontWeight: FontWeight.w500,
+            ),
       ),
     );
   }

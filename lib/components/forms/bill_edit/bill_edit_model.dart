@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 class BillEditModel extends FlutterFlowModel<BillEditWidget> {
   ///  State fields for stateful widgets in this component.
 
+  // Stores action output result for [Firestore Query - Query a collection] action in Row widget.
+  StatsRecord? rightStats;
+  // Stores action output result for [Firestore Query - Query a collection] action in Row widget.
+  List<OptionsRecord>? choices;
   // State field(s) for desc widget.
   FocusNode? descFocusNode;
   TextEditingController? descTextController;
@@ -18,8 +22,6 @@ class BillEditModel extends FlutterFlowModel<BillEditWidget> {
   FocusNode? afterdueFocusNode;
   TextEditingController? afterdueTextController;
   String? Function(BuildContext, String?)? afterdueTextControllerValidator;
-  // Stores action output result for [Firestore Query - Query a collection] action in Row widget.
-  StatsRecord? rightStats;
 
   @override
   void initState(BuildContext context) {}

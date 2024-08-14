@@ -1924,9 +1924,12 @@ double saleProgress(
     return 0.25; // Default return value if sales list is empty or sale is null
   }
 
-  // Find the minimum and maximum sales in the list
-  double minSale =
-      sales.reduce((min, currentSale) => math.min(min, currentSale));
+  // Exclude the last item from the sales list for minSale calculation
+  List<double> salesExcludingLast = sales.sublist(0, sales.length - 1);
+
+  // Find the minimum sale excluding the last item
+  double minSale = salesExcludingLast
+      .reduce((min, currentSale) => math.min(min, currentSale));
   double maxSale =
       sales.reduce((max, currentSale) => math.max(max, currentSale));
 
@@ -1998,6 +2001,7 @@ String whoInListOfNames(
   bool issue,
   bool record,
   bool? issuer,
+  bool replacement,
 ) {
   if (remittance) {
     if (preparedBy != null && preparedBy) {
@@ -2013,7 +2017,38 @@ String whoInListOfNames(
     } else {
       return "Who received the item in this record?";
     }
+  } else if (replacement) {
+    return "Who asked for this replacement?";
   } else {
     return "Invalid input.";
   }
+}
+
+String replaceBillWithConventionalString(
+  String? input,
+  List<String> choices,
+) {
+  if (input == null) return '';
+  String result = input; // Create a non-nullable variable for the result
+
+  for (String choice in choices) {
+    if (result!.toLowerCase().contains(choice.toLowerCase())) {
+      // Use a regular expression to match the phrase case-insensitively
+      RegExp exp = RegExp(RegExp.escape(choice), caseSensitive: false);
+      result = result.replaceAll(exp, choice);
+    }
+  }
+
+  return result;
+}
+
+bool isRoomInLocations(
+  List<String>? locations,
+  String room,
+) {
+  // is room inside locations?
+  if (locations == null || locations.isEmpty) {
+    return false;
+  }
+  return locations.contains(room);
 }
