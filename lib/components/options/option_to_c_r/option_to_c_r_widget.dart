@@ -4,12 +4,11 @@ import '/components/forms/add_edit_location/add_edit_location_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'option_to_locations_model.dart';
-export 'option_to_locations_model.dart';
+import 'option_to_c_r_model.dart';
+export 'option_to_c_r_model.dart';
 
-class OptionToLocationsWidget extends StatefulWidget {
-  const OptionToLocationsWidget({
+class OptionToCRWidget extends StatefulWidget {
+  const OptionToCRWidget({
     super.key,
     this.location,
     this.cr,
@@ -19,12 +18,11 @@ class OptionToLocationsWidget extends StatefulWidget {
   final DocumentReference? cr;
 
   @override
-  State<OptionToLocationsWidget> createState() =>
-      _OptionToLocationsWidgetState();
+  State<OptionToCRWidget> createState() => _OptionToCRWidgetState();
 }
 
-class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
-  late OptionToLocationsModel _model;
+class _OptionToCRWidgetState extends State<OptionToCRWidget> {
+  late OptionToCRModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -35,7 +33,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => OptionToLocationsModel());
+    _model = createModel(context, () => OptionToCRModel());
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -49,8 +47,6 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
@@ -170,140 +166,6 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Details',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    // loc
-                    _model.loc = await LocationsRecord.getDocumentOnce(
-                        widget.location!);
-                    // create cr
-
-                    await ComfortRoomsRecord.collection
-                        .doc()
-                        .set(createComfortRoomsRecordData(
-                          description: 'CR of ${_model.loc?.description}',
-                          sockets: 1,
-                          hotel: FFAppState().hotel,
-                        ));
-                    // close
-                    Navigator.pop(context);
-
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                12.0, 0.0, 0.0, 0.0),
-                            child: Icon(
-                              Icons.bathtub_outlined,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20.0,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                'Add CR Inside This Room',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    // loc
-                    _model.loca = await LocationsRecord.getDocumentOnce(
-                        widget.location!);
-                    // create cr
-
-                    await ComfortRoomsRecord.collection
-                        .doc()
-                        .set(createComfortRoomsRecordData(
-                          description: _model.loca?.description,
-                          sockets: _model.loca?.sockets,
-                          hotel: FFAppState().hotel,
-                        ));
-                    // delete location
-                    await widget.location!.delete();
-                    // close
-                    Navigator.pop(context);
-
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                12.0, 0.0, 0.0, 0.0),
-                            child: Icon(
-                              Icons.bathtub_outlined,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20.0,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                'Change Category To CR',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(

@@ -101,7 +101,7 @@ class _OptionToReplacementWidgetState extends State<OptionToReplacementWidget> {
                           child: SizedBox(
                             height: double.infinity,
                             child: AddEditReplacementWidget(
-                              location: widget.location!,
+                              location: widget.location,
                               replacement: widget.replacement,
                             ),
                           ),

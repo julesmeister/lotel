@@ -1,4 +1,3 @@
-import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'add_edit_replacement_widget.dart' show AddEditReplacementWidget;
 import 'package:flutter/material.dart';
@@ -9,26 +8,7 @@ class AddEditReplacementModel
 
   String operator = '+';
 
-  double bedPrice = 0.0;
-
-  List<TransactionsRecord> transactions = [];
-  void addToTransactions(TransactionsRecord item) => transactions.add(item);
-  void removeFromTransactions(TransactionsRecord item) =>
-      transactions.remove(item);
-  void removeAtIndexFromTransactions(int index) => transactions.removeAt(index);
-  void insertAtIndexInTransactions(int index, TransactionsRecord item) =>
-      transactions.insert(index, item);
-  void updateTransactionsAtIndex(
-          int index, Function(TransactionsRecord) updateFn) =>
-      transactions[index] = updateFn(transactions[index]);
-
-  double lateCheckOutFee = 0.0;
-
   int loop = 0;
-
-  double promoPercent = 0.0;
-
-  double roomPrice = 0.0;
 
   int number = 0;
 

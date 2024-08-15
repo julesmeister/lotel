@@ -120,10 +120,6 @@ class _RoomReplacementsWidgetState extends State<RoomReplacementsWidget>
               'date',
               isLessThanOrEqualTo: functions.endOfYear(_model.year),
             )
-            .where(
-              'ofCR',
-              isEqualTo: false,
-            )
             .orderBy('date', descending: true),
       ),
       builder: (context, snapshot) {
@@ -209,8 +205,7 @@ class _RoomReplacementsWidgetState extends State<RoomReplacementsWidget>
                             child: SizedBox(
                               height: double.infinity,
                               child: AddEditReplacementWidget(
-                                location: widget.location!.reference,
-                                ofCR: false,
+                                location: widget.location?.reference,
                               ),
                             ),
                           ),

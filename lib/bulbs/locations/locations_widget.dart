@@ -1,14 +1,14 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/add_edit_c_r/add_edit_c_r_widget.dart';
 import '/components/forms/add_edit_location/add_edit_location_widget.dart';
+import '/components/options/option_to_c_r/option_to_c_r_widget.dart';
 import '/components/options/option_to_locations/option_to_locations_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'locations_model.dart';
@@ -34,59 +34,6 @@ class _LocationsWidgetState extends State<LocationsWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => LocationsModel());
-
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      // allRooms
-      _model.allRooms = await queryRoomsRecordOnce(
-        queryBuilder: (roomsRecord) => roomsRecord.where(
-          'hotel',
-          isEqualTo: FFAppState().hotel,
-        ),
-      );
-      // allLocations
-      _model.allLocations = await queryLocationsRecordOnce(
-        queryBuilder: (locationsRecord) => locationsRecord.where(
-          'hotel',
-          isEqualTo: FFAppState().hotel,
-        ),
-      );
-      while (_model.loop != _model.allRooms?.length) {
-        if (!functions.isRoomInLocations(
-            _model.allLocations?.map((e) => e.description).toList().toList(),
-            'Room ${_model.allRooms?[_model.loop].number.toString()}')) {
-          // generate room
-
-          var locationsRecordReference = LocationsRecord.collection.doc();
-          await locationsRecordReference.set(createLocationsRecordData(
-            description:
-                'Room ${_model.allRooms?[_model.loop].number.toString()}',
-            withCR: true,
-            hotel: FFAppState().hotel,
-            sockets: 2,
-          ));
-          _model.newRoom = LocationsRecord.getDocumentFromData(
-              createLocationsRecordData(
-                description:
-                    'Room ${_model.allRooms?[_model.loop].number.toString()}',
-                withCR: true,
-                hotel: FFAppState().hotel,
-                sockets: 2,
-              ),
-              locationsRecordReference);
-          // generate CR
-
-          await CrRecord.createDoc(_model.newRoom!.reference)
-              .set(createCrRecordData(
-            sockets: 1,
-            hotel: FFAppState().hotel,
-          ));
-        }
-        // loop +
-        _model.loop = _model.loop + 1;
-        setState(() {});
-      }
-    });
 
     _model.tabBarController = TabController(
       vsync: this,
@@ -365,7 +312,7 @@ class _LocationsWidgetState extends State<LocationsWidget>
                   borderWidth: 1.0,
                   buttonSize: 60.0,
                   icon: Icon(
-                    Icons.list_alt_rounded,
+                    Icons.checklist_rounded,
                     color: FlutterFlowTheme.of(context).primaryText,
                     size: 24.0,
                   ),
@@ -383,24 +330,45 @@ class _LocationsWidgetState extends State<LocationsWidget>
                     size: 24.0,
                   ),
                   onPressed: () async {
-                    await showModalBottomSheet(
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      enableDrag: false,
-                      context: context,
-                      builder: (context) {
-                        return GestureDetector(
-                          onTap: () => FocusScope.of(context).unfocus(),
-                          child: Padding(
-                            padding: MediaQuery.viewInsetsOf(context),
-                            child: const SizedBox(
-                              height: double.infinity,
-                              child: AddEditLocationWidget(),
+                    if (_model.isCR) {
+                      await showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        enableDrag: false,
+                        context: context,
+                        builder: (context) {
+                          return GestureDetector(
+                            onTap: () => FocusScope.of(context).unfocus(),
+                            child: Padding(
+                              padding: MediaQuery.viewInsetsOf(context),
+                              child: const SizedBox(
+                                height: double.infinity,
+                                child: AddEditCRWidget(),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ).then((value) => safeSetState(() {}));
+                          );
+                        },
+                      ).then((value) => safeSetState(() {}));
+                    } else {
+                      await showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        enableDrag: false,
+                        context: context,
+                        builder: (context) {
+                          return GestureDetector(
+                            onTap: () => FocusScope.of(context).unfocus(),
+                            child: Padding(
+                              padding: MediaQuery.viewInsetsOf(context),
+                              child: const SizedBox(
+                                height: double.infinity,
+                                child: AddEditLocationWidget(),
+                              ),
+                            ),
+                          );
+                        },
+                      ).then((value) => safeSetState(() {}));
+                    }
                   },
                 ),
               ],
@@ -411,474 +379,253 @@ class _LocationsWidgetState extends State<LocationsWidget>
         ),
         body: SafeArea(
           top: true,
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: const Alignment(-1.0, 0),
-                      child: TabBar(
-                        labelColor: FlutterFlowTheme.of(context).primaryText,
-                        unselectedLabelColor:
-                            FlutterFlowTheme.of(context).secondaryText,
-                        labelPadding: const EdgeInsetsDirectional.fromSTEB(
-                            16.0, 0.0, 16.0, 12.0),
-                        labelStyle:
-                            FlutterFlowTheme.of(context).displaySmall.override(
-                                  fontFamily: 'Outfit',
-                                  letterSpacing: 0.0,
-                                ),
-                        unselectedLabelStyle:
-                            FlutterFlowTheme.of(context).displaySmall.override(
-                                  fontFamily: 'Outfit',
-                                  letterSpacing: 0.0,
-                                ),
-                        indicatorWeight: 2.0,
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
-                        tabs: const [
-                          Tab(
-                            text: 'Areas',
-                          ),
-                          Tab(
-                            text: 'CRs',
-                          ),
-                        ],
-                        controller: _model.tabBarController,
-                        onTap: (i) async {
-                          [() async {}, () async {}][i]();
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                        controller: _model.tabBarController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          StreamBuilder<List<LocationsRecord>>(
-                            stream: queryLocationsRecord(
-                              queryBuilder: (locationsRecord) => locationsRecord
-                                  .where(
-                                    'hotel',
-                                    isEqualTo: FFAppState().hotel,
-                                  )
-                                  .orderBy('description'),
+          child: SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: const Alignment(-1.0, 0),
+                        child: TabBar(
+                          labelColor: FlutterFlowTheme.of(context).primaryText,
+                          unselectedLabelColor:
+                              FlutterFlowTheme.of(context).secondaryText,
+                          labelPadding: const EdgeInsetsDirectional.fromSTEB(
+                              16.0, 0.0, 16.0, 12.0),
+                          labelStyle: FlutterFlowTheme.of(context)
+                              .displaySmall
+                              .override(
+                                fontFamily: 'Outfit',
+                                letterSpacing: 0.0,
+                              ),
+                          unselectedLabelStyle: FlutterFlowTheme.of(context)
+                              .displaySmall
+                              .override(
+                                fontFamily: 'Outfit',
+                                letterSpacing: 0.0,
+                              ),
+                          indicatorWeight: 2.0,
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 12.0, 0.0),
+                          tabs: const [
+                            Tab(
+                              text: 'Areas',
                             ),
-                            builder: (context, snapshot) {
-                              // Customize what your widget looks like when it's loading.
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: SizedBox(
-                                    width: 50.0,
-                                    height: 50.0,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        FlutterFlowTheme.of(context).primary,
+                            Tab(
+                              text: 'CRs',
+                            ),
+                          ],
+                          controller: _model.tabBarController,
+                          onTap: (i) async {
+                            [
+                              () async {
+                                _model.isCR = false;
+                                setState(() {});
+                              },
+                              () async {
+                                _model.isCR = true;
+                                setState(() {});
+                              }
+                            ][i]();
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          controller: _model.tabBarController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            StreamBuilder<List<LocationsRecord>>(
+                              stream: queryLocationsRecord(
+                                queryBuilder: (locationsRecord) =>
+                                    locationsRecord
+                                        .where(
+                                          'hotel',
+                                          isEqualTo: FFAppState().hotel,
+                                        )
+                                        .orderBy('description'),
+                              ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 50.0,
+                                      height: 50.0,
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          FlutterFlowTheme.of(context).primary,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }
-                              List<LocationsRecord>
-                                  listViewLocationsRecordList = snapshot.data!;
+                                  );
+                                }
+                                List<LocationsRecord>
+                                    listViewLocationsRecordList =
+                                    snapshot.data!;
+                                if (listViewLocationsRecordList.isEmpty) {
+                                  return Image.asset(
+                                    'assets/images/ae8ac2fa217d23aadcc913989fcc34a2.jpg',
+                                  );
+                                }
 
-                              return ListView.builder(
-                                padding: EdgeInsets.zero,
-                                primary: false,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: listViewLocationsRecordList.length,
-                                itemBuilder: (context, listViewIndex) {
-                                  final listViewLocationsRecord =
-                                      listViewLocationsRecordList[
-                                          listViewIndex];
-                                  return Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 1.0),
-                                    child: InkWell(
-                                      splashColor: Colors.transparent,
-                                      focusColor: Colors.transparent,
-                                      hoverColor: Colors.transparent,
-                                      highlightColor: Colors.transparent,
-                                      onTap: () async {
-                                        context.pushNamed(
-                                          'RoomReplacements',
-                                          queryParameters: {
-                                            'location': serializeParam(
-                                              listViewLocationsRecord,
-                                              ParamType.Document,
-                                            ),
-                                          }.withoutNulls,
-                                          extra: <String, dynamic>{
-                                            'location': listViewLocationsRecord,
-                                          },
-                                        );
-                                      },
-                                      onLongPress: () async {
-                                        if (valueOrDefault(
-                                                currentUserDocument?.role,
-                                                '') ==
-                                            'admin') {
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return GestureDetector(
-                                                onTap: () =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                child: Padding(
-                                                  padding:
-                                                      MediaQuery.viewInsetsOf(
-                                                          context),
-                                                  child: SizedBox(
-                                                    height: 170.0,
-                                                    child:
-                                                        OptionToLocationsWidget(
-                                                      location:
-                                                          listViewLocationsRecord
-                                                              .reference,
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
+                                return ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: listViewLocationsRecordList.length,
+                                  itemBuilder: (context, listViewIndex) {
+                                    final listViewLocationsRecord =
+                                        listViewLocationsRecordList[
+                                            listViewIndex];
+                                    return Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 0.0, 1.0),
+                                      child: InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          context.pushNamed(
+                                            'RoomReplacements',
+                                            queryParameters: {
+                                              'location': serializeParam(
+                                                listViewLocationsRecord,
+                                                ParamType.Document,
+                                              ),
+                                            }.withoutNulls,
+                                            extra: <String, dynamic>{
+                                              'location':
+                                                  listViewLocationsRecord,
                                             },
-                                          ).then(
-                                              (value) => safeSetState(() {}));
-                                        }
-                                      },
-                                      child: Container(
-                                        width: 300.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 0.0,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .alternate,
-                                              offset: const Offset(
-                                                0.0,
-                                                1.0,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                flex: 8,
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        listViewLocationsRecord
-                                                            .description,
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleLarge
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Outfit',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
+                                          );
+                                        },
+                                        onLongPress: () async {
+                                          if (valueOrDefault(
+                                                  currentUserDocument?.role,
+                                                  '') ==
+                                              'admin') {
+                                            await showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              enableDrag: false,
+                                              context: context,
+                                              builder: (context) {
+                                                return GestureDetector(
+                                                  onTap: () =>
+                                                      FocusScope.of(context)
+                                                          .unfocus(),
+                                                  child: Padding(
+                                                    padding:
+                                                        MediaQuery.viewInsetsOf(
+                                                            context),
+                                                    child: SizedBox(
+                                                      height: 270.0,
+                                                      child:
+                                                          OptionToLocationsWidget(
+                                                        location:
+                                                            listViewLocationsRecord
+                                                                .reference,
                                                       ),
                                                     ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  4.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        '${listViewLocationsRecord.sockets.toString()} sockets',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const Expanded(
-                                                flex: 2,
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(4.0),
-                                                  child: Icon(
-                                                    Icons
-                                                        .keyboard_arrow_right_rounded,
-                                                    color: Color(0xFF57636C),
-                                                    size: 40.0,
                                                   ),
+                                                );
+                                              },
+                                            ).then(
+                                                (value) => safeSetState(() {}));
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 300.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                blurRadius: 0.0,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .alternate,
+                                                offset: const Offset(
+                                                  0.0,
+                                                  1.0,
                                                 ),
-                                              ),
+                                              )
                                             ],
                                           ),
-                                        ),
-                                      ),
-                                    ).animateOnPageLoad(animationsMap[
-                                        'containerOnPageLoadAnimation1']!),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                          StreamBuilder<List<CrRecord>>(
-                            stream: queryCrRecord(
-                              queryBuilder: (crRecord) => crRecord.where(
-                                'hotel',
-                                isEqualTo: FFAppState().hotel,
-                              ),
-                            ),
-                            builder: (context, snapshot) {
-                              // Customize what your widget looks like when it's loading.
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: SizedBox(
-                                    width: 50.0,
-                                    height: 50.0,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        FlutterFlowTheme.of(context).primary,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }
-                              List<CrRecord> listViewCrRecordList =
-                                  snapshot.data!;
-
-                              return ListView.builder(
-                                padding: EdgeInsets.zero,
-                                primary: false,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: listViewCrRecordList.length,
-                                itemBuilder: (context, listViewIndex) {
-                                  final listViewCrRecord =
-                                      listViewCrRecordList[listViewIndex];
-                                  return Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 1.0),
-                                    child: InkWell(
-                                      splashColor: Colors.transparent,
-                                      focusColor: Colors.transparent,
-                                      hoverColor: Colors.transparent,
-                                      highlightColor: Colors.transparent,
-                                      onTap: () async {
-                                        if (valueOrDefault(
-                                                currentUserDocument?.role,
-                                                '') ==
-                                            'admin') {
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return GestureDetector(
-                                                onTap: () =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                child: Padding(
-                                                  padding:
-                                                      MediaQuery.viewInsetsOf(
-                                                          context),
-                                                  child: SizedBox(
-                                                    height: 170.0,
-                                                    child:
-                                                        OptionToLocationsWidget(
-                                                      cr: listViewCrRecord
-                                                          .reference,
-                                                    ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Expanded(
+                                                  flex: 8,
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    12.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        child: Text(
+                                                          listViewLocationsRecord
+                                                              .description,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .titleLarge
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Outfit',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    12.0,
+                                                                    4.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        child: Text(
+                                                          '${listViewLocationsRecord.sockets.toString()} sockets',
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .labelMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              );
-                                            },
-                                          ).then(
-                                              (value) => safeSetState(() {}));
-                                        }
-                                      },
-                                      child: Container(
-                                        width: 300.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 0.0,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .alternate,
-                                              offset: const Offset(
-                                                0.0,
-                                                1.0,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                flex: 8,
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: StreamBuilder<
-                                                          LocationsRecord>(
-                                                        stream: LocationsRecord
-                                                            .getDocument(
-                                                                listViewCrRecord
-                                                                    .parentReference),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          // Customize what your widget looks like when it's loading.
-                                                          if (!snapshot
-                                                              .hasData) {
-                                                            return Center(
-                                                              child: SizedBox(
-                                                                width: 50.0,
-                                                                height: 50.0,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  valueColor:
-                                                                      AlwaysStoppedAnimation<
-                                                                          Color>(
-                                                                    FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primary,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          }
-
-                                                          final textLocationsRecord =
-                                                              snapshot.data!;
-
-                                                          return Text(
-                                                            textLocationsRecord
-                                                                .description,
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .titleLarge
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Outfit',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  12.0,
-                                                                  4.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        '${listViewCrRecord.sockets.toString()} sockets',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(4.0),
-                                                  child: InkWell(
-                                                    splashColor:
-                                                        Colors.transparent,
-                                                    focusColor:
-                                                        Colors.transparent,
-                                                    hoverColor:
-                                                        Colors.transparent,
-                                                    highlightColor:
-                                                        Colors.transparent,
-                                                    onTap: () async {
-                                                      _model.loc =
-                                                          await LocationsRecord
-                                                              .getDocumentOnce(
-                                                                  listViewCrRecord
-                                                                      .parentReference);
-
-                                                      context.pushNamed(
-                                                        'CRReplacements',
-                                                        queryParameters: {
-                                                          'location':
-                                                              serializeParam(
-                                                            _model.loc,
-                                                            ParamType.Document,
-                                                          ),
-                                                        }.withoutNulls,
-                                                        extra: <String,
-                                                            dynamic>{
-                                                          'location':
-                                                              _model.loc,
-                                                        },
-                                                      );
-
-                                                      setState(() {});
-                                                    },
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(4.0),
                                                     child: Icon(
                                                       Icons
                                                           .keyboard_arrow_right_rounded,
@@ -890,26 +637,252 @@ class _LocationsWidgetState extends State<LocationsWidget>
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
+                                      ).animateOnPageLoad(animationsMap[
+                                          'containerOnPageLoadAnimation1']!),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            StreamBuilder<List<ComfortRoomsRecord>>(
+                              stream: queryComfortRoomsRecord(
+                                queryBuilder: (comfortRoomsRecord) =>
+                                    comfortRoomsRecord.where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                ),
+                              ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 50.0,
+                                      height: 50.0,
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          FlutterFlowTheme.of(context).primary,
+                                        ),
                                       ),
-                                    ).animateOnPageLoad(animationsMap[
-                                        'containerOnPageLoadAnimation6']!),
+                                    ),
                                   );
-                                },
-                              );
-                            },
-                          ),
-                        ],
+                                }
+                                List<ComfortRoomsRecord>
+                                    listViewComfortRoomsRecordList =
+                                    snapshot.data!;
+                                if (listViewComfortRoomsRecordList.isEmpty) {
+                                  return Image.asset(
+                                    'assets/images/ae8ac2fa217d23aadcc913989fcc34a2.jpg',
+                                  );
+                                }
+
+                                return ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount:
+                                      listViewComfortRoomsRecordList.length,
+                                  itemBuilder: (context, listViewIndex) {
+                                    final listViewComfortRoomsRecord =
+                                        listViewComfortRoomsRecordList[
+                                            listViewIndex];
+                                    return Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 0.0, 1.0),
+                                      child: InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          if (valueOrDefault(
+                                                  currentUserDocument?.role,
+                                                  '') ==
+                                              'admin') {
+                                            await showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              enableDrag: false,
+                                              context: context,
+                                              builder: (context) {
+                                                return GestureDetector(
+                                                  onTap: () =>
+                                                      FocusScope.of(context)
+                                                          .unfocus(),
+                                                  child: Padding(
+                                                    padding:
+                                                        MediaQuery.viewInsetsOf(
+                                                            context),
+                                                    child: SizedBox(
+                                                      height: 170.0,
+                                                      child: OptionToCRWidget(
+                                                        cr: listViewComfortRoomsRecord
+                                                            .reference,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ).then(
+                                                (value) => safeSetState(() {}));
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 300.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                blurRadius: 0.0,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .alternate,
+                                                offset: const Offset(
+                                                  0.0,
+                                                  1.0,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Expanded(
+                                                  flex: 8,
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    12.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        child: Text(
+                                                          listViewComfortRoomsRecord
+                                                              .description,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .titleLarge
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Outfit',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    12.0,
+                                                                    4.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        child: Text(
+                                                          '${listViewComfortRoomsRecord.sockets.toString()} sockets',
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .labelMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(4.0),
+                                                    child: InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        _model.cr = await ComfortRoomsRecord
+                                                            .getDocumentOnce(
+                                                                listViewComfortRoomsRecord
+                                                                    .reference);
+
+                                                        context.pushNamed(
+                                                          'CRReplacements',
+                                                          queryParameters: {
+                                                            'cr':
+                                                                serializeParam(
+                                                              listViewComfortRoomsRecord,
+                                                              ParamType
+                                                                  .Document,
+                                                            ),
+                                                          }.withoutNulls,
+                                                          extra: <String,
+                                                              dynamic>{
+                                                            'cr':
+                                                                listViewComfortRoomsRecord,
+                                                          },
+                                                        );
+
+                                                        setState(() {});
+                                                      },
+                                                      child: Icon(
+                                                        Icons
+                                                            .keyboard_arrow_right_rounded,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        size: 40.0,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ).animateOnPageLoad(animationsMap[
+                                          'containerOnPageLoadAnimation6']!),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ).animateOnPageLoad(
-                    animationsMap['tabBarOnPageLoadAnimation']!),
-              ),
-            ],
+                    ],
+                  ).animateOnPageLoad(
+                      animationsMap['tabBarOnPageLoadAnimation']!),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -467,10 +467,15 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           requireAuth: true,
           asyncParams: {
             'location': getDoc(['locations'], LocationsRecord.fromSnapshot),
+            'cr': getDoc(['comfortRooms'], ComfortRoomsRecord.fromSnapshot),
           },
           builder: (context, params) => CRReplacementsWidget(
             location: params.getParam(
               'location',
+              ParamType.Document,
+            ),
+            cr: params.getParam(
+              'cr',
               ParamType.Document,
             ),
           ),

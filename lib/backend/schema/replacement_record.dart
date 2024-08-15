@@ -35,11 +35,6 @@ class ReplacementRecord extends FirestoreRecord {
   int get quantity => _quantity ?? 0;
   bool hasQuantity() => _quantity != null;
 
-  // "ofCR" field.
-  bool? _ofCR;
-  bool get ofCR => _ofCR ?? false;
-  bool hasOfCR() => _ofCR != null;
-
   // "hotel" field.
   String? _hotel;
   String get hotel => _hotel ?? '';
@@ -50,14 +45,19 @@ class ReplacementRecord extends FirestoreRecord {
   DocumentReference? get location => _location;
   bool hasLocation() => _location != null;
 
+  // "cr" field.
+  DocumentReference? _cr;
+  DocumentReference? get cr => _cr;
+  bool hasCr() => _cr != null;
+
   void _initializeFields() {
     _requestedBy = snapshotData['requestedBy'] as String?;
     _date = snapshotData['date'] as DateTime?;
     _watts = castToType<int>(snapshotData['watts']);
     _quantity = castToType<int>(snapshotData['quantity']);
-    _ofCR = snapshotData['ofCR'] as bool?;
     _hotel = snapshotData['hotel'] as String?;
     _location = snapshotData['location'] as DocumentReference?;
+    _cr = snapshotData['cr'] as DocumentReference?;
   }
 
   static CollectionReference get collection =>
@@ -99,9 +99,9 @@ Map<String, dynamic> createReplacementRecordData({
   DateTime? date,
   int? watts,
   int? quantity,
-  bool? ofCR,
   String? hotel,
   DocumentReference? location,
+  DocumentReference? cr,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -109,9 +109,9 @@ Map<String, dynamic> createReplacementRecordData({
       'date': date,
       'watts': watts,
       'quantity': quantity,
-      'ofCR': ofCR,
       'hotel': hotel,
       'location': location,
+      'cr': cr,
     }.withoutNulls,
   );
 
@@ -127,9 +127,9 @@ class ReplacementRecordDocumentEquality implements Equality<ReplacementRecord> {
         e1?.date == e2?.date &&
         e1?.watts == e2?.watts &&
         e1?.quantity == e2?.quantity &&
-        e1?.ofCR == e2?.ofCR &&
         e1?.hotel == e2?.hotel &&
-        e1?.location == e2?.location;
+        e1?.location == e2?.location &&
+        e1?.cr == e2?.cr;
   }
 
   @override
@@ -138,9 +138,9 @@ class ReplacementRecordDocumentEquality implements Equality<ReplacementRecord> {
         e?.date,
         e?.watts,
         e?.quantity,
-        e?.ofCR,
         e?.hotel,
-        e?.location
+        e?.location,
+        e?.cr
       ]);
 
   @override

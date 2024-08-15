@@ -3,16 +3,17 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'add_edit_c_r_model.dart';
 export 'add_edit_c_r_model.dart';
 
 class AddEditCRWidget extends StatefulWidget {
   const AddEditCRWidget({
     super.key,
-    this.location,
+    this.cr,
   });
 
-  final CrRecord? location;
+  final ComfortRoomsRecord? cr;
 
   @override
   State<AddEditCRWidget> createState() => _AddEditCRWidgetState();
@@ -32,10 +33,12 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
     super.initState();
     _model = createModel(context, () => AddEditCRModel());
 
+    _model.descriptionTextController ??= TextEditingController(
+        text: widget.cr != null ? widget.cr?.description : '');
+    _model.descriptionFocusNode ??= FocusNode();
+
     _model.socketsTextController ??= TextEditingController(
-        text: widget.location != null
-            ? widget.location?.sockets.toString()
-            : '0');
+        text: widget.cr != null ? widget.cr?.sockets.toString() : '0');
     _model.socketsFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -50,6 +53,8 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -118,39 +123,14 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
-                              child: FutureBuilder<LocationsRecord>(
-                                future: LocationsRecord.getDocumentOnce(
-                                    widget.location!.parentReference),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 50.0,
-                                        height: 50.0,
-                                        child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-
-                                  final textLocationsRecord = snapshot.data!;
-
-                                  return Text(
-                                    'CR of ${textLocationsRecord.description}',
-                                    style: FlutterFlowTheme.of(context)
-                                        .headlineSmall
-                                        .override(
-                                          fontFamily: 'Outfit',
-                                          letterSpacing: 0.0,
-                                        ),
-                                  );
-                                },
+                              child: Text(
+                                widget.cr != null ? 'Edit CR' : 'Add CR',
+                                style: FlutterFlowTheme.of(context)
+                                    .headlineSmall
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                             Align(
@@ -342,6 +322,63 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
                         child: TextFormField(
+                          controller: _model.descriptionTextController,
+                          focusNode: _model.descriptionFocusNode,
+                          autofocus: false,
+                          textCapitalization: TextCapitalization.words,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'Description',
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodySmall.override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 28.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                            hintText: 'Description',
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  fontSize: 28.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                            filled: true,
+                            fillColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 24.0, 20.0, 24.0),
+                          ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                          minLines: 1,
+                          validator: _model.descriptionTextControllerValidator
+                              .asValidator(context),
+                        ),
+                      ),
+                      const Divider(
+                        height: 4.0,
+                        thickness: 1.0,
+                        color: Color(0xFFE0E3E7),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                        ),
+                        child: TextFormField(
                           controller: _model.socketsTextController,
                           focusNode: _model.socketsFocusNode,
                           autofocus: false,
@@ -416,16 +453,44 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.location != null) {
-                                    await widget.location!.reference
-                                        .update(createCrRecordData(
+                                  if (widget.cr != null) {
+                                    await widget.cr!.reference
+                                        .update(createComfortRoomsRecordData(
                                       sockets: int.tryParse(
                                           _model.socketsTextController.text),
+                                      description:
+                                          _model.descriptionTextController.text,
                                     ));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
                                           'CR lighting updated!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
+                                      ),
+                                    );
+                                    Navigator.pop(context);
+                                  } else {
+                                    await ComfortRoomsRecord.collection
+                                        .doc()
+                                        .set(createComfortRoomsRecordData(
+                                          sockets: int.tryParse(_model
+                                              .socketsTextController.text),
+                                          hotel: FFAppState().hotel,
+                                          description: _model
+                                              .descriptionTextController.text,
+                                        ));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'CR lighting created!',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
                                                 .primaryText,

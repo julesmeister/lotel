@@ -30,7 +30,7 @@ import 'schema/bill_changes_record.dart';
 import 'schema/records_record.dart';
 import 'schema/replacement_record.dart';
 import 'schema/locations_record.dart';
-import 'schema/cr_record.dart';
+import 'schema/comfort_rooms_record.dart';
 import 'dart:async';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -66,7 +66,7 @@ export 'schema/bill_changes_record.dart';
 export 'schema/records_record.dart';
 export 'schema/replacement_record.dart';
 export 'schema/locations_record.dart';
-export 'schema/cr_record.dart';
+export 'schema/comfort_rooms_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Future<int> queryUsersRecordCount({
@@ -2040,57 +2040,53 @@ Future<FFFirestorePage<LocationsRecord>> queryLocationsRecordPage({
       return page;
     });
 
-/// Functions to query CrRecords (as a Stream and as a Future).
-Future<int> queryCrRecordCount({
-  DocumentReference? parent,
+/// Functions to query ComfortRoomsRecords (as a Stream and as a Future).
+Future<int> queryComfortRoomsRecordCount({
   Query Function(Query)? queryBuilder,
   int limit = -1,
 }) =>
     queryCollectionCount(
-      CrRecord.collection(parent),
+      ComfortRoomsRecord.collection,
       queryBuilder: queryBuilder,
       limit: limit,
     );
 
-Stream<List<CrRecord>> queryCrRecord({
-  DocumentReference? parent,
+Stream<List<ComfortRoomsRecord>> queryComfortRoomsRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollection(
-      CrRecord.collection(parent),
-      CrRecord.fromSnapshot,
+      ComfortRoomsRecord.collection,
+      ComfortRoomsRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-Future<List<CrRecord>> queryCrRecordOnce({
-  DocumentReference? parent,
+Future<List<ComfortRoomsRecord>> queryComfortRoomsRecordOnce({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollectionOnce(
-      CrRecord.collection(parent),
-      CrRecord.fromSnapshot,
+      ComfortRoomsRecord.collection,
+      ComfortRoomsRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
-Future<FFFirestorePage<CrRecord>> queryCrRecordPage({
-  DocumentReference? parent,
+Future<FFFirestorePage<ComfortRoomsRecord>> queryComfortRoomsRecordPage({
   Query Function(Query)? queryBuilder,
   DocumentSnapshot? nextPageMarker,
   required int pageSize,
   required bool isStream,
-  required PagingController<DocumentSnapshot?, CrRecord> controller,
+  required PagingController<DocumentSnapshot?, ComfortRoomsRecord> controller,
   List<StreamSubscription?>? streamSubscriptions,
 }) =>
     queryCollectionPage(
-      CrRecord.collection(parent),
-      CrRecord.fromSnapshot,
+      ComfortRoomsRecord.collection,
+      ComfortRoomsRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,
@@ -2102,7 +2098,7 @@ Future<FFFirestorePage<CrRecord>> queryCrRecordPage({
       );
       if (isStream) {
         final streamSubscription =
-            (page.dataStream)?.listen((List<CrRecord> data) {
+            (page.dataStream)?.listen((List<ComfortRoomsRecord> data) {
           for (var item in data) {
             final itemIndexes = controller.itemList!
                 .asMap()

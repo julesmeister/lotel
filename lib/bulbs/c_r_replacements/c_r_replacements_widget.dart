@@ -18,10 +18,12 @@ export 'c_r_replacements_model.dart';
 class CRReplacementsWidget extends StatefulWidget {
   const CRReplacementsWidget({
     super.key,
-    required this.location,
+    this.location,
+    required this.cr,
   });
 
   final LocationsRecord? location;
+  final ComfortRoomsRecord? cr;
 
   @override
   State<CRReplacementsWidget> createState() => _CRReplacementsWidgetState();
@@ -109,8 +111,8 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
       stream: queryReplacementRecord(
         queryBuilder: (replacementRecord) => replacementRecord
             .where(
-              'location',
-              isEqualTo: widget.location?.reference,
+              'cr',
+              isEqualTo: widget.cr?.reference,
             )
             .where(
               'date',
@@ -119,10 +121,6 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
             .where(
               'date',
               isLessThanOrEqualTo: functions.endOfYear(_model.year),
-            )
-            .where(
-              'ofCR',
-              isEqualTo: true,
             )
             .orderBy('date', descending: true),
       ),
@@ -175,7 +173,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'CR of ${widget.location?.description}',
+                    widget.cr!.description,
                     style: FlutterFlowTheme.of(context).headlineMedium.override(
                           fontFamily: 'Outfit',
                           color: FlutterFlowTheme.of(context).primaryText,
@@ -209,8 +207,8 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                             child: SizedBox(
                               height: double.infinity,
                               child: AddEditReplacementWidget(
-                                location: widget.location!.reference,
-                                ofCR: true,
+                                location: widget.location?.reference,
+                                cr: widget.cr?.reference,
                               ),
                             ),
                           ),

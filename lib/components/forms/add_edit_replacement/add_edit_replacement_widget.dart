@@ -11,14 +11,14 @@ export 'add_edit_replacement_model.dart';
 class AddEditReplacementWidget extends StatefulWidget {
   const AddEditReplacementWidget({
     super.key,
-    required this.location,
+    this.location,
     this.replacement,
-    bool? ofCR,
-  }) : ofCR = ofCR ?? false;
+    this.cr,
+  });
 
   final DocumentReference? location;
   final ReplacementRecord? replacement;
-  final bool ofCR;
+  final DocumentReference? cr;
 
   @override
   State<AddEditReplacementWidget> createState() =>
@@ -535,8 +535,8 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                           location: widget.location,
                                           quantity: int.tryParse(
                                               _model.numberTextController.text),
-                                          ofCR: widget.ofCR,
                                           hotel: FFAppState().hotel,
+                                          cr: widget.cr,
                                         ),
                                         ...mapToFirestore(
                                           {

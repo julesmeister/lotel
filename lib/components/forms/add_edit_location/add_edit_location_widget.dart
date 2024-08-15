@@ -527,6 +527,19 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                               .socketsTextController.text),
                                           withCR: _model.crValue,
                                         ));
+                                    if (_model.crValue!) {
+                                      // create CR
+
+                                      await ComfortRoomsRecord.collection
+                                          .doc()
+                                          .set(createComfortRoomsRecordData(
+                                            sockets: 1,
+                                            hotel: FFAppState().hotel,
+                                            description:
+                                                'CR of ${_model.locationTextController.text}',
+                                          ));
+                                    }
+                                    Navigator.pop(context);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
@@ -542,7 +555,6 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                                 .secondary,
                                       ),
                                     );
-                                    Navigator.pop(context);
                                   }
                                 },
                                 child: Row(

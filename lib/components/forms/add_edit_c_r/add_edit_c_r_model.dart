@@ -9,6 +9,10 @@ class AddEditCRModel extends FlutterFlowModel<AddEditCRWidget> {
 
   ///  State fields for stateful widgets in this component.
 
+  // State field(s) for description widget.
+  FocusNode? descriptionFocusNode;
+  TextEditingController? descriptionTextController;
+  String? Function(BuildContext, String?)? descriptionTextControllerValidator;
   // State field(s) for sockets widget.
   FocusNode? socketsFocusNode;
   TextEditingController? socketsTextController;
@@ -19,6 +23,9 @@ class AddEditCRModel extends FlutterFlowModel<AddEditCRWidget> {
 
   @override
   void dispose() {
+    descriptionFocusNode?.dispose();
+    descriptionTextController?.dispose();
+
     socketsFocusNode?.dispose();
     socketsTextController?.dispose();
   }
