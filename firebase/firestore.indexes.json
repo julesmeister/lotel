@@ -305,7 +305,17 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "ofCR",
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "replacement",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "cr",
           "order": "ASCENDING"
         },
         {
@@ -407,16 +417,6 @@
     {
       "collectionGroup": "salaries",
       "fieldPath": "staff",
-      "indexes": [
-        {
-          "order": "ASCENDING",
-          "queryScope": "COLLECTION_GROUP"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "cr",
-      "fieldPath": "hotel",
       "indexes": [
         {
           "order": "ASCENDING",
