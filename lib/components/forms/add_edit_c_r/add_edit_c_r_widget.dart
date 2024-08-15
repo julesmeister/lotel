@@ -2,6 +2,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'add_edit_c_r_model.dart';
@@ -324,7 +325,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                         child: TextFormField(
                           controller: _model.descriptionTextController,
                           focusNode: _model.descriptionFocusNode,
-                          autofocus: false,
+                          autofocus: true,
                           textCapitalization: TextCapitalization.words,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -458,8 +459,9 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                         .update(createComfortRoomsRecordData(
                                       sockets: int.tryParse(
                                           _model.socketsTextController.text),
-                                      description:
-                                          _model.descriptionTextController.text,
+                                      description: functions.startBigLetter(
+                                          _model
+                                              .descriptionTextController.text),
                                     ));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -484,8 +486,9 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                           sockets: int.tryParse(_model
                                               .socketsTextController.text),
                                           hotel: FFAppState().hotel,
-                                          description: _model
-                                              .descriptionTextController.text,
+                                          description: functions.startBigLetter(
+                                              _model.descriptionTextController
+                                                  .text),
                                         ));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

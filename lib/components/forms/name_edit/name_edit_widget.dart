@@ -140,85 +140,9 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                     ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        height: 4.0,
-                        thickness: 1.0,
-                        color: Color(0xFFE0E3E7),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        child: TextFormField(
-                          controller: _model.nameTextController,
-                          focusNode: _model.nameFocusNode,
-                          autofocus: true,
-                          textCapitalization: TextCapitalization.words,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'Name',
-                            labelStyle:
-                                FlutterFlowTheme.of(context).bodySmall.override(
-                                      fontFamily: 'Readex Pro',
-                                      fontSize: 28.0,
-                                      letterSpacing: 0.0,
-                                    ),
-                            hintText: 'Enter new name here',
-                            hintStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Lexend Deca',
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  fontSize: 28.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none,
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 24.0, 20.0, 24.0),
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Readex Pro',
-                                    fontSize: 28.0,
-                                    letterSpacing: 0.0,
-                                  ),
-                          minLines: 1,
-                          validator: _model.nameTextControllerValidator
-                              .asValidator(context),
-                        ),
-                      ),
-                      const Divider(
-                        height: 4.0,
-                        thickness: 1.0,
-                        color: Color(0xFFE0E3E7),
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            8.0, 4.0, 16.0, 10.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              width: 150.0,
-                              height: 44.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 16.0, 0.0),
                               child: InkWell(
                                 splashColor: Colors.transparent,
                                 focusColor: Colors.transparent,
@@ -278,6 +202,63 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 4.0,
+                        thickness: 1.0,
+                        color: Color(0xFFE0E3E7),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                        ),
+                        child: TextFormField(
+                          controller: _model.nameTextController,
+                          focusNode: _model.nameFocusNode,
+                          autofocus: true,
+                          textCapitalization: TextCapitalization.words,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'Name',
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodySmall.override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 28.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                            hintText: 'Enter new name here',
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  fontSize: 28.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                            filled: true,
+                            fillColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 24.0, 20.0, 24.0),
+                          ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 28.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                          minLines: 1,
+                          validator: _model.nameTextControllerValidator
+                              .asValidator(context),
                         ),
                       ),
                     ],

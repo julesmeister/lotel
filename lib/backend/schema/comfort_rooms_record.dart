@@ -15,11 +15,6 @@ class ComfortRoomsRecord extends FirestoreRecord {
     _initializeFields();
   }
 
-  // "replacements" field.
-  List<DocumentReference>? _replacements;
-  List<DocumentReference> get replacements => _replacements ?? const [];
-  bool hasReplacements() => _replacements != null;
-
   // "sockets" field.
   int? _sockets;
   int get sockets => _sockets ?? 0;
@@ -36,7 +31,6 @@ class ComfortRoomsRecord extends FirestoreRecord {
   bool hasDescription() => _description != null;
 
   void _initializeFields() {
-    _replacements = getDataList(snapshotData['replacements']);
     _sockets = castToType<int>(snapshotData['sockets']);
     _hotel = snapshotData['hotel'] as String?;
     _description = snapshotData['description'] as String?;
@@ -98,16 +92,14 @@ class ComfortRoomsRecordDocumentEquality
 
   @override
   bool equals(ComfortRoomsRecord? e1, ComfortRoomsRecord? e2) {
-    const listEquality = ListEquality();
-    return listEquality.equals(e1?.replacements, e2?.replacements) &&
-        e1?.sockets == e2?.sockets &&
+    return e1?.sockets == e2?.sockets &&
         e1?.hotel == e2?.hotel &&
         e1?.description == e2?.description;
   }
 
   @override
-  int hash(ComfortRoomsRecord? e) => const ListEquality()
-      .hash([e?.replacements, e?.sockets, e?.hotel, e?.description]);
+  int hash(ComfortRoomsRecord? e) =>
+      const ListEquality().hash([e?.sockets, e?.hotel, e?.description]);
 
   @override
   bool isValidKey(Object? o) => o is ComfortRoomsRecord;

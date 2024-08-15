@@ -2,6 +2,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'add_edit_location_model.dart';
@@ -497,8 +498,8 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                       sockets: int.tryParse(
                                           _model.socketsTextController.text),
                                       withCR: _model.crValue,
-                                      description:
-                                          _model.locationTextController.text,
+                                      description: functions.startBigLetter(
+                                          _model.locationTextController.text),
                                     ));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -520,8 +521,9 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                     await LocationsRecord.collection
                                         .doc()
                                         .set(createLocationsRecordData(
-                                          description: _model
-                                              .locationTextController.text,
+                                          description: functions.startBigLetter(
+                                              _model
+                                                  .locationTextController.text),
                                           hotel: FFAppState().hotel,
                                           sockets: int.tryParse(_model
                                               .socketsTextController.text),
@@ -536,7 +538,7 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                             sockets: 1,
                                             hotel: FFAppState().hotel,
                                             description:
-                                                'CR of ${_model.locationTextController.text}',
+                                                'CR of ${functions.startBigLetter(_model.locationTextController.text)}',
                                           ));
                                     }
                                     Navigator.pop(context);

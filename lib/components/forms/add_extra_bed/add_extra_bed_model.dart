@@ -10,6 +10,8 @@ class AddExtraBedModel extends FlutterFlowModel<AddExtraBedWidget> {
 
   double bedPrice = 0.0;
 
+  double promoPercent = 0.0;
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Read Document] action in AddExtraBed widget.

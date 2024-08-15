@@ -2010,7 +2010,7 @@ String whoInListOfNames(
       return "Who collected this remittance?";
     }
   } else if (issue) {
-    return "Who issued this?";
+    return "Who reported this issue?";
   } else if (record) {
     if (issuer != null && issuer) {
       return "Who issued this record?";

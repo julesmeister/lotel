@@ -139,6 +139,108 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                     ),
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 16.0, 0.0),
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  // update transaction
+
+                                  await widget.ref!
+                                      .update(createTransactionsRecordData(
+                                    description: _model.descTextController.text,
+                                    total: double.tryParse(
+                                        _model.priceTextController.text),
+                                  ));
+                                  if (widget.bookingRef != null) {
+                                    // update book total
+
+                                    await widget.bookingRef!.update({
+                                      ...mapToFirestore(
+                                        {
+                                          'total': FieldValue.increment(
+                                              double.parse(_model
+                                                      .priceTextController
+                                                      .text) -
+                                                  (widget.price!)),
+                                        },
+                                      ),
+                                    });
+                                    if (widget.price !=
+                                        (double.parse(
+                                            _model.priceTextController.text))) {
+                                      // create history
+
+                                      await HistoryRecord.createDoc(
+                                              widget.roomRef!)
+                                          .set({
+                                        ...createHistoryRecordData(
+                                          description:
+                                              'The transaction amount was changed from ${widget.price?.toString()} to ${_model.priceTextController.text}.',
+                                          staff: currentUserReference,
+                                          booking: widget.bookingRef,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                    }
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Transaction description now updated!',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: const Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondary,
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 12.0, 0.0),
+                                      child: Text(
+                                        'Save',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.send_rounded,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondary,
+                                      size: 28.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -253,127 +355,6 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                       signed: true, decimal: true),
                               validator: _model.priceTextControllerValidator
                                   .asValidator(context),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        height: 4.0,
-                        thickness: 1.0,
-                        color: Color(0xFFE0E3E7),
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            8.0, 4.0, 16.0, 10.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              width: 150.0,
-                              height: 44.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  // update transaction
-
-                                  await widget.ref!
-                                      .update(createTransactionsRecordData(
-                                    description: _model.descTextController.text,
-                                    total: double.tryParse(
-                                        _model.priceTextController.text),
-                                  ));
-                                  if (widget.bookingRef != null) {
-                                    // update book total
-
-                                    await widget.bookingRef!.update({
-                                      ...mapToFirestore(
-                                        {
-                                          'total': FieldValue.increment(
-                                              double.parse(_model
-                                                      .priceTextController
-                                                      .text) -
-                                                  (widget.price!)),
-                                        },
-                                      ),
-                                    });
-                                    if (widget.price !=
-                                        (double.parse(
-                                            _model.priceTextController.text))) {
-                                      // create history
-
-                                      await HistoryRecord.createDoc(
-                                              widget.roomRef!)
-                                          .set({
-                                        ...createHistoryRecordData(
-                                          description:
-                                              'The transaction amount was changed from ${widget.price?.toString()} to ${_model.priceTextController.text}.',
-                                          staff: currentUserReference,
-                                          booking: widget.bookingRef,
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'date':
-                                                FieldValue.serverTimestamp(),
-                                          },
-                                        ),
-                                      });
-                                    }
-                                  }
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Transaction description now updated!',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                        ),
-                                      ),
-                                      duration: const Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-                                },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 12.0, 0.0),
-                                      child: Text(
-                                        'Save',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondary,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.send_rounded,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondary,
-                                      size: 28.0,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
                           ],
                         ),

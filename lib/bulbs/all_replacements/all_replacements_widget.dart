@@ -1,7 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/change_date/change_date_widget.dart';
-import '/components/options/list_of_names/list_of_names_widget.dart';
 import '/components/options/option_to_replacement/option_to_replacement_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -561,98 +560,43 @@ class _AllReplacementsWidgetState extends State<AllReplacementsWidget>
                                                           final richTextLocationsRecord =
                                                               snapshot.data!;
 
-                                                          return InkWell(
-                                                            splashColor: Colors
-                                                                .transparent,
-                                                            focusColor: Colors
-                                                                .transparent,
-                                                            hoverColor: Colors
-                                                                .transparent,
-                                                            highlightColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            onTap: () async {
-                                                              if (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin') {
-                                                                await showModalBottomSheet(
-                                                                  isScrollControlled:
-                                                                      true,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  enableDrag:
-                                                                      false,
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (context) {
-                                                                    return GestureDetector(
-                                                                      onTap: () =>
-                                                                          FocusScope.of(context)
-                                                                              .unfocus(),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding:
-                                                                            MediaQuery.viewInsetsOf(context),
-                                                                        child:
-                                                                            SizedBox(
-                                                                          height:
-                                                                              300.0,
-                                                                          child:
-                                                                              ListOfNamesWidget(
-                                                                            replacement:
-                                                                                replacementItem.reference,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                ).then((value) =>
-                                                                    safeSetState(
-                                                                        () {}));
-                                                              }
-                                                            },
-                                                            child: RichText(
-                                                              textScaler:
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .textScaler,
-                                                              text: TextSpan(
-                                                                children: [
-                                                                  TextSpan(
-                                                                    text: richTextLocationsRecord
-                                                                        .description,
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyLarge
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).primaryText,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
-                                                                        ),
-                                                                  )
-                                                                ],
-                                                                style: FlutterFlowTheme.of(
+                                                          return RichText(
+                                                            textScaler:
+                                                                MediaQuery.of(
                                                                         context)
-                                                                    .bodyLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
-                                                              ),
-                                                              textAlign:
-                                                                  TextAlign.end,
+                                                                    .textScaler,
+                                                            text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: richTextLocationsRecord
+                                                                      .description,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryText,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      ),
+                                                                )
+                                                              ],
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyLarge
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
                                                             ),
+                                                            textAlign:
+                                                                TextAlign.end,
                                                           );
                                                         },
                                                       ),
@@ -693,98 +637,43 @@ class _AllReplacementsWidgetState extends State<AllReplacementsWidget>
                                                           final richTextComfortRoomsRecord =
                                                               snapshot.data!;
 
-                                                          return InkWell(
-                                                            splashColor: Colors
-                                                                .transparent,
-                                                            focusColor: Colors
-                                                                .transparent,
-                                                            hoverColor: Colors
-                                                                .transparent,
-                                                            highlightColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            onTap: () async {
-                                                              if (valueOrDefault(
-                                                                      currentUserDocument
-                                                                          ?.role,
-                                                                      '') ==
-                                                                  'admin') {
-                                                                await showModalBottomSheet(
-                                                                  isScrollControlled:
-                                                                      true,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  enableDrag:
-                                                                      false,
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (context) {
-                                                                    return GestureDetector(
-                                                                      onTap: () =>
-                                                                          FocusScope.of(context)
-                                                                              .unfocus(),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding:
-                                                                            MediaQuery.viewInsetsOf(context),
-                                                                        child:
-                                                                            SizedBox(
-                                                                          height:
-                                                                              300.0,
-                                                                          child:
-                                                                              ListOfNamesWidget(
-                                                                            replacement:
-                                                                                replacementItem.reference,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                ).then((value) =>
-                                                                    safeSetState(
-                                                                        () {}));
-                                                              }
-                                                            },
-                                                            child: RichText(
-                                                              textScaler:
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .textScaler,
-                                                              text: TextSpan(
-                                                                children: [
-                                                                  TextSpan(
-                                                                    text: richTextComfortRoomsRecord
-                                                                        .description,
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyLarge
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).primaryText,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
-                                                                        ),
-                                                                  )
-                                                                ],
-                                                                style: FlutterFlowTheme.of(
+                                                          return RichText(
+                                                            textScaler:
+                                                                MediaQuery.of(
                                                                         context)
-                                                                    .bodyLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
-                                                              ),
-                                                              textAlign:
-                                                                  TextAlign.end,
+                                                                    .textScaler,
+                                                            text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: richTextComfortRoomsRecord
+                                                                      .description,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryText,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      ),
+                                                                )
+                                                              ],
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyLarge
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
                                                             ),
+                                                            textAlign:
+                                                                TextAlign.end,
                                                           );
                                                         },
                                                       ),

@@ -11,7 +11,8 @@ export '/admin/edit_bed_price/edit_bed_price_widget.dart'
 export '/merchandise/mart/mart_widget.dart' show MartWidget;
 export '/merchandise/inventory/inventory_widget.dart' show InventoryWidget;
 export '/merchandise/check_out/check_out_widget.dart' show CheckOutWidget;
-export '/sales/transactions/transactions_widget.dart' show TransactionsWidget;
+export '/transactions/transactions/transactions_widget.dart'
+    show TransactionsWidget;
 export '/merchandise/history_in_inventory/history_in_inventory_widget.dart'
     show HistoryInInventoryWidget;
 export '/sales/remittances/remittances_widget.dart' show RemittancesWidget;

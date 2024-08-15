@@ -119,17 +119,186 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                'Edit Grocery',
-                                style: FlutterFlowTheme.of(context)
-                                    .headlineSmall
-                                    .override(
-                                      fontFamily: 'Outfit',
-                                      letterSpacing: 0.0,
+                            Expanded(
+                              flex: 5,
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 0.0, 0.0),
+                                child: Text(
+                                  'Edit Grocery',
+                                  style: FlutterFlowTheme.of(context)
+                                      .headlineSmall
+                                      .override(
+                                        fontFamily: 'Outfit',
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                width: 250.0,
+                                height: 44.0,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 16.0, 0.0),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      if (_model.amountTextController.text !=
+                                              '') {
+                                        var confirmDialogResponse =
+                                            await showDialog<bool>(
+                                                  context: context,
+                                                  builder:
+                                                      (alertDialogContext) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          'This will alter details for this grocery.'),
+                                                      content: Text(
+                                                          'You are recording an amount of Php ${_model.amountTextController.text}.'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  false),
+                                                          child: const Text('Cancel'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  true),
+                                                          child:
+                                                              const Text('Confirm'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ) ??
+                                                false;
+                                        if (confirmDialogResponse) {
+                                          // update grocery
+
+                                          await widget.grocery!.reference
+                                              .update(createGroceriesRecordData(
+                                            remark: _model
+                                                .remarkTextController.text,
+                                            amount: double.tryParse(_model
+                                                .amountTextController.text),
+                                          ));
+                                          if (widget.grocery?.amount
+                                                  .toString() !=
+                                              _model
+                                                  .amountTextController.text) {
+                                            // increment grocery expense
+
+                                            await FFAppState()
+                                                .statsReference!
+                                                .update({
+                                              ...mapToFirestore(
+                                                {
+                                                  'groceryExpenses':
+                                                      FieldValue.increment(
+                                                          double.parse(_model
+                                                              .amountTextController
+                                                              .text)),
+                                                },
+                                              ),
+                                            });
+                                          }
+                                          // clear groceryHome
+                                          FFAppState().clearGroceryHomeCache();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Grocery updated!',
+                                                style: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                ),
+                                              ),
+                                              duration:
+                                                  const Duration(milliseconds: 4000),
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                            ),
+                                          );
+                                        }
+                                        Navigator.pop(context);
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Please enter an amount!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                              ),
+                                            ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .error,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Expanded(
+                                          flex: 5,
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 5.0, 0.0),
+                                            child: Text(
+                                              'Save Details',
+                                              textAlign: TextAlign.end,
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondary,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Icon(
+                                            Icons.send_rounded,
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondary,
+                                            size: 28.0,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -245,179 +414,6 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                       signed: true, decimal: true),
                               validator: _model.amountTextControllerValidator
                                   .asValidator(context),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        height: 4.0,
-                        thickness: 1.0,
-                        color: Color(0xFFE0E3E7),
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            8.0, 4.0, 16.0, 10.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Container(
-                                width: 250.0,
-                                height: 44.0,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                ),
-                                child: InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    if (_model.amountTextController.text !=
-                                            '') {
-                                      var confirmDialogResponse =
-                                          await showDialog<bool>(
-                                                context: context,
-                                                builder: (alertDialogContext) {
-                                                  return AlertDialog(
-                                                    title: const Text(
-                                                        'This will alter details for this grocery.'),
-                                                    content: Text(
-                                                        'You are recording an amount of Php ${_model.amountTextController.text}.'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                false),
-                                                        child: const Text('Cancel'),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                true),
-                                                        child: const Text('Confirm'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              ) ??
-                                              false;
-                                      if (confirmDialogResponse) {
-                                        // update grocery
-
-                                        await widget.grocery!.reference
-                                            .update(createGroceriesRecordData(
-                                          remark:
-                                              _model.remarkTextController.text,
-                                          amount: double.tryParse(
-                                              _model.amountTextController.text),
-                                        ));
-                                        if (widget.grocery?.amount
-                                                .toString() !=
-                                            _model.amountTextController.text) {
-                                          // increment grocery expense
-
-                                          await FFAppState()
-                                              .statsReference!
-                                              .update({
-                                            ...mapToFirestore(
-                                              {
-                                                'groceryExpenses':
-                                                    FieldValue.increment(
-                                                        double.parse(_model
-                                                            .amountTextController
-                                                            .text)),
-                                              },
-                                            ),
-                                          });
-                                        }
-                                        // clear groceryHome
-                                        FFAppState().clearGroceryHomeCache();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              'Grocery updated!',
-                                              style: TextStyle(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                              ),
-                                            ),
-                                            duration:
-                                                const Duration(milliseconds: 4000),
-                                            backgroundColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                          ),
-                                        );
-                                      }
-                                      Navigator.pop(context);
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Please enter an amount!',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .info,
-                                            ),
-                                          ),
-                                          duration:
-                                              const Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .error,
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Expanded(
-                                        flex: 5,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 5.0, 0.0),
-                                          child: Text(
-                                            'Save Details',
-                                            textAlign: TextAlign.end,
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Readex Pro',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondary,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Icon(
-                                          Icons.send_rounded,
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondary,
-                                          size: 28.0,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
                             ),
                           ],
                         ),

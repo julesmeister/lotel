@@ -5,6 +5,7 @@ import '/components/forms/add_edit_location/add_edit_location_widget.dart';
 import '/components/options/option_to_c_r/option_to_c_r_widget.dart';
 import '/components/options/option_to_locations/option_to_locations_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
+import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -390,33 +391,39 @@ class _LocationsWidgetState extends State<LocationsWidget>
                     children: [
                       Align(
                         alignment: const Alignment(-1.0, 0),
-                        child: TabBar(
+                        child: FlutterFlowButtonTabBar(
+                          useToggleButtonStyle: true,
+                          labelStyle:
+                              FlutterFlowTheme.of(context).labelMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                          unselectedLabelStyle:
+                              FlutterFlowTheme.of(context).labelMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                           labelColor: FlutterFlowTheme.of(context).primaryText,
                           unselectedLabelColor:
                               FlutterFlowTheme.of(context).secondaryText,
+                          backgroundColor:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          unselectedBackgroundColor:
+                              FlutterFlowTheme.of(context).alternate,
+                          borderColor: FlutterFlowTheme.of(context).alternate,
+                          borderWidth: 2.0,
+                          borderRadius: 12.0,
+                          elevation: 0.0,
                           labelPadding: const EdgeInsetsDirectional.fromSTEB(
-                              16.0, 0.0, 16.0, 12.0),
-                          labelStyle: FlutterFlowTheme.of(context)
-                              .displaySmall
-                              .override(
-                                fontFamily: 'Outfit',
-                                letterSpacing: 0.0,
-                              ),
-                          unselectedLabelStyle: FlutterFlowTheme.of(context)
-                              .displaySmall
-                              .override(
-                                fontFamily: 'Outfit',
-                                letterSpacing: 0.0,
-                              ),
-                          indicatorWeight: 2.0,
+                              20.0, 0.0, 20.0, 0.0),
                           padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 12.0, 0.0),
+                              16.0, 0.0, 16.0, 0.0),
                           tabs: const [
                             Tab(
                               text: 'Areas',
                             ),
                             Tab(
-                              text: 'CRs',
+                              text: 'Comfort Rooms',
                             ),
                           ],
                           controller: _model.tabBarController,
@@ -437,7 +444,6 @@ class _LocationsWidgetState extends State<LocationsWidget>
                       Expanded(
                         child: TabBarView(
                           controller: _model.tabBarController,
-                          physics: const NeverScrollableScrollPhysics(),
                           children: [
                             StreamBuilder<List<LocationsRecord>>(
                               stream: queryLocationsRecord(
