@@ -317,8 +317,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                           height: 170.0,
                                           child: OptionToReplacementWidget(
                                             replacement: replacementItem,
-                                            location:
-                                                widget.location!.reference,
+                                            cr: widget.cr?.reference,
                                           ),
                                         ),
                                       ),

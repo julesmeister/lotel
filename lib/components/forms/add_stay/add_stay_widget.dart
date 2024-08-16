@@ -414,89 +414,96 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  10.0, 0.0, 0.0, 0.0),
-                              child: RichText(
-                                textScaler: MediaQuery.of(context).textScaler,
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Total: ',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            letterSpacing: 0.0,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                    ),
-                                    TextSpan(
-                                      text: (int.parse(_model
-                                                  .numberTextController.text) +
-                                              int.parse(widget.booking!.nights
-                                                  .toString()))
-                                          .toString(),
-                                      style: TextStyle(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primary,
-                                        fontWeight: FontWeight.normal,
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    10.0, 0.0, 0.0, 0.0),
+                                child: RichText(
+                                  textScaler: MediaQuery.of(context).textScaler,
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Total: ',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.normal,
+                                            ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: (String additional) {
-                                        return int.parse(additional) <= 1
-                                            ? ' night'
-                                            : ' nights';
-                                      }(_model.numberTextController.text),
-                                      style: const TextStyle(),
-                                    ),
-                                    const TextSpan(
-                                      text: ' ',
-                                      style: TextStyle(),
-                                    ),
-                                    TextSpan(
-                                      text: (double price, String quantity) {
-                                        return " +${price * int.parse(quantity)}";
-                                      }(
-                                          (_model.promoPercent != 0.0
-                                              ? ((_model.roomPrice -
-                                                      (_model.roomPrice *
-                                                          _model.promoPercent /
-                                                          100))
-                                                  .toInt()
-                                                  .toDouble())
-                                              : ((double price,
-                                                      String ability) {
-                                                  return (ability != "normal")
-                                                      ? (price * 0.8)
-                                                      : (price);
-                                                }(
-                                                  _model.roomPrice,
-                                                  valueOrDefault<String>(
-                                                    widget.booking?.ability,
-                                                    'normal',
-                                                  )))),
-                                          _model.numberTextController.text),
-                                      style: TextStyle(
-                                        color: (int.parse(_model
+                                      TextSpan(
+                                        text: (int.parse(_model
                                                     .numberTextController
-                                                    .text)) >=
-                                                1
-                                            ? FlutterFlowTheme.of(context)
-                                                .secondary
-                                            : FlutterFlowTheme.of(context).info,
+                                                    .text) +
+                                                int.parse(widget
+                                                    .booking!.nights
+                                                    .toString()))
+                                            .toString(),
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primary,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
-                                    )
-                                  ],
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Readex Pro',
-                                        letterSpacing: 0.0,
+                                      TextSpan(
+                                        text: (String additional) {
+                                          return int.parse(additional) <= 1
+                                              ? ' night'
+                                              : ' nights';
+                                        }(_model.numberTextController.text),
+                                        style: const TextStyle(),
                                       ),
+                                      const TextSpan(
+                                        text: ' ',
+                                        style: TextStyle(),
+                                      ),
+                                      TextSpan(
+                                        text: (double price, String quantity) {
+                                          return " +${price * int.parse(quantity)}";
+                                        }(
+                                            (_model.promoPercent != 0.0
+                                                ? ((_model.roomPrice -
+                                                        (_model.roomPrice *
+                                                            _model
+                                                                .promoPercent /
+                                                            100))
+                                                    .toInt()
+                                                    .toDouble())
+                                                : ((double price,
+                                                        String ability) {
+                                                    return (ability != "normal")
+                                                        ? (price * 0.8)
+                                                        : (price);
+                                                  }(
+                                                    _model.roomPrice,
+                                                    valueOrDefault<String>(
+                                                      widget.booking?.ability,
+                                                      'normal',
+                                                    )))),
+                                            _model.numberTextController.text),
+                                        style: TextStyle(
+                                          color: (int.parse(_model
+                                                      .numberTextController
+                                                      .text)) >=
+                                                  1
+                                              ? FlutterFlowTheme.of(context)
+                                                  .secondary
+                                              : FlutterFlowTheme.of(context)
+                                                  .info,
+                                        ),
+                                      )
+                                    ],
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
                                 ),
                               ),
                             ),

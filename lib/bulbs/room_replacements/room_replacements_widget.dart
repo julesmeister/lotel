@@ -315,7 +315,7 @@ class _RoomReplacementsWidgetState extends State<RoomReplacementsWidget>
                                           child: OptionToReplacementWidget(
                                             replacement: replacementItem,
                                             location:
-                                                widget.location!.reference,
+                                                widget.location?.reference,
                                           ),
                                         ),
                                       ),

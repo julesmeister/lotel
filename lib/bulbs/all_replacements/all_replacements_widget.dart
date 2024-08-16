@@ -277,7 +277,7 @@ class _AllReplacementsWidgetState extends State<AllReplacementsWidget>
                                           height: 170.0,
                                           child: OptionToReplacementWidget(
                                             replacement: replacementItem,
-                                            location: replacementItem.location!,
+                                            location: replacementItem.location,
                                           ),
                                         ),
                                       ),

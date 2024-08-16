@@ -10,11 +10,13 @@ class OptionToReplacementWidget extends StatefulWidget {
   const OptionToReplacementWidget({
     super.key,
     required this.replacement,
-    required this.location,
+    this.location,
+    this.cr,
   });
 
   final ReplacementRecord? replacement;
   final DocumentReference? location;
+  final DocumentReference? cr;
 
   @override
   State<OptionToReplacementWidget> createState() =>
@@ -103,6 +105,7 @@ class _OptionToReplacementWidgetState extends State<OptionToReplacementWidget> {
                             child: AddEditReplacementWidget(
                               location: widget.location,
                               replacement: widget.replacement,
+                              cr: widget.cr,
                             ),
                           ),
                         );

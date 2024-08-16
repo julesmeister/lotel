@@ -538,8 +538,26 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                     await transactionsRecordReference.set({
                                       ...createTransactionsRecordData(
                                         staff: currentUserReference,
-                                        total: _model.hotelSetting!.bedPrice *
-                                            double.parse(_model
+                                        total: (_model.promoPercent != 0.0
+                                                ? ((_model.bedPrice -
+                                                        (_model.bedPrice *
+                                                            _model
+                                                                .promoPercent /
+                                                            100))
+                                                    .toInt()
+                                                    .toDouble())
+                                                : ((double price,
+                                                        String ability) {
+                                                    return (ability != "normal")
+                                                        ? (price * 0.8)
+                                                        : (price);
+                                                  }(
+                                                    _model.bedPrice,
+                                                    valueOrDefault<String>(
+                                                      widget.booking?.ability,
+                                                      'normal',
+                                                    )))) *
+                                            int.parse(_model
                                                 .numberTextController.text),
                                         hotel: FFAppState().hotel,
                                         type: 'book',
@@ -572,8 +590,26 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                         TransactionsRecord.getDocumentFromData({
                                       ...createTransactionsRecordData(
                                         staff: currentUserReference,
-                                        total: _model.hotelSetting!.bedPrice *
-                                            double.parse(_model
+                                        total: (_model.promoPercent != 0.0
+                                                ? ((_model.bedPrice -
+                                                        (_model.bedPrice *
+                                                            _model
+                                                                .promoPercent /
+                                                            100))
+                                                    .toInt()
+                                                    .toDouble())
+                                                : ((double price,
+                                                        String ability) {
+                                                    return (ability != "normal")
+                                                        ? (price * 0.8)
+                                                        : (price);
+                                                  }(
+                                                    _model.bedPrice,
+                                                    valueOrDefault<String>(
+                                                      widget.booking?.ability,
+                                                      'normal',
+                                                    )))) *
+                                            int.parse(_model
                                                 .numberTextController.text),
                                         hotel: FFAppState().hotel,
                                         type: 'book',
@@ -617,11 +653,31 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                         {
                                           'transactions': FieldValue.arrayUnion(
                                               [_model.trans?.reference]),
-                                          'total': FieldValue.increment(
-                                              _model.hotelSetting!.bedPrice *
-                                                  double.parse(_model
-                                                      .numberTextController
-                                                      .text)),
+                                          'total': FieldValue.increment((_model
+                                                          .promoPercent !=
+                                                      0.0
+                                                  ? ((_model.bedPrice -
+                                                          (_model.bedPrice *
+                                                              _model
+                                                                  .promoPercent /
+                                                              100))
+                                                      .toInt()
+                                                      .toDouble())
+                                                  : ((double price,
+                                                          String ability) {
+                                                      return (ability !=
+                                                              "normal")
+                                                          ? (price * 0.8)
+                                                          : (price);
+                                                    }(
+                                                      _model.bedPrice,
+                                                      valueOrDefault<String>(
+                                                        widget
+                                                            .booking?.ability,
+                                                        'normal',
+                                                      )))) *
+                                              int.parse(_model
+                                                  .numberTextController.text)),
                                         },
                                       ),
                                     });
