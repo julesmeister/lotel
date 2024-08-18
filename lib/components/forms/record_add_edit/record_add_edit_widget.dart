@@ -306,6 +306,9 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                                     .detailsTextController2
                                                     .text,
                                                 hotel: FFAppState().hotel,
+                                                receivedBy: _model
+                                                    .detailsTextController3
+                                                    .text,
                                               ),
                                               ...mapToFirestore(
                                                 {

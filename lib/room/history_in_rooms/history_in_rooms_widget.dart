@@ -1,4 +1,3 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/options/option_to_history/option_to_history_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -49,15 +48,39 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
     });
 
     animationsMap.addAll({
-      'calendarOnActionTriggerAnimation': AnimationInfo(
-        trigger: AnimationTrigger.onActionTrigger,
-        applyInitialState: true,
+      'iconButtonOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
         effectsBuilder: () => [
           MoveEffect(
-            curve: Curves.elasticOut,
+            curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'textOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+        ],
+      ),
+      'iconButtonOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(100.0, 0.0),
             end: const Offset(0.0, 0.0),
           ),
         ],
@@ -89,12 +112,6 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
         ],
       ),
     });
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -145,80 +162,7 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                   ),
             ),
           ),
-          actions: [
-            Align(
-              alignment: const AlignmentDirectional(0.0, 0.0),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    if (valueOrDefault(currentUserDocument?.role, '') ==
-                        'admin')
-                      AuthUserStreamWidget(
-                        builder: (context) => FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
-                          borderRadius: 20.0,
-                          borderWidth: 1.0,
-                          buttonSize: 40.0,
-                          icon: Icon(
-                            Icons.chevron_left,
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            size: 24.0,
-                          ),
-                          onPressed: () async {
-                            // set date
-                            _model.date = functions.prevDate(_model.date!);
-                            setState(() {});
-                            // update histories
-                            await _model.getHistoriesOfAllRooms(context);
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                    FlutterFlowIconButton(
-                      borderRadius: 12.0,
-                      borderWidth: 2.0,
-                      buttonSize: 40.0,
-                      fillColor: FlutterFlowTheme.of(context).info,
-                      icon: Icon(
-                        Icons.calendar_month_outlined,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
-                      ),
-                      onPressed: () async {
-                        _model.showDatePicker = !_model.showDatePicker;
-                        setState(() {});
-                      },
-                    ),
-                    if (valueOrDefault(currentUserDocument?.role, '') ==
-                        'admin')
-                      AuthUserStreamWidget(
-                        builder: (context) => FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
-                          borderRadius: 20.0,
-                          borderWidth: 1.0,
-                          buttonSize: 40.0,
-                          icon: Icon(
-                            Icons.navigate_next,
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            size: 24.0,
-                          ),
-                          onPressed: () async {
-                            // set date
-                            _model.date = functions.nextDate(_model.date!);
-                            setState(() {});
-                            // update histories
-                            await _model.getHistoriesOfAllRooms(context);
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+          actions: const [],
           centerTitle: false,
           elevation: 0.0,
         ),
@@ -231,23 +175,132 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30.0,
+                          borderWidth: 1.0,
+                          buttonSize: 60.0,
+                          icon: Icon(
+                            Icons.keyboard_arrow_left_outlined,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 30.0,
+                          ),
+                          onPressed: () async {
+                            // prev day
+                            _model.date = functions.prevDate(_model.date!);
+                            setState(() {});
+                            await _model.getHistoriesOfAllRooms(context);
+                            setState(() {});
+                          },
+                        ).animateOnPageLoad(
+                            animationsMap['iconButtonOnPageLoadAnimation1']!),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            _model.showDatePicker = !_model.showDatePicker;
+                            setState(() {});
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 16.0, 0.0),
+                                child: Icon(
+                                  Icons.calendar_month_sharp,
+                                  color: Color(0xFF04B9F9),
+                                  size: 35.0,
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Select Date',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryText,
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
+                                  AutoSizeText(
+                                    dateTimeFormat("MMMMEEEEd", _model.date),
+                                    maxLines: 1,
+                                    minFontSize: 12.0,
+                                    style: FlutterFlowTheme.of(context)
+                                        .displaySmall
+                                        .override(
+                                          fontFamily: 'Outfit',
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ).animateOnPageLoad(animationsMap[
+                                      'textOnPageLoadAnimation']!),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30.0,
+                          borderWidth: 1.0,
+                          buttonSize: 60.0,
+                          icon: Icon(
+                            Icons.keyboard_arrow_right_outlined,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 30.0,
+                          ),
+                          onPressed: () async {
+                            // next day
+                            _model.date = functions.nextDate(_model.date!);
+                            setState(() {});
+                            await _model.getHistoriesOfAllRooms(context);
+                            setState(() {});
+                          },
+                        ).animateOnPageLoad(
+                            animationsMap['iconButtonOnPageLoadAnimation2']!),
+                      ),
+                    ],
+                  ),
+                ),
                 if (_model.showDatePicker)
                   FlutterFlowCalendar(
                     color: FlutterFlowTheme.of(context).primary,
                     iconColor: FlutterFlowTheme.of(context).secondaryText,
                     weekFormat: false,
                     weekStartsMonday: false,
-                    initialDate: _model.date,
                     rowHeight: 64.0,
                     onChange: (DateTimeRange? newSelectedDate) async {
                       if (_model.calendarSelectedDay == newSelectedDate) {
                         return;
                       }
                       _model.calendarSelectedDay = newSelectedDate;
-                      // set date
                       _model.date = _model.calendarSelectedDay?.start;
                       setState(() {});
-                      // update histories
                       await _model.getHistoriesOfAllRooms(context);
                       setState(() {});
                       setState(() {});
@@ -276,8 +329,6 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                               fontFamily: 'Readex Pro',
                               letterSpacing: 0.0,
                             ),
-                  ).animateOnActionTrigger(
-                    animationsMap['calendarOnActionTriggerAnimation']!,
                   ),
                 Expanded(
                   child: Stack(
@@ -438,64 +489,6 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                                 ],
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      15.0, 0.0, 0.0, 0.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    dateTimeFormat("MMM",
-                                                        historyItem.date!),
-                                                    style:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyMedium
-                                                            .override(
-                                                              fontFamily:
-                                                                  'Readex Pro',
-                                                              color: functions.isThisMonth(
-                                                                      historyItem
-                                                                          .date!)
-                                                                  ? const Color(
-                                                                      0xFF6455F0)
-                                                                  : FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                              letterSpacing:
-                                                                  0.0,
-                                                            ),
-                                                  ),
-                                                  Text(
-                                                    dateTimeFormat(
-                                                        "d", historyItem.date!),
-                                                    style:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyMedium
-                                                            .override(
-                                                              fontFamily:
-                                                                  'Readex Pro',
-                                                              color: functions.isThisMonth(
-                                                                      historyItem
-                                                                          .date!)
-                                                                  ? FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primary
-                                                                  : FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primaryText,
-                                                              fontSize: 25.0,
-                                                              letterSpacing:
-                                                                  0.0,
-                                                            ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
                                             Expanded(
                                               flex: 7,
                                               child: Padding(
@@ -575,34 +568,6 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                                                         0.0,
                                                                   ),
                                                             ),
-                                                            Text(
-                                                              'Room ${valueOrDefault<String>(
-                                                                widget.room
-                                                                    ?.where((e) =>
-                                                                        e.reference ==
-                                                                        historyItem
-                                                                            .parentReference)
-                                                                    .toList()
-                                                                    .first
-                                                                    .number
-                                                                    .toString(),
-                                                                '0',
-                                                              )}',
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .labelSmall
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primary,
-                                                                    fontSize:
-                                                                        14.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
                                                           ],
                                                         );
                                                       },
@@ -631,6 +596,88 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                                               ),
                                                         ),
                                                       ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: Padding(
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        15.0, 0.0, 0.0, 0.0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      'Room',
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: functions.isThisMonth(
+                                                                        historyItem
+                                                                            .date!)
+                                                                    ? const Color(
+                                                                        0xFF6455F0)
+                                                                    : FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  5.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: Text(
+                                                        valueOrDefault<String>(
+                                                          widget.room
+                                                              ?.where((e) =>
+                                                                  e.reference ==
+                                                                  historyItem
+                                                                      .parentReference)
+                                                              .toList()
+                                                              .first
+                                                              .number
+                                                              .toString(),
+                                                          '0',
+                                                        ),
+                                                        maxLines: 1,
+                                                        style: FlutterFlowTheme
+                                                                .of(context)
+                                                            .bodyMedium
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Readex Pro',
+                                                              color: functions.isThisMonth(
+                                                                      historyItem
+                                                                          .date!)
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary
+                                                                  : FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                              fontSize: 25.0,
+                                                              letterSpacing:
+                                                                  0.0,
+                                                            ),
+                                                      ),
                                                     ),
                                                   ],
                                                 ),

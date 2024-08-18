@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -90,34 +91,50 @@ class _CashAdvanceOptionsWidgetState extends State<CashAdvanceOptionsWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    // ca
-                    _model.caToGetTotal =
-                        await AdvancesRecord.getDocumentOnce(widget.ca!);
-                    // decrement expenses in stats
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin') {
+                      // ca
+                      _model.caToGetTotal =
+                          await AdvancesRecord.getDocumentOnce(widget.ca!);
+                      // decrement expenses in stats
 
-                    await FFAppState().statsReference!.update({
-                      ...mapToFirestore(
-                        {
-                          'expenses': FieldValue.increment(
-                              -(_model.caToGetTotal!.amount)),
-                        },
-                      ),
-                    });
-                    // delete ca
-                    await widget.ca!.delete();
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Cash advance deleted',
-                          style: TextStyle(
-                            color: FlutterFlowTheme.of(context).info,
-                          ),
+                      await FFAppState().statsReference!.update({
+                        ...mapToFirestore(
+                          {
+                            'expenses': FieldValue.increment(
+                                -(_model.caToGetTotal!.amount)),
+                          },
                         ),
-                        duration: const Duration(milliseconds: 4000),
-                        backgroundColor: FlutterFlowTheme.of(context).error,
-                      ),
-                    );
+                      });
+                      // delete ca
+                      await widget.ca!.delete();
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Cash advance deleted',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).info,
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Consult Admin First!',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).info,
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
+                    }
 
                     setState(() {});
                   },

@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/add_edit_replacement/add_edit_replacement_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -164,43 +165,59 @@ class _OptionToReplacementWidgetState extends State<OptionToReplacementWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: const Text('Delete'),
-                              content: const Text('This record will be removed.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      // delete replacement
-                      await widget.replacement!.reference.delete();
-                      Navigator.pop(context);
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin') {
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Delete'),
+                                content: const Text('This record will be removed.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        // delete replacement
+                        await widget.replacement!.reference.delete();
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Record deleted!',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
+                          ),
+                        );
+                      }
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            'Record deleted!',
+                            'Consult Admin First!',
                             style: TextStyle(
-                              color: FlutterFlowTheme.of(context).primaryText,
+                              color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
                           duration: const Duration(milliseconds: 4000),
-                          backgroundColor:
-                              FlutterFlowTheme.of(context).secondary,
+                          backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
                     }

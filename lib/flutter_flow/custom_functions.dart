@@ -1846,7 +1846,7 @@ List<HistoryRecord>? sortRoomHistoryASC(List<HistoryRecord>? history) {
   if (history == null || history.isEmpty) {
     return null;
   }
-  history.sort((a, b) => a.date!.compareTo(b.date!));
+  history.sort((a, b) => b.date!.compareTo(a.date!));
   return history;
 }
 

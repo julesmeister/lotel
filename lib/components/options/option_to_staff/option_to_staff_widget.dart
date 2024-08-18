@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/staff_add_edit/staff_add_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -162,37 +163,53 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: const Text('Are you sure?'),
-                              content: const Text(
-                                  'Firing this staff means he/she will no longer show up in the next salary.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      // fire employee
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin') {
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Are you sure?'),
+                                content: const Text(
+                                    'Firing this staff means he/she will no longer show up in the next salary.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        // fire employee
 
-                      await widget.staffRef!.update(createStaffsRecordData(
-                        fired: true,
-                      ));
+                        await widget.staffRef!.update(createStaffsRecordData(
+                          fired: true,
+                        ));
+                      }
+                      Navigator.pop(context);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Consult Admin First!',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).info,
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
                     }
-                    Navigator.pop(context);
                   },
                   child: Container(
                     width: double.infinity,

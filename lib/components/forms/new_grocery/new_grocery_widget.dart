@@ -552,7 +552,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                               const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 5.0, 0.0),
                                           child: Text(
-                                            'Add to Grocery Grand Total',
+                                            'Save',
                                             textAlign: TextAlign.end,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium

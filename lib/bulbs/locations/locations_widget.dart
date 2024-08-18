@@ -446,14 +446,16 @@ class _LocationsWidgetState extends State<LocationsWidget>
                           controller: _model.tabBarController,
                           children: [
                             StreamBuilder<List<LocationsRecord>>(
-                              stream: queryLocationsRecord(
-                                queryBuilder: (locationsRecord) =>
-                                    locationsRecord
-                                        .where(
-                                          'hotel',
-                                          isEqualTo: FFAppState().hotel,
-                                        )
-                                        .orderBy('description'),
+                              stream: _model.areasList(
+                                requestFn: () => queryLocationsRecord(
+                                  queryBuilder: (locationsRecord) =>
+                                      locationsRecord
+                                          .where(
+                                            'hotel',
+                                            isEqualTo: FFAppState().hotel,
+                                          )
+                                          .orderBy('description'),
+                                ),
                               ),
                               builder: (context, snapshot) {
                                 // Customize what your widget looks like when it's loading.
@@ -655,11 +657,13 @@ class _LocationsWidgetState extends State<LocationsWidget>
                               },
                             ),
                             StreamBuilder<List<ComfortRoomsRecord>>(
-                              stream: queryComfortRoomsRecord(
-                                queryBuilder: (comfortRoomsRecord) =>
-                                    comfortRoomsRecord.where(
-                                  'hotel',
-                                  isEqualTo: FFAppState().hotel,
+                              stream: _model.comfortRooms(
+                                requestFn: () => queryComfortRoomsRecord(
+                                  queryBuilder: (comfortRoomsRecord) =>
+                                      comfortRoomsRecord.where(
+                                    'hotel',
+                                    isEqualTo: FFAppState().hotel,
+                                  ),
                                 ),
                               ),
                               builder: (context, snapshot) {

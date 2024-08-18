@@ -319,86 +319,100 @@ class _OptionToTransactionOnlyWidgetState
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    // delete transaction?
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: const Text('Are you sure?'),
-                              content:
-                                  const Text('This transaction will be deleted.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      // transaction action output
-                      _model.transaction =
-                          await TransactionsRecord.getDocumentOnce(
-                              widget.ref!);
-                      if ((_model.transaction!.inventories.isNotEmpty) &&
-                          (_model.transaction?.type != 'book')) {
-                        while (_model.loopInvetoryCounter !=
-                            valueOrDefault<int>(
-                              _model.transaction?.inventories.length,
-                              0,
-                            )) {
-                          // inventory
-                          _model.inventory =
-                              await InventoriesRecord.getDocumentOnce(_model
-                                  .transaction!
-                                  .inventories[_model.loopInvetoryCounter]);
-                          // item
-                          _model.item = await queryGoodsRecordOnce(
-                            queryBuilder: (goodsRecord) => goodsRecord
-                                .where(
-                                  'description',
-                                  isEqualTo: _model.inventory?.item,
-                                )
-                                .where(
-                                  'hotel',
-                                  isEqualTo: FFAppState().hotel,
-                                ),
-                            singleRecord: true,
-                          ).then((s) => s.firstOrNull);
-                          // reverse quantity sold
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin') {
+                      // delete transaction?
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Are you sure?'),
+                                content:
+                                    const Text('This transaction will be deleted.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        // transaction action output
+                        _model.transaction =
+                            await TransactionsRecord.getDocumentOnce(
+                                widget.ref!);
+                        if ((_model.transaction!.inventories.isNotEmpty) &&
+                            (_model.transaction?.type != 'book')) {
+                          while (_model.loopInvetoryCounter !=
+                              _model.transaction?.inventories.length) {
+                            // inventory
+                            _model.inventory =
+                                await InventoriesRecord.getDocumentOnce(_model
+                                    .transaction!
+                                    .inventories[_model.loopInvetoryCounter]);
+                            // item
+                            _model.item = await queryGoodsRecordOnce(
+                              queryBuilder: (goodsRecord) => goodsRecord
+                                  .where(
+                                    'description',
+                                    isEqualTo: _model.inventory?.item,
+                                  )
+                                  .where(
+                                    'hotel',
+                                    isEqualTo: FFAppState().hotel,
+                                  ),
+                              singleRecord: true,
+                            ).then((s) => s.firstOrNull);
+                            // reverse quantity sold
 
-                          await _model.item!.reference.update({
-                            ...mapToFirestore(
-                              {
-                                'quantity': FieldValue.increment(
-                                    _model.inventory!.quantityChange),
-                              },
-                            ),
-                          });
-                          // delete inventory also
-                          await _model.transaction!
-                              .inventories[_model.loopInvetoryCounter]
-                              .delete();
-                          // increment loop
-                          _model.loopInvetoryCounter =
-                              _model.loopInvetoryCounter + 1;
-                          setState(() {});
+                            await _model.item!.reference.update({
+                              ...mapToFirestore(
+                                {
+                                  'quantity': FieldValue.increment(
+                                      _model.inventory!.quantityChange),
+                                },
+                              ),
+                            });
+                            // delete inventory also
+                            await _model.transaction!
+                                .inventories[_model.loopInvetoryCounter]
+                                .delete();
+                            // increment loop
+                            _model.loopInvetoryCounter =
+                                _model.loopInvetoryCounter + 1;
+                            setState(() {});
+                          }
                         }
+                        // delete transactions
+                        await widget.ref!.delete();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Transaction is deleted!',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).info,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor: FlutterFlowTheme.of(context).error,
+                          ),
+                        );
                       }
-                      // delete transactions
-                      await widget.ref!.delete();
+                      Navigator.pop(context);
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            'Transaction is deleted!',
+                            'Consult Admin First!',
                             style: TextStyle(
                               color: FlutterFlowTheme.of(context).info,
                             ),
@@ -408,7 +422,6 @@ class _OptionToTransactionOnlyWidgetState
                         ),
                       );
                     }
-                    Navigator.pop(context);
 
                     setState(() {});
                   },

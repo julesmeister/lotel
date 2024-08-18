@@ -328,101 +328,117 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: const Text('Delete'),
-                              content: const Text(
-                                  'This bill will be removed and its impact on the relevant monthly metrics will be deducted.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin') {
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Delete'),
+                                content: const Text(
+                                    'This bill will be removed and its impact on the relevant monthly metrics will be deducted.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        if (!functions.isThisMonth(widget.bill!.date!)) {
+                          // which stats belong
+                          _model.statsBillBelong = await queryStatsRecordOnce(
+                            queryBuilder: (statsRecord) => statsRecord
+                                .where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                )
+                                .where(
+                                  'month',
+                                  isEqualTo: dateTimeFormat(
+                                      "MMMM", widget.bill?.date),
+                                )
+                                .where(
+                                  'year',
+                                  isEqualTo:
+                                      dateTimeFormat("y", widget.bill?.date),
                                 ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
+                            singleRecord: true,
+                          ).then((s) => s.firstOrNull);
+                          // set stats ref
+                          _model.stats = _model.statsBillBelong?.reference;
+                          setState(() {});
+                        }
+                        // reduce from stat
+
+                        await _model.stats!.update({
+                          ...mapToFirestore(
+                            {
+                              'bills':
+                                  FieldValue.increment(-(widget.bill!.amount)),
+                            },
+                          ),
+                        });
+                        // bill change
+
+                        await BillChangesRecord.collection
+                            .doc()
+                            .set(createBillChangesRecordData(
+                              date: getCurrentTimestamp,
+                              description:
+                                  'The bill attributed to ${widget.bill?.description} covered on ${dateTimeFormat("MMMMEEEEd", widget.bill?.date)} was deleted and the bill\'s amount was deducted from the ${dateTimeFormat("MMMM", widget.bill?.date)} records.',
+                              staff: currentUserReference,
+                              hotel: FFAppState().hotel,
+                            ));
+                        await widget.bill!.reference.delete();
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              '${valueOrDefault<String>(
+                                formatNumber(
+                                  widget.bill?.amount,
+                                  formatType: FormatType.decimal,
+                                  decimalType: DecimalType.automatic,
+                                  currency: 'Php ',
                                 ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      if (!functions.isThisMonth(widget.bill!.date!)) {
-                        // which stats belong
-                        _model.statsBillBelong = await queryStatsRecordOnce(
-                          queryBuilder: (statsRecord) => statsRecord
-                              .where(
-                                'hotel',
-                                isEqualTo: FFAppState().hotel,
-                              )
-                              .where(
-                                'month',
-                                isEqualTo:
-                                    dateTimeFormat("MMMM", widget.bill?.date),
-                              )
-                              .where(
-                                'year',
-                                isEqualTo:
-                                    dateTimeFormat("y", widget.bill?.date),
+                                '0',
+                              )} is deducted from ${dateTimeFormat("MMMM y", widget.bill?.date)} metrics.',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
                               ),
-                          singleRecord: true,
-                        ).then((s) => s.firstOrNull);
-                        // set stats ref
-                        _model.stats = _model.statsBillBelong?.reference;
-                        setState(() {});
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).secondary,
+                          ),
+                        );
+                        context.safePop();
+
+                        context.pushNamed('billsList');
                       }
-                      // reduce from stat
-
-                      await _model.stats!.update({
-                        ...mapToFirestore(
-                          {
-                            'bills':
-                                FieldValue.increment(-(widget.bill!.amount)),
-                          },
-                        ),
-                      });
-                      // bill change
-
-                      await BillChangesRecord.collection
-                          .doc()
-                          .set(createBillChangesRecordData(
-                            date: getCurrentTimestamp,
-                            description:
-                                'The bill attributed to ${widget.bill?.description} covered on ${dateTimeFormat("MMMMEEEEd", widget.bill?.date)} was deleted and the bill\'s amount was deducted from the ${dateTimeFormat("MMMM", widget.bill?.date)} records.',
-                            staff: currentUserReference,
-                            hotel: FFAppState().hotel,
-                          ));
-                      await widget.bill!.reference.delete();
-                      Navigator.pop(context);
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            '${valueOrDefault<String>(
-                              formatNumber(
-                                widget.bill?.amount,
-                                formatType: FormatType.decimal,
-                                decimalType: DecimalType.automatic,
-                                currency: 'Php ',
-                              ),
-                              '0',
-                            )} is deducted from ${dateTimeFormat("MMMM y", widget.bill?.date)} metrics.',
+                            'Consult Admin First!',
                             style: TextStyle(
-                              color: FlutterFlowTheme.of(context).primaryText,
+                              color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
                           duration: const Duration(milliseconds: 4000),
-                          backgroundColor:
-                              FlutterFlowTheme.of(context).secondary,
+                          backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
-                      context.safePop();
-
-                      context.pushNamed('billsList');
                     }
 
                     setState(() {});

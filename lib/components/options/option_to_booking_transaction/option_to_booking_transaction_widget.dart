@@ -827,94 +827,112 @@ class _OptionToBookingTransactionWidgetState
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    // delete transaction?
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: const Text('Are you sure?'),
-                              content: const Text(
-                                  'This transaction will be deleted. If this is a new checkin, the booking will also be deleted.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      // transaction action output
-                      _model.trans = await TransactionsRecord.getDocumentOnce(
-                          widget.ref!);
-                      if (functions.findTextsInString(
-                          widget.description, 'checkin')) {
-                        if (!_model.room!.vacant) {
-                          // update room vacancy and guests
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin') {
+                      // delete transaction?
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Are you sure?'),
+                                content: const Text(
+                                    'This transaction will be deleted. If this is a new checkin, the booking will also be deleted.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        // transaction action output
+                        _model.trans = await TransactionsRecord.getDocumentOnce(
+                            widget.ref!);
+                        if (functions.findTextsInString(
+                            widget.description, 'checkin')) {
+                          if (!_model.room!.vacant) {
+                            // update room vacancy and guests
 
-                          await _model.room!.reference
-                              .update(createRoomsRecordData(
-                            vacant: true,
-                            guests: 0,
-                          ));
+                            await _model.room!.reference
+                                .update(createRoomsRecordData(
+                              vacant: true,
+                              guests: 0,
+                            ));
+                          }
+                          // delete booking
+                          await _model.trans!.booking!.delete();
+                        } else {
+                          // decrement booking total
+
+                          await widget.booking!.update({
+                            ...mapToFirestore(
+                              {
+                                'total':
+                                    FieldValue.increment(-(widget.price!)),
+                                'nights': FieldValue.increment(-(1)),
+                              },
+                            ),
+                          });
                         }
-                        // delete booking
-                        await _model.trans!.booking!.delete();
-                      } else {
-                        // decrement booking total
 
-                        await widget.booking!.update({
+                        // history taking
+
+                        await HistoryRecord.createDoc(_model.room!.reference)
+                            .set({
+                          ...createHistoryRecordData(
+                            description:
+                                'Removed transaction worth Php ${widget.price?.toString()}',
+                            staff: currentUserReference,
+                          ),
                           ...mapToFirestore(
                             {
-                              'total': FieldValue.increment(-(widget.price!)),
-                              'nights': FieldValue.increment(-(1)),
+                              'date': FieldValue.serverTimestamp(),
                             },
                           ),
                         });
-                      }
+                        if (_model.trans!.remitted) {
+                          // decrease stats
 
-                      // history taking
-
-                      await HistoryRecord.createDoc(_model.room!.reference)
-                          .set({
-                        ...createHistoryRecordData(
-                          description:
-                              'Removed transaction worth Php ${widget.price?.toString()}',
-                          staff: currentUserReference,
-                        ),
-                        ...mapToFirestore(
-                          {
-                            'date': FieldValue.serverTimestamp(),
-                          },
-                        ),
-                      });
-                      if (_model.trans!.remitted) {
-                        // decrease stats
-
-                        await FFAppState().statsReference!.update({
-                          ...mapToFirestore(
-                            {
-                              'roomsIncome':
-                                  FieldValue.increment(-(_model.trans!.total)),
-                            },
+                          await FFAppState().statsReference!.update({
+                            ...mapToFirestore(
+                              {
+                                'roomsIncome': FieldValue.increment(
+                                    -(_model.trans!.total)),
+                              },
+                            ),
+                          });
+                        }
+                        // delete transactions
+                        await widget.ref!.delete();
+                        // transaction deleted
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Transaction is deleted!',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).info,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
-                        });
+                        );
                       }
-                      // delete transactions
-                      await widget.ref!.delete();
-                      // transaction deleted
+                      Navigator.pop(context);
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            'Transaction is deleted!',
+                            'Consult Admin First!',
                             style: TextStyle(
                               color: FlutterFlowTheme.of(context).info,
                             ),
@@ -924,7 +942,6 @@ class _OptionToBookingTransactionWidgetState
                         ),
                       );
                     }
-                    Navigator.pop(context);
 
                     setState(() {});
                   },
@@ -977,73 +994,91 @@ class _OptionToBookingTransactionWidgetState
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    // delete transaction?
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: const Text('Are you sure?'),
-                              content: const Text('This duplicate will be removed.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      // transaction action output
-                      _model.duplicateTrans =
-                          await TransactionsRecord.getDocumentOnce(
-                              widget.ref!);
-                      // history taking
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin') {
+                      // delete transaction?
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Are you sure?'),
+                                content:
+                                    const Text('This duplicate will be removed.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        // transaction action output
+                        _model.duplicateTrans =
+                            await TransactionsRecord.getDocumentOnce(
+                                widget.ref!);
+                        // history taking
 
-                      await HistoryRecord.createDoc(_model.room!.reference)
-                          .set({
-                        ...createHistoryRecordData(
-                          description:
-                              'There was a duplicate that caused admin to remove a transaction worth Php ${widget.price?.toString()}',
-                          staff: currentUserReference,
-                        ),
-                        ...mapToFirestore(
-                          {
-                            'date': FieldValue.serverTimestamp(),
-                          },
-                        ),
-                      });
-                      if (_model.duplicateTrans!.remitted) {
-                        // decrease stats
-
-                        await FFAppState().statsReference!.update({
+                        await HistoryRecord.createDoc(_model.room!.reference)
+                            .set({
+                          ...createHistoryRecordData(
+                            description:
+                                'There was a duplicate that caused admin to remove a transaction worth Php ${widget.price?.toString()}',
+                            staff: currentUserReference,
+                          ),
                           ...mapToFirestore(
                             {
-                              'roomsIncome': FieldValue.increment(
-                                  -(_model.duplicateTrans!.total)),
+                              'date': FieldValue.serverTimestamp(),
                             },
                           ),
                         });
-                      }
-                      // delete transactions
-                      await _model.duplicateTrans!.reference.delete();
-                      // decrement book total
+                        if (_model.duplicateTrans!.remitted) {
+                          // decrease stats
 
-                      await widget.booking!.update(createBookingsRecordData(
-                        total: widget.price,
-                      ));
-                      // duplicate removed
+                          await FFAppState().statsReference!.update({
+                            ...mapToFirestore(
+                              {
+                                'roomsIncome': FieldValue.increment(
+                                    -(_model.duplicateTrans!.total)),
+                              },
+                            ),
+                          });
+                        }
+                        // delete transactions
+                        await _model.duplicateTrans!.reference.delete();
+                        // decrement book total
+
+                        await widget.booking!.update(createBookingsRecordData(
+                          total: widget.price,
+                        ));
+                        // duplicate removed
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Duplicate removed!',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).info,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor: FlutterFlowTheme.of(context).error,
+                          ),
+                        );
+                      }
+                      Navigator.pop(context);
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            'Duplicate removed!',
+                            'Consult Admin First!',
                             style: TextStyle(
                               color: FlutterFlowTheme.of(context).info,
                             ),
@@ -1053,7 +1088,6 @@ class _OptionToBookingTransactionWidgetState
                         ),
                       );
                     }
-                    Navigator.pop(context);
 
                     setState(() {});
                   },

@@ -3541,25 +3541,109 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 10.0, 0.0),
-                                                  child: FlutterFlowIconButton(
-                                                    borderColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .alternate,
-                                                    borderRadius: 10.0,
-                                                    borderWidth: 1.0,
-                                                    buttonSize: 40.0,
-                                                    icon: Icon(
-                                                      Icons.checklist_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                      size: 24.0,
+                                                  child: FutureBuilder<int>(
+                                                    future:
+                                                        queryRecordsRecordCount(
+                                                      queryBuilder:
+                                                          (recordsRecord) =>
+                                                              recordsRecord
+                                                                  .where(
+                                                                    'hotel',
+                                                                    isEqualTo:
+                                                                        FFAppState()
+                                                                            .hotel,
+                                                                  )
+                                                                  .where(
+                                                                    'receivedBy',
+                                                                    isEqualTo:
+                                                                        '',
+                                                                  ),
                                                     ),
-                                                    onPressed: () async {
-                                                      context.pushNamed(
-                                                          'RecordsList');
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      // Customize what your widget looks like when it's loading.
+                                                      if (!snapshot.hasData) {
+                                                        return Center(
+                                                          child: SizedBox(
+                                                            width: 50.0,
+                                                            height: 50.0,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              valueColor:
+                                                                  AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primary,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                      int badgeCount =
+                                                          snapshot.data!;
+
+                                                      return badges.Badge(
+                                                        badgeContent: Text(
+                                                          badgeCount.toString(),
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .titleSmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: Colors
+                                                                    .white,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                        showBadge:
+                                                            badgeCount > 0,
+                                                        shape: badges
+                                                            .BadgeShape.circle,
+                                                        badgeColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .error,
+                                                        elevation: 4.0,
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    8.0,
+                                                                    8.0,
+                                                                    8.0,
+                                                                    8.0),
+                                                        position:
+                                                            badges.BadgePosition
+                                                                .topEnd(),
+                                                        animationType: badges
+                                                            .BadgeAnimationType
+                                                            .scale,
+                                                        toAnimate: true,
+                                                        child:
+                                                            FlutterFlowIconButton(
+                                                          borderColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .alternate,
+                                                          borderRadius: 10.0,
+                                                          borderWidth: 1.0,
+                                                          buttonSize: 40.0,
+                                                          icon: Icon(
+                                                            Icons
+                                                                .checklist_rounded,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryText,
+                                                            size: 24.0,
+                                                          ),
+                                                          onPressed: () async {
+                                                            context.pushNamed(
+                                                                'RecordsList');
+                                                          },
+                                                        ),
+                                                      );
                                                     },
                                                   ),
                                                 ),
@@ -3567,26 +3651,109 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 10.0, 0.0),
-                                                  child: FlutterFlowIconButton(
-                                                    borderColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .alternate,
-                                                    borderRadius: 10.0,
-                                                    borderWidth: 1.0,
-                                                    buttonSize: 40.0,
-                                                    icon: Icon(
-                                                      Icons
-                                                          .featured_play_list_outlined,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                      size: 24.0,
+                                                  child: FutureBuilder<int>(
+                                                    future:
+                                                        queryIssuesRecordCount(
+                                                      queryBuilder:
+                                                          (issuesRecord) =>
+                                                              issuesRecord
+                                                                  .where(
+                                                                    'hotel',
+                                                                    isEqualTo:
+                                                                        FFAppState()
+                                                                            .hotel,
+                                                                  )
+                                                                  .where(
+                                                                    'status',
+                                                                    isEqualTo:
+                                                                        'pending',
+                                                                  ),
                                                     ),
-                                                    onPressed: () async {
-                                                      context.pushNamed(
-                                                          'IssuesList');
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      // Customize what your widget looks like when it's loading.
+                                                      if (!snapshot.hasData) {
+                                                        return Center(
+                                                          child: SizedBox(
+                                                            width: 50.0,
+                                                            height: 50.0,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              valueColor:
+                                                                  AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primary,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                      int badgeCount =
+                                                          snapshot.data!;
+
+                                                      return badges.Badge(
+                                                        badgeContent: Text(
+                                                          badgeCount.toString(),
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .titleSmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: Colors
+                                                                    .white,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                        showBadge:
+                                                            badgeCount > 0,
+                                                        shape: badges
+                                                            .BadgeShape.circle,
+                                                        badgeColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .error,
+                                                        elevation: 4.0,
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    8.0,
+                                                                    8.0,
+                                                                    8.0,
+                                                                    8.0),
+                                                        position:
+                                                            badges.BadgePosition
+                                                                .topEnd(),
+                                                        animationType: badges
+                                                            .BadgeAnimationType
+                                                            .scale,
+                                                        toAnimate: true,
+                                                        child:
+                                                            FlutterFlowIconButton(
+                                                          borderColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .alternate,
+                                                          borderRadius: 10.0,
+                                                          borderWidth: 1.0,
+                                                          buttonSize: 40.0,
+                                                          icon: Icon(
+                                                            Icons
+                                                                .featured_play_list_outlined,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryText,
+                                                            size: 24.0,
+                                                          ),
+                                                          onPressed: () async {
+                                                            context.pushNamed(
+                                                                'IssuesList');
+                                                          },
+                                                        ),
+                                                      );
                                                     },
                                                   ),
                                                 ),

@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -89,50 +90,66 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    // salary
-                    _model.salaryToGetTotal =
-                        await SalariesRecord.getDocumentOnce(widget.salary!);
-                    // reset loop counter
-                    _model.loopCACounter = 0;
-                    setState(() {});
-                    while (_model.loopCACounter !=
-                        _model.salaryToGetTotal?.caRefs.length) {
-                      // unsettle ca
-
-                      await _model
-                          .salaryToGetTotal!.caRefs[_model.loopCACounter]
-                          .update(createAdvancesRecordData(
-                        settled: false,
-                      ));
-                      // increment loop
-                      _model.loopCACounter = _model.loopCACounter + 1;
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin') {
+                      // salary
+                      _model.salaryToGetTotal =
+                          await SalariesRecord.getDocumentOnce(widget.salary!);
+                      // reset loop counter
+                      _model.loopCACounter = 0;
                       setState(() {});
-                    }
-                    // decrement salary in stats
+                      while (_model.loopCACounter !=
+                          _model.salaryToGetTotal?.caRefs.length) {
+                        // unsettle ca
 
-                    await FFAppState().statsReference!.update({
-                      ...mapToFirestore(
-                        {
-                          'salaries': FieldValue.increment(
-                              -(_model.salaryToGetTotal!.total)),
-                        },
-                      ),
-                    });
-                    // delete instance
-                    await widget.salary!.delete();
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Salary deleted',
-                          style: TextStyle(
-                            color: FlutterFlowTheme.of(context).info,
-                          ),
+                        await _model
+                            .salaryToGetTotal!.caRefs[_model.loopCACounter]
+                            .update(createAdvancesRecordData(
+                          settled: false,
+                        ));
+                        // increment loop
+                        _model.loopCACounter = _model.loopCACounter + 1;
+                        setState(() {});
+                      }
+                      // decrement salary in stats
+
+                      await FFAppState().statsReference!.update({
+                        ...mapToFirestore(
+                          {
+                            'salaries': FieldValue.increment(
+                                -(_model.salaryToGetTotal!.total)),
+                          },
                         ),
-                        duration: const Duration(milliseconds: 4000),
-                        backgroundColor: FlutterFlowTheme.of(context).error,
-                      ),
-                    );
+                      });
+                      // delete instance
+                      await widget.salary!.delete();
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Salary deleted',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).info,
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Consult Admin First!',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).info,
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
+                    }
 
                     setState(() {});
                   },

@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -90,27 +91,43 @@ class _OptionToRemoveBookRemittanceWidgetState
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    // remove from set
+                    if (valueOrDefault(currentUserDocument?.role, '') ==
+                        'admin') {
+                      // remove from set
 
-                    await widget.remittance!.update({
-                      ...mapToFirestore(
-                        {
-                          'transactions': FieldValue.arrayRemove(
-                              [widget.transaction?.reference]),
-                          'gross': FieldValue.increment(
-                              -(widget.transaction!.total)),
-                          'net': FieldValue.increment(
-                              -(widget.transaction!.total)),
-                        },
-                      ),
-                    });
+                      await widget.remittance!.update({
+                        ...mapToFirestore(
+                          {
+                            'transactions': FieldValue.arrayRemove(
+                                [widget.transaction?.reference]),
+                            'gross': FieldValue.increment(
+                                -(widget.transaction!.total)),
+                            'net': FieldValue.increment(
+                                -(widget.transaction!.total)),
+                          },
+                        ),
+                      });
 
-                    await widget.transaction!.reference
-                        .update(createTransactionsRecordData(
-                      remitted: false,
-                    ));
-                    Navigator.pop(context);
-                    context.safePop();
+                      await widget.transaction!.reference
+                          .update(createTransactionsRecordData(
+                        remitted: false,
+                      ));
+                      Navigator.pop(context);
+                      context.safePop();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Consult Admin First!',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).info,
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
+                    }
                   },
                   child: Container(
                     width: double.infinity,
