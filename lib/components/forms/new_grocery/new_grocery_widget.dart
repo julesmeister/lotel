@@ -3,8 +3,10 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'new_grocery_model.dart';
 export 'new_grocery_model.dart';
@@ -36,8 +38,8 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
     _model = createModel(context, () => NewGroceryModel());
 
     _model.remarkTextController ??= TextEditingController(
-        text: widget.duplicate != null && widget.duplicate != ''
-            ? widget.duplicate
+        text: widget!.duplicate != null && widget!.duplicate != ''
+            ? widget!.duplicate
             : '');
     _model.remarkFocusNode ??= FocusNode();
 
@@ -61,18 +63,18 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
 
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -93,7 +95,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -105,7 +107,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -117,14 +119,14 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Amount Spent in Grocery',
@@ -139,7 +141,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -186,7 +188,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -233,7 +235,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -253,13 +255,13 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -273,7 +275,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                   Expanded(
                                     flex: 4,
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           10.0, 0.0, 0.0, 0.0),
                                       child: Text(
                                         'Start Counting Revenue',
@@ -295,13 +297,13 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                     flex: 3,
                                     child: Align(
                                       alignment:
-                                          const AlignmentDirectional(-1.0, 0.0),
+                                          AlignmentDirectional(-1.0, 0.0),
                                       child: Switch.adaptive(
                                         value: _model.switchValue!,
                                         onChanged: (newValue) async {
                                           setState(() =>
-                                              _model.switchValue = newValue);
-                                          if (newValue) {
+                                              _model.switchValue = newValue!);
+                                          if (newValue!) {
                                             // on
                                             _model.startCountingRevenue = true;
                                             setState(() {});
@@ -345,13 +347,15 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
                                     if (_model.amountTextController.text !=
+                                            null &&
+                                        _model.amountTextController.text !=
                                             '') {
                                       var confirmDialogResponse =
                                           await showDialog<bool>(
                                                 context: context,
                                                 builder: (alertDialogContext) {
                                                   return AlertDialog(
-                                                    title: const Text(
+                                                    title: Text(
                                                         'Have you really spent for grocery?'),
                                                     content: Text(
                                                         'You are recording an amount of Php ${_model.amountTextController.text}.'),
@@ -361,14 +365,14 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                                             Navigator.pop(
                                                                 alertDialogContext,
                                                                 false),
-                                                        child: const Text('Cancel'),
+                                                        child: Text('Cancel'),
                                                       ),
                                                       TextButton(
                                                         onPressed: () =>
                                                             Navigator.pop(
                                                                 alertDialogContext,
                                                                 true),
-                                                        child: const Text('Confirm'),
+                                                        child: Text('Confirm'),
                                                       ),
                                                     ],
                                                   );
@@ -510,7 +514,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                               ),
                                             ),
                                             duration:
-                                                const Duration(milliseconds: 4000),
+                                                Duration(milliseconds: 4000),
                                             backgroundColor:
                                                 FlutterFlowTheme.of(context)
                                                     .secondary,
@@ -531,7 +535,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .error,
@@ -549,7 +553,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                         flex: 5,
                                         child: Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 5.0, 0.0),
                                           child: Text(
                                             'Save',

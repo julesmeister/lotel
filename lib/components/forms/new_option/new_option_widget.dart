@@ -4,7 +4,10 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'new_option_model.dart';
 export 'new_option_model.dart';
 
@@ -47,18 +50,18 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -79,7 +82,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -91,7 +94,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -103,14 +106,14 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Add Option',
@@ -125,7 +128,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -156,7 +159,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 20.0, 24.0),
                           ),
                           style:
@@ -170,13 +173,13 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                               .asValidator(context),
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -186,12 +189,12 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                 'admin')
                               Expanded(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, -1.0),
+                                  alignment: AlignmentDirectional(0.0, -1.0),
                                   child: AuthUserStreamWidget(
                                     builder: (context) => Container(
                                       width: double.infinity,
                                       height: 50.0,
-                                      constraints: const BoxConstraints(
+                                      constraints: BoxConstraints(
                                         maxWidth: 500.0,
                                       ),
                                       decoration: BoxDecoration(
@@ -206,7 +209,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
+                                        padding: EdgeInsets.all(4.0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
@@ -225,7 +228,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                                   setState(() {});
                                                 },
                                                 child: AnimatedContainer(
-                                                  duration: const Duration(
+                                                  duration: Duration(
                                                       milliseconds: 100),
                                                   curve: Curves.linear,
                                                   width: 115.0,
@@ -268,7 +271,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     4.0,
                                                                     0.0,
@@ -308,7 +311,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                                   setState(() {});
                                                 },
                                                 child: AnimatedContainer(
-                                                  duration: const Duration(
+                                                  duration: Duration(
                                                       milliseconds: 100),
                                                   curve: Curves.linear,
                                                   width: 115.0,
@@ -345,7 +348,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     4.0,
                                                                     0.0,
@@ -380,7 +383,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                 ),
                               ),
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   20.0, 0.0, 0.0, 0.0),
                               child: FlutterFlowIconButton(
                                 borderRadius: 20.0,
@@ -408,7 +411,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                               .primaryText,
                                         ),
                                       ),
-                                      duration: const Duration(milliseconds: 4000),
+                                      duration: Duration(milliseconds: 4000),
                                       backgroundColor:
                                           FlutterFlowTheme.of(context)
                                               .secondary,

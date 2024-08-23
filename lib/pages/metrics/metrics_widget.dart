@@ -1,18 +1,24 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import '/components/forms/salary_edit/salary_edit_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_charts.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'metrics_model.dart';
@@ -65,8 +71,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.0, -100.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(0.0, -100.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -77,8 +83,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(100.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(100.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -89,8 +95,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(-100.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(-100.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -108,8 +114,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -127,8 +133,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -146,8 +152,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -158,8 +164,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(100.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(100.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -177,8 +183,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -196,8 +202,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -215,8 +221,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -227,8 +233,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(4.0, 4.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(4.0, 4.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -251,8 +257,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.0, 100.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(0.0, 100.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -270,8 +276,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -325,7 +331,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
                 child: FlutterFlowIconButton(
                   borderRadius: 20.0,
                   borderWidth: 1.0,
@@ -339,7 +345,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                     context.pushNamed(
                       'MetricsYearly',
                       extra: <String, dynamic>{
-                        kTransitionInfoKey: const TransitionInfo(
+                        kTransitionInfoKey: TransitionInfo(
                           hasTransition: true,
                           transitionType: PageTransitionType.rightToLeft,
                         ),
@@ -350,11 +356,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
               ),
               if (_model.hotel != 'All')
                 Align(
-                  alignment: const AlignmentDirectional(0.0, 0.0),
+                  alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
-                    child: SizedBox(
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                    child: Container(
                       width: 30.0,
                       height: 30.0,
                       child: custom_widgets.ShareStats(
@@ -384,14 +390,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
               children: [
                 Expanded(
                   child: Align(
-                    alignment: const AlignmentDirectional(0.0, -1.0),
+                    alignment: AlignmentDirectional(0.0, -1.0),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 10.0),
+                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 10.0),
                       child: Container(
                         width: double.infinity,
                         height: 50.0,
-                        constraints: const BoxConstraints(
+                        constraints: BoxConstraints(
                           maxWidth: 500.0,
                         ),
                         decoration: BoxDecoration(
@@ -403,7 +409,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: EdgeInsets.all(4.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -451,7 +457,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             4.0, 0.0, 4.0, 0.0),
                                         child: Text(
                                           'All',
@@ -477,7 +483,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    if (_model.stats.isNotEmpty) {
+                                    if (_model.stats.length != 0) {
                                       _model.hotelName1 =
                                           await _model.updateStatsByHotel(
                                         context,
@@ -500,7 +506,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .error,
@@ -536,7 +542,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   4.0, 0.0, 0.0, 0.0),
                                           child: AutoSizeText(
                                             'Serenity',
@@ -565,7 +571,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    if (_model.stats.isNotEmpty) {
+                                    if (_model.stats.length != 0) {
                                       _model.hotelName2 =
                                           await _model.updateStatsByHotel(
                                         context,
@@ -588,7 +594,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .error,
@@ -624,7 +630,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   4.0, 0.0, 0.0, 0.0),
                                           child: AutoSizeText(
                                             'My Lifestyle',
@@ -805,7 +811,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
               ],
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+              padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -817,7 +823,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 12.0, 12.0),
                           child: InkWell(
                             splashColor: Colors.transparent,
@@ -831,8 +837,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           context: context,
                                           builder: (alertDialogContext) {
                                             return AlertDialog(
-                                              title: const Text('Recalibrate'),
-                                              content: const Text(
+                                              title: Text('Recalibrate'),
+                                              content: Text(
                                                   'This will recalculate all room sales of this month from this establishment.'),
                                               actions: [
                                                 TextButton(
@@ -840,14 +846,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       Navigator.pop(
                                                           alertDialogContext,
                                                           false),
-                                                  child: const Text('Cancel'),
+                                                  child: Text('Cancel'),
                                                 ),
                                                 TextButton(
                                                   onPressed: () =>
                                                       Navigator.pop(
                                                           alertDialogContext,
                                                           true),
-                                                  child: const Text('Confirm'),
+                                                  child: Text('Confirm'),
                                                 ),
                                               ],
                                             );
@@ -888,7 +894,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   ).then((s) => s.firstOrNull);
                                   while (_model.loopCounter !=
                                       _model.remittanceForRooms?.transactions
-                                          .length) {
+                                          ?.length) {
                                     // transactionFromRemittanceGoods
                                     _model.transactionFromRemittanceRooms =
                                         await TransactionsRecord
@@ -971,7 +977,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x34090F13),
@@ -984,7 +990,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 4.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -1002,7 +1008,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ? FlutterFlowTheme.of(context).error
                                             : FlutterFlowTheme.of(context)
                                                 .secondary,
-                                        borderRadius: const BorderRadius.only(
+                                        borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
                                           topLeft: Radius.circular(12.0),
@@ -1010,7 +1016,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
+                                        padding: EdgeInsets.all(12.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
@@ -1057,7 +1063,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsetsDirectional
+                                              padding: EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       0.0, 10.0, 0.0, 0.0),
                                               child: AutoSizeText(
@@ -1109,7 +1115,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(12.0),
+                                      padding: EdgeInsets.all(12.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
@@ -1135,7 +1141,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   BorderRadius.circular(12.0),
                                             ),
                                             alignment:
-                                                const AlignmentDirectional(0.0, 0.0),
+                                                AlignmentDirectional(0.0, 0.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
@@ -1148,7 +1154,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'rooms',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel)))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretDown,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -1160,7 +1166,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'rooms',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel))))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretUp,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -1170,7 +1176,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 8.0, 0.0),
                                             child: Text(
                                               functions.metricChange(
@@ -1183,7 +1189,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   .bodyMedium
                                                   .override(
                                                     fontFamily: 'Readex Pro',
-                                                    color: const Color(0xFF14181B),
+                                                    color: Color(0xFF14181B),
                                                     fontSize: 14.0,
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
@@ -1201,7 +1207,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               animationsMap['containerOnPageLoadAnimation3']!),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 12.0, 12.0),
                           child: InkWell(
                             splashColor: Colors.transparent,
@@ -1215,8 +1221,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           context: context,
                                           builder: (alertDialogContext) {
                                             return AlertDialog(
-                                              title: const Text('Recalibrate'),
-                                              content: const Text(
+                                              title: Text('Recalibrate'),
+                                              content: Text(
                                                   'This will recalculate all expenses of this month from this establishment.'),
                                               actions: [
                                                 TextButton(
@@ -1224,14 +1230,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       Navigator.pop(
                                                           alertDialogContext,
                                                           false),
-                                                  child: const Text('Cancel'),
+                                                  child: Text('Cancel'),
                                                 ),
                                                 TextButton(
                                                   onPressed: () =>
                                                       Navigator.pop(
                                                           alertDialogContext,
                                                           true),
-                                                  child: const Text('Confirm'),
+                                                  child: Text('Confirm'),
                                                 ),
                                               ],
                                             );
@@ -1272,7 +1278,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   ).then((s) => s.firstOrNull);
                                   while (_model.loopCounter !=
                                       _model.remittanceForExpenses?.transactions
-                                          .length) {
+                                          ?.length) {
                                     // transactionFromRemittanceGoods
                                     _model.transactionFromRemittanceExpenses =
                                         await TransactionsRecord
@@ -1354,7 +1360,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x34090F13),
@@ -1367,7 +1373,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 4.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -1385,7 +1391,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ? FlutterFlowTheme.of(context).error
                                             : FlutterFlowTheme.of(context)
                                                 .secondary,
-                                        borderRadius: const BorderRadius.only(
+                                        borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
                                           topLeft: Radius.circular(12.0),
@@ -1393,7 +1399,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
+                                        padding: EdgeInsets.all(12.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
@@ -1442,7 +1448,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(12.0),
+                                      padding: EdgeInsets.all(12.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
@@ -1468,7 +1474,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   BorderRadius.circular(12.0),
                                             ),
                                             alignment:
-                                                const AlignmentDirectional(0.0, 0.0),
+                                                AlignmentDirectional(0.0, 0.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
@@ -1481,7 +1487,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'expenses',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel)))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretDown,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -1493,7 +1499,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'expenses',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel))))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretUp,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -1503,7 +1509,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 8.0, 0.0),
                                             child: Text(
                                               functions.metricChange(
@@ -1516,7 +1522,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   .bodyMedium
                                                   .override(
                                                     fontFamily: 'Readex Pro',
-                                                    color: const Color(0xFF14181B),
+                                                    color: Color(0xFF14181B),
                                                     fontSize: 14.0,
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
@@ -1534,7 +1540,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               animationsMap['containerOnPageLoadAnimation4']!),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 12.0, 12.0),
                           child: InkWell(
                             splashColor: Colors.transparent,
@@ -1548,8 +1554,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           context: context,
                                           builder: (alertDialogContext) {
                                             return AlertDialog(
-                                              title: const Text('Recalculate Bills'),
-                                              content: const Text(
+                                              title: Text('Recalculate Bills'),
+                                              content: Text(
                                                   'This will redo the calculation of the bills for this month.'),
                                               actions: [
                                                 TextButton(
@@ -1557,14 +1563,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       Navigator.pop(
                                                           alertDialogContext,
                                                           false),
-                                                  child: const Text('Cancel'),
+                                                  child: Text('Cancel'),
                                                 ),
                                                 TextButton(
                                                   onPressed: () =>
                                                       Navigator.pop(
                                                           alertDialogContext,
                                                           true),
-                                                  child: const Text('Confirm'),
+                                                  child: Text('Confirm'),
                                                 ),
                                               ],
                                             );
@@ -1623,7 +1629,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                               .primaryText,
                                         ),
                                       ),
-                                      duration: const Duration(milliseconds: 4000),
+                                      duration: Duration(milliseconds: 4000),
                                       backgroundColor:
                                           FlutterFlowTheme.of(context)
                                               .secondary,
@@ -1638,7 +1644,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x34090F13),
@@ -1651,7 +1657,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 4.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -1669,7 +1675,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ? FlutterFlowTheme.of(context).error
                                             : FlutterFlowTheme.of(context)
                                                 .secondary,
-                                        borderRadius: const BorderRadius.only(
+                                        borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
                                           topLeft: Radius.circular(12.0),
@@ -1677,7 +1683,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
+                                        padding: EdgeInsets.all(12.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
@@ -1726,7 +1732,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(12.0),
+                                      padding: EdgeInsets.all(12.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
@@ -1752,7 +1758,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   BorderRadius.circular(12.0),
                                             ),
                                             alignment:
-                                                const AlignmentDirectional(0.0, 0.0),
+                                                AlignmentDirectional(0.0, 0.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
@@ -1765,7 +1771,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'bills',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel)))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretDown,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -1777,7 +1783,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'bills',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel))))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretUp,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -1787,7 +1793,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 8.0, 0.0),
                                             child: Text(
                                               functions.metricChange(
@@ -1800,7 +1806,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   .bodyMedium
                                                   .override(
                                                     fontFamily: 'Readex Pro',
-                                                    color: const Color(0xFF14181B),
+                                                    color: Color(0xFF14181B),
                                                     fontSize: 14.0,
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
@@ -1827,7 +1833,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 16.0, 12.0),
                           child: InkWell(
                             splashColor: Colors.transparent,
@@ -1841,8 +1847,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           context: context,
                                           builder: (alertDialogContext) {
                                             return AlertDialog(
-                                              title: const Text('Recalibrate'),
-                                              content: const Text(
+                                              title: Text('Recalibrate'),
+                                              content: Text(
                                                   'This will recalculate all goods sales of this month from this establishment.'),
                                               actions: [
                                                 TextButton(
@@ -1850,14 +1856,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                       Navigator.pop(
                                                           alertDialogContext,
                                                           false),
-                                                  child: const Text('Cancel'),
+                                                  child: Text('Cancel'),
                                                 ),
                                                 TextButton(
                                                   onPressed: () =>
                                                       Navigator.pop(
                                                           alertDialogContext,
                                                           true),
-                                                  child: const Text('Confirm'),
+                                                  child: Text('Confirm'),
                                                 ),
                                               ],
                                             );
@@ -1898,7 +1904,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   ).then((s) => s.firstOrNull);
                                   while (_model.loopCounter !=
                                       _model.remittanceForGoods?.transactions
-                                          .length) {
+                                          ?.length) {
                                     // transactionFromRemittanceGoods
                                     _model.transactionFromRemittanceGoods =
                                         await TransactionsRecord
@@ -1981,7 +1987,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x34090F13),
@@ -1994,7 +2000,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 4.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -2012,7 +2018,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ? FlutterFlowTheme.of(context).error
                                             : FlutterFlowTheme.of(context)
                                                 .secondary,
-                                        borderRadius: const BorderRadius.only(
+                                        borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
                                           topLeft: Radius.circular(12.0),
@@ -2020,7 +2026,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
+                                        padding: EdgeInsets.all(12.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
@@ -2067,7 +2073,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsetsDirectional
+                                              padding: EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       0.0, 10.0, 0.0, 0.0),
                                               child: AutoSizeText(
@@ -2119,7 +2125,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(12.0),
+                                      padding: EdgeInsets.all(12.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
@@ -2145,7 +2151,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   BorderRadius.circular(12.0),
                                             ),
                                             alignment:
-                                                const AlignmentDirectional(0.0, 0.0),
+                                                AlignmentDirectional(0.0, 0.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
@@ -2158,7 +2164,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'goods',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel)))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretDown,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -2170,7 +2176,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'goods',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel))))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretUp,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -2180,7 +2186,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 8.0, 0.0),
                                             child: Text(
                                               functions.metricChange(
@@ -2193,7 +2199,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   .bodyMedium
                                                   .override(
                                                     fontFamily: 'Readex Pro',
-                                                    color: const Color(0xFF14181B),
+                                                    color: Color(0xFF14181B),
                                                     fontSize: 14.0,
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
@@ -2211,7 +2217,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               animationsMap['containerOnPageLoadAnimation6']!),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 16.0, 12.0),
                           child: InkWell(
                             splashColor: Colors.transparent,
@@ -2229,7 +2235,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   builder: (context) {
                                     return Padding(
                                       padding: MediaQuery.viewInsetsOf(context),
-                                      child: SizedBox(
+                                      child: Container(
                                         height: double.infinity,
                                         child: SalaryEditWidget(
                                           stats: _model.stat,
@@ -2260,7 +2266,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x34090F13),
@@ -2273,7 +2279,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 4.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -2291,7 +2297,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             ? FlutterFlowTheme.of(context).error
                                             : FlutterFlowTheme.of(context)
                                                 .secondary,
-                                        borderRadius: const BorderRadius.only(
+                                        borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
                                           topLeft: Radius.circular(12.0),
@@ -2299,7 +2305,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
+                                        padding: EdgeInsets.all(12.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
@@ -2348,7 +2354,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(12.0),
+                                      padding: EdgeInsets.all(12.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
@@ -2374,7 +2380,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   BorderRadius.circular(12.0),
                                             ),
                                             alignment:
-                                                const AlignmentDirectional(0.0, 0.0),
+                                                AlignmentDirectional(0.0, 0.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
@@ -2387,7 +2393,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'salaries',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel)))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretDown,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -2399,7 +2405,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                     'salaries',
                                                     _model.prevMetrics.toList(),
                                                     _model.hotel))))
-                                                  const FaIcon(
+                                                  FaIcon(
                                                     FontAwesomeIcons.caretUp,
                                                     color: Colors.white,
                                                     size: 20.0,
@@ -2409,7 +2415,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 8.0, 0.0),
                                             child: Text(
                                               functions.metricChange(
@@ -2422,7 +2428,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   .bodyMedium
                                                   .override(
                                                     fontFamily: 'Readex Pro',
-                                                    color: const Color(0xFF14181B),
+                                                    color: Color(0xFF14181B),
                                                     fontSize: 14.0,
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
@@ -2440,13 +2446,13 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               animationsMap['containerOnPageLoadAnimation7']!),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 16.0, 12.0),
                           child: Container(
                             width: 230.0,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              boxShadow: const [
+                              boxShadow: [
                                 BoxShadow(
                                   blurRadius: 4.0,
                                   color: Color(0x34090F13),
@@ -2459,7 +2465,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 4.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
@@ -2477,7 +2483,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           ? FlutterFlowTheme.of(context).error
                                           : FlutterFlowTheme.of(context)
                                               .secondary,
-                                      borderRadius: const BorderRadius.only(
+                                      borderRadius: BorderRadius.only(
                                         bottomLeft: Radius.circular(0.0),
                                         bottomRight: Radius.circular(0.0),
                                         topLeft: Radius.circular(12.0),
@@ -2485,7 +2491,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
+                                      padding: EdgeInsets.all(12.0),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
@@ -2530,7 +2536,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(12.0),
+                                    padding: EdgeInsets.all(12.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -2555,7 +2561,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                 BorderRadius.circular(12.0),
                                           ),
                                           alignment:
-                                              const AlignmentDirectional(0.0, 0.0),
+                                              AlignmentDirectional(0.0, 0.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
@@ -2568,7 +2574,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   'net',
                                                   _model.prevMetrics.toList(),
                                                   _model.hotel)))
-                                                const FaIcon(
+                                                FaIcon(
                                                   FontAwesomeIcons.caretDown,
                                                   color: Colors.white,
                                                   size: 20.0,
@@ -2580,7 +2586,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                   'net',
                                                   _model.prevMetrics.toList(),
                                                   _model.hotel))))
-                                                const FaIcon(
+                                                FaIcon(
                                                   FontAwesomeIcons.caretUp,
                                                   color: Colors.white,
                                                   size: 20.0,
@@ -2590,7 +2596,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         ),
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 8.0, 0.0),
                                           child: Text(
                                             functions.metricChange(
@@ -2602,7 +2608,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                 .bodyMedium
                                                 .override(
                                                   fontFamily: 'Readex Pro',
-                                                  color: const Color(0xFF14181B),
+                                                  color: Color(0xFF14181B),
                                                   fontSize: 14.0,
                                                   letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w500,
@@ -2627,10 +2633,10 @@ class _MetricsWidgetState extends State<MetricsWidget>
             ),
             if (_model.roomLine!.hasXData() &&
                 _model.roomLine!.hasYData() &&
-                (_model.stats.isNotEmpty))
+                (_model.stats.length != 0))
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SizedBox(
+                padding: EdgeInsets.all(16.0),
+                child: Container(
                   width: double.infinity,
                   height: 200.0,
                   child: FlutterFlowLineChart(
@@ -2643,10 +2649,10 @@ class _MetricsWidgetState extends State<MetricsWidget>
                           barWidth: 2.0,
                           isCurved: true,
                           preventCurveOverShooting: true,
-                          dotData: const FlDotData(show: false),
+                          dotData: FlDotData(show: false),
                           belowBarData: BarAreaData(
                             show: true,
-                            color: const Color(0xFFFCF3D5),
+                            color: Color(0xFFFCF3D5),
                           ),
                         ),
                       ),
@@ -2657,7 +2663,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                           color: FlutterFlowTheme.of(context).secondary,
                           barWidth: 2.0,
                           isCurved: true,
-                          dotData: const FlDotData(show: false),
+                          dotData: FlDotData(show: false),
                           belowBarData: BarAreaData(
                             show: true,
                             color: FlutterFlowTheme.of(context).accent2,
@@ -2671,7 +2677,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                           FlutterFlowTheme.of(context).secondaryBackground,
                       showBorder: false,
                     ),
-                    axisBounds: const AxisBounds(),
+                    axisBounds: AxisBounds(),
                     xAxisLabelInfo: AxisLabelInfo(
                       title: 'Last 30 Days',
                       titleTextStyle:
@@ -2681,7 +2687,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                 letterSpacing: 0.0,
                               ),
                       showLabels: true,
-                      labelTextStyle: const TextStyle(
+                      labelTextStyle: TextStyle(
                         fontSize: 8.0,
                       ),
                       labelInterval: 1.0,
@@ -2706,9 +2712,9 @@ class _MetricsWidgetState extends State<MetricsWidget>
                   ),
                 ).animateOnPageLoad(animationsMap['chartOnPageLoadAnimation']!),
               ),
-            if (_model.stats.isNotEmpty)
+            if (_model.stats.length != 0)
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -2717,7 +2723,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 12.0, 0.0),
                           child: Icon(
                             Icons.radio_button_checked,
@@ -2739,7 +2745,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 12.0, 0.0),
                           child: Icon(
                             Icons.radio_button_checked,
@@ -2760,9 +2766,9 @@ class _MetricsWidgetState extends State<MetricsWidget>
                   ],
                 ).animateOnPageLoad(animationsMap['rowOnPageLoadAnimation']!),
               ),
-            if ((_model.groceryExpenses != 0.0) && (_model.stats.isNotEmpty))
+            if ((_model.groceryExpenses != 0.0) && (_model.stats.length != 0))
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -2770,13 +2776,13 @@ class _MetricsWidgetState extends State<MetricsWidget>
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: EdgeInsets.all(4.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 10.0),
                           child: Text(
                             'Grocery Profitability',
@@ -2784,20 +2790,20 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                 .titleLarge
                                 .override(
                                   fontFamily: 'Outfit',
-                                  color: const Color(0xFF14181B),
+                                  color: Color(0xFF14181B),
                                   fontSize: 22.0,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.w500,
                                 ),
                           ),
                         ),
-                        if (_model.stats.isNotEmpty)
+                        if (_model.stats.length != 0)
                           Align(
-                            alignment: const AlignmentDirectional(0.0, 0.0),
+                            alignment: AlignmentDirectional(0.0, 0.0),
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 10.0),
-                              child: SizedBox(
+                              child: Container(
                                 width: double.infinity,
                                 height: 400.0,
                                 child: custom_widgets.GroceryProfitability(
@@ -2825,7 +2831,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                     children: [
                       Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
+                            EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
                         child: Text(
                           'Room Usage',
                           textAlign: TextAlign.start,
@@ -2839,7 +2845,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                       ),
                       Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
                         child: InkWell(
                           splashColor: Colors.transparent,
                           focusColor: Colors.transparent,
@@ -2851,19 +2857,19 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   context: context,
                                   builder: (alertDialogContext) {
                                     return AlertDialog(
-                                      title: const Text('Check For Missing Rooms'),
-                                      content: const Text(
+                                      title: Text('Check For Missing Rooms'),
+                                      content: Text(
                                           'This will go over all the rooms again, and it will add any if missing.'),
                                       actions: [
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, false),
-                                          child: const Text('Cancel'),
+                                          child: Text('Cancel'),
                                         ),
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, true),
-                                          child: const Text('Confirm'),
+                                          child: Text('Confirm'),
                                         ),
                                       ],
                                     );
@@ -2921,7 +2927,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             .primaryText,
                                       ),
                                     ),
-                                    duration: const Duration(milliseconds: 4000),
+                                    duration: Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
@@ -2936,7 +2942,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                             FlutterFlowTheme.of(context).info,
                                       ),
                                     ),
-                                    duration: const Duration(milliseconds: 4000),
+                                    duration: Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).error,
                                   ),
@@ -2955,7 +2961,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                       ),
                     ],
                   ),
-                  if (_model.roomUsage.isNotEmpty)
+                  if (_model.roomUsage.length > 0)
                     Builder(
                       builder: (context) {
                         final roomUsages = functions
@@ -2972,13 +2978,13 @@ class _MetricsWidgetState extends State<MetricsWidget>
                           itemBuilder: (context, roomUsagesIndex) {
                             final roomUsagesItem = roomUsages[roomUsagesIndex];
                             return Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 12.0, 12.0, 12.0),
                               child: Container(
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: const [
+                                  boxShadow: [
                                     BoxShadow(
                                       blurRadius: 4.0,
                                       color: Color(0x34090F13),
@@ -2991,7 +2997,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 4.0),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
@@ -3002,7 +3008,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         decoration: BoxDecoration(
                                           color: FlutterFlowTheme.of(context)
                                               .primary,
-                                          borderRadius: const BorderRadius.only(
+                                          borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(0.0),
                                             bottomRight: Radius.circular(0.0),
                                             topLeft: Radius.circular(12.0),
@@ -3010,7 +3016,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                           ),
                                         ),
                                         child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
+                                          padding: EdgeInsets.all(12.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
@@ -3020,14 +3026,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                                 width: 36.0,
                                                 height: 36.0,
                                                 decoration: BoxDecoration(
-                                                  color: const Color(0x98FFFFFF),
+                                                  color: Color(0x98FFFFFF),
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           12.0),
                                                 ),
-                                                alignment: const AlignmentDirectional(
+                                                alignment: AlignmentDirectional(
                                                     0.0, 0.0),
-                                                child: const Icon(
+                                                child: Icon(
                                                   Icons.meeting_room_rounded,
                                                   color: Colors.white,
                                                   size: 20.0,
@@ -3057,10 +3063,10 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         child: Container(
                                           width: double.infinity,
                                           height: 30.0,
-                                          decoration: const BoxDecoration(),
+                                          decoration: BoxDecoration(),
                                           child: Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     12.0, 0.0, 12.0, 0.0),
                                             child: LinearPercentIndicator(
                                               percent: valueOrDefault<double>(
@@ -3081,7 +3087,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                               backgroundColor:
                                                   FlutterFlowTheme.of(context)
                                                       .accent4,
-                                              barRadius: const Radius.circular(10.0),
+                                              barRadius: Radius.circular(10.0),
                                               padding: EdgeInsets.zero,
                                             ),
                                           ),

@@ -1,9 +1,12 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'promo_model.dart';
 export 'promo_model.dart';
@@ -86,18 +89,18 @@ class _PromoWidgetState extends State<PromoWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -118,7 +121,7 @@ class _PromoWidgetState extends State<PromoWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -130,7 +133,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -142,14 +145,14 @@ class _PromoWidgetState extends State<PromoWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Promo',
@@ -164,8 +167,8 @@ class _PromoWidgetState extends State<PromoWidget> {
                             Switch.adaptive(
                               value: _model.switchValue!,
                               onChanged: (newValue) async {
-                                setState(() => _model.switchValue = newValue);
-                                if (newValue) {
+                                setState(() => _model.switchValue = newValue!);
+                                if (newValue!) {
                                   // promoOn
                                   _model.promoOn = true;
                                   setState(() {});
@@ -186,7 +189,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -236,7 +239,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                                   fillColor: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
                                   contentPadding:
-                                      const EdgeInsetsDirectional.fromSTEB(
+                                      EdgeInsetsDirectional.fromSTEB(
                                           16.0, 24.0, 20.0, 24.0),
                                 ),
                                 style: FlutterFlowTheme.of(context)
@@ -283,7 +286,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                                   fillColor: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
                                   contentPadding:
-                                      const EdgeInsetsDirectional.fromSTEB(
+                                      EdgeInsetsDirectional.fromSTEB(
                                           16.0, 24.0, 20.0, 24.0),
                                 ),
                                 style: FlutterFlowTheme.of(context)
@@ -304,13 +307,13 @@ class _PromoWidgetState extends State<PromoWidget> {
                           ),
                         ),
                       if (_model.promoOn)
-                        const Divider(
+                        Divider(
                           height: 4.0,
                           thickness: 1.0,
                           color: Color(0xFFE0E3E7),
                         ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -331,8 +334,12 @@ class _PromoWidgetState extends State<PromoWidget> {
                                 onTap: () async {
                                   if (_model.promoOn) {
                                     if ((_model.detailTextController.text !=
+                                                null &&
+                                            _model.detailTextController.text !=
                                                 '') &&
                                         (_model.percentTextController.text !=
+                                                null &&
+                                            _model.percentTextController.text !=
                                                 '')) {
                                       // update promo
 
@@ -357,7 +364,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .secondary,
@@ -376,7 +383,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .error,
@@ -407,7 +414,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                                                 .info,
                                           ),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
+                                        duration: Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context).error,
                                       ),
@@ -421,7 +428,7 @@ class _PromoWidgetState extends State<PromoWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         'Save',

@@ -3,7 +3,11 @@ import '/components/forms/room_add_edit/room_add_edit_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'room_list_model.dart';
 export 'room_list_model.dart';
@@ -75,7 +79,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -97,7 +101,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                             onTap: () => FocusScope.of(context).unfocus(),
                             child: Padding(
                               padding: MediaQuery.viewInsetsOf(context),
-                              child: const SizedBox(
+                              child: Container(
                                 height: double.infinity,
                                 child: RoomAddEditWidget(
                                   edit: false,
@@ -113,7 +117,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                 if (_model.selectedRooms.length == 1)
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                     child: StreamBuilder<RoomsRecord>(
                       stream:
                           RoomsRecord.getDocument(_model.selectedRooms.first),
@@ -156,7 +160,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                   onTap: () => FocusScope.of(context).unfocus(),
                                   child: Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
-                                    child: SizedBox(
+                                    child: Container(
                                       height: double.infinity,
                                       child: RoomAddEditWidget(
                                         roomRef: _model.selectedRooms.first,
@@ -175,10 +179,10 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                       },
                     ),
                   ),
-                if (_model.selectedRooms.isNotEmpty)
+                if (_model.selectedRooms.length >= 1)
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                     child: FlutterFlowIconButton(
                       borderColor: Colors.transparent,
                       borderRadius: 30.0,
@@ -195,19 +199,19 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                               context: context,
                               builder: (alertDialogContext) {
                                 return AlertDialog(
-                                  title: const Text('Are you sure?'),
-                                  content: const Text(
+                                  title: Text('Are you sure?'),
+                                  content: Text(
                                       'The selected rooms will be deleted.'),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(
                                           alertDialogContext, false),
-                                      child: const Text('Cancel'),
+                                      child: Text('Cancel'),
                                     ),
                                     TextButton(
                                       onPressed: () => Navigator.pop(
                                           alertDialogContext, true),
-                                      child: const Text('Confirm'),
+                                      child: Text('Confirm'),
                                     ),
                                   ],
                                 );
@@ -241,14 +245,14 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 12.0, 0.0, 0.0),
                             child: Text(
                               'Select to edit or delete',
@@ -262,7 +266,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 12.0, 0.0, 0.0),
                           child: Text(
                             _model.selectedRooms.length.toString(),
@@ -275,7 +279,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               2.0, 12.0, 0.0, 0.0),
                           child: Text(
                             'Selected',
@@ -292,7 +296,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                     child: StreamBuilder<List<RoomsRecord>>(
                       stream: queryRoomsRecord(
                         queryBuilder: (roomsRecord) => roomsRecord
@@ -339,7 +343,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                             final allRoomsRoomsRecord =
                                 allRoomsRoomsRecordList[allRoomsIndex];
                             return Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 16.0, 8.0),
                               child: Container(
                                 width: 100.0,
@@ -358,7 +362,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           8.0, 0.0, 0.0, 0.0),
                                       child: Card(
                                         clipBehavior:
@@ -380,7 +384,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                           ),
                                           child: Align(
                                             alignment:
-                                                const AlignmentDirectional(0.0, 0.0),
+                                                AlignmentDirectional(0.0, 0.0),
                                             child: Text(
                                               allRoomsRoomsRecord.number
                                                   .toString(),
@@ -404,10 +408,10 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                     Expanded(
                                       child: Align(
                                         alignment:
-                                            const AlignmentDirectional(0.0, -1.0),
+                                            AlignmentDirectional(0.0, -1.0),
                                         child: Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   10.0, 0.0, 0.0, 0.0),
                                           child: Theme(
                                             data: ThemeData(
@@ -488,7 +492,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                                   ListTileControlAffinity
                                                       .trailing,
                                               contentPadding:
-                                                  const EdgeInsetsDirectional
+                                                  EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           8.0, 0.0, 8.0, 0.0),
                                               shape: RoundedRectangleBorder(

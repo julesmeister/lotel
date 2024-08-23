@@ -4,8 +4,10 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'bill_edit_model.dart';
 export 'bill_edit_model.dart';
@@ -17,7 +19,7 @@ class BillEditWidget extends StatefulWidget {
     required this.description,
     required this.amount,
     double? afterDue,
-  }) : afterDue = afterDue ?? 0.0;
+  }) : this.afterDue = afterDue ?? 0.0;
 
   final BillsRecord? bill;
   final String? description;
@@ -43,15 +45,15 @@ class _BillEditWidgetState extends State<BillEditWidget> {
     _model = createModel(context, () => BillEditModel());
 
     _model.descTextController ??=
-        TextEditingController(text: widget.description);
+        TextEditingController(text: widget!.description);
     _model.descFocusNode ??= FocusNode();
 
     _model.amountTextController ??=
-        TextEditingController(text: widget.amount?.toString());
+        TextEditingController(text: widget!.amount?.toString());
     _model.amountFocusNode ??= FocusNode();
 
     _model.afterdueTextController ??=
-        TextEditingController(text: widget.afterDue.toString());
+        TextEditingController(text: widget!.afterDue.toString());
     _model.afterdueFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -71,18 +73,18 @@ class _BillEditWidgetState extends State<BillEditWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -103,7 +105,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -115,7 +117,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -127,14 +129,14 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Edit Bill',
@@ -147,7 +149,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 16.0, 0.0),
                               child: InkWell(
                                 splashColor: Colors.transparent,
@@ -155,7 +157,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.amount !=
+                                  if (widget!.amount !=
                                       (double.parse(
                                           _model.amountTextController.text))) {
                                     // statsThisBillBelongsTo
@@ -169,12 +171,12 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                           .where(
                                             'month',
                                             isEqualTo: dateTimeFormat(
-                                                "MMMM", widget.bill?.date),
+                                                "MMMM", widget!.bill?.date),
                                           )
                                           .where(
                                             'year',
                                             isEqualTo: dateTimeFormat(
-                                                "y", widget.bill?.date),
+                                                "y", widget!.bill?.date),
                                           ),
                                       singleRecord: true,
                                     ).then((s) => s.firstOrNull);
@@ -187,7 +189,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                               double.parse(_model
                                                       .amountTextController
                                                       .text) -
-                                                  (widget.amount!)),
+                                                  (widget!.amount!)),
                                         },
                                       ),
                                     });
@@ -199,9 +201,9 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                         date: getCurrentTimestamp,
                                         description:
                                             functions.changesInBillDescription(
-                                                widget.description,
+                                                widget!.description,
                                                 _model.descTextController.text,
-                                                widget.amount,
+                                                widget!.amount,
                                                 double.tryParse(_model
                                                     .amountTextController
                                                     .text)),
@@ -218,7 +220,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                   );
                                   // update bill
 
-                                  await widget.bill!.reference
+                                  await widget!.bill!.reference
                                       .update(createBillsRecordData(
                                     description: functions
                                         .replaceBillWithConventionalString(
@@ -241,7 +243,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                               .primaryText,
                                         ),
                                       ),
-                                      duration: const Duration(milliseconds: 4000),
+                                      duration: Duration(milliseconds: 4000),
                                       backgroundColor:
                                           FlutterFlowTheme.of(context)
                                               .secondary,
@@ -256,7 +258,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         'Save',
@@ -285,7 +287,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -333,7 +335,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -380,7 +382,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -429,7 +431,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)

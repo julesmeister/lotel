@@ -1,12 +1,17 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'new_salary_model.dart';
 export 'new_salary_model.dart';
@@ -19,7 +24,7 @@ class NewSalaryWidget extends StatefulWidget {
     this.salaryDoc,
     this.staffDoc,
     bool? edit,
-  }) : edit = edit ?? false;
+  }) : this.edit = edit ?? false;
 
   final DocumentReference? payrollRef;
   final List<StaffsRecord>? staffsForSelection;
@@ -47,31 +52,31 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      if (widget.edit) {
+      if (widget!.edit) {
         // set rate
         setState(() {
-          _model.rateTextController?.text = widget.salaryDoc!.rate.toString();
+          _model.rateTextController?.text = widget!.salaryDoc!.rate.toString();
           _model.rateTextController?.selection = TextSelection.collapsed(
               offset: _model.rateTextController!.text.length);
         });
         // set sss
         setState(() {
-          _model.sssTextController?.text = widget.salaryDoc!.sss.toString();
+          _model.sssTextController?.text = widget!.salaryDoc!.sss.toString();
           _model.sssTextController?.selection = TextSelection.collapsed(
               offset: _model.sssTextController!.text.length);
         });
         // set ca
         setState(() {
           _model.caTextController?.text =
-              widget.salaryDoc!.cashAdvance.toString();
+              widget!.salaryDoc!.cashAdvance.toString();
           _model.caTextController?.selection = TextSelection.collapsed(
               offset: _model.caTextController!.text.length);
         });
-        if (widget.salaryDoc?.absences != null) {
+        if (widget!.salaryDoc?.absences != null) {
           // set absences
           setState(() {
             _model.absencesTextController?.text =
-                widget.salaryDoc!.absences.toString();
+                widget!.salaryDoc!.absences.toString();
             _model.absencesTextController?.selection = TextSelection.collapsed(
                 offset: _model.absencesTextController!.text.length);
           });
@@ -86,7 +91,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
 
         // absences
         _model.occuringAbsences = await queryAbsencesRecordOnce(
-          parent: widget.staffDoc?.reference,
+          parent: widget!.staffDoc?.reference,
         );
         // add absences to list
         _model.absencesList =
@@ -105,25 +110,25 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
             isEqualTo: FFAppState().hotel,
           ),
         );
-        _model.selectedStaff = widget.staffDoc;
+        _model.selectedStaff = widget!.staffDoc;
         setState(() {});
       }
     });
 
     _model.rateTextController ??= TextEditingController(
-        text: _model.edit ? widget.salaryDoc?.rate.toString() : '0');
+        text: _model.edit ? widget!.salaryDoc?.rate?.toString() : '0');
     _model.rateFocusNode ??= FocusNode();
 
     _model.sssTextController ??= TextEditingController(
-        text: _model.edit ? widget.salaryDoc?.sss.toString() : '0');
+        text: _model.edit ? widget!.salaryDoc?.sss?.toString() : '0');
     _model.sssFocusNode ??= FocusNode();
 
     _model.caTextController ??= TextEditingController(
-        text: _model.edit ? widget.salaryDoc?.cashAdvance.toString() : '0');
+        text: _model.edit ? widget!.salaryDoc?.cashAdvance?.toString() : '0');
     _model.caFocusNode ??= FocusNode();
 
     _model.absencesTextController ??= TextEditingController(
-        text: _model.edit ? widget.salaryDoc?.absences.toString() : '0');
+        text: _model.edit ? widget!.salaryDoc?.absences?.toString() : '0');
     _model.absencesFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -143,18 +148,18 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -175,7 +180,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -187,7 +192,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -199,7 +204,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -208,10 +213,10 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                             Expanded(
                               flex: 6,
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 0.0, 0.0, 0.0),
                                 child: Text(
-                                  widget.edit ? 'Edit Salary' : 'New Salary',
+                                  widget!.edit ? 'Edit Salary' : 'New Salary',
                                   style: FlutterFlowTheme.of(context)
                                       .headlineSmall
                                       .override(
@@ -221,31 +226,31 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 ),
                               ),
                             ),
-                            if (!widget.edit)
+                            if (!widget!.edit)
                               Expanded(
                                 flex: 4,
                                 child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 16.0, 0.0),
                                   child: FlutterFlowDropDown<String>(
                                     controller:
                                         _model.dropDownValueController ??=
                                             FormFieldController<String>(null),
-                                    options: widget.staffsForSelection!
+                                    options: widget!.staffsForSelection!
                                         .map((e) => e.name)
                                         .toList(),
                                     onChanged: (val) async {
                                       setState(
                                           () => _model.dropDownValue = val);
-                                      var shouldSetState = false;
-                                      if (!widget.edit) {
+                                      var _shouldSetState = false;
+                                      if (!widget!.edit) {
                                         // reset values and set staff
-                                        _model.selectedStaff = widget
+                                        _model.selectedStaff = widget!
                                             .staffsForSelection
                                             ?.where((e) =>
                                                 e.name == _model.dropDownValue)
                                             .toList()
-                                            .first;
+                                            ?.first;
                                         _model.cashAdvanceTotal = 0.0;
                                         _model.loopAdvancesCounter = 0;
                                         _model.cashAdvancesList = [];
@@ -253,7 +258,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                         // set sss
                                         setState(() {
                                           _model.sssTextController?.text =
-                                              widget.staffsForSelection!
+                                              widget!.staffsForSelection!
                                                   .where((e) =>
                                                       e.name ==
                                                       _model.dropDownValue)
@@ -271,7 +276,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                         // set rate
                                         setState(() {
                                           _model.rateTextController?.text =
-                                              widget.staffsForSelection!
+                                              widget!.staffsForSelection!
                                                   .where((e) =>
                                                       e.name ==
                                                       _model.dropDownValue)
@@ -297,8 +302,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                             isEqualTo: false,
                                           ),
                                         );
-                                        shouldSetState = true;
-                                        if (_model.cashAdvances!.isNotEmpty) {
+                                        _shouldSetState = true;
+                                        if (_model.cashAdvances!.length > 0) {
                                           while (_model.loopAdvancesCounter !=
                                               _model.cashAdvances?.length) {
                                             // add ca to list
@@ -330,7 +335,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                                         .length);
                                           });
                                         } else {
-                                          if (shouldSetState) setState(() {});
+                                          if (_shouldSetState) setState(() {});
                                           return;
                                         }
 
@@ -345,8 +350,8 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                             isEqualTo: false,
                                           ),
                                         );
-                                        shouldSetState = true;
-                                        if (_model.absences!.isNotEmpty) {
+                                        _shouldSetState = true;
+                                        if (_model.absences!.length > 0) {
                                           while (_model.loopAdvancesCounter !=
                                               _model.absences?.length) {
                                             // add absences to list
@@ -380,7 +385,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                           });
                                         }
                                       }
-                                      if (shouldSetState) setState(() {});
+                                      if (_shouldSetState) setState(() {});
                                     },
                                     width: 160.0,
                                     height: 40.0,
@@ -400,10 +405,10 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     fillColor: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
                                     elevation: 2.0,
-                                    borderColor: const Color(0xFFE0E3E7),
+                                    borderColor: Color(0xFFE0E3E7),
                                     borderWidth: 2.0,
                                     borderRadius: 8.0,
-                                    margin: const EdgeInsetsDirectional.fromSTEB(
+                                    margin: EdgeInsetsDirectional.fromSTEB(
                                         12.0, 4.0, 12.0, 4.0),
                                     hidesUnderline: true,
                                     isSearchable: false,
@@ -414,7 +419,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -433,7 +438,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               focusNode: _model.rateFocusNode,
                               onChanged: (_) => EasyDebounce.debounce(
                                 '_model.rateTextController',
-                                const Duration(milliseconds: 2000),
+                                Duration(milliseconds: 2000),
                                 () async {
                                   _model.total = (double.parse(
                                           _model.rateTextController.text) -
@@ -477,7 +482,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -499,7 +504,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               focusNode: _model.sssFocusNode,
                               onChanged: (_) => EasyDebounce.debounce(
                                 '_model.sssTextController',
-                                const Duration(milliseconds: 2000),
+                                Duration(milliseconds: 2000),
                                 () async {
                                   _model.total = (double.parse(
                                           _model.rateTextController.text) -
@@ -542,7 +547,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -564,7 +569,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               focusNode: _model.caFocusNode,
                               onChanged: (_) => EasyDebounce.debounce(
                                 '_model.caTextController',
-                                const Duration(milliseconds: 2000),
+                                Duration(milliseconds: 2000),
                                 () async {
                                   _model.total = (double.parse(
                                           _model.rateTextController.text) -
@@ -607,7 +612,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -629,7 +634,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               focusNode: _model.absencesFocusNode,
                               onChanged: (_) => EasyDebounce.debounce(
                                 '_model.absencesTextController',
-                                const Duration(milliseconds: 2000),
+                                Duration(milliseconds: 2000),
                                 () async {
                                   _model.total = (double.parse(
                                           _model.rateTextController.text) -
@@ -672,7 +677,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -692,20 +697,20 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 16.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   10.0, 0.0, 0.0, 0.0),
                               child: RichText(
                                 textScaler: MediaQuery.of(context).textScaler,
@@ -755,17 +760,17 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                               ),
                               child: Visibility(
                                 visible: (_model.selectedStaff != null) ||
-                                    widget.edit,
+                                    widget!.edit,
                                 child: InkWell(
                                   splashColor: Colors.transparent,
                                   focusColor: Colors.transparent,
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    if (widget.edit) {
+                                    if (widget!.edit) {
                                       // update values from form
 
-                                      await widget.salaryDoc!.reference
+                                      await widget!.salaryDoc!.reference
                                           .update({
                                         ...createSalariesRecordData(
                                           sss: double.tryParse(
@@ -797,7 +802,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                       // read updated salary
                                       _model.updatedSalary =
                                           await SalariesRecord.getDocumentOnce(
-                                              widget.salaryDoc!.reference);
+                                              widget!.salaryDoc!.reference);
                                       // return salary
                                       Navigator.pop(
                                           context, _model.updatedSalary);
@@ -806,7 +811,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
 
                                       var salariesRecordReference2 =
                                           SalariesRecord.createDoc(
-                                              widget.payrollRef!);
+                                              widget!.payrollRef!);
                                       await salariesRecordReference2.set({
                                         ...createSalariesRecordData(
                                           sss: double.parse(
@@ -890,7 +895,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
+                                        duration: Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -904,7 +909,7 @@ class _NewSalaryWidgetState extends State<NewSalaryWidget> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 12.0, 0.0),
                                         child: Text(
                                           'Save',

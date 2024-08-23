@@ -1655,7 +1655,10 @@ String daysSolved(
   }
 }
 
-List<String> billsChoices(List<String>? descriptions) {
+List<String> billsChoices(
+  List<String>? descriptions,
+  List<String> additional,
+) {
   // Initialize a map to count occurrences of each description
   final Map<String, int> descriptionCount = {};
 
@@ -1679,6 +1682,13 @@ List<String> billsChoices(List<String>? descriptions) {
 
   // Add "All" at the beginning of the list
   sortedUniqueDescriptions.insert(0, 'All');
+
+  // Add additional items to the end of sortedUniqueDescriptions
+  for (final item in additional) {
+    if (!sortedUniqueDescriptions.contains(item)) {
+      sortedUniqueDescriptions.add(item);
+    }
+  }
 
   return sortedUniqueDescriptions;
 }
@@ -2051,4 +2061,19 @@ bool isRoomInLocations(
     return false;
   }
   return locations.contains(room);
+}
+
+List<BillsRecord>? showBills(
+  List<BillsRecord> billsRaw,
+  String description,
+) {
+  // if description all, display all bills, otherwise, show bills with description containing description
+  if (description == 'All') {
+    return billsRaw;
+  } else {
+    return billsRaw
+        .where((bill) =>
+            bill.description.toLowerCase().contains(description.toLowerCase()))
+        .toList();
+  }
 }

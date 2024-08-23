@@ -3,8 +3,10 @@ import '/backend/backend.dart';
 import '/components/forms/transaction_edit/transaction_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_transaction_only_model.dart';
 export 'option_to_transaction_only_model.dart';
@@ -56,12 +58,12 @@ class _OptionToTransactionOnlyWidgetState
     context.watch<FFAppState>();
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -74,15 +76,15 @@ class _OptionToTransactionOnlyWidgetState
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
-                  'Options For ${widget.description}',
+                  'Options For ${widget!.description}',
                   textAlign: TextAlign.start,
                   style: FlutterFlowTheme.of(context).labelMedium.override(
                         fontFamily: 'Readex Pro',
@@ -91,7 +93,7 @@ class _OptionToTransactionOnlyWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -106,12 +108,12 @@ class _OptionToTransactionOnlyWidgetState
                       builder: (context) {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
-                          child: SizedBox(
+                          child: Container(
                             height: double.infinity,
                             child: TransactionEditWidget(
-                              ref: widget.ref!,
-                              description: widget.description!,
-                              price: widget.price!,
+                              ref: widget!.ref!,
+                              description: widget!.description!,
+                              price: widget!.price!,
                             ),
                           ),
                         );
@@ -128,12 +130,12 @@ class _OptionToTransactionOnlyWidgetState
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -143,7 +145,7 @@ class _OptionToTransactionOnlyWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Details',
@@ -163,7 +165,7 @@ class _OptionToTransactionOnlyWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -172,25 +174,25 @@ class _OptionToTransactionOnlyWidgetState
                   onTap: () async {
                     // read transaction
                     _model.transactionToMark =
-                        await TransactionsRecord.getDocumentOnce(widget.ref!);
+                        await TransactionsRecord.getDocumentOnce(widget!.ref!);
                     if (_model.transactionToMark?.type == 'expense') {
                       var confirmDialogResponse = await showDialog<bool>(
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: const Text('Mark as Grocery'),
+                                title: Text('Mark as Grocery'),
                                 content:
-                                    const Text('This will be recorded as grocery.'),
+                                    Text('This will be recorded as grocery.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: const Text('Cancel'),
+                                    child: Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: const Text('Confirm'),
+                                    child: Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -259,7 +261,7 @@ class _OptionToTransactionOnlyWidgetState
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: const Duration(milliseconds: 4000),
+                          duration: Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -277,12 +279,12 @@ class _OptionToTransactionOnlyWidgetState
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -292,7 +294,7 @@ class _OptionToTransactionOnlyWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Mark as Grocery',
@@ -312,7 +314,7 @@ class _OptionToTransactionOnlyWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -326,19 +328,19 @@ class _OptionToTransactionOnlyWidgetState
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: const Text('Are you sure?'),
+                                title: Text('Are you sure?'),
                                 content:
-                                    const Text('This transaction will be deleted.'),
+                                    Text('This transaction will be deleted.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: const Text('Cancel'),
+                                    child: Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: const Text('Confirm'),
+                                    child: Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -349,11 +351,11 @@ class _OptionToTransactionOnlyWidgetState
                         // transaction action output
                         _model.transaction =
                             await TransactionsRecord.getDocumentOnce(
-                                widget.ref!);
-                        if ((_model.transaction!.inventories.isNotEmpty) &&
+                                widget!.ref!);
+                        if ((_model.transaction!.inventories.length > 0) &&
                             (_model.transaction?.type != 'book')) {
                           while (_model.loopInvetoryCounter !=
-                              _model.transaction?.inventories.length) {
+                              _model.transaction?.inventories?.length) {
                             // inventory
                             _model.inventory =
                                 await InventoriesRecord.getDocumentOnce(_model
@@ -393,7 +395,7 @@ class _OptionToTransactionOnlyWidgetState
                           }
                         }
                         // delete transactions
-                        await widget.ref!.delete();
+                        await widget!.ref!.delete();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
@@ -402,7 +404,7 @@ class _OptionToTransactionOnlyWidgetState
                                 color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
-                            duration: const Duration(milliseconds: 4000),
+                            duration: Duration(milliseconds: 4000),
                             backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
                         );
@@ -417,7 +419,7 @@ class _OptionToTransactionOnlyWidgetState
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: const Duration(milliseconds: 4000),
+                          duration: Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -432,12 +434,12 @@ class _OptionToTransactionOnlyWidgetState
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.delete_outlined,
@@ -447,7 +449,7 @@ class _OptionToTransactionOnlyWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete Transaction',

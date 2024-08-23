@@ -6,12 +6,17 @@ import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'expense_model.dart';
 export 'expense_model.dart';
@@ -23,8 +28,8 @@ class ExpenseWidget extends StatefulWidget {
     this.remittanceRef,
     double? net,
     this.issue,
-  })  : additional = additional ?? false,
-        net = net ?? 0.0;
+  })  : this.additional = additional ?? false,
+        this.net = net ?? 0.0;
 
   final bool additional;
   final DocumentReference? remittanceRef;
@@ -53,7 +58,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
 
     _model.descriptionTextController ??= TextEditingController(
         text:
-            widget.issue != null && widget.issue != '' ? widget.issue : '');
+            widget!.issue != null && widget!.issue != '' ? widget!.issue : '');
     _model.descriptionFocusNode ??= FocusNode();
 
     animationsMap.addAll({
@@ -64,8 +69,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.0, -100.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(0.0, -100.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -76,8 +81,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(-100.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(-100.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -88,8 +93,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(100.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(100.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -107,8 +112,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.0, 110.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(0.0, 110.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -119,8 +124,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.0, 100.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(0.0, 100.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -158,7 +163,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
           ),
           actions: [
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 15.0, 0.0),
+              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 15.0, 0.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -172,7 +177,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             borderRadius: 20.0,
                             borderWidth: 1.0,
                             buttonSize: 40.0,
-                            disabledIconColor: const Color(0xFFDADBDC),
+                            disabledIconColor: Color(0xFFDADBDC),
                             icon: Icon(
                               Icons.check,
                               color: FlutterFlowTheme.of(context).primaryText,
@@ -181,7 +186,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             onPressed: _model.disableSubmit
                                 ? null
                                 : () async {
-                                    var shouldSetState = false;
+                                    var _shouldSetState = false;
                                     if (_model.choicesValue == 'Cash Advance') {
                                       if (_model.staffSelected != null) {
                                         // Cash Advance? Sure?
@@ -192,8 +197,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                       (alertDialogContext) {
                                                     return AlertDialog(
                                                       title:
-                                                          const Text('Cash Advance'),
-                                                      content: const Text(
+                                                          Text('Cash Advance'),
+                                                      content: Text(
                                                           'Are you sure you want to cash in advance?'),
                                                       actions: [
                                                         TextButton(
@@ -201,7 +206,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                               Navigator.pop(
                                                                   alertDialogContext,
                                                                   false),
-                                                          child: const Text('Cancel'),
+                                                          child: Text('Cancel'),
                                                         ),
                                                         TextButton(
                                                           onPressed: () =>
@@ -209,7 +214,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                                   alertDialogContext,
                                                                   true),
                                                           child:
-                                                              const Text('Confirm'),
+                                                              Text('Confirm'),
                                                         ),
                                                       ],
                                                     );
@@ -247,14 +252,14 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                 ),
                                               ),
                                               duration:
-                                                  const Duration(milliseconds: 4000),
+                                                  Duration(milliseconds: 4000),
                                               backgroundColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondary,
                                             ),
                                           );
                                         } else {
-                                          if (shouldSetState) setState(() {});
+                                          if (_shouldSetState) setState(() {});
                                           return;
                                         }
 
@@ -271,7 +276,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                             hotel: FFAppState().hotel,
                                             description:
                                                 '${_model.selectedNameValue} claimed ${_model.descriptionTextController.text}',
-                                            remitted: widget.additional
+                                            remitted: widget!.additional
                                                 ? true
                                                 : false,
                                             pending: false,
@@ -293,7 +298,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                             hotel: FFAppState().hotel,
                                             description:
                                                 '${_model.selectedNameValue} claimed ${_model.descriptionTextController.text}',
-                                            remitted: widget.additional
+                                            remitted: widget!.additional
                                                 ? true
                                                 : false,
                                             pending: false,
@@ -304,7 +309,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                             },
                                           ),
                                         }, transactionsRecordReference1);
-                                        shouldSetState = true;
+                                        _shouldSetState = true;
                                         // CA to expenseRef
                                         _model.expenseRef =
                                             _model.newCACopy?.reference;
@@ -322,13 +327,13 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                               ),
                                             ),
                                             duration:
-                                                const Duration(milliseconds: 4000),
+                                                Duration(milliseconds: 4000),
                                             backgroundColor:
                                                 FlutterFlowTheme.of(context)
                                                     .error,
                                           ),
                                         );
-                                        if (shouldSetState) setState(() {});
+                                        if (_shouldSetState) setState(() {});
                                         return;
                                       }
                                     } else {
@@ -342,8 +347,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                     builder:
                                                         (alertDialogContext) {
                                                       return AlertDialog(
-                                                        title: const Text('Absent'),
-                                                        content: const Text(
+                                                        title: Text('Absent'),
+                                                        content: Text(
                                                             'Are you sure you want to someone was absent?'),
                                                         actions: [
                                                           TextButton(
@@ -352,7 +357,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                                     alertDialogContext,
                                                                     false),
                                                             child:
-                                                                const Text('Cancel'),
+                                                                Text('Cancel'),
                                                           ),
                                                           TextButton(
                                                             onPressed: () =>
@@ -360,7 +365,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                                     alertDialogContext,
                                                                     true),
                                                             child:
-                                                                const Text('Confirm'),
+                                                                Text('Confirm'),
                                                           ),
                                                         ],
                                                       );
@@ -399,7 +404,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                         .primaryText,
                                                   ),
                                                 ),
-                                                duration: const Duration(
+                                                duration: Duration(
                                                     milliseconds: 4000),
                                                 backgroundColor:
                                                     FlutterFlowTheme.of(context)
@@ -407,9 +412,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                               ),
                                             );
                                           } else {
-                                            if (shouldSetState) {
+                                            if (_shouldSetState)
                                               setState(() {});
-                                            }
                                             return;
                                           }
                                         } else {
@@ -425,17 +429,20 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                 ),
                                               ),
                                               duration:
-                                                  const Duration(milliseconds: 4000),
+                                                  Duration(milliseconds: 4000),
                                               backgroundColor:
                                                   FlutterFlowTheme.of(context)
                                                       .error,
                                             ),
                                           );
-                                          if (shouldSetState) setState(() {});
+                                          if (_shouldSetState) setState(() {});
                                           return;
                                         }
                                       } else {
                                         if (_model.descriptionTextController
+                                                    .text !=
+                                                null &&
+                                            _model.descriptionTextController
                                                     .text !=
                                                 '') {
                                           // is there a duplicate within the last hour
@@ -474,7 +481,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                           isEqualTo: false,
                                                         ),
                                           );
-                                          shouldSetState = true;
+                                          _shouldSetState = true;
                                           if (_model.duplicatewithin1hour ==
                                               0) {
                                             // Not cash advance
@@ -484,9 +491,9 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                       builder:
                                                           (alertDialogContext) {
                                                         return AlertDialog(
-                                                          title: const Text(
+                                                          title: Text(
                                                               'Are you sure?'),
-                                                          content: const Text(
+                                                          content: Text(
                                                               'You are submitting a new expense.'),
                                                           actions: [
                                                             TextButton(
@@ -494,7 +501,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                                   Navigator.pop(
                                                                       alertDialogContext,
                                                                       false),
-                                                              child: const Text(
+                                                              child: Text(
                                                                   'Cancel'),
                                                             ),
                                                             TextButton(
@@ -502,7 +509,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                                   Navigator.pop(
                                                                       alertDialogContext,
                                                                       true),
-                                                              child: const Text(
+                                                              child: Text(
                                                                   'Confirm'),
                                                             ),
                                                           ],
@@ -530,7 +537,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                           .startBigLetter(_model
                                                               .descriptionTextController
                                                               .text)),
-                                                  remitted: widget.additional
+                                                  remitted: widget!.additional
                                                       ? true
                                                       : false,
                                                   pending: false,
@@ -557,7 +564,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                           .startBigLetter(_model
                                                               .descriptionTextController
                                                               .text)),
-                                                  remitted: widget.additional
+                                                  remitted: widget!.additional
                                                       ? true
                                                       : false,
                                                   pending: false,
@@ -568,7 +575,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                   },
                                                 ),
                                               }, transactionsRecordReference2);
-                                              shouldSetState = true;
+                                              _shouldSetState = true;
                                               // Saved
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
@@ -582,7 +589,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                               .primaryText,
                                                     ),
                                                   ),
-                                                  duration: const Duration(
+                                                  duration: Duration(
                                                       milliseconds: 4000),
                                                   backgroundColor:
                                                       FlutterFlowTheme.of(
@@ -610,7 +617,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                                 .primaryText,
                                                       ),
                                                     ),
-                                                    duration: const Duration(
+                                                    duration: Duration(
                                                         milliseconds: 4000),
                                                     backgroundColor:
                                                         FlutterFlowTheme.of(
@@ -673,7 +680,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                                   descending:
                                                                       true),
                                                 );
-                                                shouldSetState = true;
+                                                _shouldSetState = true;
                                                 if (_model.countGrrCopy! > 0) {
                                                   // last grr
                                                   _model.lastGrrCopy =
@@ -692,7 +699,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                                         true),
                                                     singleRecord: true,
                                                   ).then((s) => s.firstOrNull);
-                                                  shouldSetState = true;
+                                                  _shouldSetState = true;
                                                   // increment grocery
 
                                                   await _model
@@ -711,9 +718,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                 }
                                               }
                                             } else {
-                                              if (shouldSetState) {
+                                              if (_shouldSetState)
                                                 setState(() {});
-                                              }
                                               return;
                                             }
                                           } else {
@@ -728,7 +734,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                         .info,
                                                   ),
                                                 ),
-                                                duration: const Duration(
+                                                duration: Duration(
                                                     milliseconds: 4000),
                                                 backgroundColor:
                                                     FlutterFlowTheme.of(context)
@@ -749,7 +755,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                 ),
                                               ),
                                               duration:
-                                                  const Duration(milliseconds: 4000),
+                                                  Duration(milliseconds: 4000),
                                               backgroundColor:
                                                   FlutterFlowTheme.of(context)
                                                       .error,
@@ -759,10 +765,10 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                       }
                                     }
 
-                                    if (widget.additional) {
+                                    if (widget!.additional) {
                                       // add expensRef to remittance
 
-                                      await widget.remittanceRef!.update({
+                                      await widget!.remittanceRef!.update({
                                         ...mapToFirestore(
                                           {
                                             'expenses': FieldValue.increment(
@@ -802,9 +808,9 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                     setState(() {
                                       _model.amountTextController?.clear();
                                       _model.descriptionTextController?.text =
-                                          widget.issue != null &&
-                                                  widget.issue != ''
-                                              ? widget.issue!
+                                          widget!.issue != null &&
+                                                  widget!.issue != ''
+                                              ? widget!.issue!
                                               : '';
                                     });
                                     // Reset selected staff
@@ -812,11 +818,11 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                       _model.selectedNameValueController
                                           ?.reset();
                                     });
-                                    if (shouldSetState) setState(() {});
+                                    if (_shouldSetState) setState(() {});
                                   },
                           ),
                         ),
-                      if (widget.additional)
+                      if (widget!.additional)
                         FlutterFlowIconButton(
                           borderRadius: 20.0,
                           borderWidth: 1.0,
@@ -842,7 +848,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
         body: SafeArea(
           top: true,
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -857,7 +863,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                   ).animateOnPageLoad(
                       animationsMap['textOnPageLoadAnimation']!),
                   Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                     child: Text(
                       'Fill out the form below to record a new expense.',
                       style: FlutterFlowTheme.of(context).labelLarge.override(
@@ -874,9 +880,10 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                         focusNode: _model.amountFocusNode,
                         onChanged: (_) => EasyDebounce.debounce(
                           '_model.amountTextController',
-                          const Duration(milliseconds: 2000),
+                          Duration(milliseconds: 2000),
                           () async {
-                            if (_model.amountTextController.text == '') {
+                            if (_model.amountTextController.text == null ||
+                                _model.amountTextController.text == '') {
                               // disable
                               _model.disableSubmit = true;
                               setState(() {});
@@ -933,7 +940,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             ),
                             borderRadius: BorderRadius.circular(0.0),
                           ),
-                          contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                          contentPadding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 12.0, 16.0, 12.0),
                         ),
                         style:
@@ -995,7 +1002,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             ),
                             borderRadius: BorderRadius.circular(0.0),
                           ),
-                          contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                          contentPadding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 24.0, 16.0, 12.0),
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1011,12 +1018,12 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                       ).animateOnPageLoad(
                           animationsMap['textFieldOnPageLoadAnimation2']!),
                     ]
-                        .divide(const SizedBox(height: 16.0))
-                        .addToStart(const SizedBox(height: 12.0)),
+                        .divide(SizedBox(height: 16.0))
+                        .addToStart(SizedBox(height: 12.0)),
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
                     child: StreamBuilder<List<OptionsRecord>>(
                       stream: queryOptionsRecord(
                         queryBuilder: (optionsRecord) => optionsRecord.where(
@@ -1054,7 +1061,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 15.0, 16.0, 15.0),
                             child: FlutterFlowChoiceChips(
                               options: containerOptionsRecordList
@@ -1147,7 +1154,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                     ),
                                 iconColor: Colors.white,
                                 iconSize: 18.0,
-                                labelPadding: const EdgeInsetsDirectional.fromSTEB(
+                                labelPadding: EdgeInsetsDirectional.fromSTEB(
                                     12.0, 4.0, 12.0, 4.0),
                                 elevation: 2.0,
                               ),
@@ -1163,7 +1170,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                 iconColor:
                                     FlutterFlowTheme.of(context).primaryText,
                                 iconSize: 18.0,
-                                labelPadding: const EdgeInsetsDirectional.fromSTEB(
+                                labelPadding: EdgeInsetsDirectional.fromSTEB(
                                     12.0, 4.0, 12.0, 4.0),
                                 elevation: 0.0,
                               ),
@@ -1187,7 +1194,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                       _model.choicesValue, 'Cash Advance,Absent'))
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                       child: StreamBuilder<List<StaffsRecord>>(
                         stream: _model.staffsCashAdvance(
                           requestFn: () => queryStaffsRecord(
@@ -1253,10 +1260,10 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
                             elevation: 2.0,
-                            borderColor: const Color(0xFFE0E3E7),
+                            borderColor: Color(0xFFE0E3E7),
                             borderWidth: 2.0,
                             borderRadius: 8.0,
-                            margin: const EdgeInsetsDirectional.fromSTEB(
+                            margin: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 4.0, 12.0, 4.0),
                             hidesUnderline: true,
                             isSearchable: false,

@@ -3,7 +3,10 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'transaction_edit_model.dart';
 export 'transaction_edit_model.dart';
 
@@ -42,11 +45,11 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
     _model = createModel(context, () => TransactionEditModel());
 
     _model.descTextController ??=
-        TextEditingController(text: widget.description);
+        TextEditingController(text: widget!.description);
     _model.descFocusNode ??= FocusNode();
 
     _model.priceTextController ??=
-        TextEditingController(text: widget.price?.toString());
+        TextEditingController(text: widget!.price?.toString());
     _model.priceFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -64,18 +67,18 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -96,7 +99,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -108,7 +111,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -120,14 +123,14 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Edit Transaction',
@@ -140,7 +143,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 16.0, 0.0),
                               child: InkWell(
                                 splashColor: Colors.transparent,
@@ -150,39 +153,39 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                 onTap: () async {
                                   // update transaction
 
-                                  await widget.ref!
+                                  await widget!.ref!
                                       .update(createTransactionsRecordData(
                                     description: _model.descTextController.text,
                                     total: double.tryParse(
                                         _model.priceTextController.text),
                                   ));
-                                  if (widget.bookingRef != null) {
+                                  if (widget!.bookingRef != null) {
                                     // update book total
 
-                                    await widget.bookingRef!.update({
+                                    await widget!.bookingRef!.update({
                                       ...mapToFirestore(
                                         {
                                           'total': FieldValue.increment(
                                               double.parse(_model
                                                       .priceTextController
                                                       .text) -
-                                                  (widget.price!)),
+                                                  (widget!.price!)),
                                         },
                                       ),
                                     });
-                                    if (widget.price !=
+                                    if (widget!.price !=
                                         (double.parse(
                                             _model.priceTextController.text))) {
                                       // create history
 
                                       await HistoryRecord.createDoc(
-                                              widget.roomRef!)
+                                              widget!.roomRef!)
                                           .set({
                                         ...createHistoryRecordData(
                                           description:
-                                              'The transaction amount was changed from ${widget.price?.toString()} to ${_model.priceTextController.text}.',
+                                              'The transaction amount was changed from ${widget!.price?.toString()} to ${_model.priceTextController.text}.',
                                           staff: currentUserReference,
-                                          booking: widget.bookingRef,
+                                          booking: widget!.bookingRef,
                                         ),
                                         ...mapToFirestore(
                                           {
@@ -202,7 +205,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                               .primaryText,
                                         ),
                                       ),
-                                      duration: const Duration(milliseconds: 4000),
+                                      duration: Duration(milliseconds: 4000),
                                       backgroundColor:
                                           FlutterFlowTheme.of(context)
                                               .secondary,
@@ -215,7 +218,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         'Save',
@@ -244,7 +247,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -292,7 +295,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -339,7 +342,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)

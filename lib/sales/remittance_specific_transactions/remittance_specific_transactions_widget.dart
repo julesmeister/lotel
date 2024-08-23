@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/options/option_to_remove_book_remittance/option_to_remove_book_remittance_widget.dart';
 import '/components/options/option_to_remove_expense_remittance/option_to_remove_expense_remittance_widget.dart';
@@ -6,10 +7,16 @@ import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'remittance_specific_transactions_model.dart';
 export 'remittance_specific_transactions_model.dart';
 
@@ -46,10 +53,10 @@ class _RemittanceSpecificTransactionsWidgetState
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      while (_model.loopTransactionsCounter != widget.transactions?.length) {
+      while (_model.loopTransactionsCounter != widget!.transactions?.length) {
         // Read each transaction
         _model.transactionToList = await TransactionsRecord.getDocumentOnce(
-            widget.transactions![_model.loopTransactionsCounter]);
+            widget!.transactions![_model.loopTransactionsCounter]);
         // Add to list
         _model.addToTransactions(_model.transactionToList!);
         setState(() {});
@@ -57,10 +64,10 @@ class _RemittanceSpecificTransactionsWidgetState
         _model.loopTransactionsCounter = _model.loopTransactionsCounter + 1;
         setState(() {});
       }
-      while (_model.loopAbsencesCounter != widget.absences?.length) {
+      while (_model.loopAbsencesCounter != widget!.absences?.length) {
         // read absence
         _model.absenceToList = await AbsencesRecord.getDocumentOnce(
-            widget.absences![_model.loopAbsencesCounter]);
+            widget!.absences![_model.loopAbsencesCounter]);
         // add to list
         _model.addToAbsencesDocs(_model.absenceToList!);
         setState(() {});
@@ -90,8 +97,8 @@ class _RemittanceSpecificTransactionsWidgetState
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -109,8 +116,8 @@ class _RemittanceSpecificTransactionsWidgetState
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -128,8 +135,8 @@ class _RemittanceSpecificTransactionsWidgetState
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -147,8 +154,8 @@ class _RemittanceSpecificTransactionsWidgetState
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -194,7 +201,7 @@ class _RemittanceSpecificTransactionsWidgetState
             },
           ),
           title: Align(
-            alignment: const AlignmentDirectional(-1.0, 0.0),
+            alignment: AlignmentDirectional(-1.0, 0.0),
             child: Text(
               'Transactions',
               textAlign: TextAlign.start,
@@ -205,7 +212,7 @@ class _RemittanceSpecificTransactionsWidgetState
                   ),
             ),
           ),
-          actions: const [],
+          actions: [],
           centerTitle: false,
           elevation: 0.0,
         ),
@@ -215,15 +222,15 @@ class _RemittanceSpecificTransactionsWidgetState
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (_model.transactions.isNotEmpty)
+              if (_model.transactions.length > 0)
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                     child: Column(
                       children: [
                         Align(
-                          alignment: const Alignment(0.0, 0),
+                          alignment: Alignment(0.0, 0),
                           child: FlutterFlowButtonTabBar(
                             useToggleButtonStyle: true,
                             isScrollable: true,
@@ -233,7 +240,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                   fontFamily: 'Readex Pro',
                                   letterSpacing: 0.0,
                                 ),
-                            unselectedLabelStyle: const TextStyle(),
+                            unselectedLabelStyle: TextStyle(),
                             labelColor:
                                 FlutterFlowTheme.of(context).primaryText,
                             unselectedLabelColor:
@@ -246,11 +253,11 @@ class _RemittanceSpecificTransactionsWidgetState
                             borderWidth: 2.0,
                             borderRadius: 12.0,
                             elevation: 0.0,
-                            labelPadding: const EdgeInsetsDirectional.fromSTEB(
+                            labelPadding: EdgeInsetsDirectional.fromSTEB(
                                 20.0, 0.0, 20.0, 0.0),
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 0.0, 16.0, 0.0),
-                            tabs: const [
+                            tabs: [
                               Tab(
                                 text: 'All',
                               ),
@@ -289,12 +296,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           16.0, 12.0, 12.0, 12.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          boxShadow: const [
+                                          boxShadow: [
                                             BoxShadow(
                                               blurRadius: 4.0,
                                               color: Color(0x34090F13),
@@ -309,7 +316,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                         ),
                                         child: Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 0.0, 4.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -317,7 +324,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               Container(
                                                 width: double.infinity,
                                                 height: 50.0,
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                   color: Color(0xFF39D2C0),
                                                   borderRadius:
                                                       BorderRadius.only(
@@ -332,7 +339,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -346,16 +353,16 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         decoration:
                                                             BoxDecoration(
                                                           color:
-                                                              const Color(0x98FFFFFF),
+                                                              Color(0x98FFFFFF),
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
                                                                       12.0),
                                                         ),
                                                         alignment:
-                                                            const AlignmentDirectional(
+                                                            AlignmentDirectional(
                                                                 0.0, 0.0),
-                                                        child: const Icon(
+                                                        child: Icon(
                                                           Icons
                                                               .attach_money_sharp,
                                                           color: Colors.white,
@@ -397,7 +404,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(12.0),
+                                                padding: EdgeInsets.all(12.0),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -407,7 +414,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   children: [
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsetsDirectional
+                                                          EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   0.0,
@@ -421,7 +428,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             .override(
                                                               fontFamily:
                                                                   'Readex Pro',
-                                                              color: const Color(
+                                                              color: Color(
                                                                   0xFF14181B),
                                                               fontSize: 14.0,
                                                               letterSpacing:
@@ -452,7 +459,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                             blurRadius: 0.0,
                                             color: FlutterFlowTheme.of(context)
                                                 .alternate,
-                                            offset: const Offset(
+                                            offset: Offset(
                                               0.0,
                                               1.0,
                                             ),
@@ -471,7 +478,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                             blurRadius: 0.0,
                                             color: FlutterFlowTheme.of(context)
                                                 .alternate,
-                                            offset: const Offset(
+                                            offset: Offset(
                                               0.0,
                                               1.0,
                                             ),
@@ -479,7 +486,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                         ],
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             16.0, 10.0, 0.0, 10.0),
                                         child: Text(
                                           'Bookings',
@@ -494,7 +501,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                     ),
                                     if (_model.transactions
                                             .where((e) => e.type == 'book')
-                                            .toList().isNotEmpty)
+                                            .toList()
+                                            .length >
+                                        0)
                                       Builder(
                                         builder: (context) {
                                           final bookings = _model.transactions
@@ -524,9 +533,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             builder:
                                                                 (alertDialogContext) {
                                                               return AlertDialog(
-                                                                title: const Text(
+                                                                title: Text(
                                                                     'Remove'),
-                                                                content: const Text(
+                                                                content: Text(
                                                                     'This will remove this booking from this remittance as well as adjust the values from its respective remittance.'),
                                                                 actions: [
                                                                   TextButton(
@@ -534,7 +543,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         Navigator.pop(
                                                                             alertDialogContext,
                                                                             false),
-                                                                    child: const Text(
+                                                                    child: Text(
                                                                         'Cancel'),
                                                                   ),
                                                                   TextButton(
@@ -542,7 +551,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         Navigator.pop(
                                                                             alertDialogContext,
                                                                             true),
-                                                                    child: const Text(
+                                                                    child: Text(
                                                                         'Confirm'),
                                                                   ),
                                                                 ],
@@ -566,11 +575,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: SizedBox(
+                                                            child: Container(
                                                               height: 125.0,
                                                               child:
                                                                   OptionToRemoveBookRemittanceWidget(
-                                                                remittance: widget
+                                                                remittance: widget!
                                                                     .remittanceRef!,
                                                                 transaction:
                                                                     bookingsItem,
@@ -585,14 +594,14 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
-                                                  constraints: const BoxConstraints(
+                                                  constraints: BoxConstraints(
                                                     maxWidth: 570.0,
                                                   ),
                                                   decoration: BoxDecoration(
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .secondaryBackground,
-                                                    boxShadow: const [
+                                                    boxShadow: [
                                                       BoxShadow(
                                                         blurRadius: 0.0,
                                                         color:
@@ -615,7 +624,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsetsDirectional
+                                                        EdgeInsetsDirectional
                                                             .fromSTEB(
                                                                 16.0,
                                                                 12.0,
@@ -635,7 +644,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           flex: 5,
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
+                                                                EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         0.0,
@@ -663,7 +672,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         text: bookingsItem
                                                                             .description,
                                                                         style:
-                                                                            const TextStyle(),
+                                                                            TextStyle(),
                                                                       )
                                                                     ],
                                                                     style: FlutterFlowTheme.of(
@@ -682,7 +691,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           4.0,
@@ -720,7 +729,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             children: [
                                                               Padding(
                                                                 padding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -792,7 +801,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     extra: <String,
                                                                         dynamic>{
                                                                       kTransitionInfoKey:
-                                                                          const TransitionInfo(
+                                                                          TransitionInfo(
                                                                         hasTransition:
                                                                             true,
                                                                         transitionType:
@@ -818,7 +827,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   child:
                                                                       Padding(
                                                                     padding:
-                                                                        const EdgeInsets.all(
+                                                                        EdgeInsets.all(
                                                                             4.0),
                                                                     child: Icon(
                                                                       Icons
@@ -852,7 +861,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                             .primaryBackground,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             16.0, 10.0, 0.0, 10.0),
                                         child: Text(
                                           'Goods',
@@ -867,7 +876,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                     ),
                                     if (_model.transactions
                                             .where((e) => e.type == 'goods')
-                                            .toList().isNotEmpty)
+                                            .toList()
+                                            .length >
+                                        0)
                                       Builder(
                                         builder: (context) {
                                           final goods = _model.transactions
@@ -885,14 +896,14 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   goods[goodsIndex];
                                               return Container(
                                                 width: double.infinity,
-                                                constraints: const BoxConstraints(
+                                                constraints: BoxConstraints(
                                                   maxWidth: 570.0,
                                                 ),
                                                 decoration: BoxDecoration(
                                                   color: FlutterFlowTheme.of(
                                                           context)
                                                       .secondaryBackground,
-                                                  boxShadow: const [
+                                                  boxShadow: [
                                                     BoxShadow(
                                                       color: Color(0x33000000),
                                                       offset: Offset(
@@ -911,7 +922,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(16.0, 12.0,
                                                           16.0, 12.0),
                                                   child: Row(
@@ -928,7 +939,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         flex: 5,
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsetsDirectional
+                                                              EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       0.0,
@@ -959,7 +970,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             .goods
                                                                             .toList()),
                                                                         style:
-                                                                            const TextStyle(),
+                                                                            TextStyle(),
                                                                       )
                                                                     ],
                                                                     style: FlutterFlowTheme.of(
@@ -974,7 +985,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           4.0,
@@ -1025,7 +1036,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           5.0,
@@ -1051,7 +1062,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                       ),
                                                                     ),
                                                                     alignment:
-                                                                        const AlignmentDirectional(
+                                                                        AlignmentDirectional(
                                                                             -1.0,
                                                                             0.0),
                                                                     child: Row(
@@ -1067,14 +1078,14 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           decoration:
                                                                               BoxDecoration(
                                                                             color:
-                                                                                const Color(0xFF4B39EF),
+                                                                                Color(0xFF4B39EF),
                                                                             borderRadius:
                                                                                 BorderRadius.circular(4.0),
                                                                           ),
                                                                         ),
                                                                         Padding(
                                                                           padding:
-                                                                              const EdgeInsets.all(10.0),
+                                                                              EdgeInsets.all(10.0),
                                                                           child:
                                                                               Text(
                                                                             functions.cartToTextSummary(goodsItem.goods.toList())!,
@@ -1104,7 +1115,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                                  const EdgeInsetsDirectional
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -1152,7 +1163,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                         },
                                       ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           16.0, 10.0, 0.0, 10.0),
                                       child: Text(
                                         'Expenses',
@@ -1166,7 +1177,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                     ),
                                     if (_model.transactions
                                             .where((e) => e.type == 'expense')
-                                            .toList().isNotEmpty)
+                                            .toList()
+                                            .length >
+                                        0)
                                       Builder(
                                         builder: (context) {
                                           final expenses = _model.transactions
@@ -1196,9 +1209,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             builder:
                                                                 (alertDialogContext) {
                                                               return AlertDialog(
-                                                                title: const Text(
+                                                                title: Text(
                                                                     'Delete'),
-                                                                content: const Text(
+                                                                content: Text(
                                                                     'This will delete the transaction as well as adjust the values from the respective remittance.'),
                                                                 actions: [
                                                                   TextButton(
@@ -1206,7 +1219,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         Navigator.pop(
                                                                             alertDialogContext,
                                                                             false),
-                                                                    child: const Text(
+                                                                    child: Text(
                                                                         'Cancel'),
                                                                   ),
                                                                   TextButton(
@@ -1214,7 +1227,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         Navigator.pop(
                                                                             alertDialogContext,
                                                                             true),
-                                                                    child: const Text(
+                                                                    child: Text(
                                                                         'Confirm'),
                                                                   ),
                                                                 ],
@@ -1240,11 +1253,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: SizedBox(
+                                                            child: Container(
                                                               height: 125.0,
                                                               child:
                                                                   OptionToRemoveExpenseRemittanceWidget(
-                                                                remittance: widget
+                                                                remittance: widget!
                                                                     .remittanceRef!,
                                                                 transaction:
                                                                     expensesItem,
@@ -1259,14 +1272,14 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
-                                                  constraints: const BoxConstraints(
+                                                  constraints: BoxConstraints(
                                                     maxWidth: 570.0,
                                                   ),
                                                   decoration: BoxDecoration(
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .secondaryBackground,
-                                                    boxShadow: const [
+                                                    boxShadow: [
                                                       BoxShadow(
                                                         color:
                                                             Color(0x33000000),
@@ -1288,7 +1301,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsetsDirectional
+                                                        EdgeInsetsDirectional
                                                             .fromSTEB(
                                                                 16.0,
                                                                 12.0,
@@ -1308,7 +1321,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           flex: 5,
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
+                                                                EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         0.0,
@@ -1338,7 +1351,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           text:
                                                                               functions.startBigLetter(expensesItem.description),
                                                                           style:
-                                                                              const TextStyle(),
+                                                                              TextStyle(),
                                                                         )
                                                                       ],
                                                                       style: FlutterFlowTheme.of(
@@ -1357,7 +1370,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     ),
                                                                   ),
                                                                   Padding(
-                                                                    padding: const EdgeInsetsDirectional
+                                                                    padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             4.0,
@@ -1404,9 +1417,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     ),
                                                                   ),
                                                                   if (expensesItem
-                                                                          .goods.isNotEmpty)
+                                                                          .goods
+                                                                          .length >
+                                                                      0)
                                                                     Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           5.0,
                                                                           0.0,
@@ -1427,7 +1442,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                                 1.0,
                                                                           ),
                                                                         ),
-                                                                        alignment: const AlignmentDirectional(
+                                                                        alignment: AlignmentDirectional(
                                                                             -1.0,
                                                                             0.0),
                                                                         child:
@@ -1439,12 +1454,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                               width: 4.0,
                                                                               height: (20 * expensesItem.goods.length).toDouble(),
                                                                               decoration: BoxDecoration(
-                                                                                color: const Color(0xFF4B39EF),
+                                                                                color: Color(0xFF4B39EF),
                                                                                 borderRadius: BorderRadius.circular(4.0),
                                                                               ),
                                                                             ),
                                                                             Padding(
-                                                                              padding: const EdgeInsets.all(10.0),
+                                                                              padding: EdgeInsets.all(10.0),
                                                                               child: Text(
                                                                                 functions.cartToTextSummary(expensesItem.goods.toList())!,
                                                                                 style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -1474,7 +1489,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             children: [
                                                               Padding(
                                                                 padding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -1521,7 +1536,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           );
                                         },
                                       ),
-                                  ].addToEnd(const SizedBox(height: 20.0)),
+                                  ].addToEnd(SizedBox(height: 20.0)),
                                 ),
                               ),
                               SingleChildScrollView(
@@ -1530,12 +1545,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           16.0, 12.0, 12.0, 12.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          boxShadow: const [
+                                          boxShadow: [
                                             BoxShadow(
                                               blurRadius: 4.0,
                                               color: Color(0x34090F13),
@@ -1550,7 +1565,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                         ),
                                         child: Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 0.0, 4.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -1558,7 +1573,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               Container(
                                                 width: double.infinity,
                                                 height: 50.0,
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                   color: Color(0xFF39D2C0),
                                                   borderRadius:
                                                       BorderRadius.only(
@@ -1573,7 +1588,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -1587,16 +1602,16 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         decoration:
                                                             BoxDecoration(
                                                           color:
-                                                              const Color(0x98FFFFFF),
+                                                              Color(0x98FFFFFF),
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
                                                                       12.0),
                                                         ),
                                                         alignment:
-                                                            const AlignmentDirectional(
+                                                            AlignmentDirectional(
                                                                 0.0, 0.0),
-                                                        child: const Icon(
+                                                        child: Icon(
                                                           Icons
                                                               .attach_money_sharp,
                                                           color: Colors.white,
@@ -1638,7 +1653,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(12.0),
+                                                padding: EdgeInsets.all(12.0),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -1648,7 +1663,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   children: [
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsetsDirectional
+                                                          EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   0.0,
@@ -1662,7 +1677,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             .override(
                                                               fontFamily:
                                                                   'Readex Pro',
-                                                              color: const Color(
+                                                              color: Color(
                                                                   0xFF14181B),
                                                               fontSize: 14.0,
                                                               letterSpacing:
@@ -1684,7 +1699,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                     ),
                                     if (_model.transactions
                                             .where((e) => e.type == 'book')
-                                            .toList().isNotEmpty)
+                                            .toList()
+                                            .length >
+                                        0)
                                       Builder(
                                         builder: (context) {
                                           final bookings = _model.transactions
@@ -1692,7 +1709,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               .toList();
 
                                           return ListView.builder(
-                                            padding: const EdgeInsets.fromLTRB(
+                                            padding: EdgeInsets.fromLTRB(
                                               0,
                                               0.0,
                                               0,
@@ -1719,9 +1736,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             builder:
                                                                 (alertDialogContext) {
                                                               return AlertDialog(
-                                                                title: const Text(
+                                                                title: Text(
                                                                     'Remove'),
-                                                                content: const Text(
+                                                                content: Text(
                                                                     'This will remove this booking from this remittance as well as adjust the values from its respective remittance.'),
                                                                 actions: [
                                                                   TextButton(
@@ -1729,7 +1746,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         Navigator.pop(
                                                                             alertDialogContext,
                                                                             false),
-                                                                    child: const Text(
+                                                                    child: Text(
                                                                         'Cancel'),
                                                                   ),
                                                                   TextButton(
@@ -1737,7 +1754,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         Navigator.pop(
                                                                             alertDialogContext,
                                                                             true),
-                                                                    child: const Text(
+                                                                    child: Text(
                                                                         'Confirm'),
                                                                   ),
                                                                 ],
@@ -1761,11 +1778,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: SizedBox(
+                                                            child: Container(
                                                               height: 125.0,
                                                               child:
                                                                   OptionToRemoveBookRemittanceWidget(
-                                                                remittance: widget
+                                                                remittance: widget!
                                                                     .remittanceRef!,
                                                                 transaction:
                                                                     bookingsItem,
@@ -1780,14 +1797,14 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
-                                                  constraints: const BoxConstraints(
+                                                  constraints: BoxConstraints(
                                                     maxWidth: 570.0,
                                                   ),
                                                   decoration: BoxDecoration(
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .secondaryBackground,
-                                                    boxShadow: const [
+                                                    boxShadow: [
                                                       BoxShadow(
                                                         blurRadius: 0.0,
                                                         color:
@@ -1810,7 +1827,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsetsDirectional
+                                                        EdgeInsetsDirectional
                                                             .fromSTEB(
                                                                 16.0,
                                                                 12.0,
@@ -1830,7 +1847,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           flex: 5,
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
+                                                                EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         0.0,
@@ -1858,7 +1875,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         text: bookingsItem
                                                                             .description,
                                                                         style:
-                                                                            const TextStyle(),
+                                                                            TextStyle(),
                                                                       )
                                                                     ],
                                                                     style: FlutterFlowTheme.of(
@@ -1877,7 +1894,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           4.0,
@@ -1915,7 +1932,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             children: [
                                                               Padding(
                                                                 padding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -1987,7 +2004,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     extra: <String,
                                                                         dynamic>{
                                                                       kTransitionInfoKey:
-                                                                          const TransitionInfo(
+                                                                          TransitionInfo(
                                                                         hasTransition:
                                                                             true,
                                                                         transitionType:
@@ -2013,7 +2030,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   child:
                                                                       Padding(
                                                                     padding:
-                                                                        const EdgeInsets.all(
+                                                                        EdgeInsets.all(
                                                                             4.0),
                                                                     child: Icon(
                                                                       Icons
@@ -2039,7 +2056,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           );
                                         },
                                       ),
-                                  ].addToEnd(const SizedBox(height: 20.0)),
+                                  ].addToEnd(SizedBox(height: 20.0)),
                                 ),
                               ),
                               SingleChildScrollView(
@@ -2048,12 +2065,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           16.0, 12.0, 12.0, 12.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          boxShadow: const [
+                                          boxShadow: [
                                             BoxShadow(
                                               blurRadius: 4.0,
                                               color: Color(0x34090F13),
@@ -2068,7 +2085,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                         ),
                                         child: Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 0.0, 4.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -2076,7 +2093,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               Container(
                                                 width: double.infinity,
                                                 height: 50.0,
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                   color: Color(0xFF39D2C0),
                                                   borderRadius:
                                                       BorderRadius.only(
@@ -2091,7 +2108,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -2105,16 +2122,16 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         decoration:
                                                             BoxDecoration(
                                                           color:
-                                                              const Color(0x98FFFFFF),
+                                                              Color(0x98FFFFFF),
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
                                                                       12.0),
                                                         ),
                                                         alignment:
-                                                            const AlignmentDirectional(
+                                                            AlignmentDirectional(
                                                                 0.0, 0.0),
-                                                        child: const Icon(
+                                                        child: Icon(
                                                           Icons
                                                               .attach_money_sharp,
                                                           color: Colors.white,
@@ -2155,7 +2172,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(12.0),
+                                                padding: EdgeInsets.all(12.0),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -2165,7 +2182,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   children: [
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsetsDirectional
+                                                          EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   0.0,
@@ -2179,7 +2196,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             .override(
                                                               fontFamily:
                                                                   'Readex Pro',
-                                                              color: const Color(
+                                                              color: Color(
                                                                   0xFF14181B),
                                                               fontSize: 14.0,
                                                               letterSpacing:
@@ -2201,7 +2218,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                     ),
                                     if (_model.transactions
                                             .where((e) => e.type == 'goods')
-                                            .toList().isNotEmpty)
+                                            .toList()
+                                            .length >
+                                        0)
                                       Builder(
                                         builder: (context) {
                                           final goods = _model.transactions
@@ -2219,14 +2238,14 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   goods[goodsIndex];
                                               return Container(
                                                 width: double.infinity,
-                                                constraints: const BoxConstraints(
+                                                constraints: BoxConstraints(
                                                   maxWidth: 570.0,
                                                 ),
                                                 decoration: BoxDecoration(
                                                   color: FlutterFlowTheme.of(
                                                           context)
                                                       .secondaryBackground,
-                                                  boxShadow: const [
+                                                  boxShadow: [
                                                     BoxShadow(
                                                       color: Color(0x33000000),
                                                       offset: Offset(
@@ -2245,7 +2264,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(16.0, 12.0,
                                                           16.0, 12.0),
                                                   child: Row(
@@ -2262,7 +2281,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         flex: 5,
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsetsDirectional
+                                                              EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       0.0,
@@ -2293,7 +2312,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             .goods
                                                                             .toList()),
                                                                         style:
-                                                                            const TextStyle(),
+                                                                            TextStyle(),
                                                                       )
                                                                     ],
                                                                     style: FlutterFlowTheme.of(
@@ -2308,7 +2327,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           4.0,
@@ -2359,7 +2378,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                   ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           5.0,
@@ -2385,7 +2404,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                       ),
                                                                     ),
                                                                     alignment:
-                                                                        const AlignmentDirectional(
+                                                                        AlignmentDirectional(
                                                                             -1.0,
                                                                             0.0),
                                                                     child: Row(
@@ -2401,14 +2420,14 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           decoration:
                                                                               BoxDecoration(
                                                                             color:
-                                                                                const Color(0xFF4B39EF),
+                                                                                Color(0xFF4B39EF),
                                                                             borderRadius:
                                                                                 BorderRadius.circular(4.0),
                                                                           ),
                                                                         ),
                                                                         Padding(
                                                                           padding:
-                                                                              const EdgeInsets.all(10.0),
+                                                                              EdgeInsets.all(10.0),
                                                                           child:
                                                                               Text(
                                                                             functions.cartToTextSummary(goodsItem.goods.toList())!,
@@ -2438,7 +2457,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                                  const EdgeInsetsDirectional
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -2485,7 +2504,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           );
                                         },
                                       ),
-                                  ].addToEnd(const SizedBox(height: 20.0)),
+                                  ].addToEnd(SizedBox(height: 20.0)),
                                 ),
                               ),
                               SingleChildScrollView(
@@ -2494,12 +2513,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           16.0, 12.0, 12.0, 12.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          boxShadow: const [
+                                          boxShadow: [
                                             BoxShadow(
                                               blurRadius: 4.0,
                                               color: Color(0x34090F13),
@@ -2514,7 +2533,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                         ),
                                         child: Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 0.0, 4.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -2522,7 +2541,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               Container(
                                                 width: double.infinity,
                                                 height: 50.0,
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                   color: Color(0xFF39D2C0),
                                                   borderRadius:
                                                       BorderRadius.only(
@@ -2537,7 +2556,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
+                                                  padding: EdgeInsets.all(12.0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -2551,16 +2570,16 @@ class _RemittanceSpecificTransactionsWidgetState
                                                         decoration:
                                                             BoxDecoration(
                                                           color:
-                                                              const Color(0x98FFFFFF),
+                                                              Color(0x98FFFFFF),
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
                                                                       12.0),
                                                         ),
                                                         alignment:
-                                                            const AlignmentDirectional(
+                                                            AlignmentDirectional(
                                                                 0.0, 0.0),
-                                                        child: const Icon(
+                                                        child: Icon(
                                                           Icons
                                                               .attach_money_sharp,
                                                           color: Colors.white,
@@ -2601,7 +2620,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(12.0),
+                                                padding: EdgeInsets.all(12.0),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -2611,7 +2630,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   children: [
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsetsDirectional
+                                                          EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   0.0,
@@ -2625,7 +2644,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             .override(
                                                               fontFamily:
                                                                   'Readex Pro',
-                                                              color: const Color(
+                                                              color: Color(
                                                                   0xFF14181B),
                                                               fontSize: 14.0,
                                                               letterSpacing:
@@ -2647,7 +2666,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                     ),
                                     if (_model.transactions
                                             .where((e) => e.type == 'expense')
-                                            .toList().isNotEmpty)
+                                            .toList()
+                                            .length >
+                                        0)
                                       Builder(
                                         builder: (context) {
                                           final goods = _model.transactions
@@ -2655,7 +2676,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                               .toList();
 
                                           return ListView.builder(
-                                            padding: const EdgeInsets.fromLTRB(
+                                            padding: EdgeInsets.fromLTRB(
                                               0,
                                               0.0,
                                               0,
@@ -2681,9 +2702,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             builder:
                                                                 (alertDialogContext) {
                                                               return AlertDialog(
-                                                                title: const Text(
+                                                                title: Text(
                                                                     'Delete'),
-                                                                content: const Text(
+                                                                content: Text(
                                                                     'This will delete the transaction as well as adjust the values from the respective remittance.'),
                                                                 actions: [
                                                                   TextButton(
@@ -2691,7 +2712,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         Navigator.pop(
                                                                             alertDialogContext,
                                                                             false),
-                                                                    child: const Text(
+                                                                    child: Text(
                                                                         'Cancel'),
                                                                   ),
                                                                   TextButton(
@@ -2699,7 +2720,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                         Navigator.pop(
                                                                             alertDialogContext,
                                                                             true),
-                                                                    child: const Text(
+                                                                    child: Text(
                                                                         'Confirm'),
                                                                   ),
                                                                 ],
@@ -2725,11 +2746,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: SizedBox(
+                                                            child: Container(
                                                               height: 125.0,
                                                               child:
                                                                   OptionToRemoveExpenseRemittanceWidget(
-                                                                remittance: widget
+                                                                remittance: widget!
                                                                     .remittanceRef!,
                                                                 transaction:
                                                                     goodsItem,
@@ -2744,14 +2765,14 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
-                                                  constraints: const BoxConstraints(
+                                                  constraints: BoxConstraints(
                                                     maxWidth: 570.0,
                                                   ),
                                                   decoration: BoxDecoration(
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .secondaryBackground,
-                                                    boxShadow: const [
+                                                    boxShadow: [
                                                       BoxShadow(
                                                         color:
                                                             Color(0x33000000),
@@ -2773,7 +2794,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsetsDirectional
+                                                        EdgeInsetsDirectional
                                                             .fromSTEB(
                                                                 16.0,
                                                                 12.0,
@@ -2793,7 +2814,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                           flex: 5,
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
+                                                                EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         0.0,
@@ -2823,7 +2844,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           text:
                                                                               functions.startBigLetter(goodsItem.description),
                                                                           style:
-                                                                              const TextStyle(),
+                                                                              TextStyle(),
                                                                         )
                                                                       ],
                                                                       style: FlutterFlowTheme.of(
@@ -2842,7 +2863,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     ),
                                                                   ),
                                                                   Padding(
-                                                                    padding: const EdgeInsetsDirectional
+                                                                    padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             4.0,
@@ -2889,9 +2910,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     ),
                                                                   ),
                                                                   if (goodsItem
-                                                                          .goods.isNotEmpty)
+                                                                          .goods
+                                                                          .length >
+                                                                      0)
                                                                     Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           5.0,
                                                                           0.0,
@@ -2912,7 +2935,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                                 1.0,
                                                                           ),
                                                                         ),
-                                                                        alignment: const AlignmentDirectional(
+                                                                        alignment: AlignmentDirectional(
                                                                             -1.0,
                                                                             0.0),
                                                                         child:
@@ -2924,12 +2947,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                               width: 4.0,
                                                                               height: (20 * goodsItem.goods.length).toDouble(),
                                                                               decoration: BoxDecoration(
-                                                                                color: const Color(0xFF4B39EF),
+                                                                                color: Color(0xFF4B39EF),
                                                                                 borderRadius: BorderRadius.circular(4.0),
                                                                               ),
                                                                             ),
                                                                             Padding(
-                                                                              padding: const EdgeInsets.all(10.0),
+                                                                              padding: EdgeInsets.all(10.0),
                                                                               child: Text(
                                                                                 functions.cartToTextSummary(goodsItem.goods.toList())!,
                                                                                 style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -2959,7 +2982,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             children: [
                                                               Padding(
                                                                 padding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -3006,11 +3029,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                           );
                                         },
                                       ),
-                                  ].addToEnd(const SizedBox(height: 20.0)),
+                                  ].addToEnd(SizedBox(height: 20.0)),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 20.0, 0.0, 0.0),
                                 child: Builder(
                                   builder: (context) {
@@ -3018,7 +3041,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                         _model.absencesDocs.toList();
 
                                     return ListView.builder(
-                                      padding: const EdgeInsets.fromLTRB(
+                                      padding: EdgeInsets.fromLTRB(
                                         0,
                                         0.0,
                                         0,
@@ -3033,13 +3056,13 @@ class _RemittanceSpecificTransactionsWidgetState
                                             absences[absencesIndex];
                                         return Container(
                                           width: double.infinity,
-                                          constraints: const BoxConstraints(
+                                          constraints: BoxConstraints(
                                             maxWidth: 570.0,
                                           ),
                                           decoration: BoxDecoration(
                                             color: FlutterFlowTheme.of(context)
                                                 .secondaryBackground,
-                                            boxShadow: const [
+                                            boxShadow: [
                                               BoxShadow(
                                                 color: Color(0x33000000),
                                                 offset: Offset(
@@ -3058,7 +3081,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                           ),
                                           child: Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 12.0, 16.0, 12.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
@@ -3072,7 +3095,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                   flex: 5,
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsetsDirectional
+                                                        EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 0.0,
                                                                 12.0, 0.0),
                                                     child: StreamBuilder<
@@ -3128,7 +3151,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           .startBigLetter(
                                                                               columnStaffsRecord.name),
                                                                       style:
-                                                                          const TextStyle(),
+                                                                          TextStyle(),
                                                                     )
                                                                   ],
                                                                   style: FlutterFlowTheme.of(
@@ -3149,7 +3172,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                               ),
                                                               Padding(
                                                                 padding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             10.0,

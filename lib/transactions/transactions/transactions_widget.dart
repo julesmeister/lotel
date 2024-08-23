@@ -9,11 +9,16 @@ import '/flutter_flow/flutter_flow_calendar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'transactions_model.dart';
@@ -70,8 +75,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(-40.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(-40.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -90,8 +95,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
             curve: Curves.easeInOut,
             delay: 200.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.7, 0.7),
-            end: const Offset(1.0, 1.0),
+            begin: Offset(0.7, 0.7),
+            end: Offset(1.0, 1.0),
           ),
         ],
       ),
@@ -173,7 +178,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                 backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
                 automaticallyImplyLeading: false,
                 title: Align(
-                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                  alignment: AlignmentDirectional(-1.0, 0.0),
                   child: Text(
                     'Transactions',
                     textAlign: TextAlign.start,
@@ -184,7 +189,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                         ),
                   ),
                 ),
-                actions: const [],
+                actions: [],
                 centerTitle: false,
                 elevation: 0.0,
               ),
@@ -196,7 +201,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                   children: [
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -322,11 +327,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                     Expanded(
                       child: Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                            EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                         child: Column(
                           children: [
                             Align(
-                              alignment: const Alignment(0.0, 0),
+                              alignment: Alignment(0.0, 0),
                               child: FlutterFlowButtonTabBar(
                                 useToggleButtonStyle: true,
                                 isScrollable: true,
@@ -336,7 +341,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                       fontFamily: 'Readex Pro',
                                       letterSpacing: 0.0,
                                     ),
-                                unselectedLabelStyle: const TextStyle(),
+                                unselectedLabelStyle: TextStyle(),
                                 labelColor:
                                     FlutterFlowTheme.of(context).primaryText,
                                 unselectedLabelColor:
@@ -350,11 +355,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                 borderWidth: 2.0,
                                 borderRadius: 12.0,
                                 elevation: 0.0,
-                                labelPadding: const EdgeInsetsDirectional.fromSTEB(
+                                labelPadding: EdgeInsetsDirectional.fromSTEB(
                                     20.0, 0.0, 20.0, 0.0),
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 0.0, 16.0, 0.0),
-                                tabs: const [
+                                tabs: [
                                   Tab(
                                     text: 'All',
                                   ),
@@ -395,17 +400,17 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                       children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 10.0, 16.0, 10.0),
                                           child: Container(
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF39D2C0),
+                                              color: Color(0xFF39D2C0),
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(12.0),
+                                              padding: EdgeInsets.all(12.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
@@ -426,7 +431,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           height: 36.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color(
+                                                            color: Color(
                                                                 0x98FFFFFF),
                                                             borderRadius:
                                                                 BorderRadius
@@ -434,9 +439,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         12.0),
                                                           ),
                                                           alignment:
-                                                              const AlignmentDirectional(
+                                                              AlignmentDirectional(
                                                                   0.0, 0.0),
-                                                          child: const Icon(
+                                                          child: Icon(
                                                             Icons
                                                                 .money_off_sharp,
                                                             color: Colors.white,
@@ -501,7 +506,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: const Color(
+                                                                    color: Color(
                                                                         0x98FFFFFF),
                                                                     letterSpacing:
                                                                         0.0,
@@ -531,7 +536,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             height: 36.0,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: const Color(
+                                                              color: Color(
                                                                   0x98FFFFFF),
                                                               borderRadius:
                                                                   BorderRadius
@@ -539,9 +544,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           12.0),
                                                             ),
                                                             alignment:
-                                                                const AlignmentDirectional(
+                                                                AlignmentDirectional(
                                                                     0.0, 0.0),
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons
                                                                   .attach_money_outlined,
                                                               color:
@@ -611,7 +616,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: const Color(
+                                                                      color: Color(
                                                                           0x98FFFFFF),
                                                                       letterSpacing:
                                                                           0.0,
@@ -622,7 +627,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ],
                                                     ),
                                                   ),
-                                                ].divide(const SizedBox(width: 20.0)),
+                                                ].divide(SizedBox(width: 20.0)),
                                               ),
                                             ),
                                           ),
@@ -640,7 +645,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .alternate,
-                                                offset: const Offset(
+                                                offset: Offset(
                                                   0.0,
                                                   1.0,
                                                 ),
@@ -661,7 +666,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .alternate,
-                                                offset: const Offset(
+                                                offset: Offset(
                                                   0.0,
                                                   1.0,
                                                 ),
@@ -670,7 +675,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                           ),
                                           child: Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 10.0, 0.0, 10.0),
                                             child: Text(
                                               'Bookings',
@@ -689,7 +694,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                 .where((e) =>
                                                     (e.type == 'book') ||
                                                     (e.type == 'change'))
-                                                .toList().isNotEmpty)
+                                                .toList()
+                                                .length >
+                                            0)
                                           Builder(
                                             builder: (context) {
                                               final bookings = functions
@@ -754,7 +761,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
+                                                                    Container(
                                                                   height: 410.0,
                                                                   child:
                                                                       OptionToBookingTransactionWidget(
@@ -784,7 +791,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     child: Container(
                                                       width: double.infinity,
                                                       constraints:
-                                                          const BoxConstraints(
+                                                          BoxConstraints(
                                                         maxWidth:
                                                             double.infinity,
                                                       ),
@@ -792,7 +799,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                         color: FlutterFlowTheme
                                                                 .of(context)
                                                             .secondaryBackground,
-                                                        boxShadow: const [
+                                                        boxShadow: [
                                                           BoxShadow(
                                                             blurRadius: 0.0,
                                                             color: Color(
@@ -814,7 +821,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     16.0,
                                                                     12.0,
@@ -834,7 +841,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               flex: 5,
                                                               child: Padding(
                                                                 padding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -871,7 +878,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           ),
                                                                     ),
                                                                     Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           10.0,
                                                                           0.0,
@@ -894,7 +901,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             '') ==
                                                                         'admin')
                                                                       Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             0.0,
                                                                             0.0,
@@ -960,7 +967,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         ),
                                                                   ),
                                                                   Padding(
-                                                                    padding: const EdgeInsetsDirectional
+                                                                    padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             5.0,
@@ -1001,7 +1008,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           extra: <String,
                                                                               dynamic>{
                                                                             kTransitionInfoKey:
-                                                                                const TransitionInfo(
+                                                                                TransitionInfo(
                                                                               hasTransition: true,
                                                                               transitionType: PageTransitionType.rightToLeft,
                                                                             ),
@@ -1024,7 +1031,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         child:
                                                                             Padding(
                                                                           padding:
-                                                                              const EdgeInsets.all(4.0),
+                                                                              EdgeInsets.all(4.0),
                                                                           child:
                                                                               Icon(
                                                                             Icons.keyboard_arrow_right_rounded,
@@ -1059,7 +1066,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                           ),
                                           child: Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 10.0, 0.0, 10.0),
                                             child: Text(
                                               'Goods',
@@ -1076,7 +1083,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                         ),
                                         if (transactionsTransactionsRecordList
                                                 .where((e) => e.type == 'goods')
-                                                .toList().isNotEmpty)
+                                                .toList()
+                                                .length >
+                                            0)
                                           Builder(
                                             builder: (context) {
                                               final goods = functions
@@ -1139,7 +1148,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
+                                                                    Container(
                                                                   height: 218.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
@@ -1163,14 +1172,14 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     child: Container(
                                                       width: double.infinity,
                                                       constraints:
-                                                          const BoxConstraints(
+                                                          BoxConstraints(
                                                         maxWidth: 570.0,
                                                       ),
                                                       decoration: BoxDecoration(
                                                         color: FlutterFlowTheme
                                                                 .of(context)
                                                             .secondaryBackground,
-                                                        boxShadow: const [
+                                                        boxShadow: [
                                                           BoxShadow(
                                                             color: Color(
                                                                 0x33000000),
@@ -1191,7 +1200,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     16.0,
                                                                     12.0,
@@ -1209,7 +1218,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                                  const EdgeInsetsDirectional
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -1239,7 +1248,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             text:
                                                                                 functions.howManyItems(goodsItem.goods.toList()),
                                                                             style:
-                                                                                const TextStyle(),
+                                                                                TextStyle(),
                                                                           )
                                                                         ],
                                                                         style: FlutterFlowTheme.of(context)
@@ -1251,7 +1260,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       ),
                                                                     ),
                                                                     Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           10.0,
                                                                           0.0,
@@ -1310,7 +1319,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             ),
                                                                       ),
                                                                     Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           5.0,
                                                                           0.0,
@@ -1331,7 +1340,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                                 1.0,
                                                                           ),
                                                                         ),
-                                                                        alignment: const AlignmentDirectional(
+                                                                        alignment: AlignmentDirectional(
                                                                             -1.0,
                                                                             0.0),
                                                                         child:
@@ -1343,12 +1352,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               width: 4.0,
                                                                               height: (20 * goodsItem.goods.length).toDouble(),
                                                                               decoration: BoxDecoration(
-                                                                                color: const Color(0xFF4B39EF),
+                                                                                color: Color(0xFF4B39EF),
                                                                                 borderRadius: BorderRadius.circular(4.0),
                                                                               ),
                                                                             ),
                                                                             Padding(
-                                                                              padding: const EdgeInsets.all(10.0),
+                                                                              padding: EdgeInsets.all(10.0),
                                                                               child: Text(
                                                                                 functions.cartToTextSummary(goodsItem.goods.toList())!,
                                                                                 style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -1414,7 +1423,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                           ),
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 10.0, 0.0, 10.0),
                                           child: Text(
                                             'Expenses',
@@ -1429,7 +1438,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                         if (transactionsTransactionsRecordList
                                                 .where(
                                                     (e) => e.type == 'expense')
-                                                .toList().isNotEmpty)
+                                                .toList()
+                                                .length >
+                                            0)
                                           Builder(
                                             builder: (context) {
                                               final expenses = functions
@@ -1492,7 +1503,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
+                                                                    Container(
                                                                   height: 235.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
@@ -1516,14 +1527,14 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     child: Container(
                                                       width: double.infinity,
                                                       constraints:
-                                                          const BoxConstraints(
+                                                          BoxConstraints(
                                                         maxWidth: 570.0,
                                                       ),
                                                       decoration: BoxDecoration(
                                                         color: FlutterFlowTheme
                                                                 .of(context)
                                                             .secondaryBackground,
-                                                        boxShadow: const [
+                                                        boxShadow: [
                                                           BoxShadow(
                                                             color: Color(
                                                                 0x33000000),
@@ -1544,7 +1555,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     16.0,
                                                                     12.0,
@@ -1564,7 +1575,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               flex: 5,
                                                               child: Padding(
                                                                 padding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -1591,7 +1602,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           children: [
                                                                             TextSpan(
                                                                               text: functions.startBigLetter(expensesItem.description),
-                                                                              style: const TextStyle(),
+                                                                              style: TextStyle(),
                                                                             )
                                                                           ],
                                                                           style: FlutterFlowTheme.of(context)
@@ -1605,7 +1616,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         ),
                                                                       ),
                                                                       Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             10.0,
                                                                             0.0,
@@ -1662,9 +1673,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                         ),
                                                                       if (expensesItem
-                                                                              .goods.isNotEmpty)
+                                                                              .goods
+                                                                              .length >
+                                                                          0)
                                                                         Padding(
-                                                                          padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
                                                                               0.0,
                                                                               5.0,
                                                                               0.0,
@@ -1681,7 +1694,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                             ),
                                                                             alignment:
-                                                                                const AlignmentDirectional(-1.0, 0.0),
+                                                                                AlignmentDirectional(-1.0, 0.0),
                                                                             child:
                                                                                 Row(
                                                                               mainAxisSize: MainAxisSize.max,
@@ -1690,12 +1703,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                                   width: 4.0,
                                                                                   height: (20 * expensesItem.goods.length).toDouble(),
                                                                                   decoration: BoxDecoration(
-                                                                                    color: const Color(0xFF4B39EF),
+                                                                                    color: Color(0xFF4B39EF),
                                                                                     borderRadius: BorderRadius.circular(4.0),
                                                                                   ),
                                                                                 ),
                                                                                 Padding(
-                                                                                  padding: const EdgeInsets.all(10.0),
+                                                                                  padding: EdgeInsets.all(10.0),
                                                                                   child: Text(
                                                                                     functions.cartToTextSummary(expensesItem.goods.toList())!,
                                                                                     style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -1763,7 +1776,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                               );
                                             },
                                           ),
-                                      ].addToEnd(const SizedBox(height: 20.0)),
+                                      ].addToEnd(SizedBox(height: 20.0)),
                                     ),
                                   ),
                                   SingleChildScrollView(
@@ -1774,17 +1787,17 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                       children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 10.0, 16.0, 10.0),
                                           child: Container(
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF39D2C0),
+                                              color: Color(0xFF39D2C0),
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(12.0),
+                                              padding: EdgeInsets.all(12.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
@@ -1805,7 +1818,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           height: 36.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color(
+                                                            color: Color(
                                                                 0x98FFFFFF),
                                                             borderRadius:
                                                                 BorderRadius
@@ -1813,9 +1826,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         12.0),
                                                           ),
                                                           alignment:
-                                                              const AlignmentDirectional(
+                                                              AlignmentDirectional(
                                                                   0.0, 0.0),
-                                                          child: const Icon(
+                                                          child: Icon(
                                                             Icons
                                                                 .money_off_sharp,
                                                             color: Colors.white,
@@ -1880,7 +1893,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: const Color(
+                                                                    color: Color(
                                                                         0x98FFFFFF),
                                                                     letterSpacing:
                                                                         0.0,
@@ -1910,7 +1923,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             height: 36.0,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: const Color(
+                                                              color: Color(
                                                                   0x98FFFFFF),
                                                               borderRadius:
                                                                   BorderRadius
@@ -1918,9 +1931,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           12.0),
                                                             ),
                                                             alignment:
-                                                                const AlignmentDirectional(
+                                                                AlignmentDirectional(
                                                                     0.0, 0.0),
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons
                                                                   .attach_money_outlined,
                                                               color:
@@ -1992,7 +2005,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: const Color(
+                                                                      color: Color(
                                                                           0x98FFFFFF),
                                                                       letterSpacing:
                                                                           0.0,
@@ -2003,7 +2016,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ],
                                                     ),
                                                   ),
-                                                ].divide(const SizedBox(width: 20.0)),
+                                                ].divide(SizedBox(width: 20.0)),
                                               ),
                                             ),
                                           ),
@@ -2012,7 +2025,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                 .where((e) =>
                                                     (e.type == 'book') ||
                                                     (e.type == 'change'))
-                                                .toList().isNotEmpty)
+                                                .toList()
+                                                .length >
+                                            0)
                                           Builder(
                                             builder: (context) {
                                               final bookingsOnly = functions
@@ -2035,7 +2050,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                   .toList();
 
                                               return ListView.builder(
-                                                padding: const EdgeInsets.fromLTRB(
+                                                padding: EdgeInsets.fromLTRB(
                                                   0,
                                                   0.0,
                                                   0,
@@ -2083,7 +2098,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
+                                                                    Container(
                                                                   height: 410.0,
                                                                   child:
                                                                       OptionToBookingTransactionWidget(
@@ -2113,14 +2128,14 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     child: Container(
                                                       width: double.infinity,
                                                       constraints:
-                                                          const BoxConstraints(
+                                                          BoxConstraints(
                                                         maxWidth: 570.0,
                                                       ),
                                                       decoration: BoxDecoration(
                                                         color: FlutterFlowTheme
                                                                 .of(context)
                                                             .secondaryBackground,
-                                                        boxShadow: const [
+                                                        boxShadow: [
                                                           BoxShadow(
                                                             blurRadius: 0.0,
                                                             color: Color(
@@ -2142,7 +2157,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     16.0,
                                                                     12.0,
@@ -2162,7 +2177,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               flex: 5,
                                                               child: Padding(
                                                                 padding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -2190,7 +2205,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             text:
                                                                                 bookingsOnlyItem.description,
                                                                             style:
-                                                                                const TextStyle(),
+                                                                                TextStyle(),
                                                                           )
                                                                         ],
                                                                         style: FlutterFlowTheme.of(context)
@@ -2206,7 +2221,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           5,
                                                                     ),
                                                                     Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           10.0,
                                                                           0.0,
@@ -2229,7 +2244,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             '') ==
                                                                         'admin')
                                                                       Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             0.0,
                                                                             0.0,
@@ -2293,7 +2308,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         ),
                                                                   ),
                                                                   Padding(
-                                                                    padding: const EdgeInsetsDirectional
+                                                                    padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             5.0,
@@ -2334,7 +2349,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           extra: <String,
                                                                               dynamic>{
                                                                             kTransitionInfoKey:
-                                                                                const TransitionInfo(
+                                                                                TransitionInfo(
                                                                               hasTransition: true,
                                                                               transitionType: PageTransitionType.rightToLeft,
                                                                             ),
@@ -2357,7 +2372,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         child:
                                                                             Padding(
                                                                           padding:
-                                                                              const EdgeInsets.all(4.0),
+                                                                              EdgeInsets.all(4.0),
                                                                           child:
                                                                               Icon(
                                                                             Icons.keyboard_arrow_right_rounded,
@@ -2382,7 +2397,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                               );
                                             },
                                           ),
-                                      ].addToEnd(const SizedBox(height: 20.0)),
+                                      ].addToEnd(SizedBox(height: 20.0)),
                                     ),
                                   ),
                                   SingleChildScrollView(
@@ -2393,17 +2408,17 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                       children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 10.0, 16.0, 10.0),
                                           child: Container(
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF39D2C0),
+                                              color: Color(0xFF39D2C0),
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(12.0),
+                                              padding: EdgeInsets.all(12.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
@@ -2424,7 +2439,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           height: 36.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color(
+                                                            color: Color(
                                                                 0x98FFFFFF),
                                                             borderRadius:
                                                                 BorderRadius
@@ -2432,9 +2447,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         12.0),
                                                           ),
                                                           alignment:
-                                                              const AlignmentDirectional(
+                                                              AlignmentDirectional(
                                                                   0.0, 0.0),
-                                                          child: const Icon(
+                                                          child: Icon(
                                                             Icons
                                                                 .money_off_sharp,
                                                             color: Colors.white,
@@ -2492,7 +2507,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: const Color(
+                                                                    color: Color(
                                                                         0x98FFFFFF),
                                                                     letterSpacing:
                                                                         0.0,
@@ -2522,7 +2537,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             height: 36.0,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: const Color(
+                                                              color: Color(
                                                                   0x98FFFFFF),
                                                               borderRadius:
                                                                   BorderRadius
@@ -2530,9 +2545,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           12.0),
                                                             ),
                                                             alignment:
-                                                                const AlignmentDirectional(
+                                                                AlignmentDirectional(
                                                                     0.0, 0.0),
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons
                                                                   .attach_money_outlined,
                                                               color:
@@ -2601,7 +2616,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: const Color(
+                                                                      color: Color(
                                                                           0x98FFFFFF),
                                                                       letterSpacing:
                                                                           0.0,
@@ -2612,14 +2627,16 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ],
                                                     ),
                                                   ),
-                                                ].divide(const SizedBox(width: 20.0)),
+                                                ].divide(SizedBox(width: 20.0)),
                                               ),
                                             ),
                                           ),
                                         ),
                                         if (transactionsTransactionsRecordList
                                                 .where((e) => e.type == 'goods')
-                                                .toList().isNotEmpty)
+                                                .toList()
+                                                .length >
+                                            0)
                                           Builder(
                                             builder: (context) {
                                               final goods = functions
@@ -2681,7 +2698,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
+                                                                    Container(
                                                                   height: 218.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
@@ -2705,14 +2722,14 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     child: Container(
                                                       width: double.infinity,
                                                       constraints:
-                                                          const BoxConstraints(
+                                                          BoxConstraints(
                                                         maxWidth: 570.0,
                                                       ),
                                                       decoration: BoxDecoration(
                                                         color: FlutterFlowTheme
                                                                 .of(context)
                                                             .secondaryBackground,
-                                                        boxShadow: const [
+                                                        boxShadow: [
                                                           BoxShadow(
                                                             color: Color(
                                                                 0x33000000),
@@ -2733,7 +2750,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     16.0,
                                                                     12.0,
@@ -2751,7 +2768,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                                  const EdgeInsetsDirectional
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -2781,7 +2798,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             text:
                                                                                 functions.howManyItems(goodsItem.goods.toList()),
                                                                             style:
-                                                                                const TextStyle(),
+                                                                                TextStyle(),
                                                                           )
                                                                         ],
                                                                         style: FlutterFlowTheme.of(context)
@@ -2793,7 +2810,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       ),
                                                                     ),
                                                                     Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           10.0,
                                                                           0.0,
@@ -2852,7 +2869,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             ),
                                                                       ),
                                                                     Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           5.0,
                                                                           0.0,
@@ -2873,7 +2890,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                                 1.0,
                                                                           ),
                                                                         ),
-                                                                        alignment: const AlignmentDirectional(
+                                                                        alignment: AlignmentDirectional(
                                                                             -1.0,
                                                                             0.0),
                                                                         child:
@@ -2885,12 +2902,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               width: 4.0,
                                                                               height: (20 * goodsItem.goods.length).toDouble(),
                                                                               decoration: BoxDecoration(
-                                                                                color: const Color(0xFF4B39EF),
+                                                                                color: Color(0xFF4B39EF),
                                                                                 borderRadius: BorderRadius.circular(4.0),
                                                                               ),
                                                                             ),
                                                                             Padding(
-                                                                              padding: const EdgeInsets.all(10.0),
+                                                                              padding: EdgeInsets.all(10.0),
                                                                               child: Text(
                                                                                 functions.cartToTextSummary(goodsItem.goods.toList())!,
                                                                                 style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -2954,7 +2971,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                               );
                                             },
                                           ),
-                                      ].addToEnd(const SizedBox(height: 20.0)),
+                                      ].addToEnd(SizedBox(height: 20.0)),
                                     ),
                                   ),
                                   SingleChildScrollView(
@@ -2965,17 +2982,17 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                       children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 10.0, 16.0, 10.0),
                                           child: Container(
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF39D2C0),
+                                              color: Color(0xFF39D2C0),
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(12.0),
+                                              padding: EdgeInsets.all(12.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
@@ -2996,7 +3013,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           height: 36.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color(
+                                                            color: Color(
                                                                 0x98FFFFFF),
                                                             borderRadius:
                                                                 BorderRadius
@@ -3004,9 +3021,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         12.0),
                                                           ),
                                                           alignment:
-                                                              const AlignmentDirectional(
+                                                              AlignmentDirectional(
                                                                   0.0, 0.0),
-                                                          child: const Icon(
+                                                          child: Icon(
                                                             Icons
                                                                 .money_off_sharp,
                                                             color: Colors.white,
@@ -3064,7 +3081,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: const Color(
+                                                                    color: Color(
                                                                         0x98FFFFFF),
                                                                     letterSpacing:
                                                                         0.0,
@@ -3094,7 +3111,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             height: 36.0,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: const Color(
+                                                              color: Color(
                                                                   0x98FFFFFF),
                                                               borderRadius:
                                                                   BorderRadius
@@ -3102,9 +3119,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           12.0),
                                                             ),
                                                             alignment:
-                                                                const AlignmentDirectional(
+                                                                AlignmentDirectional(
                                                                     0.0, 0.0),
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons
                                                                   .attach_money_outlined,
                                                               color:
@@ -3173,7 +3190,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: const Color(
+                                                                      color: Color(
                                                                           0x98FFFFFF),
                                                                       letterSpacing:
                                                                           0.0,
@@ -3184,7 +3201,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ],
                                                     ),
                                                   ),
-                                                ].divide(const SizedBox(width: 20.0)),
+                                                ].divide(SizedBox(width: 20.0)),
                                               ),
                                             ),
                                           ),
@@ -3192,7 +3209,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                         if (transactionsTransactionsRecordList
                                                 .where(
                                                     (e) => e.type == 'expense')
-                                                .toList().isNotEmpty)
+                                                .toList()
+                                                .length >
+                                            0)
                                           Builder(
                                             builder: (context) {
                                               final expense = functions
@@ -3212,7 +3231,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                   .toList();
 
                                               return ListView.builder(
-                                                padding: const EdgeInsets.fromLTRB(
+                                                padding: EdgeInsets.fromLTRB(
                                                   0,
                                                   0.0,
                                                   0,
@@ -3259,7 +3278,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
+                                                                    Container(
                                                                   height: 235.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
@@ -3283,14 +3302,14 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                     child: Container(
                                                       width: double.infinity,
                                                       constraints:
-                                                          const BoxConstraints(
+                                                          BoxConstraints(
                                                         maxWidth: 570.0,
                                                       ),
                                                       decoration: BoxDecoration(
                                                         color: FlutterFlowTheme
                                                                 .of(context)
                                                             .secondaryBackground,
-                                                        boxShadow: const [
+                                                        boxShadow: [
                                                           BoxShadow(
                                                             color: Color(
                                                                 0x33000000),
@@ -3311,7 +3330,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     16.0,
                                                                     12.0,
@@ -3331,7 +3350,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                               flex: 5,
                                                               child: Padding(
                                                                 padding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -3358,7 +3377,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           children: [
                                                                             TextSpan(
                                                                               text: functions.startBigLetter(expenseItem.description),
-                                                                              style: const TextStyle(),
+                                                                              style: TextStyle(),
                                                                             )
                                                                           ],
                                                                           style: FlutterFlowTheme.of(context)
@@ -3374,7 +3393,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             5,
                                                                       ),
                                                                       Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             10.0,
                                                                             0.0,
@@ -3431,9 +3450,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                         ),
                                                                       if (expenseItem
-                                                                              .goods.isNotEmpty)
+                                                                              .goods
+                                                                              .length >
+                                                                          0)
                                                                         Padding(
-                                                                          padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
                                                                               0.0,
                                                                               5.0,
                                                                               0.0,
@@ -3450,7 +3471,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                             ),
                                                                             alignment:
-                                                                                const AlignmentDirectional(-1.0, 0.0),
+                                                                                AlignmentDirectional(-1.0, 0.0),
                                                                             child:
                                                                                 Row(
                                                                               mainAxisSize: MainAxisSize.max,
@@ -3459,12 +3480,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                                   width: 4.0,
                                                                                   height: (20 * expenseItem.goods.length).toDouble(),
                                                                                   decoration: BoxDecoration(
-                                                                                    color: const Color(0xFF4B39EF),
+                                                                                    color: Color(0xFF4B39EF),
                                                                                     borderRadius: BorderRadius.circular(4.0),
                                                                                   ),
                                                                                 ),
                                                                                 Padding(
-                                                                                  padding: const EdgeInsets.all(10.0),
+                                                                                  padding: EdgeInsets.all(10.0),
                                                                                   child: Text(
                                                                                     functions.cartToTextSummary(expenseItem.goods.toList())!,
                                                                                     style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -3532,11 +3553,11 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                               );
                                             },
                                           ),
-                                      ].addToEnd(const SizedBox(height: 20.0)),
+                                      ].addToEnd(SizedBox(height: 20.0)),
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 20.0, 0.0, 0.0),
                                     child: PagedListView<
                                         DocumentSnapshot<Object?>?,
@@ -3553,7 +3574,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                               isEqualTo: false,
                                             ),
                                       ),
-                                      padding: const EdgeInsets.fromLTRB(
+                                      padding: EdgeInsets.fromLTRB(
                                         0,
                                         0.0,
                                         0,
@@ -3627,7 +3648,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                         padding: MediaQuery
                                                             .viewInsetsOf(
                                                                 context),
-                                                        child: SizedBox(
+                                                        child: Container(
                                                           height:
                                                               double.infinity,
                                                           child:
@@ -3661,14 +3682,14 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                             },
                                             child: Container(
                                               width: double.infinity,
-                                              constraints: const BoxConstraints(
+                                              constraints: BoxConstraints(
                                                 maxWidth: 570.0,
                                               ),
                                               decoration: BoxDecoration(
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryBackground,
-                                                boxShadow: const [
+                                                boxShadow: [
                                                   BoxShadow(
                                                     color: Color(0x33000000),
                                                     offset: Offset(
@@ -3686,7 +3707,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                 ),
                                               ),
                                               child: Padding(
-                                                padding: const EdgeInsetsDirectional
+                                                padding: EdgeInsetsDirectional
                                                     .fromSTEB(
                                                         16.0, 12.0, 16.0, 12.0),
                                                 child: Row(
@@ -3702,7 +3723,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                       flex: 5,
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     0.0,
@@ -3763,7 +3784,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           text:
                                                                               functions.startBigLetter(columnStaffsRecord.name),
                                                                           style:
-                                                                              const TextStyle(),
+                                                                              TextStyle(),
                                                                         )
                                                                       ],
                                                                       style: FlutterFlowTheme.of(
@@ -3783,7 +3804,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     maxLines: 5,
                                                                   ),
                                                                   Padding(
-                                                                    padding: const EdgeInsetsDirectional
+                                                                    padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             10.0,
@@ -3835,7 +3856,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                           '') ==
                                                                       'admin')
                                                                     Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           0.0,
                                                                           0.0,
@@ -3939,7 +3960,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       '') ==
                                                                   'admin')
                                                                 Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           5.0,
@@ -3968,16 +3989,16 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                             builder:
                                                                                 (alertDialogContext) {
                                                                               return AlertDialog(
-                                                                                title: const Text('Are you sure?'),
-                                                                                content: const Text('This absent will be deleted.'),
+                                                                                title: Text('Are you sure?'),
+                                                                                content: Text('This absent will be deleted.'),
                                                                                 actions: [
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, false),
-                                                                                    child: const Text('Cancel'),
+                                                                                    child: Text('Cancel'),
                                                                                   ),
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, true),
-                                                                                    child: const Text('Confirm'),
+                                                                                    child: Text('Confirm'),
                                                                                   ),
                                                                                 ],
                                                                               );
@@ -4000,7 +4021,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                               ),
                                                                             ),
                                                                             duration:
-                                                                                const Duration(milliseconds: 4000),
+                                                                                Duration(milliseconds: 4000),
                                                                             backgroundColor:
                                                                                 FlutterFlowTheme.of(context).error,
                                                                           ),
@@ -4023,7 +4044,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       child:
                                                                           Padding(
                                                                         padding:
-                                                                            const EdgeInsets.all(4.0),
+                                                                            EdgeInsets.all(4.0),
                                                                         child:
                                                                             Icon(
                                                                           Icons

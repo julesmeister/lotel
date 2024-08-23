@@ -1,13 +1,18 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import '/components/forms/pay_pending_partially/pay_pending_partially_widget.dart';
 import '/components/options/option_to_pending_transaction/option_to_pending_transaction_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'pendings_model.dart';
 export 'pendings_model.dart';
@@ -116,7 +121,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                             'admin'))
                       Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
                         child: AuthUserStreamWidget(
                           builder: (context) => FlutterFlowIconButton(
                             borderRadius: 30.0,
@@ -140,7 +145,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                         FocusScope.of(context).unfocus(),
                                     child: Padding(
                                       padding: MediaQuery.viewInsetsOf(context),
-                                      child: SizedBox(
+                                      child: Container(
                                         height: 170.0,
                                         child: OptionToPendingTransactionWidget(
                                           booking: _model
@@ -168,10 +173,10 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                           ),
                         ),
                       ),
-                    if (_model.checkboxListTileCheckedItems.isNotEmpty)
+                    if (_model.checkboxListTileCheckedItems.length >= 1)
                       Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
                         child: FlutterFlowIconButton(
                           borderRadius: 30.0,
                           borderWidth: 1.0,
@@ -182,25 +187,25 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                             size: 24.0,
                           ),
                           onPressed: () async {
-                            var shouldSetState = false;
+                            var _shouldSetState = false;
                             // confirm
                             var confirmDialogResponse = await showDialog<bool>(
                                   context: context,
                                   builder: (alertDialogContext) {
                                     return AlertDialog(
-                                      title: const Text('Clear Balance'),
-                                      content: const Text(
+                                      title: Text('Clear Balance'),
+                                      content: Text(
                                           'All the selected transactions will be cleared of balance.'),
                                       actions: [
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, false),
-                                          child: const Text('Cancel'),
+                                          child: Text('Cancel'),
                                         ),
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, true),
-                                          child: const Text('Confirm'),
+                                          child: Text('Confirm'),
                                         ),
                                       ],
                                     );
@@ -216,7 +221,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                         .checkboxListTileCheckedItems[
                                             _model.loopCounter]
                                         .booking!);
-                                shouldSetState = true;
+                                _shouldSetState = true;
                                 if (_model
                                         .checkboxListTileCheckedItems[
                                             _model.loopCounter]
@@ -228,7 +233,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                         context: context,
                                         builder: (alertDialogContext) {
                                           return AlertDialog(
-                                            title: const Text('Partial Payment'),
+                                            title: Text('Partial Payment'),
                                             content: Text(
                                                 'Did the guest from room ${_model.checkboxListTileCheckedItems[_model.loopCounter].room.toString()} owing an amount of ${formatNumber(
                                               _model
@@ -244,12 +249,12 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
                                                     alertDialogContext, false),
-                                                child: const Text('NO'),
+                                                child: Text('NO'),
                                               ),
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
                                                     alertDialogContext, true),
-                                                child: const Text('YES'),
+                                                child: Text('YES'),
                                               ),
                                             ],
                                           );
@@ -270,7 +275,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                           child: Padding(
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
-                                            child: SizedBox(
+                                            child: Container(
                                               height: double.infinity,
                                               child: PayPendingPartiallyWidget(
                                                 transactions:
@@ -295,7 +300,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                     ).then((value) => safeSetState(
                                         () => _model.paidPartially = value));
 
-                                    shouldSetState = true;
+                                    _shouldSetState = true;
                                     if (!(_model.paidPartially != null)) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -309,13 +314,13 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .error,
                                         ),
                                       );
-                                      if (shouldSetState) setState(() {});
+                                      if (_shouldSetState) setState(() {});
                                       return;
                                     }
                                   } else {
@@ -348,7 +353,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                           .primaryText,
                                     ),
                                   ),
-                                  duration: const Duration(milliseconds: 4000),
+                                  duration: Duration(milliseconds: 4000),
                                   backgroundColor:
                                       FlutterFlowTheme.of(context).secondary,
                                 ),
@@ -356,7 +361,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                               // Go back home
                               context.safePop();
                             }
-                            if (shouldSetState) setState(() {});
+                            if (_shouldSetState) setState(() {});
                           },
                         ),
                       ),
@@ -372,7 +377,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Align(
-                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    alignment: AlignmentDirectional(0.0, 0.0),
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -380,7 +385,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 16.0, 0.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -388,7 +393,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 12.0, 0.0, 0.0),
                                     child: Text(
                                       'Select to pay balance',
@@ -402,7 +407,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       16.0, 12.0, 0.0, 0.0),
                                   child: Text(
                                     _model.checkboxListTileCheckedItems.length
@@ -416,7 +421,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       2.0, 12.0, 0.0, 0.0),
                                   child: Text(
                                     'Selected',
@@ -432,7 +437,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 12.0, 0.0, 0.0),
                             child: Builder(
                               builder: (context) {
@@ -451,7 +456,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                 }
 
                                 return ListView.builder(
-                                  padding: const EdgeInsets.fromLTRB(
+                                  padding: EdgeInsets.fromLTRB(
                                     0,
                                     0,
                                     0,
@@ -466,9 +471,9 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                         pendings[pendingsIndex];
                                     return Align(
                                       alignment:
-                                          const AlignmentDirectional(0.0, -1.0),
+                                          AlignmentDirectional(0.0, -1.0),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             10.0, 0.0, 10.0, 0.0),
                                         child: Theme(
                                           data: ThemeData(
@@ -526,7 +531,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                                 ListTileControlAffinity
                                                     .trailing,
                                             contentPadding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     8.0, 0.0, 0.0, 0.0),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -547,7 +552,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -558,7 +563,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             16.0, 12.0, 16.0, 12.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -578,7 +583,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                     fontWeight: FontWeight.normal,
                                   ),
                             ),
-                            const Divider(
+                            Divider(
                               height: 16.0,
                               thickness: 2.0,
                               color: Color(0xFFF1F4F8),

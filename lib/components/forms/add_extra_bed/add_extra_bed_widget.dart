@@ -3,8 +3,11 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'add_extra_bed_model.dart';
 export 'add_extra_bed_model.dart';
@@ -68,18 +71,18 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
 
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -100,7 +103,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -112,7 +115,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -124,14 +127,14 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Add Extra Bed',
@@ -144,9 +147,9 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                               ),
                             ),
                             Align(
-                              alignment: const AlignmentDirectional(0.0, -1.0),
+                              alignment: AlignmentDirectional(0.0, -1.0),
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 10.0, 0.0),
                                 child: Container(
                                   width: 80.0,
@@ -162,7 +165,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                     ),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
+                                    padding: EdgeInsets.all(4.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -196,7 +199,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                             },
                                             child: AnimatedContainer(
                                               duration:
-                                                  const Duration(milliseconds: 100),
+                                                  Duration(milliseconds: 100),
                                               curve: Curves.linear,
                                               width: 115.0,
                                               height: 100.0,
@@ -271,7 +274,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                             },
                                             child: AnimatedContainer(
                                               duration:
-                                                  const Duration(milliseconds: 100),
+                                                  Duration(milliseconds: 100),
                                               curve: Curves.linear,
                                               width: 115.0,
                                               height: 100.0,
@@ -322,7 +325,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -365,7 +368,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 20.0, 24.0),
                           ),
                           style:
@@ -381,13 +384,13 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                               .asValidator(context),
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -395,7 +398,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     10.0, 0.0, 0.0, 0.0),
                                 child: RichText(
                                   textScaler: MediaQuery.of(context).textScaler,
@@ -419,7 +422,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                     .numberTextController
                                                     .text) +
                                                 int.parse(
-                                                    widget.booking!.extraBeds))
+                                                    widget!.booking!.extraBeds))
                                             .toString(),
                                         style: TextStyle(
                                           color: FlutterFlowTheme.of(context)
@@ -434,15 +437,17 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                               ? ' extra bed'
                                               : ' extra beds';
                                         }(_model.numberTextController.text),
-                                        style: const TextStyle(),
+                                        style: TextStyle(),
                                       ),
-                                      const TextSpan(
+                                      TextSpan(
                                         text: ' ',
                                         style: TextStyle(),
                                       ),
                                       TextSpan(
                                         text: (double price, String quantity) {
-                                          return " +${price * int.parse(quantity)}";
+                                          return " +" +
+                                              (price * int.parse(quantity))
+                                                  .toString();
                                         }(
                                             (_model.promoPercent != 0.0
                                                 ? ((_model.bedPrice -
@@ -460,7 +465,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                   }(
                                                     _model.bedPrice,
                                                     valueOrDefault<String>(
-                                                      widget.booking?.ability,
+                                                      widget!.booking?.ability,
                                                       'normal',
                                                     )))),
                                             _model.numberTextController.text),
@@ -506,7 +511,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                     // history
 
                                     await HistoryRecord.createDoc(
-                                            widget.booking!.room!)
+                                            widget!.booking!.room!)
                                         .set({
                                       ...createHistoryRecordData(
                                         description: (String additional,
@@ -517,9 +522,9 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                               ? '$additional beds added'
                                               : '$additional beds removed';
                                         }(_model.numberTextController.text,
-                                            widget.booking!.extraBeds),
+                                            widget!.booking!.extraBeds),
                                         staff: currentUserReference,
-                                        booking: widget.booking?.reference,
+                                        booking: widget!.booking?.reference,
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -530,7 +535,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                     // room
                                     _model.room =
                                         await RoomsRecord.getDocumentOnce(
-                                            widget.booking!.room!);
+                                            widget!.booking!.room!);
                                     // create transaction
 
                                     var transactionsRecordReference =
@@ -554,7 +559,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                   }(
                                                     _model.bedPrice,
                                                     valueOrDefault<String>(
-                                                      widget.booking?.ability,
+                                                      widget!.booking?.ability,
                                                       'normal',
                                                     )))) *
                                             int.parse(_model
@@ -562,23 +567,24 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
-                                        pending: widget.booking?.status ==
+                                        pending: widget!.booking?.status ==
                                             'pending',
                                         room: _model.room?.number,
-                                        booking: widget.booking?.reference,
+                                        booking: widget!.booking?.reference,
                                         description: (String additional,
                                                 String existing, int room) {
-                                          return '${(int.tryParse(additional) ??
+                                          return ((int.tryParse(additional) ??
                                                           0) >
                                                       0
                                                   ? '$additional beds added'
-                                                  : '$additional beds removed'} on room $room';
+                                                  : '$additional beds removed') +
+                                              ' on room $room';
                                         }(
                                             _model.numberTextController.text,
-                                            widget.booking!.extraBeds,
+                                            widget!.booking!.extraBeds,
                                             _model.room!.number),
                                         guests:
-                                            int.parse(widget.booking!.guests),
+                                            int.parse(widget!.booking!.guests),
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -606,7 +612,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                   }(
                                                     _model.bedPrice,
                                                     valueOrDefault<String>(
-                                                      widget.booking?.ability,
+                                                      widget!.booking?.ability,
                                                       'normal',
                                                     )))) *
                                             int.parse(_model
@@ -614,23 +620,24 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
-                                        pending: widget.booking?.status ==
+                                        pending: widget!.booking?.status ==
                                             'pending',
                                         room: _model.room?.number,
-                                        booking: widget.booking?.reference,
+                                        booking: widget!.booking?.reference,
                                         description: (String additional,
                                                 String existing, int room) {
-                                          return '${(int.tryParse(additional) ??
+                                          return ((int.tryParse(additional) ??
                                                           0) >
                                                       0
                                                   ? '$additional beds added'
-                                                  : '$additional beds removed'} on room $room';
+                                                  : '$additional beds removed') +
+                                              ' on room $room';
                                         }(
                                             _model.numberTextController.text,
-                                            widget.booking!.extraBeds,
+                                            widget!.booking!.extraBeds,
                                             _model.room!.number),
                                         guests:
-                                            int.parse(widget.booking!.guests),
+                                            int.parse(widget!.booking!.guests),
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -640,13 +647,13 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                     }, transactionsRecordReference);
                                     // update booking total + transactions
 
-                                    await widget.booking!.reference.update({
+                                    await widget!.booking!.reference.update({
                                       ...createBookingsRecordData(
                                         extraBeds: (int.parse(_model
                                                     .numberTextController
                                                     .text) +
                                                 int.parse(
-                                                    widget.booking!.extraBeds))
+                                                    widget!.booking!.extraBeds))
                                             .toString(),
                                       ),
                                       ...mapToFirestore(
@@ -672,7 +679,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                     }(
                                                       _model.bedPrice,
                                                       valueOrDefault<String>(
-                                                        widget
+                                                        widget!
                                                             .booking?.ability,
                                                         'normal',
                                                       )))) *
@@ -690,7 +697,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
+                                        duration: Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -707,7 +714,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                 .error,
                                           ),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
+                                        duration: Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context).info,
                                       ),
@@ -721,7 +728,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         'Save',

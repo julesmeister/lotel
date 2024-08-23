@@ -1,11 +1,14 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/edit_grocery/edit_grocery_widget.dart';
 import '/components/forms/new_grocery/new_grocery_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_grocery_model.dart';
 export 'option_to_grocery_model.dart';
@@ -51,12 +54,12 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -69,13 +72,13 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
@@ -87,7 +90,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
               ),
               if (FFAppState().role == 'admin')
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -102,10 +105,10 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                         builder: (context) {
                           return Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: SizedBox(
+                            child: Container(
                               height: double.infinity,
                               child: EditGroceryWidget(
-                                grocery: widget.grocery!,
+                                grocery: widget!.grocery!,
                               ),
                             ),
                           );
@@ -119,12 +122,12 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                       ),
                       child: Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Icon(
                                 Icons.edit_outlined,
@@ -134,7 +137,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     12.0, 0.0, 0.0, 0.0),
                                 child: Text(
                                   'Change Details',
@@ -155,7 +158,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                 ),
               if (FFAppState().role == 'admin')
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -170,10 +173,10 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                         builder: (context) {
                           return Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: SizedBox(
+                            child: Container(
                               height: double.infinity,
                               child: NewGroceryWidget(
-                                duplicate: widget.grocery?.remark,
+                                duplicate: widget!.grocery?.remark,
                               ),
                             ),
                           );
@@ -187,12 +190,12 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                       ),
                       child: Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Icon(
                                 Icons.control_point_duplicate,
@@ -202,7 +205,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     12.0, 0.0, 0.0, 0.0),
                                 child: Text(
                                   'Duplicate Grocery Info',
@@ -223,7 +226,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                 ),
               if (FFAppState().role == 'admin')
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -234,19 +237,19 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: const Text('Starting Point'),
-                                content: const Text(
+                                title: Text('Starting Point'),
+                                content: Text(
                                     'Are you sure you want to track revenue from this point forward?'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: const Text('Cancel'),
+                                    child: Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: const Text('Confirm'),
+                                    child: Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -257,7 +260,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                         // get grocery
                         _model.groceryToTrack =
                             await GroceriesRecord.getDocumentOnce(
-                                widget.grocery!.reference);
+                                widget!.grocery!.reference);
                         // count grr
                         _model.countGrr =
                             await queryGoodsRevenueRatioRecordCount(
@@ -332,7 +335,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: const Duration(milliseconds: 4000),
+                            duration: Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -349,12 +352,12 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                       ),
                       child: Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Icon(
                                 Icons.start,
@@ -364,7 +367,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     12.0, 0.0, 0.0, 0.0),
                                 child: Text(
                                   'Mark as starting point',
@@ -384,7 +387,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                   ),
                 ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -392,14 +395,14 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                   highlightColor: Colors.transparent,
                   onTap: () async {
                     _model.grocery = await GroceriesRecord.getDocumentOnce(
-                        widget.grocery!.reference);
+                        widget!.grocery!.reference);
                     // reduce from stat
 
                     await FFAppState().statsReference!.update({
                       ...mapToFirestore(
                         {
                           'groceryExpenses':
-                              FieldValue.increment(-(widget.grocery!.amount)),
+                              FieldValue.increment(-(widget!.grocery!.amount)),
                         },
                       ),
                     });
@@ -440,7 +443,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                         }
                       }
                     }
-                    await widget.grocery!.reference.delete();
+                    await widget!.grocery!.reference.delete();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -449,7 +452,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                             color: FlutterFlowTheme.of(context).info,
                           ),
                         ),
-                        duration: const Duration(milliseconds: 4000),
+                        duration: Duration(milliseconds: 4000),
                         backgroundColor: FlutterFlowTheme.of(context).error,
                       ),
                     );
@@ -467,12 +470,12 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.remove,
@@ -482,7 +485,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Remove',

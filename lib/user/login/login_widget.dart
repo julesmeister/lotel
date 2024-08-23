@@ -6,11 +6,13 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'login_model.dart';
 export 'login_model.dart';
@@ -57,20 +59,20 @@ class _LoginWidgetState extends State<LoginWidget> {
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: const AlignmentDirectional(0.0, 0.0),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 32.0, 0.0, 32.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 32.0, 0.0, 32.0),
                   child: Container(
                     width: double.infinity,
                     height: 70.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
-                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    alignment: AlignmentDirectional(0.0, 0.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.asset(
@@ -83,7 +85,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: EdgeInsets.all(12.0),
                   child: StreamBuilder<List<HotelSettingsRecord>>(
                     stream: queryHotelSettingsRecord(
                       queryBuilder: (hotelSettingsRecord) =>
@@ -121,12 +123,12 @@ class _LoginWidgetState extends State<LoginWidget> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12.0),
                           border: Border.all(
-                            color: const Color(0xFFF1F4F8),
+                            color: Color(0xFFF1F4F8),
                             width: 2.0,
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(24.0),
+                          padding: EdgeInsets.all(24.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -139,14 +141,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     .displaySmall
                                     .override(
                                       fontFamily: 'Urbanist',
-                                      color: const Color(0xFF101213),
+                                      color: Color(0xFF101213),
                                       fontSize: 36.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 12.0, 0.0, 24.0),
                                 child: Text(
                                   'Choose a hotel to sign in',
@@ -155,7 +157,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       .labelMedium
                                       .override(
                                         fontFamily: 'Manrope',
-                                        color: const Color(0xFF57636C),
+                                        color: Color(0xFF57636C),
                                         fontSize: 12.0,
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
@@ -186,14 +188,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 verticalAlignment: WrapCrossAlignment.start,
                               ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     8.0, 15.0, 8.0, 0.0),
                                 child: TextFormField(
                                   controller: _model.textController,
                                   focusNode: _model.textFieldFocusNode,
                                   onChanged: (_) => EasyDebounce.debounce(
                                     '_model.textController',
-                                    const Duration(milliseconds: 2000),
+                                    Duration(milliseconds: 2000),
                                     () => setState(() {}),
                                   ),
                                   autofocus: true,
@@ -264,9 +266,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       ?.acceptNewStaff ??
                                   true)
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment: AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 15.0, 0.0, 16.0),
                                     child: FFButtonWidget(
                                       onPressed: ((_model.radioButtonValue ==
@@ -274,6 +276,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   _model.radioButtonValue ==
                                                       '') ||
                                               (_model.textController.text ==
+                                                      null ||
+                                                  _model.textController.text ==
                                                       ''))
                                           ? null
                                           : () async {
@@ -296,7 +300,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 ),
                                                 singleRecord: true,
                                               ).then((s) => s.firstOrNull);
-                                              if (FFAppState().role == '') {
+                                              if (FFAppState().role == null ||
+                                                  FFAppState().role == '') {
                                                 // Default Generic User And Name
 
                                                 await currentUserReference!
@@ -344,7 +349,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                     containerHotelSettingsRecord!
                                                         .bedPrice;
                                                 FFAppState().extPricePerHr =
-                                                    containerHotelSettingsRecord
+                                                    containerHotelSettingsRecord!
                                                         .lateCheckoutFee;
                                                 FFAppState().settingRef =
                                                     _model.setting?.reference;
@@ -373,7 +378,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 context.mounted,
                                                 extra: <String, dynamic>{
                                                   kTransitionInfoKey:
-                                                      const TransitionInfo(
+                                                      TransitionInfo(
                                                     hasTransition: true,
                                                     transitionType:
                                                         PageTransitionType
@@ -385,30 +390,30 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               setState(() {});
                                             },
                                       text: 'Enter',
-                                      icon: const FaIcon(
+                                      icon: FaIcon(
                                         FontAwesomeIcons.hotel,
                                         size: 20.0,
                                       ),
                                       options: FFButtonOptions(
                                         width: 230.0,
                                         height: 44.0,
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 0.0, 0.0),
                                         iconPadding:
-                                            const EdgeInsetsDirectional.fromSTEB(
+                                            EdgeInsetsDirectional.fromSTEB(
                                                 0.0, 0.0, 0.0, 0.0),
                                         color: Colors.white,
                                         textStyle: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
                                               fontFamily: 'Manrope',
-                                              color: const Color(0xFF101213),
+                                              color: Color(0xFF101213),
                                               fontSize: 14.0,
                                               letterSpacing: 0.0,
                                               fontWeight: FontWeight.bold,
                                             ),
                                         elevation: 0.0,
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0xFFF1F4F8),
                                           width: 2.0,
                                         ),

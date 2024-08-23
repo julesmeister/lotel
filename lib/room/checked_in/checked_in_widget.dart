@@ -12,10 +12,12 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'checked_in_model.dart';
 export 'checked_in_model.dart';
@@ -65,7 +67,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
 
     return StreamBuilder<BookingsRecord>(
       stream: _model.bookingDetails(
-        requestFn: () => BookingsRecord.getDocument(widget.booking!),
+        requestFn: () => BookingsRecord.getDocument(widget!.booking!),
       ),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
@@ -117,7 +119,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                       letterSpacing: 0.0,
                     ),
               ),
-              actions: const [],
+              actions: [],
               centerTitle: false,
               elevation: 2.0,
             ),
@@ -129,10 +131,10 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: const AlignmentDirectional(0.0, -1.0),
+                      alignment: AlignmentDirectional(0.0, -1.0),
                       child: Container(
                         width: double.infinity,
-                        constraints: const BoxConstraints(
+                        constraints: BoxConstraints(
                           maxWidth: 1170.0,
                         ),
                         decoration: BoxDecoration(
@@ -145,18 +147,18 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                             children: [
                               Container(
                                 width: double.infinity,
-                                constraints: const BoxConstraints(
+                                constraints: BoxConstraints(
                                   maxWidth: 1170.0,
                                 ),
-                                decoration: const BoxDecoration(),
+                                decoration: BoxDecoration(),
                               ),
                               Align(
-                                alignment: const AlignmentDirectional(0.0, -1.0),
+                                alignment: AlignmentDirectional(0.0, -1.0),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: EdgeInsets.all(16.0),
                                   child: Container(
                                     width: double.infinity,
-                                    constraints: const BoxConstraints(
+                                    constraints: BoxConstraints(
                                       maxWidth: 1170.0,
                                     ),
                                     decoration: BoxDecoration(
@@ -174,14 +176,14 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                         Expanded(
                                           flex: 8,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(16.0),
+                                            padding: EdgeInsets.all(16.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 0.0, 15.0),
                                                   child: Text(
@@ -196,7 +198,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -228,7 +230,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               return "Room $room";
                                                             }(valueOrDefault<
                                                                 int>(
-                                                              widget.roomNo,
+                                                              widget!.roomNo,
                                                               0,
                                                             )),
                                                             style: FlutterFlowTheme
@@ -244,11 +246,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                           if (!((checkedInBookingsRecord
                                                                       .status ==
                                                                   'out') ||
-                                                              (widget.ref ==
+                                                              (widget!.ref ==
                                                                   null)))
                                                             Padding(
                                                               padding:
-                                                                  const EdgeInsetsDirectional
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           5.0,
                                                                           0.0,
@@ -290,7 +292,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                 if (_model.showMoveRoom)
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsetsDirectional
+                                                        EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 5.0,
                                                                 0.0, 0.0),
                                                     child: FutureBuilder<
@@ -358,7 +360,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
 
                                                             await HistoryRecord
                                                                     .createDoc(
-                                                                        widget
+                                                                        widget!
                                                                             .ref!)
                                                                 .set({
                                                               ...createHistoryRecordData(
@@ -366,7 +368,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     'Guest is moving out of this room and into room ${_model.choiceChipsValue}',
                                                                 staff:
                                                                     currentUserReference,
-                                                                booking: widget
+                                                                booking: widget!
                                                                     .booking,
                                                               ),
                                                               ...mapToFirestore(
@@ -389,10 +391,10 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .set({
                                                               ...createHistoryRecordData(
                                                                 description:
-                                                                    'Guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} transferred in from room ${widget.roomNo?.toString()}.',
+                                                                    'Guest${functions.stringToInt(checkedInBookingsRecord.guests)! > 1 ? 's' : ''} transferred in from room ${widget!.roomNo?.toString()}.',
                                                                 staff:
                                                                     currentUserReference,
-                                                                booking: widget
+                                                                booking: widget!
                                                                     .booking,
                                                               ),
                                                               ...mapToFirestore(
@@ -417,7 +419,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     createRoomsRecordData(
                                                                   vacant: false,
                                                                   currentBooking:
-                                                                      widget
+                                                                      widget!
                                                                           .booking,
                                                                   guests: int.parse(
                                                                       checkedInBookingsRecord
@@ -448,7 +450,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       .where(
                                                                         'booking',
                                                                         isEqualTo:
-                                                                            widget.booking,
+                                                                            widget!.booking,
                                                                       )
                                                                       .orderBy(
                                                                           'date',
@@ -460,7 +462,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     .firstOrNull);
                                                             // booking's room ref update
 
-                                                            await widget
+                                                            await widget!
                                                                 .booking!
                                                                 .update(
                                                                     createBookingsRecordData(
@@ -500,7 +502,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .description,
                                                                     _model
                                                                         .choiceChipsValue!,
-                                                                    widget
+                                                                    widget!
                                                                         .roomNo!
                                                                         .toString()),
                                                                 total: choiceChipsRoomsRecordList
@@ -532,7 +534,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         .primaryText,
                                                                   ),
                                                                 ),
-                                                                duration: const Duration(
+                                                                duration: Duration(
                                                                     milliseconds:
                                                                         4000),
                                                                 backgroundColor:
@@ -626,7 +628,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                     ),
                                                   ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -673,7 +675,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                           ),
                                                           Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
+                                                                EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         5.0,
                                                                         0.0,
@@ -713,7 +715,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         padding:
                                                                             MediaQuery.viewInsetsOf(context),
                                                                         child:
-                                                                            SizedBox(
+                                                                            Container(
                                                                           height:
                                                                               double.infinity,
                                                                           child:
@@ -744,7 +746,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -790,7 +792,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -839,7 +841,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -886,7 +888,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                           ),
                                                           Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
+                                                                EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         5.0,
                                                                         0.0,
@@ -926,7 +928,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         padding:
                                                                             MediaQuery.viewInsetsOf(context),
                                                                         child:
-                                                                            SizedBox(
+                                                                            Container(
                                                                           height:
                                                                               double.infinity,
                                                                           child:
@@ -957,7 +959,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -986,6 +988,9 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                       Text(
                                                         checkedInBookingsRecord
                                                                         .promo !=
+                                                                    null &&
+                                                                checkedInBookingsRecord
+                                                                        .promo !=
                                                                     ''
                                                             ? checkedInBookingsRecord
                                                                 .promo
@@ -1005,7 +1010,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -1057,7 +1062,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 15.0, 0.0, 0.0),
                                                   child: Row(
@@ -1106,7 +1111,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 10.0, 0.0, 0.0),
                                                   child: Row(
@@ -1119,11 +1124,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                       if ((checkedInBookingsRecord
                                                                   .status !=
                                                               'out') &&
-                                                          (widget.ref != null))
+                                                          (widget!.ref != null))
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
+                                                                EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         12.0,
@@ -1153,15 +1158,15 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         padding:
                                                                             MediaQuery.viewInsetsOf(context),
                                                                         child:
-                                                                            SizedBox(
+                                                                            Container(
                                                                           height:
                                                                               180.0,
                                                                           child:
                                                                               OptionToBookingWidget(
                                                                             ref:
-                                                                                widget.ref!,
+                                                                                widget!.ref!,
                                                                             roomNo:
-                                                                                widget.roomNo!,
+                                                                                widget!.roomNo!,
                                                                             bookingToExtend:
                                                                                 checkedInBookingsRecord,
                                                                             extend:
@@ -1190,7 +1195,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 setState(() {});
                                                               },
                                                               text: 'Modify',
-                                                              icon: const Icon(
+                                                              icon: Icon(
                                                                 Icons
                                                                     .edit_outlined,
                                                                 size: 15.0,
@@ -1198,14 +1203,14 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               options:
                                                                   FFButtonOptions(
                                                                 height: 48.0,
-                                                                padding: const EdgeInsetsDirectional
+                                                                padding: EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         16.0,
                                                                         0.0,
                                                                         16.0,
                                                                         0.0),
                                                                 iconPadding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -1242,11 +1247,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                       if ((checkedInBookingsRecord
                                                                   .status !=
                                                               'out') &&
-                                                          (widget.ref != null))
+                                                          (widget!.ref != null))
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
+                                                                EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         12.0,
@@ -1268,16 +1273,16 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                             builder:
                                                                                 (alertDialogContext) {
                                                                               return AlertDialog(
-                                                                                title: const Text('Is the guest paying?'),
-                                                                                content: const Text('The guest will be marked paid if you confirm.'),
+                                                                                title: Text('Is the guest paying?'),
+                                                                                content: Text('The guest will be marked paid if you confirm.'),
                                                                                 actions: [
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, false),
-                                                                                    child: const Text('Cancel'),
+                                                                                    child: Text('Cancel'),
                                                                                   ),
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, true),
-                                                                                    child: const Text('Confirm'),
+                                                                                    child: Text('Confirm'),
                                                                                   ),
                                                                                 ],
                                                                               );
@@ -1308,7 +1313,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           ),
                                                                         ),
                                                                         duration:
-                                                                            const Duration(milliseconds: 4000),
+                                                                            Duration(milliseconds: 4000),
                                                                         backgroundColor:
                                                                             FlutterFlowTheme.of(context).secondary,
                                                                       ),
@@ -1326,16 +1331,16 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                             builder:
                                                                                 (alertDialogContext) {
                                                                               return AlertDialog(
-                                                                                title: const Text('Is this guest checking out?'),
-                                                                                content: const Text('This guest will be checked out if you confirm.'),
+                                                                                title: Text('Is this guest checking out?'),
+                                                                                content: Text('This guest will be checked out if you confirm.'),
                                                                                 actions: [
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, false),
-                                                                                    child: const Text('Cancel'),
+                                                                                    child: Text('Cancel'),
                                                                                   ),
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, true),
-                                                                                    child: const Text('Confirm'),
+                                                                                    child: Text('Confirm'),
                                                                                   ),
                                                                                 ],
                                                                               );
@@ -1345,7 +1350,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   if (confirmDialogResponse) {
                                                                     // Free up room
 
-                                                                    await widget
+                                                                    await widget!
                                                                         .ref!
                                                                         .update(
                                                                             createRoomsRecordData(
@@ -1364,7 +1369,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         staff:
                                                                             currentUserReference,
                                                                         booking:
-                                                                            widget.booking,
+                                                                            widget!.booking,
                                                                       ),
                                                                       ...mapToFirestore(
                                                                         {
@@ -1375,7 +1380,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     });
                                                                     // Check out
 
-                                                                    await widget
+                                                                    await widget!
                                                                         .booking!
                                                                         .update({
                                                                       ...createBookingsRecordData(
@@ -1404,7 +1409,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           ),
                                                                         ),
                                                                         duration:
-                                                                            const Duration(milliseconds: 4000),
+                                                                            Duration(milliseconds: 4000),
                                                                         backgroundColor:
                                                                             FlutterFlowTheme.of(context).secondary,
                                                                       ),
@@ -1424,14 +1429,14 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               options:
                                                                   FFButtonOptions(
                                                                 height: 48.0,
-                                                                padding: const EdgeInsetsDirectional
+                                                                padding: EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         16.0,
                                                                         0.0,
                                                                         16.0,
                                                                         0.0),
                                                                 iconPadding:
-                                                                    const EdgeInsetsDirectional
+                                                                    EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -1465,13 +1470,13 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                           ),
                                                         ),
                                                     ].divide(
-                                                        const SizedBox(width: 16.0)),
+                                                        SizedBox(width: 16.0)),
                                                   ),
                                                 ),
                                                 if (_model.showChangePrice)
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsetsDirectional
+                                                        EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 10.0,
                                                                 0.0, 0.0),
                                                     child: Column(
@@ -1486,11 +1491,11 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               flex: 3,
                                                               child: Align(
                                                                 alignment:
-                                                                    const AlignmentDirectional(
+                                                                    AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -1506,7 +1511,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       _model.priceChangedescriptionValue ??=
                                                                           'Discount',
                                                                     ),
-                                                                    options: const [
+                                                                    options: [
                                                                       'Discount',
                                                                       'Extend Hours',
                                                                       'Change Room'
@@ -1549,7 +1554,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         2.0,
                                                                     borderRadius:
                                                                         8.0,
-                                                                    margin: const EdgeInsetsDirectional
+                                                                    margin: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             16.0,
                                                                             4.0,
@@ -1577,12 +1582,12 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 children: [
                                                                   Align(
                                                                     alignment:
-                                                                        const AlignmentDirectional(
+                                                                        AlignmentDirectional(
                                                                             0.0,
                                                                             -1.0),
                                                                     child:
                                                                         Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           0.0,
                                                                           10.0,
@@ -1610,7 +1615,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         child:
                                                                             Padding(
                                                                           padding:
-                                                                              const EdgeInsets.all(4.0),
+                                                                              EdgeInsets.all(4.0),
                                                                           child:
                                                                               Row(
                                                                             mainAxisSize:
@@ -1630,7 +1635,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                     setState(() {});
                                                                                   },
                                                                                   child: AnimatedContainer(
-                                                                                    duration: const Duration(milliseconds: 100),
+                                                                                    duration: Duration(milliseconds: 100),
                                                                                     curve: Curves.linear,
                                                                                     width: 115.0,
                                                                                     height: 100.0,
@@ -1671,7 +1676,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                     setState(() {});
                                                                                   },
                                                                                   child: AnimatedContainer(
-                                                                                    duration: const Duration(milliseconds: 100),
+                                                                                    duration: Duration(milliseconds: 100),
                                                                                     curve: Curves.linear,
                                                                                     width: 115.0,
                                                                                     height: 100.0,
@@ -1705,7 +1710,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   ),
                                                                   Expanded(
                                                                     child:
-                                                                        SizedBox(
+                                                                        Container(
                                                                       width:
                                                                           100.0,
                                                                       child:
@@ -1800,7 +1805,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsetsDirectional
+                                                              EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       5.0,
@@ -1840,7 +1845,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     ),
                                                               ),
                                                               Padding(
-                                                                padding: const EdgeInsetsDirectional
+                                                                padding: EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         20.0,
                                                                         0.0,
@@ -1897,9 +1902,12 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               ),
                                                               if (_model.adjustTextController
                                                                           .text !=
+                                                                      null &&
+                                                                  _model.adjustTextController
+                                                                          .text !=
                                                                       '')
                                                                 Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           10.0,
                                                                           0.0,
@@ -1926,10 +1934,12 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     onPressed:
                                                                         () async {
                                                                       if (_model.adjustTextController.text !=
+                                                                              null &&
+                                                                          _model.adjustTextController.text !=
                                                                               '') {
                                                                         // update Booking
 
-                                                                        await widget
+                                                                        await widget!
                                                                             .booking!
                                                                             .update(createBookingsRecordData(
                                                                           total: functions.adjustPrice(
@@ -1976,17 +1986,17 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                         _model.adjustTextController.text,
                                                                                         '0',
                                                                                       ))!),
-                                                                              booking: widget.booking,
+                                                                              booking: widget!.booking,
                                                                               hotel: FFAppState().hotel,
                                                                               type: 'book',
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
-                                                                              room: widget.roomNo,
+                                                                              room: widget!.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return "${(priceChange / bedPrice).toInt().abs()} ";
+                                                                                  return (priceChange / bedPrice).toInt().abs().toString() + " ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',
-                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget!.roomNo?.toString()}',
                                                                               remitted: false,
                                                                               pending: false,
                                                                             ),
@@ -2009,17 +2019,17 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                         _model.adjustTextController.text,
                                                                                         '0',
                                                                                       ))!),
-                                                                              booking: widget.booking,
+                                                                              booking: widget!.booking,
                                                                               hotel: FFAppState().hotel,
                                                                               type: 'book',
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
-                                                                              room: widget.roomNo,
+                                                                              room: widget!.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return "${(priceChange / bedPrice).toInt().abs()} ";
+                                                                                  return (priceChange / bedPrice).toInt().abs().toString() + " ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',
-                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget!.roomNo?.toString()}',
                                                                               remitted: false,
                                                                               pending: false,
                                                                             ),
@@ -2031,7 +2041,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           }, transactionsRecordReference1);
                                                                           // add trans to booking
 
-                                                                          await widget
+                                                                          await widget!
                                                                               .booking!
                                                                               .update({
                                                                             ...mapToFirestore(
@@ -2055,7 +2065,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                     '0',
                                                                                   ))!).toString()}.',
                                                                               staff: currentUserReference,
-                                                                              booking: widget.booking,
+                                                                              booking: widget!.booking,
                                                                             ),
                                                                             ...mapToFirestore(
                                                                               {
@@ -2082,17 +2092,17 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                         _model.adjustTextController.text,
                                                                                         '0',
                                                                                       ))!),
-                                                                              booking: widget.booking,
+                                                                              booking: widget!.booking,
                                                                               hotel: FFAppState().hotel,
                                                                               type: 'book',
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
-                                                                              room: widget.roomNo,
+                                                                              room: widget!.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return "${(priceChange / bedPrice).toInt().abs()} ";
+                                                                                  return (priceChange / bedPrice).toInt().abs().toString() + " ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',
-                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget!.roomNo?.toString()}',
                                                                               remitted: false,
                                                                               pending: true,
                                                                             ),
@@ -2115,17 +2125,17 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                         _model.adjustTextController.text,
                                                                                         '0',
                                                                                       ))!),
-                                                                              booking: widget.booking,
+                                                                              booking: widget!.booking,
                                                                               hotel: FFAppState().hotel,
                                                                               type: 'book',
                                                                               guests: int.parse(checkedInBookingsRecord.guests),
-                                                                              room: widget.roomNo,
+                                                                              room: widget!.roomNo,
                                                                               description: '${_model.priceChangedescriptionValue == 'Extra Bed' ? ((double priceChange, double bedPrice) {
-                                                                                  return "${(priceChange / bedPrice).toInt().abs()} ";
+                                                                                  return (priceChange / bedPrice).toInt().abs().toString() + " ";
                                                                                 }(functions.priceHasChanged(checkedInBookingsRecord.total, functions.adjustPrice(_model.operator, checkedInBookingsRecord.total, valueOrDefault<String>(
                                                                                     _model.adjustTextController.text,
                                                                                     '0',
-                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget.roomNo?.toString()}',
+                                                                                  ))!), _model.hotelSetting!.bedPrice)) : ''}${_model.priceChangedescriptionValue} for room ${widget!.roomNo?.toString()}',
                                                                               remitted: false,
                                                                               pending: true,
                                                                             ),
@@ -2137,7 +2147,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                           }, transactionsRecordReference2);
                                                                           // add to pending list
 
-                                                                          await widget
+                                                                          await widget!
                                                                               .booking!
                                                                               .update({
                                                                             ...mapToFirestore(
@@ -2161,7 +2171,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                     '0',
                                                                                   ))!).toString()}. But payment is pending.',
                                                                               staff: currentUserReference,
-                                                                              booking: widget.booking,
+                                                                              booking: widget!.booking,
                                                                             ),
                                                                             ...mapToFirestore(
                                                                               {
@@ -2175,7 +2185,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                             'Extra Bed') {
                                                                           // change extra bed value
 
-                                                                          await widget
+                                                                          await widget!
                                                                               .booking!
                                                                               .update(createBookingsRecordData(
                                                                             extraBeds:
@@ -2195,7 +2205,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               ),
                                                                             ),
                                                                             duration:
-                                                                                const Duration(milliseconds: 4000),
+                                                                                Duration(milliseconds: 4000),
                                                                             backgroundColor:
                                                                                 FlutterFlowTheme.of(context).secondary,
                                                                           ),
@@ -2212,7 +2222,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               ),
                                                                             ),
                                                                             duration:
-                                                                                const Duration(milliseconds: 4000),
+                                                                                Duration(milliseconds: 4000),
                                                                             backgroundColor:
                                                                                 FlutterFlowTheme.of(context).error,
                                                                           ),
@@ -2239,7 +2249,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                 ))
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsetsDirectional
+                                                        EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 16.0,
                                                                 0.0, 0.0),
                                                     child: Column(
@@ -2251,7 +2261,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsetsDirectional
+                                                              EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       4.0,
@@ -2272,7 +2282,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsetsDirectional
+                                                              EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       0.0,
@@ -2333,7 +2343,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   ),
                                                                 ),
                                                                 child: Padding(
-                                                                  padding: const EdgeInsetsDirectional
+                                                                  padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -2349,7 +2359,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     children: [
                                                                       Padding(
                                                                         padding:
-                                                                            const EdgeInsets.all(12.0),
+                                                                            EdgeInsets.all(12.0),
                                                                         child:
                                                                             Row(
                                                                           mainAxisSize:
@@ -2366,7 +2376,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                 ),
                                                                               ),
                                                                               child: Padding(
-                                                                                padding: const EdgeInsets.all(2.0),
+                                                                                padding: EdgeInsets.all(2.0),
                                                                                 child: ClipRRect(
                                                                                   borderRadius: BorderRadius.circular(10.0),
                                                                                   child: Image.asset(
@@ -2379,7 +2389,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               ),
                                                                             ),
                                                                             Padding(
-                                                                              padding: const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
                                                                               child: Column(
                                                                                 mainAxisSize: MainAxisSize.max,
                                                                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -2393,7 +2403,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                         ),
                                                                                   ),
                                                                                   Padding(
-                                                                                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                                                                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                                                                                     child: Text(
                                                                                       'staff',
                                                                                       style: FlutterFlowTheme.of(context).labelSmall.override(
@@ -2410,7 +2420,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         ),
                                                                       ),
                                                                       Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
                                                                             16.0,
                                                                             0.0,
                                                                             0.0,
@@ -2427,7 +2437,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         ),
                                                                       ),
                                                                       Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
                                                                             16.0,
                                                                             3.0,
                                                                             0.0,
@@ -2456,7 +2466,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                     ),
                                                   ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Row(
@@ -2500,7 +2510,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Text(
@@ -2516,7 +2526,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 8.0, 0.0, 0.0),
                                                   child: Text(
@@ -2536,7 +2546,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                             ),
                                           ),
                                         ),
-                                      ].divide(const SizedBox(width: 16.0)),
+                                      ].divide(SizedBox(width: 16.0)),
                                     ),
                                   ),
                                 ),

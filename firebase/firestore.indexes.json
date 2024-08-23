@@ -209,24 +209,6 @@
       ]
     },
     {
-      "collectionGroup": "bills",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "hotel",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "description",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "date",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
       "collectionGroup": "groceries",
       "queryScope": "COLLECTION",
       "fields": [
@@ -399,6 +381,20 @@
         {
           "fieldPath": "date",
           "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "bills",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hotel",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
         }
       ]
     }

@@ -5,11 +5,15 @@ import '/flutter_flow/flutter_flow_calendar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'history_in_inventory_model.dart';
 export 'history_in_inventory_model.dart';
@@ -50,8 +54,8 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
             curve: Curves.elasticOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(0.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -69,15 +73,15 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 400.0.ms,
-            begin: const Offset(0.9, 0.9),
-            end: const Offset(1.0, 1.0),
+            begin: Offset(0.9, 0.9),
+            end: Offset(1.0, 1.0),
           ),
           MoveEffect(
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 400.0.ms,
-            begin: const Offset(0.0, 20.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(0.0, 20.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -163,7 +167,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                 },
               ),
               title: Align(
-                alignment: const AlignmentDirectional(-1.0, 0.0),
+                alignment: AlignmentDirectional(-1.0, 0.0),
                 child: AutoSizeText(
                   'History of Inventories',
                   textAlign: TextAlign.start,
@@ -179,10 +183,10 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
               ),
               actions: [
                 Align(
-                  alignment: const AlignmentDirectional(0.0, 0.0),
+                  alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -250,7 +254,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
             body: SafeArea(
               top: true,
               child: Align(
-                alignment: const AlignmentDirectional(0.0, 0.0),
+                alignment: AlignmentDirectional(0.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -308,7 +312,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                               historyInInventoryInventoriesRecordList.toList();
 
                           return ListView.builder(
-                            padding: const EdgeInsets.fromLTRB(
+                            padding: EdgeInsets.fromLTRB(
                               0,
                               0,
                               0,
@@ -322,18 +326,18 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                               final activitiesItem =
                                   activities[activitiesIndex];
                               return Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 1.0),
                                 child: Container(
                                   width: 100.0,
-                                  constraints: const BoxConstraints(
+                                  constraints: BoxConstraints(
                                     minHeight: 100.0,
                                     maxHeight: 120.0,
                                   ),
                                   decoration: BoxDecoration(
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
-                                    boxShadow: const [
+                                    boxShadow: [
                                       BoxShadow(
                                         blurRadius: 0.0,
                                         color: Color(0xFFE0E3E7),
@@ -345,21 +349,21 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                     ],
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         4.0, 0.0, 0.0, 0.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
+                                        Container(
                                           width: 24.0,
                                           child: Stack(
                                             alignment:
-                                                const AlignmentDirectional(0.0, 0.0),
+                                                AlignmentDirectional(0.0, 0.0),
                                             children: [
                                               Align(
-                                                alignment: const AlignmentDirectional(
+                                                alignment: AlignmentDirectional(
                                                     0.0, -0.7),
                                                 child: Container(
                                                   width: 12.0,
@@ -391,7 +395,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                         Expanded(
                                           child: Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 16.0, 16.0, 12.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
@@ -450,7 +454,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsetsDirectional
+                                                          EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   8.0,
                                                                   0.0,
@@ -496,7 +500,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     4.0,
@@ -519,7 +523,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     4.0,
@@ -540,7 +544,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsetsDirectional
+                                                            EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     4.0,
@@ -596,7 +600,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                                     activitiesItem
                                                                         .item,
                                                                 style:
-                                                                    const TextStyle(),
+                                                                    TextStyle(),
                                                               ),
                                                               TextSpan(
                                                                 text:
@@ -638,7 +642,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                                               .normal,
                                                                     ),
                                                               ),
-                                                              const TextSpan(
+                                                              TextSpan(
                                                                 text: ' to ',
                                                                 style:
                                                                     TextStyle(),
@@ -683,7 +687,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                   ],
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsetsDirectional
+                                                  padding: EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 12.0, 0.0, 0.0),
                                                   child: Column(
@@ -727,7 +731,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                                               ? ' + '
                                                                               : ' - ',
                                                                           style:
-                                                                              const TextStyle(),
+                                                                              TextStyle(),
                                                                         ),
                                                                         TextSpan(
                                                                           text: activitiesItem
@@ -735,9 +739,9 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                                               .abs()
                                                                               .toString(),
                                                                           style:
-                                                                              const TextStyle(),
+                                                                              TextStyle(),
                                                                         ),
-                                                                        const TextSpan(
+                                                                        TextSpan(
                                                                           text:
                                                                               ' = ',
                                                                           style:
@@ -748,9 +752,9 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                                               .prevOperatorChange(activitiesItem.previousQuantity, activitiesItem.operator, activitiesItem.quantityChange)
                                                                               .toString(),
                                                                           style:
-                                                                              const TextStyle(),
+                                                                              TextStyle(),
                                                                         ),
-                                                                        const TextSpan(
+                                                                        TextSpan(
                                                                           text:
                                                                               ' pieces left',
                                                                           style:
@@ -776,7 +780,7 @@ class _HistoryInInventoryWidgetState extends State<HistoryInInventoryWidget>
                                                             flex: 1,
                                                             child: Padding(
                                                               padding:
-                                                                  const EdgeInsetsDirectional
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,

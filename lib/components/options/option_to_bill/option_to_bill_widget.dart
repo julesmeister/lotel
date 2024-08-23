@@ -4,9 +4,11 @@ import '/components/forms/bill_edit/bill_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_bill_model.dart';
 export 'option_to_bill_model.dart';
@@ -58,12 +60,12 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -76,13 +78,13 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
@@ -93,7 +95,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -102,7 +104,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                   onTap: () async {
                     // read bill
                     _model.billToChange = await BillsRecord.getDocumentOnce(
-                        widget.bill!.reference);
+                        widget!.bill!.reference);
                     // edit transaction description
                     await showModalBottomSheet(
                       isScrollControlled: true,
@@ -111,7 +113,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                       builder: (context) {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
-                          child: SizedBox(
+                          child: Container(
                             height: double.infinity,
                             child: BillEditWidget(
                               bill: _model.billToChange!,
@@ -139,12 +141,12 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -154,7 +156,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Details',
@@ -174,7 +176,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -190,7 +192,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           )
                           .where(
                             'choice',
-                            isEqualTo: widget.bill?.description,
+                            isEqualTo: widget!.bill?.description,
                           ),
                     );
                     if (_model.existingBill == 1) {
@@ -202,7 +204,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                               color: FlutterFlowTheme.of(context).accent4,
                             ),
                           ),
-                          duration: const Duration(milliseconds: 4000),
+                          duration: Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -213,7 +215,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           .set(createBillChangesRecordData(
                             date: getCurrentTimestamp,
                             description:
-                                'There was an attempt to create a duplicate bookmark on the bill ${widget.bill?.description}.',
+                                'There was an attempt to create a duplicate bookmark on the bill ${widget!.bill?.description}.',
                             staff: currentUserReference,
                             hotel: FFAppState().hotel,
                           ));
@@ -223,19 +225,19 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: const Text('Bookmark'),
-                                content: const Text(
+                                title: Text('Bookmark'),
+                                content: Text(
                                     'Bookmarking this bill detail will simplify future inputs. It\'ll appear in the choices box, just a click away.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: const Text('Cancel'),
+                                    child: Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: const Text('Confirm'),
+                                    child: Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -247,7 +249,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                             .doc()
                             .set(createOptionsRecordData(
                               type: 'bill',
-                              choice: widget.bill?.description,
+                              choice: widget!.bill?.description,
                             ));
                         // bill changes
 
@@ -256,7 +258,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                             .set(createBillChangesRecordData(
                               date: getCurrentTimestamp,
                               description:
-                                  'The bill \"${widget.bill?.description}\" has been bookmarked for easy access.',
+                                  'The bill \"${widget!.bill?.description}\" has been bookmarked for easy access.',
                               staff: currentUserReference,
                               hotel: FFAppState().hotel,
                             ));
@@ -269,7 +271,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: const Duration(milliseconds: 4000),
+                            duration: Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -286,12 +288,12 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.star_rate,
@@ -301,7 +303,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Bookmark This Bill For Easy Access',
@@ -321,7 +323,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -334,19 +336,19 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: const Text('Delete'),
-                                content: const Text(
+                                title: Text('Delete'),
+                                content: Text(
                                     'This bill will be removed and its impact on the relevant monthly metrics will be deducted.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: const Text('Cancel'),
+                                    child: Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: const Text('Confirm'),
+                                    child: Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -354,7 +356,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           ) ??
                           false;
                       if (confirmDialogResponse) {
-                        if (!functions.isThisMonth(widget.bill!.date!)) {
+                        if (!functions.isThisMonth(widget!.bill!.date!)) {
                           // which stats belong
                           _model.statsBillBelong = await queryStatsRecordOnce(
                             queryBuilder: (statsRecord) => statsRecord
@@ -365,12 +367,12 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                                 .where(
                                   'month',
                                   isEqualTo: dateTimeFormat(
-                                      "MMMM", widget.bill?.date),
+                                      "MMMM", widget!.bill?.date),
                                 )
                                 .where(
                                   'year',
                                   isEqualTo:
-                                      dateTimeFormat("y", widget.bill?.date),
+                                      dateTimeFormat("y", widget!.bill?.date),
                                 ),
                             singleRecord: true,
                           ).then((s) => s.firstOrNull);
@@ -384,7 +386,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           ...mapToFirestore(
                             {
                               'bills':
-                                  FieldValue.increment(-(widget.bill!.amount)),
+                                  FieldValue.increment(-(widget!.bill!.amount)),
                             },
                           ),
                         });
@@ -395,29 +397,29 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                             .set(createBillChangesRecordData(
                               date: getCurrentTimestamp,
                               description:
-                                  'The bill attributed to ${widget.bill?.description} covered on ${dateTimeFormat("MMMMEEEEd", widget.bill?.date)} was deleted and the bill\'s amount was deducted from the ${dateTimeFormat("MMMM", widget.bill?.date)} records.',
+                                  'The bill attributed to ${widget!.bill?.description} covered on ${dateTimeFormat("MMMMEEEEd", widget!.bill?.date)} was deleted and the bill\'s amount was deducted from the ${dateTimeFormat("MMMM", widget!.bill?.date)} records.',
                               staff: currentUserReference,
                               hotel: FFAppState().hotel,
                             ));
-                        await widget.bill!.reference.delete();
+                        await widget!.bill!.reference.delete();
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
                               '${valueOrDefault<String>(
                                 formatNumber(
-                                  widget.bill?.amount,
+                                  widget!.bill?.amount,
                                   formatType: FormatType.decimal,
                                   decimalType: DecimalType.automatic,
                                   currency: 'Php ',
                                 ),
                                 '0',
-                              )} is deducted from ${dateTimeFormat("MMMM y", widget.bill?.date)} metrics.',
+                              )} is deducted from ${dateTimeFormat("MMMM y", widget!.bill?.date)} metrics.',
                               style: TextStyle(
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: const Duration(milliseconds: 4000),
+                            duration: Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -435,7 +437,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: const Duration(milliseconds: 4000),
+                          duration: Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -450,12 +452,12 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.remove,
@@ -465,7 +467,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete',

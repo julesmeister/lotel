@@ -2,7 +2,9 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'salary_options_model.dart';
 export 'salary_options_model.dart';
@@ -48,12 +50,12 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -66,13 +68,13 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
@@ -83,7 +85,7 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -94,12 +96,12 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                         'admin') {
                       // salary
                       _model.salaryToGetTotal =
-                          await SalariesRecord.getDocumentOnce(widget.salary!);
+                          await SalariesRecord.getDocumentOnce(widget!.salary!);
                       // reset loop counter
                       _model.loopCACounter = 0;
                       setState(() {});
                       while (_model.loopCACounter !=
-                          _model.salaryToGetTotal?.caRefs.length) {
+                          _model.salaryToGetTotal?.caRefs?.length) {
                         // unsettle ca
 
                         await _model
@@ -122,7 +124,7 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                         ),
                       });
                       // delete instance
-                      await widget.salary!.delete();
+                      await widget!.salary!.delete();
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -132,7 +134,7 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: const Duration(milliseconds: 4000),
+                          duration: Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -145,7 +147,7 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: const Duration(milliseconds: 4000),
+                          duration: Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -160,12 +162,12 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.delete_outlined,
@@ -175,7 +177,7 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete',

@@ -8,11 +8,16 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'issues_list_model.dart';
@@ -61,8 +66,8 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(-100.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(-100.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -73,8 +78,8 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.0, -99.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(0.0, -99.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -85,8 +90,8 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(100.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(100.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -97,8 +102,8 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(0.0, 100.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(0.0, 100.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -184,7 +189,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                       onTap: () => FocusScope.of(context).unfocus(),
                       child: Padding(
                         padding: MediaQuery.viewInsetsOf(context),
-                        child: const SizedBox(
+                        child: Container(
                           height: double.infinity,
                           child: NewIssueWidget(
                             edit: false,
@@ -342,7 +347,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                   shrinkWrap: true,
                   reverse: false,
                   scrollDirection: Axis.vertical,
-                  separatorBuilder: (_, __) => const SizedBox(height: 1.0),
+                  separatorBuilder: (_, __) => SizedBox(height: 1.0),
                   builderDelegate: PagedChildBuilderDelegate<IssuesRecord>(
                     // Customize what your widget looks like when it's loading the first page.
                     firstPageProgressIndicatorBuilder: (_) => Center(
@@ -387,7 +392,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                 onTap: () => FocusScope.of(context).unfocus(),
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
-                                  child: SizedBox(
+                                  child: Container(
                                     height: 362.0,
                                     child: OptionToIssueWidget(
                                       issue: listViewIssuesRecord,
@@ -407,7 +412,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                               BoxShadow(
                                 blurRadius: 0.0,
                                 color: FlutterFlowTheme.of(context).alternate,
-                                offset: const Offset(
+                                offset: Offset(
                                   0.0,
                                   1.0,
                                 ),
@@ -415,7 +420,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 12.0, 16.0, 12.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -441,7 +446,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                             child: Padding(
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
-                                              child: SizedBox(
+                                              child: Container(
                                                 height: double.infinity,
                                                 child: ChangeDateWidget(
                                                   date: listViewIssuesRecord
@@ -477,7 +482,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                               ),
                                             ),
                                             duration:
-                                                const Duration(milliseconds: 4000),
+                                                Duration(milliseconds: 4000),
                                             backgroundColor:
                                                 FlutterFlowTheme.of(context)
                                                     .secondary,
@@ -501,8 +506,8 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                               color:
                                                   listViewIssuesRecord.status ==
                                                           'pending'
-                                                      ? const Color(0xFFFD9DA3)
-                                                      : const Color(0xFF70F6E1),
+                                                      ? Color(0xFFFD9DA3)
+                                                      : Color(0xFF70F6E1),
                                               letterSpacing: 0.0,
                                             ),
                                       ),
@@ -534,8 +539,8 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                               color:
                                                   listViewIssuesRecord.status ==
                                                           'pending'
-                                                      ? const Color(0xFFFD9DA3)
-                                                      : const Color(0xFF70F6E1),
+                                                      ? Color(0xFFFD9DA3)
+                                                      : Color(0xFF70F6E1),
                                               letterSpacing: 0.0,
                                             ),
                                       ),
@@ -544,7 +549,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                 ),
                                 Flexible(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 0.0, 0.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
@@ -553,7 +558,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                       children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 0.0, 12.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
@@ -596,7 +601,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                                               padding: MediaQuery
                                                                   .viewInsetsOf(
                                                                       context),
-                                                              child: SizedBox(
+                                                              child: Container(
                                                                 height: 300.0,
                                                                 child:
                                                                     ListOfNamesWidget(
@@ -643,7 +648,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                                                         .w600,
                                                               ),
                                                         ),
-                                                        const TextSpan(
+                                                        TextSpan(
                                                           text: ' reported',
                                                           style: TextStyle(),
                                                         )
@@ -713,14 +718,14 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                           ),
                                         ),
                                         AnimatedContainer(
-                                          duration: const Duration(milliseconds: 150),
+                                          duration: Duration(milliseconds: 150),
                                           curve: Curves.easeInOut,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
                                             color: listViewIssuesRecord
                                                         .status ==
                                                     'pending'
-                                                ? const Color(0x57FF5963)
+                                                ? Color(0x57FF5963)
                                                 : FlutterFlowTheme.of(context)
                                                     .accent2,
                                             borderRadius:
@@ -737,7 +742,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                             ),
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(12.0),
+                                            padding: EdgeInsets.all(12.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
                                               crossAxisAlignment:
@@ -760,7 +765,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                         ),
                                         Padding(
                                           padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
+                                              EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 8.0, 0.0, 0.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
@@ -795,7 +800,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                                               padding: MediaQuery
                                                                   .viewInsetsOf(
                                                                       context),
-                                                              child: SizedBox(
+                                                              child: Container(
                                                                 height: double
                                                                     .infinity,
                                                                 child:
@@ -840,7 +845,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                                                     .primaryText,
                                                               ),
                                                             ),
-                                                            duration: const Duration(
+                                                            duration: Duration(
                                                                 milliseconds:
                                                                     4000),
                                                             backgroundColor:

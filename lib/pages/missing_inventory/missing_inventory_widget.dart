@@ -4,10 +4,15 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'missing_inventory_model.dart';
 export 'missing_inventory_model.dart';
@@ -48,11 +53,11 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
     _model = createModel(context, () => MissingInventoryModel());
 
     _model.descTextController ??=
-        TextEditingController(text: widget.description);
+        TextEditingController(text: widget!.description);
     _model.descFocusNode ??= FocusNode();
 
     _model.quantityTextController ??=
-        TextEditingController(text: widget.quantity?.toString());
+        TextEditingController(text: widget!.quantity?.toString());
     _model.quantityFocusNode ??= FocusNode();
 
     _model.whyTextController ??=
@@ -74,8 +79,8 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: const Offset(30.0, 0.0),
-            end: const Offset(0.0, 0.0),
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -104,20 +109,20 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Color(0xB20B191E),
       ),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -138,7 +143,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -150,7 +155,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -162,7 +167,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -174,7 +179,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Missing Item in Inventory',
@@ -187,13 +192,13 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 10.0, 16.0, 0.0),
                                     child: Container(
                                       width: double.infinity,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        boxShadow: const [
+                                        boxShadow: [
                                           BoxShadow(
                                             blurRadius: 4.0,
                                             color: Color(0x34090F13),
@@ -219,7 +224,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                                   BorderRadius.circular(12.0),
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(12.0),
+                                              padding: EdgeInsets.all(12.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 children: [
@@ -229,7 +234,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                                       width: 36.0,
                                                       height: 36.0,
                                                       constraints:
-                                                          const BoxConstraints(
+                                                          BoxConstraints(
                                                         minWidth: 36.0,
                                                         minHeight: 36.0,
                                                         maxWidth: 36.0,
@@ -237,15 +242,15 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                                       ),
                                                       decoration: BoxDecoration(
                                                         color:
-                                                            const Color(0x98FFFFFF),
+                                                            Color(0x98FFFFFF),
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(12.0),
                                                       ),
                                                       alignment:
-                                                          const AlignmentDirectional(
+                                                          AlignmentDirectional(
                                                               0.0, 0.0),
-                                                      child: const Icon(
+                                                      child: Icon(
                                                         Icons
                                                             .warning_amber_sharp,
                                                         color: Colors.white,
@@ -257,7 +262,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                                     flex: 6,
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsetsDirectional
+                                                          EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   16.0,
                                                                   0.0,
@@ -298,7 +303,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -338,7 +343,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -375,7 +380,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -417,7 +422,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -433,20 +438,20 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   10.0, 0.0, 0.0, 0.0),
                               child: RichText(
                                 textScaler: MediaQuery.of(context).textScaler,
@@ -454,7 +459,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                   children: [
                                     TextSpan(
                                       text: dateTimeFormat("M/d h:mm a",
-                                          widget.transaction!.date!),
+                                          widget!.transaction!.date!),
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -494,7 +499,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                       queryBuilder: (goodsRecord) => goodsRecord
                                           .where(
                                             'description',
-                                            isEqualTo: widget.description,
+                                            isEqualTo: widget!.description,
                                           )
                                           .where(
                                             'hotel',
@@ -508,14 +513,14 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                         InventoriesRecord.collection.doc();
                                     await inventoriesRecordReference
                                         .set(createInventoriesRecordData(
-                                      date: widget.transaction?.date,
+                                      date: widget!.transaction?.date,
                                       activity: _model.whyTextController.text,
                                       hotel: FFAppState().hotel,
                                       staff: currentUserReference,
                                       quantityChange: int.tryParse(
                                           _model.quantityTextController.text),
                                       previousQuantity: (_model.good!.quantity -
-                                              (widget.quantity!))
+                                              (widget!.quantity!))
                                           .abs(),
                                       item: _model.descTextController.text,
                                       operator: 'minus',
@@ -526,7 +531,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     _model.newInventory =
                                         InventoriesRecord.getDocumentFromData(
                                             createInventoriesRecordData(
-                                              date: widget.transaction?.date,
+                                              date: widget!.transaction?.date,
                                               activity:
                                                   _model.whyTextController.text,
                                               hotel: FFAppState().hotel,
@@ -536,7 +541,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                                       .text),
                                               previousQuantity:
                                                   (_model.good!.quantity -
-                                                          (widget.quantity!))
+                                                          (widget!.quantity!))
                                                       .abs(),
                                               item: _model
                                                   .descTextController.text,
@@ -548,7 +553,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                             inventoriesRecordReference);
                                     // add inventory to remittance
 
-                                    await widget.remittanceRef!.update({
+                                    await widget!.remittanceRef!.update({
                                       ...mapToFirestore(
                                         {
                                           'inventories': FieldValue.arrayUnion(
@@ -566,7 +571,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
+                                        duration: Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -580,7 +585,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 12.0, 0.0),
                                         child: Text(
                                           'Create Inventory For This Item',

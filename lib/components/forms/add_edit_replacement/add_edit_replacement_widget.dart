@@ -3,7 +3,10 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'add_edit_replacement_model.dart';
 export 'add_edit_replacement_model.dart';
@@ -40,14 +43,14 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
     _model = createModel(context, () => AddEditReplacementModel());
 
     _model.numberTextController ??= TextEditingController(
-        text: widget.replacement != null
-            ? widget.replacement?.quantity.toString()
+        text: widget!.replacement != null
+            ? widget!.replacement?.quantity?.toString()
             : '0');
     _model.numberFocusNode ??= FocusNode();
 
     _model.wattsTextController ??= TextEditingController(
-        text: widget.replacement != null
-            ? widget.replacement?.watts.toString()
+        text: widget!.replacement != null
+            ? widget!.replacement?.watts?.toString()
             : '');
     _model.wattsFocusNode ??= FocusNode();
 
@@ -67,18 +70,18 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
 
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -99,7 +102,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -111,7 +114,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -123,17 +126,17 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                widget.replacement != null
+                                widget!.replacement != null
                                     ? 'Edit Bulb'
                                     : 'Add Bulb',
                                 style: FlutterFlowTheme.of(context)
@@ -145,9 +148,9 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                               ),
                             ),
                             Align(
-                              alignment: const AlignmentDirectional(0.0, -1.0),
+                              alignment: AlignmentDirectional(0.0, -1.0),
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 10.0, 0.0),
                                 child: Container(
                                   width: 80.0,
@@ -163,7 +166,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                     ),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
+                                    padding: EdgeInsets.all(4.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -197,7 +200,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                             },
                                             child: AnimatedContainer(
                                               duration:
-                                                  const Duration(milliseconds: 100),
+                                                  Duration(milliseconds: 100),
                                               curve: Curves.linear,
                                               width: 115.0,
                                               height: 100.0,
@@ -272,7 +275,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                             },
                                             child: AnimatedContainer(
                                               duration:
-                                                  const Duration(milliseconds: 100),
+                                                  Duration(milliseconds: 100),
                                               curve: Curves.linear,
                                               width: 115.0,
                                               height: 100.0,
@@ -323,7 +326,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -366,7 +369,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 20.0, 24.0),
                           ),
                           style:
@@ -382,7 +385,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                               .asValidator(context),
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -425,7 +428,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 20.0, 24.0),
                           ),
                           style:
@@ -441,25 +444,25 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                               .asValidator(context),
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   10.0, 0.0, 0.0, 0.0),
                               child: RichText(
                                 textScaler: MediaQuery.of(context).textScaler,
                                 text: TextSpan(
-                                  children: const [
+                                  children: [
                                     TextSpan(
                                       text: ' ',
                                       style: TextStyle(),
@@ -493,10 +496,10 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                           '0') &&
                                       (_model.wattsTextController.text !=
                                           '0')) {
-                                    if (widget.replacement != null) {
+                                    if (widget!.replacement != null) {
                                       // update replacement
 
-                                      await widget.replacement!.reference
+                                      await widget!.replacement!.reference
                                           .update(createReplacementRecordData(
                                         watts: int.tryParse(
                                             _model.wattsTextController.text),
@@ -515,7 +518,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .secondary,
@@ -532,11 +535,11 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                           requestedBy: currentUserDisplayName,
                                           watts: int.tryParse(
                                               _model.wattsTextController.text),
-                                          location: widget.location,
+                                          location: widget!.location,
                                           quantity: int.tryParse(
                                               _model.numberTextController.text),
                                           hotel: FFAppState().hotel,
-                                          cr: widget.cr,
+                                          cr: widget!.cr,
                                         ),
                                         ...mapToFirestore(
                                           {
@@ -557,7 +560,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .secondary,
@@ -575,7 +578,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                                 .error,
                                           ),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
+                                        duration: Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context).info,
                                       ),
@@ -587,7 +590,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         'Save',

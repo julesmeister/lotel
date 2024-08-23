@@ -5,7 +5,9 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'record_add_edit_model.dart';
 export 'record_add_edit_model.dart';
@@ -41,22 +43,22 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
     _model = createModel(context, () => RecordAddEditModel());
 
     _model.detailsTextController1 ??= TextEditingController(
-        text: widget.record != null
-            ? widget.record?.detail
-            : (widget.details != null && widget.details != ''
-                ? widget.details
+        text: widget!.record != null
+            ? widget!.record?.detail
+            : (widget!.details != null && widget!.details != ''
+                ? widget!.details
                 : ''));
     _model.detailsFocusNode1 ??= FocusNode();
 
     _model.detailsTextController2 ??= TextEditingController(
-        text: widget.issuer != null && widget.issuer != ''
-            ? widget.issuer
-            : (widget.record != null
-                ? widget.record?.issuedBy
+        text: widget!.issuer != null && widget!.issuer != ''
+            ? widget!.issuer
+            : (widget!.record != null
+                ? widget!.record?.issuedBy
                 : currentUserDisplayName));
 
     _model.detailsTextController3 ??= TextEditingController(
-        text: widget.record != null ? widget.record?.receivedBy : '');
+        text: widget!.record != null ? widget!.record?.receivedBy : '');
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -75,18 +77,18 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -131,7 +133,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                   return Material(
                     color: Colors.transparent,
                     elevation: 5.0,
-                    shape: const RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(0.0),
                         bottomRight: Radius.circular(0.0),
@@ -143,7 +145,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
-                        borderRadius: const BorderRadius.only(
+                        borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(0.0),
                           bottomRight: Radius.circular(0.0),
                           topLeft: Radius.circular(16.0),
@@ -155,7 +157,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 12.0, 0.0, 12.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -164,10 +166,10 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                 Expanded(
                                   flex: 6,
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 0.0, 0.0),
                                     child: Text(
-                                      widget.record != null
+                                      widget!.record != null
                                           ? 'Edit Record'
                                           : 'Add Record',
                                       style: FlutterFlowTheme.of(context)
@@ -197,10 +199,10 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                                               ?.role,
                                                           '') ==
                                                       'admin') &&
-                                                  (widget.record != null)
+                                                  (widget!.record != null)
                                               ? FlutterFlowTheme.of(context)
                                                   .error
-                                              : const Color(0x00000000),
+                                              : Color(0x00000000),
                                           size: 24.0,
                                         ),
                                         onPressed: () async {
@@ -210,9 +212,9 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                                     builder:
                                                         (alertDialogContext) {
                                                       return AlertDialog(
-                                                        title: const Text(
+                                                        title: Text(
                                                             'Delete Record'),
-                                                        content: const Text(
+                                                        content: Text(
                                                             'Are you certain you want to delete this?'),
                                                         actions: [
                                                           TextButton(
@@ -221,7 +223,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                                                     alertDialogContext,
                                                                     false),
                                                             child:
-                                                                const Text('Cancel'),
+                                                                Text('Cancel'),
                                                           ),
                                                           TextButton(
                                                             onPressed: () =>
@@ -229,7 +231,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                                                     alertDialogContext,
                                                                     true),
                                                             child:
-                                                                const Text('Confirm'),
+                                                                Text('Confirm'),
                                                           ),
                                                         ],
                                                       );
@@ -237,7 +239,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                                   ) ??
                                                   false;
                                           if (confirmDialogResponse) {
-                                            await widget.record!.reference
+                                            await widget!.record!.reference
                                                 .delete();
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
@@ -250,7 +252,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                                         .primaryText,
                                                   ),
                                                 ),
-                                                duration: const Duration(
+                                                duration: Duration(
                                                     milliseconds: 4000),
                                                 backgroundColor:
                                                     FlutterFlowTheme.of(context)
@@ -266,7 +268,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                 Expanded(
                                   flex: 3,
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 16.0, 0.0),
                                     child: Container(
                                       width: 150.0,
@@ -281,8 +283,8 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                         hoverColor: Colors.transparent,
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
-                                          if (widget.record != null) {
-                                            await widget.record!.reference
+                                          if (widget!.record != null) {
+                                            await widget!.record!.reference
                                                 .update(createRecordsRecordData(
                                               detail: functions.startBigLetter(
                                                   _model.detailsTextController1
@@ -323,7 +325,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                               .showSnackBar(
                                             SnackBar(
                                               content: Text(
-                                                widget.record != null
+                                                widget!.record != null
                                                     ? 'Record updated!'
                                                     : 'Record saved!',
                                                 style: TextStyle(
@@ -333,7 +335,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                                 ),
                                               ),
                                               duration:
-                                                  const Duration(milliseconds: 4000),
+                                                  Duration(milliseconds: 4000),
                                               backgroundColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondary,
@@ -347,7 +349,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                               MainAxisAlignment.end,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsetsDirectional
+                                              padding: EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       0.0, 0.0, 12.0, 0.0),
                                               child: Text(
@@ -383,7 +385,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                               ],
                             ),
                           ),
-                          const Divider(
+                          Divider(
                             height: 4.0,
                             thickness: 1.0,
                             color: Color(0xFFE0E3E7),
@@ -427,7 +429,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -442,7 +444,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                   .asValidator(context),
                             ),
                           ),
-                          const Divider(
+                          Divider(
                             height: 4.0,
                             thickness: 1.0,
                             color: Color(0xFFE0E3E7),
@@ -456,11 +458,11 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                             child: AuthUserStreamWidget(
                               builder: (context) => Autocomplete<String>(
                                 initialValue: TextEditingValue(
-                                    text: widget.issuer != null &&
-                                            widget.issuer != ''
-                                        ? widget.issuer!
-                                        : (widget.record != null
-                                            ? widget.record!.issuedBy
+                                    text: widget!.issuer != null &&
+                                            widget!.issuer != ''
+                                        ? widget!.issuer!
+                                        : (widget!.record != null
+                                            ? widget!.record!.issuedBy
                                             : currentUserDisplayName)),
                                 optionsBuilder: (textEditingValue) {
                                   if (textEditingValue.text == '') {
@@ -490,7 +492,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                           fontFamily: 'Readex Pro',
                                           letterSpacing: 0.0,
                                         ),
-                                    textHighlightStyle: const TextStyle(),
+                                    textHighlightStyle: TextStyle(),
                                     elevation: 4.0,
                                     optionBackgroundColor:
                                         FlutterFlowTheme.of(context)
@@ -553,7 +555,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                       fillColor: FlutterFlowTheme.of(context)
                                           .secondaryBackground,
                                       contentPadding:
-                                          const EdgeInsetsDirectional.fromSTEB(
+                                          EdgeInsetsDirectional.fromSTEB(
                                               16.0, 24.0, 20.0, 24.0),
                                     ),
                                     style: FlutterFlowTheme.of(context)
@@ -572,7 +574,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                               ),
                             ),
                           ),
-                          const Divider(
+                          Divider(
                             height: 4.0,
                             thickness: 1.0,
                             color: Color(0xFFE0E3E7),
@@ -585,8 +587,8 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                             ),
                             child: Autocomplete<String>(
                               initialValue: TextEditingValue(
-                                  text: widget.record != null
-                                      ? widget.record!.receivedBy
+                                  text: widget!.record != null
+                                      ? widget!.record!.receivedBy
                                       : ''),
                               optionsBuilder: (textEditingValue) {
                                 if (textEditingValue.text == '') {
@@ -615,7 +617,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                         fontFamily: 'Readex Pro',
                                         letterSpacing: 0.0,
                                       ),
-                                  textHighlightStyle: const TextStyle(),
+                                  textHighlightStyle: TextStyle(),
                                   elevation: 4.0,
                                   optionBackgroundColor:
                                       FlutterFlowTheme.of(context)
@@ -678,7 +680,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                     fillColor: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
                                     contentPadding:
-                                        const EdgeInsetsDirectional.fromSTEB(
+                                        EdgeInsetsDirectional.fromSTEB(
                                             16.0, 24.0, 20.0, 24.0),
                                   ),
                                   style: FlutterFlowTheme.of(context)
@@ -696,7 +698,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                               },
                             ),
                           ),
-                          const Divider(
+                          Divider(
                             height: 4.0,
                             thickness: 1.0,
                             color: Color(0xFFE0E3E7),

@@ -1,7 +1,10 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_booking_model.dart';
 export 'option_to_booking_model.dart';
@@ -53,12 +56,12 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -71,13 +74,13 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
@@ -88,7 +91,7 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -101,7 +104,7 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                             FFAppState().settingRef!);
                     // room
                     _model.room = await RoomsRecord.getDocumentOnce(
-                        widget.bookingToExtend!.room!);
+                        widget!.bookingToExtend!.room!);
                     // go to check in
 
                     context.pushNamed(
@@ -119,11 +122,11 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                           ParamType.int,
                         ),
                         'bookingToExtend': serializeParam(
-                          widget.bookingToExtend,
+                          widget!.bookingToExtend,
                           ParamType.Document,
                         ),
                         'ref': serializeParam(
-                          widget.bookingToExtend?.room,
+                          widget!.bookingToExtend?.room,
                           ParamType.DocumentReference,
                         ),
                         'promoOn': serializeParam(
@@ -169,19 +172,19 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                                       _model.room?.price,
                                       900.0,
                                     ),
-                                    widget.bookingToExtend!.ability)),
+                                    widget!.bookingToExtend!.ability)),
                             900.0,
                           ),
                           ParamType.double,
                         ),
                         'totalAmount': serializeParam(
-                          widget.bookingToExtend?.total,
+                          widget!.bookingToExtend?.total,
                           ParamType.double,
                         ),
                       }.withoutNulls,
                       extra: <String, dynamic>{
-                        'bookingToExtend': widget.bookingToExtend,
-                        kTransitionInfoKey: const TransitionInfo(
+                        'bookingToExtend': widget!.bookingToExtend,
+                        kTransitionInfoKey: TransitionInfo(
                           hasTransition: true,
                           transitionType: PageTransitionType.rightToLeft,
                         ),
@@ -200,12 +203,12 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.extension_outlined,
@@ -215,7 +218,7 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Refund / Extend',
@@ -235,7 +238,7 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -251,12 +254,12 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.price_change_outlined,
@@ -266,7 +269,7 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Price',

@@ -1,12 +1,17 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import '/components/forms/change_amount/change_amount_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'pay_pending_partially_model.dart';
 export 'pay_pending_partially_model.dart';
 
@@ -44,12 +49,12 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
       // reset
       _model.loop = 0;
       setState(() {});
-      while (widget.transactions?.length != _model.loop) {
+      while (widget!.transactions?.length != _model.loop) {
         // add transaction to list
         _model.addToPendings(PayPendingStruct(
-          amount: widget.transactions?[_model.loop].total,
+          amount: widget!.transactions?[_model.loop]?.total,
           pending: false,
-          ref: widget.transactions?[_model.loop].reference,
+          ref: widget!.transactions?[_model.loop]?.reference,
         ));
         setState(() {});
         // + loop
@@ -73,18 +78,18 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -105,7 +110,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -117,7 +122,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -129,7 +134,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -138,7 +143,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                             Expanded(
                               flex: 6,
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 0.0, 0.0, 0.0),
                                 child: Text(
                                   'Pay',
@@ -152,7 +157,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 16.0, 0.0),
                               child: Text(
                                 formatNumber(
@@ -175,7 +180,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -194,7 +199,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                               final pendingTransactionsItem =
                                   pendingTransactions[pendingTransactionsIndex];
                               return Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     20.0, 5.0, 16.0, 5.0),
                                 child: InkWell(
                                   splashColor: Colors.transparent,
@@ -210,7 +215,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                         return Padding(
                                           padding:
                                               MediaQuery.viewInsetsOf(context),
-                                          child: SizedBox(
+                                          child: Container(
                                             height: double.infinity,
                                             child: ChangeAmountWidget(
                                               amount: pendingTransactionsItem
@@ -262,7 +267,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                           Text(
                                             dateTimeFormat(
                                                 "EEEE MMMM d y h:mm a",
-                                                widget.transactions!
+                                                widget!.transactions!
                                                     .where((e) =>
                                                         e.reference ==
                                                         pendingTransactionsItem
@@ -344,20 +349,20 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                           );
                         },
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 16.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   10.0, 0.0, 0.0, 0.0),
                               child: RichText(
                                 textScaler: MediaQuery.of(context).textScaler,
@@ -424,7 +429,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                   // get booking
                                   _model.booking =
                                       await BookingsRecord.getDocumentOnce(
-                                          widget.booking!);
+                                          widget!.booking!);
                                   // room
                                   _model.room =
                                       await RoomsRecord.getDocumentOnce(
@@ -450,7 +455,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                           .update({
                                         ...createTransactionsRecordData(
                                           description:
-                                              'Guest paid the outstanding balance since ${functions.hoursAgo(widget.transactions!.where((e) => e.reference == _model.pendings[_model.loop].ref).toList().first.date!)} for ${widget.transactions?.where((e) => e.reference == _model.pendings[_model.loop].ref).toList().first.description}',
+                                              'Guest paid the outstanding balance since ${functions.hoursAgo(widget!.transactions!.where((e) => e.reference == _model.pendings[_model.loop].ref).toList().first.date!)} for ${widget!.transactions?.where((e) => e.reference == _model.pendings[_model.loop].ref).toList()?.first?.description}',
                                           total: _model
                                               .pendings[_model.loop].amount,
                                           staff: currentUserReference,
@@ -465,7 +470,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                       });
                                       // remove pending from booking
 
-                                      await widget.booking!.update({
+                                      await widget!.booking!.update({
                                         ...mapToFirestore(
                                           {
                                             'pendings': FieldValue.arrayRemove([
@@ -501,7 +506,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                         locale: '',
                                       )}.',
                                       staff: currentUserReference,
-                                      booking: widget.booking,
+                                      booking: widget!.booking,
                                     ),
                                     ...mapToFirestore(
                                       {
@@ -511,9 +516,9 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                   });
                                   // update book status
 
-                                  await widget.booking!
+                                  await widget!.booking!
                                       .update(createBookingsRecordData(
-                                    status: widget.transactions?.length !=
+                                    status: widget!.transactions?.length !=
                                             _model.pendings
                                                 .where(
                                                     (e) => e.pending == false)
@@ -532,7 +537,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         'Paid',

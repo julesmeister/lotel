@@ -6,8 +6,10 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'new_issue_model.dart';
 export 'new_issue_model.dart';
@@ -17,7 +19,7 @@ class NewIssueWidget extends StatefulWidget {
     super.key,
     bool? edit,
     this.ref,
-  }) : edit = edit ?? false;
+  }) : this.edit = edit ?? false;
 
   final bool edit;
   final DocumentReference? ref;
@@ -42,9 +44,9 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      if (widget.edit) {
+      if (widget!.edit) {
         // editable issue
-        _model.issueToEdit = await IssuesRecord.getDocumentOnce(widget.ref!);
+        _model.issueToEdit = await IssuesRecord.getDocumentOnce(widget!.ref!);
         // set form with detail
         setState(() {
           _model.detailTextController?.text = _model.issueToEdit!.detail;
@@ -74,18 +76,18 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -106,7 +108,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -118,7 +120,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -130,7 +132,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -139,10 +141,10 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                             Expanded(
                               flex: 5,
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 0.0, 0.0, 0.0),
                                 child: Text(
-                                  widget.edit ? 'Edit Issue' : 'New Issue',
+                                  widget!.edit ? 'Edit Issue' : 'New Issue',
                                   style: FlutterFlowTheme.of(context)
                                       .headlineSmall
                                       .override(
@@ -153,7 +155,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 10.0, 0.0),
                               child: FFButtonWidget(
                                 onPressed: () async {
@@ -167,7 +169,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                       return Padding(
                                         padding:
                                             MediaQuery.viewInsetsOf(context),
-                                        child: const SizedBox(
+                                        child: Container(
                                           height: double.infinity,
                                           child: RecordAddEditWidget(),
                                         ),
@@ -178,9 +180,9 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                 text: '+ Record',
                                 options: FFButtonOptions(
                                   height: 40.0,
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       24.0, 0.0, 24.0, 0.0),
-                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
                                   color: FlutterFlowTheme.of(context).tertiary,
                                   textStyle: FlutterFlowTheme.of(context)
@@ -191,7 +193,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                         letterSpacing: 0.0,
                                       ),
                                   elevation: 3.0,
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: Colors.transparent,
                                     width: 1.0,
                                   ),
@@ -202,7 +204,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -251,7 +253,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                   fillColor: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
                                   contentPadding:
-                                      const EdgeInsetsDirectional.fromSTEB(
+                                      EdgeInsetsDirectional.fromSTEB(
                                           16.0, 24.0, 20.0, 24.0),
                                 ),
                                 style: FlutterFlowTheme.of(context)
@@ -273,7 +275,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       16.0, 20.0, 16.0, 0.0),
                                   child: Text(
                                     'Please don\'t touch anything while issue is being recorded.',
@@ -288,7 +290,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, -2.13),
+                                  alignment: AlignmentDirectional(0.0, -2.13),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(8.0),
                                     child: Image.asset(
@@ -303,14 +305,14 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                             ),
                         ],
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(8.0, 4.0, 16.0, 5.0),
+                            EdgeInsetsDirectional.fromSTEB(8.0, 4.0, 16.0, 5.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -331,8 +333,8 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                   // isLoading
                                   _model.isLoading = true;
                                   setState(() {});
-                                  if (widget.edit) {
-                                    await widget.ref!
+                                  if (widget!.edit) {
+                                    await widget!.ref!
                                         .update(createIssuesRecordData(
                                       detail: functions.startBigLetter(
                                           _model.detailTextController.text),
@@ -347,7 +349,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
+                                        duration: Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -378,7 +380,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
+                                        duration: Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -395,10 +397,10 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
-                                        widget.edit ? 'Save' : 'Submit',
+                                        widget!.edit ? 'Save' : 'Submit',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(

@@ -1,13 +1,17 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:badges/badges.dart' as badges;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'mart_model.dart';
 export 'mart_model.dart';
@@ -94,7 +98,7 @@ class _MartWidgetState extends State<MartWidget> {
                     if (FFAppState().role == 'admin')
                       Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                         child: FlutterFlowIconButton(
                           borderColor: FlutterFlowTheme.of(context).alternate,
                           borderRadius: 12.0,
@@ -114,7 +118,7 @@ class _MartWidgetState extends State<MartWidget> {
                       ),
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(12.0, 8.0, 10.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(12.0, 8.0, 10.0, 8.0),
                       child: FlutterFlowIconButton(
                         borderColor: FlutterFlowTheme.of(context).alternate,
                         borderRadius: 12.0,
@@ -134,7 +138,7 @@ class _MartWidgetState extends State<MartWidget> {
                     ),
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                       child: badges.Badge(
                         badgeContent: Text(
                           _model.cart.length.toString(),
@@ -145,16 +149,16 @@ class _MartWidgetState extends State<MartWidget> {
                                     letterSpacing: 0.0,
                                   ),
                         ),
-                        showBadge: _model.cart.isNotEmpty,
+                        showBadge: _model.cart.length != 0,
                         shape: badges.BadgeShape.circle,
                         badgeColor: FlutterFlowTheme.of(context).primary,
                         elevation: 4.0,
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         position: badges.BadgePosition.topEnd(),
                         animationType: badges.BadgeAnimationType.scale,
                         toAnimate: true,
                         child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 8.0, 16.0, 8.0),
                           child: FlutterFlowIconButton(
                             borderColor: FlutterFlowTheme.of(context).alternate,
@@ -180,7 +184,7 @@ class _MartWidgetState extends State<MartWidget> {
                                 }.withoutNulls,
                                 extra: <String, dynamic>{
                                   'cart': _model.cart,
-                                  kTransitionInfoKey: const TransitionInfo(
+                                  kTransitionInfoKey: TransitionInfo(
                                     hasTransition: true,
                                     transitionType:
                                         PageTransitionType.leftToRight,
@@ -206,13 +210,13 @@ class _MartWidgetState extends State<MartWidget> {
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: const AlignmentDirectional(0.0, -1.0),
+                      alignment: AlignmentDirectional(0.0, -1.0),
                       child: Container(
                         width: double.infinity,
-                        constraints: const BoxConstraints(
+                        constraints: BoxConstraints(
                           maxWidth: 970.0,
                         ),
-                        decoration: const BoxDecoration(),
+                        decoration: BoxDecoration(),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
@@ -226,10 +230,10 @@ class _MartWidgetState extends State<MartWidget> {
                                 Container(
                                   width: double.infinity,
                                   height: 24.0,
-                                  decoration: const BoxDecoration(),
+                                  decoration: BoxDecoration(),
                                 ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 12.0, 16.0, 0.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -238,7 +242,7 @@ class _MartWidgetState extends State<MartWidget> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 0.0, 15.0),
                                         child: FlutterFlowChoiceChips(
                                           options: functions
@@ -324,7 +328,7 @@ class _MartWidgetState extends State<MartWidget> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 0.0, 16.0, 0.0),
                                 child: Container(
                                   width: double.infinity,
@@ -334,9 +338,9 @@ class _MartWidgetState extends State<MartWidget> {
                                         .primaryBackground,
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment: AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 0.0, 0.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
@@ -345,7 +349,7 @@ class _MartWidgetState extends State<MartWidget> {
                                           flex: 4,
                                           child: Align(
                                             alignment:
-                                                const AlignmentDirectional(-1.0, 0.0),
+                                                AlignmentDirectional(-1.0, 0.0),
                                             child: Text(
                                               'Item',
                                               style:
@@ -363,9 +367,9 @@ class _MartWidgetState extends State<MartWidget> {
                                           flex: 3,
                                           child: Align(
                                             alignment:
-                                                const AlignmentDirectional(-1.0, 0.0),
+                                                AlignmentDirectional(-1.0, 0.0),
                                             child: Padding(
-                                              padding: const EdgeInsetsDirectional
+                                              padding: EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'Add to Cart',
@@ -386,7 +390,7 @@ class _MartWidgetState extends State<MartWidget> {
                                           flex: 3,
                                           child: Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     4.0, 0.0, 16.0, 0.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
@@ -395,7 +399,7 @@ class _MartWidgetState extends State<MartWidget> {
                                               children: [
                                                 Align(
                                                   alignment:
-                                                      const AlignmentDirectional(
+                                                      AlignmentDirectional(
                                                           1.0, 0.0),
                                                   child: Text(
                                                     'Availability',
@@ -428,7 +432,7 @@ class _MartWidgetState extends State<MartWidget> {
                                       .toList();
 
                                   return ListView.separated(
-                                    padding: const EdgeInsets.fromLTRB(
+                                    padding: EdgeInsets.fromLTRB(
                                       0,
                                       0.0,
                                       0,
@@ -439,12 +443,12 @@ class _MartWidgetState extends State<MartWidget> {
                                     scrollDirection: Axis.vertical,
                                     itemCount: goodsList.length,
                                     separatorBuilder: (_, __) =>
-                                        const SizedBox(height: 1.0),
+                                        SizedBox(height: 1.0),
                                     itemBuilder: (context, goodsListIndex) {
                                       final goodsListItem =
                                           goodsList[goodsListIndex];
                                       return Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             16.0, 0.0, 16.0, 0.0),
                                         child: Container(
                                           width: double.infinity,
@@ -457,7 +461,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .alternate,
-                                                offset: const Offset(
+                                                offset: Offset(
                                                   0.0,
                                                   1.0,
                                                 ),
@@ -466,7 +470,7 @@ class _MartWidgetState extends State<MartWidget> {
                                           ),
                                           child: Padding(
                                             padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
+                                                EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 12.0, 16.0, 12.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
@@ -479,7 +483,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                     children: [
                                                       Align(
                                                         alignment:
-                                                            const AlignmentDirectional(
+                                                            AlignmentDirectional(
                                                                 -1.0, 0.0),
                                                         child: Text(
                                                           goodsListItem
@@ -497,7 +501,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                       ),
                                                       Align(
                                                         alignment:
-                                                            const AlignmentDirectional(
+                                                            AlignmentDirectional(
                                                                 -1.0, 0.0),
                                                         child: Text(
                                                           formatNumber(
@@ -561,7 +565,9 @@ class _MartWidgetState extends State<MartWidget> {
                                                                       e.category ==
                                                                       goodsListItem
                                                                           .category)
-                                                                  .toList().isEmpty)
+                                                                  .toList()
+                                                                  .length ==
+                                                              0)
                                                           ? null
                                                           : () async {
                                                               _model.removeFromCart(
@@ -639,22 +645,22 @@ class _MartWidgetState extends State<MartWidget> {
                                                                     builder:
                                                                         (alertDialogContext) {
                                                                       return AlertDialog(
-                                                                        title: const Text(
+                                                                        title: Text(
                                                                             'To Replenish'),
                                                                         content:
-                                                                            const Text('Do we need to buy more of this?'),
+                                                                            Text('Do we need to buy more of this?'),
                                                                         actions: [
                                                                           TextButton(
                                                                             onPressed: () =>
                                                                                 Navigator.pop(alertDialogContext, false),
                                                                             child:
-                                                                                const Text('Cancel'),
+                                                                                Text('Cancel'),
                                                                           ),
                                                                           TextButton(
                                                                             onPressed: () =>
                                                                                 Navigator.pop(alertDialogContext, true),
                                                                             child:
-                                                                                const Text('Confirm'),
+                                                                                Text('Confirm'),
                                                                           ),
                                                                         ],
                                                                       );
@@ -687,7 +693,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                                       .primaryText,
                                                                 ),
                                                               ),
-                                                              duration: const Duration(
+                                                              duration: Duration(
                                                                   milliseconds:
                                                                       4000),
                                                               backgroundColor:
@@ -726,11 +732,11 @@ class _MartWidgetState extends State<MartWidget> {
                                                           ),
                                                           child: Align(
                                                             alignment:
-                                                                const AlignmentDirectional(
+                                                                AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  const EdgeInsetsDirectional
+                                                                  EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           8.0,
                                                                           4.0,

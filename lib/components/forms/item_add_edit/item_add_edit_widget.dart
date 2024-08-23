@@ -5,8 +5,11 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'item_add_edit_model.dart';
 export 'item_add_edit_model.dart';
@@ -21,7 +24,7 @@ class ItemAddEditWidget extends StatefulWidget {
     this.price,
     this.category,
     this.categories,
-  }) : edit = edit ?? false;
+  }) : this.edit = edit ?? false;
 
   final DocumentReference? goodsRef;
   final bool edit;
@@ -50,22 +53,22 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
     _model = createModel(context, () => ItemAddEditModel());
 
     _model.descTextController ??=
-        TextEditingController(text: widget.edit ? widget.desc : '');
+        TextEditingController(text: widget!.edit ? widget!.desc : '');
     _model.descFocusNode ??= FocusNode();
 
     _model.priceTextController ??= TextEditingController(
-        text: widget.edit ? widget.price?.toString() : '');
+        text: widget!.edit ? widget!.price?.toString() : '');
     _model.priceFocusNode ??= FocusNode();
 
     _model.quantityTextController ??= TextEditingController(
-        text: widget.edit ? widget.quantity?.toString() : '');
+        text: widget!.edit ? widget!.quantity?.toString() : '');
     _model.quantityFocusNode ??= FocusNode();
 
     _model.whyTextController ??= TextEditingController(text: '');
     _model.whyFocusNode ??= FocusNode();
 
     _model.categoryTextController ??=
-        TextEditingController(text: widget.edit ? widget.category : '');
+        TextEditingController(text: widget!.edit ? widget!.category : '');
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -84,18 +87,18 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Align(
-        alignment: const AlignmentDirectional(0.0, 1.0),
+        alignment: AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
+                alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -116,7 +119,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -128,7 +131,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -140,17 +143,17 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                widget.edit ? 'Edit Item' : 'New Item',
+                                widget!.edit ? 'Edit Item' : 'New Item',
                                 style: FlutterFlowTheme.of(context)
                                     .headlineSmall
                                     .override(
@@ -162,7 +165,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -202,7 +205,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -240,7 +243,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -285,7 +288,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -304,7 +307,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                     RegExp('[0-9]'))
                               ],
                             ),
-                            if (widget.edit)
+                            if (widget!.edit)
                               TextFormField(
                                 controller: _model.whyTextController,
                                 focusNode: _model.whyFocusNode,
@@ -330,7 +333,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   fillColor: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
                                   contentPadding:
-                                      const EdgeInsetsDirectional.fromSTEB(
+                                      EdgeInsetsDirectional.fromSTEB(
                                           16.0, 24.0, 20.0, 24.0),
                                 ),
                                 style: FlutterFlowTheme.of(context)
@@ -346,14 +349,14 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                               ),
                             Autocomplete<String>(
                               initialValue: TextEditingValue(
-                                  text: widget.edit ? widget.category! : ''),
+                                  text: widget!.edit ? widget!.category! : ''),
                               optionsBuilder: (textEditingValue) {
                                 if (textEditingValue.text == '') {
                                   return const Iterable<String>.empty();
                                 }
                                 return functions
                                     .noRedundantCategories(
-                                        widget.categories?.toList())
+                                        widget!.categories?.toList())
                                     .where((option) {
                                   final lowercaseOption = option.toLowerCase();
                                   return lowercaseOption.contains(
@@ -374,7 +377,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                         fontFamily: 'Readex Pro',
                                         letterSpacing: 0.0,
                                       ),
-                                  textHighlightStyle: const TextStyle(),
+                                  textHighlightStyle: TextStyle(),
                                   elevation: 4.0,
                                   optionBackgroundColor:
                                       FlutterFlowTheme.of(context)
@@ -428,7 +431,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                     fillColor: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
                                     contentPadding:
-                                        const EdgeInsetsDirectional.fromSTEB(
+                                        EdgeInsetsDirectional.fromSTEB(
                                             16.0, 24.0, 20.0, 24.0),
                                   ),
                                   style: FlutterFlowTheme.of(context)
@@ -448,20 +451,20 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                           ],
                         ),
                       ),
-                      const Divider(
+                      Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   10.0, 0.0, 0.0, 0.0),
                               child: RichText(
                                 textScaler: MediaQuery.of(context).textScaler,
@@ -502,8 +505,10 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.edit == false) {
+                                  if (widget!.edit == false) {
                                     if (_model.categoryTextController.text !=
+                                            null &&
+                                        _model.categoryTextController.text !=
                                             '') {
                                       // create goods
 
@@ -557,7 +562,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                             item: functions.startBigLetter(
                                                 _model.descTextController.text),
                                             operator: 'add',
-                                            previousPrice: widget.price,
+                                            previousPrice: widget!.price,
                                             priceChange: double.tryParse(_model
                                                 .priceTextController.text),
                                             remitted: false,
@@ -574,7 +579,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .secondary,
@@ -593,7 +598,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                             ),
                                           ),
                                           duration:
-                                              const Duration(milliseconds: 4000),
+                                              Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .error,
@@ -603,7 +608,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   } else {
                                     // update goods
 
-                                    await widget.goodsRef!
+                                    await widget!.goodsRef!
                                         .update(createGoodsRecordData(
                                       price: double.tryParse(
                                           _model.priceTextController.text),
@@ -624,18 +629,18 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                                       .whyTextController.text ==
                                                   ''
                                               ? functions.activityOfInventory(
-                                                  widget.price!,
+                                                  widget!.price!,
                                                   double.parse(_model
                                                       .priceTextController
                                                       .text),
-                                                  widget.quantity!,
+                                                  widget!.quantity!,
                                                   int.parse(_model
                                                       .quantityTextController
                                                       .text),
-                                                  widget.desc!,
+                                                  widget!.desc!,
                                                   _model
                                                       .descTextController.text,
-                                                  widget.category!,
+                                                  widget!.category!,
                                                   _model.categoryTextController
                                                       .text)
                                               : _model.whyTextController.text,
@@ -645,15 +650,15 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                               (functions.stringToInt(_model
                                                       .quantityTextController
                                                       .text)!) -
-                                                  (widget.quantity!),
-                                          previousQuantity: widget.quantity,
+                                                  (widget!.quantity!),
+                                          previousQuantity: widget!.quantity,
                                           item: _model.descTextController.text,
                                           operator: functions.whichOperator(
-                                              widget.quantity!,
+                                              widget!.quantity!,
                                               int.parse(_model
                                                   .quantityTextController
                                                   .text)),
-                                          previousPrice: widget.price,
+                                          previousPrice: widget!.price,
                                           priceChange: double.tryParse(
                                               _model.priceTextController.text),
                                           remitted: false,
@@ -667,7 +672,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
+                                        duration: Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -684,10 +689,10 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
-                                        widget.edit ? 'Save' : 'Create',
+                                        widget!.edit ? 'Save' : 'Create',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
