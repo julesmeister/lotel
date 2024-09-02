@@ -1,11 +1,8 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'edit_grocery_model.dart';
 export 'edit_grocery_model.dart';
@@ -37,11 +34,11 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
     _model = createModel(context, () => EditGroceryModel());
 
     _model.remarkTextController ??=
-        TextEditingController(text: widget!.grocery?.remark);
+        TextEditingController(text: widget.grocery?.remark);
     _model.remarkFocusNode ??= FocusNode();
 
     _model.amountTextController ??=
-        TextEditingController(text: widget!.grocery?.amount?.toString());
+        TextEditingController(text: widget.grocery?.amount.toString());
     _model.amountFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -60,18 +57,18 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
 
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Align(
-        alignment: AlignmentDirectional(0.0, 1.0),
+        alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -92,7 +89,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -104,7 +101,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -116,7 +113,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -125,7 +122,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                             Expanded(
                               flex: 5,
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 0.0, 0.0, 0.0),
                                 child: Text(
                                   'Edit Grocery',
@@ -148,7 +145,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                       .secondaryBackground,
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 16.0, 0.0),
                                   child: InkWell(
                                     splashColor: Colors.transparent,
@@ -157,8 +154,6 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
                                       if (_model.amountTextController.text !=
-                                              null &&
-                                          _model.amountTextController.text !=
                                               '') {
                                         var confirmDialogResponse =
                                             await showDialog<bool>(
@@ -166,7 +161,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                                   builder:
                                                       (alertDialogContext) {
                                                     return AlertDialog(
-                                                      title: Text(
+                                                      title: const Text(
                                                           'This will alter details for this grocery.'),
                                                       content: Text(
                                                           'You are recording an amount of Php ${_model.amountTextController.text}.'),
@@ -176,7 +171,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                                               Navigator.pop(
                                                                   alertDialogContext,
                                                                   false),
-                                                          child: Text('Cancel'),
+                                                          child: const Text('Cancel'),
                                                         ),
                                                         TextButton(
                                                           onPressed: () =>
@@ -184,7 +179,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                                                   alertDialogContext,
                                                                   true),
                                                           child:
-                                                              Text('Confirm'),
+                                                              const Text('Confirm'),
                                                         ),
                                                       ],
                                                     );
@@ -194,14 +189,14 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                         if (confirmDialogResponse) {
                                           // update grocery
 
-                                          await widget!.grocery!.reference
+                                          await widget.grocery!.reference
                                               .update(createGroceriesRecordData(
                                             remark: _model
                                                 .remarkTextController.text,
                                             amount: double.tryParse(_model
                                                 .amountTextController.text),
                                           ));
-                                          if (widget!.grocery?.amount
+                                          if (widget.grocery?.amount
                                                   .toString() !=
                                               _model
                                                   .amountTextController.text) {
@@ -235,7 +230,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                                 ),
                                               ),
                                               duration:
-                                                  Duration(milliseconds: 4000),
+                                                  const Duration(milliseconds: 4000),
                                               backgroundColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondary,
@@ -256,7 +251,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                               ),
                                             ),
                                             duration:
-                                                Duration(milliseconds: 4000),
+                                                const Duration(milliseconds: 4000),
                                             backgroundColor:
                                                 FlutterFlowTheme.of(context)
                                                     .error,
@@ -272,7 +267,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                           flex: 5,
                                           child: Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 5.0, 0.0),
                                             child: Text(
                                               'Save Details',
@@ -309,7 +304,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -356,7 +351,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -403,7 +398,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)

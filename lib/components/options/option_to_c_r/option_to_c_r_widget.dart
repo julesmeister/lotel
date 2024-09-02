@@ -4,10 +4,7 @@ import '/components/forms/add_edit_c_r/add_edit_c_r_widget.dart';
 import '/components/forms/add_edit_location/add_edit_location_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'option_to_c_r_model.dart';
 export 'option_to_c_r_model.dart';
 
@@ -52,12 +49,12 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -70,13 +67,13 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
@@ -87,17 +84,17 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    if (widget!.location != null) {
+                    if (widget.location != null) {
                       // loc
                       _model.location = await LocationsRecord.getDocumentOnce(
-                          widget!.location!);
+                          widget.location!);
                       // edit location
                       await showModalBottomSheet(
                         isScrollControlled: true,
@@ -106,7 +103,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                         builder: (context) {
                           return Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: Container(
+                            child: SizedBox(
                               height: double.infinity,
                               child: AddEditLocationWidget(
                                 location: _model.location,
@@ -118,7 +115,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                     } else {
                       // cr
                       _model.cr =
-                          await ComfortRoomsRecord.getDocumentOnce(widget!.cr!);
+                          await ComfortRoomsRecord.getDocumentOnce(widget.cr!);
                       // edit cr loc
                       await showModalBottomSheet(
                         isScrollControlled: true,
@@ -128,7 +125,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                         builder: (context) {
                           return Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: Container(
+                            child: SizedBox(
                               height: double.infinity,
                               child: AddEditCRWidget(
                                 cr: _model.cr,
@@ -151,12 +148,12 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -166,7 +163,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Details',
@@ -186,7 +183,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -199,18 +196,18 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: Text('Delete'),
-                                content: Text('This location will be removed.'),
+                                title: const Text('Delete'),
+                                content: const Text('This location will be removed.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: Text('Confirm'),
+                                    child: const Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -218,12 +215,12 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                           ) ??
                           false;
                       if (confirmDialogResponse) {
-                        if (widget!.location != null) {
+                        if (widget.location != null) {
                           // delete location
-                          await widget!.location!.delete();
+                          await widget.location!.delete();
                         } else {
                           // delete cr
-                          await widget!.cr!.delete();
+                          await widget.cr!.delete();
                         }
 
                         Navigator.pop(context);
@@ -235,7 +232,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -250,7 +247,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -263,12 +260,12 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.remove,
@@ -278,7 +275,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete',

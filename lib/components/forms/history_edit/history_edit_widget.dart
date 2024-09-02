@@ -3,10 +3,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'history_edit_model.dart';
 export 'history_edit_model.dart';
 
@@ -37,7 +34,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
     _model = createModel(context, () => HistoryEditModel());
 
     _model.detailsTextController ??=
-        TextEditingController(text: widget!.history?.description);
+        TextEditingController(text: widget.history?.description);
     _model.detailsFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -55,18 +52,18 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
     return Container(
       width: double.infinity,
       height: 285.0,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Align(
-        alignment: AlignmentDirectional(0.0, 1.0),
+        alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -87,7 +84,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -99,7 +96,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -111,14 +108,14 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Edit History',
@@ -133,7 +130,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -176,7 +173,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 20.0, 24.0),
                           ),
                           style:
@@ -190,13 +187,13 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                               .asValidator(context),
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -220,8 +217,8 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                               context: context,
                                               builder: (alertDialogContext) {
                                                 return AlertDialog(
-                                                  title: Text('Delete History'),
-                                                  content: Text(
+                                                  title: const Text('Delete History'),
+                                                  content: const Text(
                                                       'Are you certain you want to delete this?'),
                                                   actions: [
                                                     TextButton(
@@ -229,14 +226,14 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                                           Navigator.pop(
                                                               alertDialogContext,
                                                               false),
-                                                      child: Text('Cancel'),
+                                                      child: const Text('Cancel'),
                                                     ),
                                                     TextButton(
                                                       onPressed: () =>
                                                           Navigator.pop(
                                                               alertDialogContext,
                                                               true),
-                                                      child: Text('Confirm'),
+                                                      child: const Text('Confirm'),
                                                     ),
                                                   ],
                                                 );
@@ -244,7 +241,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                             ) ??
                                             false;
                                     if (confirmDialogResponse) {
-                                      await widget!.history!.reference.delete();
+                                      await widget.history!.reference.delete();
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
@@ -257,7 +254,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                             ),
                                           ),
                                           duration:
-                                              Duration(milliseconds: 4000),
+                                              const Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .secondary,
@@ -290,7 +287,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await widget!.history!.reference
+                                  await widget.history!.reference
                                       .update(createHistoryRecordData(
                                     description:
                                         _model.detailsTextController.text,
@@ -304,7 +301,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                               .primaryText,
                                         ),
                                       ),
-                                      duration: Duration(milliseconds: 4000),
+                                      duration: const Duration(milliseconds: 4000),
                                       backgroundColor:
                                           FlutterFlowTheme.of(context)
                                               .secondary,
@@ -317,7 +314,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         'Save',

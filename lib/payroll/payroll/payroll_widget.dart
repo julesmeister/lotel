@@ -7,17 +7,12 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'payroll_model.dart';
@@ -64,8 +59,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(0.0, 50.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -83,8 +78,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(40.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(40.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -95,8 +90,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -107,8 +102,8 @@ class _PayrollWidgetState extends State<PayrollWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -206,7 +201,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                         'admin')
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
                         child: AuthUserStreamWidget(
                           builder: (context) => FlutterFlowIconButton(
                             borderColor: FlutterFlowTheme.of(context).alternate,
@@ -226,19 +221,19 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                         context: context,
                                         builder: (alertDialogContext) {
                                           return AlertDialog(
-                                            title: Text('Create Payroll'),
-                                            content: Text(
+                                            title: const Text('Create Payroll'),
+                                            content: const Text(
                                                 'This action will replicate the latest payroll data, although you may need to make adjustments as required.'),
                                             actions: [
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
                                                     alertDialogContext, false),
-                                                child: Text('Cancel'),
+                                                child: const Text('Cancel'),
                                               ),
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
                                                     alertDialogContext, true),
-                                                child: Text('Confirm'),
+                                                child: const Text('Confirm'),
                                               ),
                                             ],
                                           );
@@ -335,20 +330,20 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                           sss: _model
                                               .sampleSalaries?[
                                                   _model.loopSalariesCounter!]
-                                              ?.sss,
+                                              .sss,
                                           cashAdvance: 0.0,
                                           pendingCA: _model
                                               .sampleSalaries?[
                                                   _model.loopSalariesCounter!]
-                                              ?.pendingCA,
+                                              .pendingCA,
                                           staff: _model
                                               .sampleSalaries?[
                                                   _model.loopSalariesCounter!]
-                                              ?.staff,
+                                              .staff,
                                           rate: _model
                                               .sampleSalaries?[
                                                   _model.loopSalariesCounter!]
-                                              ?.rate,
+                                              .rate,
                                         ),
                                         ...mapToFirestore(
                                           {
@@ -363,20 +358,20 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                           sss: _model
                                               .sampleSalaries?[
                                                   _model.loopSalariesCounter!]
-                                              ?.sss,
+                                              .sss,
                                           cashAdvance: 0.0,
                                           pendingCA: _model
                                               .sampleSalaries?[
                                                   _model.loopSalariesCounter!]
-                                              ?.pendingCA,
+                                              .pendingCA,
                                           staff: _model
                                               .sampleSalaries?[
                                                   _model.loopSalariesCounter!]
-                                              ?.staff,
+                                              .staff,
                                           rate: _model
                                               .sampleSalaries?[
                                                   _model.loopSalariesCounter!]
-                                              ?.rate,
+                                              .rate,
                                         ),
                                         ...mapToFirestore(
                                           {
@@ -390,7 +385,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                         parent: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.staff,
+                                            .staff,
                                         queryBuilder: (advancesRecord) =>
                                             advancesRecord
                                                 .where(
@@ -406,7 +401,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                         parent: _model
                                             .sampleSalaries?[
                                                 _model.loopSalariesCounter!]
-                                            ?.staff,
+                                            .staff,
                                       );
                                       // save salary w/ cash advances
 
@@ -424,7 +419,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                 _model
                                                     .sampleSalaries?[_model
                                                         .loopSalariesCounter!]
-                                                    ?.rate,
+                                                    .rate,
                                                 0.0,
                                               ) -
                                               _model
@@ -454,7 +449,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                             'absencesRefs': _model.absencesRaw
                                                 ?.where((e) => !e.settled)
                                                 .toList()
-                                                ?.map((e) => e.reference)
+                                                .map((e) => e.reference)
                                                 .toList(),
                                           },
                                         ),
@@ -502,20 +497,20 @@ class _PayrollWidgetState extends State<PayrollWidget>
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(0.0, -1.0),
+                      alignment: const AlignmentDirectional(0.0, -1.0),
                       child: Container(
                         width: double.infinity,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxWidth: 1170.0,
                         ),
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 5.0, 0.0, 0.0),
                                 child: Container(
                                   height: 100.0,
@@ -529,7 +524,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                       Expanded(
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 16.0, 0.0),
                                           child: PagedListView<
                                               DocumentSnapshot<Object?>?,
@@ -547,7 +542,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                     isEqualTo: false,
                                                   ),
                                             ),
-                                            padding: EdgeInsets.fromLTRB(
+                                            padding: const EdgeInsets.fromLTRB(
                                               16.0,
                                               0,
                                               0,
@@ -601,7 +596,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                     .listViewPagingController1!
                                                     .itemList![listViewIndex];
                                                 return Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 10.0, 0.0),
                                                   child: FutureBuilder<
@@ -698,7 +693,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                         .viewInsetsOf(
                                                                             context),
                                                                     child:
-                                                                        Container(
+                                                                        SizedBox(
                                                                       height:
                                                                           180.0,
                                                                       child:
@@ -720,9 +715,9 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                           height: 170.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF4B39EF),
-                                                            boxShadow: [
+                                                            boxShadow: const [
                                                               BoxShadow(
                                                                 blurRadius: 5.0,
                                                                 color: Color(
@@ -740,7 +735,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                           ),
                                                           child: Padding(
                                                             padding:
-                                                                EdgeInsets.all(
+                                                                const EdgeInsets.all(
                                                                     10.0),
                                                             child: Row(
                                                               mainAxisSize:
@@ -778,7 +773,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                             ),
                                                                       ),
                                                                       Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             4.0,
                                                                             0.0,
@@ -792,7 +787,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                               .titleSmall
                                                                               .override(
                                                                                 fontFamily: 'Plus Jakarta Sans',
-                                                                                color: Color(0x9AFFFFFF),
+                                                                                color: const Color(0x9AFFFFFF),
                                                                                 fontSize: 12.0,
                                                                                 letterSpacing: 0.0,
                                                                                 fontWeight: FontWeight.w500,
@@ -800,7 +795,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                         ),
                                                                       ),
                                                                       Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             0.0,
                                                                             3.0,
                                                                             0.0,
@@ -855,7 +850,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                           'admin')
                                         Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 8.0, 10.0, 8.0),
                                           child: AuthUserStreamWidget(
                                             builder: (context) =>
@@ -891,7 +886,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                         padding: MediaQuery
                                                             .viewInsetsOf(
                                                                 context),
-                                                        child: Container(
+                                                        child: const SizedBox(
                                                           height:
                                                               double.infinity,
                                                           child:
@@ -911,7 +906,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 10.0, 16.0, 0.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -967,11 +962,11 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 8.0, 16.0, 0.0),
                                 child: Container(
                                   width: double.infinity,
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                     maxWidth: double.infinity,
                                   ),
                                   decoration: BoxDecoration(
@@ -985,7 +980,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                     ),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 12.0, 16.0, 12.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
@@ -1051,7 +1046,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                             )
                                             .orderBy('date', descending: true),
                                       ),
-                                      padding: EdgeInsets.fromLTRB(
+                                      padding: const EdgeInsets.fromLTRB(
                                         0,
                                         12.0,
                                         0,
@@ -1062,7 +1057,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                       reverse: false,
                                       scrollDirection: Axis.vertical,
                                       separatorBuilder: (_, __) =>
-                                          SizedBox(height: 12.0),
+                                          const SizedBox(height: 12.0),
                                       builderDelegate:
                                           PagedChildBuilderDelegate<
                                               PayrollsRecord>(
@@ -1104,7 +1099,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                               .itemList![listViewIndex];
                                           return Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 0.0, 16.0, 0.0),
                                             child: InkWell(
                                               splashColor: Colors.transparent,
@@ -1140,7 +1135,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                         padding: MediaQuery
                                                             .viewInsetsOf(
                                                                 context),
-                                                        child: Container(
+                                                        child: SizedBox(
                                                           height: 125.0,
                                                           child:
                                                               OptionToPayrollWidget(
@@ -1156,7 +1151,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                               },
                                               child: Container(
                                                 width: double.infinity,
-                                                constraints: BoxConstraints(
+                                                constraints: const BoxConstraints(
                                                   maxWidth: 570.0,
                                                 ),
                                                 decoration: BoxDecoration(
@@ -1174,7 +1169,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(16.0, 12.0,
                                                           16.0, 12.0),
                                                   child: Row(
@@ -1191,7 +1186,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                         flex: 3,
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       0.0,
@@ -1214,7 +1209,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                     .textScaler,
                                                                 text: TextSpan(
                                                                   children: [
-                                                                    TextSpan(
+                                                                    const TextSpan(
                                                                       text:
                                                                           'Fortnight: ',
                                                                       style:
@@ -1245,7 +1240,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                               ),
                                                               Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             4.0,
@@ -1310,7 +1305,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                             ),
                                                             Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       1.0, 0.0),
                                                               child: Text(
                                                                 listViewPayrollsRecord

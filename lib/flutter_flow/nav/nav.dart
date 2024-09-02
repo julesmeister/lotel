@@ -1,22 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
-import '/backend/schema/enums/enums.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
 import '/index.dart';
 import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/lat_lng.dart';
-import '/flutter_flow/place.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
@@ -81,46 +74,46 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
+          appStateNotifier.loggedIn ? const NavBarPage() : const LoginWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
+              appStateNotifier.loggedIn ? const NavBarPage() : const LoginWidget(),
         ),
         FFRoute(
           name: 'HomePage',
           path: '/homePage',
           requireAuth: true,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'HomePage')
-              : HomePageWidget(),
+              ? const NavBarPage(initialPage: 'HomePage')
+              : const HomePageWidget(),
         ),
         FFRoute(
           name: 'Login',
           path: '/login',
-          builder: (context, params) => LoginWidget(),
+          builder: (context, params) => const LoginWidget(),
         ),
         FFRoute(
           name: 'RoomList',
           path: '/roomList',
           requireAuth: true,
-          builder: (context, params) => RoomListWidget(),
+          builder: (context, params) => const RoomListWidget(),
         ),
         FFRoute(
           name: 'Settings',
           path: '/settings',
           requireAuth: true,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'Settings')
-              : SettingsWidget(),
+              ? const NavBarPage(initialPage: 'Settings')
+              : const SettingsWidget(),
         ),
         FFRoute(
           name: 'ManageRoles',
           path: '/manageRoles',
           requireAuth: true,
-          builder: (context, params) => ManageRolesWidget(),
+          builder: (context, params) => const ManageRolesWidget(),
         ),
         FFRoute(
           name: 'CheckedIn',
@@ -198,20 +191,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'EditBedPrice',
           path: '/editBedPrice',
           requireAuth: true,
-          builder: (context, params) => EditBedPriceWidget(),
+          builder: (context, params) => const EditBedPriceWidget(),
         ),
         FFRoute(
           name: 'mart',
           path: '/mart',
           requireAuth: true,
           builder: (context, params) =>
-              params.isEmpty ? NavBarPage(initialPage: 'mart') : MartWidget(),
+              params.isEmpty ? const NavBarPage(initialPage: 'mart') : const MartWidget(),
         ),
         FFRoute(
           name: 'inventory',
           path: '/inventory',
           requireAuth: true,
-          builder: (context, params) => InventoryWidget(),
+          builder: (context, params) => const InventoryWidget(),
         ),
         FFRoute(
           name: 'CheckOut',
@@ -233,27 +226,27 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/transactions',
           requireAuth: true,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'transactions')
-              : TransactionsWidget(),
+              ? const NavBarPage(initialPage: 'transactions')
+              : const TransactionsWidget(),
         ),
         FFRoute(
           name: 'HistoryInInventory',
           path: '/historyInInventory',
           requireAuth: true,
-          builder: (context, params) => HistoryInInventoryWidget(),
+          builder: (context, params) => const HistoryInInventoryWidget(),
         ),
         FFRoute(
           name: 'remittances',
           path: '/remittances',
           requireAuth: true,
-          builder: (context, params) => RemittancesWidget(),
+          builder: (context, params) => const RemittancesWidget(),
         ),
         FFRoute(
           name: 'Expense',
           path: '/expense',
           requireAuth: true,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'Expense')
+              ? const NavBarPage(initialPage: 'Expense')
               : ExpenseWidget(
                   additional: params.getParam(
                     'additional',
@@ -279,7 +272,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'Payroll',
           path: '/payroll',
           requireAuth: true,
-          builder: (context, params) => PayrollWidget(),
+          builder: (context, params) => const PayrollWidget(),
         ),
         FFRoute(
           name: 'NewEditPayroll',
@@ -337,25 +330,25 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'IssuesList',
           path: '/issuesList',
           requireAuth: true,
-          builder: (context, params) => IssuesListWidget(),
+          builder: (context, params) => const IssuesListWidget(),
         ),
         FFRoute(
           name: 'Replenish',
           path: '/replenish',
           requireAuth: true,
-          builder: (context, params) => ReplenishWidget(),
+          builder: (context, params) => const ReplenishWidget(),
         ),
         FFRoute(
           name: 'Metrics',
           path: '/metrics',
           requireAuth: true,
-          builder: (context, params) => MetricsWidget(),
+          builder: (context, params) => const MetricsWidget(),
         ),
         FFRoute(
           name: 'LateCheckoutFee',
           path: '/lateCheckoutFee',
           requireAuth: true,
-          builder: (context, params) => LateCheckoutFeeWidget(),
+          builder: (context, params) => const LateCheckoutFeeWidget(),
         ),
         FFRoute(
           name: 'BillForm',
@@ -382,31 +375,31 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'billsList',
           path: '/billsList',
           requireAuth: true,
-          builder: (context, params) => BillsListWidget(),
+          builder: (context, params) => const BillsListWidget(),
         ),
         FFRoute(
           name: 'groceryList',
           path: '/groceryList',
           requireAuth: true,
-          builder: (context, params) => GroceryListWidget(),
+          builder: (context, params) => const GroceryListWidget(),
         ),
         FFRoute(
           name: 'Pendings',
           path: '/pendings',
           requireAuth: true,
-          builder: (context, params) => PendingsWidget(),
+          builder: (context, params) => const PendingsWidget(),
         ),
         FFRoute(
           name: 'ManageOptions',
           path: '/manageOptions',
           requireAuth: true,
-          builder: (context, params) => ManageOptionsWidget(),
+          builder: (context, params) => const ManageOptionsWidget(),
         ),
         FFRoute(
           name: 'HistoryInBills',
           path: '/historyInBills',
           requireAuth: true,
-          builder: (context, params) => HistoryInBillsWidget(),
+          builder: (context, params) => const HistoryInBillsWidget(),
         ),
         FFRoute(
           name: 'HistoryInRoom',
@@ -441,18 +434,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'MetricsYearly',
           path: '/metricsYearly',
           requireAuth: true,
-          builder: (context, params) => MetricsYearlyWidget(),
+          builder: (context, params) => const MetricsYearlyWidget(),
         ),
         FFRoute(
           name: 'RecordsList',
           path: '/recordsList',
           requireAuth: true,
-          builder: (context, params) => RecordsListWidget(),
+          builder: (context, params) => const RecordsListWidget(),
         ),
         FFRoute(
           name: 'Locations',
           path: '/locations',
-          builder: (context, params) => LocationsWidget(),
+          builder: (context, params) => const LocationsWidget(),
         ),
         FFRoute(
           name: 'RoomReplacements',
@@ -491,7 +484,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'AllReplacements',
           path: '/allReplacements',
           requireAuth: true,
-          builder: (context, params) => AllReplacementsWidget(),
+          builder: (context, params) => const AllReplacementsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -731,7 +724,7 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => const TransitionInfo(hasTransition: false);
 }
 
 class RootPageContext {

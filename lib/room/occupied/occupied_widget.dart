@@ -3,13 +3,9 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'occupied_model.dart';
 export 'occupied_model.dart';
 
@@ -72,15 +68,15 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 4.0, 12.0),
+      padding: const EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 4.0, 12.0),
       child: Container(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           minWidth: 350.0,
           maxWidth: double.infinity,
         ),
         decoration: BoxDecoration(
           color: Colors.white,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -93,7 +89,7 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 8.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 8.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,7 +108,7 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                           Expanded(
                             flex: 6,
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 12.0, 12.0, 0.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
@@ -124,14 +120,14 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                         .headlineSmall
                                         .override(
                                           fontFamily: 'Outfit',
-                                          color: Color(0xFF14181B),
+                                          color: const Color(0xFF14181B),
                                           fontSize: 24.0,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                         ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 4.0, 0.0, 0.0),
                                     child: AutoSizeText(
                                       'These rooms are currently occupied.',
@@ -141,7 +137,7 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                           .labelMedium
                                           .override(
                                             fontFamily: 'Plus Jakarta Sans',
-                                            color: Color(0xFF57636C),
+                                            color: const Color(0xFF57636C),
                                             fontSize: 14.0,
                                             letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
@@ -155,7 +151,7 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                           Expanded(
                             flex: 1,
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 10.0, 10.0, 0.0),
                               child: FlutterFlowIconButton(
                                 borderRadius: 20.0,
@@ -179,25 +175,25 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                     Container(
                       width: double.infinity,
                       height: 200.0,
-                      decoration: BoxDecoration(),
+                      decoration: const BoxDecoration(),
                       child: Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                         child: Builder(
                           builder: (context) {
-                            final rooms = widget!.occupiedRooms!
+                            final rooms = widget.occupiedRooms!
                                 .sortedList(keyOf: (e) => e.number, desc: false)
                                 .toList();
 
                             return GridView.builder(
-                              padding: EdgeInsets.fromLTRB(
+                              padding: const EdgeInsets.fromLTRB(
                                 16.0,
                                 0,
                                 10.0,
                                 0,
                               ),
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 10.0,
                                 mainAxisSpacing: 10.0,
@@ -216,7 +212,7 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                     borderRadius: BorderRadius.circular(50.0),
                                   ),
                                   child: Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
                                     child: Text(
                                       roomsItem.number
                                           .toString()
@@ -252,13 +248,13 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                   children: [
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 0.0, 0.0),
                       child: Text(
                         'Vacant Rooms',
                         style:
                             FlutterFlowTheme.of(context).headlineSmall.override(
                                   fontFamily: 'Outfit',
-                                  color: Color(0xFF14181B),
+                                  color: const Color(0xFF14181B),
                                   fontSize: 24.0,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.w600,
@@ -267,13 +263,13 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 0.0),
                       child: Text(
                         'These rooms are currently vacant.',
                         style:
                             FlutterFlowTheme.of(context).labelMedium.override(
                                   fontFamily: 'Plus Jakarta Sans',
-                                  color: Color(0xFF57636C),
+                                  color: const Color(0xFF57636C),
                                   fontSize: 14.0,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.w500,
@@ -282,29 +278,29 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
                       child: Container(
                         height: 200.0,
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 10.0),
                           child: Builder(
                             builder: (context) {
-                              final rooms = widget!.vacantRooms!
+                              final rooms = widget.vacantRooms!
                                   .sortedList(
                                       keyOf: (e) => e.number, desc: false)
                                   .toList();
 
                               return GridView.builder(
-                                padding: EdgeInsets.fromLTRB(
+                                padding: const EdgeInsets.fromLTRB(
                                   16.0,
                                   0,
                                   10.0,
                                   0,
                                 ),
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 10.0,
                                   mainAxisSpacing: 10.0,
@@ -324,7 +320,7 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                       borderRadius: BorderRadius.circular(50.0),
                                     ),
                                     child: Align(
-                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(0.0, 0.0),
                                       child: Text(
                                         roomsItem.number
                                             .toString()

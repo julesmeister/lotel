@@ -1,6 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
 import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/change_remittance/change_remittance_widget.dart';
 import '/components/forms/extra_remittance/extra_remittance_widget.dart';
@@ -15,18 +14,14 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/room/occupied/occupied_widget.dart';
-import 'dart:math';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:badges/badges.dart' as badges;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
@@ -73,9 +68,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
           },
         ),
       });
-      if (FFAppState().extPricePerHr == null) {
+      if (FFAppState().extPricePerHr == 0.0) {
         // hotel Settings
-        _model.hotelSettingForLate = await queryHotelSettingsRecordOnce(
+        _model.hotelSettingForLates = await queryHotelSettingsRecordOnce(
           queryBuilder: (hotelSettingsRecord) => hotelSettingsRecord.where(
             'hotel',
             isEqualTo: FFAppState().hotel,
@@ -84,25 +79,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
         ).then((s) => s.firstOrNull);
         // set extPricePerHr
         FFAppState().extPricePerHr =
-            _model.hotelSettingForLate!.lateCheckoutFee;
+            _model.hotelSettingForLates!.lateCheckoutFee;
         setState(() {});
-      } else {
-        if (FFAppState().extPricePerHr == 0.0) {
-          // hotel Settings
-          _model.hotelSettingForLates = await queryHotelSettingsRecordOnce(
-            queryBuilder: (hotelSettingsRecord) => hotelSettingsRecord.where(
-              'hotel',
-              isEqualTo: FFAppState().hotel,
-            ),
-            singleRecord: true,
-          ).then((s) => s.firstOrNull);
-          // set extPricePerHr
-          FFAppState().extPricePerHr =
-              _model.hotelSettingForLates!.lateCheckoutFee;
-          setState(() {});
-        }
       }
-
+    
       if (!(FFAppState().settingRef != null)) {
         // hotel Settings
         _model.hotelSettingsHome = await queryHotelSettingsRecordOnce(
@@ -162,7 +142,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                 color: FlutterFlowTheme.of(context).primaryText,
               ),
             ),
-            duration: Duration(milliseconds: 4000),
+            duration: const Duration(milliseconds: 4000),
             backgroundColor: FlutterFlowTheme.of(context).secondary,
           ),
         );
@@ -183,9 +163,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
               isEqualTo: functions.currentMonth(),
             ),
       );
-      if (_model.fireStat!.length > 0) {
+      if (_model.fireStat!.isNotEmpty) {
         // save new ref stat
-        FFAppState().statsReference = _model.fireStat?.first?.reference;
+        FFAppState().statsReference = _model.fireStat?.first.reference;
         FFAppState().currentStats = functions.currentMonthYear()!;
         setState(() {});
         return;
@@ -204,8 +184,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -236,8 +216,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(30.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(30.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -392,7 +372,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
               child: Container(
                 width: double.infinity,
                 height: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
@@ -406,7 +386,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   ],
                 ),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
@@ -414,9 +394,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         if (valueOrDefault(currentUserDocument?.role, '') ==
                             'admin')
                           Align(
-                            alignment: AlignmentDirectional(0.0, -1.0),
+                            alignment: const AlignmentDirectional(0.0, -1.0),
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 16.0, 16.0, 0.0),
                               child: AuthUserStreamWidget(
                                 builder: (context) =>
@@ -448,7 +428,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     return Container(
                                       width: double.infinity,
                                       height: 50.0,
-                                      constraints: BoxConstraints(
+                                      constraints: const BoxConstraints(
                                         maxWidth: 500.0,
                                       ),
                                       decoration: BoxDecoration(
@@ -463,7 +443,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsets.all(4.0),
+                                        padding: const EdgeInsets.all(4.0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
@@ -648,7 +628,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   setState(() {});
                                                 },
                                                 child: AnimatedContainer(
-                                                  duration: Duration(
+                                                  duration: const Duration(
                                                       milliseconds: 100),
                                                   curve: Curves.linear,
                                                   width: 115.0,
@@ -692,7 +672,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     0.0,
@@ -709,7 +689,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     4.0,
                                                                     0.0,
@@ -905,7 +885,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   setState(() {});
                                                 },
                                                 child: AnimatedContainer(
-                                                  duration: Duration(
+                                                  duration: const Duration(
                                                       milliseconds: 100),
                                                   curve: Curves.linear,
                                                   width: 115.0,
@@ -944,7 +924,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     0.0,
@@ -961,7 +941,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     4.0,
                                                                     0.0,
@@ -1000,9 +980,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         if (valueOrDefault(currentUserDocument?.role, '') ==
                             'admin')
                           Align(
-                            alignment: AlignmentDirectional(0.0, -1.0),
+                            alignment: const AlignmentDirectional(0.0, -1.0),
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 10.0, 16.0, 0.0),
                               child: AuthUserStreamWidget(
                                 builder: (context) =>
@@ -1047,10 +1027,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             : null;
 
                                     return AnimatedContainer(
-                                      duration: Duration(milliseconds: 600),
+                                      duration: const Duration(milliseconds: 600),
                                       curve: Curves.elasticOut,
                                       width: double.infinity,
-                                      constraints: BoxConstraints(
+                                      constraints: const BoxConstraints(
                                         maxWidth: 500.0,
                                       ),
                                       decoration: BoxDecoration(
@@ -1069,7 +1049,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         children: [
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 5.0, 0.0, 5.0),
                                             child: InkWell(
                                               splashColor: Colors.transparent,
@@ -1090,7 +1070,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(10.0, 0.0,
                                                                 0.0, 0.0),
                                                     child: Text(
@@ -1115,7 +1095,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       .showRemitController)
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   0.0,
@@ -1135,7 +1115,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       .showRemitController)
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   0.0,
@@ -1156,7 +1136,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           ),
                                           if (_model.showRemitController)
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(0.0, 0.0, 0.0, 5.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
@@ -1168,7 +1148,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     flex: 5,
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   10.0,
                                                                   0.0,
@@ -1193,11 +1173,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     flex: 5,
                                                     child: Align(
                                                       alignment:
-                                                          AlignmentDirectional(
+                                                          const AlignmentDirectional(
                                                               1.0, 0.0),
                                                       child: Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     0.0,
@@ -1212,8 +1192,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               (newValue) async {
                                                             setState(() => _model
                                                                     .allowRemittanceToBeSeenValue =
-                                                                newValue!);
-                                                            if (newValue!) {
+                                                                newValue);
+                                                            if (newValue) {
                                                               // remittable
 
                                                               await homePageHotelSettingsRecord!
@@ -1267,7 +1247,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             ),
                           ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 24.0, 16.0, 16.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -1285,7 +1265,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           .labelMedium
                                           .override(
                                             fontFamily: 'Plus Jakarta Sans',
-                                            color: Color(0xFF57636C),
+                                            color: const Color(0xFF57636C),
                                             fontSize: 14.0,
                                             letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
@@ -1373,7 +1353,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           padding: MediaQuery
                                                               .viewInsetsOf(
                                                                   context),
-                                                          child: Container(
+                                                          child: const SizedBox(
                                                             height:
                                                                 double.infinity,
                                                             child:
@@ -1409,7 +1389,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           padding: MediaQuery
                                                               .viewInsetsOf(
                                                                   context),
-                                                          child: Container(
+                                                          child: const SizedBox(
                                                             height:
                                                                 double.infinity,
                                                             child:
@@ -1441,7 +1421,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         .override(
                                                           fontFamily: 'Outfit',
                                                           color:
-                                                              Color(0xFF14181B),
+                                                              const Color(0xFF14181B),
                                                           fontSize: 36.0,
                                                           letterSpacing: 0.0,
                                                           fontWeight:
@@ -1457,7 +1437,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                       ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 4.0, 0.0, 0.0),
                                       child: Text(
                                         dateTimeFormat(
@@ -1468,7 +1448,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             .labelSmall
                                             .override(
                                               fontFamily: 'Plus Jakarta Sans',
-                                              color: Color(0xFF57636C),
+                                              color: const Color(0xFF57636C),
                                               fontSize: 12.0,
                                               letterSpacing: 0.0,
                                               fontWeight: FontWeight.w500,
@@ -1485,7 +1465,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 0.0, 15.0),
                                     child: InkWell(
                                       splashColor: Colors.transparent,
@@ -1511,7 +1491,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   padding:
                                                       MediaQuery.viewInsetsOf(
                                                           context),
-                                                  child: Container(
+                                                  child: SizedBox(
                                                     height: double.infinity,
                                                     child: ChangeDateWidget(
                                                       date: FFAppState()
@@ -1554,7 +1534,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         .primaryText,
                                                   ),
                                                 ),
-                                                duration: Duration(
+                                                duration: const Duration(
                                                     milliseconds: 4000),
                                                 backgroundColor:
                                                     FlutterFlowTheme.of(context)
@@ -1597,7 +1577,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 TextSpan(
                                                   text: dateTimeFormat("yMMMd",
                                                       FFAppState().lastRemit),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 )
@@ -1678,7 +1658,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   padding:
                                                       MediaQuery.viewInsetsOf(
                                                           context),
-                                                  child: Container(
+                                                  child: SizedBox(
                                                     height: MediaQuery.sizeOf(
                                                                 context)
                                                             .height *
@@ -1700,7 +1680,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         },
                                         child: FFButtonWidget(
                                           onPressed: () async {
-                                            var _shouldSetState = false;
+                                            var shouldSetState = false;
                                             if (FFAppState().role == 'admin') {
                                               // Accept Remittance
                                               var confirmDialogResponse =
@@ -1709,9 +1689,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         builder:
                                                             (alertDialogContext) {
                                                           return AlertDialog(
-                                                            title: Text(
+                                                            title: const Text(
                                                                 'Accept Remittance'),
-                                                            content: Text(
+                                                            content: const Text(
                                                                 'Are you sure you want to accept this remittance?'),
                                                             actions: [
                                                               TextButton(
@@ -1719,7 +1699,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     Navigator.pop(
                                                                         alertDialogContext,
                                                                         false),
-                                                                child: Text(
+                                                                child: const Text(
                                                                     'Cancel'),
                                                               ),
                                                               TextButton(
@@ -1727,7 +1707,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     Navigator.pop(
                                                                         alertDialogContext,
                                                                         true),
-                                                                child: Text(
+                                                                child: const Text(
                                                                     'Confirm'),
                                                               ),
                                                             ],
@@ -1755,7 +1735,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               ),
                                                   singleRecord: true,
                                                 ).then((s) => s.firstOrNull);
-                                                _shouldSetState = true;
+                                                shouldSetState = true;
                                                 // update collected by
 
                                                 await _model
@@ -1785,8 +1765,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       false;
                                                 });
                                               } else {
-                                                if (_shouldSetState)
+                                                if (shouldSetState) {
                                                   setState(() {});
+                                                }
                                                 return;
                                               }
 
@@ -1802,7 +1783,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               .primaryText,
                                                     ),
                                                   ),
-                                                  duration: Duration(
+                                                  duration: const Duration(
                                                       milliseconds: 4000),
                                                   backgroundColor:
                                                       FlutterFlowTheme.of(
@@ -1826,7 +1807,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       padding: MediaQuery
                                                           .viewInsetsOf(
                                                               context),
-                                                      child: Container(
+                                                      child: const SizedBox(
                                                         height: 504.0,
                                                         child:
                                                             ChangeRemittanceWidget(),
@@ -1839,8 +1820,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             }
 
                                             await _model.clearCache(context);
-                                            if (_shouldSetState)
+                                            if (shouldSetState) {
                                               setState(() {});
+                                            }
                                           },
                                           text: valueOrDefault(
                                                       currentUserDocument?.role,
@@ -1852,12 +1834,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             width: 110.0,
                                             height: 40.0,
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 0.0, 0.0),
                                             iconPadding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 0.0, 0.0),
-                                            color: Color(0xFF4B39EF),
+                                            color: const Color(0xFF4B39EF),
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyMedium
@@ -1870,7 +1852,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
-                                            borderSide: BorderSide(
+                                            borderSide: const BorderSide(
                                               color: Colors.transparent,
                                               width: 1.0,
                                             ),
@@ -1889,7 +1871,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         if (valueOrDefault(currentUserDocument?.role, '') ==
                             'admin')
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 12.0, 0.0),
                             child: AuthUserStreamWidget(
                               builder: (context) => Row(
@@ -1899,7 +1881,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 12.0, 0.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
@@ -1908,7 +1890,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       children: [
                                         Align(
                                           alignment:
-                                              AlignmentDirectional(0.0, 0.0),
+                                              const AlignmentDirectional(0.0, 0.0),
                                           child: Text(
                                             'Metrics',
                                             style: FlutterFlowTheme.of(context)
@@ -1931,7 +1913,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       context.pushNamed(
                                         'Metrics',
                                         extra: <String, dynamic>{
-                                          kTransitionInfoKey: TransitionInfo(
+                                          kTransitionInfoKey: const TransitionInfo(
                                             hasTransition: true,
                                             transitionType:
                                                 PageTransitionType.rightToLeft,
@@ -1954,10 +1936,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                         Align(
                                           alignment:
-                                              AlignmentDirectional(0.0, 0.0),
+                                              const AlignmentDirectional(0.0, 0.0),
                                           child: Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 2.0, 0.0, 0.0),
                                             child: Icon(
                                               Icons.chevron_right,
@@ -1978,7 +1960,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         Container(
                           width: double.infinity,
                           height: 120.0,
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             maxHeight: 160.0,
                           ),
                           decoration: BoxDecoration(
@@ -1992,10 +1974,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 8.0, 0.0, 0.0),
                                   child: ListView(
-                                    padding: EdgeInsets.fromLTRB(
+                                    padding: const EdgeInsets.fromLTRB(
                                       16.0,
                                       0,
                                       0,
@@ -2008,7 +1990,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       Builder(
                                         builder: (context) => Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 8.0, 8.0),
                                           child:
                                               FutureBuilder<List<RoomsRecord>>(
@@ -2087,7 +2069,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         backgroundColor:
                                                             Colors.transparent,
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                     0.0, 0.0)
                                                                 .resolve(
                                                                     Directionality.of(
@@ -2097,7 +2079,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               FocusScope.of(
                                                                       dialogContext)
                                                                   .unfocus(),
-                                                          child: Container(
+                                                          child: SizedBox(
                                                             height: 600.0,
                                                             child:
                                                                 OccupiedWidget(
@@ -2124,13 +2106,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         BorderRadius.circular(
                                                             8.0),
                                                     border: Border.all(
-                                                      color: Color(0xFFE0E3E7),
+                                                      color: const Color(0xFFE0E3E7),
                                                       width: 2.0,
                                                     ),
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        EdgeInsets.all(12.0),
+                                                        const EdgeInsets.all(12.0),
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.max,
@@ -2163,7 +2145,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 hasTextTriggered3),
                                                         Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       4.0,
@@ -2194,7 +2176,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 8.0, 8.0),
                                         child: InkWell(
                                           splashColor: Colors.transparent,
@@ -2206,7 +2188,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               'transactions',
                                               extra: <String, dynamic>{
                                                 kTransitionInfoKey:
-                                                    TransitionInfo(
+                                                    const TransitionInfo(
                                                   hasTransition: true,
                                                   transitionType:
                                                       PageTransitionType
@@ -2224,12 +2206,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               borderRadius:
                                                   BorderRadius.circular(8.0),
                                               border: Border.all(
-                                                color: Color(0xFFE0E3E7),
+                                                color: const Color(0xFFE0E3E7),
                                                 width: 2.0,
                                               ),
                                             ),
                                             child: Padding(
-                                              padding: EdgeInsets.all(12.0),
+                                              padding: const EdgeInsets.all(12.0),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
@@ -2316,7 +2298,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   ),
                                                   Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 4.0,
                                                                 0.0, 0.0),
                                                     child: AutoSizeText(
@@ -2340,7 +2322,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 8.0, 8.0),
                                         child: StreamBuilder<
                                             List<TransactionsRecord>>(
@@ -2414,12 +2396,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       BorderRadius.circular(
                                                           8.0),
                                                   border: Border.all(
-                                                    color: Color(0xFFE0E3E7),
+                                                    color: const Color(0xFFE0E3E7),
                                                     width: 2.0,
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(12.0),
+                                                  padding: const EdgeInsets.all(12.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -2432,7 +2414,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     children: [
                                                       Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 -1.0, 0.0),
                                                         child: badges.Badge(
                                                           badgeContent: Text(
@@ -2469,7 +2451,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   .error,
                                                           elevation: 4.0,
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       8.0,
                                                                       8.0,
@@ -2545,7 +2527,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Outfit',
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0xFFFD949C),
                                                                       letterSpacing:
                                                                           0.0,
@@ -2563,11 +2545,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       ),
                                                       Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 -1.0, -1.0),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       4.0,
@@ -2596,7 +2578,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 8.0, 8.0),
                                         child: InkWell(
                                           splashColor: Colors.transparent,
@@ -2615,15 +2597,15 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               borderRadius:
                                                   BorderRadius.circular(8.0),
                                               border: Border.all(
-                                                color: Color(0xFFE0E3E7),
+                                                color: const Color(0xFFE0E3E7),
                                                 width: 2.0,
                                               ),
                                             ),
                                             child: Align(
-                                              alignment: AlignmentDirectional(
+                                              alignment: const AlignmentDirectional(
                                                   0.0, 0.0),
                                               child: Padding(
-                                                padding: EdgeInsets.all(12.0),
+                                                padding: const EdgeInsets.all(12.0),
                                                 child: Column(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -2697,7 +2679,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   4.0,
@@ -2727,7 +2709,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 16.0, 8.0),
                                         child: Container(
                                           width: 150.0,
@@ -2737,12 +2719,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
                                             border: Border.all(
-                                              color: Color(0xFFE0E3E7),
+                                              color: const Color(0xFFE0E3E7),
                                               width: 2.0,
                                             ),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.all(12.0),
+                                            padding: const EdgeInsets.all(12.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
@@ -2816,7 +2798,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   },
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 4.0, 0.0, 0.0),
                                                   child: Text(
@@ -2844,7 +2826,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 4.0, 0.0, 12.0),
                           child: StreamBuilder<List<RoomsRecord>>(
                             stream: FFAppState().rooms(
@@ -2878,12 +2860,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
                               return Container(
                                 width: double.infinity,
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   minHeight: 230.0,
                                   maxHeight: 260.0,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFF4B39EF),
+                                  color: const Color(0xFF4B39EF),
                                   borderRadius: BorderRadius.circular(0.0),
                                 ),
                                 child: Column(
@@ -2897,7 +2879,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       children: [
                                         Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 12.0, 0.0, 0.0),
                                           child: Text(
                                             'Rooms',
@@ -2916,7 +2898,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       0.0, 12.0, 0.0, 0.0),
                                               child: FlutterFlowIconButton(
@@ -2929,7 +2911,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 fillColor:
                                                     FlutterFlowTheme.of(context)
                                                         .accent1,
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.list_alt_outlined,
                                                   color: Colors.white,
                                                   size: 24.0,
@@ -2953,7 +2935,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       0.0, 12.0, 0.0, 0.0),
                                               child: FlutterFlowIconButton(
@@ -2966,7 +2948,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 fillColor:
                                                     FlutterFlowTheme.of(context)
                                                         .accent1,
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.discount_outlined,
                                                   color: Colors.white,
                                                   size: 24.0,
@@ -2987,7 +2969,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           padding: MediaQuery
                                                               .viewInsetsOf(
                                                                   context),
-                                                          child: Container(
+                                                          child: const SizedBox(
                                                             height:
                                                                 double.infinity,
                                                             child:
@@ -3006,7 +2988,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     '') ==
                                                 'admin')
                                               Padding(
-                                                padding: EdgeInsetsDirectional
+                                                padding: const EdgeInsetsDirectional
                                                     .fromSTEB(
                                                         0.0, 12.0, 0.0, 0.0),
                                                 child: AuthUserStreamWidget(
@@ -3023,7 +3005,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         FlutterFlowTheme.of(
                                                                 context)
                                                             .accent1,
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                       Icons.edit_note_rounded,
                                                       color: Colors.white,
                                                       size: 24.0,
@@ -3048,7 +3030,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   .toList();
 
                                           return ListView.builder(
-                                            padding: EdgeInsets.fromLTRB(
+                                            padding: const EdgeInsets.fromLTRB(
                                               0,
                                               0,
                                               20.0,
@@ -3062,7 +3044,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               final roomsItem =
                                                   rooms[roomsIndex];
                                               return Padding(
-                                                padding: EdgeInsetsDirectional
+                                                padding: const EdgeInsetsDirectional
                                                     .fromSTEB(
                                                         12.0, 12.0, 0.0, 12.0),
                                                 child: InkWell(
@@ -3110,11 +3092,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   .info,
                                                             ),
                                                           ),
-                                                          duration: Duration(
+                                                          duration: const Duration(
                                                               milliseconds:
                                                                   4000),
                                                           backgroundColor:
-                                                              Color(0xFFFF5963),
+                                                              const Color(0xFFFF5963),
                                                         ),
                                                       );
                                                     }
@@ -3125,7 +3107,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     width: 210.0,
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
-                                                      boxShadow: [
+                                                      boxShadow: const [
                                                         BoxShadow(
                                                           blurRadius: 4.0,
                                                           color:
@@ -3142,7 +3124,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     ),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsets.all(12.0),
+                                                          const EdgeInsets.all(12.0),
                                                       child: Column(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -3168,7 +3150,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       .override(
                                                                         fontFamily:
                                                                             'Plus Jakarta Sans',
-                                                                        color: Color(
+                                                                        color: const Color(
                                                                             0xFF14181B),
                                                                         fontSize:
                                                                             16.0,
@@ -3200,7 +3182,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       .override(
                                                                         fontFamily:
                                                                             'Plus Jakarta Sans',
-                                                                        color: Color(
+                                                                        color: const Color(
                                                                             0xFF14181B),
                                                                         fontSize:
                                                                             14.0,
@@ -3232,7 +3214,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     homePageHotelSettingsRecord!
                                                                             .promoOn
                                                                         ? formatNumber(
-                                                                            (roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord!.promoPercent / 100)).toInt().toDouble(),
+                                                                            (roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)).toInt().toDouble(),
                                                                             formatType:
                                                                                 FormatType.decimal,
                                                                             decimalType:
@@ -3262,7 +3244,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           fontFamily:
                                                                               'Outfit',
                                                                           color:
-                                                                              Color(0xFF14181B),
+                                                                              const Color(0xFF14181B),
                                                                           fontSize:
                                                                               36.0,
                                                                           letterSpacing:
@@ -3291,7 +3273,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       ? FlutterFlowTheme.of(
                                                                               context)
                                                                           .secondary
-                                                                      : Color(
+                                                                      : const Color(
                                                                           0xFFFF5963),
                                                                   size: 24.0,
                                                                 ),
@@ -3299,7 +3281,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               Expanded(
                                                                 flex: 6,
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           10.0,
                                                                           0.0,
@@ -3318,7 +3300,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           fontFamily:
                                                                               'Plus Jakarta Sans',
                                                                           color:
-                                                                              Color(0xFF14181B),
+                                                                              const Color(0xFF14181B),
                                                                           fontSize:
                                                                               14.0,
                                                                           letterSpacing:
@@ -3334,7 +3316,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 child:
                                                                     FlutterFlowIconButton(
                                                                   borderColor:
-                                                                      Color(
+                                                                      const Color(
                                                                           0xFFF1F4F8),
                                                                   borderRadius:
                                                                       30.0,
@@ -3342,7 +3324,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       2.0,
                                                                   buttonSize:
                                                                       44.0,
-                                                                  icon: Icon(
+                                                                  icon: const Icon(
                                                                     Icons
                                                                         .arrow_forward_rounded,
                                                                     color: Color(
@@ -3354,78 +3336,57 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     if (roomsItem
                                                                             .vacant ==
                                                                         true) {
-                                                                      if (FFAppState()
-                                                                              .bedPrice ==
-                                                                          null) {
-                                                                        ScaffoldMessenger.of(context)
-                                                                            .showSnackBar(
-                                                                          SnackBar(
-                                                                            content:
-                                                                                Text(
-                                                                              'Extra bed price has not yet been set',
-                                                                              style: TextStyle(
-                                                                                color: FlutterFlowTheme.of(context).primaryText,
-                                                                              ),
-                                                                            ),
-                                                                            duration:
-                                                                                Duration(milliseconds: 4000),
-                                                                            backgroundColor:
-                                                                                FlutterFlowTheme.of(context).secondary,
+                                                                      context
+                                                                          .pushNamed(
+                                                                        'CheckIn',
+                                                                        queryParameters:
+                                                                            {
+                                                                          'ref':
+                                                                              serializeParam(
+                                                                            roomsItem.reference,
+                                                                            ParamType.DocumentReference,
                                                                           ),
-                                                                        );
-                                                                      } else {
-                                                                        context
-                                                                            .pushNamed(
-                                                                          'CheckIn',
-                                                                          queryParameters:
-                                                                              {
-                                                                            'ref':
-                                                                                serializeParam(
-                                                                              roomsItem.reference,
-                                                                              ParamType.DocumentReference,
-                                                                            ),
-                                                                            'price':
-                                                                                serializeParam(
-                                                                              homePageHotelSettingsRecord!.promoOn ? ((roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord!.promoPercent / 100)).toInt().toDouble()) : roomsItem.price,
-                                                                              ParamType.double,
-                                                                            ),
-                                                                            'roomNo':
-                                                                                serializeParam(
-                                                                              roomsItem.number,
-                                                                              ParamType.int,
-                                                                            ),
-                                                                            'extend':
-                                                                                serializeParam(
-                                                                              false,
-                                                                              ParamType.bool,
-                                                                            ),
-                                                                            'promoOn':
-                                                                                serializeParam(
-                                                                              homePageHotelSettingsRecord?.promoOn,
-                                                                              ParamType.bool,
-                                                                            ),
-                                                                            'promoDetail':
-                                                                                serializeParam(
-                                                                              homePageHotelSettingsRecord?.promoDetail,
-                                                                              ParamType.String,
-                                                                            ),
-                                                                            'promoDiscount':
-                                                                                serializeParam(
-                                                                              homePageHotelSettingsRecord?.promoPercent,
-                                                                              ParamType.double,
-                                                                            ),
-                                                                          }.withoutNulls,
-                                                                          extra: <String,
-                                                                              dynamic>{
-                                                                            kTransitionInfoKey:
-                                                                                TransitionInfo(
-                                                                              hasTransition: true,
-                                                                              transitionType: PageTransitionType.rightToLeft,
-                                                                            ),
-                                                                          },
-                                                                        );
-                                                                      }
-                                                                    } else {
+                                                                          'price':
+                                                                              serializeParam(
+                                                                            homePageHotelSettingsRecord.promoOn ? ((roomsItem.price - (roomsItem.price * homePageHotelSettingsRecord.promoPercent / 100)).toInt().toDouble()) : roomsItem.price,
+                                                                            ParamType.double,
+                                                                          ),
+                                                                          'roomNo':
+                                                                              serializeParam(
+                                                                            roomsItem.number,
+                                                                            ParamType.int,
+                                                                          ),
+                                                                          'extend':
+                                                                              serializeParam(
+                                                                            false,
+                                                                            ParamType.bool,
+                                                                          ),
+                                                                          'promoOn':
+                                                                              serializeParam(
+                                                                            homePageHotelSettingsRecord.promoOn,
+                                                                            ParamType.bool,
+                                                                          ),
+                                                                          'promoDetail':
+                                                                              serializeParam(
+                                                                            homePageHotelSettingsRecord.promoDetail,
+                                                                            ParamType.String,
+                                                                          ),
+                                                                          'promoDiscount':
+                                                                              serializeParam(
+                                                                            homePageHotelSettingsRecord.promoPercent,
+                                                                            ParamType.double,
+                                                                          ),
+                                                                        }.withoutNulls,
+                                                                        extra: <String,
+                                                                            dynamic>{
+                                                                          kTransitionInfoKey:
+                                                                              const TransitionInfo(
+                                                                            hasTransition: true,
+                                                                            transitionType: PageTransitionType.rightToLeft,
+                                                                          ),
+                                                                        },
+                                                                      );
+                                                                                                                                        } else {
                                                                       context
                                                                           .pushNamed(
                                                                         'CheckedIn',
@@ -3450,7 +3411,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                         extra: <String,
                                                                             dynamic>{
                                                                           kTransitionInfoKey:
-                                                                              TransitionInfo(
+                                                                              const TransitionInfo(
                                                                             hasTransition:
                                                                                 true,
                                                                             transitionType:
@@ -3525,7 +3486,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         24.0, 10.0, 24.0, 0.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
@@ -3538,7 +3499,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               .displaySmall
                                               .override(
                                                 fontFamily: 'Plus Jakarta Sans',
-                                                color: Color(0xFF14181B),
+                                                color: const Color(0xFF14181B),
                                                 fontSize: 18.0,
                                                 letterSpacing: 0.0,
                                                 fontWeight: FontWeight.bold,
@@ -3551,7 +3512,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 10.0, 0.0),
                                                   child: FlutterFlowIconButton(
@@ -3577,7 +3538,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 10.0, 0.0),
                                                   child: FutureBuilder<int>(
@@ -3647,7 +3608,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 .error,
                                                         elevation: 4.0,
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     8.0,
                                                                     8.0,
@@ -3687,7 +3648,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 0.0, 10.0, 0.0),
                                                   child: FutureBuilder<int>(
@@ -3757,7 +3718,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 .error,
                                                         elevation: 4.0,
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     8.0,
                                                                     8.0,
@@ -3829,7 +3790,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 .viewInsetsOf(
                                                                     context),
                                                             child:
-                                                                NewIssueWidget(),
+                                                                const NewIssueWidget(),
                                                           ),
                                                         );
                                                       },
@@ -3844,7 +3805,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ],
                                     ),
                                   ),
-                                  if (issuedBoxIssuesRecordList.length > 0)
+                                  if (issuedBoxIssuesRecordList.isNotEmpty)
                                     Container(
                                       width: double.infinity,
                                       height: 130.0,
@@ -3872,7 +3833,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               final issuesListItem =
                                                   issuesList[issuesListIndex];
                                               return Padding(
-                                                padding: EdgeInsetsDirectional
+                                                padding: const EdgeInsetsDirectional
                                                     .fromSTEB(
                                                         16.0, 12.0, 16.0, 16.0),
                                                 child: InkWell(
@@ -3900,7 +3861,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: Container(
+                                                            child: SizedBox(
                                                               height: 362.0,
                                                               child:
                                                                   OptionToIssueWidget(
@@ -3919,7 +3880,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     height: 100.0,
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
-                                                      boxShadow: [
+                                                      boxShadow: const [
                                                         BoxShadow(
                                                           blurRadius: 12.0,
                                                           color:
@@ -3936,7 +3897,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     ),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   8.0,
                                                                   8.0,
@@ -3969,7 +3930,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           Expanded(
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           12.0,
                                                                           0.0,
@@ -4026,7 +3987,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   Flexible(
                                                                     child:
                                                                         Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           3.0,
                                                                           0.0,
@@ -4047,22 +4008,22 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                             ),
                                                                             TextSpan(
                                                                               text: issuesListItem.staffName,
-                                                                              style: TextStyle(),
+                                                                              style: const TextStyle(),
                                                                             ),
-                                                                            TextSpan(
+                                                                            const TextSpan(
                                                                               text: ' on ',
                                                                               style: TextStyle(),
                                                                             ),
                                                                             TextSpan(
                                                                               text: dateTimeFormat("MMM d h:mm a", issuesListItem.date!),
-                                                                              style: TextStyle(),
+                                                                              style: const TextStyle(),
                                                                             )
                                                                           ],
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .labelMedium
                                                                               .override(
                                                                                 fontFamily: 'Plus Jakarta Sans',
-                                                                                color: Color(0xFF57636C),
+                                                                                color: const Color(0xFF57636C),
                                                                                 letterSpacing: 0.0,
                                                                                 fontWeight: FontWeight.w500,
                                                                               ),
@@ -4075,7 +4036,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   Flexible(
                                                                     child:
                                                                         Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           4.0,
                                                                           0.0,
@@ -4090,7 +4051,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                             .headlineSmall
                                                                             .override(
                                                                               fontFamily: 'Outfit',
-                                                                              color: Color(0xFF14181B),
+                                                                              color: const Color(0xFF14181B),
                                                                               fontSize: 24.0,
                                                                               letterSpacing: 0.0,
                                                                               fontWeight: FontWeight.w500,
@@ -4120,7 +4081,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         ),
                         Container(
                           width: double.infinity,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                           ),
                           child: Visibility(
@@ -4128,23 +4089,23 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 valueOrDefault(currentUserDocument?.role, '') !=
                                     'generic',
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 16.0),
                               child: AuthUserStreamWidget(
                                 builder: (context) => Column(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 15.0, 0.0, 0.0),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Align(
                                             alignment:
-                                                AlignmentDirectional(-1.0, 0.0),
+                                                const AlignmentDirectional(-1.0, 0.0),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       24.0, 0.0, 0.0, 5.0),
                                               child: Text(
@@ -4170,7 +4131,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 16.0),
                                             child: FutureBuilder<
                                                 List<RemittancesRecord>>(
@@ -4245,7 +4206,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         children: [
                                                           Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
+                                                                const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         0.0,
@@ -4260,7 +4221,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Plus Jakarta Sans',
-                                                                    color: Color(
+                                                                    color: const Color(
                                                                         0xFF57636C),
                                                                     fontSize:
                                                                         14.0,
@@ -4288,7 +4249,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           .where(
                                                                             'date',
                                                                             isLessThan:
-                                                                                currentRemittancesRecord?.date,
+                                                                                currentRemittancesRecord.date,
                                                                           )
                                                                           .where(
                                                                             'hotel',
@@ -4346,7 +4307,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                         .end,
                                                                 children: [
                                                                   Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -4376,7 +4337,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                             fontFamily:
                                                                                 'Outfit',
                                                                             color:
-                                                                                Color(0xFF14181B),
+                                                                                const Color(0xFF14181B),
                                                                             fontSize:
                                                                                 36.0,
                                                                             letterSpacing:
@@ -4387,7 +4348,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     ),
                                                                   ),
                                                                   Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             5.0,
                                                                             0.0,
@@ -4397,8 +4358,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       (double todayRemittance,
                                                                               double
                                                                                   yesterdayRemittance) {
-                                                                        return ((todayRemittance - yesterdayRemittance) / yesterdayRemittance * 100).toStringAsFixed(0) +
-                                                                            '%';
+                                                                        return '${((todayRemittance - yesterdayRemittance) / yesterdayRemittance * 100).toStringAsFixed(0)}%';
                                                                       }(
                                                                           currentRemittancesRecord!
                                                                               .net,
@@ -4410,7 +4370,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           .override(
                                                                             fontFamily:
                                                                                 'Readex Pro',
-                                                                            color: currentRemittancesRecord!.net > yesterdayRemittancesRecord!.net
+                                                                            color: currentRemittancesRecord.net > yesterdayRemittancesRecord.net
                                                                                 ? FlutterFlowTheme.of(context).secondary
                                                                                 : FlutterFlowTheme.of(context).error,
                                                                             fontSize:
@@ -4420,12 +4380,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           ),
                                                                     ),
                                                                   ),
-                                                                  if (currentRemittancesRecord!
+                                                                  if (currentRemittancesRecord
                                                                           .net >
-                                                                      yesterdayRemittancesRecord!
+                                                                      yesterdayRemittancesRecord
                                                                           .net)
                                                                     Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           0.0,
                                                                           0.0,
@@ -4440,12 +4400,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                             22.0,
                                                                       ),
                                                                     ),
-                                                                  if (currentRemittancesRecord!
+                                                                  if (currentRemittancesRecord
                                                                           .net <
-                                                                      yesterdayRemittancesRecord!
+                                                                      yesterdayRemittancesRecord
                                                                           .net)
                                                                     Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           0.0,
                                                                           0.0,
@@ -4545,11 +4505,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       textTransactionsRecord?.total !=
                                                                               0.0
                                                                           ? 'The remittance received exceeds the predetermined sum by ${(double change) {
-                                                                              return "Php " +
-                                                                                  (change.abs()).toStringAsFixed(1).replaceAllMapped(
+                                                                              return "Php ${(change.abs()).toStringAsFixed(1).replaceAllMapped(
                                                                                         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                                                                                         (Match match) => '${match[1]},',
-                                                                                      );
+                                                                                      )}";
                                                                             }(textTransactionsRecord!.total)}.'
                                                                           : 'The remittance was received in its exact amount.',
                                                                       maxLines:
@@ -4589,7 +4548,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             extra: <String,
                                                                 dynamic>{
                                                               kTransitionInfoKey:
-                                                                  TransitionInfo(
+                                                                  const TransitionInfo(
                                                                 hasTransition:
                                                                     true,
                                                                 transitionType:
@@ -4618,7 +4577,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Plus Jakarta Sans',
-                                                                    color: Color(
+                                                                    color: const Color(
                                                                         0xFF57636C),
                                                                     letterSpacing:
                                                                         0.0,
@@ -4629,7 +4588,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             ),
                                                             Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           15.0,
@@ -4637,7 +4596,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           0.0),
                                                               child:
                                                                   FlutterFlowIconButton(
-                                                                borderColor: Color(
+                                                                borderColor: const Color(
                                                                     0xFFF1F4F8),
                                                                 borderRadius:
                                                                     30.0,
@@ -4645,7 +4604,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     2.0,
                                                                 buttonSize:
                                                                     44.0,
-                                                                icon: Icon(
+                                                                icon: const Icon(
                                                                   Icons
                                                                       .arrow_forward_rounded,
                                                                   color: Color(
@@ -4660,7 +4619,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     extra: <String,
                                                                         dynamic>{
                                                                       kTransitionInfoKey:
-                                                                          TransitionInfo(
+                                                                          const TransitionInfo(
                                                                         hasTransition:
                                                                             true,
                                                                         transitionType:
@@ -4683,7 +4642,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ],
                                       ),
                                     ),
-                                    Divider(
+                                    const Divider(
                                       height: 4.0,
                                       thickness: 2.0,
                                       indent: 20.0,
@@ -4745,7 +4704,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       24.0, 0.0, 24.0, 0.0),
                                               child: Row(
@@ -4759,11 +4718,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       children: [
                                                         Align(
                                                           alignment:
-                                                              AlignmentDirectional(
+                                                              const AlignmentDirectional(
                                                                   -1.0, 0.0),
                                                           child: Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
+                                                                const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         15.0,
@@ -4814,7 +4773,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       24.0, 0.0, 24.0, 16.0),
                                               child: Row(
@@ -4840,7 +4799,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -4870,7 +4829,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Outfit',
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0xFF14181B),
                                                                       fontSize:
                                                                           36.0,
@@ -4898,7 +4857,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     .textScaler,
                                                                 text: TextSpan(
                                                                   children: [
-                                                                    TextSpan(
+                                                                    const TextSpan(
                                                                       text:
                                                                           'Total spent for groceries since ',
                                                                       style:
@@ -4909,12 +4868,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           .daysAgo(
                                                                               groceryColumnGoodsRevenueRatioRecord!.date!),
                                                                       style:
-                                                                          TextStyle(
+                                                                          const TextStyle(
                                                                         color: Color(
                                                                             0xFF6F61EF),
                                                                       ),
                                                                     ),
-                                                                    TextSpan(
+                                                                    const TextSpan(
                                                                       text:
                                                                           '. A ',
                                                                       style:
@@ -4925,17 +4884,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                               grocery,
                                                                           double
                                                                               revenue) {
-                                                                        return (((grocery + revenue == 0) ? 0.0 : revenue / grocery) * 100).toStringAsFixed(1).replaceAll(RegExp(r'\.0*$'),
-                                                                                '') +
-                                                                            '%';
-                                                                      }(groceryColumnGoodsRevenueRatioRecord!.grocery, groceryColumnGoodsRevenueRatioRecord!.revenue),
+                                                                        return '${(((grocery + revenue == 0) ? 0.0 : revenue / grocery) * 100).toStringAsFixed(1).replaceAll(RegExp(r'\.0*$'),
+                                                                                '')}%';
+                                                                      }(groceryColumnGoodsRevenueRatioRecord.grocery, groceryColumnGoodsRevenueRatioRecord.revenue),
                                                                       style:
                                                                           TextStyle(
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .secondary,
                                                                       ),
                                                                     ),
-                                                                    TextSpan(
+                                                                    const TextSpan(
                                                                       text:
                                                                           ' uptick in sales is contributing to the recovery of grocery expenditures.',
                                                                       style:
@@ -4986,7 +4944,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             children: [
                                                               Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -4995,7 +4953,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 child:
                                                                     FlutterFlowIconButton(
                                                                   borderColor:
-                                                                      Color(
+                                                                      const Color(
                                                                           0xFFF1F4F8),
                                                                   borderRadius:
                                                                       30.0,
@@ -5003,7 +4961,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       2.0,
                                                                   buttonSize:
                                                                       44.0,
-                                                                  icon: Icon(
+                                                                  icon: const Icon(
                                                                     Icons
                                                                         .featured_play_list_outlined,
                                                                     color: Color(
@@ -5042,7 +5000,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                             ),
                                                                           ),
                                                                           duration:
-                                                                              Duration(milliseconds: 4000),
+                                                                              const Duration(milliseconds: 4000),
                                                                           backgroundColor:
                                                                               FlutterFlowTheme.of(context).error,
                                                                         ),
@@ -5055,7 +5013,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                 ),
                                                               ),
                                                               FlutterFlowIconButton(
-                                                                borderColor: Color(
+                                                                borderColor: const Color(
                                                                     0xFFF1F4F8),
                                                                 borderRadius:
                                                                     30.0,
@@ -5063,7 +5021,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     2.0,
                                                                 buttonSize:
                                                                     44.0,
-                                                                icon: Icon(
+                                                                icon: const Icon(
                                                                   Icons.add,
                                                                   color: Color(
                                                                       0xFF57636C),
@@ -5089,7 +5047,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           padding:
                                                                               MediaQuery.viewInsetsOf(context),
                                                                           child:
-                                                                              Container(
+                                                                              const SizedBox(
                                                                             height:
                                                                                 double.infinity,
                                                                             child:
@@ -5118,7 +5076,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     if (valueOrDefault(
                                             currentUserDocument?.role, '') !=
                                         'generic')
-                                      Divider(
+                                      const Divider(
                                         height: 4.0,
                                         thickness: 2.0,
                                         indent: 20.0,
@@ -5129,7 +5087,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             currentUserDocument?.role, '') !=
                                         'generic')
                                       Padding(
-                                        padding: EdgeInsets.all(24.0),
+                                        padding: const EdgeInsets.all(24.0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           crossAxisAlignment:
@@ -5143,7 +5101,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   .displaySmall
                                                   .override(
                                                     fontFamily: 'Outfit',
-                                                    color: Color(0xFF14181B),
+                                                    color: const Color(0xFF14181B),
                                                     fontSize: 36.0,
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w600,
@@ -5167,7 +5125,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     0.0,
                                                                     0.0,
@@ -5176,11 +5134,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         child:
                                                             FlutterFlowIconButton(
                                                           borderColor:
-                                                              Color(0xFFF1F4F8),
+                                                              const Color(0xFFF1F4F8),
                                                           borderRadius: 30.0,
                                                           borderWidth: 2.0,
                                                           buttonSize: 44.0,
-                                                          icon: Icon(
+                                                          icon: const Icon(
                                                             Icons
                                                                 .featured_play_list_outlined,
                                                             color: Color(
@@ -5219,7 +5177,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           .info,
                                                                     ),
                                                                   ),
-                                                                  duration: Duration(
+                                                                  duration: const Duration(
                                                                       milliseconds:
                                                                           4000),
                                                                   backgroundColor:
@@ -5236,11 +5194,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       ),
                                                       FlutterFlowIconButton(
                                                         borderColor:
-                                                            Color(0xFFF1F4F8),
+                                                            const Color(0xFFF1F4F8),
                                                         borderRadius: 30.0,
                                                         borderWidth: 2.0,
                                                         buttonSize: 44.0,
-                                                        icon: Icon(
+                                                        icon: const Icon(
                                                           Icons.add,
                                                           color:
                                                               Color(0xFF57636C),
@@ -5259,7 +5217,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           ],
                                         ),
                                       ),
-                                    Divider(
+                                    const Divider(
                                       height: 4.0,
                                       thickness: 2.0,
                                       indent: 20.0,
@@ -5267,7 +5225,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       color: Color(0xFFE0E3E7),
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           24.0, 24.0, 24.0, 0.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
@@ -5281,7 +5239,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 .displaySmall
                                                 .override(
                                                   fontFamily: 'Outfit',
-                                                  color: Color(0xFF14181B),
+                                                  color: const Color(0xFF14181B),
                                                   fontSize: 36.0,
                                                   letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w600,
@@ -5297,11 +5255,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               children: [
                                                 FlutterFlowIconButton(
                                                   borderColor:
-                                                      Color(0xFFF1F4F8),
+                                                      const Color(0xFFF1F4F8),
                                                   borderRadius: 30.0,
                                                   borderWidth: 2.0,
                                                   buttonSize: 44.0,
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                     Icons.arrow_forward_rounded,
                                                     color: Color(0xFF57636C),
                                                     size: 24.0,
@@ -5311,7 +5269,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       'Payroll',
                                                       extra: <String, dynamic>{
                                                         kTransitionInfoKey:
-                                                            TransitionInfo(
+                                                            const TransitionInfo(
                                                           hasTransition: true,
                                                           transitionType:
                                                               PageTransitionType

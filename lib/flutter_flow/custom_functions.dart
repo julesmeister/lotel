@@ -1267,9 +1267,12 @@ String daysOfIssue(
   DateTime? dateFixed,
 ) {
   final now = DateTime.now();
-  final days = now.difference(date).inDays.abs();
-  final suffix = days == 1 ? ' day' : ' days';
-  return '$days$suffix ${days > 0 ? "ago" : "from now"}';
+  final days = now.difference(date).inDays;
+
+  if (days == 0) return "Today";
+
+  final suffix = days.abs() == 1 ? ' day' : ' days';
+  return '${days.abs()}$suffix ${days > 0 ? "ago" : "from now"}';
 }
 
 List<RoomPendingStruct>? allPendings(List<TransactionsRecord>? transactions) {
@@ -1589,7 +1592,8 @@ DateTime endOfMonth(
     monthMap[month]! + 1,
     1,
   );
-  final lastDayOfMonth = firstDayOfNextMonth.subtract(Duration(days: 1));
+  final lastDayOfMonth =
+      firstDayOfNextMonth.subtract(Duration(microseconds: 1));
 
   return lastDayOfMonth;
 }

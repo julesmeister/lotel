@@ -1,4 +1,3 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/change_date/change_date_widget.dart';
 import '/components/forms/new_grocery/new_grocery_widget.dart';
@@ -8,17 +7,11 @@ import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -58,8 +51,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -70,8 +63,8 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -89,15 +82,15 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-50.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-50.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
           ScaleEffect(
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(0.7, 0.7),
-            end: Offset(1.0, 1.0),
+            begin: const Offset(0.7, 0.7),
+            end: const Offset(1.0, 1.0),
           ),
         ],
       ),
@@ -162,7 +155,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
           ),
           actions: [
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
               child: FlutterFlowIconButton(
                 borderRadius: 30.0,
                 borderWidth: 1.0,
@@ -182,7 +175,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                         onTap: () => FocusScope.of(context).unfocus(),
                         child: Padding(
                           padding: MediaQuery.viewInsetsOf(context),
-                          child: Container(
+                          child: const SizedBox(
                             height: double.infinity,
                             child: NewGroceryWidget(),
                           ),
@@ -204,7 +197,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -255,11 +248,11 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                   child: Column(
                     children: [
                       Align(
-                        alignment: Alignment(0.0, 0),
+                        alignment: const Alignment(0.0, 0),
                         child: FlutterFlowButtonTabBar(
                           useToggleButtonStyle: true,
                           labelStyle:
@@ -267,7 +260,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
-                          unselectedLabelStyle: TextStyle(),
+                          unselectedLabelStyle: const TextStyle(),
                           labelColor: FlutterFlowTheme.of(context).primaryText,
                           unselectedLabelColor:
                               FlutterFlowTheme.of(context).secondaryText,
@@ -279,11 +272,11 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                           borderWidth: 2.0,
                           borderRadius: 12.0,
                           elevation: 0.0,
-                          labelPadding: EdgeInsetsDirectional.fromSTEB(
+                          labelPadding: const EdgeInsetsDirectional.fromSTEB(
                               20.0, 0.0, 20.0, 0.0),
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 0.0, 24.0, 0.0),
-                          tabs: [
+                          tabs: const [
                             Tab(
                               text: 'Groceries',
                             ),
@@ -370,7 +363,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                               .orderBy('date',
                                                   descending: true),
                                         ),
-                                        padding: EdgeInsets.fromLTRB(
+                                        padding: const EdgeInsets.fromLTRB(
                                           0,
                                           10.0,
                                           0,
@@ -381,7 +374,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                         reverse: false,
                                         scrollDirection: Axis.vertical,
                                         separatorBuilder: (_, __) =>
-                                            SizedBox(height: 1.0),
+                                            const SizedBox(height: 1.0),
                                         builderDelegate:
                                             PagedChildBuilderDelegate<
                                                 GroceriesRecord>(
@@ -434,7 +427,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                 if (listViewGroceriesRecord
                                                         .date! >=
                                                     functions.startOfDay(
-                                                        columnGoodsRevenueRatioRecord!
+                                                        columnGoodsRevenueRatioRecord
                                                             .date!)) {
                                                   await showModalBottomSheet(
                                                     isScrollControlled: true,
@@ -451,7 +444,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           padding: MediaQuery
                                                               .viewInsetsOf(
                                                                   context),
-                                                          child: Container(
+                                                          child: SizedBox(
                                                             height: 266.0,
                                                             child:
                                                                 OptionToGroceryWidget(
@@ -479,7 +472,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .alternate,
-                                                      offset: Offset(
+                                                      offset: const Offset(
                                                         0.0,
                                                         1.0,
                                                       ),
@@ -494,7 +487,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                   children: [
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   24.0,
                                                                   12.0,
@@ -540,7 +533,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                           .viewInsetsOf(
                                                                               context),
                                                                       child:
-                                                                          Container(
+                                                                          SizedBox(
                                                                         height:
                                                                             double.infinity,
                                                                         child:
@@ -659,7 +652,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                             .primaryText,
                                                                       ),
                                                                     ),
-                                                                    duration: Duration(
+                                                                    duration: const Duration(
                                                                         milliseconds:
                                                                             4000),
                                                                     backgroundColor:
@@ -689,7 +682,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                             'Readex Pro',
                                                                         color: listViewGroceriesRecord.date! >=
                                                                                 functions.startOfDay(columnGoodsRevenueRatioRecord!.date!)
-                                                                            ? Color(0xFF6758FB)
+                                                                            ? const Color(0xFF6758FB)
                                                                             : FlutterFlowTheme.of(context).secondaryText,
                                                                         letterSpacing:
                                                                             0.0,
@@ -707,7 +700,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                         fontFamily:
                                                                             'Readex Pro',
                                                                         color: listViewGroceriesRecord.date! >=
-                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord!.date!)
+                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord.date!)
                                                                             ? FlutterFlowTheme.of(context).primary
                                                                             : FlutterFlowTheme.of(context).primaryText,
                                                                         fontSize:
@@ -722,7 +715,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           Flexible(
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           20.0,
                                                                           0.0,
@@ -760,7 +753,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                               .bodyLarge
                                                                               .override(
                                                                                 fontFamily: 'Readex Pro',
-                                                                                color: listViewGroceriesRecord.date! >= functions.startOfDay(columnGoodsRevenueRatioRecord!.date!) ? FlutterFlowTheme.of(context).primaryText : FlutterFlowTheme.of(context).secondaryText,
+                                                                                color: listViewGroceriesRecord.date! >= functions.startOfDay(columnGoodsRevenueRatioRecord.date!) ? FlutterFlowTheme.of(context).primaryText : FlutterFlowTheme.of(context).secondaryText,
                                                                                 letterSpacing: 0.0,
                                                                               ),
                                                                         ),
@@ -768,7 +761,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     ],
                                                                   ),
                                                                   AnimatedContainer(
-                                                                    duration: Duration(
+                                                                    duration: const Duration(
                                                                         milliseconds:
                                                                             150),
                                                                     curve: Curves
@@ -790,7 +783,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     child:
                                                                         Align(
                                                                       alignment:
-                                                                          AlignmentDirectional(
+                                                                          const AlignmentDirectional(
                                                                               -1.0,
                                                                               0.0),
                                                                       child:
@@ -816,7 +809,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                               textAlign: TextAlign.start,
                                                                               style: FlutterFlowTheme.of(context).bodyLarge.override(
                                                                                     fontFamily: 'Readex Pro',
-                                                                                    color: listViewGroceriesRecord.date! >= functions.startOfDay(columnGoodsRevenueRatioRecord!.date!) ? FlutterFlowTheme.of(context).primaryText : FlutterFlowTheme.of(context).secondaryText,
+                                                                                    color: listViewGroceriesRecord.date! >= functions.startOfDay(columnGoodsRevenueRatioRecord.date!) ? FlutterFlowTheme.of(context).primaryText : FlutterFlowTheme.of(context).secondaryText,
                                                                                     fontSize: 24.0,
                                                                                     letterSpacing: 0.0,
                                                                                     fontWeight: FontWeight.w500,
@@ -836,7 +829,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   24.0,
                                                                   0.0,
@@ -895,7 +888,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       style:
                                                                           TextStyle(
                                                                         color: listViewGroceriesRecord.date! >=
-                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord!.date!)
+                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord.date!)
                                                                             ? FlutterFlowTheme.of(context).primaryText
                                                                             : FlutterFlowTheme.of(context).secondaryText,
                                                                         fontWeight:
@@ -906,7 +899,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       text: richTextUsersRecord
                                                                           .displayName,
                                                                       style:
-                                                                          TextStyle(),
+                                                                          const TextStyle(),
                                                                     )
                                                                   ],
                                                                   style: FlutterFlowTheme.of(
@@ -916,7 +909,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                         fontFamily:
                                                                             'Readex Pro',
                                                                         color: listViewGroceriesRecord.date! >=
-                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord!.date!)
+                                                                                functions.startOfDay(columnGoodsRevenueRatioRecord.date!)
                                                                             ? FlutterFlowTheme.of(context).primaryText
                                                                             : FlutterFlowTheme.of(context).secondaryText,
                                                                         fontSize:
@@ -944,7 +937,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       'Readex Pro',
                                                                   color: listViewGroceriesRecord
                                                                               .date! >=
-                                                                          functions.startOfDay(columnGoodsRevenueRatioRecord!
+                                                                          functions.startOfDay(columnGoodsRevenueRatioRecord
                                                                               .date!)
                                                                       ? FlutterFlowTheme.of(
                                                                               context)
@@ -998,7 +991,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                           )
                                           .orderBy('date', descending: true),
                                     ),
-                                    padding: EdgeInsets.fromLTRB(
+                                    padding: const EdgeInsets.fromLTRB(
                                       0,
                                       10.0,
                                       0,
@@ -1009,7 +1002,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                     reverse: false,
                                     scrollDirection: Axis.vertical,
                                     separatorBuilder: (_, __) =>
-                                        SizedBox(height: 1.0),
+                                        const SizedBox(height: 1.0),
                                     builderDelegate: PagedChildBuilderDelegate<
                                         GoodsRevenueRatioRecord>(
                                       // Customize what your widget looks like when it's loading the first page.
@@ -1058,7 +1051,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .alternate,
-                                                offset: Offset(
+                                                offset: const Offset(
                                                   0.0,
                                                   1.0,
                                                 ),
@@ -1071,7 +1064,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsetsDirectional
+                                                padding: const EdgeInsetsDirectional
                                                     .fromSTEB(
                                                         24.0, 12.0, 24.0, 0.0),
                                                 child: Row(
@@ -1105,7 +1098,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                       animateFromLastPercent:
                                                           true,
                                                       progressColor:
-                                                          Color(0xFF4B39EF),
+                                                          const Color(0xFF4B39EF),
                                                       backgroundColor:
                                                           FlutterFlowTheme.of(
                                                                   context)
@@ -1113,7 +1106,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                       center: Text(
                                                         (double grocery,
                                                                 double revenue) {
-                                                          return (((grocery + revenue ==
+                                                          return '${(((grocery + revenue ==
                                                                               0)
                                                                           ? 0.0
                                                                           : revenue /
@@ -1124,8 +1117,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                   .replaceAll(
                                                                       RegExp(
                                                                           r'\.0*$'),
-                                                                      '') +
-                                                              '%';
+                                                                      '')}%';
                                                         }(
                                                             listViewGoodsRevenueRatioRecord
                                                                 .grocery,
@@ -1137,7 +1129,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                             .override(
                                                               fontFamily:
                                                                   'Outfit',
-                                                              color: Color(
+                                                              color: const Color(
                                                                   0xFF14181B),
                                                               fontSize: 14.0,
                                                               letterSpacing:
@@ -1153,7 +1145,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                     Flexible(
                                                       child: Padding(
                                                         padding:
-                                                            EdgeInsetsDirectional
+                                                            const EdgeInsetsDirectional
                                                                 .fromSTEB(
                                                                     25.0,
                                                                     0.0,
@@ -1168,11 +1160,11 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           children: [
                                                             Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -1190,7 +1182,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                           .center,
                                                                   children: [
                                                                     Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           1.0,
                                                                           0.0,
@@ -1214,7 +1206,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       flex: 3,
                                                                       child:
                                                                           Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             10.0,
                                                                             0.0,
                                                                             0.0,
@@ -1240,7 +1232,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       flex: 3,
                                                                       child:
                                                                           Text(
-                                                                        '${formatNumber(
+                                                                        formatNumber(
                                                                           listViewGoodsRevenueRatioRecord
                                                                               .grocery,
                                                                           formatType:
@@ -1249,7 +1241,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                               DecimalType.automatic,
                                                                           currency:
                                                                               'P ',
-                                                                        )}',
+                                                                        ),
                                                                         textAlign:
                                                                             TextAlign.end,
                                                                         maxLines:
@@ -1269,7 +1261,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                             ),
                                                             Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           0.0,
@@ -1284,7 +1276,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                         .spaceBetween,
                                                                 children: [
                                                                   Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             1.0,
@@ -1309,7 +1301,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                     flex: 3,
                                                                     child:
                                                                         Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           10.0,
                                                                           0.0,
                                                                           0.0,
@@ -1334,7 +1326,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                   Expanded(
                                                                     flex: 3,
                                                                     child: Text(
-                                                                      '${formatNumber(
+                                                                      formatNumber(
                                                                         listViewGoodsRevenueRatioRecord
                                                                             .revenue,
                                                                         formatType:
@@ -1343,7 +1335,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                             DecimalType.automatic,
                                                                         currency:
                                                                             'P ',
-                                                                      )}',
+                                                                      ),
                                                                       textAlign:
                                                                           TextAlign
                                                                               .end,
@@ -1370,7 +1362,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                 0)
                                                               Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -1385,7 +1377,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                           .spaceBetween,
                                                                   children: [
                                                                     Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           1.0,
                                                                           0.0,
@@ -1409,7 +1401,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       flex: 3,
                                                                       child:
                                                                           Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             10.0,
                                                                             0.0,
                                                                             0.0,
@@ -1457,7 +1449,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                 0)
                                                               Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
@@ -1472,7 +1464,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                           .spaceBetween,
                                                                   children: [
                                                                     Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           1.0,
                                                                           0.0,
@@ -1496,7 +1488,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                       flex: 1,
                                                                       child:
                                                                           Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             10.0,
                                                                             0.0,
                                                                             0.0,
@@ -1528,16 +1520,15 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                           TextSpan(
                                                                             text:
                                                                                 (double grocery, double revenue) {
-                                                                              return "P " +
-                                                                                  (revenue - grocery).toStringAsFixed(1).replaceAllMapped(
+                                                                              return "P ${(revenue - grocery).toStringAsFixed(1).replaceAllMapped(
                                                                                         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                                                                                         (Match match) => '${match[1]},',
-                                                                                      );
+                                                                                      )}";
                                                                             }(listViewGoodsRevenueRatioRecord.grocery, listViewGoodsRevenueRatioRecord.revenue),
                                                                             style:
-                                                                                TextStyle(),
+                                                                                const TextStyle(),
                                                                           ),
-                                                                          TextSpan(
+                                                                          const TextSpan(
                                                                             text:
                                                                                 ' ',
                                                                             style:
@@ -1587,7 +1578,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                   ),
                                                 ),
                                               Padding(
-                                                padding: EdgeInsetsDirectional
+                                                padding: const EdgeInsetsDirectional
                                                     .fromSTEB(
                                                         24.0, 0.0, 24.0, 12.0),
                                                 child: RichText(
@@ -1596,7 +1587,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           .textScaler,
                                                   text: TextSpan(
                                                     children: [
-                                                      TextSpan(
+                                                      const TextSpan(
                                                         text:
                                                             'Groceries purchased since ',
                                                         style: TextStyle(),
@@ -1606,7 +1597,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                             "EEEE MMMM d y",
                                                             listViewGoodsRevenueRatioRecord
                                                                 .date!),
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           color:
                                                               Color(0xFF12151C),
                                                         ),

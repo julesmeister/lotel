@@ -6,15 +6,11 @@ import '/flutter_flow/flutter_flow_calendar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'history_in_room_model.dart';
 export 'history_in_room_model.dart';
 
@@ -58,8 +54,8 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
             curve: Curves.elasticOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(0.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(0.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -77,15 +73,15 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 400.0.ms,
-            begin: Offset(0.9, 0.9),
-            end: Offset(1.0, 1.0),
+            begin: const Offset(0.9, 0.9),
+            end: const Offset(1.0, 1.0),
           ),
           MoveEffect(
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 400.0.ms,
-            begin: Offset(0.0, 20.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(0.0, 20.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -111,7 +107,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
   Widget build(BuildContext context) {
     return StreamBuilder<List<HistoryRecord>>(
       stream: queryHistoryRecord(
-        parent: widget!.room?.reference,
+        parent: widget.room?.reference,
         queryBuilder: (historyRecord) => historyRecord
             .where(
               'date',
@@ -167,9 +163,9 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                 },
               ),
               title: Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
+                alignment: const AlignmentDirectional(-1.0, 0.0),
                 child: AutoSizeText(
-                  'History of Room ${widget!.room?.number?.toString()}',
+                  'History of Room ${widget.room?.number.toString()}',
                   textAlign: TextAlign.start,
                   maxLines: 1,
                   minFontSize: 12.0,
@@ -183,10 +179,10 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
               ),
               actions: [
                 Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
+                  alignment: const AlignmentDirectional(0.0, 0.0),
                   child: Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -254,7 +250,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
             body: SafeArea(
               top: true,
               child: Align(
-                alignment: AlignmentDirectional(0.0, 0.0),
+                alignment: const AlignmentDirectional(0.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -322,7 +318,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                           }
 
                           return ListView.builder(
-                            padding: EdgeInsets.fromLTRB(
+                            padding: const EdgeInsets.fromLTRB(
                               0,
                               0,
                               0,
@@ -335,7 +331,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                             itemBuilder: (context, historyIndex) {
                               final historyItem = history[historyIndex];
                               return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 1.0),
                                 child: InkWell(
                                   splashColor: Colors.transparent,
@@ -347,7 +343,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                                       'CheckedIn',
                                       queryParameters: {
                                         'ref': serializeParam(
-                                          widget!.room?.reference,
+                                          widget.room?.reference,
                                           ParamType.DocumentReference,
                                         ),
                                         'booking': serializeParam(
@@ -355,7 +351,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                                           ParamType.DocumentReference,
                                         ),
                                         'roomNo': serializeParam(
-                                          widget!.room?.number,
+                                          widget.room?.number,
                                           ParamType.int,
                                         ),
                                       }.withoutNulls,
@@ -374,7 +370,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                                           child: Padding(
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
-                                            child: Container(
+                                            child: SizedBox(
                                               height: 180.0,
                                               child: OptionToHistoryWidget(
                                                 history: historyItem,
@@ -387,14 +383,14 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                                   },
                                   child: Container(
                                     width: 100.0,
-                                    constraints: BoxConstraints(
+                                    constraints: const BoxConstraints(
                                       minHeight: 100.0,
                                       maxHeight: 120.0,
                                     ),
                                     decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryBackground,
-                                      boxShadow: [
+                                      boxShadow: const [
                                         BoxShadow(
                                           blurRadius: 0.0,
                                           color: Color(0xFFE0E3E7),
@@ -406,22 +402,22 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                                       ],
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           16.0, 0.0, 16.0, 0.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Container(
+                                          SizedBox(
                                             width: 24.0,
                                             child: Stack(
-                                              alignment: AlignmentDirectional(
+                                              alignment: const AlignmentDirectional(
                                                   0.0, 0.0),
                                               children: [
                                                 Align(
                                                   alignment:
-                                                      AlignmentDirectional(
+                                                      const AlignmentDirectional(
                                                           0.0, -0.7),
                                                   child: Container(
                                                     width: 12.0,
@@ -455,7 +451,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     15.0, 0.0, 0.0, 0.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
@@ -475,7 +471,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                                                                 .isThisMonth(
                                                                     historyItem
                                                                         .date!)
-                                                            ? Color(0xFF6455F0)
+                                                            ? const Color(0xFF6455F0)
                                                             : FlutterFlowTheme
                                                                     .of(context)
                                                                 .secondaryText,
@@ -512,7 +508,7 @@ class _HistoryInRoomWidgetState extends State<HistoryInRoomWidget>
                                           Expanded(
                                             flex: 7,
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       20.0, 0.0, 15.0, 0.0),
                                               child: Column(

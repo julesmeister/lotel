@@ -1,20 +1,14 @@
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:provider/provider.dart';
 import 'metrics_yearly_model.dart';
 export 'metrics_yearly_model.dart';
 
@@ -53,8 +47,8 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -65,8 +59,8 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -140,7 +134,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                     letterSpacing: 0.0,
                   ),
             ),
-            actions: [],
+            actions: const [],
             centerTitle: false,
             elevation: 0.0,
           ),
@@ -154,14 +148,14 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                   children: [
                     Expanded(
                       child: Align(
-                        alignment: AlignmentDirectional(0.0, -1.0),
+                        alignment: const AlignmentDirectional(0.0, -1.0),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 16.0, 10.0),
                           child: Container(
                             width: double.infinity,
                             height: 50.0,
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxWidth: 500.0,
                             ),
                             decoration: BoxDecoration(
@@ -174,7 +168,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -219,7 +213,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                         children: [
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     4.0, 0.0, 4.0, 0.0),
                                             child: Text(
                                               'All',
@@ -276,7 +270,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                               MainAxisAlignment.center,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: AutoSizeText(
                                                 'Serenity',
@@ -338,7 +332,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                               MainAxisAlignment.center,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: AutoSizeText(
                                                 'My Lifestyle',
@@ -378,14 +372,14 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                   children: [
                     Expanded(
                       child: Align(
-                        alignment: AlignmentDirectional(0.0, -1.0),
+                        alignment: const AlignmentDirectional(0.0, -1.0),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 16.0, 10.0),
                           child: Container(
                             width: double.infinity,
                             height: 50.0,
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxWidth: 500.0,
                             ),
                             decoration: BoxDecoration(
@@ -398,7 +392,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -444,7 +438,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                               MainAxisAlignment.center,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'Rooms',
@@ -503,7 +497,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                               MainAxisAlignment.center,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: AutoSizeText(
                                                 'Goods',
@@ -564,7 +558,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                               MainAxisAlignment.center,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: AutoSizeText(
                                                 'Net',
@@ -644,7 +638,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: Builder(
                     builder: (context) {
                       final sales = functions
@@ -663,7 +657,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                         itemBuilder: (context, salesIndex) {
                           final salesItem = sales[salesIndex];
                           return Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 0.0, 16.0, 10.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -688,9 +682,9 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                 Expanded(
                                   flex: 11,
                                   child: Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           10.0, 0.0, 0.0, 0.0),
                                       child: LinearPercentIndicator(
                                         percent: functions.saleProgress(
@@ -718,7 +712,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                                       .map((e) => e.sales)
                                                       .toList(),
                                                   salesItem.sales))!,
-                                          defaultColor: Color(0x5839D2C0),
+                                          defaultColor: const Color(0x5839D2C0),
                                         ),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
@@ -739,7 +733,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                                 letterSpacing: 0.0,
                                               ),
                                         ),
-                                        barRadius: Radius.circular(5.0),
+                                        barRadius: const Radius.circular(5.0),
                                         padding: EdgeInsets.zero,
                                       ),
                                     ),
@@ -755,12 +749,12 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                 ),
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 16.0, 4.0),
+                      const EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 16.0, 4.0),
                   child: Container(
                     width: double.infinity,
                     height: 90.0,
                     decoration: BoxDecoration(
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           blurRadius: 6.0,
                           color: Color(0x4B1A1F24),
@@ -775,14 +769,14 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                           FlutterFlowTheme.of(context).primary,
                           FlutterFlowTheme.of(context).tertiary
                         ],
-                        stops: [0.0, 1.0],
-                        begin: AlignmentDirectional(0.94, -1.0),
-                        end: AlignmentDirectional(-0.94, 1.0),
+                        stops: const [0.0, 1.0],
+                        begin: const AlignmentDirectional(0.94, -1.0),
+                        end: const AlignmentDirectional(-0.94, 1.0),
                       ),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

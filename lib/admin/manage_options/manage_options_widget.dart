@@ -1,16 +1,9 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/new_option/new_option_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'manage_options_model.dart';
 export 'manage_options_model.dart';
 
@@ -107,7 +100,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
                       child: FlutterFlowIconButton(
                         borderColor: Colors.transparent,
                         borderRadius: 30.0,
@@ -129,7 +122,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                 onTap: () => FocusScope.of(context).unfocus(),
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
-                                  child: Container(
+                                  child: const SizedBox(
                                     height: double.infinity,
                                     child: NewOptionWidget(),
                                   ),
@@ -140,10 +133,10 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                         },
                       ),
                     ),
-                    if (_model.selectedChoice.length >= 1)
+                    if (_model.selectedChoice.isNotEmpty)
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
                         child: FlutterFlowIconButton(
                           borderColor: Colors.transparent,
                           borderRadius: 30.0,
@@ -160,19 +153,19 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                   context: context,
                                   builder: (alertDialogContext) {
                                     return AlertDialog(
-                                      title: Text('Delete'),
-                                      content: Text(
+                                      title: const Text('Delete'),
+                                      content: const Text(
                                           'This will delete the selected options!'),
                                       actions: [
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, false),
-                                          child: Text('Cancel'),
+                                          child: const Text('Cancel'),
                                         ),
                                         TextButton(
                                           onPressed: () => Navigator.pop(
                                               alertDialogContext, true),
-                                          child: Text('Confirm'),
+                                          child: const Text('Confirm'),
                                         ),
                                       ],
                                     );
@@ -199,7 +192,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                           .primaryText,
                                     ),
                                   ),
-                                  duration: Duration(milliseconds: 4000),
+                                  duration: const Duration(milliseconds: 4000),
                                   backgroundColor:
                                       FlutterFlowTheme.of(context).secondary,
                                 ),
@@ -216,7 +209,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
               elevation: 0.0,
             ),
             body: Align(
-              alignment: AlignmentDirectional(0.0, -1.0),
+              alignment: const AlignmentDirectional(0.0, -1.0),
               child: SingleChildScrollView(
                 primary: false,
                 child: Column(
@@ -226,14 +219,14 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 12.0, 0.0, 0.0),
                               child: Text(
                                 'Select to edit or delete',
@@ -247,7 +240,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 12.0, 0.0, 0.0),
                             child: Text(
                               _model.selectedChoice.length.toString(),
@@ -260,7 +253,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 2.0, 12.0, 0.0, 0.0),
                             child: Text(
                               'Selected',
@@ -277,7 +270,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -296,7 +289,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                               BoxShadow(
                                 blurRadius: 0.0,
                                 color: FlutterFlowTheme.of(context).alternate,
-                                offset: Offset(
+                                offset: const Offset(
                                   0.0,
                                   1.0,
                                 ),
@@ -308,7 +301,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 10.0, 0.0, 10.0),
                                 child: Text(
                                   'Expenses',
@@ -322,7 +315,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                               ),
                               if (!_model.showExpenses)
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 16.0, 0.0),
                                   child: Icon(
                                     Icons.chevron_left,
@@ -333,7 +326,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                 ),
                               if (_model.showExpenses)
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 16.0, 0.0),
                                   child: Icon(
                                     Icons.keyboard_arrow_down_rounded,
@@ -388,7 +381,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                               );
                             },
                             child: ListView.builder(
-                              padding: EdgeInsets.fromLTRB(
+                              padding: const EdgeInsets.fromLTRB(
                                 0,
                                 12.0,
                                 0,
@@ -403,7 +396,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                     expenseListOptionsRecordList[
                                         expenseListIndex];
                                 return Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 0.0, 16.0, 8.0),
                                   child: Container(
                                     width: 100.0,
@@ -423,9 +416,9 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                         Expanded(
                                           child: Align(
                                             alignment:
-                                                AlignmentDirectional(0.0, -1.0),
+                                                const AlignmentDirectional(0.0, -1.0),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       10.0, 0.0, 0.0, 0.0),
                                               child: Theme(
@@ -495,7 +488,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                                       ListTileControlAffinity
                                                           .trailing,
                                                   contentPadding:
-                                                      EdgeInsetsDirectional
+                                                      const EdgeInsetsDirectional
                                                           .fromSTEB(8.0, 0.0,
                                                               8.0, 0.0),
                                                   shape: RoundedRectangleBorder(
@@ -534,7 +527,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                             BoxShadow(
                               blurRadius: 0.0,
                               color: FlutterFlowTheme.of(context).alternate,
-                              offset: Offset(
+                              offset: const Offset(
                                 0.0,
                                 1.0,
                               ),
@@ -546,7 +539,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 10.0, 0.0, 10.0),
                               child: Text(
                                 'Bills',
@@ -560,7 +553,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                             ),
                             if (!_model.showBills)
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 16.0, 0.0),
                                 child: Icon(
                                   Icons.chevron_left,
@@ -571,7 +564,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                               ),
                             if (_model.showBills)
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 16.0, 0.0),
                                 child: Icon(
                                   Icons.keyboard_arrow_down_rounded,
@@ -625,7 +618,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                               );
                             },
                             child: ListView.builder(
-                              padding: EdgeInsets.fromLTRB(
+                              padding: const EdgeInsets.fromLTRB(
                                 0,
                                 12.0,
                                 0,
@@ -639,7 +632,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                 final billsLisOptionsRecord =
                                     billsLisOptionsRecordList[billsLisIndex];
                                 return Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 0.0, 16.0, 8.0),
                                   child: Container(
                                     width: 100.0,
@@ -659,9 +652,9 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                         Expanded(
                                           child: Align(
                                             alignment:
-                                                AlignmentDirectional(0.0, -1.0),
+                                                const AlignmentDirectional(0.0, -1.0),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       10.0, 0.0, 0.0, 0.0),
                                               child: Theme(
@@ -730,7 +723,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                                       ListTileControlAffinity
                                                           .trailing,
                                                   contentPadding:
-                                                      EdgeInsetsDirectional
+                                                      const EdgeInsetsDirectional
                                                           .fromSTEB(8.0, 0.0,
                                                               8.0, 0.0),
                                                   shape: RoundedRectangleBorder(

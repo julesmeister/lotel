@@ -4,10 +4,7 @@ import '/components/forms/add_edit_c_r/add_edit_c_r_widget.dart';
 import '/components/forms/add_edit_location/add_edit_location_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_locations_model.dart';
 export 'option_to_locations_model.dart';
@@ -56,12 +53,12 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -74,13 +71,13 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
@@ -91,17 +88,17 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    if (widget!.location != null) {
+                    if (widget.location != null) {
                       // loc
                       _model.location = await LocationsRecord.getDocumentOnce(
-                          widget!.location!);
+                          widget.location!);
                       // edit location
                       await showModalBottomSheet(
                         isScrollControlled: true,
@@ -110,7 +107,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                         builder: (context) {
                           return Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: Container(
+                            child: SizedBox(
                               height: double.infinity,
                               child: AddEditLocationWidget(
                                 location: _model.location,
@@ -122,7 +119,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                     } else {
                       // cr
                       _model.cr =
-                          await ComfortRoomsRecord.getDocumentOnce(widget!.cr!);
+                          await ComfortRoomsRecord.getDocumentOnce(widget.cr!);
                       // edit cr loc
                       await showModalBottomSheet(
                         isScrollControlled: true,
@@ -132,7 +129,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                         builder: (context) {
                           return Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: Container(
+                            child: SizedBox(
                               height: double.infinity,
                               child: AddEditCRWidget(
                                 cr: _model.cr,
@@ -155,12 +152,12 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -170,7 +167,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Details',
@@ -190,7 +187,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -199,7 +196,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                   onTap: () async {
                     // loc
                     _model.loc = await LocationsRecord.getDocumentOnce(
-                        widget!.location!);
+                        widget.location!);
                     // create cr
 
                     await ComfortRoomsRecord.collection
@@ -221,12 +218,12 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.bathtub_outlined,
@@ -236,7 +233,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Add CR Inside This Room',
@@ -256,7 +253,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -265,7 +262,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                   onTap: () async {
                     // loc
                     _model.loca = await LocationsRecord.getDocumentOnce(
-                        widget!.location!);
+                        widget.location!);
                     // create cr
 
                     await ComfortRoomsRecord.collection
@@ -276,7 +273,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                           hotel: FFAppState().hotel,
                         ));
                     // delete location
-                    await widget!.location!.delete();
+                    await widget.location!.delete();
                     // close
                     Navigator.pop(context);
 
@@ -289,12 +286,12 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.bathtub_outlined,
@@ -304,7 +301,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Category To CR',
@@ -324,7 +321,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -337,18 +334,18 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: Text('Delete'),
-                                content: Text('This area will be removed.'),
+                                title: const Text('Delete'),
+                                content: const Text('This area will be removed.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: Text('Confirm'),
+                                    child: const Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -356,14 +353,14 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                           ) ??
                           false;
                       if (confirmDialogResponse) {
-                        if (widget!.location != null) {
+                        if (widget.location != null) {
                           // replacements of location
                           _model.replacementofLocations =
                               await queryReplacementRecordOnce(
                             queryBuilder: (replacementRecord) =>
                                 replacementRecord.where(
                               'location',
-                              isEqualTo: widget!.location,
+                              isEqualTo: widget.location,
                             ),
                           );
                           while (_model.loop !=
@@ -377,7 +374,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                             setState(() {});
                           }
                           // delete location
-                          await widget!.location!.delete();
+                          await widget.location!.delete();
                         } else {
                           // replacementsofCR
                           _model.replacementsofCR =
@@ -385,7 +382,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                             queryBuilder: (replacementRecord) =>
                                 replacementRecord.where(
                               'cr',
-                              isEqualTo: widget!.cr,
+                              isEqualTo: widget.cr,
                             ),
                           );
                           while (
@@ -399,7 +396,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                             setState(() {});
                           }
                           // delete cr
-                          await widget!.cr!.delete();
+                          await widget.cr!.delete();
                         }
 
                         Navigator.pop(context);
@@ -411,7 +408,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -428,12 +425,12 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.remove,
@@ -443,7 +440,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete',

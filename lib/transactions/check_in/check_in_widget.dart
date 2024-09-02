@@ -8,16 +8,13 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import 'dart:math';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'check_in_model.dart';
 export 'check_in_model.dart';
@@ -34,11 +31,11 @@ class CheckInWidget extends StatefulWidget {
     bool? promoOn,
     String? promoDetail,
     double? promoDiscount,
-  })  : this.totalAmount = totalAmount ?? 0.0,
-        this.extend = extend ?? false,
-        this.promoOn = promoOn ?? false,
-        this.promoDetail = promoDetail ?? 'No promo',
-        this.promoDiscount = promoDiscount ?? 0.0;
+  })  : totalAmount = totalAmount ?? 0.0,
+        extend = extend ?? false,
+        promoOn = promoOn ?? false,
+        promoDetail = promoDetail ?? 'No promo',
+        promoDiscount = promoDiscount ?? 0.0;
 
   final double? price;
   final DocumentReference? ref;
@@ -73,33 +70,33 @@ class _CheckInWidgetState extends State<CheckInWidget>
       _model.paid = true;
       _model.loop = 0;
       setState(() {});
-      if (widget!.extend) {
+      if (widget.extend) {
         // room
-        _model.room = await RoomsRecord.getDocumentOnce(widget!.ref!);
+        _model.room = await RoomsRecord.getDocumentOnce(widget.ref!);
         // set price, nights, beds, paid
         _model.price = valueOrDefault<double>(
-          (widget!.bookingToExtend?.ability == 'senior') ||
-                  (widget!.bookingToExtend?.ability == 'pwd')
+          (widget.bookingToExtend?.ability == 'senior') ||
+                  (widget.bookingToExtend?.ability == 'pwd')
               ? (_model.room!.price - _model.room!.price * 0.2)
               : ((_model.room!.price -
-                      (_model.room!.price * widget!.promoDiscount / 100))
+                      (_model.room!.price * widget.promoDiscount / 100))
                   .toInt()
                   .toDouble()),
           0.0,
         );
-        _model.startingNights = widget!.bookingToExtend?.nights;
-        _model.startingBeds = widget!.bookingToExtend?.extraBeds;
-        _model.paid = widget!.bookingToExtend?.status == 'paid';
-        _model.pendings = widget!.bookingToExtend!.pendings
+        _model.startingNights = widget.bookingToExtend?.nights;
+        _model.startingBeds = widget.bookingToExtend?.extraBeds;
+        _model.paid = widget.bookingToExtend?.status == 'paid';
+        _model.pendings = widget.bookingToExtend!.pendings
             .toList()
             .cast<DocumentReference>();
-        _model.ability = widget!.bookingToExtend!.ability;
+        _model.ability = widget.bookingToExtend!.ability;
         setState(() {});
-        if (widget!.bookingToExtend!.transactions.isNotEmpty) {
-          while (_model.loop != widget!.bookingToExtend?.transactions?.length) {
+        if (widget.bookingToExtend!.transactions.isNotEmpty) {
+          while (_model.loop != widget.bookingToExtend?.transactions.length) {
             // trans
             _model.trans = await TransactionsRecord.getDocumentOnce(
-                widget!.bookingToExtend!.transactions[_model.loop]);
+                widget.bookingToExtend!.transactions[_model.loop]);
             // add trans to list
             _model.addToTransactions(_model.trans!);
             setState(() {});
@@ -108,18 +105,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
             setState(() {});
           }
         }
-        if (widget!.bookingToExtend!.pendings.isNotEmpty) {
+        if (widget.bookingToExtend!.pendings.isNotEmpty) {
           // reset loop
           _model.loop = 0;
           setState(() {});
           while (_model.loop !=
               valueOrDefault<int>(
-                widget!.bookingToExtend?.pendings?.length,
+                widget.bookingToExtend?.pendings.length,
                 0,
               )) {
             // pendings to trans
             _model.pendingsToTrans = await TransactionsRecord.getDocumentOnce(
-                widget!.bookingToExtend!.pendings[_model.loop]);
+                widget.bookingToExtend!.pendings[_model.loop]);
             // add trans to list
             _model.addToTransactions(_model.pendingsToTrans!);
             setState(() {});
@@ -130,7 +127,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
         }
       } else {
         _model.price = valueOrDefault<double>(
-          widget!.price,
+          widget.price,
           0.0,
         );
         _model.startingNights = 0;
@@ -140,11 +137,11 @@ class _CheckInWidgetState extends State<CheckInWidget>
     });
 
     _model.contactFieldTextController ??= TextEditingController(
-        text: widget!.extend == true ? widget!.bookingToExtend?.contact : '');
+        text: widget.extend == true ? widget.bookingToExtend?.contact : '');
     _model.contactFieldFocusNode ??= FocusNode();
 
     _model.detailsFieldTextController ??= TextEditingController(
-        text: widget!.extend == true ? widget!.bookingToExtend?.details : '');
+        text: widget.extend == true ? widget.bookingToExtend?.details : '');
     _model.detailsFieldFocusNode ??= FocusNode();
 
     animationsMap.addAll({
@@ -162,8 +159,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(0.0, 100.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(0.0, 100.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -209,13 +206,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
           },
         ),
         title: Text(
-          '${widget!.extend == false ? 'New Booking' : 'Extend Booking'} In Room ${widget!.roomNo?.toString()}',
+          '${widget.extend == false ? 'New Booking' : 'Extend Booking'} In Room ${widget.roomNo?.toString()}',
           style: FlutterFlowTheme.of(context).titleSmall.override(
                 fontFamily: 'Readex Pro',
                 letterSpacing: 0.0,
               ),
         ),
-        actions: [],
+        actions: const [],
         centerTitle: false,
         elevation: 0.0,
       ),
@@ -242,11 +239,11 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                if (widget!.promoOn)
+                                if (widget.promoOn)
                                   Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           16.0, 24.0, 16.0, 0.0),
                                       child: Container(
                                         width:
@@ -255,7 +252,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         decoration: BoxDecoration(
                                           color: FlutterFlowTheme.of(context)
                                               .error,
-                                          boxShadow: [
+                                          boxShadow: const [
                                             BoxShadow(
                                               blurRadius: 8.0,
                                               color: Color(0x36000000),
@@ -269,7 +266,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               BorderRadius.circular(8.0),
                                         ),
                                         child: Padding(
-                                          padding: EdgeInsets.all(12.0),
+                                          padding: const EdgeInsets.all(12.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
@@ -282,7 +279,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   Card(
                                                     clipBehavior: Clip
                                                         .antiAliasWithSaveLayer,
-                                                    color: Color(0xFFFD949C),
+                                                    color: const Color(0xFFFD949C),
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
@@ -291,7 +288,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     ),
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsets.all(8.0),
+                                                          const EdgeInsets.all(8.0),
                                                       child: Icon(
                                                         Icons.discount_outlined,
                                                         color:
@@ -321,7 +318,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                                   .end,
                                                           children: [
                                                             AutoSizeText(
-                                                              widget!
+                                                              widget
                                                                   .promoDetail,
                                                               maxLines: 1,
                                                               minFontSize: 14.0,
@@ -342,14 +339,14 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
                                                                       4.0,
                                                                       0.0,
                                                                       0.0),
                                                           child: Text(
-                                                            '${widget!.promoDiscount.toString()}%',
+                                                            '${widget.promoDiscount.toString()}%',
                                                             textAlign:
                                                                 TextAlign.end,
                                                             style: FlutterFlowTheme
@@ -383,9 +380,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ),
                                   ),
                                 Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  alignment: const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 24.0, 16.0, 24.0),
                                     child: Container(
                                       width: MediaQuery.sizeOf(context).width *
@@ -393,7 +390,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context)
                                             .accent4,
-                                        boxShadow: [
+                                        boxShadow: const [
                                           BoxShadow(
                                             blurRadius: 8.0,
                                             color: Color(0x36000000),
@@ -407,7 +404,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             BorderRadius.circular(8.0),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsets.all(12.0),
+                                        padding: const EdgeInsets.all(12.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
@@ -430,7 +427,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        EdgeInsets.all(8.0),
+                                                        const EdgeInsets.all(8.0),
                                                     child: FaIcon(
                                                       FontAwesomeIcons.bed,
                                                       color:
@@ -470,7 +467,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   4.0,
@@ -528,7 +525,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           ? FlutterFlowTheme.of(
                                                                   context)
                                                               .secondaryText
-                                                          : Color(0xFFE0E3E7),
+                                                          : const Color(0xFFE0E3E7),
                                                       size: 20.0,
                                                     ),
                                                     incrementIconBuilder:
@@ -538,7 +535,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           ? FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryText
-                                                          : Color(0xFFE0E3E7),
+                                                          : const Color(0xFFE0E3E7),
                                                       size: 20.0,
                                                     ),
                                                     countBuilder: (count) =>
@@ -554,10 +551,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           ),
                                                     ),
                                                     count: _model
-                                                        .nightsValue ??= widget!
+                                                        .nightsValue ??= widget
                                                                 .extend ==
                                                             true
-                                                        ? widget!
+                                                        ? widget
                                                             .bookingToExtend!
                                                             .nights
                                                         : 1,
@@ -585,7 +582,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -595,7 +592,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
                                   child: TextFormField(
                                     controller:
@@ -678,7 +675,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
                                   child: TextFormField(
                                     controller:
@@ -767,7 +764,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 16.0, 24.0, 0.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -783,26 +780,25 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
-                              if (FFAppState().bedPrice != null)
-                                Text(
-                                  formatNumber(
-                                    FFAppState().bedPrice,
-                                    formatType: FormatType.decimal,
-                                    decimalType: DecimalType.automatic,
-                                    currency: 'Php ',
-                                  ),
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Readex Pro',
-                                        letterSpacing: 0.0,
-                                      ),
+                              Text(
+                                formatNumber(
+                                  FFAppState().bedPrice,
+                                  formatType: FormatType.decimal,
+                                  decimalType: DecimalType.automatic,
+                                  currency: 'Php ',
                                 ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 12.0, 16.0, 0.0),
                           child: Wrap(
                             spacing: 0.0,
@@ -815,10 +811,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             clipBehavior: Clip.none,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 8.0, 0.0, 15.0),
                                 child: FlutterFlowChoiceChips(
-                                  options: [
+                                  options: const [
                                     ChipData('0'),
                                     ChipData('1'),
                                     ChipData('2'),
@@ -846,7 +842,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     iconColor: Colors.white,
                                     iconSize: 18.0,
                                     labelPadding:
-                                        EdgeInsetsDirectional.fromSTEB(
+                                        const EdgeInsetsDirectional.fromSTEB(
                                             12.0, 4.0, 12.0, 4.0),
                                     elevation: 2.0,
                                   ),
@@ -863,7 +859,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .primaryText,
                                     iconSize: 18.0,
                                     labelPadding:
-                                        EdgeInsetsDirectional.fromSTEB(
+                                        const EdgeInsetsDirectional.fromSTEB(
                                             12.0, 4.0, 12.0, 4.0),
                                     elevation: 0.0,
                                   ),
@@ -876,7 +872,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       FormFieldController<List<String>>(
                                     [
                                       valueOrDefault<String>(
-                                        widget!.extend
+                                        widget.extend
                                             ? valueOrDefault<String>(
                                                 (String? beds) {
                                                   return int.parse(
@@ -885,7 +881,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                       ? "+"
                                                       : beds;
                                                 }(valueOrDefault<String>(
-                                                  widget!.bookingToExtend
+                                                  widget.bookingToExtend
                                                       ?.extraBeds,
                                                   '0',
                                                 )),
@@ -909,7 +905,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 16.0, 24.0, 0.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -928,7 +924,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 12.0, 16.0, 0.0),
                           child: Wrap(
                             spacing: 0.0,
@@ -941,10 +937,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             clipBehavior: Clip.none,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 8.0, 0.0, 15.0),
                                 child: FlutterFlowChoiceChips(
-                                  options: [
+                                  options: const [
                                     ChipData('1'),
                                     ChipData('2'),
                                     ChipData('3'),
@@ -966,7 +962,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     iconColor: Colors.white,
                                     iconSize: 18.0,
                                     labelPadding:
-                                        EdgeInsetsDirectional.fromSTEB(
+                                        const EdgeInsetsDirectional.fromSTEB(
                                             12.0, 4.0, 12.0, 4.0),
                                     elevation: 2.0,
                                   ),
@@ -983,7 +979,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         .primaryText,
                                     iconSize: 18.0,
                                     labelPadding:
-                                        EdgeInsetsDirectional.fromSTEB(
+                                        const EdgeInsetsDirectional.fromSTEB(
                                             12.0, 4.0, 12.0, 4.0),
                                     elevation: 0.0,
                                   ),
@@ -995,8 +991,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   controller: _model.guestsValueController ??=
                                       FormFieldController<List<String>>(
                                     [
-                                      widget!.extend == true
-                                          ? widget!.bookingToExtend!.guests
+                                      widget.extend == true
+                                          ? widget.bookingToExtend!.guests
                                           : '1'
                                     ],
                                   ),
@@ -1008,13 +1004,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                         ),
                       ],
                     ),
-                    if (widget!.extend)
+                    if (widget.extend)
                       Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 24.0, 16.0, 24.0, 0.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -1030,27 +1026,26 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         fontWeight: FontWeight.bold,
                                       ),
                                 ),
-                                if (FFAppState().extPricePerHr != null)
-                                  Text(
-                                    formatNumber(
-                                      FFAppState().extPricePerHr,
-                                      formatType: FormatType.decimal,
-                                      decimalType: DecimalType.automatic,
-                                      currency: 'Php ',
-                                    ),
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          fontSize: 12.0,
-                                          letterSpacing: 0.0,
-                                        ),
+                                Text(
+                                  formatNumber(
+                                    FFAppState().extPricePerHr,
+                                    formatType: FormatType.decimal,
+                                    decimalType: DecimalType.automatic,
+                                    currency: 'Php ',
                                   ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        fontSize: 12.0,
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
                               ],
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 24.0, 12.0, 16.0, 0.0),
                             child: Wrap(
                               spacing: 0.0,
@@ -1063,10 +1058,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               clipBehavior: Clip.none,
                               children: [
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 8.0, 0.0, 15.0),
                                   child: FlutterFlowChoiceChips(
-                                    options: [
+                                    options: const [
                                       ChipData('0'),
                                       ChipData('1'),
                                       ChipData('2'),
@@ -1099,7 +1094,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       iconColor: Colors.white,
                                       iconSize: 18.0,
                                       labelPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
+                                          const EdgeInsetsDirectional.fromSTEB(
                                               12.0, 4.0, 12.0, 4.0),
                                       elevation: 2.0,
                                     ),
@@ -1117,7 +1112,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           .primaryText,
                                       iconSize: 18.0,
                                       labelPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
+                                          const EdgeInsetsDirectional.fromSTEB(
                                               12.0, 4.0, 12.0, 4.0),
                                       elevation: 0.0,
                                     ),
@@ -1141,13 +1136,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                         ],
                       ),
                     Align(
-                      alignment: AlignmentDirectional(0.0, -1.0),
+                      alignment: const AlignmentDirectional(0.0, -1.0),
                       child: Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(16.0),
                         child: Container(
                           width: double.infinity,
                           height: 50.0,
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             maxWidth: 500.0,
                           ),
                           decoration: BoxDecoration(
@@ -1160,7 +1155,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                             ),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(4.0),
+                            padding: const EdgeInsets.all(4.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -1212,7 +1207,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     4.0, 0.0, 0.0, 0.0),
                                             child: Text(
                                               'Paid',
@@ -1276,7 +1271,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     4.0, 0.0, 0.0, 0.0),
                                             child: Text(
                                               'Pending',
@@ -1303,16 +1298,16 @@ class _CheckInWidgetState extends State<CheckInWidget>
                         ),
                       ),
                     ),
-                    if (!widget!.extend)
+                    if (!widget.extend)
                       Align(
-                        alignment: AlignmentDirectional(0.0, -1.0),
+                        alignment: const AlignmentDirectional(0.0, -1.0),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 0.0, 16.0, 16.0),
                           child: Container(
                             width: double.infinity,
                             height: 50.0,
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxWidth: 500.0,
                             ),
                             decoration: BoxDecoration(
@@ -1325,7 +1320,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -1338,7 +1333,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         _model.ability = 'normal';
-                                        _model.price = widget!.price!;
+                                        _model.price = widget.price!;
                                         setState(() {});
                                       },
                                       child: Container(
@@ -1378,7 +1373,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               size: 16.0,
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'Normal',
@@ -1412,7 +1407,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             (double roomPrice, bool promoOn) {
                                           return roomPrice -
                                               roomPrice * (promoOn ? 0.1 : 0.2);
-                                        }(widget!.price!, widget!.promoOn);
+                                        }(widget.price!, widget.promoOn);
                                         setState(() {});
                                       },
                                       child: Container(
@@ -1448,7 +1443,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               size: 16.0,
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'Senior',
@@ -1482,7 +1477,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             (double roomPrice, bool promoOn) {
                                           return roomPrice -
                                               roomPrice * (promoOn ? 0.1 : 0.2);
-                                        }(widget!.price!, widget!.promoOn);
+                                        }(widget.price!, widget.promoOn);
                                         setState(() {});
                                       },
                                       child: Container(
@@ -1518,7 +1513,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               size: 16.0,
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'PWD',
@@ -1548,13 +1543,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                       ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
                       child: Container(
                         width: MediaQuery.sizeOf(context).width * 1.0,
                         decoration: BoxDecoration(
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               blurRadius: 4.0,
                               color: Color(0x55000000),
@@ -1571,7 +1566,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 16.0, 16.0, 16.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -1606,7 +1601,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               ),
                                               '-1',
                                               0,
-                                              widget!.extend
+                                              widget.extend
                                                   ? ((FFAppState()
                                                               .extPricePerHr ??
                                                           0) *
@@ -1622,7 +1617,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               valueOrDefault<int>(
                                                 int.parse(
                                                     valueOrDefault<String>(
-                                                  widget!.bookingToExtend
+                                                  widget.bookingToExtend
                                                       ?.extraBeds,
                                                   '0',
                                                 )),
@@ -1642,7 +1637,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ],
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 4.0, 0.0, 0.0),
                                     child: Text(
                                       'Total',
@@ -1662,8 +1657,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                               ),
                               FFButtonWidget(
                                 onPressed: () async {
-                                  var _shouldSetState = false;
-                                  if (widget!.extend) {
+                                  var shouldSetState = false;
+                                  if (widget.extend) {
                                     if (_model.paid) {
                                       if (functions.hasDifferencesInBookings(
                                           valueOrDefault<String>(
@@ -1698,7 +1693,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   _model.startingNights,
                                                   0,
                                                 ),
-                                                widget!.extend
+                                                widget.extend
                                                     ? ((FFAppState()
                                                                 .extPricePerHr ??
                                                             0) *
@@ -1711,18 +1706,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                         )))
                                                     : 0.0,
                                                 _model.transactions.toList(),
-                                                int.parse(widget!
+                                                int.parse(widget
                                                     .bookingToExtend!
                                                     .extraBeds)),
                                             type: 'book',
                                             hotel: FFAppState().hotel,
-                                            booking: widget!
+                                            booking: widget
                                                 .bookingToExtend?.reference,
                                             guests: functions.stringToInt(
                                                 _model.guestsValue),
-                                            room: widget!.roomNo,
+                                            room: widget.roomNo,
                                             description:
-                                                '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget!.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                             remitted: false,
                                             pending: false,
                                           ),
@@ -1750,7 +1745,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   _model.startingNights,
                                                   0,
                                                 ),
-                                                widget!.extend
+                                                widget.extend
                                                     ? ((FFAppState()
                                                                 .extPricePerHr ??
                                                             0) *
@@ -1763,18 +1758,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                         )))
                                                     : 0.0,
                                                 _model.transactions.toList(),
-                                                int.parse(widget!
+                                                int.parse(widget
                                                     .bookingToExtend!
                                                     .extraBeds)),
                                             type: 'book',
                                             hotel: FFAppState().hotel,
-                                            booking: widget!
+                                            booking: widget
                                                 .bookingToExtend?.reference,
                                             guests: functions.stringToInt(
                                                 _model.guestsValue),
-                                            room: widget!.roomNo,
+                                            room: widget.roomNo,
                                             description:
-                                                '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget!.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                             remitted: false,
                                             pending: false,
                                           ),
@@ -1784,7 +1779,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             },
                                           ),
                                         }, transactionsRecordReference1);
-                                        _shouldSetState = true;
+                                        shouldSetState = true;
                                         // add to trans list
                                         _model.addToTransactions(
                                             _model.refundTrans!);
@@ -1792,11 +1787,11 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         // add this change to history
 
                                         await HistoryRecord.createDoc(
-                                                widget!.ref!)
+                                                widget.ref!)
                                             .set({
                                           ...createHistoryRecordData(
                                             description:
-                                                '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget!.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                             staff: currentUserReference,
                                           ),
                                           ...mapToFirestore(
@@ -1810,7 +1805,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         // update guest data history only
 
                                         await HistoryRecord.createDoc(
-                                                widget!.ref!)
+                                                widget.ref!)
                                             .set({
                                           ...createHistoryRecordData(
                                             description:
@@ -1826,7 +1821,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         });
                                         // update details and contact
 
-                                        await widget!.bookingToExtend!.reference
+                                        await widget.bookingToExtend!.reference
                                             .update(createBookingsRecordData(
                                           details: _model
                                               .detailsFieldTextController.text,
@@ -1846,20 +1841,20 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               ),
                                             ),
                                             duration:
-                                                Duration(milliseconds: 4000),
+                                                const Duration(milliseconds: 4000),
                                             backgroundColor:
                                                 FlutterFlowTheme.of(context)
                                                     .secondary,
                                           ),
                                         );
-                                        if (_shouldSetState) setState(() {});
+                                        if (shouldSetState) setState(() {});
                                         return;
                                       }
 
                                       // pay all balances
                                       await action_blocks.payBalanceOfPending(
                                         context,
-                                        booking: widget!.bookingToExtend,
+                                        booking: widget.bookingToExtend,
                                       );
                                     } else {
                                       // haven't paid balance
@@ -1868,9 +1863,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 context: context,
                                                 builder: (alertDialogContext) {
                                                   return AlertDialog(
-                                                    title: Text(
+                                                    title: const Text(
                                                         'Did the guest not pay balance yet?'),
-                                                    content: Text(
+                                                    content: const Text(
                                                         'Confirm to proceed even without paying the balance yet.'),
                                                     actions: [
                                                       TextButton(
@@ -1878,14 +1873,14 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                             Navigator.pop(
                                                                 alertDialogContext,
                                                                 false),
-                                                        child: Text('Cancel'),
+                                                        child: const Text('Cancel'),
                                                       ),
                                                       TextButton(
                                                         onPressed: () =>
                                                             Navigator.pop(
                                                                 alertDialogContext,
                                                                 true),
-                                                        child: Text('Confirm'),
+                                                        child: const Text('Confirm'),
                                                       ),
                                                     ],
                                                   );
@@ -1904,7 +1899,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     int.parse((_model
                                                         .hoursLateCheckoutValue!)),
                                                 _model.transactions.toList(),
-                                                int.parse(widget!
+                                                int.parse(widget
                                                     .bookingToExtend!
                                                     .extraBeds))! >
                                             0.0) {
@@ -1924,7 +1919,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   FFAppState().bedPrice,
                                                   _model.startingBeds!,
                                                   _model.startingNights!,
-                                                  widget!.extend
+                                                  widget.extend
                                                       ? ((FFAppState()
                                                                   .extPricePerHr ??
                                                               0) *
@@ -1937,18 +1932,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           )))
                                                       : 0.0,
                                                   _model.transactions.toList(),
-                                                  int.parse(widget!
+                                                  int.parse(widget
                                                       .bookingToExtend!
                                                       .extraBeds)),
                                               type: 'book',
                                               hotel: FFAppState().hotel,
-                                              booking: widget!
+                                              booking: widget
                                                   .bookingToExtend?.reference,
                                               guests: functions.stringToInt(
                                                   _model.guestsValue),
-                                              room: widget!.roomNo,
+                                              room: widget.roomNo,
                                               description:
-                                                  '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget!.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                  '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                               remitted: false,
                                               pending: true,
                                             ),
@@ -1971,7 +1966,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   FFAppState().bedPrice,
                                                   _model.startingBeds!,
                                                   _model.startingNights!,
-                                                  widget!.extend
+                                                  widget.extend
                                                       ? ((FFAppState()
                                                                   .extPricePerHr ??
                                                               0) *
@@ -1984,18 +1979,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                           )))
                                                       : 0.0,
                                                   _model.transactions.toList(),
-                                                  int.parse(widget!
+                                                  int.parse(widget
                                                       .bookingToExtend!
                                                       .extraBeds)),
                                               type: 'book',
                                               hotel: FFAppState().hotel,
-                                              booking: widget!
+                                              booking: widget
                                                   .bookingToExtend?.reference,
                                               guests: functions.stringToInt(
                                                   _model.guestsValue),
-                                              room: widget!.roomNo,
+                                              room: widget.roomNo,
                                               description:
-                                                  '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget!.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                  '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                               remitted: false,
                                               pending: true,
                                             ),
@@ -2005,7 +2000,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               },
                                             ),
                                           }, transactionsRecordReference2);
-                                          _shouldSetState = true;
+                                          shouldSetState = true;
                                           // add to pendings list
                                           _model.addToPendings(
                                               _model.newExtPending!.reference);
@@ -2013,13 +2008,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           // add this change to history
 
                                           await HistoryRecord.createDoc(
-                                                  widget!.ref!)
+                                                  widget.ref!)
                                               .set({
                                             ...createHistoryRecordData(
                                               description:
-                                                  'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget!.roomNo!, _model.hoursLateCheckoutValue!)}, but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                  'Availed ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}, but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                               staff: currentUserReference,
-                                              booking: widget!
+                                              booking: widget
                                                   .bookingToExtend?.reference,
                                             ),
                                             ...mapToFirestore(
@@ -2041,7 +2036,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                       int.parse((_model
                                                           .hoursLateCheckoutValue!)),
                                                   _model.transactions.toList(),
-                                                  int.parse(widget!
+                                                  int.parse(widget
                                                       .bookingToExtend!
                                                       .extraBeds))! <
                                               0.0) {
@@ -2061,7 +2056,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     FFAppState().bedPrice,
                                                     _model.startingBeds!,
                                                     _model.startingNights!,
-                                                    widget!.extend
+                                                    widget.extend
                                                         ? ((FFAppState()
                                                                     .extPricePerHr ??
                                                                 0) *
@@ -2075,18 +2070,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                         : 0.0,
                                                     _model.transactions
                                                         .toList(),
-                                                    int.parse(widget!
+                                                    int.parse(widget
                                                         .bookingToExtend!
                                                         .extraBeds)),
                                                 type: 'book',
                                                 hotel: FFAppState().hotel,
-                                                booking: widget!
+                                                booking: widget
                                                     .bookingToExtend?.reference,
                                                 guests: functions.stringToInt(
                                                     _model.guestsValue),
-                                                room: widget!.roomNo,
+                                                room: widget.roomNo,
                                                 description:
-                                                    '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget!.roomNo!, '0')}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                    '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, '0')}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                                 remitted: false,
                                                 pending: true,
                                               ),
@@ -2109,7 +2104,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     FFAppState().bedPrice,
                                                     _model.startingBeds!,
                                                     _model.startingNights!,
-                                                    widget!.extend
+                                                    widget.extend
                                                         ? ((FFAppState()
                                                                     .extPricePerHr ??
                                                                 0) *
@@ -2123,18 +2118,18 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                         : 0.0,
                                                     _model.transactions
                                                         .toList(),
-                                                    int.parse(widget!
+                                                    int.parse(widget
                                                         .bookingToExtend!
                                                         .extraBeds)),
                                                 type: 'book',
                                                 hotel: FFAppState().hotel,
-                                                booking: widget!
+                                                booking: widget
                                                     .bookingToExtend?.reference,
                                                 guests: functions.stringToInt(
                                                     _model.guestsValue),
-                                                room: widget!.roomNo,
+                                                room: widget.roomNo,
                                                 description:
-                                                    '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget!.roomNo!, '0')}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                    '${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, '0')}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                                 remitted: false,
                                                 pending: true,
                                               ),
@@ -2144,7 +2139,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 },
                                               ),
                                             }, transactionsRecordReference3);
-                                            _shouldSetState = true;
+                                            shouldSetState = true;
                                             // add to pendings list
                                             _model.addToPendings(_model
                                                 .newRefundPending!.reference);
@@ -2152,13 +2147,13 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             // add this change to history
 
                                             await HistoryRecord.createDoc(
-                                                    widget!.ref!)
+                                                    widget.ref!)
                                                 .set({
                                               ...createHistoryRecordData(
                                                 description:
-                                                    'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget!.roomNo!, _model.hoursLateCheckoutValue!)}, but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
+                                                    'Guest requested ${functions.quantityDescriptionForBookings(_model.startingBeds!, _model.bedsValue!, _model.startingNights, _model.nightsValue, widget.roomNo!, _model.hoursLateCheckoutValue!)}, but pending${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}',
                                                 staff: currentUserReference,
-                                                booking: widget!
+                                                booking: widget
                                                     .bookingToExtend?.reference,
                                               ),
                                               ...mapToFirestore(
@@ -2181,27 +2176,28 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                         .info,
                                                   ),
                                                 ),
-                                                duration: Duration(
+                                                duration: const Duration(
                                                     milliseconds: 4000),
                                                 backgroundColor:
                                                     FlutterFlowTheme.of(context)
                                                         .error,
                                               ),
                                             );
-                                            if (_shouldSetState)
+                                            if (shouldSetState) {
                                               setState(() {});
+                                            }
                                             return;
                                           }
                                         }
                                       } else {
-                                        if (_shouldSetState) setState(() {});
+                                        if (shouldSetState) setState(() {});
                                         return;
                                       }
                                     }
 
                                     // update booking
 
-                                    await widget!.bookingToExtend!.reference
+                                    await widget.bookingToExtend!.reference
                                         .update({
                                       ...createBookingsRecordData(
                                         nights: _model.nightsValue,
@@ -2217,7 +2213,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                   int.parse((_model
                                                       .hoursLateCheckoutValue!)),
                                               _model.transactions.toList(),
-                                              int.parse(widget!
+                                              int.parse(widget
                                                   .bookingToExtend!.extraBeds)),
                                           0.0,
                                         ),
@@ -2230,7 +2226,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             .contactFieldTextController.text,
                                         staff: currentUserReference,
                                         guests: _model.guestsValue,
-                                        room: widget!.ref,
+                                        room: widget.ref,
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -2250,7 +2246,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -2269,7 +2265,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         contact: _model
                                             .contactFieldTextController.text,
                                         hotel: FFAppState().hotel,
-                                        room: widget!.ref,
+                                        room: widget.ref,
                                         extraBeds: _model.bedsValue,
                                         guests: _model.guestsValue,
                                         total: valueOrDefault<double>(
@@ -2289,8 +2285,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             .paidOrPending(_model.paid),
                                         staff: currentUserReference,
                                         ability: _model.ability,
-                                        promo: widget!.promoOn
-                                            ? widget!.promoDetail
+                                        promo: widget.promoOn
+                                            ? widget.promoDetail
                                             : 'No Promo',
                                       ),
                                       ...mapToFirestore(
@@ -2310,7 +2306,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         contact: _model
                                             .contactFieldTextController.text,
                                         hotel: FFAppState().hotel,
-                                        room: widget!.ref,
+                                        room: widget.ref,
                                         extraBeds: _model.bedsValue,
                                         guests: _model.guestsValue,
                                         total: valueOrDefault<double>(
@@ -2330,8 +2326,8 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             .paidOrPending(_model.paid),
                                         staff: currentUserReference,
                                         ability: _model.ability,
-                                        promo: widget!.promoOn
-                                            ? widget!.promoDetail
+                                        promo: widget.promoOn
+                                            ? widget.promoDetail
                                             : 'No Promo',
                                       ),
                                       ...mapToFirestore(
@@ -2341,7 +2337,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         },
                                       ),
                                     }, bookingsRecordReference);
-                                    _shouldSetState = true;
+                                    shouldSetState = true;
                                     if (_model.paid) {
                                       // New Transaction
 
@@ -2366,9 +2362,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               _model.savedBooking?.reference,
                                           guests: functions
                                               .stringToInt(_model.guestsValue),
-                                          room: widget!.roomNo,
+                                          room: widget.roomNo,
                                           description:
-                                              'New check in in room ${widget!.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                              'New check in in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                           remitted: false,
                                           pending: false,
                                         ),
@@ -2399,9 +2395,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               _model.savedBooking?.reference,
                                           guests: functions
                                               .stringToInt(_model.guestsValue),
-                                          room: widget!.roomNo,
+                                          room: widget.roomNo,
                                           description:
-                                              'New check in in room ${widget!.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                              'New check in in room ${widget.roomNo?.toString()}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''} for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                           remitted: false,
                                           pending: false,
                                         ),
@@ -2411,7 +2407,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           },
                                         ),
                                       }, transactionsRecordReference4);
-                                      _shouldSetState = true;
+                                      shouldSetState = true;
                                       // add to trans list
                                       _model
                                           .addToTransactions(_model.checkin1!);
@@ -2419,7 +2415,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       // Check In To History
 
                                       await HistoryRecord.createDoc(
-                                              widget!.ref!)
+                                              widget.ref!)
                                           .set({
                                         ...createHistoryRecordData(
                                           description:
@@ -2459,9 +2455,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               _model.savedBooking?.reference,
                                           guests: functions
                                               .stringToInt(_model.guestsValue),
-                                          room: widget!.roomNo,
+                                          room: widget.roomNo,
                                           description:
-                                              'room ${widget!.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                              'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                           remitted: false,
                                           pending: true,
                                         ),
@@ -2492,9 +2488,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               _model.savedBooking?.reference,
                                           guests: functions
                                               .stringToInt(_model.guestsValue),
-                                          room: widget!.roomNo,
+                                          room: widget.roomNo,
                                           description:
-                                              'room ${widget!.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
+                                              'room ${widget.roomNo?.toString()} check in for ${_model.nightsValue?.toString()} ${_model.nightsValue! > 1 ? 'nights' : 'night'}${_model.ability != 'normal' ? ' by a ${_model.ability}' : ''}${_model.bedsValue != '0' ? ' with ${_model.bedsValue} extra bed${functions.stringToInt(_model.bedsValue)! > 1 ? 's' : ''}' : ''}',
                                           remitted: false,
                                           pending: true,
                                         ),
@@ -2504,7 +2500,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           },
                                         ),
                                       }, transactionsRecordReference5);
-                                      _shouldSetState = true;
+                                      shouldSetState = true;
                                       // add to pendings list
 
                                       await _model.savedBooking!.reference
@@ -2519,7 +2515,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       // add this change to history
 
                                       await HistoryRecord.createDoc(
-                                              widget!.ref!)
+                                              widget.ref!)
                                           .set({
                                         ...createHistoryRecordData(
                                           description:
@@ -2547,7 +2543,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -2555,7 +2551,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     );
                                     // Update room display details
 
-                                    await widget!.ref!
+                                    await widget.ref!
                                         .update(createRoomsRecordData(
                                       vacant: false,
                                       guests: valueOrDefault<int>(
@@ -2581,17 +2577,17 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   }
 
                                   context.safePop();
-                                  if (_shouldSetState) setState(() {});
+                                  if (shouldSetState) setState(() {});
                                 },
-                                text: widget!.extend == true
+                                text: widget.extend == true
                                     ? 'Save'
                                     : 'Check In',
                                 options: FFButtonOptions(
                                   width: 130.0,
                                   height: 50.0,
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
-                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
                                   color: FlutterFlowTheme.of(context).primary,
                                   textStyle: FlutterFlowTheme.of(context)
@@ -2601,7 +2597,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         letterSpacing: 0.0,
                                       ),
                                   elevation: 3.0,
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: Colors.transparent,
                                     width: 1.0,
                                   ),

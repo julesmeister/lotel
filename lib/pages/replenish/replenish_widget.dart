@@ -1,14 +1,9 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'replenish_model.dart';
@@ -120,7 +115,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
               ),
               actions: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 4.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -167,7 +162,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                               color: FlutterFlowTheme.of(context).primaryText,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor:
                               FlutterFlowTheme.of(context).secondary,
                         ),
@@ -189,7 +184,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                       child: LinearPercentIndicator(
                         percent: (_model.replenishNeeded!) /
                             replenishGoodsRecordList.length,
@@ -198,21 +193,21 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                         animation: true,
                         animateFromLastPercent: true,
                         progressColor: FlutterFlowTheme.of(context).secondary,
-                        backgroundColor: Color(0xFFE0E3E7),
-                        barRadius: Radius.circular(0.0),
+                        backgroundColor: const Color(0xFFE0E3E7),
+                        barRadius: const Radius.circular(0.0),
                         padding: EdgeInsets.zero,
                       ),
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 12.0, 0.0, 0.0),
                               child: Text(
                                 'Items',
@@ -226,7 +221,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 12.0, 0.0, 0.0),
                             child: Text(
                               valueOrDefault<String>(
@@ -242,7 +237,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 2.0, 12.0, 0.0, 0.0),
                             child: Text(
                               'items need replenishing',
@@ -257,10 +252,10 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                         ],
                       ),
                     ),
-                    if (replenishGoodsRecordList.length > 0)
+                    if (replenishGoodsRecordList.isNotEmpty)
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 12.0, 0.0, 0.0),
                           child: Builder(
                             builder: (context) {
@@ -280,7 +275,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                                   final replenishItem =
                                       replenish[replenishIndex];
                                   return Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 16.0, 8.0),
                                     child: Container(
                                       width: 100.0,
@@ -374,7 +369,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                                                     ListTileControlAffinity
                                                         .trailing,
                                                 contentPadding:
-                                                    EdgeInsetsDirectional
+                                                    const EdgeInsetsDirectional
                                                         .fromSTEB(
                                                             8.0, 0.0, 8.0, 0.0),
                                                 shape: RoundedRectangleBorder(

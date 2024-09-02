@@ -1,29 +1,11 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/forms/change_date/change_date_widget.dart';
-import '/components/options/option_to_booking_transaction/option_to_booking_transaction_widget.dart';
-import '/components/options/option_to_transaction_only/option_to_transaction_only_widget.dart';
-import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
-import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/request_manager.dart';
 
 import 'transactions_widget.dart' show TransactionsWidget;
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:provider/provider.dart';
 
 class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
   ///  Local state fields for this page.
@@ -36,6 +18,7 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // State field(s) for Calendar widget.
   DateTimeRange? calendarSelectedDay;
   // State field(s) for TabBar widget.
@@ -81,7 +64,9 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
   @override
   void dispose() {
     tabBarController?.dispose();
-    listViewStreamSubscriptions7.forEach((s) => s?.cancel());
+    for (var s in listViewStreamSubscriptions7) {
+      s?.cancel();
+    }
     listViewPagingController7?.dispose();
 
     /// Dispose query cache managers for this widget.

@@ -6,17 +6,13 @@ import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'bill_form_model.dart';
 export 'bill_form_model.dart';
@@ -27,8 +23,8 @@ class BillFormWidget extends StatefulWidget {
     bool? additional,
     this.remittanceRef,
     double? net,
-  })  : this.additional = additional ?? false,
-        this.net = net ?? 0.0;
+  })  : additional = additional ?? false,
+        net = net ?? 0.0;
 
   final bool additional;
   final DocumentReference? remittanceRef;
@@ -75,8 +71,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(0.0, -100.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(0.0, -100.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -87,8 +83,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -99,8 +95,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -111,8 +107,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -130,8 +126,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(0.0, 110.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(0.0, 110.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -186,7 +182,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
               visible:
                   valueOrDefault(currentUserDocument?.role, '') != 'generic',
               child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 15.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 15.0, 0.0),
                 child: AuthUserStreamWidget(
                   builder: (context) => FlutterFlowIconButton(
                     borderRadius: 20.0,
@@ -200,11 +196,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
                     onPressed: _model.disableSubmit
                         ? null
                         : () async {
-                            if ((_model.amountTextController.text != null &&
-                                    _model.amountTextController.text != '') &&
+                            if ((_model.amountTextController.text != '') &&
                                 (_model.descriptionTextController.text !=
-                                        null &&
-                                    _model.descriptionTextController.text !=
                                         '') &&
                                 (functions.stringToDouble(
                                         _model.amountTextController.text) >
@@ -214,19 +207,19 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                         context: context,
                                         builder: (alertDialogContext) {
                                           return AlertDialog(
-                                            title: Text('Are you sure?'),
-                                            content: Text(
+                                            title: const Text('Are you sure?'),
+                                            content: const Text(
                                                 'This bill will be recorded for future reference.'),
                                             actions: [
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
                                                     alertDialogContext, false),
-                                                child: Text('Cancel'),
+                                                child: const Text('Cancel'),
                                               ),
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
                                                     alertDialogContext, true),
-                                                child: Text('Confirm'),
+                                                child: const Text('Confirm'),
                                               ),
                                             ],
                                           );
@@ -325,7 +318,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                             .primaryText,
                                       ),
                                     ),
-                                    duration: Duration(milliseconds: 4000),
+                                    duration: const Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
@@ -352,7 +345,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                       color: FlutterFlowTheme.of(context).info,
                                     ),
                                   ),
-                                  duration: Duration(milliseconds: 4000),
+                                  duration: const Duration(milliseconds: 4000),
                                   backgroundColor:
                                       FlutterFlowTheme.of(context).error,
                                 ),
@@ -372,7 +365,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
         body: SafeArea(
           top: true,
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+            padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -380,7 +373,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
@@ -398,7 +391,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                               onTap: () => FocusScope.of(context).unfocus(),
                               child: Padding(
                                 padding: MediaQuery.viewInsetsOf(context),
-                                child: Container(
+                                child: SizedBox(
                                   height: double.infinity,
                                   child: ChangeDateWidget(
                                     date: _model.date!,
@@ -421,13 +414,13 @@ class _BillFormWidgetState extends State<BillFormWidget>
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.calendar_month,
                             color: Color(0xFF04B9F9),
                             size: 35.0,
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 0.0, 0.0, 0.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -470,7 +463,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                   ).animateOnPageLoad(
                       animationsMap['textOnPageLoadAnimation']!),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                     child: Text(
                       'Fill out the form below to record a bill. Leave after due blank if not applicable.',
                       style: FlutterFlowTheme.of(context).labelLarge.override(
@@ -487,10 +480,9 @@ class _BillFormWidgetState extends State<BillFormWidget>
                         focusNode: _model.amountFocusNode,
                         onChanged: (_) => EasyDebounce.debounce(
                           '_model.amountTextController',
-                          Duration(milliseconds: 2000),
+                          const Duration(milliseconds: 2000),
                           () async {
-                            if (_model.amountTextController.text == null ||
-                                _model.amountTextController.text == '') {
+                            if (_model.amountTextController.text == '') {
                               // disable
                               _model.disableSubmit = true;
                               setState(() {});
@@ -547,7 +539,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                             ),
                             borderRadius: BorderRadius.circular(0.0),
                           ),
-                          contentPadding: EdgeInsetsDirectional.fromSTEB(
+                          contentPadding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 12.0, 16.0, 12.0),
                         ),
                         style:
@@ -611,7 +603,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                             ),
                             borderRadius: BorderRadius.circular(0.0),
                           ),
-                          contentPadding: EdgeInsetsDirectional.fromSTEB(
+                          contentPadding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 12.0, 16.0, 12.0),
                         ),
                         style:
@@ -673,7 +665,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                             ),
                             borderRadius: BorderRadius.circular(0.0),
                           ),
-                          contentPadding: EdgeInsetsDirectional.fromSTEB(
+                          contentPadding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 24.0, 16.0, 12.0),
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -689,12 +681,12 @@ class _BillFormWidgetState extends State<BillFormWidget>
                       ).animateOnPageLoad(
                           animationsMap['textFieldOnPageLoadAnimation3']!),
                     ]
-                        .divide(SizedBox(height: 16.0))
-                        .addToStart(SizedBox(height: 12.0)),
+                        .divide(const SizedBox(height: 16.0))
+                        .addToStart(const SizedBox(height: 12.0)),
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
                     child: StreamBuilder<List<OptionsRecord>>(
                       stream: queryOptionsRecord(
                         queryBuilder: (optionsRecord) => optionsRecord.where(
@@ -732,7 +724,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                             ),
                           ),
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 15.0, 16.0, 15.0),
                             child: FlutterFlowChoiceChips(
                               options: containerOptionsRecordList
@@ -765,7 +757,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                     ),
                                 iconColor: Colors.white,
                                 iconSize: 18.0,
-                                labelPadding: EdgeInsetsDirectional.fromSTEB(
+                                labelPadding: const EdgeInsetsDirectional.fromSTEB(
                                     12.0, 4.0, 12.0, 4.0),
                                 elevation: 2.0,
                               ),
@@ -781,7 +773,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                 iconColor:
                                     FlutterFlowTheme.of(context).primaryText,
                                 iconSize: 18.0,
-                                labelPadding: EdgeInsetsDirectional.fromSTEB(
+                                labelPadding: const EdgeInsetsDirectional.fromSTEB(
                                     12.0, 4.0, 12.0, 4.0),
                                 elevation: 0.0,
                               ),

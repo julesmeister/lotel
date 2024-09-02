@@ -1,22 +1,17 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_autocomplete_options_list.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'check_out_model.dart';
 export 'check_out_model.dart';
@@ -122,7 +117,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
               visible:
                   valueOrDefault(currentUserDocument?.role, '') != 'generic',
               child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                 child: AuthUserStreamWidget(
                   builder: (context) => FlutterFlowIconButton(
                     borderColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -130,20 +125,19 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                     borderWidth: 1.0,
                     buttonSize: 60.0,
                     fillColor: FlutterFlowTheme.of(context).primaryBackground,
-                    disabledIconColor: Color(0xFFDADBDC),
+                    disabledIconColor: const Color(0xFFDADBDC),
                     icon: Icon(
                       Icons.check,
                       color: FlutterFlowTheme.of(context).primaryText,
                       size: 24.0,
                     ),
-                    onPressed: (widget!.cart?.length == 0)
+                    onPressed: (widget.cart?.length == 0)
                         ? null
                         : () async {
-                            var _shouldSetState = false;
+                            var shouldSetState = false;
                             if (_model.expense) {
                               if ((_model.whichExpense == 'consumedBy') &&
-                                  (_model.priceTextController1.text == null ||
-                                      _model.priceTextController1.text == '')) {
+                                  (_model.priceTextController1.text == '')) {
                                 // who consumed?
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -154,12 +148,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                             .primaryText,
                                       ),
                                     ),
-                                    duration: Duration(milliseconds: 4000),
+                                    duration: const Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
                                 );
-                                if (_shouldSetState) setState(() {});
+                                if (shouldSetState) setState(() {});
                                 return;
                               }
                             }
@@ -180,7 +174,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                       ),
                                   singleRecord: true,
                                 ).then((s) => s.firstOrNull);
-                                _shouldSetState = true;
+                                shouldSetState = true;
                                 // booking
                                 _model.booking = _model.room?.currentBooking;
                                 setState(() {});
@@ -194,12 +188,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                             .secondaryBackground,
                                       ),
                                     ),
-                                    duration: Duration(milliseconds: 4000),
+                                    duration: const Duration(milliseconds: 4000),
                                     backgroundColor:
                                         FlutterFlowTheme.of(context).error,
                                   ),
                                 );
-                                if (_shouldSetState) setState(() {});
+                                if (shouldSetState) setState(() {});
                                 return;
                               }
                             }
@@ -208,12 +202,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             setState(() {});
                             while (_model.loopCounter !=
                                 valueOrDefault<int>(
-                                  widget!.cart?.length,
+                                  widget.cart?.length,
                                   0,
                                 )) {
                               // Subtract Quantity of Item
 
-                              await widget!.cart![_model.loopCounter].reference
+                              await widget.cart![_model.loopCounter].reference
                                   .update({
                                 ...mapToFirestore(
                                   {
@@ -233,9 +227,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 staff: currentUserReference,
                                 total: _model.expense
                                     ? ((functions
-                                        .totalOfCart(widget!.cart?.toList())!))
+                                        .totalOfCart(widget.cart?.toList())!))
                                     : functions
-                                        .totalOfCart(widget!.cart?.toList()),
+                                        .totalOfCart(widget.cart?.toList()),
                                 hotel: FFAppState().hotel,
                                 type: _model.expense ? 'expense' : 'goods',
                                 remitted: false,
@@ -259,7 +253,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                   'date': FieldValue.serverTimestamp(),
                                   'goods': getCartGoodsListFirestoreData(
                                     functions
-                                        .summarizeCart(widget!.cart?.toList()),
+                                        .summarizeCart(widget.cart?.toList()),
                                   ),
                                 },
                               ),
@@ -270,9 +264,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 staff: currentUserReference,
                                 total: _model.expense
                                     ? ((functions
-                                        .totalOfCart(widget!.cart?.toList())!))
+                                        .totalOfCart(widget.cart?.toList())!))
                                     : functions
-                                        .totalOfCart(widget!.cart?.toList()),
+                                        .totalOfCart(widget.cart?.toList()),
                                 hotel: FFAppState().hotel,
                                 type: _model.expense ? 'expense' : 'goods',
                                 remitted: false,
@@ -296,15 +290,15 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                   'date': DateTime.now(),
                                   'goods': getCartGoodsListFirestoreData(
                                     functions
-                                        .summarizeCart(widget!.cart?.toList()),
+                                        .summarizeCart(widget.cart?.toList()),
                                   ),
                                 },
                               ),
                             }, transactionsRecordReference);
-                            _shouldSetState = true;
+                            shouldSetState = true;
                             while (_model.loopGoodsCounter !=
                                 functions
-                                    .summarizeCart(widget!.cart?.toList())
+                                    .summarizeCart(widget.cart?.toList())
                                     ?.length) {
                               // create inventory
 
@@ -324,23 +318,23 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     : 'sold',
                                 hotel: FFAppState().hotel,
                                 staff: currentUserReference,
-                                quantityChange: (functions.summarizeCart(widget!
+                                quantityChange: (functions.summarizeCart(widget
                                         .cart
                                         ?.toList())?[_model.loopGoodsCounter])
                                     ?.quantity,
                                 previousQuantity: (functions.summarizeCart(
-                                            widget!.cart?.toList())?[
+                                            widget.cart?.toList())?[
                                         _model.loopGoodsCounter])
                                     ?.previousQuantity,
-                                item: (functions.summarizeCart(widget!.cart
+                                item: (functions.summarizeCart(widget.cart
                                         ?.toList())?[_model.loopGoodsCounter])
                                     ?.description,
                                 operator: 'minus',
-                                previousPrice: (functions.summarizeCart(widget!
+                                previousPrice: (functions.summarizeCart(widget
                                         .cart
                                         ?.toList())?[_model.loopGoodsCounter])
                                     ?.price,
-                                priceChange: (functions.summarizeCart(widget!
+                                priceChange: (functions.summarizeCart(widget
                                         .cart
                                         ?.toList())?[_model.loopGoodsCounter])
                                     ?.price,
@@ -364,32 +358,32 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         hotel: FFAppState().hotel,
                                         staff: currentUserReference,
                                         quantityChange: (functions
-                                                    .summarizeCart(widget!.cart
+                                                    .summarizeCart(widget.cart
                                                         ?.toList())?[
                                                 _model.loopGoodsCounter])
                                             ?.quantity,
                                         previousQuantity: (functions
-                                                    .summarizeCart(widget!.cart
+                                                    .summarizeCart(widget.cart
                                                         ?.toList())?[
                                                 _model.loopGoodsCounter])
                                             ?.previousQuantity,
                                         item: (functions.summarizeCart(
-                                                    widget!.cart?.toList())?[
+                                                    widget.cart?.toList())?[
                                                 _model.loopGoodsCounter])
                                             ?.description,
                                         operator: 'minus',
                                         previousPrice: (functions.summarizeCart(
-                                                    widget!.cart?.toList())?[
+                                                    widget.cart?.toList())?[
                                                 _model.loopGoodsCounter])
                                             ?.price,
                                         priceChange: (functions.summarizeCart(
-                                                    widget!.cart?.toList())?[
+                                                    widget.cart?.toList())?[
                                                 _model.loopGoodsCounter])
                                             ?.price,
                                         remitted: false,
                                       ),
                                       inventoriesRecordReference);
-                              _shouldSetState = true;
+                              shouldSetState = true;
                               // collect inventories to list
                               _model.addToInventories(
                                   _model.newInventory!.reference);
@@ -431,7 +425,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             context.pushNamed(
                               'mart',
                               extra: <String, dynamic>{
-                                kTransitionInfoKey: TransitionInfo(
+                                kTransitionInfoKey: const TransitionInfo(
                                   hasTransition: true,
                                   transitionType:
                                       PageTransitionType.rightToLeft,
@@ -448,12 +442,12 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         .primaryText,
                                   ),
                                 ),
-                                duration: Duration(milliseconds: 4000),
+                                duration: const Duration(milliseconds: 4000),
                                 backgroundColor:
                                     FlutterFlowTheme.of(context).secondary,
                               ),
                             );
-                            if (_shouldSetState) setState(() {});
+                            if (shouldSetState) setState(() {});
                           },
                   ),
                 ),
@@ -472,7 +466,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
               children: [
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 12.0),
+                      const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 12.0),
                   child: Text(
                     'Items',
                     style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -487,7 +481,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                       Builder(
                         builder: (context) {
                           final cartGoods = functions
-                                  .summarizeCart(widget!.cart?.toList())
+                                  .summarizeCart(widget.cart?.toList())
                                   ?.toList() ??
                               [];
 
@@ -500,7 +494,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             itemBuilder: (context, cartGoodsIndex) {
                               final cartGoodsItem = cartGoods[cartGoodsIndex];
                               return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 1.0),
                                 child: Container(
                                   width: double.infinity,
@@ -512,7 +506,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                       BoxShadow(
                                         color: FlutterFlowTheme.of(context)
                                             .primaryBackground,
-                                        offset: Offset(
+                                        offset: const Offset(
                                           0.0,
                                           1.0,
                                         ),
@@ -520,7 +514,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     ],
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 5.0, 16.0, 5.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
@@ -549,7 +543,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
@@ -565,7 +559,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
@@ -617,7 +611,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 20.0, 16.0, 0.0),
                               child: Text(
                                 'Please don\'t touch anything while transaction is being completed.',
@@ -632,7 +626,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                               ),
                             ),
                             Align(
-                              alignment: AlignmentDirectional(0.0, -2.13),
+                              alignment: const AlignmentDirectional(0.0, -2.13),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Image.asset(
@@ -650,7 +644,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 0.0),
                   child: Text(
                     'Total',
                     style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -667,7 +661,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                   children: [
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 1.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 1.0),
                       child: Container(
                         width: double.infinity,
                         height: 60.0,
@@ -678,7 +672,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             BoxShadow(
                               color: FlutterFlowTheme.of(context)
                                   .primaryBackground,
-                              offset: Offset(
+                              offset: const Offset(
                                 0.0,
                                 1.0,
                               ),
@@ -686,7 +680,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                           ],
                         ),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               16.0, 5.0, 16.0, 5.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -707,23 +701,23 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 5.0, 0.0, 0.0),
                                     child: Text(
                                       valueOrDefault<int>(
-                                                widget!.cart?.length,
+                                                widget.cart?.length,
                                                 0,
                                               ) >
                                               0
                                           ? (valueOrDefault<int>(
-                                                    widget!.cart?.length,
+                                                    widget.cart?.length,
                                                     0,
                                                   ) ==
                                                   1
                                               ? '1 item in the basket'
                                               : '${valueOrDefault<String>(
-                                                  widget!.cart?.length
-                                                      ?.toString(),
+                                                  widget.cart?.length
+                                                      .toString(),
                                                   '0',
                                                 )} items in the basket')
                                           : 'No items in the basket',
@@ -741,7 +735,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 valueOrDefault<String>(
                                   formatNumber(
                                     functions
-                                        .totalOfCart(widget!.cart?.toList()),
+                                        .totalOfCart(widget.cart?.toList()),
                                     formatType: FormatType.decimal,
                                     decimalType: DecimalType.automatic,
                                     currency: 'P ',
@@ -762,7 +756,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
                       child: Container(
                         width: double.infinity,
                         height: 60.0,
@@ -773,7 +767,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             BoxShadow(
                               color: FlutterFlowTheme.of(context)
                                   .primaryBackground,
-                              offset: Offset(
+                              offset: const Offset(
                                 0.0,
                                 1.0,
                               ),
@@ -781,14 +775,14 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                           ],
                         ),
                         child: Align(
-                          alignment: AlignmentDirectional(0.0, -1.0),
+                          alignment: const AlignmentDirectional(0.0, -1.0),
                           child: SwitchListTile.adaptive(
                             value: _model.switchListTileValue1 ??=
                                 _model.pending,
                             onChanged: (newValue) async {
                               setState(() =>
-                                  _model.switchListTileValue1 = newValue!);
-                              if (newValue!) {
+                                  _model.switchListTileValue1 = newValue);
+                              if (newValue) {
                                 _model.pending = true;
                                 setState(() {});
                               } else {
@@ -827,7 +821,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
                       child: Container(
                         width: double.infinity,
                         height: 60.0,
@@ -838,7 +832,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             BoxShadow(
                               color: FlutterFlowTheme.of(context)
                                   .primaryBackground,
-                              offset: Offset(
+                              offset: const Offset(
                                 0.0,
                                 1.0,
                               ),
@@ -846,14 +840,14 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                           ],
                         ),
                         child: Align(
-                          alignment: AlignmentDirectional(0.0, -1.0),
+                          alignment: const AlignmentDirectional(0.0, -1.0),
                           child: SwitchListTile.adaptive(
                             value: _model.switchListTileValue2 ??=
                                 _model.expense,
                             onChanged: (newValue) async {
                               setState(() =>
-                                  _model.switchListTileValue2 = newValue!);
-                              if (newValue!) {
+                                  _model.switchListTileValue2 = newValue);
+                              if (newValue) {
                                 _model.expense = true;
                                 setState(() {});
                               } else {
@@ -894,15 +888,15 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                 ),
                 if (_model.expense)
                   Align(
-                    alignment: AlignmentDirectional(0.0, -1.0),
+                    alignment: const AlignmentDirectional(0.0, -1.0),
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 600),
+                        duration: const Duration(milliseconds: 600),
                         curve: Curves.easeIn,
                         width: double.infinity,
                         height: 50.0,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxWidth: 500.0,
                         ),
                         decoration: BoxDecoration(
@@ -914,7 +908,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -965,7 +959,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         ),
                                         Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   4.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             'Consumed By',
@@ -1024,7 +1018,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         size: 16.0,
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             4.0, 0.0, 0.0, 0.0),
                                         child: Text(
                                           'Spoilage',
@@ -1082,7 +1076,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         size: 16.0,
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             4.0, 0.0, 0.0, 0.0),
                                         child: Text(
                                           'Other',
@@ -1110,9 +1104,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                 if ((_model.whichExpense == 'consumedBy') && _model.expense)
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
                     child: Autocomplete<String>(
-                      initialValue: TextEditingValue(),
+                      initialValue: const TextEditingValue(),
                       optionsBuilder: (textEditingValue) {
                         if (textEditingValue.text == '') {
                           return const Iterable<String>.empty();
@@ -1134,7 +1128,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
-                          textHighlightStyle: TextStyle(),
+                          textHighlightStyle: const TextStyle(),
                           elevation: 4.0,
                           optionBackgroundColor:
                               FlutterFlowTheme.of(context).primaryBackground,
@@ -1208,9 +1202,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                 20.0, 24.0, 0.0, 24.0),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.emoji_people_sharp,
                             ),
                           ),
@@ -1228,7 +1222,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                 if ((_model.whichExpense == 'other') && _model.expense)
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
                     child: TextFormField(
                       controller: _model.priceTextController2,
                       focusNode: _model.priceFocusNode2,
@@ -1277,9 +1271,9 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                         filled: true,
                         fillColor:
                             FlutterFlowTheme.of(context).secondaryBackground,
-                        contentPadding: EdgeInsetsDirectional.fromSTEB(
+                        contentPadding: const EdgeInsetsDirectional.fromSTEB(
                             20.0, 24.0, 0.0, 24.0),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.question_mark,
                         ),
                       ),
@@ -1294,7 +1288,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                 if (_model.pending)
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 0.0, 6.0),
+                        const EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 0.0, 6.0),
                     child: Text(
                       'Room',
                       style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -1306,7 +1300,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                 if (_model.pending)
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 16.0),
                     child: FutureBuilder<List<RoomsRecord>>(
                       future: queryRoomsRecordOnce(
                         queryBuilder: (roomsRecord) => roomsRecord

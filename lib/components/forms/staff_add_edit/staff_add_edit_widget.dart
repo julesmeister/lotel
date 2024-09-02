@@ -1,14 +1,10 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'staff_add_edit_model.dart';
 export 'staff_add_edit_model.dart';
@@ -21,7 +17,7 @@ class StaffAddEditWidget extends StatefulWidget {
     this.name,
     this.sss,
     this.weeklyRate,
-  }) : this.edit = edit ?? false;
+  }) : edit = edit ?? false;
 
   final DocumentReference? staffRef;
   final bool edit;
@@ -49,22 +45,22 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      if (widget!.edit) {
+      if (widget.edit) {
         // set name
         setState(() {
-          _model.nameTextController?.text = widget!.name!;
+          _model.nameTextController?.text = widget.name!;
           _model.nameTextController?.selection = TextSelection.collapsed(
               offset: _model.nameTextController!.text.length);
         });
         // set sss
         setState(() {
-          _model.sssTextController?.text = widget!.sss!.toString();
+          _model.sssTextController?.text = widget.sss!.toString();
           _model.sssTextController?.selection = TextSelection.collapsed(
               offset: _model.sssTextController!.text.length);
         });
         // set rate
         setState(() {
-          _model.rateTextController?.text = widget!.weeklyRate!.toString();
+          _model.rateTextController?.text = widget.weeklyRate!.toString();
           _model.rateTextController?.selection = TextSelection.collapsed(
               offset: _model.rateTextController!.text.length);
         });
@@ -72,15 +68,15 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
     });
 
     _model.nameTextController ??=
-        TextEditingController(text: widget!.edit ? widget!.name : '');
+        TextEditingController(text: widget.edit ? widget.name : '');
     _model.nameFocusNode ??= FocusNode();
 
     _model.sssTextController ??= TextEditingController(
-        text: widget!.edit ? widget!.sss?.toString() : '');
+        text: widget.edit ? widget.sss?.toString() : '');
     _model.sssFocusNode ??= FocusNode();
 
     _model.rateTextController ??= TextEditingController(
-        text: widget!.edit ? widget!.weeklyRate?.toString() : '');
+        text: widget.edit ? widget.weeklyRate?.toString() : '');
     _model.rateFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -100,18 +96,18 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Align(
-        alignment: AlignmentDirectional(0.0, 1.0),
+        alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -132,7 +128,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -144,7 +140,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -156,17 +152,17 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                widget!.edit
+                                widget.edit
                                     ? 'Edit Staff\'s Rates'
                                     : 'New Staff',
                                 style: FlutterFlowTheme.of(context)
@@ -180,7 +176,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -221,7 +217,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -259,7 +255,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -304,7 +300,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
@@ -326,20 +322,20 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   10.0, 0.0, 0.0, 0.0),
                               child: RichText(
                                 textScaler: MediaQuery.of(context).textScaler,
@@ -380,7 +376,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget!.edit == false) {
+                                  if (widget.edit == false) {
                                     // create staff
 
                                     var staffsRecordReference =
@@ -417,7 +413,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -426,7 +422,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                   } else {
                                     // update staff
 
-                                    await widget!.staffRef!
+                                    await widget.staffRef!
                                         .update(createStaffsRecordData(
                                       weeklyRate: double.tryParse(
                                           _model.rateTextController.text),
@@ -447,10 +443,10 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
-                                        widget!.edit ? 'Save' : 'Create',
+                                        widget.edit ? 'Save' : 'Create',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(

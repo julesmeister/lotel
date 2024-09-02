@@ -5,10 +5,8 @@ import '/components/forms/new_issue/new_issue_widget.dart';
 import '/components/forms/record_add_edit/record_add_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_issue_model.dart';
 export 'option_to_issue_model.dart';
@@ -54,12 +52,12 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -72,13 +70,13 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
@@ -89,7 +87,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -104,11 +102,11 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                       builder: (context) {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
-                          child: Container(
+                          child: SizedBox(
                             height: double.infinity,
                             child: NewIssueWidget(
                               edit: true,
-                              ref: widget!.issue?.reference,
+                              ref: widget.issue?.reference,
                             ),
                           ),
                         );
@@ -124,12 +122,12 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.edit_outlined,
@@ -139,7 +137,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Edit',
@@ -159,7 +157,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -173,18 +171,18 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: Text('Delete This Issue'),
-                                content: Text('Are you sure?'),
+                                title: const Text('Delete This Issue'),
+                                content: const Text('Are you sure?'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: Text('Confirm'),
+                                    child: const Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -192,7 +190,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                           ) ??
                           false;
                       if (confirmDialogResponse) {
-                        await widget!.issue!.reference.delete();
+                        await widget.issue!.reference.delete();
                         Navigator.pop(context);
                       } else {
                         return;
@@ -206,7 +204,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -219,12 +217,12 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.delete_outlined,
@@ -234,7 +232,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete',
@@ -254,7 +252,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -263,25 +261,25 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                   onTap: () async {
                     if (valueOrDefault(currentUserDocument?.role, '') ==
                         'admin') {
-                      if (widget!.issue?.status == 'fixed') {
+                      if (widget.issue?.status == 'fixed') {
                         // reopen
                         var confirmDialogResponse = await showDialog<bool>(
                               context: context,
                               builder: (alertDialogContext) {
                                 return AlertDialog(
-                                  title: Text('Reopen This Issue'),
-                                  content: Text(
+                                  title: const Text('Reopen This Issue'),
+                                  content: const Text(
                                       'Has this issue not been sorted out yet?'),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(
                                           alertDialogContext, false),
-                                      child: Text('Cancel'),
+                                      child: const Text('Cancel'),
                                     ),
                                     TextButton(
                                       onPressed: () => Navigator.pop(
                                           alertDialogContext, true),
-                                      child: Text('Confirm'),
+                                      child: const Text('Confirm'),
                                     ),
                                   ],
                                 );
@@ -289,7 +287,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                             ) ??
                             false;
                         if (confirmDialogResponse) {
-                          await widget!.issue!.reference.update({
+                          await widget.issue!.reference.update({
                             ...createIssuesRecordData(
                               status: 'pending',
                             ),
@@ -309,7 +307,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                                       FlutterFlowTheme.of(context).primaryText,
                                 ),
                               ),
-                              duration: Duration(milliseconds: 4000),
+                              duration: const Duration(milliseconds: 4000),
                               backgroundColor:
                                   FlutterFlowTheme.of(context).secondary,
                             ),
@@ -321,18 +319,18 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                               context: context,
                               builder: (alertDialogContext) {
                                 return AlertDialog(
-                                  title: Text('Fix This Issue'),
-                                  content: Text('Is this issue resolved?'),
+                                  title: const Text('Fix This Issue'),
+                                  content: const Text('Is this issue resolved?'),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(
                                           alertDialogContext, false),
-                                      child: Text('Cancel'),
+                                      child: const Text('Cancel'),
                                     ),
                                     TextButton(
                                       onPressed: () => Navigator.pop(
                                           alertDialogContext, true),
-                                      child: Text('Confirm'),
+                                      child: const Text('Confirm'),
                                     ),
                                   ],
                                 );
@@ -340,7 +338,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                             ) ??
                             false;
                         if (confirmDialogResponse) {
-                          await widget!.issue!.reference.update({
+                          await widget.issue!.reference.update({
                             ...createIssuesRecordData(
                               status: 'fixed',
                             ),
@@ -360,7 +358,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                                       FlutterFlowTheme.of(context).primaryText,
                                 ),
                               ),
-                              duration: Duration(milliseconds: 4000),
+                              duration: const Duration(milliseconds: 4000),
                               backgroundColor:
                                   FlutterFlowTheme.of(context).secondary,
                             ),
@@ -376,7 +374,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -389,12 +387,12 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_fix_high_outlined,
@@ -404,10 +402,10 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                widget!.issue?.status == 'fixed'
+                                widget.issue?.status == 'fixed'
                                     ? 'Reopen The Issue as Pending'
                                     : 'Tag The Problem as Fixed',
                                 style: FlutterFlowTheme.of(context)
@@ -426,7 +424,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -462,7 +460,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                           ParamType.double,
                         ),
                         'issue': serializeParam(
-                          widget!.issue?.detail,
+                          widget.issue?.detail,
                           ParamType.String,
                         ),
                       }.withoutNulls,
@@ -477,12 +475,12 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.price_check,
@@ -492,7 +490,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Add Item to Expense',
@@ -512,7 +510,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -527,10 +525,10 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                       builder: (context) {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
-                          child: Container(
+                          child: SizedBox(
                             height: double.infinity,
                             child: NewGroceryWidget(
-                              duplicate: widget!.issue?.detail,
+                              duplicate: widget.issue?.detail,
                             ),
                           ),
                         );
@@ -544,12 +542,12 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.shopping_cart_checkout,
@@ -559,7 +557,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Add Item to Grocery',
@@ -579,7 +577,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -588,26 +586,25 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                   onTap: () async {
                     // issue
                     _model.issueToRecord = await IssuesRecord.getDocumentOnce(
-                        widget!.issue!.reference);
+                        widget.issue!.reference);
                     var confirmDialogResponse = await showDialog<bool>(
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Record This'),
+                              title: const Text('Record This'),
                               content: Text((String staff) {
-                                return "This item will be recorded and was issued by " +
-                                    staff;
+                                return "This item will be recorded and was issued by $staff";
                               }(_model.issueToRecord!.staffName)),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -624,11 +621,11 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                         builder: (context) {
                           return Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: Container(
+                            child: SizedBox(
                               height: double.infinity,
                               child: RecordAddEditWidget(
                                 issuer: _model.issueToRecord?.staffName,
-                                details: widget!.issue?.detail,
+                                details: widget.issue?.detail,
                               ),
                             ),
                           );
@@ -646,12 +643,12 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.playlist_add,
@@ -661,7 +658,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Add Item to Record',

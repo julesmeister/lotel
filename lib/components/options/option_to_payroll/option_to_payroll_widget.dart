@@ -1,11 +1,7 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_payroll_model.dart';
 export 'option_to_payroll_model.dart';
@@ -51,12 +47,12 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -69,13 +65,13 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
@@ -86,31 +82,31 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    var _shouldSetState = false;
+                    var shouldSetState = false;
                     // Sure delete?
                     var confirmDialogResponse = await showDialog<bool>(
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Remove this duplicate'),
-                              content: Text('Are you certain?'),
+                              title: const Text('Remove this duplicate'),
+                              content: const Text('Are you certain?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -123,9 +119,9 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                       setState(() {});
                       // salaries
                       _model.salaries = await querySalariesRecordOnce(
-                        parent: widget!.payroll?.reference,
+                        parent: widget.payroll?.reference,
                       );
-                      _shouldSetState = true;
+                      shouldSetState = true;
                       while (_model.loopCounter != _model.salaries?.length) {
                         // delete each salary
                         await _model.salaries![_model.loopCounter].reference
@@ -140,12 +136,12 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                         ...mapToFirestore(
                           {
                             'salaries':
-                                FieldValue.increment(-(widget!.payroll!.total)),
+                                FieldValue.increment(-(widget.payroll!.total)),
                           },
                         ),
                       });
                       // delete payroll
-                      await widget!.payroll!.reference.delete();
+                      await widget.payroll!.reference.delete();
                       // Payroll deleted
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -155,17 +151,17 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
                       context.safePop();
                     } else {
-                      if (_shouldSetState) setState(() {});
+                      if (shouldSetState) setState(() {});
                       return;
                     }
 
-                    if (_shouldSetState) setState(() {});
+                    if (shouldSetState) setState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -174,12 +170,12 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.remove,
@@ -189,7 +185,7 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Remove Duplicate',

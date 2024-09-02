@@ -1,12 +1,9 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'add_edit_c_r_model.dart';
 export 'add_edit_c_r_model.dart';
@@ -38,11 +35,11 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
     _model = createModel(context, () => AddEditCRModel());
 
     _model.descriptionTextController ??= TextEditingController(
-        text: widget!.cr != null ? widget!.cr?.description : '');
+        text: widget.cr != null ? widget.cr?.description : '');
     _model.descriptionFocusNode ??= FocusNode();
 
     _model.socketsTextController ??= TextEditingController(
-        text: widget!.cr != null ? widget!.cr?.sockets?.toString() : '0');
+        text: widget.cr != null ? widget.cr?.sockets.toString() : '0');
     _model.socketsFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -62,18 +59,18 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Align(
-        alignment: AlignmentDirectional(0.0, 1.0),
+        alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -94,7 +91,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -106,7 +103,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -118,17 +115,17 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
-                                widget!.cr != null ? 'Edit CR' : 'Add CR',
+                                widget.cr != null ? 'Edit CR' : 'Add CR',
                                 style: FlutterFlowTheme.of(context)
                                     .headlineSmall
                                     .override(
@@ -138,9 +135,9 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                               ),
                             ),
                             Align(
-                              alignment: AlignmentDirectional(0.0, -1.0),
+                              alignment: const AlignmentDirectional(0.0, -1.0),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 10.0, 0.0),
                                 child: Container(
                                   width: 80.0,
@@ -156,7 +153,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                     ),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.all(4.0),
+                                    padding: const EdgeInsets.all(4.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -189,7 +186,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                             },
                                             child: AnimatedContainer(
                                               duration:
-                                                  Duration(milliseconds: 100),
+                                                  const Duration(milliseconds: 100),
                                               curve: Curves.linear,
                                               width: 115.0,
                                               height: 100.0,
@@ -263,7 +260,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                             },
                                             child: AnimatedContainer(
                                               duration:
-                                                  Duration(milliseconds: 100),
+                                                  const Duration(milliseconds: 100),
                                               curve: Curves.linear,
                                               width: 115.0,
                                               height: 100.0,
@@ -314,7 +311,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -357,7 +354,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 20.0, 24.0),
                           ),
                           style:
@@ -371,7 +368,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                               .asValidator(context),
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -414,7 +411,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 20.0, 24.0),
                           ),
                           style:
@@ -428,19 +425,19 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                               .asValidator(context),
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
+                            const Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [],
                             ),
@@ -457,8 +454,8 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget!.cr != null) {
-                                    await widget!.cr!.reference
+                                  if (widget.cr != null) {
+                                    await widget.cr!.reference
                                         .update(createComfortRoomsRecordData(
                                       sockets: int.tryParse(
                                           _model.socketsTextController.text),
@@ -475,7 +472,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -501,7 +498,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -516,7 +513,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         'Save',

@@ -1,13 +1,9 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'list_of_names_model.dart';
 export 'list_of_names_model.dart';
@@ -21,8 +17,8 @@ class ListOfNamesWidget extends StatefulWidget {
     this.records,
     bool? issuer,
     this.replacement,
-  })  : this.preparedBy = preparedBy ?? true,
-        this.issuer = issuer ?? true;
+  })  : preparedBy = preparedBy ?? true,
+        issuer = issuer ?? true;
 
   final DocumentReference? remittance;
   final bool preparedBy;
@@ -83,7 +79,7 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
     context.watch<FFAppState>();
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: FutureBuilder<List<UsersRecord>>(
         future: queryUsersRecordOnce(
           queryBuilder: (usersRecord) => usersRecord.where(
@@ -112,7 +108,7 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
             width: 300.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -135,16 +131,16 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             12.0, 12.0, 0.0, 0.0),
                         child: Text(
                           functions.whoInListOfNames(
-                              widget!.remittance != null,
-                              widget!.preparedBy,
-                              widget!.issues != null,
-                              widget!.records != null,
-                              widget!.issuer,
-                              widget!.replacement != null),
+                              widget.remittance != null,
+                              widget.preparedBy,
+                              widget.issues != null,
+                              widget.records != null,
+                              widget.issuer,
+                              widget.replacement != null),
                           textAlign: TextAlign.start,
                           style:
                               FlutterFlowTheme.of(context).labelMedium.override(
@@ -155,7 +151,7 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                       ),
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                         child: InkWell(
                           splashColor: Colors.transparent,
                           focusColor: Colors.transparent,
@@ -175,7 +171,7 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
                     child: Builder(
                       builder: (context) {
                         final allNames = functions
@@ -194,7 +190,7 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                                 List.generate(allNames.length, (allNamesIndex) {
                               final allNamesItem = allNames[allNamesIndex];
                               return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 12.0, 0.0, 0.0),
                                 child: InkWell(
                                   splashColor: Colors.transparent,
@@ -202,52 +198,52 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    if (widget!.remittance != null) {
-                                      if (widget!.preparedBy) {
+                                    if (widget.remittance != null) {
+                                      if (widget.preparedBy) {
                                         // update prepared by
 
-                                        await widget!.remittance!
+                                        await widget.remittance!
                                             .update(createRemittancesRecordData(
                                           preparedByName: allNamesItem,
                                         ));
                                       } else {
                                         // update collected by
 
-                                        await widget!.remittance!
+                                        await widget.remittance!
                                             .update(createRemittancesRecordData(
                                           collectedByName: allNamesItem,
                                         ));
                                       }
                                     } else {
-                                      if (widget!.issues != null) {
+                                      if (widget.issues != null) {
                                         // updateName
 
-                                        await widget!.issues!
+                                        await widget.issues!
                                             .update(createIssuesRecordData(
                                           staffName: allNamesItem,
                                         ));
                                       } else {
-                                        if (widget!.records != null) {
-                                          if (widget!.issuer) {
+                                        if (widget.records != null) {
+                                          if (widget.issuer) {
                                             // update issuer
 
-                                            await widget!.records!
+                                            await widget.records!
                                                 .update(createRecordsRecordData(
                                               issuedBy: allNamesItem,
                                             ));
                                           } else {
                                             // update recipient
 
-                                            await widget!.records!
+                                            await widget.records!
                                                 .update(createRecordsRecordData(
                                               receivedBy: allNamesItem,
                                             ));
                                           }
                                         } else {
-                                          if (widget!.replacement != null) {
+                                          if (widget.replacement != null) {
                                             // updated requested by
 
-                                            await widget!.replacement!.update(
+                                            await widget.replacement!.update(
                                                 createReplacementRecordData(
                                               requestedBy: allNamesItem,
                                             ));
@@ -263,7 +259,7 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                                                         .info,
                                                   ),
                                                 ),
-                                                duration: Duration(
+                                                duration: const Duration(
                                                     milliseconds: 4000),
                                                 backgroundColor:
                                                     FlutterFlowTheme.of(context)
@@ -284,14 +280,14 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                                           .secondaryBackground,
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 8.0, 0.0, 8.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     12.0, 0.0, 0.0, 0.0),
                                             child: Icon(
                                               Icons.location_history,
@@ -303,7 +299,7 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
                                           ),
                                           Expanded(
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       12.0, 0.0, 0.0, 0.0),
                                               child: Text(

@@ -8,16 +8,10 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'c_r_replacements_model.dart';
 export 'c_r_replacements_model.dart';
 
@@ -70,8 +64,8 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -82,8 +76,8 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -94,8 +88,8 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(0.0, 100.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(0.0, 100.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -118,7 +112,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
         queryBuilder: (replacementRecord) => replacementRecord
             .where(
               'cr',
-              isEqualTo: widget!.cr?.reference,
+              isEqualTo: widget.cr?.reference,
             )
             .where(
               'date',
@@ -179,7 +173,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget!.cr!.description,
+                    widget.cr!.description,
                     style: FlutterFlowTheme.of(context).headlineMedium.override(
                           fontFamily: 'Outfit',
                           color: FlutterFlowTheme.of(context).primaryText,
@@ -210,11 +204,11 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                           onTap: () => FocusScope.of(context).unfocus(),
                           child: Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: Container(
+                            child: SizedBox(
                               height: double.infinity,
                               child: AddEditReplacementWidget(
-                                location: widget!.location?.reference,
-                                cr: widget!.cr?.reference,
+                                location: widget.location?.reference,
+                                cr: widget.cr?.reference,
                               ),
                             ),
                           ),
@@ -297,7 +291,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemCount: replacement.length,
-                          separatorBuilder: (_, __) => SizedBox(height: 1.0),
+                          separatorBuilder: (_, __) => const SizedBox(height: 1.0),
                           itemBuilder: (context, replacementIndex) {
                             final replacementItem =
                                 replacement[replacementIndex];
@@ -319,11 +313,11 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                       child: Padding(
                                         padding:
                                             MediaQuery.viewInsetsOf(context),
-                                        child: Container(
+                                        child: SizedBox(
                                           height: 170.0,
                                           child: OptionToReplacementWidget(
                                             replacement: replacementItem,
-                                            cr: widget!.cr?.reference,
+                                            cr: widget.cr?.reference,
                                           ),
                                         ),
                                       ),
@@ -341,7 +335,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                       blurRadius: 0.0,
                                       color: FlutterFlowTheme.of(context)
                                           .alternate,
-                                      offset: Offset(
+                                      offset: const Offset(
                                         0.0,
                                         1.0,
                                       ),
@@ -349,7 +343,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                   ],
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 12.0, 16.0, 12.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -380,7 +374,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                                     padding:
                                                         MediaQuery.viewInsetsOf(
                                                             context),
-                                                    child: Container(
+                                                    child: SizedBox(
                                                       height: double.infinity,
                                                       child: ChangeDateWidget(
                                                         date: replacementItem
@@ -420,7 +414,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                                               .primaryText,
                                                     ),
                                                   ),
-                                                  duration: Duration(
+                                                  duration: const Duration(
                                                       milliseconds: 4000),
                                                   backgroundColor:
                                                       FlutterFlowTheme.of(
@@ -479,7 +473,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                       Flexible(
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 0.0, 0.0, 0.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -488,7 +482,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                             children: [
                                               AnimatedContainer(
                                                 duration:
-                                                    Duration(milliseconds: 150),
+                                                    const Duration(milliseconds: 150),
                                                 curve: Curves.easeInOut,
                                                 width: double.infinity,
                                                 decoration: BoxDecoration(
@@ -515,17 +509,16 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                                       TextSpan(
                                                         text:
                                                             (String quantity) {
-                                                          return ' ' +
-                                                              (int.parse(quantity) ==
+                                                          return ' ${int.parse(quantity) ==
                                                                       1
                                                                   ? 'bulb'
-                                                                  : 'bulbs');
+                                                                  : 'bulbs'}';
                                                         }(replacementItem
                                                                 .quantity
                                                                 .toString()),
-                                                        style: TextStyle(),
+                                                        style: const TextStyle(),
                                                       ),
-                                                      TextSpan(
+                                                      const TextSpan(
                                                         text: ' - ',
                                                         style: TextStyle(),
                                                       ),
@@ -606,7 +599,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                                                       .viewInsetsOf(
                                                                           context),
                                                                   child:
-                                                                      Container(
+                                                                      SizedBox(
                                                                     height:
                                                                         300.0,
                                                                     child:
@@ -653,7 +646,7 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                                             TextSpan(
                                                               text: replacementItem
                                                                   .requestedBy,
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,

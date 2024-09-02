@@ -1,16 +1,12 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/forms/item_add_edit/item_add_edit_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'inventory_model.dart';
 export 'inventory_model.dart';
@@ -113,7 +109,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                     if (FFAppState().role == 'admin')
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 10.0, 8.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 10.0, 8.0),
                         child: FlutterFlowIconButton(
                           borderColor: FlutterFlowTheme.of(context).alternate,
                           borderRadius: 12.0,
@@ -133,7 +129,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                       ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
                       child: FlutterFlowIconButton(
                         borderColor: FlutterFlowTheme.of(context).alternate,
                         borderRadius: 12.0,
@@ -156,7 +152,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                 onTap: () => FocusScope.of(context).unfocus(),
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
-                                  child: Container(
+                                  child: SizedBox(
                                     height: double.infinity,
                                     child: ItemAddEditWidget(
                                       edit: false,
@@ -186,13 +182,13 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(0.0, -1.0),
+                      alignment: const AlignmentDirectional(0.0, -1.0),
                       child: Container(
                         width: double.infinity,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxWidth: 970.0,
                         ),
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
@@ -206,10 +202,10 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                 Container(
                                   width: double.infinity,
                                   height: 24.0,
-                                  decoration: BoxDecoration(),
+                                  decoration: const BoxDecoration(),
                                 ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 12.0, 16.0, 0.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -218,7 +214,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 0.0, 15.0),
                                         child: FlutterFlowChoiceChips(
                                           options: functions
@@ -304,7 +300,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     16.0, 0.0, 16.0, 0.0),
                                 child: Container(
                                   width: double.infinity,
@@ -314,9 +310,9 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                         .primaryBackground,
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
-                                  alignment: AlignmentDirectional(-1.0, 0.0),
+                                  alignment: const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         16.0, 0.0, 0.0, 0.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
@@ -325,7 +321,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                           flex: 4,
                                           child: Align(
                                             alignment:
-                                                AlignmentDirectional(-1.0, 0.0),
+                                                const AlignmentDirectional(-1.0, 0.0),
                                             child: Text(
                                               'Item',
                                               style:
@@ -343,9 +339,9 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                           flex: 3,
                                           child: Align(
                                             alignment:
-                                                AlignmentDirectional(-1.0, 0.0),
+                                                const AlignmentDirectional(-1.0, 0.0),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(4.0, 0.0, 0.0, 0.0),
                                               child: Text(
                                                 'Edit / Delete',
@@ -366,7 +362,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                           flex: 3,
                                           child: Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     4.0, 0.0, 16.0, 0.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
@@ -375,7 +371,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                               children: [
                                                 Align(
                                                   alignment:
-                                                      AlignmentDirectional(
+                                                      const AlignmentDirectional(
                                                           1.0, 0.0),
                                                   child: Text(
                                                     'Availability',
@@ -409,7 +405,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                           .toList();
 
                                   return ListView.separated(
-                                    padding: EdgeInsets.fromLTRB(
+                                    padding: const EdgeInsets.fromLTRB(
                                       0,
                                       0.0,
                                       0,
@@ -420,13 +416,13 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                     scrollDirection: Axis.vertical,
                                     itemCount: inventoryGoods.length,
                                     separatorBuilder: (_, __) =>
-                                        SizedBox(height: 1.0),
+                                        const SizedBox(height: 1.0),
                                     itemBuilder:
                                         (context, inventoryGoodsIndex) {
                                       final inventoryGoodsItem =
                                           inventoryGoods[inventoryGoodsIndex];
                                       return Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 0.0, 16.0, 0.0),
                                         child: Container(
                                           width: double.infinity,
@@ -439,7 +435,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .alternate,
-                                                offset: Offset(
+                                                offset: const Offset(
                                                   0.0,
                                                   1.0,
                                                 ),
@@ -448,7 +444,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                           ),
                                           child: Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 12.0, 16.0, 12.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
@@ -461,7 +457,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                     children: [
                                                       Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 -1.0, 0.0),
                                                         child: Text(
                                                           inventoryGoodsItem
@@ -479,7 +475,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                       ),
                                                       Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 -1.0, 0.0),
                                                         child: Text(
                                                           formatNumber(
@@ -554,7 +550,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    Container(
+                                                                    SizedBox(
                                                                   height: double
                                                                       .infinity,
                                                                   child:
@@ -617,9 +613,9 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                                   builder:
                                                                       (alertDialogContext) {
                                                                     return AlertDialog(
-                                                                      title: Text(
+                                                                      title: const Text(
                                                                           'Deletion Imminent'),
-                                                                      content: Text(
+                                                                      content: const Text(
                                                                           'Are you sure you want to delete this item?'),
                                                                       actions: [
                                                                         TextButton(
@@ -627,14 +623,14 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                                               alertDialogContext,
                                                                               false),
                                                                           child:
-                                                                              Text('Cancel'),
+                                                                              const Text('Cancel'),
                                                                         ),
                                                                         TextButton(
                                                                           onPressed: () => Navigator.pop(
                                                                               alertDialogContext,
                                                                               true),
                                                                           child:
-                                                                              Text('Confirm'),
+                                                                              const Text('Confirm'),
                                                                         ),
                                                                       ],
                                                                     );
@@ -658,7 +654,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                                       .primaryText,
                                                                 ),
                                                               ),
-                                                              duration: Duration(
+                                                              duration: const Duration(
                                                                   milliseconds:
                                                                       4000),
                                                               backgroundColor:
@@ -701,22 +697,22 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                                     builder:
                                                                         (alertDialogContext) {
                                                                       return AlertDialog(
-                                                                        title: Text(
+                                                                        title: const Text(
                                                                             'To Replenish'),
                                                                         content:
-                                                                            Text('Do we need to buy more of this?'),
+                                                                            const Text('Do we need to buy more of this?'),
                                                                         actions: [
                                                                           TextButton(
                                                                             onPressed: () =>
                                                                                 Navigator.pop(alertDialogContext, false),
                                                                             child:
-                                                                                Text('Cancel'),
+                                                                                const Text('Cancel'),
                                                                           ),
                                                                           TextButton(
                                                                             onPressed: () =>
                                                                                 Navigator.pop(alertDialogContext, true),
                                                                             child:
-                                                                                Text('Confirm'),
+                                                                                const Text('Confirm'),
                                                                           ),
                                                                         ],
                                                                       );
@@ -749,7 +745,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                                       .primaryText,
                                                                 ),
                                                               ),
-                                                              duration: Duration(
+                                                              duration: const Duration(
                                                                   milliseconds:
                                                                       4000),
                                                               backgroundColor:
@@ -788,11 +784,11 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                           ),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           8.0,
                                                                           4.0,

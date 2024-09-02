@@ -4,10 +4,7 @@ import '/components/forms/history_edit/history_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'option_to_history_model.dart';
 export 'option_to_history_model.dart';
 
@@ -50,12 +47,12 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -68,13 +65,13 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Options',
                   textAlign: TextAlign.start,
@@ -85,7 +82,7 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -100,10 +97,10 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                       builder: (context) {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
-                          child: Container(
+                          child: SizedBox(
                             height: 300.0,
                             child: HistoryEditWidget(
-                              history: widget!.history!,
+                              history: widget.history!,
                             ),
                           ),
                         );
@@ -120,12 +117,12 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -135,7 +132,7 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Details',
@@ -155,9 +152,9 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                 ),
               ),
               if (functions.findTextsInString(
-                  widget!.history?.description, 'checked out'))
+                  widget.history?.description, 'checked out'))
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -168,19 +165,19 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: Text('Undoing Check-out'),
-                                content: Text(
+                                title: const Text('Undoing Check-out'),
+                                content: const Text(
                                     'This history will be removed and the room will be occupied again!'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: Text('Confirm'),
+                                    child: const Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -190,7 +187,7 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                       if (confirmDialogResponse) {
                         // update booking to paid
 
-                        await widget!.history!.booking!.update({
+                        await widget.history!.booking!.update({
                           ...createBookingsRecordData(
                             status: 'paid',
                           ),
@@ -202,25 +199,25 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                         });
                         // book
                         _model.book = await BookingsRecord.getDocumentOnce(
-                            widget!.history!.booking!);
+                            widget.history!.booking!);
                         // update room
 
-                        await widget!.history!.parentReference
+                        await widget.history!.parentReference
                             .update(createRoomsRecordData(
                           vacant: false,
                           guests: int.parse(_model.book!.guests),
-                          currentBooking: widget!.history?.booking,
+                          currentBooking: widget.history?.booking,
                         ));
                         // undoing history
 
                         await HistoryRecord.createDoc(
-                                widget!.history!.parentReference)
+                                widget.history!.parentReference)
                             .set({
                           ...createHistoryRecordData(
                             description:
                                 'Check out has been undone. Previous guest is still occupying this room.',
                             staff: currentUserReference,
-                            booking: widget!.history?.booking,
+                            booking: widget.history?.booking,
                           ),
                           ...mapToFirestore(
                             {
@@ -240,12 +237,12 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                       ),
                       child: Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Icon(
                                 Icons.undo_outlined,
@@ -255,7 +252,7 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     12.0, 0.0, 0.0, 0.0),
                                 child: Text(
                                   'Undo Check-out',
@@ -275,9 +272,9 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                   ),
                 ),
               if (!functions.findTextsInString(
-                  widget!.history?.description, 'checked out'))
+                  widget.history?.description, 'checked out'))
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -288,18 +285,18 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: Text('Removing History'),
-                                content: Text('This history will be removed!'),
+                                title: const Text('Removing History'),
+                                content: const Text('This history will be removed!'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: Text('Confirm'),
+                                    child: const Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -307,7 +304,7 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                           ) ??
                           false;
                       if (confirmDialogResponse) {
-                        await widget!.history!.reference.delete();
+                        await widget.history!.reference.delete();
                         Navigator.pop(context);
                       }
                     },
@@ -318,12 +315,12 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                       ),
                       child: Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Icon(
                                 Icons.remove,
@@ -333,7 +330,7 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     12.0, 0.0, 0.0, 0.0),
                                 child: Text(
                                   'Remove',

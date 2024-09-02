@@ -4,11 +4,9 @@ import '/components/forms/transaction_edit/transaction_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'option_to_booking_transaction_model.dart';
 export 'option_to_booking_transaction_model.dart';
@@ -60,7 +58,7 @@ class _OptionToBookingTransactionWidgetState
             )
             .where(
               'number',
-              isEqualTo: widget!.roomNo,
+              isEqualTo: widget.roomNo,
             ),
         singleRecord: true,
       ).then((s) => s.firstOrNull);
@@ -83,12 +81,12 @@ class _OptionToBookingTransactionWidgetState
     context.watch<FFAppState>();
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
         width: 300.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
@@ -101,15 +99,15 @@ class _OptionToBookingTransactionWidgetState
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
-                  'Options For Room ${widget!.roomNo?.toString()}',
+                  'Options For Room ${widget.roomNo?.toString()}',
                   textAlign: TextAlign.start,
                   style: FlutterFlowTheme.of(context).labelMedium.override(
                         fontFamily: 'Readex Pro',
@@ -118,7 +116,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -133,14 +131,14 @@ class _OptionToBookingTransactionWidgetState
                       builder: (context) {
                         return Padding(
                           padding: MediaQuery.viewInsetsOf(context),
-                          child: Container(
+                          child: SizedBox(
                             height: double.infinity,
                             child: TransactionEditWidget(
-                              ref: widget!.ref!,
-                              description: widget!.description!,
-                              price: widget!.price!,
+                              ref: widget.ref!,
+                              description: widget.description!,
+                              price: widget.price!,
                               roomRef: _model.room?.reference,
-                              bookingRef: widget!.booking,
+                              bookingRef: widget.booking,
                             ),
                           ),
                         );
@@ -157,12 +155,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -172,7 +170,7 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Change Details',
@@ -192,7 +190,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -205,19 +203,19 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Mark as Pending'),
-                              content: Text(
+                              title: const Text('Mark as Pending'),
+                              content: const Text(
                                   'Guest has decided not to pay balance yet?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -227,43 +225,43 @@ class _OptionToBookingTransactionWidgetState
                     if (confirmDialogResponse) {
                       // set pending transaction
 
-                      await widget!.ref!.update(createTransactionsRecordData(
+                      await widget.ref!.update(createTransactionsRecordData(
                         pending: true,
                         description: (String description) {
                           return description.replaceAll(
                               RegExp(
                                   r'Guest paid the outstanding balance since \d+ hours ago for '),
                               '');
-                        }(widget!.description!),
+                        }(widget.description!),
                       ));
                       // add to pending
 
-                      await widget!.booking!.update({
+                      await widget.booking!.update({
                         ...createBookingsRecordData(
                           status: 'pending',
                         ),
                         ...mapToFirestore(
                           {
-                            'pendings': FieldValue.arrayUnion([widget!.ref]),
+                            'pendings': FieldValue.arrayUnion([widget.ref]),
                           },
                         ),
                       });
                       // bookingRef
                       _model.bookingRef = await BookingsRecord.getDocumentOnce(
-                          widget!.booking!);
+                          widget.booking!);
                       // create history
 
                       await HistoryRecord.createDoc(_model.bookingRef!.room!)
                           .set({
                         ...createHistoryRecordData(
                           description: 'Transaction worth ${formatNumber(
-                            widget!.price,
+                            widget.price,
                             formatType: FormatType.decimal,
                             decimalType: DecimalType.automatic,
                             currency: 'Php ',
                           )} now pending.',
                           staff: currentUserReference,
-                          booking: widget!.booking,
+                          booking: widget.booking,
                         ),
                         ...mapToFirestore(
                           {
@@ -279,7 +277,7 @@ class _OptionToBookingTransactionWidgetState
                               color: FlutterFlowTheme.of(context).primaryText,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor:
                               FlutterFlowTheme.of(context).secondary,
                         ),
@@ -295,12 +293,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.auto_awesome_motion_outlined,
@@ -310,7 +308,7 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Mark as Pending',
@@ -330,7 +328,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -341,18 +339,18 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Converting Guest to Senior Citizen'),
-                              content: Text('Are you sure about this?'),
+                              title: const Text('Converting Guest to Senior Citizen'),
+                              content: const Text('Are you sure about this?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -362,7 +360,7 @@ class _OptionToBookingTransactionWidgetState
                     if (confirmDialogResponse) {
                       // read booking
                       _model.bookingNorm = await BookingsRecord.getDocumentOnce(
-                          widget!.booking!);
+                          widget.booking!);
                       if (_model.bookingNorm?.ability == 'normal') {
                         // no further discount
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -373,14 +371,14 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
                         );
                       } else {
                         // make senior in booking
 
-                        await widget!.booking!.update(createBookingsRecordData(
+                        await widget.booking!.update(createBookingsRecordData(
                           ability: 'normal',
                           total: (double total, bool promoOn) {
                             return total / (1 - (promoOn ? 0.1 : 0.2));
@@ -390,13 +388,13 @@ class _OptionToBookingTransactionWidgetState
                         // read Transaction again
                         _model.readTransNorm =
                             await TransactionsRecord.getDocumentOnce(
-                                widget!.ref!);
+                                widget.ref!);
                         // create new transaction
 
                         await TransactionsRecord.collection.doc().set({
                           ...createTransactionsRecordData(
                             description:
-                                'Guest from room ${widget!.roomNo?.toString()} is no longer a discounted guest.',
+                                'Guest from room ${widget.roomNo?.toString()} is no longer a discounted guest.',
                             staff: currentUserReference,
                             total: (double total, bool promoOn) {
                               return (total -
@@ -404,13 +402,13 @@ class _OptionToBookingTransactionWidgetState
                                   .abs();
                             }(_model.bookingNorm!.total,
                                 _model.settings!.promoOn),
-                            booking: widget!.booking,
+                            booking: widget.booking,
                             type: 'book',
                             pending: _model.readTransNorm?.pending,
                             remitted: false,
                             hotel: FFAppState().hotel,
                             guests: int.tryParse(_model.bookingNorm!.guests),
-                            room: widget!.roomNo,
+                            room: widget.roomNo,
                           ),
                           ...mapToFirestore(
                             {
@@ -424,9 +422,9 @@ class _OptionToBookingTransactionWidgetState
                             .set({
                           ...createHistoryRecordData(
                             description:
-                                'Guest from room ${widget!.roomNo?.toString()} no longer discounted.',
+                                'Guest from room ${widget.roomNo?.toString()} no longer discounted.',
                             staff: currentUserReference,
-                            booking: widget!.booking,
+                            booking: widget.booking,
                           ),
                           ...mapToFirestore(
                             {
@@ -442,7 +440,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -461,12 +459,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.transform,
@@ -476,7 +474,7 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Remove Senior/PWD Discount',
@@ -496,7 +494,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -507,18 +505,18 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Converting Guest to Senior Citizen'),
-                              content: Text('Are you sure about this?'),
+                              title: const Text('Converting Guest to Senior Citizen'),
+                              content: const Text('Are you sure about this?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -528,11 +526,11 @@ class _OptionToBookingTransactionWidgetState
                     if (confirmDialogResponse) {
                       // read booking
                       _model.booking = await BookingsRecord.getDocumentOnce(
-                          widget!.booking!);
+                          widget.booking!);
                       if (_model.booking?.ability == 'normal') {
                         // make senior in booking
 
-                        await widget!.booking!.update(createBookingsRecordData(
+                        await widget.booking!.update(createBookingsRecordData(
                           ability: 'senior',
                           total: (double total, bool promoOn) {
                             return total - (total * (promoOn ? 0.1 : 0.2));
@@ -541,24 +539,24 @@ class _OptionToBookingTransactionWidgetState
                         // read Transaction again
                         _model.readTrans =
                             await TransactionsRecord.getDocumentOnce(
-                                widget!.ref!);
+                                widget.ref!);
                         // create new transaction
 
                         await TransactionsRecord.collection.doc().set({
                           ...createTransactionsRecordData(
                             description:
-                                'Guest from room ${widget!.roomNo?.toString()} is now categorized as senior citizen. Hereby granting a discount.',
+                                'Guest from room ${widget.roomNo?.toString()} is now categorized as senior citizen. Hereby granting a discount.',
                             staff: currentUserReference,
                             total: (double total, bool promoOn) {
                               return -(total * (promoOn ? 0.1 : 0.2));
-                            }(widget!.price!, _model.settings!.promoOn),
-                            booking: widget!.booking,
+                            }(widget.price!, _model.settings!.promoOn),
+                            booking: widget.booking,
                             type: 'book',
                             pending: _model.readTrans?.pending,
                             remitted: false,
                             hotel: FFAppState().hotel,
                             guests: int.tryParse(_model.booking!.guests),
-                            room: widget!.roomNo,
+                            room: widget.roomNo,
                           ),
                           ...mapToFirestore(
                             {
@@ -572,9 +570,9 @@ class _OptionToBookingTransactionWidgetState
                             .set({
                           ...createHistoryRecordData(
                             description:
-                                'Guest from room ${widget!.roomNo?.toString()} now discounted as senior citizen.',
+                                'Guest from room ${widget.roomNo?.toString()} now discounted as senior citizen.',
                             staff: currentUserReference,
-                            booking: widget!.booking,
+                            booking: widget.booking,
                           ),
                           ...mapToFirestore(
                             {
@@ -590,7 +588,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -605,7 +603,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
                         );
@@ -623,12 +621,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.transform,
@@ -638,7 +636,7 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Categorize as Senior',
@@ -658,7 +656,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -669,18 +667,18 @@ class _OptionToBookingTransactionWidgetState
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: Text('Categorizing Guest to PWD'),
-                              content: Text('Are you sure about this?'),
+                              title: const Text('Categorizing Guest to PWD'),
+                              content: const Text('Are you sure about this?'),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
+                                  child: const Text('Confirm'),
                                 ),
                               ],
                             );
@@ -690,7 +688,7 @@ class _OptionToBookingTransactionWidgetState
                     if (confirmDialogResponse) {
                       // read booking
                       _model.bookingPWD = await BookingsRecord.getDocumentOnce(
-                          widget!.booking!);
+                          widget.booking!);
                       if (_model.bookingNorm?.ability == 'normal') {
                         // make pwd in booking
 
@@ -704,13 +702,13 @@ class _OptionToBookingTransactionWidgetState
                         // read Transaction again
                         _model.readTransPWD =
                             await TransactionsRecord.getDocumentOnce(
-                                widget!.ref!);
+                                widget.ref!);
                         // create new transaction
 
                         await TransactionsRecord.collection.doc().set({
                           ...createTransactionsRecordData(
                             description:
-                                'Guest from room ${widget!.roomNo?.toString()} is now categorized as PWD. Hereby granting a discount.',
+                                'Guest from room ${widget.roomNo?.toString()} is now categorized as PWD. Hereby granting a discount.',
                             staff: currentUserReference,
                             total: (double total, bool promoOn) {
                               return -(total * (promoOn ? 0.1 : 0.2));
@@ -722,7 +720,7 @@ class _OptionToBookingTransactionWidgetState
                             remitted: false,
                             hotel: FFAppState().hotel,
                             guests: int.tryParse(_model.bookingPWD!.guests),
-                            room: widget!.roomNo,
+                            room: widget.roomNo,
                           ),
                           ...mapToFirestore(
                             {
@@ -736,9 +734,9 @@ class _OptionToBookingTransactionWidgetState
                             .set({
                           ...createHistoryRecordData(
                             description:
-                                'Guest from room ${widget!.roomNo?.toString()} now discounted as PWD.',
+                                'Guest from room ${widget.roomNo?.toString()} now discounted as PWD.',
                             staff: currentUserReference,
-                            booking: widget!.booking,
+                            booking: widget.booking,
                           ),
                           ...mapToFirestore(
                             {
@@ -754,7 +752,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
                           ),
@@ -769,7 +767,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
                         );
@@ -787,12 +785,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.transform_sharp,
@@ -802,7 +800,7 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Categorize as PWD',
@@ -822,7 +820,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -836,19 +834,19 @@ class _OptionToBookingTransactionWidgetState
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: Text('Are you sure?'),
-                                content: Text(
+                                title: const Text('Are you sure?'),
+                                content: const Text(
                                     'This transaction will be deleted. If this is a new checkin, the booking will also be deleted.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: Text('Confirm'),
+                                    child: const Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -858,9 +856,9 @@ class _OptionToBookingTransactionWidgetState
                       if (confirmDialogResponse) {
                         // transaction action output
                         _model.trans = await TransactionsRecord.getDocumentOnce(
-                            widget!.ref!);
+                            widget.ref!);
                         if (functions.findTextsInString(
-                            widget!.description, 'checkin')) {
+                            widget.description, 'checkin')) {
                           if (!_model.room!.vacant) {
                             // update room vacancy and guests
 
@@ -875,11 +873,11 @@ class _OptionToBookingTransactionWidgetState
                         } else {
                           // decrement booking total
 
-                          await widget!.booking!.update({
+                          await widget.booking!.update({
                             ...mapToFirestore(
                               {
                                 'total':
-                                    FieldValue.increment(-(widget!.price!)),
+                                    FieldValue.increment(-(widget.price!)),
                                 'nights': FieldValue.increment(-(1)),
                               },
                             ),
@@ -892,7 +890,7 @@ class _OptionToBookingTransactionWidgetState
                             .set({
                           ...createHistoryRecordData(
                             description:
-                                'Removed transaction worth Php ${widget!.price?.toString()}',
+                                'Removed transaction worth Php ${widget.price?.toString()}',
                             staff: currentUserReference,
                           ),
                           ...mapToFirestore(
@@ -914,7 +912,7 @@ class _OptionToBookingTransactionWidgetState
                           });
                         }
                         // delete transactions
-                        await widget!.ref!.delete();
+                        await widget.ref!.delete();
                         // transaction deleted
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -924,7 +922,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
                         );
@@ -939,7 +937,7 @@ class _OptionToBookingTransactionWidgetState
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -954,12 +952,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.delete_outlined,
@@ -969,7 +967,7 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Delete Transaction',
@@ -989,7 +987,7 @@ class _OptionToBookingTransactionWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -1003,19 +1001,19 @@ class _OptionToBookingTransactionWidgetState
                             context: context,
                             builder: (alertDialogContext) {
                               return AlertDialog(
-                                title: Text('Are you sure?'),
+                                title: const Text('Are you sure?'),
                                 content:
-                                    Text('This duplicate will be removed.'),
+                                    const Text('This duplicate will be removed.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(
                                         alertDialogContext, false),
-                                    child: Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.pop(alertDialogContext, true),
-                                    child: Text('Confirm'),
+                                    child: const Text('Confirm'),
                                   ),
                                 ],
                               );
@@ -1026,14 +1024,14 @@ class _OptionToBookingTransactionWidgetState
                         // transaction action output
                         _model.duplicateTrans =
                             await TransactionsRecord.getDocumentOnce(
-                                widget!.ref!);
+                                widget.ref!);
                         // history taking
 
                         await HistoryRecord.createDoc(_model.room!.reference)
                             .set({
                           ...createHistoryRecordData(
                             description:
-                                'There was a duplicate that caused admin to remove a transaction worth Php ${widget!.price?.toString()}',
+                                'There was a duplicate that caused admin to remove a transaction worth Php ${widget.price?.toString()}',
                             staff: currentUserReference,
                           ),
                           ...mapToFirestore(
@@ -1058,8 +1056,8 @@ class _OptionToBookingTransactionWidgetState
                         await _model.duplicateTrans!.reference.delete();
                         // decrement book total
 
-                        await widget!.booking!.update(createBookingsRecordData(
-                          total: widget!.price,
+                        await widget.booking!.update(createBookingsRecordData(
+                          total: widget.price,
                         ));
                         // duplicate removed
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -1070,7 +1068,7 @@ class _OptionToBookingTransactionWidgetState
                                 color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
-                            duration: Duration(milliseconds: 4000),
+                            duration: const Duration(milliseconds: 4000),
                             backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
                         );
@@ -1085,7 +1083,7 @@ class _OptionToBookingTransactionWidgetState
                               color: FlutterFlowTheme.of(context).info,
                             ),
                           ),
-                          duration: Duration(milliseconds: 4000),
+                          duration: const Duration(milliseconds: 4000),
                           backgroundColor: FlutterFlowTheme.of(context).error,
                         ),
                       );
@@ -1100,12 +1098,12 @@ class _OptionToBookingTransactionWidgetState
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Icon(
                               Icons.remove_outlined,
@@ -1115,7 +1113,7 @@ class _OptionToBookingTransactionWidgetState
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Remove duplicate',

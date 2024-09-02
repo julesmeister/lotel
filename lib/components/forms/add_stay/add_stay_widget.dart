@@ -4,11 +4,8 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'add_stay_model.dart';
 export 'add_stay_model.dart';
@@ -50,10 +47,10 @@ class _AddStayWidgetState extends State<AddStayWidget> {
         0.0,
       );
       setState(() {});
-      while (widget!.booking?.transactions?.length != _model.loop) {
+      while (widget.booking?.transactions.length != _model.loop) {
         // bookingTrans
         _model.bookingTrans = await TransactionsRecord.getDocumentOnce(
-            widget!.booking!.transactions[_model.loop]);
+            widget.booking!.transactions[_model.loop]);
         // add to trans list
         _model.addToTransactions(_model.bookingTrans!);
         setState(() {});
@@ -66,7 +63,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
       _model.lateCheckOutFee = _model.hotelSetting!.lateCheckoutFee;
       setState(() {});
       // room
-      _model.room = await RoomsRecord.getDocumentOnce(widget!.booking!.room!);
+      _model.room = await RoomsRecord.getDocumentOnce(widget.booking!.room!);
       // room price
       _model.roomPrice = _model.room!.price;
       _model.number = _model.room!.number;
@@ -92,18 +89,18 @@ class _AddStayWidgetState extends State<AddStayWidget> {
 
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Align(
-        alignment: AlignmentDirectional(0.0, 1.0),
+        alignment: const AlignmentDirectional(0.0, 1.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 16.0),
                   child: FlutterFlowIconButton(
                     borderColor: Colors.transparent,
                     borderRadius: 30.0,
@@ -124,7 +121,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
               Material(
                 color: Colors.transparent,
                 elevation: 5.0,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
@@ -136,7 +133,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(16.0),
@@ -148,14 +145,14 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 12.0, 0.0, 12.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 0.0, 0.0),
                               child: Text(
                                 'Add Stay',
@@ -168,9 +165,9 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                               ),
                             ),
                             Align(
-                              alignment: AlignmentDirectional(0.0, -1.0),
+                              alignment: const AlignmentDirectional(0.0, -1.0),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 10.0, 0.0),
                                 child: Container(
                                   width: 80.0,
@@ -186,7 +183,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                     ),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.all(4.0),
+                                    padding: const EdgeInsets.all(4.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -220,7 +217,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                             },
                                             child: AnimatedContainer(
                                               duration:
-                                                  Duration(milliseconds: 100),
+                                                  const Duration(milliseconds: 100),
                                               curve: Curves.linear,
                                               width: 115.0,
                                               height: 100.0,
@@ -295,7 +292,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                             },
                                             child: AnimatedContainer(
                                               duration:
-                                                  Duration(milliseconds: 100),
+                                                  const Duration(milliseconds: 100),
                                               curve: Curves.linear,
                                               width: 115.0,
                                               height: 100.0,
@@ -346,7 +343,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                           ],
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
@@ -389,7 +386,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                             filled: true,
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
+                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 24.0, 20.0, 24.0),
                           ),
                           style:
@@ -405,13 +402,13 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                               .asValidator(context),
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         height: 4.0,
                         thickness: 1.0,
                         color: Color(0xFFE0E3E7),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             8.0, 4.0, 16.0, 10.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -419,7 +416,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     10.0, 0.0, 0.0, 0.0),
                                 child: RichText(
                                   textScaler: MediaQuery.of(context).textScaler,
@@ -442,7 +439,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                         text: (int.parse(_model
                                                     .numberTextController
                                                     .text) +
-                                                int.parse(widget!
+                                                int.parse(widget
                                                     .booking!.nights
                                                     .toString()))
                                             .toString(),
@@ -458,17 +455,15 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                               ? ' night'
                                               : ' nights';
                                         }(_model.numberTextController.text),
-                                        style: TextStyle(),
+                                        style: const TextStyle(),
                                       ),
-                                      TextSpan(
+                                      const TextSpan(
                                         text: ' ',
                                         style: TextStyle(),
                                       ),
                                       TextSpan(
                                         text: (double price, String quantity) {
-                                          return " +" +
-                                              (price * int.parse(quantity))
-                                                  .toString();
+                                          return " +${price * int.parse(quantity)}";
                                         }(
                                             (_model.promoPercent != 0.0
                                                 ? ((_model.roomPrice -
@@ -486,7 +481,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                   }(
                                                     _model.roomPrice,
                                                     valueOrDefault<String>(
-                                                      widget!.booking?.ability,
+                                                      widget.booking?.ability,
                                                       'normal',
                                                     )))),
                                             _model.numberTextController.text),
@@ -532,7 +527,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                     // history
 
                                     await HistoryRecord.createDoc(
-                                            widget!.booking!.room!)
+                                            widget.booking!.room!)
                                         .set({
                                       ...createHistoryRecordData(
                                         description: (String additional,
@@ -543,9 +538,9 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                               ? 'Extended $additional ${int.tryParse(additional) == 1 ? 'night' : 'nights'}'
                                               : 'Refunded $additional ${int.tryParse(additional) == 1 ? 'night' : 'nights'}';
                                         }(_model.numberTextController.text,
-                                            widget!.booking!.nights.toString()),
+                                            widget.booking!.nights.toString()),
                                         staff: currentUserReference,
-                                        booking: widget!.booking?.reference,
+                                        booking: widget.booking?.reference,
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -576,7 +571,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                   }(
                                                     _model.roomPrice,
                                                     valueOrDefault<String>(
-                                                      widget!.booking?.ability,
+                                                      widget.booking?.ability,
                                                       'normal',
                                                     )))) *
                                             double.parse(_model
@@ -584,10 +579,10 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
-                                        pending: widget!.booking?.status ==
+                                        pending: widget.booking?.status ==
                                             'pending',
                                         room: _model.number,
-                                        booking: widget!.booking?.reference,
+                                        booking: widget.booking?.reference,
                                         description: (String additional,
                                                 String existing, int room) {
                                           return (int.tryParse(additional) ??
@@ -597,10 +592,10 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                               : '$additional ${int.tryParse(additional) == 1 ? 'night' : 'nights'} refunded in room $room';
                                         }(
                                             _model.numberTextController.text,
-                                            widget!.booking!.extraBeds,
+                                            widget.booking!.extraBeds,
                                             _model.number),
                                         guests:
-                                            int.parse(widget!.booking!.guests),
+                                            int.parse(widget.booking!.guests),
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -628,7 +623,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                   }(
                                                     _model.roomPrice,
                                                     valueOrDefault<String>(
-                                                      widget!.booking?.ability,
+                                                      widget.booking?.ability,
                                                       'normal',
                                                     )))) *
                                             double.parse(_model
@@ -636,10 +631,10 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                         hotel: FFAppState().hotel,
                                         type: 'book',
                                         remitted: false,
-                                        pending: widget!.booking?.status ==
+                                        pending: widget.booking?.status ==
                                             'pending',
                                         room: _model.number,
-                                        booking: widget!.booking?.reference,
+                                        booking: widget.booking?.reference,
                                         description: (String additional,
                                                 String existing, int room) {
                                           return (int.tryParse(additional) ??
@@ -649,10 +644,10 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                               : '$additional ${int.tryParse(additional) == 1 ? 'night' : 'nights'} refunded in room $room';
                                         }(
                                             _model.numberTextController.text,
-                                            widget!.booking!.extraBeds,
+                                            widget.booking!.extraBeds,
                                             _model.number),
                                         guests:
-                                            int.parse(widget!.booking!.guests),
+                                            int.parse(widget.booking!.guests),
                                       ),
                                       ...mapToFirestore(
                                         {
@@ -665,14 +660,14 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                     setState(() {});
                                     // update booking total + transactions
 
-                                    await widget!.booking!.reference.update({
+                                    await widget.booking!.reference.update({
                                       ...createBookingsRecordData(
                                         total: functions.getTotalAmount(
                                             valueOrDefault<String>(
-                                              widget!.booking?.extraBeds,
+                                              widget.booking?.extraBeds,
                                               '0',
                                             ),
-                                            widget!.booking!.nights +
+                                            widget.booking!.nights +
                                                 int.parse(_model
                                                     .numberTextController.text),
                                             _model.promoPercent != 0.0
@@ -691,12 +686,12 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                   }(
                                                     _model.roomPrice,
                                                     valueOrDefault<String>(
-                                                      widget!.booking?.ability,
+                                                      widget.booking?.ability,
                                                       'normal',
                                                     ))),
                                             _model.bedPrice,
                                             '-1',
-                                            widget!.booking!.nights,
+                                            widget.booking!.nights,
                                             _model.lateCheckOutFee,
                                             _model.transactions.toList(),
                                             0),
@@ -720,7 +715,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                 .primaryText,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondary,
@@ -737,7 +732,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                 .error,
                                           ),
                                         ),
-                                        duration: Duration(milliseconds: 4000),
+                                        duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
                                             FlutterFlowTheme.of(context).info,
                                       ),
@@ -751,7 +746,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 12.0, 0.0),
                                       child: Text(
                                         'Save',

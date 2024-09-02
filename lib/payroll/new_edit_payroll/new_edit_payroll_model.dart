@@ -1,23 +1,7 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/forms/change_date/change_date_widget.dart';
-import '/components/forms/new_salary/new_salary_widget.dart';
-import '/components/options/salary_options/salary_options_widget.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import '/custom_code/widgets/index.dart' as custom_widgets;
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'new_edit_payroll_widget.dart' show NewEditPayrollWidget;
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
   ///  Local state fields for this page.
@@ -90,6 +74,7 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - Read Document] action in NewEditPayroll widget.
   PayrollsRecord? existingPayroll;
   // Stores action output result for [Firestore Query - Query a collection] action in NewEditPayroll widget.

@@ -7,17 +7,12 @@ import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'bills_list_model.dart';
 export 'bills_list_model.dart';
@@ -60,7 +55,6 @@ class _BillsListWidgetState extends State<BillsListWidget>
               isLessThanOrEqualTo: functions.endOfYear(_model.year),
             )
             .orderBy('date', descending: true),
-        limit: 50,
       );
       // additional
       _model.additional = await queryOptionsRecordOnce(
@@ -72,11 +66,12 @@ class _BillsListWidgetState extends State<BillsListWidget>
       // set all descriptions
       _model.allDescriptions = functions
           .billsChoices(
-              _model.allBills?.map((e) => e.description).toList()?.toList(),
+              _model.allBills?.map((e) => e.description).toList().toList(),
               _model.additional!.map((e) => e.choice).toList().toList())
           .toList()
           .cast<String>();
       _model.year = functions.currentYear();
+      _model.showBills = _model.allBills!.toList().cast<BillsRecord>();
       setState(() {});
     });
 
@@ -88,8 +83,8 @@ class _BillsListWidgetState extends State<BillsListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -100,8 +95,8 @@ class _BillsListWidgetState extends State<BillsListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -172,7 +167,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                       ),
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
                         child: InkWell(
                           splashColor: Colors.transparent,
                           focusColor: Colors.transparent,
@@ -181,6 +176,30 @@ class _BillsListWidgetState extends State<BillsListWidget>
                           onTap: () async {
                             FFAppState().hotel =
                                 functions.nextHotel(FFAppState().hotel);
+                            setState(() {});
+                            // all bills
+                            _model.hotelBills = await queryBillsRecordOnce(
+                              queryBuilder: (billsRecord) => billsRecord
+                                  .where(
+                                    'hotel',
+                                    isEqualTo: FFAppState().hotel,
+                                  )
+                                  .where(
+                                    'date',
+                                    isGreaterThanOrEqualTo:
+                                        functions.startOfYear(_model.year),
+                                  )
+                                  .where(
+                                    'date',
+                                    isLessThanOrEqualTo:
+                                        functions.endOfYear(_model.year),
+                                  )
+                                  .orderBy('date', descending: true),
+                            );
+                            _model.showBills =
+                                _model.hotelBills!.toList().cast<BillsRecord>();
+                            setState(() {});
+
                             setState(() {});
                           },
                           child: Icon(
@@ -213,7 +232,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                   },
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
                   child: FlutterFlowIconButton(
                     borderRadius: 20.0,
                     borderWidth: 1.0,
@@ -240,7 +259,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,6 +276,30 @@ class _BillsListWidgetState extends State<BillsListWidget>
                         // set previous year
                         _model.year =
                             functions.previousYear('January', _model.year);
+                        setState(() {});
+                        // all bills
+                        _model.prevBills = await queryBillsRecordOnce(
+                          queryBuilder: (billsRecord) => billsRecord
+                              .where(
+                                'hotel',
+                                isEqualTo: FFAppState().hotel,
+                              )
+                              .where(
+                                'date',
+                                isGreaterThanOrEqualTo:
+                                    functions.startOfYear(_model.year),
+                              )
+                              .where(
+                                'date',
+                                isLessThanOrEqualTo:
+                                    functions.endOfYear(_model.year),
+                              )
+                              .orderBy('date', descending: true),
+                        );
+                        _model.showBills =
+                            _model.prevBills!.toList().cast<BillsRecord>();
+                        setState(() {});
+
                         setState(() {});
                       },
                     ).animateOnPageLoad(
@@ -283,6 +326,30 @@ class _BillsListWidgetState extends State<BillsListWidget>
                         _model.year =
                             functions.nextYear(_model.year, 'December');
                         setState(() {});
+                        // all bills
+                        _model.nextBills = await queryBillsRecordOnce(
+                          queryBuilder: (billsRecord) => billsRecord
+                              .where(
+                                'hotel',
+                                isEqualTo: FFAppState().hotel,
+                              )
+                              .where(
+                                'date',
+                                isGreaterThanOrEqualTo:
+                                    functions.startOfYear(_model.year),
+                              )
+                              .where(
+                                'date',
+                                isLessThanOrEqualTo:
+                                    functions.endOfYear(_model.year),
+                              )
+                              .orderBy('date', descending: true),
+                        );
+                        _model.showBills =
+                            _model.nextBills!.toList().cast<BillsRecord>();
+                        setState(() {});
+
+                        setState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -290,7 +357,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
                 child: FlutterFlowChoiceChips(
                   options: _model.allDescriptions
                       .map((label) => ChipData(label))
@@ -322,7 +389,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                     iconColor: FlutterFlowTheme.of(context).secondaryBackground,
                     iconSize: 18.0,
                     labelPadding:
-                        EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
                     elevation: 4.0,
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -336,7 +403,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                     iconColor: FlutterFlowTheme.of(context).secondaryText,
                     iconSize: 18.0,
                     labelPadding:
-                        EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
                     elevation: 0.0,
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -355,7 +422,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
               if (_model.choiceChipsValue != 'All')
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 10.0),
+                      const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 10.0),
                   child: Container(
                     width: MediaQuery.sizeOf(context).width * 1.0,
                     height: 50.0,
@@ -365,7 +432,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -374,13 +441,13 @@ class _BillsListWidgetState extends State<BillsListWidget>
                             width: 4.0,
                             height: double.infinity,
                             decoration: BoxDecoration(
-                              color: Color(0xFF4B39EF),
+                              color: const Color(0xFF4B39EF),
                               borderRadius: BorderRadius.circular(4.0),
                             ),
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
@@ -393,7 +460,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                         .bodyMedium
                                         .override(
                                           fontFamily: 'Plus Jakarta Sans',
-                                          color: Color(0xFF4B39EF),
+                                          color: const Color(0xFF4B39EF),
                                           fontSize: 18.0,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w500,
@@ -404,7 +471,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -455,7 +522,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                       formatNumber(
                                         functions.totalOfSpecificBill(functions
                                             .showBills(
-                                                _model.allBills!.toList(),
+                                                _model.showBills.toList(),
                                                 _model.choiceChipsValue!)
                                             ?.toList()),
                                         formatType: FormatType.decimal,
@@ -466,7 +533,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                           .headlineSmall
                                           .override(
                                             fontFamily: 'Outfit',
-                                            color: Color(0xFF14181B),
+                                            color: const Color(0xFF14181B),
                                             fontSize: 24.0,
                                             letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
@@ -486,7 +553,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                 child: Builder(
                   builder: (context) {
                     final bills = functions
-                            .showBills(_model.allBills!.toList(),
+                            .showBills(_model.showBills.toList(),
                                 _model.choiceChipsValue!)
                             ?.toList() ??
                         [];
@@ -497,7 +564,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: bills.length,
-                      separatorBuilder: (_, __) => SizedBox(height: 1.0),
+                      separatorBuilder: (_, __) => const SizedBox(height: 1.0),
                       itemBuilder: (context, billsIndex) {
                         final billsItem = bills[billsIndex];
                         return InkWell(
@@ -518,7 +585,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                         FocusScope.of(context).unfocus(),
                                     child: Padding(
                                       padding: MediaQuery.viewInsetsOf(context),
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 218.0,
                                         child: OptionToBillWidget(
                                           bill: billsItem,
@@ -547,7 +614,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                 BoxShadow(
                                   blurRadius: 0.0,
                                   color: FlutterFlowTheme.of(context).alternate,
-                                  offset: Offset(
+                                  offset: const Offset(
                                     0.0,
                                     1.0,
                                   ),
@@ -559,7 +626,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 12.0, 16.0, 5.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -572,7 +639,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                         hoverColor: Colors.transparent,
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
-                                          var _shouldSetState = false;
+                                          var shouldSetState = false;
                                           if (valueOrDefault(
                                                   currentUserDocument?.role,
                                                   '') ==
@@ -591,7 +658,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                     padding:
                                                         MediaQuery.viewInsetsOf(
                                                             context),
-                                                    child: Container(
+                                                    child: SizedBox(
                                                       height: double.infinity,
                                                       child: ChangeDateWidget(
                                                         date: billsItem.date!,
@@ -603,7 +670,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                             ).then((value) => safeSetState(() =>
                                                 _model.adjustedDate = value));
 
-                                            _shouldSetState = true;
+                                            shouldSetState = true;
                                             if (_model.adjustedDate != null) {
                                               if (dateTimeFormat(
                                                       "M", billsItem.date) ==
@@ -622,7 +689,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                                 .primaryText,
                                                       ),
                                                     ),
-                                                    duration: Duration(
+                                                    duration: const Duration(
                                                         milliseconds: 4000),
                                                     backgroundColor:
                                                         FlutterFlowTheme.of(
@@ -660,7 +727,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                           ),
                                                   singleRecord: true,
                                                 ).then((s) => s.firstOrNull);
-                                                _shouldSetState = true;
+                                                shouldSetState = true;
                                                 // deduct from prev stats
 
                                                 await _model
@@ -704,7 +771,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                           ),
                                                   singleRecord: true,
                                                 ).then((s) => s.firstOrNull);
-                                                _shouldSetState = true;
+                                                shouldSetState = true;
                                                 if (_model.belongingStats
                                                         ?.reference !=
                                                     null) {
@@ -734,7 +801,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                               .secondaryBackground,
                                                         ),
                                                       ),
-                                                      duration: Duration(
+                                                      duration: const Duration(
                                                           milliseconds: 4000),
                                                       backgroundColor:
                                                           FlutterFlowTheme.of(
@@ -742,8 +809,9 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                               .error,
                                                     ),
                                                   );
-                                                  if (_shouldSetState)
+                                                  if (shouldSetState) {
                                                     setState(() {});
+                                                  }
                                                   return;
                                                 }
 
@@ -779,7 +847,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                                 .primaryText,
                                                       ),
                                                     ),
-                                                    duration: Duration(
+                                                    duration: const Duration(
                                                         milliseconds: 4000),
                                                     backgroundColor:
                                                         FlutterFlowTheme.of(
@@ -825,7 +893,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                         .info,
                                                   ),
                                                 ),
-                                                duration: Duration(
+                                                duration: const Duration(
                                                     milliseconds: 4000),
                                                 backgroundColor:
                                                     FlutterFlowTheme.of(context)
@@ -834,7 +902,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                             );
                                           }
 
-                                          if (_shouldSetState) setState(() {});
+                                          if (shouldSetState) setState(() {});
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
@@ -850,7 +918,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                     color: functions
                                                             .isThisMonth(
                                                                 billsItem.date!)
-                                                        ? Color(0xFF6758FB)
+                                                        ? const Color(0xFF6758FB)
                                                         : FlutterFlowTheme.of(
                                                                 context)
                                                             .secondaryText,
@@ -884,7 +952,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                       Flexible(
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   20.0, 0.0, 0.0, 0.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -949,10 +1017,10 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                               ),
                                               AnimatedContainer(
                                                 duration:
-                                                    Duration(milliseconds: 150),
+                                                    const Duration(milliseconds: 150),
                                                 curve: Curves.easeInOut,
                                                 width: double.infinity,
-                                                decoration: BoxDecoration(),
+                                                decoration: const BoxDecoration(),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -963,7 +1031,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                   children: [
                                                     Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   0.0,
                                                                   0.0,
@@ -1102,7 +1170,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 0.0, 16.0, 10.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -1155,7 +1223,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                         },
                                       ),
                                       Text(
-                                        '${dateTimeFormat("y", billsItem.date)}',
+                                        dateTimeFormat("y", billsItem.date),
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .override(

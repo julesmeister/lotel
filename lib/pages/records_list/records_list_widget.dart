@@ -8,16 +8,11 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'records_list_model.dart';
 export 'records_list_model.dart';
@@ -47,11 +42,23 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
       // hide
       _model.showMonthPicker = false;
       setState(() {});
-      await Future.delayed(const Duration(milliseconds: 500));
       // set month year
       _model.month = functions.currentMonth();
       _model.year = functions.currentYear();
       setState(() {});
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${_model.month} ${_model.year}',
+            style: TextStyle(
+              color: FlutterFlowTheme.of(context).primaryText,
+            ),
+          ),
+          duration: const Duration(milliseconds: 4000),
+          backgroundColor: FlutterFlowTheme.of(context).secondary,
+        ),
+      );
+      await Future.delayed(const Duration(milliseconds: 500));
       // show
       _model.showMonthPicker = true;
       setState(() {});
@@ -65,8 +72,8 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(-100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -77,8 +84,8 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
             curve: Curves.bounceOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(0.0, -99.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(0.0, -99.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -89,8 +96,8 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(100.0, 0.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(100.0, 0.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -101,8 +108,8 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 600.0.ms,
-            begin: Offset(0.0, 100.0),
-            end: Offset(0.0, 0.0),
+            begin: const Offset(0.0, 100.0),
+            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -225,12 +232,12 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                             elevation: 0,
                             insetPadding: EdgeInsets.zero,
                             backgroundColor: Colors.transparent,
-                            alignment: AlignmentDirectional(0.0, 0.0)
+                            alignment: const AlignmentDirectional(0.0, 0.0)
                                 .resolve(Directionality.of(context)),
                             child: GestureDetector(
                               onTap: () =>
                                   FocusScope.of(dialogContext).unfocus(),
-                              child: Container(
+                              child: const SizedBox(
                                 height: double.infinity,
                                 width: double.infinity,
                                 child: RecordAddEditWidget(),
@@ -366,12 +373,12 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Container(
                       width: 400.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             blurRadius: 4.0,
                             color: Color(0x33000000),
@@ -383,11 +390,11 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                         ],
                         borderRadius: BorderRadius.circular(12.0),
                         border: Border.all(
-                          color: Color(0xFFE5E7EB),
+                          color: const Color(0xFFE5E7EB),
                         ),
                       ),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             12.0, 8.0, 12.0, 8.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -395,11 +402,11 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                             Container(
                               width: 36.0,
                               height: 36.0,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Color(0x4C39D2C0),
                                 shape: BoxShape.circle,
                               ),
-                              child: Padding(
+                              child: const Padding(
                                 padding: EdgeInsets.all(4.0),
                                 child: Icon(
                                   Icons.ads_click_outlined,
@@ -410,7 +417,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     10.0, 0.0, 0.0, 0.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -423,7 +430,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                           .bodyLarge
                                           .override(
                                             fontFamily: 'Figtree',
-                                            color: Color(0xFF15161E),
+                                            color: const Color(0xFF15161E),
                                             fontSize: 16.0,
                                             letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
@@ -435,17 +442,17 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                           .labelMedium
                                           .override(
                                             fontFamily: 'Figtree',
-                                            color: Color(0xFF606A85),
+                                            color: const Color(0xFF606A85),
                                             fontSize: 14.0,
                                             letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
                                           ),
                                     ),
-                                  ].divide(SizedBox(height: 4.0)),
+                                  ].divide(const SizedBox(height: 4.0)),
                                 ),
                               ),
                             ),
-                          ].divide(SizedBox(width: 8.0)),
+                          ].divide(const SizedBox(width: 8.0)),
                         ),
                       ),
                     ),
@@ -466,7 +473,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemCount: records.length,
-                          separatorBuilder: (_, __) => SizedBox(height: 1.0),
+                          separatorBuilder: (_, __) => const SizedBox(height: 1.0),
                           itemBuilder: (context, recordsIndex) {
                             final recordsItem = records[recordsIndex];
                             return InkWell(
@@ -486,7 +493,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                       child: Padding(
                                         padding:
                                             MediaQuery.viewInsetsOf(context),
-                                        child: Container(
+                                        child: SizedBox(
                                           height: 170.0,
                                           child: OptionToRecordWidget(
                                             record: recordsItem,
@@ -498,15 +505,14 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                 ).then((value) => safeSetState(() {}));
                               },
                               onDoubleTap: () async {
-                                if (recordsItem.receivedBy == null ||
-                                    recordsItem.receivedBy == '') {
+                                if (recordsItem.receivedBy == '') {
                                   var confirmDialogResponse =
                                       await showDialog<bool>(
                                             context: context,
                                             builder: (alertDialogContext) {
                                               return AlertDialog(
-                                                title: Text('Received'),
-                                                content: Text(
+                                                title: const Text('Received'),
+                                                content: const Text(
                                                     'Are you the one who received this item?'),
                                                 actions: [
                                                   TextButton(
@@ -514,14 +520,14 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                         Navigator.pop(
                                                             alertDialogContext,
                                                             false),
-                                                    child: Text('No'),
+                                                    child: const Text('No'),
                                                   ),
                                                   TextButton(
                                                     onPressed: () =>
                                                         Navigator.pop(
                                                             alertDialogContext,
                                                             true),
-                                                    child: Text('Yes'),
+                                                    child: const Text('Yes'),
                                                   ),
                                                 ],
                                               );
@@ -554,7 +560,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                       blurRadius: 0.0,
                                       color: FlutterFlowTheme.of(context)
                                           .alternate,
-                                      offset: Offset(
+                                      offset: const Offset(
                                         0.0,
                                         1.0,
                                       ),
@@ -562,7 +568,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                   ],
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 12.0, 16.0, 12.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -593,7 +599,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                     padding:
                                                         MediaQuery.viewInsetsOf(
                                                             context),
-                                                    child: Container(
+                                                    child: SizedBox(
                                                       height: double.infinity,
                                                       child: ChangeDateWidget(
                                                         date: recordsItem
@@ -632,7 +638,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                               .primaryText,
                                                     ),
                                                   ),
-                                                  duration: Duration(
+                                                  duration: const Duration(
                                                       milliseconds: 4000),
                                                   backgroundColor:
                                                       FlutterFlowTheme.of(
@@ -659,12 +665,9 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                             'Readex Pro',
                                                         color: recordsItem
                                                                         .receivedBy ==
-                                                                    null ||
-                                                                recordsItem
-                                                                        .receivedBy ==
                                                                     ''
-                                                            ? Color(0xFFFD9DA3)
-                                                            : Color(0xFF70F6E1),
+                                                            ? const Color(0xFFFD9DA3)
+                                                            : const Color(0xFF70F6E1),
                                                         letterSpacing: 0.0,
                                                       ),
                                             ),
@@ -677,9 +680,6 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                   .override(
                                                     fontFamily: 'Readex Pro',
                                                     color: recordsItem
-                                                                    .receivedBy ==
-                                                                null ||
-                                                            recordsItem
                                                                     .receivedBy ==
                                                                 ''
                                                         ? FlutterFlowTheme.of(
@@ -703,12 +703,9 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                             'Readex Pro',
                                                         color: recordsItem
                                                                         .receivedBy ==
-                                                                    null ||
-                                                                recordsItem
-                                                                        .receivedBy ==
                                                                     ''
-                                                            ? Color(0xFFFD9DA3)
-                                                            : Color(0xFF70F6E1),
+                                                            ? const Color(0xFFFD9DA3)
+                                                            : const Color(0xFF70F6E1),
                                                         letterSpacing: 0.0,
                                                       ),
                                             ),
@@ -718,7 +715,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                       Flexible(
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 0.0, 0.0, 0.0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -726,7 +723,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsetsDirectional
+                                                padding: const EdgeInsetsDirectional
                                                     .fromSTEB(
                                                         0.0, 0.0, 0.0, 12.0),
                                                 child: Row(
@@ -772,7 +769,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                                       .viewInsetsOf(
                                                                           context),
                                                                   child:
-                                                                      Container(
+                                                                      SizedBox(
                                                                     height:
                                                                         300.0,
                                                                     child:
@@ -826,8 +823,6 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                                   fontFamily:
                                                                       'Readex Pro',
                                                                   color: recordsItem.receivedBy ==
-                                                                              null ||
-                                                                          recordsItem.receivedBy ==
                                                                               ''
                                                                       ? FlutterFlowTheme.of(
                                                                               context)
@@ -878,7 +873,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                                       .viewInsetsOf(
                                                                           context),
                                                                   child:
-                                                                      Container(
+                                                                      SizedBox(
                                                                     height:
                                                                         300.0,
                                                                     child:
@@ -907,9 +902,6 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                         children: [
                                                           if (recordsItem
                                                                       .receivedBy !=
-                                                                  null &&
-                                                              recordsItem
-                                                                      .receivedBy !=
                                                                   '')
                                                             Text(
                                                               'Recipient',
@@ -930,9 +922,6 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                             ),
                                                           if (recordsItem
                                                                       .receivedBy !=
-                                                                  null &&
-                                                              recordsItem
-                                                                      .receivedBy !=
                                                                   '')
                                                             Text(
                                                               recordsItem
@@ -944,8 +933,6 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                                     fontFamily:
                                                                         'Readex Pro',
                                                                     color: recordsItem.receivedBy ==
-                                                                                null ||
-                                                                            recordsItem.receivedBy ==
                                                                                 ''
                                                                         ? FlutterFlowTheme.of(context)
                                                                             .error
@@ -964,22 +951,19 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                 ),
                                               ),
                                               Padding(
-                                                padding: EdgeInsetsDirectional
+                                                padding: const EdgeInsetsDirectional
                                                     .fromSTEB(
                                                         0.0, 0.0, 0.0, 10.0),
                                                 child: AnimatedContainer(
-                                                  duration: Duration(
+                                                  duration: const Duration(
                                                       milliseconds: 150),
                                                   curve: Curves.easeInOut,
                                                   width: double.infinity,
                                                   decoration: BoxDecoration(
                                                     color: recordsItem
                                                                     .receivedBy ==
-                                                                null ||
-                                                            recordsItem
-                                                                    .receivedBy ==
                                                                 ''
-                                                        ? Color(0x57FF5963)
+                                                        ? const Color(0x57FF5963)
                                                         : FlutterFlowTheme.of(
                                                                 context)
                                                             .accent2,
@@ -988,9 +972,6 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                             12.0),
                                                     border: Border.all(
                                                       color: recordsItem
-                                                                      .receivedBy ==
-                                                                  null ||
-                                                              recordsItem
                                                                       .receivedBy ==
                                                                   ''
                                                           ? FlutterFlowTheme.of(
@@ -1004,7 +985,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                        EdgeInsets.all(12.0),
+                                                        const EdgeInsets.all(12.0),
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.max,

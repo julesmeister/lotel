@@ -1,27 +1,8 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
-import '/components/forms/salary_edit/salary_edit_widget.dart';
-import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_charts.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
-import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'metrics_widget.dart' show MetricsWidget;
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:provider/provider.dart';
 
 class MetricsModel extends FlutterFlowModel<MetricsWidget> {
   ///  Local state fields for this page.
@@ -110,6 +91,10 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Backend Call - Read Document] action in Metrics widget.
+  StatsRecord? alreadyStats;
+  // Stores action output result for [Firestore Query - Query a collection] action in Metrics widget.
+  StatsRecord? latestStats;
   // Stores action output result for [Action Block - UpdateStatsByHotel] action in Container widget.
   String? hotelName;
   // Stores action output result for [Action Block - UpdateStatsByHotel] action in Container widget.
@@ -176,7 +161,7 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
             isEqualTo: hotel,
           ),
     );
-    if (initStatsCount! > 0) {
+    if (initStatsCount > 0) {
       // get stats
       foundMonthDoc = await queryStatsRecordOnce(
         queryBuilder: (statsRecord) => statsRecord
@@ -198,11 +183,11 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
             )
             .where(
               'year',
-              isEqualTo: functions.previousYear(month!, year!),
+              isEqualTo: functions.previousYear(month, year!),
             ),
       );
       // initialize stats list
-      stats = foundMonthDoc!.toList().cast<StatsRecord>();
+      stats = foundMonthDoc.toList().cast<StatsRecord>();
       // initialize all page vars
       month = month!;
       year = year!;
@@ -263,36 +248,36 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
       prevMetrics = [];
       // set net only
       net = rooms + goods - expenses - salaries - bills - groceryExpenses;
-      while (foundPrevMonthDoc?.length != loopCounter) {
+      while (foundPrevMonthDoc.length != loopCounter) {
         // create hotel Metric
         addToPrevMetrics(MetricsHolderStruct(
-          hotel: foundPrevMonthDoc?[loopCounter]?.hotel,
+          hotel: foundPrevMonthDoc[loopCounter].hotel,
           rooms: valueOrDefault<double>(
-            foundPrevMonthDoc?[loopCounter]?.roomsIncome,
+            foundPrevMonthDoc[loopCounter].roomsIncome,
             0.0,
           ),
           goods: valueOrDefault<double>(
-            foundPrevMonthDoc?[loopCounter]?.goodsIncome,
+            foundPrevMonthDoc[loopCounter].goodsIncome,
             0.0,
           ),
           expenses: valueOrDefault<double>(
-            foundPrevMonthDoc?[loopCounter]?.expenses,
+            foundPrevMonthDoc[loopCounter].expenses,
             0.0,
           ),
           salaries: valueOrDefault<double>(
-            foundPrevMonthDoc?[loopCounter]?.salaries,
+            foundPrevMonthDoc[loopCounter].salaries,
             0.0,
           ),
           bills: valueOrDefault<double>(
-            foundPrevMonthDoc?[loopCounter]?.bills,
+            foundPrevMonthDoc[loopCounter].bills,
             0.0,
           ),
           net: valueOrDefault<double>(
-            foundPrevMonthDoc![loopCounter].roomsIncome +
-                foundPrevMonthDoc![loopCounter].goodsIncome -
-                foundPrevMonthDoc![loopCounter].expenses -
-                foundPrevMonthDoc![loopCounter].salaries -
-                foundPrevMonthDoc![loopCounter].bills,
+            foundPrevMonthDoc[loopCounter].roomsIncome +
+                foundPrevMonthDoc[loopCounter].goodsIncome -
+                foundPrevMonthDoc[loopCounter].expenses -
+                foundPrevMonthDoc[loopCounter].salaries -
+                foundPrevMonthDoc[loopCounter].bills,
             0.0,
           ),
         ));
@@ -378,7 +363,7 @@ class MetricsModel extends FlutterFlowModel<MetricsWidget> {
     } else {
       // statByHotel
       stat = functions.statByHotel(stats.toList(), hotel!);
-      hotel = hotel!;
+      hotel = hotel;
       // initialize all page vars
       expenses = stat!.expenses;
       salaries = stat!.salaries;
