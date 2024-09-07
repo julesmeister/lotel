@@ -41,11 +41,11 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // hide
       _model.showMonthPicker = false;
-      setState(() {});
+      safeSetState(() {});
       // set month year
       _model.month = functions.currentMonth();
       _model.year = functions.currentYear();
-      setState(() {});
+      safeSetState(() {});
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -61,7 +61,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
       await Future.delayed(const Duration(milliseconds: 500));
       // show
       _model.showMonthPicker = true;
-      setState(() {});
+      safeSetState(() {});
     });
 
     animationsMap.addAll({
@@ -115,7 +115,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -274,19 +274,19 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                         onPressed: () async {
                           // hide month picker
                           _model.showMonthPicker = false;
-                          setState(() {});
+                          safeSetState(() {});
                           await Future.delayed(
                               const Duration(milliseconds: 500));
                           // set previous year
                           _model.year =
                               functions.previousYear(_model.month, _model.year);
-                          setState(() {});
+                          safeSetState(() {});
                           // set previous month
                           _model.month = functions.previousMonth(_model.month);
-                          setState(() {});
+                          safeSetState(() {});
                           // show month picker
                           _model.showMonthPicker = true;
-                          setState(() {});
+                          safeSetState(() {});
                         },
                       ).animateOnPageLoad(
                           animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -314,7 +314,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                           changeMonthYear: (month, year) async {
                             // hide
                             _model.showMonthPicker = false;
-                            setState(() {});
+                            safeSetState(() {});
                             await Future.delayed(
                                 const Duration(milliseconds: 500));
                             // hide
@@ -335,10 +335,10 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                               }[month];
                             }(month))!;
                             _model.year = year.toString();
-                            setState(() {});
+                            safeSetState(() {});
                             // show
                             _model.showMonthPicker = true;
-                            setState(() {});
+                            safeSetState(() {});
                           },
                         ).animateOnPageLoad(
                             animationsMap['containerOnPageLoadAnimation']!),
@@ -354,19 +354,19 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                         onPressed: () async {
                           // hide month picker
                           _model.showMonthPicker = false;
-                          setState(() {});
+                          safeSetState(() {});
                           await Future.delayed(
                               const Duration(milliseconds: 500));
                           // set next year
                           _model.year =
                               functions.nextYear(_model.year, _model.month);
-                          setState(() {});
+                          safeSetState(() {});
                           // set next month
                           _model.month = functions.nextMonth(_model.month);
-                          setState(() {});
+                          safeSetState(() {});
                           // show month picker
                           _model.showMonthPicker = true;
-                          setState(() {});
+                          safeSetState(() {});
                         },
                       ).animateOnPageLoad(
                           animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -649,7 +649,7 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                             }
                                           }
 
-                                          setState(() {});
+                                          safeSetState(() {});
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,

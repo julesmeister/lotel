@@ -36,7 +36,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
       );
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -142,7 +142,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                       );
                       // reset loop
                       _model.loopCounter = 0;
-                      setState(() {});
+                      safeSetState(() {});
                       while (_model.loopCounter != _model.replenished?.length) {
                         // unreplenish
 
@@ -152,7 +152,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                         ));
                         // increment
                         _model.loopCounter = _model.loopCounter + 1;
-                        setState(() {});
+                        safeSetState(() {});
                       }
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -168,7 +168,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                         ),
                       );
 
-                      setState(() {});
+                      safeSetState(() {});
                     },
                   ),
                 ),
@@ -307,7 +307,7 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                                                             replenishItem] ??=
                                                         replenishItem.replenish,
                                                 onChanged: (newValue) async {
-                                                  setState(() => _model
+                                                  safeSetState(() => _model
                                                           .checkboxListTileValueMap1[
                                                       replenishItem] = newValue!);
                                                   if (newValue!) {

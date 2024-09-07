@@ -42,7 +42,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
       // roomUsage init
       _model.roomUsage =
           _model.initStat!.roomUsage.toList().cast<RoomUsageStruct>();
-      setState(() {});
+      safeSetState(() {});
       // transactionsToRemit
       _model.toRemit = await queryTransactionsRecordOnce(
         queryBuilder: (transactionsRecord) => transactionsRecord
@@ -60,7 +60,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
             ),
       );
       // amount to remit to field
-      setState(() {
+      safeSetState(() {
         _model.amountTextController?.text =
             functions.netOfTransactions(_model.toRemit!.toList()).toString();
         _model.amountTextController?.selection = TextSelection.collapsed(
@@ -68,7 +68,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
       });
       _model.toRemitAmount =
           functions.netOfTransactions(_model.toRemit!.toList());
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.amountTextController ??=
@@ -78,7 +78,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
     _model.changeExtraTextController ??= TextEditingController(text: '0');
     _model.changeExtraFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -232,7 +232,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                 _model.loopFailedCounter =
                                                     _model.loopFailedCounter +
                                                         1;
-                                                setState(() {});
+                                                safeSetState(() {});
                                               }
                                               // clear failed transactions and bookings
 
@@ -311,7 +311,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             const Duration(milliseconds: 2000),
                                             () async {
                                               // set change
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.changeExtraTextController
                                                     ?.text = ((_model
                                                             .toRemitAmount -
@@ -374,7 +374,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       _model
                                                           .amountTextController
                                                           ?.clear(); // set change
-                                                      setState(() {
+                                                      safeSetState(() {
                                                         _model
                                                             .changeExtraTextController
                                                             ?.text = ((_model
@@ -392,7 +392,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                     .text
                                                                     .length);
                                                       });
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     },
                                                     child: const Icon(
                                                       Icons.clear,
@@ -434,7 +434,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             const Duration(milliseconds: 2000),
                                             () async {
                                               // set amountEntered
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.amountTextController
                                                     ?.text = ((_model
                                                             .toRemitAmount
@@ -498,7 +498,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       _model
                                                           .changeExtraTextController
                                                           ?.clear(); // set amountEntered
-                                                      setState(() {
+                                                      safeSetState(() {
                                                         _model
                                                             .amountTextController
                                                             ?.text = ((_model
@@ -517,7 +517,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                     .text
                                                                     .length);
                                                       });
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     },
                                                     child: const Icon(
                                                       Icons.clear,
@@ -586,7 +586,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                             if (confirmDialogResponse) {
                                               // is loading
                                               _model.isLoading = true;
-                                              setState(() {});
+                                              safeSetState(() {});
                                               if ((_model.toRemitAmount !=
                                                       (double.parse(_model
                                                           .amountTextController
@@ -615,7 +615,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   ),
                                                 );
                                                 if (shouldSetState) {
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                 }
                                                 return;
                                               } else {
@@ -649,7 +649,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                         .toList()
                                                         .cast<
                                                             TransactionsRecord>();
-                                                setState(() {});
+                                                safeSetState(() {});
                                                 if (_model
                                                         .transactions?.length !=
                                                     0) {
@@ -682,7 +682,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   _model.inventoriesToRemit =
                                                       [];
                                                   _model.bookingsToRemit = [];
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                   while (_model
                                                           .loopTransactionsCounter !=
                                                       _model
@@ -693,7 +693,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                         _model.allUnremittedTransactions[
                                                             _model
                                                                 .loopTransactionsCounter]);
-                                                    setState(() {});
+                                                    safeSetState(() {});
                                                     if (_model
                                                             .allUnremittedTransactions[
                                                                 _model
@@ -706,7 +706,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                               _model
                                                                   .loopTransactionsCounter]
                                                           .booking!);
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                       // update use of room local
                                                       _model
                                                           .updateRoomUsageAtIndex(
@@ -721,16 +721,16 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                         (e) =>
                                                             e..incrementUse(1),
                                                       );
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                       // what's happening
                                                       _model.happening =
                                                           'Remitting room ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].room.toString()}\'s transaction';
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     } else {
                                                       // what's happening
                                                       _model.happening =
                                                           'Remitting ${_model.allUnremittedTransactions[_model.loopTransactionsCounter].type}';
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     }
 
                                                     if (_model
@@ -783,7 +783,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     _model.loopTransactionsCounter =
                                                         _model.loopTransactionsCounter +
                                                             1;
-                                                    setState(() {});
+                                                    safeSetState(() {});
                                                   }
                                                   // update roomUsage firestore
 
@@ -821,7 +821,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   // what's happening
                                                   _model.happening =
                                                       'Remitting absences if any';
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                   while (_model
                                                           .loopAbsencesCounter !=
                                                       _model.unremittedAbsences
@@ -831,7 +831,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                         _model.unremittedAbsences![
                                                             _model
                                                                 .loopAbsencesCounter]);
-                                                    setState(() {});
+                                                    safeSetState(() {});
                                                     // remit absence
 
                                                     await _model
@@ -846,12 +846,12 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                     _model.loopAbsencesCounter =
                                                         _model.loopAbsencesCounter +
                                                             1;
-                                                    setState(() {});
+                                                    safeSetState(() {});
                                                   }
                                                   // what's happening
                                                   _model.happening =
                                                       'Remitting inventories';
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                   while (_model
                                                           .loopInventoryCounter !=
                                                       valueOrDefault<int>(
@@ -877,17 +877,17 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                             _model
                                                                 .loopInventoryCounter]
                                                         .reference);
-                                                    setState(() {});
+                                                    safeSetState(() {});
                                                     // increment counter only
                                                     _model.loopInventoryCounter =
                                                         _model.loopInventoryCounter +
                                                             1;
-                                                    setState(() {});
+                                                    safeSetState(() {});
                                                   }
                                                   // what's happening
                                                   _model.happening =
                                                       'Updating grocery values';
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                   // count grr
                                                   _model.countGrr =
                                                       await queryGoodsRevenueRatioRecordCount(
@@ -988,7 +988,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   // what's happening
                                                   _model.happening =
                                                       'Updating metrics';
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                   // update stats and graph
 
                                                   await FFAppState()
@@ -1041,7 +1041,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   // what's happening
                                                   _model.happening =
                                                       'Finishing remittance!';
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                   // Create Remittance
 
                                                   var remittancesRecordReference =
@@ -1159,7 +1159,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                       [];
                                                   _model.bookingsToRemit = [];
                                                   _model.isLoading = false;
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                   // carryover change transaction
 
                                                   await TransactionsRecord
@@ -1204,7 +1204,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                   // last remit update
                                                   FFAppState().lastRemit =
                                                       functions.today();
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                   Navigator.pop(context);
                                                   // Remitted
                                                   ScaffoldMessenger.of(context)
@@ -1260,7 +1260,7 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               }
                                             }
                                             if (shouldSetState) {
-                                              setState(() {});
+                                              safeSetState(() {});
                                             }
                                           },
                                           text: 'Continue Remitting',

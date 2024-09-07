@@ -43,7 +43,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (_model.date == null) {
         _model.date = functions.today();
-        setState(() {});
+        safeSetState(() {});
       } else {
         return;
       }
@@ -53,7 +53,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
       vsync: this,
       length: 5,
       initialIndex: 0,
-    )..addListener(() => setState(() {}));
+    )..addListener(() => safeSetState(() {}));
     animationsMap.addAll({
       'textOnPageLoadAnimation': AnimationInfo(
         trigger: AnimationTrigger.onPageLoad,
@@ -103,7 +103,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
       this,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -231,7 +231,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                               ),
                               onPressed: () async {
                                 _model.date = functions.prevDate(_model.date!);
-                                setState(() {});
+                                safeSetState(() {});
                               },
                             ),
                           if (valueOrDefault(currentUserDocument?.role, '') ==
@@ -251,7 +251,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                 onPressed: () async {
                                   _model.showDatePicker =
                                       !_model.showDatePicker;
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                               ).animateOnPageLoad(animationsMap[
                                   'iconButtonOnPageLoadAnimation']!),
@@ -270,7 +270,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                               ),
                               onPressed: () async {
                                 _model.date = functions.nextDate(_model.date!);
-                                setState(() {});
+                                safeSetState(() {});
                               },
                             ),
                         ],
@@ -290,8 +290,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                           }
                           _model.calendarSelectedDay = newSelectedDate;
                           _model.date = _model.calendarSelectedDay?.start;
-                          setState(() {});
-                          setState(() {});
+                          safeSetState(() {});
+                          safeSetState(() {});
                         },
                         titleStyle:
                             FlutterFlowTheme.of(context).headlineSmall.override(
@@ -1493,7 +1493,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     SizedBox(
-                                                                  height: 235.0,
+                                                                  height: 218.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
                                                                     ref: expensesItem
@@ -3260,7 +3260,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                         context),
                                                                 child:
                                                                     SizedBox(
-                                                                  height: 235.0,
+                                                                  height: 218.0,
                                                                   child:
                                                                       OptionToTransactionOnlyWidget(
                                                                     ref: expenseItem
@@ -3657,7 +3657,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                 }
                                               }
 
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: Container(
                                               width: double.infinity,

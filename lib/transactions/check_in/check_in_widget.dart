@@ -69,7 +69,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
       // default status
       _model.paid = true;
       _model.loop = 0;
-      setState(() {});
+      safeSetState(() {});
       if (widget.extend) {
         // room
         _model.room = await RoomsRecord.getDocumentOnce(widget.ref!);
@@ -91,7 +91,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
             .toList()
             .cast<DocumentReference>();
         _model.ability = widget.bookingToExtend!.ability;
-        setState(() {});
+        safeSetState(() {});
         if (widget.bookingToExtend!.transactions.isNotEmpty) {
           while (_model.loop != widget.bookingToExtend?.transactions.length) {
             // trans
@@ -99,16 +99,16 @@ class _CheckInWidgetState extends State<CheckInWidget>
                 widget.bookingToExtend!.transactions[_model.loop]);
             // add trans to list
             _model.addToTransactions(_model.trans!);
-            setState(() {});
+            safeSetState(() {});
             // + loop
             _model.loop = _model.loop + 1;
-            setState(() {});
+            safeSetState(() {});
           }
         }
         if (widget.bookingToExtend!.pendings.isNotEmpty) {
           // reset loop
           _model.loop = 0;
-          setState(() {});
+          safeSetState(() {});
           while (_model.loop !=
               valueOrDefault<int>(
                 widget.bookingToExtend?.pendings.length,
@@ -119,10 +119,10 @@ class _CheckInWidgetState extends State<CheckInWidget>
                 widget.bookingToExtend!.pendings[_model.loop]);
             // add trans to list
             _model.addToTransactions(_model.pendingsToTrans!);
-            setState(() {});
+            safeSetState(() {});
             // + loop
             _model.loop = _model.loop + 1;
-            setState(() {});
+            safeSetState(() {});
           }
         }
       } else {
@@ -132,7 +132,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
         );
         _model.startingNights = 0;
         _model.startingBeds = '-1';
-        setState(() {});
+        safeSetState(() {});
       }
     });
 
@@ -172,7 +172,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
       this,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -559,7 +559,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                             .nights
                                                         : 1,
                                                     updateCount: (count) =>
-                                                        setState(() =>
+                                                        safeSetState(() =>
                                                             _model.nightsValue =
                                                                 count),
                                                     stepSize: 1,
@@ -828,7 +828,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ChipData('10'),
                                     ChipData('+')
                                   ],
-                                  onChanged: (val) => setState(() =>
+                                  onChanged: (val) => safeSetState(() =>
                                       _model.bedsValue = val?.firstOrNull),
                                   selectedChipStyle: ChipStyle(
                                     backgroundColor:
@@ -948,7 +948,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     ChipData('5'),
                                     ChipData('6')
                                   ],
-                                  onChanged: (val) => setState(() =>
+                                  onChanged: (val) => safeSetState(() =>
                                       _model.guestsValue = val?.firstOrNull),
                                   selectedChipStyle: ChipStyle(
                                     backgroundColor:
@@ -1070,7 +1070,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       ChipData('5')
                                     ],
                                     onChanged: (val) async {
-                                      setState(() =>
+                                      safeSetState(() =>
                                           _model.hoursLateCheckoutValue =
                                               val?.firstOrNull);
                                       if (_model.paid == false) {
@@ -1078,7 +1078,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             '0') {
                                           // make status paid
                                           _model.paid = true;
-                                          setState(() {});
+                                          safeSetState(() {});
                                         }
                                       }
                                     },
@@ -1168,7 +1168,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
                                       _model.paid = true;
-                                      setState(() {});
+                                      safeSetState(() {});
                                     },
                                     child: Container(
                                       width: 115.0,
@@ -1236,7 +1236,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
                                       _model.paid = false;
-                                      setState(() {});
+                                      safeSetState(() {});
                                     },
                                     child: Container(
                                       width: 115.0,
@@ -1334,7 +1334,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       onTap: () async {
                                         _model.ability = 'normal';
                                         _model.price = widget.price!;
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -1408,7 +1408,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           return roomPrice -
                                               roomPrice * (promoOn ? 0.1 : 0.2);
                                         }(widget.price!, widget.promoOn);
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -1478,7 +1478,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           return roomPrice -
                                               roomPrice * (promoOn ? 0.1 : 0.2);
                                         }(widget.price!, widget.promoOn);
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -1783,7 +1783,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                         // add to trans list
                                         _model.addToTransactions(
                                             _model.refundTrans!);
-                                        setState(() {});
+                                        safeSetState(() {});
                                         // add this change to history
 
                                         await HistoryRecord.createDoc(
@@ -1847,7 +1847,9 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                                     .secondary,
                                           ),
                                         );
-                                        if (shouldSetState) setState(() {});
+                                        if (shouldSetState) {
+                                          safeSetState(() {});
+                                        }
                                         return;
                                       }
 
@@ -2004,7 +2006,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           // add to pendings list
                                           _model.addToPendings(
                                               _model.newExtPending!.reference);
-                                          setState(() {});
+                                          safeSetState(() {});
                                           // add this change to history
 
                                           await HistoryRecord.createDoc(
@@ -2143,7 +2145,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                             // add to pendings list
                                             _model.addToPendings(_model
                                                 .newRefundPending!.reference);
-                                            setState(() {});
+                                            safeSetState(() {});
                                             // add this change to history
 
                                             await HistoryRecord.createDoc(
@@ -2184,13 +2186,15 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                               ),
                                             );
                                             if (shouldSetState) {
-                                              setState(() {});
+                                              safeSetState(() {});
                                             }
                                             return;
                                           }
                                         }
                                       } else {
-                                        if (shouldSetState) setState(() {});
+                                        if (shouldSetState) {
+                                          safeSetState(() {});
+                                        }
                                         return;
                                       }
                                     }
@@ -2234,6 +2238,15 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                           'transactions': _model.transactions
                                               .map((e) => e.reference)
                                               .toList(),
+                                        },
+                                      ),
+                                    });
+                                    // update last checkin time on room
+
+                                    await widget.ref!.update({
+                                      ...mapToFirestore(
+                                        {
+                                          'last': FieldValue.serverTimestamp(),
                                         },
                                       ),
                                     });
@@ -2411,7 +2424,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                       // add to trans list
                                       _model
                                           .addToTransactions(_model.checkin1!);
-                                      setState(() {});
+                                      safeSetState(() {});
                                       // Check In To History
 
                                       await HistoryRecord.createDoc(
@@ -2551,17 +2564,23 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                     );
                                     // Update room display details
 
-                                    await widget.ref!
-                                        .update(createRoomsRecordData(
-                                      vacant: false,
-                                      guests: valueOrDefault<int>(
-                                        functions
-                                            .stringToInt(_model.guestsValue),
-                                        1,
+                                    await widget.ref!.update({
+                                      ...createRoomsRecordData(
+                                        vacant: false,
+                                        guests: valueOrDefault<int>(
+                                          functions
+                                              .stringToInt(_model.guestsValue),
+                                          1,
+                                        ),
+                                        currentBooking:
+                                            _model.savedBooking?.reference,
                                       ),
-                                      currentBooking:
-                                          _model.savedBooking?.reference,
-                                    ));
+                                      ...mapToFirestore(
+                                        {
+                                          'last': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
                                     // add transactions to booking
 
                                     await _model.savedBooking!.reference
@@ -2577,7 +2596,7 @@ class _CheckInWidgetState extends State<CheckInWidget>
                                   }
 
                                   context.safePop();
-                                  if (shouldSetState) setState(() {});
+                                  if (shouldSetState) safeSetState(() {});
                                 },
                                 text: widget.extend == true
                                     ? 'Save'

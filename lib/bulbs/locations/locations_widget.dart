@@ -40,7 +40,7 @@ class _LocationsWidgetState extends State<LocationsWidget>
       vsync: this,
       length: 2,
       initialIndex: 0,
-    )..addListener(() => setState(() {}));
+    )..addListener(() => safeSetState(() {}));
     animationsMap.addAll({
       'tabBarOnPageLoadAnimation': AnimationInfo(
         trigger: AnimationTrigger.onPageLoad,
@@ -260,7 +260,7 @@ class _LocationsWidgetState extends State<LocationsWidget>
       this,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -431,11 +431,11 @@ class _LocationsWidgetState extends State<LocationsWidget>
                             [
                               () async {
                                 _model.isCR = false;
-                                setState(() {});
+                                safeSetState(() {});
                               },
                               () async {
                                 _model.isCR = true;
-                                setState(() {});
+                                safeSetState(() {});
                               }
                             ][i]();
                           },
@@ -859,7 +859,7 @@ class _LocationsWidgetState extends State<LocationsWidget>
                                                           },
                                                         );
 
-                                                        setState(() {});
+                                                        safeSetState(() {});
                                                       },
                                                       child: Icon(
                                                         Icons

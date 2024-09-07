@@ -37,7 +37,7 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.date = functions.today();
-      setState(() {});
+      safeSetState(() {});
     });
 
     animationsMap.addAll({
@@ -88,7 +88,7 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
       this,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -200,7 +200,7 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                               ),
                               onPressed: () async {
                                 _model.date = functions.prevDate(_model.date!);
-                                setState(() {});
+                                safeSetState(() {});
                               },
                             ),
                           ),
@@ -216,7 +216,7 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                           ),
                           onPressed: () async {
                             _model.showDatePicker = !_model.showDatePicker;
-                            setState(() {});
+                            safeSetState(() {});
                           },
                         ),
                         if (valueOrDefault(currentUserDocument?.role, '') ==
@@ -234,7 +234,7 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                               ),
                               onPressed: () async {
                                 _model.date = functions.nextDate(_model.date!);
-                                setState(() {});
+                                safeSetState(() {});
                               },
                             ),
                           ),
@@ -269,8 +269,8 @@ class _HistoryInBillsWidgetState extends State<HistoryInBillsWidget>
                           }
                           _model.calendarSelectedDay = newSelectedDate;
                           _model.date = _model.calendarSelectedDay?.start;
-                          setState(() {});
-                          setState(() {});
+                          safeSetState(() {});
+                          safeSetState(() {});
                         },
                         titleStyle:
                             FlutterFlowTheme.of(context).headlineSmall.override(

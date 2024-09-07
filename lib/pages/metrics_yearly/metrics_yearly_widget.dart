@@ -36,7 +36,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // current year
       _model.year = functions.currentYear();
-      setState(() {});
+      safeSetState(() {});
     });
 
     animationsMap.addAll({
@@ -66,7 +66,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -180,7 +180,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
                                       _model.hotel = 'All';
-                                      setState(() {});
+                                      safeSetState(() {});
                                     },
                                     child: Container(
                                       width: 50.0,
@@ -242,7 +242,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       onTap: () async {
                                         // set hotel name
                                         _model.hotel = 'Serenity';
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -303,7 +303,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       onTap: () async {
                                         // set hotel
                                         _model.hotel = 'My Lifestyle';
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -406,7 +406,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       onTap: () async {
                                         // set category
                                         _model.category = 'Rooms';
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 50.0,
@@ -469,7 +469,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       onTap: () async {
                                         // set category
                                         _model.category = 'Goods';
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -530,7 +530,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                                       onTap: () async {
                                         // set category
                                         _model.category = 'Net';
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -608,7 +608,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                         // set previous year
                         _model.year =
                             functions.previousYear('January', _model.year);
-                        setState(() {});
+                        safeSetState(() {});
                       },
                     ),
                     Text(
@@ -632,7 +632,7 @@ class _MetricsYearlyWidgetState extends State<MetricsYearlyWidget>
                         // next Year
                         _model.year =
                             functions.nextYear(_model.year, 'December');
-                        setState(() {});
+                        safeSetState(() {});
                       },
                     ),
                   ],

@@ -25,7 +25,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
     super.initState();
     _model = createModel(context, () => RoomListModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -220,7 +220,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                             await _model.selectedRooms[_model.loopCounter]
                                 .delete();
                             _model.loopCounter = _model.loopCounter + 1;
-                            setState(() {});
+                            safeSetState(() {});
                           }
                         }
                       },
@@ -420,7 +420,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                                       .checkboxListTileValueMap1[
                                                   allRoomsRoomsRecord] ??= false,
                                               onChanged: (newValue) async {
-                                                setState(() =>
+                                                safeSetState(() =>
                                                     _model.checkboxListTileValueMap1[
                                                             allRoomsRoomsRecord] =
                                                         newValue!);
@@ -428,13 +428,13 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                                   _model.addToSelectedRooms(
                                                       allRoomsRoomsRecord
                                                           .reference);
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                 } else {
                                                   _model
                                                       .removeFromSelectedRooms(
                                                           allRoomsRoomsRecord
                                                               .reference);
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                 }
                                               },
                                               title: Text(

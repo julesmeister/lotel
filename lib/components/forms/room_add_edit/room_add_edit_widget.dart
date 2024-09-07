@@ -56,7 +56,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
         text: widget.edit ? widget.capacity?.toString() : '');
     _model.capacityFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -460,7 +460,7 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
 
                                   Navigator.pop(context);
 
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

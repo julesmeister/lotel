@@ -47,19 +47,19 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (widget.edit) {
         // set name
-        setState(() {
+        safeSetState(() {
           _model.nameTextController?.text = widget.name!;
           _model.nameTextController?.selection = TextSelection.collapsed(
               offset: _model.nameTextController!.text.length);
         });
         // set sss
-        setState(() {
+        safeSetState(() {
           _model.sssTextController?.text = widget.sss!.toString();
           _model.sssTextController?.selection = TextSelection.collapsed(
               offset: _model.sssTextController!.text.length);
         });
         // set rate
-        setState(() {
+        safeSetState(() {
           _model.rateTextController?.text = widget.weeklyRate!.toString();
           _model.rateTextController?.selection = TextSelection.collapsed(
               offset: _model.rateTextController!.text.length);
@@ -79,7 +79,7 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
         text: widget.edit ? widget.weeklyRate?.toString() : '');
     _model.rateFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -434,9 +434,9 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
 
                                   Navigator.pop(context);
 
-                                  setState(() {});
+                                  safeSetState(() {});
 
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

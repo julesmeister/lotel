@@ -66,14 +66,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
           if (_model.latestStats != null) {
             // set latest stat reference app state
             FFAppState().statsReference = _model.latestStats?.reference;
-            setState(() {});
+            safeSetState(() {});
           } else {
             // clear stats reference
             FFAppState().statsReference = null;
-            setState(() {});
+            safeSetState(() {});
             // create a new blank stat
             await action_blocks.createNewStats(context);
-            setState(() {});
+            safeSetState(() {});
           }
         }
       }
@@ -81,17 +81,17 @@ class _MetricsWidgetState extends State<MetricsWidget>
       _model.showMonthPicker = false;
       _model.month = functions.currentMonth();
       _model.year = functions.currentYear();
-      setState(() {});
+      safeSetState(() {});
       await _model.updateStatsByDate(
         context,
         year: functions.currentYear(),
         month: functions.currentMonth(),
         hotel: FFAppState().hotel,
       );
-      setState(() {});
+      safeSetState(() {});
       // show month picker
       _model.showMonthPicker = true;
-      setState(() {});
+      safeSetState(() {});
     });
 
     animationsMap.addAll({
@@ -314,7 +314,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -457,9 +457,9 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     hotel: 'All',
                                   );
                                   _model.hotel = _model.hotelName!;
-                                  setState(() {});
+                                  safeSetState(() {});
 
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Container(
                                   width: 50.0,
@@ -522,7 +522,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       );
                                       // set hotel name
                                       _model.hotel = _model.hotelName1!;
-                                      setState(() {});
+                                      safeSetState(() {});
                                     } else {
                                       // No data
                                       ScaffoldMessenger.of(context)
@@ -545,7 +545,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       );
                                     }
 
-                                    setState(() {});
+                                    safeSetState(() {});
                                   },
                                   child: Container(
                                     width: 115.0,
@@ -610,7 +610,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       );
                                       // set hotel
                                       _model.hotel = _model.hotelName2!;
-                                      setState(() {});
+                                      safeSetState(() {});
                                     } else {
                                       // No data
                                       ScaffoldMessenger.of(context)
@@ -633,7 +633,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       );
                                     }
 
-                                    setState(() {});
+                                    safeSetState(() {});
                                   },
                                   child: Container(
                                     width: 115.0,
@@ -708,27 +708,27 @@ class _MetricsWidgetState extends State<MetricsWidget>
                   onPressed: () async {
                     // hide month picker
                     _model.showMonthPicker = false;
-                    setState(() {});
+                    safeSetState(() {});
                     // set previous year
                     _model.year =
                         functions.previousYear(_model.month, _model.year);
-                    setState(() {});
+                    safeSetState(() {});
                     // set previous month
                     _model.month = functions.previousMonth(_model.month);
-                    setState(() {});
+                    safeSetState(() {});
                     await _model.updateStatsByDate(
                       context,
                       year: _model.year,
                       month: _model.month,
                       hotel: FFAppState().hotel,
                     );
-                    setState(() {});
+                    safeSetState(() {});
                     // set hotel to all
                     _model.hotel = 'All';
-                    setState(() {});
+                    safeSetState(() {});
                     // show month picker
                     _model.showMonthPicker = true;
-                    setState(() {});
+                    safeSetState(() {});
                   },
                 ),
                 if (_model.showMonthPicker)
@@ -772,7 +772,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         }[month];
                       }(month))!;
                       _model.year = year.toString();
-                      setState(() {});
+                      safeSetState(() {});
                       // get stats from this month
                       await _model.updateStatsByDate(
                         context,
@@ -795,13 +795,13 @@ class _MetricsWidgetState extends State<MetricsWidget>
                         }(month),
                         hotel: FFAppState().hotel,
                       );
-                      setState(() {});
+                      safeSetState(() {});
                       // show month picker
                       _model.showMonthPicker = true;
-                      setState(() {});
+                      safeSetState(() {});
                       // set hotel to all
                       _model.hotel = 'All';
-                      setState(() {});
+                      safeSetState(() {});
                     },
                   ).animateOnPageLoad(
                       animationsMap['containerOnPageLoadAnimation2']!),
@@ -817,26 +817,26 @@ class _MetricsWidgetState extends State<MetricsWidget>
                   onPressed: () async {
                     // hide month picker
                     _model.showMonthPicker = false;
-                    setState(() {});
+                    safeSetState(() {});
                     // next Year
                     _model.year = functions.nextYear(_model.year, _model.month);
-                    setState(() {});
+                    safeSetState(() {});
                     // next month
                     _model.month = functions.nextMonth(_model.month);
-                    setState(() {});
+                    safeSetState(() {});
                     await _model.updateStatsByDate(
                       context,
                       year: _model.year,
                       month: _model.month,
                       hotel: FFAppState().hotel,
                     );
-                    setState(() {});
+                    safeSetState(() {});
                     // set hotel to all
                     _model.hotel = 'All';
-                    setState(() {});
+                    safeSetState(() {});
                     // show month picker
                     _model.showMonthPicker = true;
-                    setState(() {});
+                    safeSetState(() {});
                   },
                 ),
               ],
@@ -895,7 +895,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   // reset loop and temp
                                   _model.loopCounter = 0;
                                   _model.transactionsTemp = [];
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // remittance first day of month
                                   _model.remittanceForRooms =
                                       await queryRemittancesRecordOnce(
@@ -939,11 +939,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       // add to temp
                                       _model.addToTransactionsTemp(_model
                                           .transactionFromRemittanceRooms!);
-                                      setState(() {});
+                                      safeSetState(() {});
                                     }
                                     // + loop
                                     _model.loopCounter = _model.loopCounter + 1;
-                                    setState(() {});
+                                    safeSetState(() {});
                                   }
                                   // room  sales
                                   _model.roomSales =
@@ -995,14 +995,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     month: _model.month,
                                     hotel: FFAppState().hotel,
                                   );
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // set hotel to all
                                   _model.hotel = 'All';
-                                  setState(() {});
+                                  safeSetState(() {});
                                 }
                               }
 
-                              setState(() {});
+                              safeSetState(() {});
                             },
                             child: Container(
                               width: 230.0,
@@ -1279,7 +1279,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   // reset loop and temp
                                   _model.loopCounter = 0;
                                   _model.transactionsTemp = [];
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // remittance first day of month
                                   _model.remittanceForExpenses =
                                       await queryRemittancesRecordOnce(
@@ -1323,11 +1323,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       // add to temp
                                       _model.addToTransactionsTemp(_model
                                           .transactionFromRemittanceExpenses!);
-                                      setState(() {});
+                                      safeSetState(() {});
                                     }
                                     // + loop
                                     _model.loopCounter = _model.loopCounter + 1;
-                                    setState(() {});
+                                    safeSetState(() {});
                                   }
                                   // expenses recalculate
                                   _model.expensesRecalculate =
@@ -1378,14 +1378,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     month: _model.month,
                                     hotel: FFAppState().hotel,
                                   );
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // set hotel to all
                                   _model.hotel = 'All';
-                                  setState(() {});
+                                  safeSetState(() {});
                                 }
                               }
 
-                              setState(() {});
+                              safeSetState(() {});
                             },
                             child: Container(
                               width: 230.0,
@@ -1646,10 +1646,10 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     month: _model.month,
                                     hotel: FFAppState().hotel,
                                   );
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // set hotel to all
                                   _model.hotel = 'All';
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // recalculated
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -1669,7 +1669,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                 }
                               }
 
-                              setState(() {});
+                              safeSetState(() {});
                             },
                             child: Container(
                               width: 230.0,
@@ -1905,7 +1905,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                   // reset loop and temp
                                   _model.loopCounter = 0;
                                   _model.transactionsTemp = [];
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // remittance first day of month
                                   _model.remittanceForGoods =
                                       await queryRemittancesRecordOnce(
@@ -1949,11 +1949,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       // add to temp
                                       _model.addToTransactionsTemp(_model
                                           .transactionFromRemittanceGoods!);
-                                      setState(() {});
+                                      safeSetState(() {});
                                     }
                                     // + loop
                                     _model.loopCounter = _model.loopCounter + 1;
-                                    setState(() {});
+                                    safeSetState(() {});
                                   }
                                   // goods sales
                                   _model.goodSales =
@@ -2005,14 +2005,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     month: _model.month,
                                     hotel: FFAppState().hotel,
                                   );
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // set hotel to all
                                   _model.hotel = 'All';
-                                  setState(() {});
+                                  safeSetState(() {});
                                 }
                               }
 
-                              setState(() {});
+                              safeSetState(() {});
                             },
                             child: Container(
                               width: 230.0,
@@ -2284,14 +2284,14 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                     month: _model.month,
                                     hotel: FFAppState().hotel,
                                   );
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // set hotel to all
                                   _model.hotel = 'All';
-                                  setState(() {});
+                                  safeSetState(() {});
                                 }
                               }
 
-                              setState(() {});
+                              safeSetState(() {});
                             },
                             child: Container(
                               width: 230.0,
@@ -2981,7 +2981,7 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               }
                             }
 
-                            setState(() {});
+                            safeSetState(() {});
                           },
                           child: Icon(
                             Icons.refresh,

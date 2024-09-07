@@ -9,9 +9,12 @@ class GroceryListModel extends FlutterFlowModel<GroceryListWidget> {
 
   String year = '2024';
 
+  bool loop = true;
+
+  DateTime? loopDate;
+
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for TabBar widget.
   TabController? tabBarController;
   int get tabBarCurrentIndex =>
@@ -30,6 +33,10 @@ class GroceryListModel extends FlutterFlowModel<GroceryListWidget> {
   StatsRecord? prevStats;
   // Stores action output result for [Firestore Query - Query a collection] action in Column widget.
   StatsRecord? currStats;
+  // Stores action output result for [Firestore Query - Query a collection] action in Column widget.
+  GoodsRevenueRatioRecord? latestGrocery;
+  // Stores action output result for [Firestore Query - Query a collection] action in Column widget.
+  GoodsRevenueRatioRecord? correctGroceryCategory;
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, GoodsRevenueRatioRecord>?

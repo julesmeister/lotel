@@ -35,7 +35,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     _model.textController ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -164,7 +164,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               ),
                               FlutterFlowRadioButton(
                                 options: ['Serenity', 'My Lifestyle'].toList(),
-                                onChanged: (val) => setState(() {}),
+                                onChanged: (val) => safeSetState(() {}),
                                 controller:
                                     _model.radioButtonValueController ??=
                                         FormFieldController<String>(null),
@@ -194,7 +194,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   onChanged: (_) => EasyDebounce.debounce(
                                     '_model.textController',
                                     const Duration(milliseconds: 2000),
-                                    () => setState(() {}),
+                                    () => safeSetState(() {}),
                                   ),
                                   autofocus: true,
                                   textCapitalization: TextCapitalization.words,
@@ -382,7 +382,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 },
                                               );
 
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                       text: 'Enter',
                                       icon: const FaIcon(

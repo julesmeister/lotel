@@ -29,7 +29,7 @@ class _MartWidgetState extends State<MartWidget> {
     super.initState();
     _model = createModel(context, () => MartModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -248,7 +248,7 @@ class _MartWidgetState extends State<MartWidget> {
                                                       .toList())
                                               .map((label) => ChipData(label))
                                               .toList(),
-                                          onChanged: (val) => setState(() =>
+                                          onChanged: (val) => safeSetState(() =>
                                               _model.categoriesValue =
                                                   val?.firstOrNull),
                                           selectedChipStyle: ChipStyle(
@@ -566,7 +566,8 @@ class _MartWidgetState extends State<MartWidget> {
                                                           : () async {
                                                               _model.removeFromCart(
                                                                   goodsListItem);
-                                                              setState(() {});
+                                                              safeSetState(
+                                                                  () {});
                                                             },
                                                     ),
                                                     FlutterFlowIconButton(
@@ -607,7 +608,8 @@ class _MartWidgetState extends State<MartWidget> {
                                                           : () async {
                                                               _model.addToCart(
                                                                   goodsListItem);
-                                                              setState(() {});
+                                                              safeSetState(
+                                                                  () {});
                                                             },
                                                     ),
                                                   ],

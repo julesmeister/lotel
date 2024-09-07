@@ -42,7 +42,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
         text: widget.cr != null ? widget.cr?.sockets.toString() : '0');
     _model.socketsFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -166,7 +166,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.socketsTextController
                                                     ?.text = ((int.parse(_model
                                                             .socketsTextController
@@ -182,7 +182,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                                             .length);
                                               });
                                               _model.operator = '-';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -240,7 +240,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.socketsTextController
                                                     ?.text = ((int.parse(_model
                                                             .socketsTextController
@@ -256,7 +256,7 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                                             .length);
                                               });
                                               _model.operator = '+';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:

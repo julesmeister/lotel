@@ -78,7 +78,6 @@ class RemittancesModel extends FlutterFlowModel<RemittancesWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Firestore Query - Query a collection] action in remittances widget.
   RemittancesRecord? latestRemittance;
   // State field(s) for Calendar widget.

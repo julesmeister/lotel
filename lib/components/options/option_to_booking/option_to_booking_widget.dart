@@ -38,7 +38,7 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
     super.initState();
     _model = createModel(context, () => OptionToBookingModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -191,7 +191,7 @@ class _OptionToBookingWidgetState extends State<OptionToBookingWidget> {
                     // return false
                     Navigator.pop(context, false);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

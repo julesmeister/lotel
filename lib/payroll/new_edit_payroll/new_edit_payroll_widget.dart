@@ -44,11 +44,11 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // Set edit boolean
       _model.edit = widget.ref?.id != null && widget.ref?.id != '';
-      setState(() {});
+      safeSetState(() {});
       if (_model.edit) {
         // set ref
         _model.ref = widget.ref;
-        setState(() {});
+        safeSetState(() {});
         // old payroll
         _model.existingPayroll =
             await PayrollsRecord.getDocumentOnce(widget.ref!);
@@ -62,13 +62,13 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
         _model.settled = _model.existingPayroll?.status == 'settled';
         _model.salaries =
             _model.existingSalaries!.toList().cast<SalariesRecord>();
-        setState(() {});
+        safeSetState(() {});
       } else {
         // new payroll
         _model.date = functions.today();
         _model.fortnight = functions.generateFortnight(functions.today()!);
         _model.settled = false;
-        setState(() {});
+        safeSetState(() {});
       }
 
       _model.staffsOfThisHotel = await queryStaffsRecordOnce(
@@ -78,7 +78,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
         ),
       );
       _model.staffs = _model.staffsOfThisHotel!.toList().cast<StaffsRecord>();
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.newRateTextController ??= TextEditingController();
@@ -87,7 +87,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
     _model.newSSSTextController ??= TextEditingController();
     _model.newSSSFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -175,9 +175,9 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
 
                     // add salary to list
                     _model.addToSalaries(_model.salary!);
-                    setState(() {});
+                    safeSetState(() {});
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                 ),
               ),
@@ -355,7 +355,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   ));
                                   // update date
                                   _model.date = _model.adjustedDate;
-                                  setState(() {});
+                                  safeSetState(() {});
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
@@ -373,7 +373,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   );
                                 }
 
-                                setState(() {});
+                                safeSetState(() {});
                               },
                               child: AutoSizeText(
                                 dateTimeFormat("EEE M d y h:mm a", _model.date),
@@ -402,7 +402,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       onPressed: () async {
                                         _model.showChangeRate =
                                             !_model.showChangeRate;
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       text: 'Change Rate',
                                       options: FFButtonOptions(
@@ -617,7 +617,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                             if (confirmDialogResponse) {
                               // reset loop counter
                               _model.loopSalariesCounter = 0;
-                              setState(() {});
+                              safeSetState(() {});
                               while (_model.loopSalariesCounter !=
                                   _model.salaries.length) {
                                 if (_model.newRateTextController.text != '') {
@@ -678,7 +678,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 // increment loop
                                 _model.loopSalariesCounter =
                                     _model.loopSalariesCounter + 1;
-                                setState(() {});
+                                safeSetState(() {});
                               }
                               // updated salaries
                               _model.updatedSalaries =
@@ -690,15 +690,15 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   .toList()
                                   .cast<SalariesRecord>();
                               _model.showChangeRate = false;
-                              setState(() {});
+                              safeSetState(() {});
                             }
                             // reset form fields
-                            setState(() {
+                            safeSetState(() {
                               _model.newRateTextController?.clear();
                               _model.newSSSTextController?.clear();
                             });
 
-                            setState(() {});
+                            safeSetState(() {});
                           },
                         ),
                       ],
@@ -743,7 +743,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   onPressed: () async {
                                     _model.fortnight =
                                         functions.downOrdinal(_model.fortnight);
-                                    setState(() {});
+                                    safeSetState(() {});
                                     // update fortnight
 
                                     await widget.ref!
@@ -782,7 +782,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       onPressed: () async {
                                         _model.fortnight = functions
                                             .upOrdinal(_model.fortnight);
-                                        setState(() {});
+                                        safeSetState(() {});
                                         // update fortnight
 
                                         await widget.ref!
@@ -837,7 +837,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         _model.settled = true;
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -906,7 +906,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         _model.settled = false;
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                       child: Container(
                                         width: 115.0,
@@ -1055,10 +1055,10 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                           salariesListIndex,
                                           (_) => _model.updatedSalary!,
                                         );
-                                        setState(() {});
+                                        safeSetState(() {});
                                       }
 
-                                      setState(() {});
+                                      safeSetState(() {});
                                     },
                                     onLongPress: () async {
                                       await showModalBottomSheet(
@@ -1487,13 +1487,13 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     if (confirmDialogResponse) {
                                       // reset salary loop counter
                                       _model.loopSalariesCounter = 0;
-                                      setState(() {});
+                                      safeSetState(() {});
                                       while (_model.loopSalariesCounter !=
                                           _model.salaries.length) {
                                         // reset ca counter loop
                                         _model.loopCACounterUnsettle = 0;
                                         _model.loopAbsencesCounter = 0;
-                                        setState(() {});
+                                        safeSetState(() {});
                                         while (_model.loopCACounterUnsettle !=
                                             _model
                                                 .salaries[
@@ -1513,7 +1513,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                           // increment loop ca counter
                                           _model.loopCACounterUnsettle =
                                               _model.loopCACounterUnsettle + 1;
-                                          setState(() {});
+                                          safeSetState(() {});
                                         }
                                         while (_model.loopAbsencesCounter !=
                                             _model
@@ -1534,7 +1534,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                           // increment loop absence  counter
                                           _model.loopAbsencesCounter =
                                               _model.loopAbsencesCounter + 1;
-                                          setState(() {});
+                                          safeSetState(() {});
                                         }
                                         // delete each salary
                                         await _model
@@ -1545,7 +1545,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         // increment loop salaries
                                         _model.loopSalariesCounter =
                                             _model.loopSalariesCounter + 1;
-                                        setState(() {});
+                                        safeSetState(() {});
                                       }
                                       // deduct from stats
 
@@ -1712,7 +1712,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   _model.loopSalariesCounter = 0;
                                   _model.loopAbsencesCounter = 0;
                                   _model.loopAdvancesCounter = 0;
-                                  setState(() {});
+                                  safeSetState(() {});
                                   while (_model.loopSalariesCounter !=
                                       _model.salaries.length) {
                                     // staff
@@ -1738,7 +1738,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     // reset ca loop counter
                                     _model.loopAdvancesCounter = 0;
                                     _model.loopAbsencesCounter = 0;
-                                    setState(() {});
+                                    safeSetState(() {});
                                     while (_model.loopAdvancesCounter !=
                                         _model.unsettledCashAdvance?.length) {
                                       // settle the ca
@@ -1753,7 +1753,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       // increment advances counter
                                       _model.loopAdvancesCounter =
                                           _model.loopAdvancesCounter + 1;
-                                      setState(() {});
+                                      safeSetState(() {});
                                     }
                                     // list of absences
                                     _model.absences =
@@ -1765,7 +1765,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         .where((e) => !e.settled)
                                         .toList()
                                         .cast<AbsencesRecord>();
-                                    setState(() {});
+                                    safeSetState(() {});
                                     while (_model.loopAbsencesCounter !=
                                         _model.absencesToSettle.length) {
                                       // settle the absence
@@ -1780,12 +1780,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       // increment loop
                                       _model.loopAbsencesCounter =
                                           _model.loopAbsencesCounter + 1;
-                                      setState(() {});
+                                      safeSetState(() {});
                                     }
                                     // increment loopSalaries
                                     _model.loopSalariesCounter =
                                         _model.loopSalariesCounter + 1;
-                                    setState(() {});
+                                    safeSetState(() {});
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -1865,7 +1865,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 );
                               }
 
-                              setState(() {});
+                              safeSetState(() {});
                             },
                             text: _model.edit ? 'Save' : 'Create',
                             icon: const Icon(
@@ -1949,7 +1949,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                   _model.loopSalariesCounter = 0;
                                   _model.loopAbsencesCounter = 0;
                                   _model.loopAdvancesCounter = 0;
-                                  setState(() {});
+                                  safeSetState(() {});
                                   while (_model.loopSalariesCounter !=
                                       _model.salaries.length) {
                                     // staff
@@ -1975,7 +1975,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     // reset ca loop counter
                                     _model.loopAdvancesCounter = 0;
                                     _model.loopAbsencesCounter = 0;
-                                    setState(() {});
+                                    safeSetState(() {});
                                     while (_model.loopAdvancesCounter !=
                                         _model.unsettledCashAdvanceClear
                                             ?.length) {
@@ -1991,7 +1991,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       // increment advances counter
                                       _model.loopAdvancesCounter =
                                           _model.loopAdvancesCounter + 1;
-                                      setState(() {});
+                                      safeSetState(() {});
                                     }
                                     // list of absences
                                     _model.absencesClear =
@@ -2004,7 +2004,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         .where((e) => !e.settled)
                                         .toList()
                                         .cast<AbsencesRecord>();
-                                    setState(() {});
+                                    safeSetState(() {});
                                     while (_model.loopAbsencesCounter !=
                                         _model.absencesToSettle.length) {
                                       // settle the absence
@@ -2019,12 +2019,12 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       // increment loop
                                       _model.loopAbsencesCounter =
                                           _model.loopAbsencesCounter + 1;
-                                      setState(() {});
+                                      safeSetState(() {});
                                     }
                                     // increment loopSalaries
                                     _model.loopSalariesCounter =
                                         _model.loopSalariesCounter + 1;
-                                    setState(() {});
+                                    safeSetState(() {});
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -2060,7 +2060,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 }
                               }
 
-                              setState(() {});
+                              safeSetState(() {});
                             },
                             text: 'Clear Cash Advances',
                             icon: const Icon(

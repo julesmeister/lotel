@@ -36,27 +36,27 @@ class _PromoWidgetState extends State<PromoWidget> {
           await HotelSettingsRecord.getDocumentOnce(FFAppState().settingRef!);
       if (_model.settings!.promoOn) {
         // set detail
-        setState(() {
+        safeSetState(() {
           _model.detailTextController?.text = _model.settings!.promoDetail;
           _model.detailTextController?.selection = TextSelection.collapsed(
               offset: _model.detailTextController!.text.length);
         });
         // set percent
-        setState(() {
+        safeSetState(() {
           _model.percentTextController?.text =
               _model.settings!.promoPercent.toString();
           _model.percentTextController?.selection = TextSelection.collapsed(
               offset: _model.percentTextController!.text.length);
         });
         // on toggle
-        setState(() {
+        safeSetState(() {
           _model.switchValue = true;
         });
         _model.promoOn = true;
-        setState(() {});
+        safeSetState(() {});
       } else {
         // off toggle
-        setState(() {
+        safeSetState(() {
           _model.switchValue = false;
         });
       }
@@ -69,7 +69,7 @@ class _PromoWidgetState extends State<PromoWidget> {
     _model.percentTextController ??= TextEditingController();
     _model.percentFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -164,15 +164,16 @@ class _PromoWidgetState extends State<PromoWidget> {
                             Switch.adaptive(
                               value: _model.switchValue!,
                               onChanged: (newValue) async {
-                                setState(() => _model.switchValue = newValue);
+                                safeSetState(
+                                    () => _model.switchValue = newValue);
                                 if (newValue) {
                                   // promoOn
                                   _model.promoOn = true;
-                                  setState(() {});
+                                  safeSetState(() {});
                                 } else {
                                   // promoOff
                                   _model.promoOn = false;
-                                  setState(() {});
+                                  safeSetState(() {});
                                 }
                               },
                               activeColor: FlutterFlowTheme.of(context).primary,

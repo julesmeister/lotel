@@ -46,7 +46,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
         // editable issue
         _model.issueToEdit = await IssuesRecord.getDocumentOnce(widget.ref!);
         // set form with detail
-        setState(() {
+        safeSetState(() {
           _model.detailTextController?.text = _model.issueToEdit!.detail;
           _model.detailTextController?.selection = TextSelection.collapsed(
               offset: _model.detailTextController!.text.length);
@@ -57,7 +57,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
     _model.detailTextController ??= TextEditingController();
     _model.detailFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -330,7 +330,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                 onTap: () async {
                                   // isLoading
                                   _model.isLoading = true;
-                                  setState(() {});
+                                  safeSetState(() {});
                                   if (widget.edit) {
                                     await widget.ref!
                                         .update(createIssuesRecordData(
@@ -388,7 +388,7 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
 
                                   // unLoad
                                   _model.isLoading = false;
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

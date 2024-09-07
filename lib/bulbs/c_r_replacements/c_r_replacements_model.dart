@@ -13,7 +13,6 @@ class CRReplacementsModel extends FlutterFlowModel<CRReplacementsWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Bottom Sheet - ChangeDate] action in Column widget.
   DateTime? adjustedFixDateCopy;
 

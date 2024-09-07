@@ -32,7 +32,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
     _model.nameTextController ??= TextEditingController();
     _model.nameFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -222,7 +222,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                                 onTap: () async {
                                                   // type expense
                                                   _model.type = 'expense';
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                 },
                                                 child: AnimatedContainer(
                                                   duration: const Duration(
@@ -305,7 +305,7 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                                 onTap: () async {
                                                   // type bill
                                                   _model.type = 'bill';
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                 },
                                                 child: AnimatedContainer(
                                                   duration: const Duration(

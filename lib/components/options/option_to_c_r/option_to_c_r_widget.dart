@@ -36,7 +36,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
     super.initState();
     _model = createModel(context, () => OptionToCRModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -139,7 +139,7 @@ class _OptionToCRWidgetState extends State<OptionToCRWidget> {
                     // close
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

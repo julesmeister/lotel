@@ -52,10 +52,10 @@ class _RemittanceSpecificTransactionsWidgetState
             widget.transactions![_model.loopTransactionsCounter]);
         // Add to list
         _model.addToTransactions(_model.transactionToList!);
-        setState(() {});
+        safeSetState(() {});
         // increment loop
         _model.loopTransactionsCounter = _model.loopTransactionsCounter + 1;
-        setState(() {});
+        safeSetState(() {});
       }
       while (_model.loopAbsencesCounter != widget.absences?.length) {
         // read absence
@@ -63,10 +63,10 @@ class _RemittanceSpecificTransactionsWidgetState
             widget.absences![_model.loopAbsencesCounter]);
         // add to list
         _model.addToAbsencesDocs(_model.absenceToList!);
-        setState(() {});
+        safeSetState(() {});
         // increment loop
         _model.loopAbsencesCounter = _model.loopAbsencesCounter + 1;
-        setState(() {});
+        safeSetState(() {});
       }
     });
 
@@ -74,7 +74,7 @@ class _RemittanceSpecificTransactionsWidgetState
       vsync: this,
       length: 5,
       initialIndex: 0,
-    )..addListener(() => setState(() {}));
+    )..addListener(() => safeSetState(() {}));
     animationsMap.addAll({
       'containerOnPageLoadAnimation1': AnimationInfo(
         trigger: AnimationTrigger.onPageLoad,
@@ -160,7 +160,7 @@ class _RemittanceSpecificTransactionsWidgetState
       this,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

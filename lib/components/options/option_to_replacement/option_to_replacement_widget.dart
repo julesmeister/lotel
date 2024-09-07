@@ -38,7 +38,7 @@ class _OptionToReplacementWidgetState extends State<OptionToReplacementWidget> {
     super.initState();
     _model = createModel(context, () => OptionToReplacementModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

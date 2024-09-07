@@ -20,7 +20,6 @@ class InventoryModel extends FlutterFlowModel<InventoryWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for categories widget.
   FormFieldController<List<String>>? categoriesValueController;
   String? get categoriesValue => categoriesValueController?.value?.firstOrNull;

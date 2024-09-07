@@ -33,7 +33,7 @@ class _OptionToRecordWidgetState extends State<OptionToRecordWidget> {
     super.initState();
     _model = createModel(context, () => OptionToRecordModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

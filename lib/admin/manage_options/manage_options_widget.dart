@@ -24,7 +24,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
     super.initState();
     _model = createModel(context, () => ManageOptionsModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -181,7 +181,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                 await _model.selectedChoice[_model.loop]
                                     .delete();
                                 _model.loop = _model.loop + 1;
-                                setState(() {});
+                                safeSetState(() {});
                               }
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -278,7 +278,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                         highlightColor: Colors.transparent,
                         onTap: () async {
                           _model.showExpenses = !_model.showExpenses;
-                          setState(() {});
+                          safeSetState(() {});
                         },
                         child: Container(
                           width: MediaQuery.sizeOf(context).width * 1.0,
@@ -433,7 +433,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                                           .checkboxListTileValueMap1[
                                                       expenseListOptionsRecord] ??= false,
                                                   onChanged: (newValue) async {
-                                                    setState(() => _model
+                                                    safeSetState(() => _model
                                                                 .checkboxListTileValueMap1[
                                                             expenseListOptionsRecord] =
                                                         newValue!);
@@ -517,7 +517,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                       highlightColor: Colors.transparent,
                       onTap: () async {
                         _model.showBills = !_model.showBills;
-                        setState(() {});
+                        safeSetState(() {});
                       },
                       child: Container(
                         width: MediaQuery.sizeOf(context).width * 1.0,
@@ -669,7 +669,7 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                                           .checkboxListTileValueMap2[
                                                       billsLisOptionsRecord] ??= false,
                                                   onChanged: (newValue) async {
-                                                    setState(() => _model
+                                                    safeSetState(() => _model
                                                                 .checkboxListTileValueMap2[
                                                             billsLisOptionsRecord] =
                                                         newValue!);

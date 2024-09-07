@@ -2081,3 +2081,13 @@ List<BillsRecord>? showBills(
         .toList();
   }
 }
+
+bool moreThan24hr(DateTime? date) {
+  // if date has already been 24 hrs or more
+  if (date == null) {
+    return false;
+  }
+  final now = DateTime.now();
+  final difference = now.difference(date);
+  return difference.inHours >= 24;
+}

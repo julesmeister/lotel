@@ -36,7 +36,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
     ));
     _model.textFieldFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -124,7 +124,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
                 onPressed: () async {
                   FFAppState().bedPrice =
                       editBedPriceHotelSettingsRecord!.bedPrice;
-                  setState(() {});
+                  safeSetState(() {});
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
@@ -383,7 +383,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
 
                         FFAppState().bedPrice =
                             double.parse(_model.textController.text);
-                        setState(() {});
+                        safeSetState(() {});
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(

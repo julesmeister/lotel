@@ -39,8 +39,8 @@ class _NameEditWidgetState extends State<NameEditWidget> {
       _model.userToEdit = await UsersRecord.getDocumentOnce(
           widget.ref != null ? widget.ref! : currentUserReference!);
       _model.user = _model.userToEdit;
-      setState(() {});
-      setState(() {
+      safeSetState(() {});
+      safeSetState(() {
         _model.nameTextController?.text = _model.userToEdit!.displayName;
         _model.nameTextController?.selection = TextSelection.collapsed(
             offset: _model.nameTextController!.text.length);
@@ -50,7 +50,7 @@ class _NameEditWidgetState extends State<NameEditWidget> {
     _model.nameTextController ??= TextEditingController();
     _model.nameFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

@@ -30,7 +30,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     super.initState();
     _model = createModel(context, () => SettingsModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -449,7 +449,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                           functions.currentMonthYear()!;
                                       FFAppState().settingRef =
                                           _model.hotelSetting?.reference;
-                                      setState(() {});
+                                      safeSetState(() {});
                                       // clear statsSettings
                                       FFAppState().clearStatsSettingsCache();
                                       ScaffoldMessenger.of(context)
@@ -470,7 +470,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                   .secondary,
                                         ),
                                       );
-                                      if (shouldSetState) setState(() {});
+                                      if (shouldSetState) safeSetState(() {});
                                       return;
                                     } else {
                                       await action_blocks
@@ -493,7 +493,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       );
                                     }
 
-                                    if (shouldSetState) setState(() {});
+                                    if (shouldSetState) safeSetState(() {});
                                   },
                                 );
                               },
@@ -1069,7 +1069,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                 );
                                               }
 
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                           );
                                         },
@@ -1117,7 +1117,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     adminAreaHotelSettingsRecord!
                                         .acceptNewStaff,
                                 onChanged: (newValue) async {
-                                  setState(() =>
+                                  safeSetState(() =>
                                       _model.checkboxListTileValue = newValue!);
                                   if (newValue!) {
                                     await adminAreaHotelSettingsRecord!

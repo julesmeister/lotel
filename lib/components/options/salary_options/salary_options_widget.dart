@@ -33,7 +33,7 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
     super.initState();
     _model = createModel(context, () => SalaryOptionsModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -97,7 +97,7 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                           await SalariesRecord.getDocumentOnce(widget.salary!);
                       // reset loop counter
                       _model.loopCACounter = 0;
-                      setState(() {});
+                      safeSetState(() {});
                       while (_model.loopCACounter !=
                           _model.salaryToGetTotal?.caRefs.length) {
                         // unsettle ca
@@ -109,7 +109,7 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                         ));
                         // increment loop
                         _model.loopCACounter = _model.loopCACounter + 1;
-                        setState(() {});
+                        safeSetState(() {});
                       }
                       // decrement salary in stats
 
@@ -151,7 +151,7 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
                       );
                     }
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

@@ -26,7 +26,7 @@ class _OptionToLogoutWidgetState extends State<OptionToLogoutWidget> {
     super.initState();
     _model = createModel(context, () => OptionToLogoutModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -86,10 +86,8 @@ class _OptionToLogoutWidgetState extends State<OptionToLogoutWidget> {
                     GoRouter.of(context).clearRedirectLocation();
 
                     Navigator.pop(context);
-                    if (Navigator.of(context).canPop()) {
-                      context.pop();
-                    }
-                    context.pushNamedAuth('Login', context.mounted);
+
+                    context.goNamedAuth('Login', context.mounted);
                   },
                   child: Container(
                     width: double.infinity,

@@ -66,7 +66,7 @@ class _OptionToBookingTransactionWidgetState
           await HotelSettingsRecord.getDocumentOnce(FFAppState().settingRef!);
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -284,7 +284,7 @@ class _OptionToBookingTransactionWidgetState
                       );
                     }
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -450,7 +450,7 @@ class _OptionToBookingTransactionWidgetState
                     // close
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -612,7 +612,7 @@ class _OptionToBookingTransactionWidgetState
                     // close
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -776,7 +776,7 @@ class _OptionToBookingTransactionWidgetState
                     // close
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -943,7 +943,7 @@ class _OptionToBookingTransactionWidgetState
                       );
                     }
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -1089,7 +1089,7 @@ class _OptionToBookingTransactionWidgetState
                       );
                     }
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

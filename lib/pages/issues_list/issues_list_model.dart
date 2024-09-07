@@ -17,7 +17,6 @@ class IssuesListModel extends FlutterFlowModel<IssuesListWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, IssuesRecord>? listViewPagingController;

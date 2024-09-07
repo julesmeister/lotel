@@ -47,7 +47,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -183,7 +183,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                               await _model.selectedUsers[_model.loopCounter]
                                   .delete();
                               _model.loopCounter = _model.loopCounter + 1;
-                              setState(() {});
+                              safeSetState(() {});
                             }
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -512,7 +512,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                   recentItem] ??= false,
                                                               onChanged:
                                                                   (newValue) async {
-                                                                setState(() =>
+                                                                safeSetState(() =>
                                                                     _model.checkboxListTileValueMap1[
                                                                             recentItem] =
                                                                         newValue!);
@@ -807,7 +807,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                   othersItem] ??= false,
                                                               onChanged:
                                                                   (newValue) async {
-                                                                setState(() =>
+                                                                safeSetState(() =>
                                                                     _model.checkboxListTileValueMap2[
                                                                             othersItem] =
                                                                         newValue!);
@@ -924,7 +924,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                     'expire'
                                   ],
                                   onChanged: (val) async {
-                                    setState(
+                                    safeSetState(
                                         () => _model.selectedRoleValue = val);
                                     while (_model.loopCounter !=
                                         valueOrDefault<int>(
@@ -954,7 +954,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                           _model.loopCounter + 1;
                                     }
                                     // reset drop down
-                                    setState(() {
+                                    safeSetState(() {
                                       _model.selectedRoleValueController
                                           ?.reset();
                                     });

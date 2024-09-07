@@ -51,7 +51,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.date = getCurrentTimestamp;
       _model.stats = FFAppState().statsReference;
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.amountTextController ??= TextEditingController();
@@ -133,7 +133,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -284,7 +284,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                   // set stats ref
                                   _model.stats =
                                       _model.statsBillBelong?.reference;
-                                  setState(() {});
+                                  safeSetState(() {});
                                 }
                                 // increment bills stats
 
@@ -324,17 +324,17 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                   ),
                                 );
                                 // Reset choice chips
-                                setState(() {
+                                safeSetState(() {
                                   _model.choicesValueController?.reset();
                                 });
                                 // Reset amount/description
-                                setState(() {
+                                safeSetState(() {
                                   _model.amountTextController?.clear();
                                   _model.descriptionTextController?.clear();
                                 });
                                 // reset date
                                 _model.date = getCurrentTimestamp;
-                                setState(() {});
+                                safeSetState(() {});
                               }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -352,7 +352,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                               );
                             }
 
-                            setState(() {});
+                            safeSetState(() {});
                           },
                   ),
                 ),
@@ -405,10 +405,10 @@ class _BillFormWidgetState extends State<BillFormWidget>
 
                         if (_model.adjustedDate != null) {
                           _model.date = _model.adjustedDate;
-                          setState(() {});
+                          safeSetState(() {});
                         }
 
-                        setState(() {});
+                        safeSetState(() {});
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
@@ -485,11 +485,11 @@ class _BillFormWidgetState extends State<BillFormWidget>
                             if (_model.amountTextController.text == '') {
                               // disable
                               _model.disableSubmit = true;
-                              setState(() {});
+                              safeSetState(() {});
                             } else {
                               // enable
                               _model.disableSubmit = false;
-                              setState(() {});
+                              safeSetState(() {});
                             }
                           },
                         ),
@@ -733,9 +733,9 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                   .map((label) => ChipData(label))
                                   .toList(),
                               onChanged: (val) async {
-                                setState(() =>
+                                safeSetState(() =>
                                     _model.choicesValue = val?.firstOrNull);
-                                setState(() {
+                                safeSetState(() {
                                   _model.descriptionTextController?.text =
                                       _model.choicesValue!;
                                   _model.descriptionTextController?.selection =

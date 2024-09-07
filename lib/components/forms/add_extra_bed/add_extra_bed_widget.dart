@@ -46,13 +46,13 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
         _model.hotelSetting?.promoPercent,
         0.0,
       );
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.numberTextController ??= TextEditingController(text: '0');
     _model.numberFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -176,7 +176,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               // minus operator
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.numberTextController
                                                     ?.text = ((int.parse(_model
                                                             .numberTextController
@@ -192,7 +192,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                             .length);
                                               });
                                               _model.operator = '-';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -251,7 +251,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               // add operator
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.numberTextController
                                                     ?.text = ((int.parse(_model
                                                             .numberTextController
@@ -267,7 +267,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                             .length);
                                               });
                                               _model.operator = '+';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -714,7 +714,7 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                     );
                                   }
 
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

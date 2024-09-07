@@ -29,7 +29,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
     super.initState();
     _model = createModel(context, () => PendingsModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -315,7 +315,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                                   .error,
                                         ),
                                       );
-                                      if (shouldSetState) setState(() {});
+                                      if (shouldSetState) safeSetState(() {});
                                       return;
                                     }
                                   } else {
@@ -333,7 +333,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
 
                                 // increment counter
                                 _model.loopCounter = _model.loopCounter + 1;
-                                setState(() {});
+                                safeSetState(() {});
                               }
                               FFAppState().clearPendingsCountCacheKey(
                                   FFAppState().hotel);
@@ -356,7 +356,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                               // Go back home
                               context.safePop();
                             }
-                            if (shouldSetState) setState(() {});
+                            if (shouldSetState) safeSetState(() {});
                           },
                         ),
                       ),
@@ -481,7 +481,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                                 _model.checkboxListTileValueMap[
                                                     pendingsItem] ??= false,
                                             onChanged: (newValue) async {
-                                              setState(() => _model
+                                              safeSetState(() => _model
                                                       .checkboxListTileValueMap[
                                                   pendingsItem] = newValue!);
                                             },

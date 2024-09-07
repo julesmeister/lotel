@@ -37,7 +37,7 @@ class _HistoryEditWidgetState extends State<HistoryEditWidget> {
         TextEditingController(text: widget.history?.description);
     _model.detailsFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

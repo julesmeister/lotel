@@ -37,7 +37,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
     super.initState();
     _model = createModel(context, () => OptionToIssueModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -466,7 +466,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                       }.withoutNulls,
                     );
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -634,7 +634,7 @@ class _OptionToIssueWidgetState extends State<OptionToIssueWidget> {
                     }
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

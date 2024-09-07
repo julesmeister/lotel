@@ -51,7 +51,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
             : '');
     _model.wattsFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -177,7 +177,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               // minus operator
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.numberTextController
                                                     ?.text = ((int.parse(_model
                                                             .numberTextController
@@ -193,7 +193,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                                             .length);
                                               });
                                               _model.operator = '-';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -252,7 +252,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               // add operator
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.numberTextController
                                                     ?.text = ((int.parse(_model
                                                             .numberTextController
@@ -268,7 +268,7 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                                             .length);
                                               });
                                               _model.operator = '+';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:

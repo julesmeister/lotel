@@ -23,7 +23,6 @@ class ManageRolesModel extends FlutterFlowModel<ManageRolesWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for CheckboxListTile widget.
   Map<UsersRecord, bool> checkboxListTileValueMap1 = {};
   List<UsersRecord> get checkboxListTileCheckedItems1 =>

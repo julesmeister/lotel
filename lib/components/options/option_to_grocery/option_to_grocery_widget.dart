@@ -36,7 +36,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
     super.initState();
     _model = createModel(context, () => OptionToGroceryModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -340,7 +340,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                       }
                       Navigator.pop(context);
 
-                      setState(() {});
+                      safeSetState(() {});
                     },
                     child: Container(
                       width: double.infinity,
@@ -458,7 +458,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                     Navigator.pop(context);
                     context.safePop();
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

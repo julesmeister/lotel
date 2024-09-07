@@ -45,14 +45,14 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.year = functions.currentYear();
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.tabBarController = TabController(
       vsync: this,
       length: 3,
       initialIndex: 0,
-    )..addListener(() => setState(() {}));
+    )..addListener(() => safeSetState(() {}));
     animationsMap.addAll({
       'iconButtonOnPageLoadAnimation1': AnimationInfo(
         trigger: AnimationTrigger.onPageLoad,
@@ -80,7 +80,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -179,7 +179,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                             // set previous year
                             _model.year =
                                 functions.previousYear('January', _model.year);
-                            setState(() {});
+                            safeSetState(() {});
                           },
                         ).animateOnPageLoad(
                             animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -205,7 +205,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                             // set next year
                             _model.year =
                                 functions.nextYear(_model.year, 'December');
-                            setState(() {});
+                            safeSetState(() {});
                           },
                         ).animateOnPageLoad(
                             animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -1199,7 +1199,8 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                                   ));
                                                                 }
 
-                                                                setState(() {});
+                                                                safeSetState(
+                                                                    () {});
                                                               },
                                                               child: Column(
                                                                 mainAxisSize:

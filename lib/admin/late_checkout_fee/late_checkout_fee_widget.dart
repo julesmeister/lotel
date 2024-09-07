@@ -30,7 +30,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
         TextEditingController(text: FFAppState().extPricePerHr.toString());
     _model.textFieldFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -118,7 +118,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
                 onPressed: () async {
                   FFAppState().extPricePerHr =
                       lateCheckoutFeeHotelSettingsRecord!.lateCheckoutFee;
-                  setState(() {});
+                  safeSetState(() {});
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
@@ -381,7 +381,7 @@ class _LateCheckoutFeeWidgetState extends State<LateCheckoutFeeWidget> {
 
                         FFAppState().extPricePerHr =
                             double.parse(_model.textController.text);
-                        setState(() {});
+                        safeSetState(() {});
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(

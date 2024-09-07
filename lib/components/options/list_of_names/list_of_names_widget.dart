@@ -61,10 +61,10 @@ class _ListOfNamesWidgetState extends State<ListOfNamesWidget> {
       );
       _model.names =
           _model.staffs!.map((e) => e.name).toList().toList().cast<String>();
-      setState(() {});
+      safeSetState(() {});
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

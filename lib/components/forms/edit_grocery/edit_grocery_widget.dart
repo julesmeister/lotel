@@ -2,6 +2,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'edit_grocery_model.dart';
@@ -41,7 +42,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
         TextEditingController(text: widget.grocery?.amount.toString());
     _model.amountFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -191,8 +192,9 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
 
                                           await widget.grocery!.reference
                                               .update(createGroceriesRecordData(
-                                            remark: _model
-                                                .remarkTextController.text,
+                                            remark: functions.startBigLetter(
+                                                _model
+                                                    .remarkTextController.text),
                                             amount: double.tryParse(_model
                                                 .amountTextController.text),
                                           ));
@@ -237,6 +239,7 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                             ),
                                           );
                                         }
+                                        Navigator.pop(context);
                                         Navigator.pop(context);
                                       } else {
                                         ScaffoldMessenger.of(context)

@@ -33,7 +33,7 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
     super.initState();
     _model = createModel(context, () => OptionToStaffModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -112,7 +112,7 @@ class _OptionToStaffWidgetState extends State<OptionToStaffWidget> {
                       },
                     ).then((value) => safeSetState(() {}));
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

@@ -38,7 +38,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
     super.initState();
     _model = createModel(context, () => OptionToLocationsModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -143,7 +143,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                     // close
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -209,7 +209,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                     // close
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -277,7 +277,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                     // close
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -371,7 +371,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                                 .delete();
                             // loop +
                             _model.loop = _model.loop + 1;
-                            setState(() {});
+                            safeSetState(() {});
                           }
                           // delete location
                           await widget.location!.delete();
@@ -393,7 +393,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                                 .delete();
                             // loop +
                             _model.loop = _model.loop + 1;
-                            setState(() {});
+                            safeSetState(() {});
                           }
                           // delete cr
                           await widget.cr!.delete();
@@ -416,7 +416,7 @@ class _OptionToLocationsWidgetState extends State<OptionToLocationsWidget> {
                       }
                     }
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

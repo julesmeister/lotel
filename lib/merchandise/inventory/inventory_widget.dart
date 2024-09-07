@@ -28,7 +28,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
     super.initState();
     _model = createModel(context, () => InventoryModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -224,7 +224,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                                       .toList())
                                               .map((label) => ChipData(label))
                                               .toList(),
-                                          onChanged: (val) => setState(() =>
+                                          onChanged: (val) => safeSetState(() =>
                                               _model.categoriesValue =
                                                   val?.firstOrNull),
                                           selectedChipStyle: ChipStyle(

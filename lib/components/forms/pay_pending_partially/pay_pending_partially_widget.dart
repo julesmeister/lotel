@@ -43,7 +43,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // reset
       _model.loop = 0;
-      setState(() {});
+      safeSetState(() {});
       while (widget.transactions?.length != _model.loop) {
         // add transaction to list
         _model.addToPendings(PayPendingStruct(
@@ -51,14 +51,14 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
           pending: false,
           ref: widget.transactions?[_model.loop].reference,
         ));
-        setState(() {});
+        safeSetState(() {});
         // + loop
         _model.loop = _model.loop + 1;
-        setState(() {});
+        safeSetState(() {});
       }
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -228,10 +228,10 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                         pendingTransactionsIndex,
                                         (e) => e..amount = _model.amount,
                                       );
-                                      setState(() {});
+                                      safeSetState(() {});
                                     }
 
-                                    setState(() {});
+                                    safeSetState(() {});
                                   },
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -304,7 +304,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                                   pendingTransactionsItem] ??=
                                               !pendingTransactionsItem.pending,
                                           onChanged: (newValue) async {
-                                            setState(() => _model
+                                            safeSetState(() => _model
                                                         .checkboxValueMap[
                                                     pendingTransactionsItem] =
                                                 newValue!);
@@ -314,14 +314,14 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                                 pendingTransactionsIndex,
                                                 (e) => e..pending = false,
                                               );
-                                              setState(() {});
+                                              safeSetState(() {});
                                             } else {
                                               // pending
                                               _model.updatePendingsAtIndex(
                                                 pendingTransactionsIndex,
                                                 (e) => e..pending = true,
                                               );
-                                              setState(() {});
+                                              safeSetState(() {});
                                             }
                                           },
                                           side: BorderSide(
@@ -431,7 +431,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                           _model.booking!.room!);
                                   // reset
                                   _model.loop = 0;
-                                  setState(() {});
+                                  safeSetState(() {});
                                   while (
                                       _model.pendings.length != _model.loop) {
                                     if (_model.pendings[_model.loop].pending) {
@@ -482,7 +482,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
 
                                     // + loop
                                     _model.loop = _model.loop + 1;
-                                    setState(() {});
+                                    safeSetState(() {});
                                   }
                                   // set history
 
@@ -525,7 +525,7 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                   // success
                                   Navigator.pop(context, true);
 
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

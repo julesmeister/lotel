@@ -22,7 +22,6 @@ class RoomListModel extends FlutterFlowModel<RoomListWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for CheckboxListTile widget.
   Map<RoomsRecord, bool> checkboxListTileValueMap1 = {};
   List<RoomsRecord> get checkboxListTileCheckedItems1 =>

@@ -42,15 +42,15 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // hide
       _model.showMonthPicker = false;
-      setState(() {});
+      safeSetState(() {});
       await Future.delayed(const Duration(milliseconds: 500));
       // set month year
       _model.month = functions.currentMonth();
       _model.year = functions.currentYear();
-      setState(() {});
+      safeSetState(() {});
       // show
       _model.showMonthPicker = true;
-      setState(() {});
+      safeSetState(() {});
     });
 
     animationsMap.addAll({
@@ -104,7 +104,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -221,18 +221,18 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                     onPressed: () async {
                       // hide month picker
                       _model.showMonthPicker = false;
-                      setState(() {});
+                      safeSetState(() {});
                       await Future.delayed(const Duration(milliseconds: 500));
                       // set previous year
                       _model.year =
                           functions.previousYear(_model.month, _model.year);
-                      setState(() {});
+                      safeSetState(() {});
                       // set previous month
                       _model.month = functions.previousMonth(_model.month);
-                      setState(() {});
+                      safeSetState(() {});
                       // show month picker
                       _model.showMonthPicker = true;
-                      setState(() {});
+                      safeSetState(() {});
                     },
                   ).animateOnPageLoad(
                       animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -260,7 +260,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                       changeMonthYear: (month, year) async {
                         // hide
                         _model.showMonthPicker = false;
-                        setState(() {});
+                        safeSetState(() {});
                         await Future.delayed(const Duration(milliseconds: 500));
                         // hide
                         _model.month = ((int month) {
@@ -280,10 +280,10 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                           }[month];
                         }(month))!;
                         _model.year = year.toString();
-                        setState(() {});
+                        safeSetState(() {});
                         // show
                         _model.showMonthPicker = true;
-                        setState(() {});
+                        safeSetState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['containerOnPageLoadAnimation']!),
@@ -299,18 +299,18 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                     onPressed: () async {
                       // hide month picker
                       _model.showMonthPicker = false;
-                      setState(() {});
+                      safeSetState(() {});
                       await Future.delayed(const Duration(milliseconds: 500));
                       // set next year
                       _model.year =
                           functions.nextYear(_model.year, _model.month);
-                      setState(() {});
+                      safeSetState(() {});
                       // set next month
                       _model.month = functions.nextMonth(_model.month);
-                      setState(() {});
+                      safeSetState(() {});
                       // show month picker
                       _model.showMonthPicker = true;
-                      setState(() {});
+                      safeSetState(() {});
                     },
                   ).animateOnPageLoad(
                       animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -486,7 +486,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                       }
                                     }
 
-                                    setState(() {});
+                                    safeSetState(() {});
                                   },
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
@@ -851,7 +851,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                                         );
                                                       }
 
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     },
                                                     child: Text(
                                                       'Solved on ${dateTimeFormat("MMM d h:mm a", listViewIssuesRecord.dateFixed)} ${functions.daysSolved(listViewIssuesRecord.date!, listViewIssuesRecord.dateFixed)}',

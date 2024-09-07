@@ -11,7 +11,6 @@ class IndividualHistoryModel extends FlutterFlowModel<IndividualHistoryWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for TabBar widget.
   TabController? tabBarController;
   int get tabBarCurrentIndex =>

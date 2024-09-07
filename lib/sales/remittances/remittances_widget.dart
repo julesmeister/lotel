@@ -55,7 +55,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
         ).then((s) => s.firstOrNull);
         // today
         _model.date = functions.startOfDay(_model.latestRemittance!.date!);
-        setState(() {});
+        safeSetState(() {});
       } else {
         return;
       }
@@ -189,7 +189,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -310,7 +310,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                 _model.inventories = [];
                                 _model.bookings = [];
                                 _model.transactions = [];
-                                setState(() {});
+                                safeSetState(() {});
                               },
                             ).animateOnPageLoad(animationsMap[
                                 'iconButtonOnPageLoadAnimation1']!),
@@ -323,7 +323,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                               highlightColor: Colors.transparent,
                               onTap: () async {
                                 _model.showDatePicker = !_model.showDatePicker;
-                                setState(() {});
+                                safeSetState(() {});
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
@@ -338,38 +338,40 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                       size: 35.0,
                                     ),
                                   ),
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Select Date',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              letterSpacing: 0.0,
-                                            ),
-                                      ),
-                                      AutoSizeText(
-                                        dateTimeFormat(
-                                            "MMMMEEEEd", _model.date),
-                                        maxLines: 1,
-                                        minFontSize: 18.0,
-                                        style: FlutterFlowTheme.of(context)
-                                            .displaySmall
-                                            .override(
-                                              fontFamily: 'Outfit',
-                                              fontSize: 18.0,
-                                              letterSpacing: 0.0,
-                                            ),
-                                      ).animateOnPageLoad(animationsMap[
-                                          'textOnPageLoadAnimation1']!),
-                                    ],
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Select Date',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                letterSpacing: 0.0,
+                                              ),
+                                        ),
+                                        AutoSizeText(
+                                          dateTimeFormat(
+                                              "MMMMEEEEd", _model.date),
+                                          maxLines: 1,
+                                          minFontSize: 10.0,
+                                          style: FlutterFlowTheme.of(context)
+                                              .displaySmall
+                                              .override(
+                                                fontFamily: 'Outfit',
+                                                fontSize: 18.0,
+                                                letterSpacing: 0.0,
+                                              ),
+                                        ).animateOnPageLoad(animationsMap[
+                                            'textOnPageLoadAnimation1']!),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -395,7 +397,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                 _model.inventories = [];
                                 _model.bookings = [];
                                 _model.transactions = [];
-                                setState(() {});
+                                safeSetState(() {});
                               },
                             ).animateOnPageLoad(animationsMap[
                                 'iconButtonOnPageLoadAnimation2']!),
@@ -421,8 +423,8 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                           _model.inventories = [];
                           _model.bookings = [];
                           _model.transactions = [];
-                          setState(() {});
-                          setState(() {});
+                          safeSetState(() {});
+                          safeSetState(() {});
                         },
                         titleStyle:
                             FlutterFlowTheme.of(context).headlineSmall.override(
@@ -1276,7 +1278,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     _model.loopTransactionCounter =
                                                         0;
                                                     _model.isLoading = true;
-                                                    setState(() {});
+                                                    safeSetState(() {});
                                                     // roomList
                                                     _model.roomInThisHotel =
                                                         await queryRoomsRecordOnce(
@@ -1293,7 +1295,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                         .roomInThisHotel!
                                                         .toList()
                                                         .cast<RoomsRecord>();
-                                                    setState(() {});
+                                                    safeSetState(() {});
                                                     while (_model
                                                             .loopInvetoryCounter !=
                                                         mainCardRemittancesRecord
@@ -1314,7 +1316,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                       _model.loopInvetoryCounter =
                                                           _model.loopInvetoryCounter +
                                                               1;
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     }
                                                     while (_model
                                                             .loopBookCounter !=
@@ -1335,7 +1337,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                               1;
                                                       _model.addToBookings(
                                                           _model.bookToList!);
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     }
                                                     while (_model
                                                             .loopTransactionCounter !=
@@ -1357,7 +1359,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                       _model.addToTransactions(
                                                           _model
                                                               .transactionToList!);
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     }
                                                     if (functions
                                                         .isInventoryComplete(
@@ -1385,7 +1387,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                         _model.loopAbsencesCounter =
                                                             _model.loopAbsencesCounter +
                                                                 1;
-                                                        setState(() {});
+                                                        safeSetState(() {});
                                                       }
                                                       // remove loading button
                                                       _model.showDownloadButton =
@@ -1393,7 +1395,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                       _model.showLoadButton =
                                                           false;
                                                       _model.isLoading = false;
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                     } else {
                                                       // missing
                                                       ScaffoldMessenger.of(
@@ -1423,11 +1425,11 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           true;
                                                       _model.showDownloadButton =
                                                           false;
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                       // reset counter
                                                       _model.loopTransactionCounter =
                                                           0;
-                                                      setState(() {});
+                                                      safeSetState(() {});
                                                       while (functions
                                                               .transactionWithMissingInventory(
                                                                   _model
@@ -1512,7 +1514,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                         _model.loopTransactionCounter =
                                                             _model.loopTransactionCounter +
                                                                 1;
-                                                        setState(() {});
+                                                        safeSetState(() {});
                                                       }
                                                     }
                                                   } else {
@@ -1539,7 +1541,7 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                     );
                                                   }
 
-                                                  setState(() {});
+                                                  safeSetState(() {});
                                                 },
                                                 text: 'Load Shareable PDF',
                                                 options: FFButtonOptions(

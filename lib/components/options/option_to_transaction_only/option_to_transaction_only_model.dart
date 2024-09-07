@@ -14,10 +14,14 @@ class OptionToTransactionOnlyModel
 
   // Stores action output result for [Backend Call - Read Document] action in changeDetails widget.
   TransactionsRecord? transactionToMark;
+  // Stores action output result for [Backend Call - Create Document] action in changeDetails widget.
+  GroceriesRecord? grocery;
   // Stores action output result for [Firestore Query - Query a collection] action in changeDetails widget.
   int? countGrr;
   // Stores action output result for [Firestore Query - Query a collection] action in changeDetails widget.
   GoodsRevenueRatioRecord? lastGrr;
+  // Stores action output result for [Firestore Query - Query a collection] action in changeDetails widget.
+  StatsRecord? stats;
   // Stores action output result for [Backend Call - Read Document] action in delete widget.
   TransactionsRecord? transaction;
   // Stores action output result for [Backend Call - Read Document] action in delete widget.

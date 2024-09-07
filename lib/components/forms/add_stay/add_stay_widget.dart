@@ -46,34 +46,34 @@ class _AddStayWidgetState extends State<AddStayWidget> {
         _model.hotelSetting?.promoPercent,
         0.0,
       );
-      setState(() {});
+      safeSetState(() {});
       while (widget.booking?.transactions.length != _model.loop) {
         // bookingTrans
         _model.bookingTrans = await TransactionsRecord.getDocumentOnce(
             widget.booking!.transactions[_model.loop]);
         // add to trans list
         _model.addToTransactions(_model.bookingTrans!);
-        setState(() {});
+        safeSetState(() {});
         // + loop
         _model.loop = _model.loop + 1;
-        setState(() {});
+        safeSetState(() {});
       }
       // set bed price
       _model.bedPrice = _model.hotelSetting!.bedPrice;
       _model.lateCheckOutFee = _model.hotelSetting!.lateCheckoutFee;
-      setState(() {});
+      safeSetState(() {});
       // room
       _model.room = await RoomsRecord.getDocumentOnce(widget.booking!.room!);
       // room price
       _model.roomPrice = _model.room!.price;
       _model.number = _model.room!.number;
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.numberTextController ??= TextEditingController(text: '0');
     _model.numberFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -197,7 +197,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               // minus operator
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.numberTextController
                                                     ?.text = ((int.parse(_model
                                                             .numberTextController
@@ -213,7 +213,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                             .length);
                                               });
                                               _model.operator = '-';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -272,7 +272,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               // add operator
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.numberTextController
                                                     ?.text = ((int.parse(_model
                                                             .numberTextController
@@ -288,7 +288,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                                             .length);
                                               });
                                               _model.operator = '+';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -657,7 +657,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                     }, transactionsRecordReference);
                                     // add to transactions
                                     _model.addToTransactions(_model.trans!);
-                                    setState(() {});
+                                    safeSetState(() {});
                                     // update booking total + transactions
 
                                     await widget.booking!.reference.update({
@@ -706,6 +706,15 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                         },
                                       ),
                                     });
+                                    // update last checkin time on room
+
+                                    await widget.booking!.room!.update({
+                                      ...mapToFirestore(
+                                        {
+                                          'last': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
@@ -739,7 +748,7 @@ class _AddStayWidgetState extends State<AddStayWidget> {
                                     );
                                   }
 
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

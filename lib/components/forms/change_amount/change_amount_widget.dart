@@ -35,7 +35,7 @@ class _ChangeAmountWidgetState extends State<ChangeAmountWidget> {
         TextEditingController(text: widget.amount.toString());
     _model.extraFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

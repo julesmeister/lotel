@@ -46,7 +46,7 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
 
     _model.crValue =
         widget.location != null ? widget.location!.withCR : false;
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -172,7 +172,7 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.socketsTextController
                                                     ?.text = ((int.parse(_model
                                                             .socketsTextController
@@ -188,7 +188,7 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                                             .length);
                                               });
                                               _model.operator = '-';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -246,7 +246,7 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.socketsTextController
                                                     ?.text = ((int.parse(_model
                                                             .socketsTextController
@@ -262,7 +262,7 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                                             .length);
                                               });
                                               _model.operator = '+';
-                                              setState(() {});
+                                              safeSetState(() {});
                                             },
                                             child: AnimatedContainer(
                                               duration:
@@ -465,7 +465,8 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                 Switch.adaptive(
                                   value: _model.crValue!,
                                   onChanged: (newValue) async {
-                                    setState(() => _model.crValue = newValue);
+                                    safeSetState(
+                                        () => _model.crValue = newValue);
                                   },
                                   activeColor:
                                       FlutterFlowTheme.of(context).primary,

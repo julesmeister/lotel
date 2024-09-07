@@ -87,7 +87,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
       this,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -573,7 +573,7 @@ class _MissingInventoryWidgetState extends State<MissingInventoryWidget>
                                       ),
                                     );
 
-                                    setState(() {});
+                                    safeSetState(() {});
                                   },
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,

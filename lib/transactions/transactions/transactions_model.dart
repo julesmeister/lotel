@@ -18,7 +18,6 @@ class TransactionsModel extends FlutterFlowModel<TransactionsWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // State field(s) for Calendar widget.
   DateTimeRange? calendarSelectedDay;
   // State field(s) for TabBar widget.

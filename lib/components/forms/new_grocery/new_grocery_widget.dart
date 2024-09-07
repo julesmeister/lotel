@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
     _model.amountFocusNode ??= FocusNode();
 
     _model.switchValue = false;
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -299,16 +300,16 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                       child: Switch.adaptive(
                                         value: _model.switchValue!,
                                         onChanged: (newValue) async {
-                                          setState(() =>
+                                          safeSetState(() =>
                                               _model.switchValue = newValue);
                                           if (newValue) {
                                             // on
                                             _model.startCountingRevenue = true;
-                                            setState(() {});
+                                            safeSetState(() {});
                                           } else {
                                             // off
                                             _model.startCountingRevenue = false;
-                                            setState(() {});
+                                            safeSetState(() {});
                                           }
                                         },
                                         activeColor:
@@ -384,8 +385,9 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                             recordedBy: currentUserReference,
                                             amount: double.tryParse(_model
                                                 .amountTextController.text),
-                                            remark: _model
-                                                .remarkTextController.text,
+                                            remark: functions.startBigLetter(
+                                                _model
+                                                    .remarkTextController.text),
                                           ),
                                           ...mapToFirestore(
                                             {
@@ -539,7 +541,7 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                       );
                                     }
 
-                                    setState(() {});
+                                    safeSetState(() {});
                                   },
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,

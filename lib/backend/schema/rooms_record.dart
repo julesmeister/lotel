@@ -50,6 +50,11 @@ class RoomsRecord extends FirestoreRecord {
   DocumentReference? get currentBooking => _currentBooking;
   bool hasCurrentBooking() => _currentBooking != null;
 
+  // "last" field.
+  DateTime? _last;
+  DateTime? get last => _last;
+  bool hasLast() => _last != null;
+
   void _initializeFields() {
     _number = castToType<int>(snapshotData['number']);
     _capacity = castToType<int>(snapshotData['capacity']);
@@ -58,6 +63,7 @@ class RoomsRecord extends FirestoreRecord {
     _guests = castToType<int>(snapshotData['guests']);
     _hotel = snapshotData['hotel'] as String?;
     _currentBooking = snapshotData['currentBooking'] as DocumentReference?;
+    _last = snapshotData['last'] as DateTime?;
   }
 
   static CollectionReference get collection =>
@@ -101,6 +107,7 @@ Map<String, dynamic> createRoomsRecordData({
   int? guests,
   String? hotel,
   DocumentReference? currentBooking,
+  DateTime? last,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -111,6 +118,7 @@ Map<String, dynamic> createRoomsRecordData({
       'guests': guests,
       'hotel': hotel,
       'currentBooking': currentBooking,
+      'last': last,
     }.withoutNulls,
   );
 
@@ -128,7 +136,8 @@ class RoomsRecordDocumentEquality implements Equality<RoomsRecord> {
         e1?.vacant == e2?.vacant &&
         e1?.guests == e2?.guests &&
         e1?.hotel == e2?.hotel &&
-        e1?.currentBooking == e2?.currentBooking;
+        e1?.currentBooking == e2?.currentBooking &&
+        e1?.last == e2?.last;
   }
 
   @override
@@ -139,7 +148,8 @@ class RoomsRecordDocumentEquality implements Equality<RoomsRecord> {
         e?.vacant,
         e?.guests,
         e?.hotel,
-        e?.currentBooking
+        e?.currentBooking,
+        e?.last
       ]);
 
   @override

@@ -42,9 +42,9 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // set date
       _model.date = functions.today();
-      setState(() {});
+      safeSetState(() {});
       await _model.getHistoriesOfAllRooms(context);
-      setState(() {});
+      safeSetState(() {});
     });
 
     animationsMap.addAll({
@@ -113,7 +113,7 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -197,9 +197,9 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                           onPressed: () async {
                             // prev day
                             _model.date = functions.prevDate(_model.date!);
-                            setState(() {});
+                            safeSetState(() {});
                             await _model.getHistoriesOfAllRooms(context);
-                            setState(() {});
+                            safeSetState(() {});
                           },
                         ).animateOnPageLoad(
                             animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -212,7 +212,7 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                           highlightColor: Colors.transparent,
                           onTap: () async {
                             _model.showDatePicker = !_model.showDatePicker;
-                            setState(() {});
+                            safeSetState(() {});
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -277,9 +277,9 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                           onPressed: () async {
                             // next day
                             _model.date = functions.nextDate(_model.date!);
-                            setState(() {});
+                            safeSetState(() {});
                             await _model.getHistoriesOfAllRooms(context);
-                            setState(() {});
+                            safeSetState(() {});
                           },
                         ).animateOnPageLoad(
                             animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -300,10 +300,10 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                       }
                       _model.calendarSelectedDay = newSelectedDate;
                       _model.date = _model.calendarSelectedDay?.start;
-                      setState(() {});
+                      safeSetState(() {});
                       await _model.getHistoriesOfAllRooms(context);
-                      setState(() {});
-                      setState(() {});
+                      safeSetState(() {});
+                      safeSetState(() {});
                     },
                     titleStyle:
                         FlutterFlowTheme.of(context).headlineSmall.override(

@@ -321,7 +321,7 @@ class _PrintRemittanceState extends State<PrintRemittance> {
         "Room Number",
         "Room Price",
         "Amount Paid",
-        "Nights Paid",
+        "Stay Length",
       ];
 
       return pw.Container(

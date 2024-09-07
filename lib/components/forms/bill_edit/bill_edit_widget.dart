@@ -54,7 +54,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
         TextEditingController(text: widget.afterDue.toString());
     _model.afterdueFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -249,7 +249,7 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                   );
                                   Navigator.pop(context);
 
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

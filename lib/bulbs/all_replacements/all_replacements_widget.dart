@@ -38,14 +38,14 @@ class _AllReplacementsWidgetState extends State<AllReplacementsWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // hide
       _model.showMonthPicker = false;
-      setState(() {});
+      safeSetState(() {});
       await Future.delayed(const Duration(milliseconds: 500));
       // set month year
       _model.year = functions.currentYear();
-      setState(() {});
+      safeSetState(() {});
       // show
       _model.showMonthPicker = true;
-      setState(() {});
+      safeSetState(() {});
     });
 
     animationsMap.addAll({
@@ -87,7 +87,7 @@ class _AllReplacementsWidgetState extends State<AllReplacementsWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -203,7 +203,7 @@ class _AllReplacementsWidgetState extends State<AllReplacementsWidget>
                           // set previous year
                           _model.year =
                               functions.previousYear('January', _model.year);
-                          setState(() {});
+                          safeSetState(() {});
                         },
                       ).animateOnPageLoad(
                           animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -228,7 +228,7 @@ class _AllReplacementsWidgetState extends State<AllReplacementsWidget>
                           // set next year
                           _model.year =
                               functions.nextYear(_model.year, 'December');
-                          setState(() {});
+                          safeSetState(() {});
                         },
                       ).animateOnPageLoad(
                           animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -385,7 +385,7 @@ class _AllReplacementsWidgetState extends State<AllReplacementsWidget>
                                             }
                                           }
 
-                                          setState(() {});
+                                          safeSetState(() {});
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,

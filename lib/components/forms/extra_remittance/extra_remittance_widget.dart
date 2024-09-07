@@ -51,8 +51,8 @@ class _ExtraRemittanceWidgetState extends State<ExtraRemittanceWidget> {
         singleRecord: true,
       ).then((s) => s.firstOrNull);
       _model.changeTransaction = _model.change;
-      setState(() {});
-      setState(() {
+      safeSetState(() {});
+      safeSetState(() {
         _model.extraTextController?.text =
             functions.absolute(_model.change!.total).toString();
         _model.extraTextController?.selection = TextSelection.collapsed(
@@ -63,7 +63,7 @@ class _ExtraRemittanceWidgetState extends State<ExtraRemittanceWidget> {
     _model.extraTextController ??= TextEditingController();
     _model.extraFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

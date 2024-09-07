@@ -35,7 +35,7 @@ class _OptionToPendingTransactionWidgetState
     super.initState();
     _model = createModel(context, () => OptionToPendingTransactionModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -127,7 +127,7 @@ class _OptionToPendingTransactionWidgetState
                         });
                         // + loop
                         _model.loop = _model.loop + 1;
-                        setState(() {});
+                        safeSetState(() {});
                       }
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -240,7 +240,7 @@ class _OptionToPendingTransactionWidgetState
                         ));
                         // + loop
                         _model.loop = _model.loop + 1;
-                        setState(() {});
+                        safeSetState(() {});
                       }
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

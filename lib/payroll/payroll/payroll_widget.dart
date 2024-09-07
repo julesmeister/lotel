@@ -41,7 +41,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.year = functions.currentYear();
-      setState(() {});
+      safeSetState(() {});
     });
 
     animationsMap.addAll({
@@ -109,7 +109,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -253,7 +253,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                 if (payrollCount > 0) {
                                   // isLoading
                                   _model.isLoading = true;
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // get sample payroll
                                   _model.firstExistingPayroll =
                                       await queryPayrollsRecordOnce(
@@ -275,7 +275,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                   // reset loop counter
                                   _model.loopSalariesCounter = 0;
                                   _model.loopAdvancesCounter = 0;
-                                  setState(() {});
+                                  safeSetState(() {});
                                   // create new payroll
 
                                   var payrollsRecordReference =
@@ -458,11 +458,11 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                     // increment salaries counter
                                     _model.loopSalariesCounter =
                                         _model.loopSalariesCounter! + 1;
-                                    setState(() {});
+                                    safeSetState(() {});
                                   }
                                   // is not Loading
                                   _model.isLoading = false;
-                                  setState(() {});
+                                  safeSetState(() {});
 
                                   context.pushNamed(
                                     'NewEditPayroll',
@@ -478,7 +478,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                 }
                               }
 
-                              setState(() {});
+                              safeSetState(() {});
                             },
                           ),
                         ),
@@ -926,7 +926,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                         // set previous year
                                         _model.year = functions.previousYear(
                                             'January', _model.year);
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                     ).animateOnPageLoad(animationsMap[
                                         'iconButtonOnPageLoadAnimation1']!),
@@ -954,7 +954,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                         // set next year
                                         _model.year = functions.nextYear(
                                             _model.year, 'December');
-                                        setState(() {});
+                                        safeSetState(() {});
                                       },
                                     ).animateOnPageLoad(animationsMap[
                                         'iconButtonOnPageLoadAnimation2']!),

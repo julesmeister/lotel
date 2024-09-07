@@ -58,7 +58,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
     _model.detailsTextController3 ??= TextEditingController(
         text: widget.record != null ? widget.record?.receivedBy : '');
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -502,8 +502,8 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                   );
                                 },
                                 onSelected: (String selection) {
-                                  setState(() => _model.detailsSelectedOption2 =
-                                      selection);
+                                  safeSetState(() => _model
+                                      .detailsSelectedOption2 = selection);
                                   FocusScope.of(context).unfocus();
                                 },
                                 fieldViewBuilder: (
@@ -627,7 +627,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                 );
                               },
                               onSelected: (String selection) {
-                                setState(() =>
+                                safeSetState(() =>
                                     _model.detailsSelectedOption3 = selection);
                                 FocusScope.of(context).unfocus();
                               },

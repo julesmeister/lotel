@@ -35,7 +35,7 @@ class _SalaryEditWidgetState extends State<SalaryEditWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
+      safeSetState(() {
         _model.salaryTextController?.text = widget.stats!.salaries.toString();
         _model.salaryTextController?.selection = TextSelection.collapsed(
             offset: _model.salaryTextController!.text.length);
@@ -45,7 +45,7 @@ class _SalaryEditWidgetState extends State<SalaryEditWidget> {
     _model.salaryTextController ??= TextEditingController();
     _model.salaryFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

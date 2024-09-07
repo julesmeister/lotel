@@ -34,7 +34,7 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
     super.initState();
     _model = createModel(context, () => OptionToHistoryModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -228,7 +228,7 @@ class _OptionToHistoryWidgetState extends State<OptionToHistoryWidget> {
                         Navigator.pop(context);
                       }
 
-                      setState(() {});
+                      safeSetState(() {});
                     },
                     child: Container(
                       width: double.infinity,

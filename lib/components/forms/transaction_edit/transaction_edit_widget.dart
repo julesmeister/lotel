@@ -49,7 +49,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
         TextEditingController(text: widget.price?.toString());
     _model.priceFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

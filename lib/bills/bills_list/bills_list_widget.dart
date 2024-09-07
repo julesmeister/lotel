@@ -72,7 +72,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
           .cast<String>();
       _model.year = functions.currentYear();
       _model.showBills = _model.allBills!.toList().cast<BillsRecord>();
-      setState(() {});
+      safeSetState(() {});
     });
 
     animationsMap.addAll({
@@ -102,7 +102,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -176,7 +176,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                           onTap: () async {
                             FFAppState().hotel =
                                 functions.nextHotel(FFAppState().hotel);
-                            setState(() {});
+                            safeSetState(() {});
                             // all bills
                             _model.hotelBills = await queryBillsRecordOnce(
                               queryBuilder: (billsRecord) => billsRecord
@@ -198,9 +198,9 @@ class _BillsListWidgetState extends State<BillsListWidget>
                             );
                             _model.showBills =
                                 _model.hotelBills!.toList().cast<BillsRecord>();
-                            setState(() {});
+                            safeSetState(() {});
 
-                            setState(() {});
+                            safeSetState(() {});
                           },
                           child: Icon(
                             Icons.switch_left,
@@ -276,7 +276,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                         // set previous year
                         _model.year =
                             functions.previousYear('January', _model.year);
-                        setState(() {});
+                        safeSetState(() {});
                         // all bills
                         _model.prevBills = await queryBillsRecordOnce(
                           queryBuilder: (billsRecord) => billsRecord
@@ -298,9 +298,9 @@ class _BillsListWidgetState extends State<BillsListWidget>
                         );
                         _model.showBills =
                             _model.prevBills!.toList().cast<BillsRecord>();
-                        setState(() {});
+                        safeSetState(() {});
 
-                        setState(() {});
+                        safeSetState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -325,7 +325,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                         // set next year
                         _model.year =
                             functions.nextYear(_model.year, 'December');
-                        setState(() {});
+                        safeSetState(() {});
                         // all bills
                         _model.nextBills = await queryBillsRecordOnce(
                           queryBuilder: (billsRecord) => billsRecord
@@ -347,9 +347,9 @@ class _BillsListWidgetState extends State<BillsListWidget>
                         );
                         _model.showBills =
                             _model.nextBills!.toList().cast<BillsRecord>();
-                        setState(() {});
+                        safeSetState(() {});
 
-                        setState(() {});
+                        safeSetState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -363,19 +363,19 @@ class _BillsListWidgetState extends State<BillsListWidget>
                       .map((label) => ChipData(label))
                       .toList(),
                   onChanged: (val) async {
-                    setState(() => _model.choiceChipsValue =
+                    safeSetState(() => _model.choiceChipsValue =
                         val?.firstOrNull); // reset showInList
                     _model.showInList = [];
-                    setState(() {});
+                    safeSetState(() {});
                     if (_model.choiceChipsValue == 'All') {
                       // all
                       _model.showInList =
                           _model.allDescriptions.toList().cast<String>();
-                      setState(() {});
+                      safeSetState(() {});
                     } else {
                       // choice only
                       _model.addToShowInList(_model.choiceChipsValue!);
-                      setState(() {});
+                      safeSetState(() {});
                     }
                   },
                   selectedChipStyle: ChipStyle(
@@ -600,10 +600,10 @@ class _BillsListWidgetState extends State<BillsListWidget>
                           onDoubleTap: () async {
                             // reset
                             _model.showInList = [];
-                            setState(() {});
+                            safeSetState(() {});
                             // add to showInList
                             _model.addToShowInList(billsItem.description);
-                            setState(() {});
+                            safeSetState(() {});
                           },
                           child: Container(
                             width: 100.0,
@@ -810,7 +810,7 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                                     ),
                                                   );
                                                   if (shouldSetState) {
-                                                    setState(() {});
+                                                    safeSetState(() {});
                                                   }
                                                   return;
                                                 }
@@ -902,7 +902,9 @@ class _BillsListWidgetState extends State<BillsListWidget>
                                             );
                                           }
 
-                                          if (shouldSetState) setState(() {});
+                                          if (shouldSetState) {
+                                            safeSetState(() {});
+                                          }
                                         },
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,

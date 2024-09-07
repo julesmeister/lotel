@@ -41,7 +41,7 @@ class _OptionToTransactionOnlyWidgetState
     super.initState();
     _model = createModel(context, () => OptionToTransactionOnlyModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -200,10 +200,12 @@ class _OptionToTransactionOnlyWidgetState
                       if (confirmDialogResponse) {
                         // create grocery
 
-                        await GroceriesRecord.collection.doc().set({
+                        var groceriesRecordReference =
+                            GroceriesRecord.collection.doc();
+                        await groceriesRecordReference.set({
                           ...createGroceriesRecordData(
                             hotel: FFAppState().hotel,
-                            recordedBy: currentUserReference,
+                            recordedBy: _model.transactionToMark?.staff,
                             amount: _model.transactionToMark?.total,
                             remark: _model.transactionToMark?.description,
                           ),
@@ -213,6 +215,19 @@ class _OptionToTransactionOnlyWidgetState
                             },
                           ),
                         });
+                        _model.grocery = GroceriesRecord.getDocumentFromData({
+                          ...createGroceriesRecordData(
+                            hotel: FFAppState().hotel,
+                            recordedBy: _model.transactionToMark?.staff,
+                            amount: _model.transactionToMark?.total,
+                            remark: _model.transactionToMark?.description,
+                          ),
+                          ...mapToFirestore(
+                            {
+                              'date': DateTime.now(),
+                            },
+                          ),
+                        }, groceriesRecordReference);
                         // count grr
                         _model.countGrr =
                             await queryGoodsRevenueRatioRecordCount(
@@ -222,10 +237,15 @@ class _OptionToTransactionOnlyWidgetState
                                     'hotel',
                                     isEqualTo: FFAppState().hotel,
                                   )
+                                  .where(
+                                    'date',
+                                    isLessThanOrEqualTo:
+                                        _model.transactionToMark?.date,
+                                  )
                                   .orderBy('date', descending: true),
                         );
                         if (_model.countGrr! > 0) {
-                          // last grr
+                          // correct grr category
                           _model.lastGrr =
                               await queryGoodsRevenueRatioRecordOnce(
                             queryBuilder: (goodsRevenueRatioRecord) =>
@@ -233,6 +253,11 @@ class _OptionToTransactionOnlyWidgetState
                                     .where(
                                       'hotel',
                                       isEqualTo: FFAppState().hotel,
+                                    )
+                                    .where(
+                                      'date',
+                                      isLessThanOrEqualTo:
+                                          _model.transactionToMark?.date,
                                     )
                                     .orderBy('date', descending: true),
                             singleRecord: true,
@@ -247,7 +272,51 @@ class _OptionToTransactionOnlyWidgetState
                               },
                             ),
                           });
+                          // stats
+                          _model.stats = await queryStatsRecordOnce(
+                            queryBuilder: (statsRecord) => statsRecord
+                                .where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                )
+                                .where(
+                                  'year',
+                                  isEqualTo: dateTimeFormat(
+                                      "y", _model.transactionToMark?.date),
+                                )
+                                .where(
+                                  'month',
+                                  isEqualTo: dateTimeFormat(
+                                      "MMMM", _model.transactionToMark?.date),
+                                ),
+                            singleRecord: true,
+                          ).then((s) => s.firstOrNull);
+                          // increment grocery expenses
+
+                          await _model.stats!.reference.update({
+                            ...mapToFirestore(
+                              {
+                                'groceryExpenses': FieldValue.increment(
+                                    _model.transactionToMark!.total),
+                              },
+                            ),
+                          });
                           FFAppState().clearGroceryHomeCache();
+                          // Added to grocery and metrics!
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Added to grocery and metrics!',
+                                style: TextStyle(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                ),
+                              ),
+                              duration: const Duration(milliseconds: 4000),
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).secondary,
+                            ),
+                          );
                         }
                       }
                     } else {
@@ -268,7 +337,7 @@ class _OptionToTransactionOnlyWidgetState
                     // close
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -389,7 +458,7 @@ class _OptionToTransactionOnlyWidgetState
                             // increment loop
                             _model.loopInvetoryCounter =
                                 _model.loopInvetoryCounter + 1;
-                            setState(() {});
+                            safeSetState(() {});
                           }
                         }
                         // delete transactions
@@ -423,7 +492,7 @@ class _OptionToTransactionOnlyWidgetState
                       );
                     }
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

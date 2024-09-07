@@ -34,7 +34,7 @@ class _CashAdvanceOptionsWidgetState extends State<CashAdvanceOptionsWidget> {
     super.initState();
     _model = createModel(context, () => CashAdvanceOptionsModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -136,7 +136,7 @@ class _CashAdvanceOptionsWidgetState extends State<CashAdvanceOptionsWidget> {
                       );
                     }
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

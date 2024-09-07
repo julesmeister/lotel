@@ -67,7 +67,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
     _model.categoryTextController ??=
         TextEditingController(text: widget.edit ? widget.category : '');
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -386,7 +386,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 );
                               },
                               onSelected: (String selection) {
-                                setState(() =>
+                                safeSetState(() =>
                                     _model.categorySelectedOption = selection);
                                 FocusScope.of(context).unfocus();
                               },
@@ -677,7 +677,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
 
                                   Navigator.pop(context);
 
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

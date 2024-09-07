@@ -42,7 +42,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
       vsync: this,
       length: 2,
       initialIndex: 0,
-    )..addListener(() => setState(() {}));
+    )..addListener(() => safeSetState(() {}));
     animationsMap.addAll({
       'iconButtonOnPageLoadAnimation1': AnimationInfo(
         trigger: AnimationTrigger.onPageLoad,
@@ -96,7 +96,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -214,7 +214,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                         // set previous year
                         _model.year =
                             functions.previousYear('January', _model.year);
-                        setState(() {});
+                        safeSetState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['iconButtonOnPageLoadAnimation1']!),
@@ -239,7 +239,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                         // set next year
                         _model.year =
                             functions.nextYear(_model.year, 'December');
-                        setState(() {});
+                        safeSetState(() {});
                       },
                     ).animateOnPageLoad(
                         animationsMap['iconButtonOnPageLoadAnimation2']!),
@@ -511,158 +511,238 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                                 Colors
                                                                     .transparent,
                                                             onTap: () async {
-                                                              await showModalBottomSheet(
-                                                                isScrollControlled:
-                                                                    true,
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .transparent,
-                                                                enableDrag:
-                                                                    false,
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) {
-                                                                  return GestureDetector(
-                                                                    onTap: () =>
-                                                                        FocusScope.of(context)
-                                                                            .unfocus(),
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: MediaQuery
-                                                                          .viewInsetsOf(
-                                                                              context),
+                                                              if (listViewGroceriesRecord
+                                                                      .date! >=
+                                                                  functions.startOfDay(
+                                                                      columnGoodsRevenueRatioRecord
+                                                                          .date!)) {
+                                                                await showModalBottomSheet(
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  enableDrag:
+                                                                      false,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return GestureDetector(
+                                                                      onTap: () =>
+                                                                          FocusScope.of(context)
+                                                                              .unfocus(),
                                                                       child:
-                                                                          SizedBox(
-                                                                        height:
-                                                                            double.infinity,
+                                                                          Padding(
+                                                                        padding:
+                                                                            MediaQuery.viewInsetsOf(context),
                                                                         child:
-                                                                            ChangeDateWidget(
-                                                                          date:
-                                                                              listViewGroceriesRecord.date!,
+                                                                            SizedBox(
+                                                                          height:
+                                                                              double.infinity,
+                                                                          child:
+                                                                              ChangeDateWidget(
+                                                                            date:
+                                                                                listViewGroceriesRecord.date!,
+                                                                          ),
                                                                         ),
                                                                       ),
+                                                                    );
+                                                                  },
+                                                                ).then((value) =>
+                                                                    safeSetState(() =>
+                                                                        _model.adjustedDate =
+                                                                            value));
+
+                                                                if (_model
+                                                                        .adjustedDate !=
+                                                                    null) {
+                                                                  if (dateTimeFormat(
+                                                                          "MMMM",
+                                                                          listViewGroceriesRecord
+                                                                              .date) !=
+                                                                      dateTimeFormat(
+                                                                          "MMMM",
+                                                                          _model
+                                                                              .adjustedDate)) {
+                                                                    // prevStats
+                                                                    _model.prevStats =
+                                                                        await queryStatsRecordOnce(
+                                                                      queryBuilder: (statsRecord) => statsRecord
+                                                                          .where(
+                                                                            'hotel',
+                                                                            isEqualTo:
+                                                                                FFAppState().hotel,
+                                                                          )
+                                                                          .where(
+                                                                            'year',
+                                                                            isEqualTo:
+                                                                                dateTimeFormat("y", listViewGroceriesRecord.date),
+                                                                          )
+                                                                          .where(
+                                                                            'month',
+                                                                            isEqualTo:
+                                                                                dateTimeFormat("MMMM", listViewGroceriesRecord.date),
+                                                                          ),
+                                                                      singleRecord:
+                                                                          true,
+                                                                    ).then((s) =>
+                                                                            s.firstOrNull);
+                                                                    // deduct from previous
+
+                                                                    await _model
+                                                                        .prevStats!
+                                                                        .reference
+                                                                        .update({
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'groceryExpenses':
+                                                                              FieldValue.increment(-(listViewGroceriesRecord.amount)),
+                                                                        },
+                                                                      ),
+                                                                    });
+                                                                    // currStats
+                                                                    _model.currStats =
+                                                                        await queryStatsRecordOnce(
+                                                                      queryBuilder: (statsRecord) => statsRecord
+                                                                          .where(
+                                                                            'hotel',
+                                                                            isEqualTo:
+                                                                                FFAppState().hotel,
+                                                                          )
+                                                                          .where(
+                                                                            'year',
+                                                                            isEqualTo:
+                                                                                dateTimeFormat("y", _model.adjustedDate),
+                                                                          )
+                                                                          .where(
+                                                                            'month',
+                                                                            isEqualTo:
+                                                                                dateTimeFormat("MMMM", _model.adjustedDate),
+                                                                          ),
+                                                                      singleRecord:
+                                                                          true,
+                                                                    ).then((s) =>
+                                                                            s.firstOrNull);
+                                                                    // increment to current
+
+                                                                    await _model
+                                                                        .prevStats!
+                                                                        .reference
+                                                                        .update({
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'groceryExpenses':
+                                                                              FieldValue.increment(listViewGroceriesRecord.amount),
+                                                                        },
+                                                                      ),
+                                                                    });
+                                                                  }
+                                                                  // latestGrocery grr
+                                                                  _model.latestGrocery =
+                                                                      await queryGoodsRevenueRatioRecordOnce(
+                                                                    queryBuilder: (goodsRevenueRatioRecord) =>
+                                                                        goodsRevenueRatioRecord
+                                                                            .where(
+                                                                              'hotel',
+                                                                              isEqualTo: FFAppState().hotel,
+                                                                            )
+                                                                            .orderBy('date',
+                                                                                descending: true),
+                                                                    singleRecord:
+                                                                        true,
+                                                                  ).then((s) =>
+                                                                          s.firstOrNull);
+                                                                  // correct grocery category grr
+                                                                  _model.correctGroceryCategory =
+                                                                      await queryGoodsRevenueRatioRecordOnce(
+                                                                    queryBuilder: (goodsRevenueRatioRecord) => goodsRevenueRatioRecord
+                                                                        .where(
+                                                                          'date',
+                                                                          isLessThanOrEqualTo:
+                                                                              _model.adjustedDate,
+                                                                        )
+                                                                        .where(
+                                                                          'hotel',
+                                                                          isEqualTo:
+                                                                              FFAppState().hotel,
+                                                                        )
+                                                                        .orderBy('date', descending: true),
+                                                                    singleRecord:
+                                                                        true,
+                                                                  ).then((s) =>
+                                                                          s.firstOrNull);
+                                                                  if (dateTimeFormat(
+                                                                          "MMMM",
+                                                                          _model
+                                                                              .adjustedDate) ==
+                                                                      dateTimeFormat(
+                                                                          "MMMM",
+                                                                          _model
+                                                                              .correctGroceryCategory
+                                                                              ?.date)) {
+                                                                    // minus amount on latest grocery
+
+                                                                    await _model
+                                                                        .latestGrocery!
+                                                                        .reference
+                                                                        .update({
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'grocery':
+                                                                              FieldValue.increment(-(listViewGroceriesRecord.amount)),
+                                                                        },
+                                                                      ),
+                                                                    });
+                                                                    // transfer amount to correct grocery category
+
+                                                                    await _model
+                                                                        .correctGroceryCategory!
+                                                                        .reference
+                                                                        .update({
+                                                                      ...mapToFirestore(
+                                                                        {
+                                                                          'grocery':
+                                                                              FieldValue.increment(listViewGroceriesRecord.amount),
+                                                                        },
+                                                                      ),
+                                                                    });
+                                                                  }
+                                                                  // update date
+
+                                                                  await listViewGroceriesRecord
+                                                                      .reference
+                                                                      .update(
+                                                                          createGroceriesRecordData(
+                                                                    date: _model
+                                                                        .adjustedDate,
+                                                                  ));
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .showSnackBar(
+                                                                    SnackBar(
+                                                                      content:
+                                                                          Text(
+                                                                        'The date for ${listViewGroceriesRecord.remark} is now updated!',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).primaryText,
+                                                                        ),
+                                                                      ),
+                                                                      duration: const Duration(
+                                                                          milliseconds:
+                                                                              4000),
+                                                                      backgroundColor:
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .secondary,
                                                                     ),
                                                                   );
-                                                                },
-                                                              ).then((value) =>
-                                                                  safeSetState(() =>
-                                                                      _model.adjustedDate =
-                                                                          value));
-
-                                                              if (_model
-                                                                      .adjustedDate !=
-                                                                  null) {
-                                                                if (dateTimeFormat(
-                                                                        "MMMM",
-                                                                        listViewGroceriesRecord
-                                                                            .date) !=
-                                                                    dateTimeFormat(
-                                                                        "MMMM",
-                                                                        _model
-                                                                            .adjustedDate)) {
-                                                                  // prevStats
-                                                                  _model.prevStats =
-                                                                      await queryStatsRecordOnce(
-                                                                    queryBuilder: (statsRecord) =>
-                                                                        statsRecord
-                                                                            .where(
-                                                                              'hotel',
-                                                                              isEqualTo: FFAppState().hotel,
-                                                                            )
-                                                                            .where(
-                                                                              'year',
-                                                                              isEqualTo: dateTimeFormat("y", listViewGroceriesRecord.date),
-                                                                            )
-                                                                            .where(
-                                                                              'month',
-                                                                              isEqualTo: dateTimeFormat("MMMM", listViewGroceriesRecord.date),
-                                                                            ),
-                                                                    singleRecord:
-                                                                        true,
-                                                                  ).then((s) =>
-                                                                          s.firstOrNull);
-                                                                  // deduct from previous
-
-                                                                  await _model
-                                                                      .prevStats!
-                                                                      .reference
-                                                                      .update({
-                                                                    ...mapToFirestore(
-                                                                      {
-                                                                        'groceryExpenses':
-                                                                            FieldValue.increment(-(listViewGroceriesRecord.amount)),
-                                                                      },
-                                                                    ),
-                                                                  });
-                                                                  // currStats
-                                                                  _model.currStats =
-                                                                      await queryStatsRecordOnce(
-                                                                    queryBuilder: (statsRecord) =>
-                                                                        statsRecord
-                                                                            .where(
-                                                                              'hotel',
-                                                                              isEqualTo: FFAppState().hotel,
-                                                                            )
-                                                                            .where(
-                                                                              'year',
-                                                                              isEqualTo: dateTimeFormat("y", _model.adjustedDate),
-                                                                            )
-                                                                            .where(
-                                                                              'month',
-                                                                              isEqualTo: dateTimeFormat("MMMM", _model.adjustedDate),
-                                                                            ),
-                                                                    singleRecord:
-                                                                        true,
-                                                                  ).then((s) =>
-                                                                          s.firstOrNull);
-                                                                  // increment to current
-
-                                                                  await _model
-                                                                      .currStats!
-                                                                      .reference
-                                                                      .update({
-                                                                    ...mapToFirestore(
-                                                                      {
-                                                                        'groceryExpenses':
-                                                                            FieldValue.increment(listViewGroceriesRecord.amount),
-                                                                      },
-                                                                    ),
-                                                                  });
                                                                 }
-                                                                // update date
-
-                                                                await listViewGroceriesRecord
-                                                                    .reference
-                                                                    .update(
-                                                                        createGroceriesRecordData(
-                                                                  date: _model
-                                                                      .adjustedDate,
-                                                                ));
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                  SnackBar(
-                                                                    content:
-                                                                        Text(
-                                                                      'The date for ${listViewGroceriesRecord.remark} is now updated!',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primaryText,
-                                                                      ),
-                                                                    ),
-                                                                    duration: const Duration(
-                                                                        milliseconds:
-                                                                            4000),
-                                                                    backgroundColor:
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .secondary,
-                                                                  ),
-                                                                );
                                                               }
 
-                                                              setState(() {});
+                                                              safeSetState(
+                                                                  () {});
                                                             },
                                                             child: Column(
                                                               mainAxisSize:

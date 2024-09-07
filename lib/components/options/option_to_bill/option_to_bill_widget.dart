@@ -40,10 +40,10 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.stats = FFAppState().statsReference;
-      setState(() {});
+      safeSetState(() {});
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -130,7 +130,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                     // close
                     Navigator.pop(context);
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -277,7 +277,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                       }
                     }
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -376,7 +376,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                           ).then((s) => s.firstOrNull);
                           // set stats ref
                           _model.stats = _model.statsBillBelong?.reference;
-                          setState(() {});
+                          safeSetState(() {});
                         }
                         // reduce from stat
 
@@ -441,7 +441,7 @@ class _OptionToBillWidgetState extends State<OptionToBillWidget> {
                       );
                     }
 
-                    setState(() {});
+                    safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,

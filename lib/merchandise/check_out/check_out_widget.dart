@@ -45,7 +45,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.loopCounter = 0;
       _model.loopGoodsCounter = 0;
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.priceTextController1 ??= TextEditingController();
@@ -68,7 +68,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
       ),
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -153,7 +153,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
                                 );
-                                if (shouldSetState) setState(() {});
+                                if (shouldSetState) safeSetState(() {});
                                 return;
                               }
                             }
@@ -177,7 +177,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 shouldSetState = true;
                                 // booking
                                 _model.booking = _model.room?.currentBooking;
-                                setState(() {});
+                                safeSetState(() {});
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -193,13 +193,13 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                         FlutterFlowTheme.of(context).error,
                                   ),
                                 );
-                                if (shouldSetState) setState(() {});
+                                if (shouldSetState) safeSetState(() {});
                                 return;
                               }
                             }
                             // loading
                             _model.isLoading = true;
-                            setState(() {});
+                            safeSetState(() {});
                             while (_model.loopCounter !=
                                 valueOrDefault<int>(
                                   widget.cart?.length,
@@ -387,11 +387,11 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                               // collect inventories to list
                               _model.addToInventories(
                                   _model.newInventory!.reference);
-                              setState(() {});
+                              safeSetState(() {});
                               // Increment loopGoodsCounter
                               _model.loopGoodsCounter =
                                   _model.loopGoodsCounter + 1;
-                              setState(() {});
+                              safeSetState(() {});
                             }
                             // add inventories to transaction
 
@@ -418,7 +418,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             }
                             // finish loading
                             _model.isLoading = false;
-                            setState(() {});
+                            safeSetState(() {});
                             if (Navigator.of(context).canPop()) {
                               context.pop();
                             }
@@ -447,7 +447,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                     FlutterFlowTheme.of(context).secondary,
                               ),
                             );
-                            if (shouldSetState) setState(() {});
+                            if (shouldSetState) safeSetState(() {});
                           },
                   ),
                 ),
@@ -780,14 +780,14 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             value: _model.switchListTileValue1 ??=
                                 _model.pending,
                             onChanged: (newValue) async {
-                              setState(() =>
+                              safeSetState(() =>
                                   _model.switchListTileValue1 = newValue);
                               if (newValue) {
                                 _model.pending = true;
-                                setState(() {});
+                                safeSetState(() {});
                               } else {
                                 _model.pending = false;
-                                setState(() {});
+                                safeSetState(() {});
                               }
                             },
                             title: Text(
@@ -845,14 +845,14 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                             value: _model.switchListTileValue2 ??=
                                 _model.expense,
                             onChanged: (newValue) async {
-                              setState(() =>
+                              safeSetState(() =>
                                   _model.switchListTileValue2 = newValue);
                               if (newValue) {
                                 _model.expense = true;
-                                setState(() {});
+                                safeSetState(() {});
                               } else {
                                 _model.expense = false;
-                                setState(() {});
+                                safeSetState(() {});
                               }
                             },
                             title: Text(
@@ -921,7 +921,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
                                     _model.whichExpense = 'consumedBy';
-                                    setState(() {});
+                                    safeSetState(() {});
                                   },
                                   child: Container(
                                     width: 145.0,
@@ -986,7 +986,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   _model.whichExpense = 'spoilage';
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Container(
                                   width: 115.0,
@@ -1044,7 +1044,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   _model.whichExpense = 'other';
-                                  setState(() {});
+                                  safeSetState(() {});
                                 },
                                 child: Container(
                                   width: 80.0,
@@ -1138,7 +1138,8 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                         );
                       },
                       onSelected: (String selection) {
-                        setState(() => _model.priceSelectedOption1 = selection);
+                        safeSetState(
+                            () => _model.priceSelectedOption1 = selection);
                         FocusScope.of(context).unfocus();
                       },
                       fieldViewBuilder: (
@@ -1339,7 +1340,7 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                                   .toList())
                               .map((label) => ChipData(label))
                               .toList(),
-                          onChanged: (val) => setState(
+                          onChanged: (val) => safeSetState(
                               () => _model.choiceChipsValue = val?.firstOrNull),
                           selectedChipStyle: ChipStyle(
                             backgroundColor:

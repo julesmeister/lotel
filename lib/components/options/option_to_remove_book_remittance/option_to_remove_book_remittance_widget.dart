@@ -36,7 +36,7 @@ class _OptionToRemoveBookRemittanceWidgetState
     super.initState();
     _model = createModel(context, () => OptionToRemoveBookRemittanceModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override

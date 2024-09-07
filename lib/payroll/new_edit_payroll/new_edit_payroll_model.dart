@@ -74,7 +74,6 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - Read Document] action in NewEditPayroll widget.
   PayrollsRecord? existingPayroll;
   // Stores action output result for [Firestore Query - Query a collection] action in NewEditPayroll widget.

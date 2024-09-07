@@ -49,7 +49,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
     _model.adjustTextController ??= TextEditingController();
     _model.adjustFocusNode ??= FocusNode();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -269,7 +269,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   _model.showMoveRoom =
                                                                       !_model
                                                                           .showMoveRoom;
-                                                                  setState(
+                                                                  safeSetState(
                                                                       () {});
                                                                 },
                                                                 child: Icon(
@@ -352,7 +352,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               .toList(),
                                                           onChanged:
                                                               (val) async {
-                                                            setState(() => _model
+                                                            safeSetState(() => _model
                                                                     .choiceChipsValue =
                                                                 val?.firstOrNull); // from room history
 
@@ -544,9 +544,9 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                             // hide move room again
                                                             _model.showMoveRoom =
                                                                 false;
-                                                            setState(() {});
+                                                            safeSetState(() {});
 
-                                                            setState(() {});
+                                                            safeSetState(() {});
                                                           },
                                                           selectedChipStyle:
                                                               ChipStyle(
@@ -1183,11 +1183,12 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       true;
                                                                   _model.operator =
                                                                       '-';
-                                                                  setState(
+                                                                  safeSetState(
                                                                       () {});
                                                                 }
 
-                                                                setState(() {});
+                                                                safeSetState(
+                                                                    () {});
                                                               },
                                                               text: 'Modify',
                                                               icon: const Icon(
@@ -1291,7 +1292,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       booking:
                                                                           checkedInBookingsRecord,
                                                                     );
-                                                                    setState(
+                                                                    safeSetState(
                                                                         () {});
                                                                     // Paid Balance
                                                                     ScaffoldMessenger.of(
@@ -1512,7 +1513,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       'Change Room'
                                                                     ],
                                                                     onChanged: (val) =>
-                                                                        setState(() =>
+                                                                        safeSetState(() =>
                                                                             _model.priceChangedescriptionValue =
                                                                                 val),
                                                                     height:
@@ -1627,7 +1628,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                   onTap: () async {
                                                                                     // minus operator
                                                                                     _model.operator = '-';
-                                                                                    setState(() {});
+                                                                                    safeSetState(() {});
                                                                                   },
                                                                                   child: AnimatedContainer(
                                                                                     duration: const Duration(milliseconds: 100),
@@ -1668,7 +1669,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                                   onTap: () async {
                                                                                     // operator plus
                                                                                     _model.operator = '+';
-                                                                                    setState(() {});
+                                                                                    safeSetState(() {});
                                                                                   },
                                                                                   child: AnimatedContainer(
                                                                                     duration: const Duration(milliseconds: 100),
@@ -2219,7 +2220,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         );
                                                                       }
 
-                                                                      setState(
+                                                                      safeSetState(
                                                                           () {});
                                                                     },
                                                                   ),

@@ -20,7 +20,6 @@ class ExpenseModel extends FlutterFlowModel<ExpenseWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
   TransactionsRecord? newCACopy;
   // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.

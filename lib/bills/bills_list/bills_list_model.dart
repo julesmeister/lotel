@@ -40,7 +40,6 @@ class BillsListModel extends FlutterFlowModel<BillsListWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Stores action output result for [Firestore Query - Query a collection] action in billsList widget.
   List<BillsRecord>? allBills;
   // Stores action output result for [Firestore Query - Query a collection] action in billsList widget.

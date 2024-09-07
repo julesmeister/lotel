@@ -32,7 +32,7 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
     super.initState();
     _model = createModel(context, () => OptionToPayrollModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -116,7 +116,7 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                     if (confirmDialogResponse) {
                       // reset salary loop counter
                       _model.loopCounter = 0;
-                      setState(() {});
+                      safeSetState(() {});
                       // salaries
                       _model.salaries = await querySalariesRecordOnce(
                         parent: widget.payroll?.reference,
@@ -128,7 +128,7 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                             .delete();
                         // increment loop salaries
                         _model.loopCounter = _model.loopCounter + 1;
-                        setState(() {});
+                        safeSetState(() {});
                       }
                       // deduct from stats
 
@@ -157,11 +157,11 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
                       );
                       context.safePop();
                     } else {
-                      if (shouldSetState) setState(() {});
+                      if (shouldSetState) safeSetState(() {});
                       return;
                     }
 
-                    if (shouldSetState) setState(() {});
+                    if (shouldSetState) safeSetState(() {});
                   },
                   child: Container(
                     width: double.infinity,
