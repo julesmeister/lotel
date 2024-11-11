@@ -470,67 +470,73 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional.fromSTEB(
                                             10.0, 0.0, 10.0, 0.0),
-                                        child: Theme(
-                                          data: ThemeData(
-                                            unselectedWidgetColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondaryText,
-                                          ),
-                                          child: CheckboxListTile(
-                                            value:
-                                                _model.checkboxListTileValueMap[
-                                                    pendingsItem] ??= false,
-                                            onChanged: (newValue) async {
-                                              safeSetState(() => _model
-                                                      .checkboxListTileValueMap[
-                                                  pendingsItem] = newValue!);
-                                            },
-                                            title: Text(
-                                              'Room ${pendingsItem.room.toString()}',
-                                              style:
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: Theme(
+                                            data: ThemeData(
+                                              unselectedWidgetColor:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyLarge
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        letterSpacing: 0.0,
-                                                      ),
+                                                      .secondaryText,
                                             ),
-                                            subtitle: Text(
-                                              'Balance: Php ${formatNumber(
-                                                pendingsItem.total,
-                                                formatType: FormatType.decimal,
-                                                decimalType:
-                                                    DecimalType.automatic,
-                                              )} - ${functions.hoursAgo(pendingsItem.since!)}',
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .bodySmall
-                                                  .override(
-                                                    fontFamily: 'Readex Pro',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .success,
-                                                    letterSpacing: 0.0,
-                                                  ),
-                                            ),
-                                            tileColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondaryBackground,
-                                            activeColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .primary,
-                                            checkColor: Colors.white,
-                                            dense: false,
-                                            controlAffinity:
-                                                ListTileControlAffinity
-                                                    .trailing,
-                                            contentPadding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    8.0, 0.0, 0.0, 0.0),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
+                                            child: CheckboxListTile(
+                                              value: _model
+                                                      .checkboxListTileValueMap[
+                                                  pendingsItem] ??= false,
+                                              onChanged: (newValue) async {
+                                                safeSetState(() => _model
+                                                        .checkboxListTileValueMap[
+                                                    pendingsItem] = newValue!);
+                                              },
+                                              title: Text(
+                                                'Room ${pendingsItem.room.toString()}',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyLarge
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                              ),
+                                              subtitle: Text(
+                                                'Balance: Php ${formatNumber(
+                                                  pendingsItem.total,
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.automatic,
+                                                )} - ${functions.hoursAgo(pendingsItem.since!)}',
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .success,
+                                                      letterSpacing: 0.0,
+                                                    ),
+                                              ),
+                                              tileColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              activeColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              checkColor: Colors.white,
+                                              dense: false,
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .trailing,
+                                              contentPadding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          8.0, 0.0, 0.0, 0.0),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                              ),
                                             ),
                                           ),
                                         ),

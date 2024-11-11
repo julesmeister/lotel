@@ -409,91 +409,97 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                           padding:
                                               const EdgeInsetsDirectional.fromSTEB(
                                                   10.0, 0.0, 0.0, 0.0),
-                                          child: Theme(
-                                            data: ThemeData(
-                                              unselectedWidgetColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                            ),
-                                            child: CheckboxListTile(
-                                              value: _model
-                                                      .checkboxListTileValueMap1[
-                                                  allRoomsRoomsRecord] ??= false,
-                                              onChanged: (newValue) async {
-                                                safeSetState(() =>
-                                                    _model.checkboxListTileValueMap1[
-                                                            allRoomsRoomsRecord] =
-                                                        newValue!);
-                                                if (newValue!) {
-                                                  _model.addToSelectedRooms(
-                                                      allRoomsRoomsRecord
-                                                          .reference);
-                                                  safeSetState(() {});
-                                                } else {
-                                                  _model
-                                                      .removeFromSelectedRooms(
-                                                          allRoomsRoomsRecord
-                                                              .reference);
-                                                  safeSetState(() {});
-                                                }
-                                              },
-                                              title: Text(
-                                                formatNumber(
-                                                  allRoomsRoomsRecord.price,
-                                                  formatType:
-                                                      FormatType.decimal,
-                                                  decimalType:
-                                                      DecimalType.periodDecimal,
-                                                  currency: 'P ',
-                                                ),
-                                                style:
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: Theme(
+                                              data: ThemeData(
+                                                unselectedWidgetColor:
                                                     FlutterFlowTheme.of(context)
-                                                        .bodyLarge
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
+                                                        .secondaryText,
                                               ),
-                                              subtitle: Text(
-                                                formatNumber(
-                                                  allRoomsRoomsRecord.capacity,
-                                                  formatType:
-                                                      FormatType.decimal,
-                                                  decimalType:
-                                                      DecimalType.periodDecimal,
-                                                  currency: 'Capacity: ',
+                                              child: CheckboxListTile(
+                                                value: _model
+                                                        .checkboxListTileValueMap1[
+                                                    allRoomsRoomsRecord] ??= false,
+                                                onChanged: (newValue) async {
+                                                  safeSetState(() => _model
+                                                              .checkboxListTileValueMap1[
+                                                          allRoomsRoomsRecord] =
+                                                      newValue!);
+                                                  if (newValue!) {
+                                                    _model.addToSelectedRooms(
+                                                        allRoomsRoomsRecord
+                                                            .reference);
+                                                    safeSetState(() {});
+                                                  } else {
+                                                    _model
+                                                        .removeFromSelectedRooms(
+                                                            allRoomsRoomsRecord
+                                                                .reference);
+                                                    safeSetState(() {});
+                                                  }
+                                                },
+                                                title: Text(
+                                                  formatNumber(
+                                                    allRoomsRoomsRecord.price,
+                                                    formatType:
+                                                        FormatType.decimal,
+                                                    decimalType: DecimalType
+                                                        .periodDecimal,
+                                                    currency: 'P ',
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyLarge
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        letterSpacing: 0.0,
+                                                      ),
                                                 ),
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodySmall
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .tertiary,
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                              ),
-                                              tileColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryBackground,
-                                              activeColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
-                                              checkColor: Colors.white,
-                                              dense: false,
-                                              controlAffinity:
-                                                  ListTileControlAffinity
-                                                      .trailing,
-                                              contentPadding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          8.0, 0.0, 8.0, 0.0),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
+                                                subtitle: Text(
+                                                  formatNumber(
+                                                    allRoomsRoomsRecord
+                                                        .capacity,
+                                                    formatType:
+                                                        FormatType.decimal,
+                                                    decimalType: DecimalType
+                                                        .periodDecimal,
+                                                    currency: 'Capacity: ',
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodySmall
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .tertiary,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                                tileColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryBackground,
+                                                activeColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                checkColor: Colors.white,
+                                                dense: false,
+                                                controlAffinity:
+                                                    ListTileControlAffinity
+                                                        .trailing,
+                                                contentPadding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
+                                                            8.0, 0.0, 8.0, 0.0),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
                                               ),
                                             ),
                                           ),

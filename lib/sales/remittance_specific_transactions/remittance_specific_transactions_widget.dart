@@ -237,7 +237,7 @@ class _RemittanceSpecificTransactionsWidgetState
                             labelColor:
                                 FlutterFlowTheme.of(context).primaryText,
                             unselectedLabelColor:
-                                FlutterFlowTheme.of(context).secondaryText,
+                                FlutterFlowTheme.of(context).primaryText,
                             backgroundColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
                             unselectedBackgroundColor:
@@ -1241,7 +1241,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                 .viewInsetsOf(
                                                                     context),
                                                             child: SizedBox(
-                                                              height: 125.0,
+                                                              height: 170.0,
                                                               child:
                                                                   OptionToRemoveExpenseRemittanceWidget(
                                                                 remittance: widget

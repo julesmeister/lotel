@@ -340,7 +340,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                 labelColor:
                                     FlutterFlowTheme.of(context).primaryText,
                                 unselectedLabelColor:
-                                    FlutterFlowTheme.of(context).secondaryText,
+                                    FlutterFlowTheme.of(context).primaryText,
                                 backgroundColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
                                 unselectedBackgroundColor:
@@ -855,7 +855,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                       bookingsItem
                                                                           .description
                                                                           .maybeHandleOverflow(
-                                                                              maxChars: 250),
+                                                                        maxChars:
+                                                                            250,
+                                                                      ),
                                                                       maxLines:
                                                                           5,
                                                                       style: FlutterFlowTheme.of(

@@ -5,6 +5,11 @@ enum Hotels {
   MyLifestyle,
 }
 
+enum DateRange {
+  Start,
+  End,
+}
+
 extension FFEnumExtensions<T extends Enum> on T {
   String serialize() => name;
 }
@@ -18,6 +23,8 @@ T? deserializeEnum<T>(String? value) {
   switch (T) {
     case (Hotels):
       return Hotels.values.deserialize(value) as T?;
+    case (DateRange):
+      return DateRange.values.deserialize(value) as T?;
     default:
       return null;
   }

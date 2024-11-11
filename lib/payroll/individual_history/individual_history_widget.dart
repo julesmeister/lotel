@@ -244,7 +244,7 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                               labelColor:
                                   FlutterFlowTheme.of(context).primaryText,
                               unselectedLabelColor:
-                                  FlutterFlowTheme.of(context).secondaryText,
+                                  FlutterFlowTheme.of(context).primaryText,
                               backgroundColor: FlutterFlowTheme.of(context)
                                   .secondaryBackground,
                               unselectedBackgroundColor:
@@ -610,6 +610,8 @@ class _IndividualHistoryWidgetState extends State<IndividualHistoryWidget>
                                                               _model.year),
                                                     )
                                                     .orderBy('date',
+                                                        descending: true)
+                                                    .orderBy('settled',
                                                         descending: true),
                                                 parent:
                                                     widget.staff?.reference),

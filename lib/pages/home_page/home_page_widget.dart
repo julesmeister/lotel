@@ -8,6 +8,7 @@ import '/components/forms/new_issue/new_issue_widget.dart';
 import '/components/forms/promo/promo_widget.dart';
 import '/components/options/list_of_names/list_of_names_widget.dart';
 import '/components/options/option_to_issue/option_to_issue_widget.dart';
+import '/components/options/option_to_reasses/option_to_reasses_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -2104,8 +2105,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 ],
                               ),
                             ),
-                            if (valueOrDefault(currentUserDocument?.role, '') ==
-                                'admin')
+                            if ((valueOrDefault(
+                                        currentUserDocument?.role, '') ==
+                                    'admin') &&
+                                (FFAppState().lockDown == false))
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 12.0, 0.0),
@@ -2741,8 +2744,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   AutoSizeText(
                                                                 '${pendingCountCount.toString()}  '
                                                                     .maybeHandleOverflow(
-                                                                        maxChars:
-                                                                            3),
+                                                                  maxChars: 3,
+                                                                ),
                                                                 maxLines: 1,
                                                                 minFontSize:
                                                                     10.0,
@@ -2944,7 +2947,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 0.0, 16.0, 8.0),
                                             child: Container(
-                                              width: 150.0,
+                                              constraints: const BoxConstraints(
+                                                minWidth: 90.0,
+                                              ),
                                               decoration: BoxDecoration(
                                                 color:
                                                     FlutterFlowTheme.of(context)
@@ -3368,6 +3373,41 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         }
 
                                                         safeSetState(() {});
+                                                      },
+                                                      onLongPress: () async {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          enableDrag: false,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return GestureDetector(
+                                                              onTap: () =>
+                                                                  FocusScope.of(
+                                                                          context)
+                                                                      .unfocus(),
+                                                              child: Padding(
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
+                                                                child:
+                                                                    SizedBox(
+                                                                  height: 125.0,
+                                                                  child:
+                                                                      OptionToReassesWidget(
+                                                                    room:
+                                                                        roomsItem,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            safeSetState(
+                                                                () {}));
                                                       },
                                                       child: Container(
                                                         width: 210.0,
@@ -4140,7 +4180,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                         context),
                                                                 child:
                                                                     SizedBox(
-                                                                  height: 362.0,
+                                                                  height: 410.0,
                                                                   child:
                                                                       OptionToIssueWidget(
                                                                     issue:
@@ -4886,311 +4926,364 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           endIndent: 20.0,
                                           color: Color(0xFFE0E3E7),
                                         ),
-                                        FutureBuilder<
-                                            List<GoodsRevenueRatioRecord>>(
-                                          future: FFAppState().groceryHome(
-                                            uniqueQueryKey: FFAppState().hotel,
-                                            requestFn: () =>
-                                                queryGoodsRevenueRatioRecordOnce(
-                                              queryBuilder:
-                                                  (goodsRevenueRatioRecord) =>
-                                                      goodsRevenueRatioRecord
-                                                          .where(
-                                                            'hotel',
-                                                            isEqualTo:
-                                                                FFAppState()
-                                                                    .hotel,
-                                                          )
-                                                          .orderBy('date',
-                                                              descending: true),
-                                              singleRecord: true,
+                                        if (FFAppState().lockDown == false)
+                                          FutureBuilder<
+                                              List<GoodsRevenueRatioRecord>>(
+                                            future: FFAppState().groceryHome(
+                                              uniqueQueryKey:
+                                                  FFAppState().hotel,
+                                              requestFn: () =>
+                                                  queryGoodsRevenueRatioRecordOnce(
+                                                queryBuilder:
+                                                    (goodsRevenueRatioRecord) =>
+                                                        goodsRevenueRatioRecord
+                                                            .where(
+                                                              'hotel',
+                                                              isEqualTo:
+                                                                  FFAppState()
+                                                                      .hotel,
+                                                            )
+                                                            .orderBy('date',
+                                                                descending:
+                                                                    true),
+                                                singleRecord: true,
+                                              ),
                                             ),
-                                          ),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 50.0,
-                                                  height: 50.0,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
+                                            builder: (context, snapshot) {
+                                              // Customize what your widget looks like when it's loading.
+                                              if (!snapshot.hasData) {
+                                                return Center(
+                                                  child: SizedBox(
+                                                    width: 50.0,
+                                                    height: 50.0,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                              Color>(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              );
-                                            }
-                                            List<GoodsRevenueRatioRecord>
-                                                groceryColumnGoodsRevenueRatioRecordList =
-                                                snapshot.data!;
-                                            // Return an empty Container when the item does not exist.
-                                            if (snapshot.data!.isEmpty) {
-                                              return Container();
-                                            }
-                                            final groceryColumnGoodsRevenueRatioRecord =
-                                                groceryColumnGoodsRevenueRatioRecordList
-                                                        .isNotEmpty
-                                                    ? groceryColumnGoodsRevenueRatioRecordList
-                                                        .first
-                                                    : null;
+                                                );
+                                              }
+                                              List<GoodsRevenueRatioRecord>
+                                                  groceryColumnGoodsRevenueRatioRecordList =
+                                                  snapshot.data!;
+                                              // Return an empty Container when the item does not exist.
+                                              if (snapshot.data!.isEmpty) {
+                                                return Container();
+                                              }
+                                              final groceryColumnGoodsRevenueRatioRecord =
+                                                  groceryColumnGoodsRevenueRatioRecordList
+                                                          .isNotEmpty
+                                                      ? groceryColumnGoodsRevenueRatioRecordList
+                                                          .first
+                                                      : null;
 
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          24.0, 0.0, 24.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 5,
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          children: [
-                                                            Align(
-                                                              alignment:
-                                                                  const AlignmentDirectional(
-                                                                      -1.0,
-                                                                      0.0),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            15.0,
-                                                                            0.0,
-                                                                            5.0),
-                                                                child: Text(
-                                                                  'Grocery',
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .start,
-                                                                  maxLines: 1,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Plus Jakarta Sans',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primaryText,
-                                                                        fontSize:
-                                                                            18.0,
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Container(
-                                                          width: 100.0,
-                                                          height: 1.0,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryBackground,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(24.0, 0.0, 24.0,
-                                                          16.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 5,
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Padding(
+                                              return Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(24.0, 0.0,
+                                                                24.0, 0.0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 5,
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              Align(
+                                                                alignment:
+                                                                    const AlignmentDirectional(
+                                                                        -1.0,
+                                                                        0.0),
+                                                                child: Padding(
                                                                   padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
-                                                                          0.0,
+                                                                          15.0,
                                                                           0.0,
                                                                           5.0),
                                                                   child: Text(
-                                                                    valueOrDefault<
-                                                                        String>(
-                                                                      formatNumber(
-                                                                        groceryColumnGoodsRevenueRatioRecord
-                                                                            ?.grocery,
-                                                                        formatType:
-                                                                            FormatType.decimal,
-                                                                        decimalType:
-                                                                            DecimalType.automatic,
-                                                                        currency:
-                                                                            'P ',
-                                                                      ),
-                                                                      '0',
-                                                                    ),
+                                                                    'Grocery',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
                                                                     maxLines: 1,
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .displaySmall
+                                                                        .labelMedium
                                                                         .override(
                                                                           fontFamily:
-                                                                              'Outfit',
+                                                                              'Plus Jakarta Sans',
                                                                           color:
-                                                                              const Color(0xFF14181B),
+                                                                              FlutterFlowTheme.of(context).primaryText,
                                                                           fontSize:
-                                                                              36.0,
+                                                                              18.0,
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
-                                                                              FontWeight.w600,
+                                                                              FontWeight.bold,
                                                                         ),
                                                                   ),
                                                                 ),
-                                                              ],
-                                                            ),
-                                                            Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Expanded(
-                                                                  child:
-                                                                      RichText(
-                                                                    textScaler:
-                                                                        MediaQuery.of(context)
-                                                                            .textScaler,
-                                                                    text:
-                                                                        TextSpan(
-                                                                      children: [
-                                                                        const TextSpan(
-                                                                          text:
-                                                                              'Total spent for groceries since ',
-                                                                          style:
-                                                                              TextStyle(),
-                                                                        ),
-                                                                        TextSpan(
-                                                                          text:
-                                                                              functions.daysAgo(groceryColumnGoodsRevenueRatioRecord!.date!),
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            color:
-                                                                                Color(0xFF6F61EF),
-                                                                          ),
-                                                                        ),
-                                                                        const TextSpan(
-                                                                          text:
-                                                                              '. A ',
-                                                                          style:
-                                                                              TextStyle(),
-                                                                        ),
-                                                                        TextSpan(
-                                                                          text: (double grocery,
-                                                                              double revenue) {
-                                                                            return '${(((grocery + revenue == 0) ? 0.0 : revenue / grocery) * 100).toStringAsFixed(1).replaceAll(RegExp(r'\.0*$'), '')}%';
-                                                                          }(groceryColumnGoodsRevenueRatioRecord.grocery, groceryColumnGoodsRevenueRatioRecord.revenue),
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondary,
-                                                                          ),
-                                                                        ),
-                                                                        const TextSpan(
-                                                                          text:
-                                                                              ' uptick in sales is contributing to the recovery of grocery expenditures.',
-                                                                          style:
-                                                                              TextStyle(),
-                                                                        )
-                                                                      ],
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .labelSmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                      if (valueOrDefault(
-                                                              currentUserDocument
-                                                                  ?.role,
-                                                              '') ==
-                                                          'admin')
                                                         Expanded(
                                                           flex: 2,
+                                                          child: Container(
+                                                            width: 100.0,
+                                                            height: 1.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondaryBackground,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(24.0, 0.0,
+                                                                24.0, 16.0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 5,
                                                           child: Column(
                                                             mainAxisSize:
                                                                 MainAxisSize
                                                                     .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
-                                                                    .end,
+                                                                    .start,
                                                             children: [
                                                               Row(
                                                                 mainAxisSize:
                                                                     MainAxisSize
                                                                         .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .end,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
                                                                 children: [
                                                                   Padding(
                                                                     padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             0.0,
-                                                                            5.0,
-                                                                            0.0),
+                                                                            0.0,
+                                                                            5.0),
+                                                                    child: Text(
+                                                                      valueOrDefault<
+                                                                          String>(
+                                                                        formatNumber(
+                                                                          groceryColumnGoodsRevenueRatioRecord
+                                                                              ?.grocery,
+                                                                          formatType:
+                                                                              FormatType.decimal,
+                                                                          decimalType:
+                                                                              DecimalType.automatic,
+                                                                          currency:
+                                                                              'P ',
+                                                                        ),
+                                                                        '0',
+                                                                      ),
+                                                                      maxLines:
+                                                                          1,
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .displaySmall
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                const Color(0xFF14181B),
+                                                                            fontSize:
+                                                                                36.0,
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  Expanded(
                                                                     child:
-                                                                        FlutterFlowIconButton(
+                                                                        RichText(
+                                                                      textScaler:
+                                                                          MediaQuery.of(context)
+                                                                              .textScaler,
+                                                                      text:
+                                                                          TextSpan(
+                                                                        children: [
+                                                                          const TextSpan(
+                                                                            text:
+                                                                                'Total spent for groceries since ',
+                                                                            style:
+                                                                                TextStyle(),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                functions.daysAgo(groceryColumnGoodsRevenueRatioRecord!.date!),
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              color: Color(0xFF6F61EF),
+                                                                            ),
+                                                                          ),
+                                                                          const TextSpan(
+                                                                            text:
+                                                                                '. A ',
+                                                                            style:
+                                                                                TextStyle(),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                (double grocery, double revenue) {
+                                                                              return '${(((grocery + revenue == 0) ? 0.0 : revenue / grocery) * 100).toStringAsFixed(1).replaceAll(RegExp(r'\.0*$'), '')}%';
+                                                                            }(groceryColumnGoodsRevenueRatioRecord.grocery, groceryColumnGoodsRevenueRatioRecord.revenue),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: FlutterFlowTheme.of(context).secondary,
+                                                                            ),
+                                                                          ),
+                                                                          const TextSpan(
+                                                                            text:
+                                                                                ' uptick in sales is contributing to the recovery of grocery expenditures.',
+                                                                            style:
+                                                                                TextStyle(),
+                                                                          )
+                                                                        ],
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .labelSmall
+                                                                            .override(
+                                                                              fontFamily: 'Readex Pro',
+                                                                              letterSpacing: 0.0,
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        if (valueOrDefault(
+                                                                currentUserDocument
+                                                                    ?.role,
+                                                                '') ==
+                                                            'admin')
+                                                          Expanded(
+                                                            flex: 2,
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          5.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          FlutterFlowIconButton(
+                                                                        borderColor:
+                                                                            const Color(0xFFF1F4F8),
+                                                                        borderRadius:
+                                                                            30.0,
+                                                                        borderWidth:
+                                                                            2.0,
+                                                                        buttonSize:
+                                                                            44.0,
+                                                                        icon:
+                                                                            const Icon(
+                                                                          Icons
+                                                                              .featured_play_list_outlined,
+                                                                          color:
+                                                                              Color(0xFF57636C),
+                                                                          size:
+                                                                              24.0,
+                                                                        ),
+                                                                        onPressed:
+                                                                            () async {
+                                                                          // count
+                                                                          _model.countGroceries =
+                                                                              await queryGroceriesRecordCount(
+                                                                            queryBuilder: (groceriesRecord) =>
+                                                                                groceriesRecord.where(
+                                                                              'hotel',
+                                                                              isEqualTo: FFAppState().hotel,
+                                                                            ),
+                                                                          );
+                                                                          if (_model.countGroceries! >
+                                                                              0) {
+                                                                            context.pushNamed('groceryList');
+                                                                          } else {
+                                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                                              SnackBar(
+                                                                                content: Text(
+                                                                                  'There are no groceries yet!',
+                                                                                  style: TextStyle(
+                                                                                    color: FlutterFlowTheme.of(context).info,
+                                                                                  ),
+                                                                                ),
+                                                                                duration: const Duration(milliseconds: 4000),
+                                                                                backgroundColor: FlutterFlowTheme.of(context).error,
+                                                                              ),
+                                                                            );
+                                                                          }
+
+                                                                          safeSetState(
+                                                                              () {});
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                    FlutterFlowIconButton(
                                                                       borderColor:
                                                                           const Color(
                                                                               0xFFF1F4F8),
@@ -5203,7 +5296,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       icon:
                                                                           const Icon(
                                                                         Icons
-                                                                            .featured_play_list_outlined,
+                                                                            .add,
                                                                         color: Color(
                                                                             0xFF57636C),
                                                                         size:
@@ -5211,103 +5304,47 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       ),
                                                                       onPressed:
                                                                           () async {
-                                                                        // count
-                                                                        _model.countGroceries =
-                                                                            await queryGroceriesRecordCount(
-                                                                          queryBuilder: (groceriesRecord) =>
-                                                                              groceriesRecord.where(
-                                                                            'hotel',
-                                                                            isEqualTo:
-                                                                                FFAppState().hotel,
-                                                                          ),
-                                                                        );
-                                                                        if (_model.countGroceries! >
-                                                                            0) {
-                                                                          context
-                                                                              .pushNamed('groceryList');
-                                                                        } else {
-                                                                          ScaffoldMessenger.of(context)
-                                                                              .showSnackBar(
-                                                                            SnackBar(
-                                                                              content: Text(
-                                                                                'There are no groceries yet!',
-                                                                                style: TextStyle(
-                                                                                  color: FlutterFlowTheme.of(context).info,
+                                                                        await showModalBottomSheet(
+                                                                          isScrollControlled:
+                                                                              true,
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (context) {
+                                                                            return GestureDetector(
+                                                                              onTap: () => FocusScope.of(context).unfocus(),
+                                                                              child: Padding(
+                                                                                padding: MediaQuery.viewInsetsOf(context),
+                                                                                child: const SizedBox(
+                                                                                  height: double.infinity,
+                                                                                  child: NewGroceryWidget(),
                                                                                 ),
                                                                               ),
-                                                                              duration: const Duration(milliseconds: 4000),
-                                                                              backgroundColor: FlutterFlowTheme.of(context).error,
-                                                                            ),
-                                                                          );
-                                                                        }
-
-                                                                        safeSetState(
-                                                                            () {});
+                                                                            );
+                                                                          },
+                                                                        ).then((value) =>
+                                                                            safeSetState(() {}));
                                                                       },
                                                                     ),
-                                                                  ),
-                                                                  FlutterFlowIconButton(
-                                                                    borderColor:
-                                                                        const Color(
-                                                                            0xFFF1F4F8),
-                                                                    borderRadius:
-                                                                        30.0,
-                                                                    borderWidth:
-                                                                        2.0,
-                                                                    buttonSize:
-                                                                        44.0,
-                                                                    icon: const Icon(
-                                                                      Icons.add,
-                                                                      color: Color(
-                                                                          0xFF57636C),
-                                                                      size:
-                                                                          24.0,
-                                                                    ),
-                                                                    onPressed:
-                                                                        () async {
-                                                                      await showModalBottomSheet(
-                                                                        isScrollControlled:
-                                                                            true,
-                                                                        backgroundColor:
-                                                                            Colors.transparent,
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (context) {
-                                                                          return GestureDetector(
-                                                                            onTap: () =>
-                                                                                FocusScope.of(context).unfocus(),
-                                                                            child:
-                                                                                Padding(
-                                                                              padding: MediaQuery.viewInsetsOf(context),
-                                                                              child: const SizedBox(
-                                                                                height: double.infinity,
-                                                                                child: NewGroceryWidget(),
-                                                                              ),
-                                                                            ),
-                                                                          );
-                                                                        },
-                                                                      ).then((value) =>
-                                                                          safeSetState(
-                                                                              () {}));
-                                                                    },
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                        if (valueOrDefault(
-                                                currentUserDocument?.role,
-                                                '') !=
-                                            'generic')
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        if ((valueOrDefault(
+                                                    currentUserDocument?.role,
+                                                    '') !=
+                                                'generic') &&
+                                            (FFAppState().lockDown == false))
                                           const Divider(
                                             height: 4.0,
                                             thickness: 2.0,
@@ -5315,10 +5352,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             endIndent: 20.0,
                                             color: Color(0xFFE0E3E7),
                                           ),
-                                        if (valueOrDefault(
-                                                currentUserDocument?.role,
-                                                '') !=
-                                            'generic')
+                                        if ((valueOrDefault(
+                                                    currentUserDocument?.role,
+                                                    '') !=
+                                                'generic') &&
+                                            (FFAppState().lockDown == false))
                                           Padding(
                                             padding: const EdgeInsets.all(24.0),
                                             child: Row(
@@ -5459,83 +5497,86 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               ],
                                             ),
                                           ),
-                                        const Divider(
-                                          height: 4.0,
-                                          thickness: 2.0,
-                                          indent: 20.0,
-                                          endIndent: 20.0,
-                                          color: Color(0xFFE0E3E7),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  24.0, 24.0, 24.0, 0.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Payroll',
-                                                maxLines: 1,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .displaySmall
-                                                        .override(
-                                                          fontFamily: 'Outfit',
-                                                          color:
-                                                              const Color(0xFF14181B),
-                                                          fontSize: 36.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    FlutterFlowIconButton(
-                                                      borderColor:
-                                                          const Color(0xFFF1F4F8),
-                                                      borderRadius: 30.0,
-                                                      borderWidth: 2.0,
-                                                      buttonSize: 44.0,
-                                                      icon: const Icon(
-                                                        Icons
-                                                            .arrow_forward_rounded,
-                                                        color:
-                                                            Color(0xFF57636C),
-                                                        size: 24.0,
-                                                      ),
-                                                      onPressed: () async {
-                                                        context.pushNamed(
-                                                          'Payroll',
-                                                          extra: <String,
-                                                              dynamic>{
-                                                            kTransitionInfoKey:
-                                                                const TransitionInfo(
-                                                              hasTransition:
-                                                                  true,
-                                                              transitionType:
-                                                                  PageTransitionType
-                                                                      .rightToLeft,
-                                                            ),
-                                                          },
-                                                        );
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
+                                        if (FFAppState().lockDown == false)
+                                          const Divider(
+                                            height: 4.0,
+                                            thickness: 2.0,
+                                            indent: 20.0,
+                                            endIndent: 20.0,
+                                            color: Color(0xFFE0E3E7),
                                           ),
-                                        ),
+                                        if (FFAppState().lockDown == false)
+                                          Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    24.0, 24.0, 24.0, 0.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Payroll',
+                                                  maxLines: 1,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .displaySmall
+                                                      .override(
+                                                        fontFamily: 'Outfit',
+                                                        color:
+                                                            const Color(0xFF14181B),
+                                                        fontSize: 36.0,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      FlutterFlowIconButton(
+                                                        borderColor:
+                                                            const Color(0xFFF1F4F8),
+                                                        borderRadius: 30.0,
+                                                        borderWidth: 2.0,
+                                                        buttonSize: 44.0,
+                                                        icon: const Icon(
+                                                          Icons
+                                                              .arrow_forward_rounded,
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                          size: 24.0,
+                                                        ),
+                                                        onPressed: () async {
+                                                          context.pushNamed(
+                                                            'Payroll',
+                                                            extra: <String,
+                                                                dynamic>{
+                                                              kTransitionInfoKey:
+                                                                  const TransitionInfo(
+                                                                hasTransition:
+                                                                    true,
+                                                                transitionType:
+                                                                    PageTransitionType
+                                                                        .rightToLeft,
+                                                              ),
+                                                            },
+                                                          );
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),

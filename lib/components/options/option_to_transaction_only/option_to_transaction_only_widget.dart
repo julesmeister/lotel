@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/components/forms/transaction_edit/transaction_edit_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -81,9 +82,11 @@ class _OptionToTransactionOnlyWidgetState
             children: [
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
-                child: Text(
+                child: AutoSizeText(
                   'Options For ${widget.description}',
                   textAlign: TextAlign.start,
+                  maxLines: 1,
+                  minFontSize: 10.0,
                   style: FlutterFlowTheme.of(context).labelMedium.override(
                         fontFamily: 'Readex Pro',
                         letterSpacing: 0.0,

@@ -485,6 +485,32 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/allReplacements',
           requireAuth: true,
           builder: (context, params) => const AllReplacementsWidget(),
+        ),
+        FFRoute(
+          name: 'IssueSeparator',
+          path: '/issueSeparator',
+          requireAuth: true,
+          asyncParams: {
+            'issue': getDoc(['issues'], IssuesRecord.fromSnapshot),
+          },
+          builder: (context, params) => IssueSeparatorWidget(
+            issue: params.getParam(
+              'issue',
+              ParamType.Document,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'Purge',
+          path: '/purge',
+          requireAuth: true,
+          builder: (context, params) => const PurgeWidget(),
+        ),
+        FFRoute(
+          name: 'PurgedList',
+          path: '/purgedList',
+          requireAuth: true,
+          builder: (context, params) => const PurgedListWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

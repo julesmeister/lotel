@@ -295,87 +295,94 @@ class _ReplenishWidgetState extends State<ReplenishWidget> {
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Expanded(
-                                            child: Theme(
-                                              data: ThemeData(
-                                                unselectedWidgetColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                              ),
-                                              child: CheckboxListTile(
-                                                value:
-                                                    _model.checkboxListTileValueMap1[
-                                                            replenishItem] ??=
-                                                        replenishItem.replenish,
-                                                onChanged: (newValue) async {
-                                                  safeSetState(() => _model
-                                                          .checkboxListTileValueMap1[
-                                                      replenishItem] = newValue!);
-                                                  if (newValue!) {
-                                                    // replenish
-
-                                                    await replenishItem
-                                                        .reference
-                                                        .update(
-                                                            createGoodsRecordData(
-                                                      replenish: true,
-                                                    ));
-                                                  } else {
-                                                    // unreplenish
-
-                                                    await replenishItem
-                                                        .reference
-                                                        .update(
-                                                            createGoodsRecordData(
-                                                      replenish: false,
-                                                    ));
-                                                  }
-                                                },
-                                                title: Text(
-                                                  replenishItem.description,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyLarge
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        letterSpacing: 0.0,
-                                                        lineHeight: 2.0,
-                                                      ),
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              child: Theme(
+                                                data: ThemeData(
+                                                  unselectedWidgetColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondaryText,
                                                 ),
-                                                subtitle: Text(
-                                                  'Quantities: ${replenishItem.quantity.toString()}',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodySmall
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .success,
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                                ),
-                                                tileColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                activeColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                checkColor: Colors.white,
-                                                dense: false,
-                                                controlAffinity:
-                                                    ListTileControlAffinity
-                                                        .trailing,
-                                                contentPadding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                            8.0, 0.0, 8.0, 0.0),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
+                                                child: CheckboxListTile(
+                                                  value:
+                                                      _model.checkboxListTileValueMap1[
+                                                              replenishItem] ??=
+                                                          replenishItem
+                                                              .replenish,
+                                                  onChanged: (newValue) async {
+                                                    safeSetState(() =>
+                                                        _model.checkboxListTileValueMap1[
+                                                                replenishItem] =
+                                                            newValue!);
+                                                    if (newValue!) {
+                                                      // replenish
+
+                                                      await replenishItem
+                                                          .reference
+                                                          .update(
+                                                              createGoodsRecordData(
+                                                        replenish: true,
+                                                      ));
+                                                    } else {
+                                                      // unreplenish
+
+                                                      await replenishItem
+                                                          .reference
+                                                          .update(
+                                                              createGoodsRecordData(
+                                                        replenish: false,
+                                                      ));
+                                                    }
+                                                  },
+                                                  title: Text(
+                                                    replenishItem.description,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyLarge
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                          lineHeight: 2.0,
+                                                        ),
+                                                  ),
+                                                  subtitle: Text(
+                                                    'Quantities: ${replenishItem.quantity.toString()}',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodySmall
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .success,
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                  ),
+                                                  tileColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondaryBackground,
+                                                  activeColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .primary,
+                                                  checkColor: Colors.white,
+                                                  dense: false,
+                                                  controlAffinity:
+                                                      ListTileControlAffinity
+                                                          .trailing,
+                                                  contentPadding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(8.0, 0.0,
+                                                              8.0, 0.0),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                  ),
                                                 ),
                                               ),
                                             ),

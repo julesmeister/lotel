@@ -388,7 +388,7 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
                                   child: SizedBox(
-                                    height: 362.0,
+                                    height: 410.0,
                                     child: OptionToIssueWidget(
                                       issue: listViewIssuesRecord,
                                     ),

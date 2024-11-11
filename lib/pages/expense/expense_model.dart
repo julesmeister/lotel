@@ -18,6 +18,8 @@ class ExpenseModel extends FlutterFlowModel<ExpenseWidget> {
 
   int loop = 0;
 
+  DateTime? dateSubmitted;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Backend Call - Create Document] action in IconButton widget.

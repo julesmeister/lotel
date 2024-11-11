@@ -51,3 +51,7 @@ export '/bulbs/c_r_replacements/c_r_replacements_widget.dart'
     show CRReplacementsWidget;
 export '/bulbs/all_replacements/all_replacements_widget.dart'
     show AllReplacementsWidget;
+export '/components/forms/issue_separator/issue_separator_widget.dart'
+    show IssueSeparatorWidget;
+export '/admin/purge/purge_widget.dart' show PurgeWidget;
+export '/admin/purged_list/purged_list_widget.dart' show PurgedListWidget;

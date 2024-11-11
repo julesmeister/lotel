@@ -31,6 +31,7 @@ import 'schema/records_record.dart';
 import 'schema/replacement_record.dart';
 import 'schema/locations_record.dart';
 import 'schema/comfort_rooms_record.dart';
+import 'schema/purged_record.dart';
 import 'dart:async';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -67,6 +68,7 @@ export 'schema/records_record.dart';
 export 'schema/replacement_record.dart';
 export 'schema/locations_record.dart';
 export 'schema/comfort_rooms_record.dart';
+export 'schema/purged_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Future<int> queryUsersRecordCount({
@@ -2099,6 +2101,84 @@ Future<FFFirestorePage<ComfortRoomsRecord>> queryComfortRoomsRecordPage({
       if (isStream) {
         final streamSubscription =
             (page.dataStream)?.listen((List<ComfortRoomsRecord> data) {
+          for (var item in data) {
+            final itemIndexes = controller.itemList!
+                .asMap()
+                .map((k, v) => MapEntry(v.reference.id, k));
+            final index = itemIndexes[item.reference.id];
+            final items = controller.itemList!;
+            if (index != null) {
+              items.replaceRange(index, index + 1, [item]);
+              controller.itemList = {
+                for (var item in items) item.reference: item
+              }.values.toList();
+            }
+          }
+        });
+        streamSubscriptions?.add(streamSubscription);
+      }
+      return page;
+    });
+
+/// Functions to query PurgedRecords (as a Stream and as a Future).
+Future<int> queryPurgedRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      PurgedRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<PurgedRecord>> queryPurgedRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      PurgedRecord.collection,
+      PurgedRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<PurgedRecord>> queryPurgedRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      PurgedRecord.collection,
+      PurgedRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+Future<FFFirestorePage<PurgedRecord>> queryPurgedRecordPage({
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+  required PagingController<DocumentSnapshot?, PurgedRecord> controller,
+  List<StreamSubscription?>? streamSubscriptions,
+}) =>
+    queryCollectionPage(
+      PurgedRecord.collection,
+      PurgedRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      nextPageMarker: nextPageMarker,
+      pageSize: pageSize,
+      isStream: isStream,
+    ).then((page) {
+      controller.appendPage(
+        page.data,
+        page.nextPageMarker,
+      );
+      if (isStream) {
+        final streamSubscription =
+            (page.dataStream)?.listen((List<PurgedRecord> data) {
           for (var item in data) {
             final itemIndexes = controller.itemList!
                 .asMap()

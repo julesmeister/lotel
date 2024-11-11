@@ -413,16 +413,23 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                 .toList()
                                                                 .first
                                                                 .reference
-                                                                .update(
-                                                                    createRoomsRecordData(
-                                                                  vacant: false,
-                                                                  currentBooking:
-                                                                      widget
-                                                                          .booking,
-                                                                  guests: int.parse(
-                                                                      checkedInBookingsRecord
-                                                                          .guests),
-                                                                ));
+                                                                .update({
+                                                              ...createRoomsRecordData(
+                                                                vacant: false,
+                                                                currentBooking:
+                                                                    widget
+                                                                        .booking,
+                                                                guests: int.parse(
+                                                                    checkedInBookingsRecord
+                                                                        .guests),
+                                                              ),
+                                                              ...mapToFirestore(
+                                                                {
+                                                                  'last': FieldValue
+                                                                      .serverTimestamp(),
+                                                                },
+                                                              ),
+                                                            });
                                                             // revacant current room
 
                                                             await checkedInBookingsRecord

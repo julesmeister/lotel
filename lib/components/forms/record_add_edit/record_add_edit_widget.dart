@@ -319,6 +319,7 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                             });
                                           }
 
+                                          Navigator.pop(context);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(
@@ -339,7 +340,6 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                                       .secondary,
                                             ),
                                           );
-                                          Navigator.pop(context);
                                         },
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,

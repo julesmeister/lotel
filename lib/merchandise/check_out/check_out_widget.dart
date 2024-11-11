@@ -776,45 +776,48 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                         ),
                         child: Align(
                           alignment: const AlignmentDirectional(0.0, -1.0),
-                          child: SwitchListTile.adaptive(
-                            value: _model.switchListTileValue1 ??=
-                                _model.pending,
-                            onChanged: (newValue) async {
-                              safeSetState(() =>
-                                  _model.switchListTileValue1 = newValue);
-                              if (newValue) {
-                                _model.pending = true;
-                                safeSetState(() {});
-                              } else {
-                                _model.pending = false;
-                                safeSetState(() {});
-                              }
-                            },
-                            title: Text(
-                              'Pending',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyLarge
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    letterSpacing: 0.0,
-                                  ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: SwitchListTile.adaptive(
+                              value: _model.switchListTileValue1 ??=
+                                  _model.pending,
+                              onChanged: (newValue) async {
+                                safeSetState(() =>
+                                    _model.switchListTileValue1 = newValue);
+                                if (newValue) {
+                                  _model.pending = true;
+                                  safeSetState(() {});
+                                } else {
+                                  _model.pending = false;
+                                  safeSetState(() {});
+                                }
+                              },
+                              title: Text(
+                                'Pending',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                              subtitle: Text(
+                                'Has the guest not paid yet?',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                              tileColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              activeColor: FlutterFlowTheme.of(context).primary,
+                              activeTrackColor:
+                                  FlutterFlowTheme.of(context).accent1,
+                              dense: true,
+                              controlAffinity: ListTileControlAffinity.trailing,
                             ),
-                            subtitle: Text(
-                              'Has the guest not paid yet?',
-                              style: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    letterSpacing: 0.0,
-                                  ),
-                            ),
-                            tileColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            activeColor: FlutterFlowTheme.of(context).primary,
-                            activeTrackColor:
-                                FlutterFlowTheme.of(context).accent1,
-                            dense: true,
-                            controlAffinity: ListTileControlAffinity.trailing,
                           ),
                         ),
                       ),
@@ -841,45 +844,48 @@ class _CheckOutWidgetState extends State<CheckOutWidget>
                         ),
                         child: Align(
                           alignment: const AlignmentDirectional(0.0, -1.0),
-                          child: SwitchListTile.adaptive(
-                            value: _model.switchListTileValue2 ??=
-                                _model.expense,
-                            onChanged: (newValue) async {
-                              safeSetState(() =>
-                                  _model.switchListTileValue2 = newValue);
-                              if (newValue) {
-                                _model.expense = true;
-                                safeSetState(() {});
-                              } else {
-                                _model.expense = false;
-                                safeSetState(() {});
-                              }
-                            },
-                            title: Text(
-                              'Expense',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyLarge
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    letterSpacing: 0.0,
-                                  ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: SwitchListTile.adaptive(
+                              value: _model.switchListTileValue2 ??=
+                                  _model.expense,
+                              onChanged: (newValue) async {
+                                safeSetState(() =>
+                                    _model.switchListTileValue2 = newValue);
+                                if (newValue) {
+                                  _model.expense = true;
+                                  safeSetState(() {});
+                                } else {
+                                  _model.expense = false;
+                                  safeSetState(() {});
+                                }
+                              },
+                              title: Text(
+                                'Expense',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                              subtitle: Text(
+                                'Is this an expense?',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                              tileColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              activeColor: FlutterFlowTheme.of(context).primary,
+                              activeTrackColor:
+                                  FlutterFlowTheme.of(context).accent1,
+                              dense: true,
+                              controlAffinity: ListTileControlAffinity.trailing,
                             ),
-                            subtitle: Text(
-                              'Is this an expense?',
-                              style: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    letterSpacing: 0.0,
-                                  ),
-                            ),
-                            tileColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            activeColor: FlutterFlowTheme.of(context).primary,
-                            activeTrackColor:
-                                FlutterFlowTheme.of(context).accent1,
-                            dense: true,
-                            controlAffinity: ListTileControlAffinity.trailing,
                           ),
                         ),
                       ),

@@ -96,7 +96,7 @@ class _EditBedPriceWidgetState extends State<EditBedPriceWidget> {
               icon: Icon(
                 Icons.chevron_left,
                 color: FlutterFlowTheme.of(context).info,
-                size: 25.0,
+                size: 30.0,
               ),
               onPressed: () async {
                 context.safePop();

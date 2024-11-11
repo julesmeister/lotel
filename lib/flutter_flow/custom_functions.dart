@@ -2091,3 +2091,59 @@ bool moreThan24hr(DateTime? date) {
   final difference = now.difference(date);
   return difference.inHours >= 24;
 }
+
+List<String> breakdownString(String? texts) {
+  // break the string down into words, split by commas, periods, spaces, ampersands
+  if (texts == null) {
+    return [];
+  }
+
+  final List<String> words = texts.split(RegExp(r'[,.&\s]+'));
+  // Remove duplicates by converting to a Set and back to a List
+  return words.toSet().toList();
+}
+
+String issueInOrderText(
+  List<String> choices,
+  String issue,
+) {
+  // make sure the choices are in the same order as is in issue and return the choices separated by space
+  // Sort choices by the order they appear in `issue`.
+  choices.sort((a, b) => issue.indexOf(a).compareTo(issue.indexOf(b)));
+  return choices.join(' ');
+}
+
+List<String>? removeSelectedChoices(
+  List<String>? choices,
+  List<String>? words,
+) {
+  // remove choices from words
+  if (choices == null || words == null) {
+    return null;
+  }
+
+  List<String> result = List.from(words);
+
+  for (String choice in choices) {
+    result.remove(choice);
+  }
+
+  return result;
+}
+
+String ordinal(int number) {
+  // ordinal string from the number
+  if (number % 100 >= 11 && number % 100 <= 13) {
+    return '$number' + 'th';
+  }
+  switch (number % 10) {
+    case 1:
+      return '$number' + 'st';
+    case 2:
+      return '$number' + 'nd';
+    case 3:
+      return '$number' + 'rd';
+    default:
+      return '$number' + 'th';
+  }
+}

@@ -217,29 +217,69 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                                 ) ??
                                                 false;
                                         if (confirmDialogResponse) {
+                                          // set date submitted
+                                          _model.dateSubmitted =
+                                              getCurrentTimestamp;
+                                          safeSetState(() {});
+                                          // Create transaction expense
+
+                                          var transactionsRecordReference1 =
+                                              TransactionsRecord.collection
+                                                  .doc();
+                                          await transactionsRecordReference1
+                                              .set(createTransactionsRecordData(
+                                            date: _model.dateSubmitted,
+                                            staff: currentUserReference,
+                                            total: double.tryParse(_model
+                                                .amountTextController.text),
+                                            type: 'expense',
+                                            hotel: FFAppState().hotel,
+                                            description:
+                                                '${_model.selectedNameValue} claimed ${_model.descriptionTextController.text}',
+                                            remitted: widget.additional
+                                                ? true
+                                                : false,
+                                            pending: false,
+                                          ));
+                                          _model.newCACopy = TransactionsRecord
+                                              .getDocumentFromData(
+                                                  createTransactionsRecordData(
+                                                    date: _model.dateSubmitted,
+                                                    staff: currentUserReference,
+                                                    total: double.tryParse(_model
+                                                        .amountTextController
+                                                        .text),
+                                                    type: 'expense',
+                                                    hotel: FFAppState().hotel,
+                                                    description:
+                                                        '${_model.selectedNameValue} claimed ${_model.descriptionTextController.text}',
+                                                    remitted: widget.additional
+                                                        ? true
+                                                        : false,
+                                                    pending: false,
+                                                  ),
+                                                  transactionsRecordReference1);
+                                          shouldSetState = true;
+                                          // CA to expenseRef
+                                          _model.expenseRef =
+                                              _model.newCACopy?.reference;
+                                          safeSetState(() {});
                                           // cash advance
 
                                           await AdvancesRecord.createDoc(
                                                   _model.staffSelected!)
-                                              .set({
-                                            ...createAdvancesRecordData(
-                                              settled: false,
-                                              amount: double.tryParse(_model
-                                                  .amountTextController.text),
-                                              requestedBy: currentUserReference,
-                                            ),
-                                            ...mapToFirestore(
-                                              {
-                                                'date': FieldValue
-                                                    .serverTimestamp(),
-                                              },
-                                            ),
-                                          });
+                                              .set(createAdvancesRecordData(
+                                            settled: false,
+                                            amount: double.tryParse(_model
+                                                .amountTextController.text),
+                                            date: _model.dateSubmitted,
+                                            requestedBy: currentUserReference,
+                                          ));
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(
                                               content: Text(
-                                                'You have cashed in advance!',
+                                                '${_model.selectedNameValue} has cashed in advance!',
                                                 style: TextStyle(
                                                   color: FlutterFlowTheme.of(
                                                           context)
@@ -259,58 +299,6 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                           }
                                           return;
                                         }
-
-                                        // Create transaction expense
-
-                                        var transactionsRecordReference1 =
-                                            TransactionsRecord.collection.doc();
-                                        await transactionsRecordReference1.set({
-                                          ...createTransactionsRecordData(
-                                            staff: currentUserReference,
-                                            total: double.tryParse(_model
-                                                .amountTextController.text),
-                                            type: 'expense',
-                                            hotel: FFAppState().hotel,
-                                            description:
-                                                '${_model.selectedNameValue} claimed ${_model.descriptionTextController.text}',
-                                            remitted: widget.additional
-                                                ? true
-                                                : false,
-                                            pending: false,
-                                          ),
-                                          ...mapToFirestore(
-                                            {
-                                              'date':
-                                                  FieldValue.serverTimestamp(),
-                                            },
-                                          ),
-                                        });
-                                        _model.newCACopy = TransactionsRecord
-                                            .getDocumentFromData({
-                                          ...createTransactionsRecordData(
-                                            staff: currentUserReference,
-                                            total: double.tryParse(_model
-                                                .amountTextController.text),
-                                            type: 'expense',
-                                            hotel: FFAppState().hotel,
-                                            description:
-                                                '${_model.selectedNameValue} claimed ${_model.descriptionTextController.text}',
-                                            remitted: widget.additional
-                                                ? true
-                                                : false,
-                                            pending: false,
-                                          ),
-                                          ...mapToFirestore(
-                                            {
-                                              'date': DateTime.now(),
-                                            },
-                                          ),
-                                        }, transactionsRecordReference1);
-                                        shouldSetState = true;
-                                        // CA to expenseRef
-                                        _model.expenseRef =
-                                            _model.newCACopy?.reference;
-                                        safeSetState(() {});
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(

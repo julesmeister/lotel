@@ -90,8 +90,9 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                 style: FlutterFlowTheme.of(context).labelMedium.override(
                       fontFamily: 'Readex Pro',
                       color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 25.0,
+                      fontSize: 24.0,
                       letterSpacing: 0.0,
+                      fontWeight: FontWeight.w500,
                     ),
               ),
               actions: [
@@ -421,80 +422,86 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                               padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       10.0, 0.0, 0.0, 0.0),
-                                              child: Theme(
-                                                data: ThemeData(
-                                                  unselectedWidgetColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryText,
-                                                ),
-                                                child: CheckboxListTile(
-                                                  value: _model
-                                                          .checkboxListTileValueMap1[
-                                                      expenseListOptionsRecord] ??= false,
-                                                  onChanged: (newValue) async {
-                                                    safeSetState(() => _model
-                                                                .checkboxListTileValueMap1[
-                                                            expenseListOptionsRecord] =
-                                                        newValue!);
-                                                    if (newValue!) {
-                                                      _model.addToSelectedChoice(
-                                                          expenseListOptionsRecord
-                                                              .reference);
-                                                    } else {
-                                                      _model.removeFromSelectedChoice(
-                                                          expenseListOptionsRecord
-                                                              .reference);
-                                                    }
-                                                  },
-                                                  title: Text(
-                                                    expenseListOptionsRecord
-                                                        .choice,
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyLarge
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
+                                              child: Material(
+                                                color: Colors.transparent,
+                                                child: Theme(
+                                                  data: ThemeData(
+                                                    unselectedWidgetColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondaryText,
                                                   ),
-                                                  subtitle: Text(
-                                                    expenseListOptionsRecord
-                                                        .type,
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodySmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .success,
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                  ),
-                                                  tileColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryBackground,
-                                                  activeColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
-                                                  checkColor: Colors.white,
-                                                  dense: false,
-                                                  controlAffinity:
-                                                      ListTileControlAffinity
-                                                          .trailing,
-                                                  contentPadding:
-                                                      const EdgeInsetsDirectional
-                                                          .fromSTEB(8.0, 0.0,
-                                                              8.0, 0.0),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
+                                                  child: CheckboxListTile(
+                                                    value: _model
+                                                            .checkboxListTileValueMap1[
+                                                        expenseListOptionsRecord] ??= false,
+                                                    onChanged:
+                                                        (newValue) async {
+                                                      safeSetState(() => _model
+                                                                  .checkboxListTileValueMap1[
+                                                              expenseListOptionsRecord] =
+                                                          newValue!);
+                                                      if (newValue!) {
+                                                        _model.addToSelectedChoice(
+                                                            expenseListOptionsRecord
+                                                                .reference);
+                                                      } else {
+                                                        _model.removeFromSelectedChoice(
+                                                            expenseListOptionsRecord
+                                                                .reference);
+                                                      }
+                                                    },
+                                                    title: Text(
+                                                      expenseListOptionsRecord
+                                                          .choice,
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyLarge
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                    subtitle: Text(
+                                                      expenseListOptionsRecord
+                                                          .type,
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodySmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .success,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                    ),
+                                                    tileColor: FlutterFlowTheme
+                                                            .of(context)
+                                                        .secondaryBackground,
+                                                    activeColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary,
+                                                    checkColor: Colors.white,
+                                                    dense: false,
+                                                    controlAffinity:
+                                                        ListTileControlAffinity
+                                                            .trailing,
+                                                    contentPadding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(8.0, 0.0,
+                                                                8.0, 0.0),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -657,79 +664,86 @@ class _ManageOptionsWidgetState extends State<ManageOptionsWidget> {
                                               padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       10.0, 0.0, 0.0, 0.0),
-                                              child: Theme(
-                                                data: ThemeData(
-                                                  unselectedWidgetColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryText,
-                                                ),
-                                                child: CheckboxListTile(
-                                                  value: _model
-                                                          .checkboxListTileValueMap2[
-                                                      billsLisOptionsRecord] ??= false,
-                                                  onChanged: (newValue) async {
-                                                    safeSetState(() => _model
-                                                                .checkboxListTileValueMap2[
-                                                            billsLisOptionsRecord] =
-                                                        newValue!);
-                                                    if (newValue!) {
-                                                      _model.addToSelectedChoice(
-                                                          billsLisOptionsRecord
-                                                              .reference);
-                                                    } else {
-                                                      _model.removeFromSelectedChoice(
-                                                          billsLisOptionsRecord
-                                                              .reference);
-                                                    }
-                                                  },
-                                                  title: Text(
-                                                    billsLisOptionsRecord
-                                                        .choice,
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyLarge
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
+                                              child: Material(
+                                                color: Colors.transparent,
+                                                child: Theme(
+                                                  data: ThemeData(
+                                                    unselectedWidgetColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondaryText,
                                                   ),
-                                                  subtitle: Text(
-                                                    billsLisOptionsRecord.type,
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodySmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .success,
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                  ),
-                                                  tileColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryBackground,
-                                                  activeColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
-                                                  checkColor: Colors.white,
-                                                  dense: false,
-                                                  controlAffinity:
-                                                      ListTileControlAffinity
-                                                          .trailing,
-                                                  contentPadding:
-                                                      const EdgeInsetsDirectional
-                                                          .fromSTEB(8.0, 0.0,
-                                                              8.0, 0.0),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
+                                                  child: CheckboxListTile(
+                                                    value: _model
+                                                            .checkboxListTileValueMap2[
+                                                        billsLisOptionsRecord] ??= false,
+                                                    onChanged:
+                                                        (newValue) async {
+                                                      safeSetState(() => _model
+                                                                  .checkboxListTileValueMap2[
+                                                              billsLisOptionsRecord] =
+                                                          newValue!);
+                                                      if (newValue!) {
+                                                        _model.addToSelectedChoice(
+                                                            billsLisOptionsRecord
+                                                                .reference);
+                                                      } else {
+                                                        _model.removeFromSelectedChoice(
+                                                            billsLisOptionsRecord
+                                                                .reference);
+                                                      }
+                                                    },
+                                                    title: Text(
+                                                      billsLisOptionsRecord
+                                                          .choice,
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyLarge
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                    subtitle: Text(
+                                                      billsLisOptionsRecord
+                                                          .type,
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodySmall
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .success,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                    ),
+                                                    tileColor: FlutterFlowTheme
+                                                            .of(context)
+                                                        .secondaryBackground,
+                                                    activeColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary,
+                                                    checkColor: Colors.white,
+                                                    dense: false,
+                                                    controlAffinity:
+                                                        ListTileControlAffinity
+                                                            .trailing,
+                                                    contentPadding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(8.0, 0.0,
+                                                                8.0, 0.0),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
                                                   ),
                                                 ),
                                               ),

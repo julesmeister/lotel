@@ -609,6 +609,11 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                       queryBuilder:
                                                           (advancesRecord) =>
                                                               advancesRecord
+                                                                  .where(
+                                                                    'settled',
+                                                                    isEqualTo:
+                                                                        false,
+                                                                  )
                                                                   .orderBy(
                                                                       'date',
                                                                       descending:
@@ -637,7 +642,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                         );
                                                       }
                                                       List<AdvancesRecord>
-                                                          dashboardMainCardAdvancesRecordList =
+                                                          staffsCAsAdvancesRecordList =
                                                           snapshot.data!;
 
                                                       return InkWell(
@@ -757,7 +762,10 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                       AutoSizeText(
                                                                         listViewStaffsRecord
                                                                             .name
-                                                                            .maybeHandleOverflow(maxChars: 15),
+                                                                            .maybeHandleOverflow(
+                                                                          maxChars:
+                                                                              15,
+                                                                        ),
                                                                         maxLines:
                                                                             1,
                                                                         minFontSize:
@@ -805,7 +813,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                           valueOrDefault<
                                                                               String>(
                                                                             formatNumber(
-                                                                              functions.totalOfCAs(dashboardMainCardAdvancesRecordList.where((e) => e.settled == false).toList()),
+                                                                              functions.totalOfCAs(staffsCAsAdvancesRecordList.where((e) => e.settled == false).toList()),
                                                                               formatType: FormatType.decimal,
                                                                               decimalType: DecimalType.automatic,
                                                                               currency: 'P ',

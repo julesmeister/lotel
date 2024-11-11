@@ -15,6 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
+
   await initFirebase();
 
   final appState = FFAppState(); // Initialize FFAppState
@@ -91,6 +92,15 @@ class _MyAppState extends State<MyApp> {
       ),
       themeMode: _themeMode,
       routerConfig: _router,
+      builder: (_, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler: MediaQuery.of(context).textScaler.clamp(
+                minScaleFactor: 1.0,
+                maxScaleFactor: 1.2,
+              ),
+        ),
+        child: child!,
+      ),
     );
   }
 }

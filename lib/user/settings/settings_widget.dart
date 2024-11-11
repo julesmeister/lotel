@@ -75,7 +75,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     return Padding(
                       padding: MediaQuery.viewInsetsOf(context),
                       child: const SizedBox(
-                        height: 125.0,
+                        height: 170.0,
                         child: OptionToLogoutWidget(),
                       ),
                     );
@@ -757,6 +757,85 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             highlightColor: Colors.transparent,
                             onTap: () async {
                               context.pushNamed(
+                                'Purge',
+                                extra: <String, dynamic>{
+                                  kTransitionInfoKey: const TransitionInfo(
+                                    hasTransition: true,
+                                    transitionType:
+                                        PageTransitionType.rightToLeft,
+                                  ),
+                                },
+                              );
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 70.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 0.0,
+                                    color:
+                                        FlutterFlowTheme.of(context).alternate,
+                                    offset: const Offset(
+                                      0.0,
+                                      1.0,
+                                    ),
+                                  )
+                                ],
+                                shape: BoxShape.rectangle,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 16.0, 0.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Text(
+                                          'Purge',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyLarge
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                letterSpacing: 0.0,
+                                              ),
+                                        ),
+                                        Expanded(
+                                          child: Align(
+                                            alignment:
+                                                const AlignmentDirectional(1.0, 0.0),
+                                            child: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryText,
+                                              size: 20.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 1.0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              context.pushNamed(
                                 'EditBedPrice',
                                 extra: <String, dynamic>{
                                   kTransitionInfoKey: const TransitionInfo(
@@ -1102,54 +1181,58 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                               ],
                               shape: BoxShape.rectangle,
                             ),
-                            child: Theme(
-                              data: ThemeData(
-                                checkboxTheme: const CheckboxThemeData(
-                                  visualDensity: VisualDensity.compact,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Theme(
+                                data: ThemeData(
+                                  checkboxTheme: const CheckboxThemeData(
+                                    visualDensity: VisualDensity.compact,
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  unselectedWidgetColor:
+                                      FlutterFlowTheme.of(context)
+                                          .secondaryText,
                                 ),
-                                unselectedWidgetColor:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                              ),
-                              child: CheckboxListTile(
-                                value: _model.checkboxListTileValue ??=
-                                    adminAreaHotelSettingsRecord!
-                                        .acceptNewStaff,
-                                onChanged: (newValue) async {
-                                  safeSetState(() =>
-                                      _model.checkboxListTileValue = newValue!);
-                                  if (newValue!) {
-                                    await adminAreaHotelSettingsRecord!
-                                        .reference
-                                        .update(createHotelSettingsRecordData(
-                                      acceptNewStaff: true,
-                                    ));
-                                  } else {
-                                    await adminAreaHotelSettingsRecord!
-                                        .reference
-                                        .update(createHotelSettingsRecordData(
-                                      acceptNewStaff: false,
-                                    ));
-                                  }
-                                },
-                                title: Text(
-                                  'Allow New Staff Signup',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyLarge
-                                      .override(
-                                        fontFamily: 'Readex Pro',
-                                        letterSpacing: 0.0,
-                                      ),
+                                child: CheckboxListTile(
+                                  value: _model.checkboxListTileValue ??=
+                                      adminAreaHotelSettingsRecord!
+                                          .acceptNewStaff,
+                                  onChanged: (newValue) async {
+                                    safeSetState(() => _model
+                                        .checkboxListTileValue = newValue!);
+                                    if (newValue!) {
+                                      await adminAreaHotelSettingsRecord!
+                                          .reference
+                                          .update(createHotelSettingsRecordData(
+                                        acceptNewStaff: true,
+                                      ));
+                                    } else {
+                                      await adminAreaHotelSettingsRecord!
+                                          .reference
+                                          .update(createHotelSettingsRecordData(
+                                        acceptNewStaff: false,
+                                      ));
+                                    }
+                                  },
+                                  title: Text(
+                                    'Allow New Staff Signup',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyLarge
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
+                                  tileColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  activeColor:
+                                      FlutterFlowTheme.of(context).primary,
+                                  checkColor: FlutterFlowTheme.of(context).info,
+                                  dense: false,
+                                  controlAffinity:
+                                      ListTileControlAffinity.trailing,
                                 ),
-                                tileColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                activeColor:
-                                    FlutterFlowTheme.of(context).primary,
-                                checkColor: FlutterFlowTheme.of(context).info,
-                                dense: false,
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
                               ),
                             ),
                           ),

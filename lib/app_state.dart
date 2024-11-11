@@ -54,6 +54,9 @@ class FFAppState extends ChangeNotifier {
     _safeInit(() {
       _extPricePerHr = prefs.getDouble('ff_extPricePerHr') ?? _extPricePerHr;
     });
+    _safeInit(() {
+      _lockDown = prefs.getBool('ff_lockDown') ?? _lockDown;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -163,6 +166,13 @@ class FFAppState extends ChangeNotifier {
 
   void insertAtIndexInRoomUsages(int index, RoomUsageStruct value) {
     roomUsages.insert(index, value);
+  }
+
+  bool _lockDown = false;
+  bool get lockDown => _lockDown;
+  set lockDown(bool value) {
+    _lockDown = value;
+    prefs.setBool('ff_lockDown', value);
   }
 
   final _roomsManager = StreamRequestManager<List<RoomsRecord>>();

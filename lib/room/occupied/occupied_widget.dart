@@ -216,7 +216,9 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                     child: Text(
                                       roomsItem.number
                                           .toString()
-                                          .maybeHandleOverflow(maxChars: 3),
+                                          .maybeHandleOverflow(
+                                            maxChars: 3,
+                                          ),
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
                                       style: FlutterFlowTheme.of(context)
@@ -324,7 +326,9 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                       child: Text(
                                         roomsItem.number
                                             .toString()
-                                            .maybeHandleOverflow(maxChars: 3),
+                                            .maybeHandleOverflow(
+                                              maxChars: 3,
+                                            ),
                                         textAlign: TextAlign.center,
                                         maxLines: 1,
                                         style: FlutterFlowTheme.of(context)

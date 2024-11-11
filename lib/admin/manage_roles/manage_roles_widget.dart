@@ -113,8 +113,9 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                 style: FlutterFlowTheme.of(context).labelMedium.override(
                       fontFamily: 'Readex Pro',
                       color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 25.0,
+                      fontSize: 24.0,
                       letterSpacing: 0.0,
+                      fontWeight: FontWeight.w500,
                     ),
               ),
               actions: [
@@ -498,88 +499,92 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                       .first
                                                                   : null;
 
-                                                          return Theme(
-                                                            data: ThemeData(
-                                                              unselectedWidgetColor:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                            ),
-                                                            child:
-                                                                CheckboxListTile(
-                                                              value: _model
-                                                                      .checkboxListTileValueMap1[
-                                                                  recentItem] ??= false,
-                                                              onChanged:
-                                                                  (newValue) async {
-                                                                safeSetState(() =>
-                                                                    _model.checkboxListTileValueMap1[
-                                                                            recentItem] =
-                                                                        newValue!);
-                                                                if (newValue!) {
-                                                                  _model.addToSelectedUsers(
-                                                                      recentItem
-                                                                          .reference);
-                                                                } else {
-                                                                  _model.removeFromSelectedUsers(
-                                                                      recentItem
-                                                                          .reference);
-                                                                }
-                                                              },
-                                                              title: Text(
-                                                                recentItem
-                                                                    .displayName,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
+                                                          return Material(
+                                                            color: Colors
+                                                                .transparent,
+                                                            child: Theme(
+                                                              data: ThemeData(
+                                                                unselectedWidgetColor:
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
                                                               ),
-                                                              subtitle: Text(
-                                                                '${recentItem.role} is online ${functions.hoursAgo(checkboxListTileLastLoginRecord!.datetime!)}',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodySmall
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .success,
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
-                                                              ),
-                                                              tileColor: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryBackground,
-                                                              activeColor:
-                                                                  FlutterFlowTheme.of(
+                                                              child:
+                                                                  CheckboxListTile(
+                                                                value: _model
+                                                                        .checkboxListTileValueMap1[
+                                                                    recentItem] ??= false,
+                                                                onChanged:
+                                                                    (newValue) async {
+                                                                  safeSetState(() =>
+                                                                      _model.checkboxListTileValueMap1[
+                                                                              recentItem] =
+                                                                          newValue!);
+                                                                  if (newValue!) {
+                                                                    _model.addToSelectedUsers(
+                                                                        recentItem
+                                                                            .reference);
+                                                                  } else {
+                                                                    _model.removeFromSelectedUsers(
+                                                                        recentItem
+                                                                            .reference);
+                                                                  }
+                                                                },
+                                                                title: Text(
+                                                                  recentItem
+                                                                      .displayName,
+                                                                  style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .primary,
-                                                              checkColor:
-                                                                  Colors.white,
-                                                              dense: false,
-                                                              controlAffinity:
-                                                                  ListTileControlAffinity
-                                                                      .trailing,
-                                                              contentPadding:
-                                                                  const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          8.0,
-                                                                          0.0,
-                                                                          8.0,
-                                                                          0.0),
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8.0),
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                                subtitle: Text(
+                                                                  '${recentItem.role} is online ${functions.hoursAgo(checkboxListTileLastLoginRecord!.datetime!)}',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodySmall
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .success,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                                tileColor: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryBackground,
+                                                                activeColor:
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                checkColor:
+                                                                    Colors
+                                                                        .white,
+                                                                dense: false,
+                                                                controlAffinity:
+                                                                    ListTileControlAffinity
+                                                                        .trailing,
+                                                                contentPadding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            8.0,
+                                                                            0.0,
+                                                                            8.0,
+                                                                            0.0),
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8.0),
+                                                                ),
                                                               ),
                                                             ),
                                                           );
@@ -793,88 +798,92 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                       .first
                                                                   : null;
 
-                                                          return Theme(
-                                                            data: ThemeData(
-                                                              unselectedWidgetColor:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                            ),
-                                                            child:
-                                                                CheckboxListTile(
-                                                              value: _model
-                                                                      .checkboxListTileValueMap2[
-                                                                  othersItem] ??= false,
-                                                              onChanged:
-                                                                  (newValue) async {
-                                                                safeSetState(() =>
-                                                                    _model.checkboxListTileValueMap2[
-                                                                            othersItem] =
-                                                                        newValue!);
-                                                                if (newValue!) {
-                                                                  _model.addToSelectedUsers(
-                                                                      othersItem
-                                                                          .reference);
-                                                                } else {
-                                                                  _model.removeFromSelectedUsers(
-                                                                      othersItem
-                                                                          .reference);
-                                                                }
-                                                              },
-                                                              title: Text(
-                                                                othersItem
-                                                                    .displayName,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
+                                                          return Material(
+                                                            color: Colors
+                                                                .transparent,
+                                                            child: Theme(
+                                                              data: ThemeData(
+                                                                unselectedWidgetColor:
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
                                                               ),
-                                                              subtitle: Text(
-                                                                '${othersItem.role} is online ${functions.hoursAgo(checkboxListTileLastLoginRecord!.datetime!)}',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodySmall
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .success,
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
-                                                              ),
-                                                              tileColor: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryBackground,
-                                                              activeColor:
-                                                                  FlutterFlowTheme.of(
+                                                              child:
+                                                                  CheckboxListTile(
+                                                                value: _model
+                                                                        .checkboxListTileValueMap2[
+                                                                    othersItem] ??= false,
+                                                                onChanged:
+                                                                    (newValue) async {
+                                                                  safeSetState(() =>
+                                                                      _model.checkboxListTileValueMap2[
+                                                                              othersItem] =
+                                                                          newValue!);
+                                                                  if (newValue!) {
+                                                                    _model.addToSelectedUsers(
+                                                                        othersItem
+                                                                            .reference);
+                                                                  } else {
+                                                                    _model.removeFromSelectedUsers(
+                                                                        othersItem
+                                                                            .reference);
+                                                                  }
+                                                                },
+                                                                title: Text(
+                                                                  othersItem
+                                                                      .displayName,
+                                                                  style: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .primary,
-                                                              checkColor:
-                                                                  Colors.white,
-                                                              dense: false,
-                                                              controlAffinity:
-                                                                  ListTileControlAffinity
-                                                                      .trailing,
-                                                              contentPadding:
-                                                                  const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          8.0,
-                                                                          0.0,
-                                                                          8.0,
-                                                                          0.0),
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8.0),
+                                                                      .bodyLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                                subtitle: Text(
+                                                                  '${othersItem.role} is online ${functions.hoursAgo(checkboxListTileLastLoginRecord!.datetime!)}',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodySmall
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Readex Pro',
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .success,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                                tileColor: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryBackground,
+                                                                activeColor:
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                checkColor:
+                                                                    Colors
+                                                                        .white,
+                                                                dense: false,
+                                                                controlAffinity:
+                                                                    ListTileControlAffinity
+                                                                        .trailing,
+                                                                contentPadding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            8.0,
+                                                                            0.0,
+                                                                            8.0,
+                                                                            0.0),
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8.0),
+                                                                ),
                                                               ),
                                                             ),
                                                           );
