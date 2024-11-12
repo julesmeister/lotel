@@ -558,9 +558,19 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            offset: const Offset(
+                              3.0,
+                              3.0,
+                            ),
+                          )
+                        ],
                         borderRadius: BorderRadius.circular(8.0),
                         border: Border.all(
-                          color: FlutterFlowTheme.of(context).alternate,
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          width: 2.0,
                         ),
                       ),
                       child: Padding(
@@ -584,10 +594,10 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                                     fontWeight: FontWeight.normal,
                                   ),
                             ),
-                            const Divider(
+                            Divider(
                               height: 16.0,
-                              thickness: 2.0,
-                              color: Color(0xFFF1F4F8),
+                              thickness: 1.0,
+                              color: FlutterFlowTheme.of(context).primaryText,
                             ),
                             Row(
                               mainAxisSize: MainAxisSize.max,

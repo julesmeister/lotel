@@ -251,6 +251,11 @@ class _PromoWidgetState extends State<PromoWidget> {
                                 validator: _model.detailTextControllerValidator
                                     .asValidator(context),
                               ),
+                              const Divider(
+                                height: 4.0,
+                                thickness: 1.0,
+                                color: Color(0xFFE0E3E7),
+                              ),
                               TextFormField(
                                 controller: _model.percentTextController,
                                 focusNode: _model.percentFocusNode,

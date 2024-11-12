@@ -572,15 +572,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: SizedBox(
-                                                              height: 125.0,
-                                                              child:
-                                                                  OptionToRemoveBookRemittanceWidget(
-                                                                remittance: widget
-                                                                    .remittanceRef!,
-                                                                transaction:
-                                                                    bookingsItem,
-                                                              ),
+                                                            child:
+                                                                OptionToRemoveBookRemittanceWidget(
+                                                              remittance: widget
+                                                                  .remittanceRef!,
+                                                              transaction:
+                                                                  bookingsItem,
                                                             ),
                                                           ),
                                                         );
@@ -1246,15 +1243,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: SizedBox(
-                                                              height: 170.0,
-                                                              child:
-                                                                  OptionToRemoveExpenseRemittanceWidget(
-                                                                remittance: widget
-                                                                    .remittanceRef!,
-                                                                transaction:
-                                                                    expensesItem,
-                                                              ),
+                                                            child:
+                                                                OptionToRemoveExpenseRemittanceWidget(
+                                                              remittance: widget
+                                                                  .remittanceRef!,
+                                                              transaction:
+                                                                  expensesItem,
                                                             ),
                                                           ),
                                                         );
@@ -1773,15 +1767,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: SizedBox(
-                                                              height: 125.0,
-                                                              child:
-                                                                  OptionToRemoveBookRemittanceWidget(
-                                                                remittance: widget
-                                                                    .remittanceRef!,
-                                                                transaction:
-                                                                    bookingsItem,
-                                                              ),
+                                                            child:
+                                                                OptionToRemoveBookRemittanceWidget(
+                                                              remittance: widget
+                                                                  .remittanceRef!,
+                                                              transaction:
+                                                                  bookingsItem,
                                                             ),
                                                           ),
                                                         );
@@ -2749,15 +2740,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child: SizedBox(
-                                                              height: 125.0,
-                                                              child:
-                                                                  OptionToRemoveExpenseRemittanceWidget(
-                                                                remittance: widget
-                                                                    .remittanceRef!,
-                                                                transaction:
-                                                                    goodsItem,
-                                                              ),
+                                                            child:
+                                                                OptionToRemoveExpenseRemittanceWidget(
+                                                              remittance: widget
+                                                                  .remittanceRef!,
+                                                              transaction:
+                                                                  goodsItem,
                                                             ),
                                                           ),
                                                         );

@@ -387,13 +387,24 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryBackground,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                  offset: const Offset(
+                                                    3.0,
+                                                    3.0,
+                                                  ),
+                                                )
+                                              ],
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
                                               border: Border.all(
                                                 color:
                                                     FlutterFlowTheme.of(context)
-                                                        .alternate,
-                                                width: 1.0,
+                                                        .primaryText,
+                                                width: 2.0,
                                               ),
                                             ),
                                             child: Row(
@@ -563,7 +574,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                 activeColor:
                                                                     FlutterFlowTheme.of(
                                                                             context)
-                                                                        .primary,
+                                                                        .primaryText,
                                                                 checkColor:
                                                                     Colors
                                                                         .white,
@@ -686,13 +697,24 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryBackground,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                  offset: const Offset(
+                                                    3.0,
+                                                    3.0,
+                                                  ),
+                                                )
+                                              ],
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
                                               border: Border.all(
                                                 color:
                                                     FlutterFlowTheme.of(context)
-                                                        .alternate,
-                                                width: 1.0,
+                                                        .primaryText,
+                                                width: 2.0,
                                               ),
                                             ),
                                             child: Row(
@@ -862,7 +884,7 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                                                 activeColor:
                                                                     FlutterFlowTheme.of(
                                                                             context)
-                                                                        .primary,
+                                                                        .primaryText,
                                                                 checkColor:
                                                                     Colors
                                                                         .white,
@@ -909,17 +931,8 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                               child: Container(
                                 width: double.infinity,
                                 height: 140.0,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      const Color(0x00FFFFFF),
-                                      FlutterFlowTheme.of(context)
-                                          .secondaryBackground
-                                    ],
-                                    stops: const [0.0, 1.0],
-                                    begin: const AlignmentDirectional(0.0, -1.0),
-                                    end: const AlignmentDirectional(0, 1.0),
-                                  ),
+                                decoration: const BoxDecoration(
+                                  color: Colors.transparent,
                                 ),
                                 alignment: const AlignmentDirectional(0.0, 0.0),
                                 child: FlutterFlowDropDown<String>(
@@ -1003,9 +1016,9 @@ class _ManageRolesWidgetState extends State<ManageRolesWidget>
                                       .secondaryBackground,
                                   elevation: 2.0,
                                   borderColor:
-                                      FlutterFlowTheme.of(context).alternate,
+                                      FlutterFlowTheme.of(context).primaryText,
                                   borderWidth: 2.0,
-                                  borderRadius: 50.0,
+                                  borderRadius: 12.0,
                                   margin: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 4.0, 16.0, 4.0),
                                   hidesUnderline: true,

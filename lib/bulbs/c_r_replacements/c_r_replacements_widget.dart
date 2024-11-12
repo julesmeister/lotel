@@ -313,12 +313,9 @@ class _CRReplacementsWidgetState extends State<CRReplacementsWidget>
                                       child: Padding(
                                         padding:
                                             MediaQuery.viewInsetsOf(context),
-                                        child: SizedBox(
-                                          height: 170.0,
-                                          child: OptionToReplacementWidget(
-                                            replacement: replacementItem,
-                                            cr: widget.cr?.reference,
-                                          ),
+                                        child: OptionToReplacementWidget(
+                                          replacement: replacementItem,
+                                          cr: widget.cr?.reference,
                                         ),
                                       ),
                                     );

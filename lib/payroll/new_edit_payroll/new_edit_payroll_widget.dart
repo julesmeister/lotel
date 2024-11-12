@@ -1,7 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/forms/add_edit_salary/add_edit_salary_widget.dart';
 import '/components/forms/change_date/change_date_widget.dart';
-import '/components/forms/new_salary/new_salary_widget.dart';
 import '/components/options/salary_options/salary_options_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -160,7 +160,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                             padding: MediaQuery.viewInsetsOf(context),
                             child: SizedBox(
                               height: double.infinity,
-                              child: NewSalaryWidget(
+                              child: AddEditSalaryWidget(
                                 payrollRef: widget.ref!,
                                 staffsForSelection: functions.staffsToAddSalary(
                                     _model.staffs.toList(),
@@ -1034,7 +1034,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                   context),
                                               child: SizedBox(
                                                 height: double.infinity,
-                                                child: NewSalaryWidget(
+                                                child: AddEditSalaryWidget(
                                                   edit: true,
                                                   staffDoc:
                                                       listContainerStaffsRecord,

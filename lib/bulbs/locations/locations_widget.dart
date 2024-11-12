@@ -535,14 +535,11 @@ class _LocationsWidgetState extends State<LocationsWidget>
                                                     padding:
                                                         MediaQuery.viewInsetsOf(
                                                             context),
-                                                    child: SizedBox(
-                                                      height: 270.0,
-                                                      child:
-                                                          OptionToLocationsWidget(
-                                                        location:
-                                                            listViewLocationsRecord
-                                                                .reference,
-                                                      ),
+                                                    child:
+                                                        OptionToLocationsWidget(
+                                                      location:
+                                                          listViewLocationsRecord
+                                                              .reference,
                                                     ),
                                                   ),
                                                 );

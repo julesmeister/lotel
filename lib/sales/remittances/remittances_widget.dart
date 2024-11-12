@@ -818,9 +818,13 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                                                           AuthUserStreamWidget(
                                                             builder: (context) =>
                                                                 FlutterFlowIconButton(
+                                                              borderColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
                                                               borderRadius:
-                                                                  20.0,
-                                                              borderWidth: 1.0,
+                                                                  10.0,
+                                                              borderWidth: 2.0,
                                                               buttonSize: 40.0,
                                                               icon: Icon(
                                                                 Icons.add,

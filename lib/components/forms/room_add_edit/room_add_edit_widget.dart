@@ -211,6 +211,11 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                     RegExp('[0-9]'))
                               ],
                             ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
+                            ),
                             TextFormField(
                               controller: _model.priceTextController,
                               focusNode: _model.priceFocusNode,
@@ -255,6 +260,11 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                 FilteringTextInputFormatter.allow(
                                     RegExp('[0-9]'))
                               ],
+                            ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
                             ),
                             TextFormField(
                               controller: _model.capacityTextController,

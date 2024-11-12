@@ -201,6 +201,11 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                               validator: _model.remarkTextControllerValidator
                                   .asValidator(context),
                             ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
+                            ),
                             TextFormField(
                               controller: _model.amountTextController,
                               focusNode: _model.amountFocusNode,

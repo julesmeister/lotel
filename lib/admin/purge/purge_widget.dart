@@ -534,88 +534,91 @@ class _PurgeWidgetState extends State<PurgeWidget>
                 ],
               ),
               if (_model.showCalendar)
-                FlutterFlowCalendar(
-                  color: FlutterFlowTheme.of(context).primary,
-                  iconColor: FlutterFlowTheme.of(context).secondaryText,
-                  weekFormat: false,
-                  weekStartsMonday: false,
-                  initialDate: functions.startOfMonth(
-                      functions.currentMonth(), functions.currentYear()),
-                  onChange: (DateTimeRange? newSelectedDate) async {
-                    if (_model.calendarSelectedDay == newSelectedDate) {
-                      return;
-                    }
-                    _model.calendarSelectedDay = newSelectedDate;
-                    if (_model.marker == DateRange.Start) {
-                      // set start
-                      _model.startDate = _model.calendarSelectedDay?.start;
-                      safeSetState(() {});
-                      if (_model.endDate != null) {
-                        if (_model.startDate! > _model.endDate!) {
+                Expanded(
+                  child: FlutterFlowCalendar(
+                    color: FlutterFlowTheme.of(context).primary,
+                    iconColor: FlutterFlowTheme.of(context).secondaryText,
+                    weekFormat: false,
+                    weekStartsMonday: false,
+                    initialDate: functions.startOfMonth(
+                        functions.currentMonth(), functions.currentYear()),
+                    onChange: (DateTimeRange? newSelectedDate) async {
+                      if (_model.calendarSelectedDay == newSelectedDate) {
+                        return;
+                      }
+                      _model.calendarSelectedDay = newSelectedDate;
+                      if (_model.marker == DateRange.Start) {
+                        // set start
+                        _model.startDate = _model.calendarSelectedDay?.start;
+                        safeSetState(() {});
+                        if (_model.endDate != null) {
+                          if (_model.startDate! > _model.endDate!) {
+                            // set new end date
+                            _model.endDate = _model.calendarSelectedDay?.start;
+                            safeSetState(() {});
+                          }
+                        } else {
                           // set new end date
                           _model.endDate = _model.calendarSelectedDay?.start;
                           safeSetState(() {});
                         }
                       } else {
-                        // set new end date
+                        // set end
                         _model.endDate = _model.calendarSelectedDay?.start;
                         safeSetState(() {});
                       }
-                    } else {
-                      // set end
-                      _model.endDate = _model.calendarSelectedDay?.start;
-                      safeSetState(() {});
-                    }
 
-                    if ((_model.startDate != null) &&
-                        (_model.endDate != null)) {
-                      if (_model.startDate! < _model.endDate!) {
-                        // bookings
-                        _model.bookingsCount = await queryBookingsRecordCount(
-                          queryBuilder: (bookingsRecord) => bookingsRecord
-                              .where(
-                                'dateOut',
-                                isGreaterThan: _model.startDate,
-                              )
-                              .where(
-                                'dateOut',
-                                isLessThan: _model.endDate,
-                              )
-                              .where(
-                                'hotel',
-                                isEqualTo: FFAppState().hotel,
-                              ),
-                        );
-                        // set bookingCount
-                        _model.recordsCount = _model.bookingsCount!;
-                        safeSetState(() {});
+                      if ((_model.startDate != null) &&
+                          (_model.endDate != null)) {
+                        if (_model.startDate! < _model.endDate!) {
+                          // bookings
+                          _model.bookingsCount = await queryBookingsRecordCount(
+                            queryBuilder: (bookingsRecord) => bookingsRecord
+                                .where(
+                                  'dateOut',
+                                  isGreaterThan: _model.startDate,
+                                )
+                                .where(
+                                  'dateOut',
+                                  isLessThan: _model.endDate,
+                                )
+                                .where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                ),
+                          );
+                          // set bookingCount
+                          _model.recordsCount = _model.bookingsCount!;
+                          safeSetState(() {});
+                        }
                       }
-                    }
-                    safeSetState(() {});
-                  },
-                  titleStyle: FlutterFlowTheme.of(context).titleLarge.override(
-                        fontFamily: 'Outfit',
-                        letterSpacing: 0.0,
-                      ),
-                  dayOfWeekStyle:
-                      FlutterFlowTheme.of(context).bodyLarge.override(
-                            fontFamily: 'Readex Pro',
-                            letterSpacing: 0.0,
-                          ),
-                  dateStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Readex Pro',
-                        letterSpacing: 0.0,
-                      ),
-                  selectedDateStyle:
-                      FlutterFlowTheme.of(context).titleSmall.override(
-                            fontFamily: 'Readex Pro',
-                            letterSpacing: 0.0,
-                          ),
-                  inactiveDateStyle:
-                      FlutterFlowTheme.of(context).labelMedium.override(
-                            fontFamily: 'Readex Pro',
-                            letterSpacing: 0.0,
-                          ),
+                      safeSetState(() {});
+                    },
+                    titleStyle:
+                        FlutterFlowTheme.of(context).titleLarge.override(
+                              fontFamily: 'Outfit',
+                              letterSpacing: 0.0,
+                            ),
+                    dayOfWeekStyle:
+                        FlutterFlowTheme.of(context).bodyLarge.override(
+                              fontFamily: 'Readex Pro',
+                              letterSpacing: 0.0,
+                            ),
+                    dateStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Readex Pro',
+                          letterSpacing: 0.0,
+                        ),
+                    selectedDateStyle:
+                        FlutterFlowTheme.of(context).titleSmall.override(
+                              fontFamily: 'Readex Pro',
+                              letterSpacing: 0.0,
+                            ),
+                    inactiveDateStyle:
+                        FlutterFlowTheme.of(context).labelMedium.override(
+                              fontFamily: 'Readex Pro',
+                              letterSpacing: 0.0,
+                            ),
+                  ),
                 ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 16.0, 0.0),

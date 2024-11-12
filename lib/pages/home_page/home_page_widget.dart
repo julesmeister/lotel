@@ -1487,12 +1487,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               padding: MediaQuery
                                                                   .viewInsetsOf(
                                                                       context),
-                                                              child: const SizedBox(
-                                                                height: double
-                                                                    .infinity,
-                                                                child:
-                                                                    ExtraRemittanceWidget(),
-                                                              ),
+                                                              child:
+                                                                  const ExtraRemittanceWidget(),
                                                             ),
                                                           );
                                                         },
@@ -1524,12 +1520,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               padding: MediaQuery
                                                                   .viewInsetsOf(
                                                                       context),
-                                                              child: const SizedBox(
-                                                                height: double
-                                                                    .infinity,
-                                                                child:
-                                                                    ExtraRemittanceWidget(),
-                                                              ),
+                                                              child:
+                                                                  const ExtraRemittanceWidget(),
                                                             ),
                                                           );
                                                         },
@@ -1888,19 +1880,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       padding: MediaQuery
                                                           .viewInsetsOf(
                                                               context),
-                                                      child: SizedBox(
-                                                        height:
-                                                            MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .height *
-                                                                3.0,
-                                                        child:
-                                                            ListOfNamesWidget(
-                                                          remittance: _model
-                                                              .latestRemittance
-                                                              ?.reference,
-                                                          preparedBy: false,
-                                                        ),
+                                                      child: ListOfNamesWidget(
+                                                        remittance: _model
+                                                            .latestRemittance
+                                                            ?.reference,
+                                                        preparedBy: false,
                                                       ),
                                                     ),
                                                   );
@@ -2205,7 +2189,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Padding(
@@ -2322,7 +2306,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                           dialogContext)
                                                                       .unfocus(),
                                                               child: SizedBox(
-                                                                height: 600.0,
+                                                                height: 660.0,
                                                                 child:
                                                                     OccupiedWidget(
                                                                   occupiedRooms:
@@ -3472,13 +3456,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
-                                                                  height: 125.0,
-                                                                  child:
-                                                                      OptionToReassesWidget(
-                                                                    room:
-                                                                        roomsItem,
-                                                                  ),
+                                                                    OptionToReassesWidget(
+                                                                  room:
+                                                                      roomsItem,
                                                                 ),
                                                               ),
                                                             );
@@ -4273,13 +4253,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
-                                                                  height: 410.0,
-                                                                  child:
-                                                                      OptionToIssueWidget(
-                                                                    issue:
-                                                                        issuesListItem,
-                                                                  ),
+                                                                    OptionToIssueWidget(
+                                                                  issue:
+                                                                      issuesListItem,
                                                                 ),
                                                               ),
                                                             );

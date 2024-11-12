@@ -444,13 +444,10 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                                                           padding: MediaQuery
                                                               .viewInsetsOf(
                                                                   context),
-                                                          child: SizedBox(
-                                                            height: 266.0,
-                                                            child:
-                                                                OptionToGroceryWidget(
-                                                              grocery:
-                                                                  listViewGroceriesRecord,
-                                                            ),
+                                                          child:
+                                                              OptionToGroceryWidget(
+                                                            grocery:
+                                                                listViewGroceriesRecord,
                                                           ),
                                                         ),
                                                       );

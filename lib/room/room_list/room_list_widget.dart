@@ -340,7 +340,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                 allRoomsRoomsRecordList[allRoomsIndex];
                             return Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 16.0, 8.0),
+                                  16.0, 0.0, 16.0, 10.0),
                               child: Container(
                                 width: 100.0,
                                 height: 70.0,
@@ -456,7 +456,7 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                                         FormatType.decimal,
                                                     decimalType: DecimalType
                                                         .periodDecimal,
-                                                    currency: 'P ',
+                                                    currency: 'Php ',
                                                   ),
                                                   style: FlutterFlowTheme.of(
                                                           context)
@@ -472,10 +472,9 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                                     allRoomsRoomsRecord
                                                         .capacity,
                                                     formatType:
-                                                        FormatType.decimal,
-                                                    decimalType: DecimalType
-                                                        .periodDecimal,
-                                                    currency: 'Capacity: ',
+                                                        FormatType.custom,
+                                                    format: 'Capacity: 0',
+                                                    locale: '',
                                                   ),
                                                   style: FlutterFlowTheme.of(
                                                           context)

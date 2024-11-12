@@ -307,6 +307,11 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                               validator: _model.descTextControllerValidator
                                   .asValidator(context),
                             ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
+                            ),
                             TextFormField(
                               controller: _model.priceTextController,
                               focusNode: _model.priceFocusNode,

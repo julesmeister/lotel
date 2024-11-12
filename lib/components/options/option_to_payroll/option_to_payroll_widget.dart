@@ -66,145 +66,148 @@ class _OptionToPayrollWidgetState extends State<OptionToPayrollWidget> {
         ),
         child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
-                child: Text(
-                  'Options',
-                  textAlign: TextAlign.start,
-                  style: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily: 'Readex Pro',
-                        letterSpacing: 0.0,
-                      ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                  child: Text(
+                    'Options',
+                    textAlign: TextAlign.start,
+                    style: FlutterFlowTheme.of(context).labelMedium.override(
+                          fontFamily: 'Readex Pro',
+                          letterSpacing: 0.0,
+                        ),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    var shouldSetState = false;
-                    // Sure delete?
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: const Text('Remove this duplicate'),
-                              content: const Text('Are you certain?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      // reset salary loop counter
-                      _model.loopCounter = 0;
-                      safeSetState(() {});
-                      // salaries
-                      _model.salaries = await querySalariesRecordOnce(
-                        parent: widget.payroll?.reference,
-                      );
-                      shouldSetState = true;
-                      while (_model.loopCounter != _model.salaries?.length) {
-                        // delete each salary
-                        await _model.salaries![_model.loopCounter].reference
-                            .delete();
-                        // increment loop salaries
-                        _model.loopCounter = _model.loopCounter + 1;
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      var shouldSetState = false;
+                      // Sure delete?
+                      var confirmDialogResponse = await showDialog<bool>(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Remove this duplicate'),
+                                content: const Text('Are you certain?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                        alertDialogContext, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext, true),
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                      if (confirmDialogResponse) {
+                        // reset salary loop counter
+                        _model.loopCounter = 0;
                         safeSetState(() {});
-                      }
-                      // deduct from stats
+                        // salaries
+                        _model.salaries = await querySalariesRecordOnce(
+                          parent: widget.payroll?.reference,
+                        );
+                        shouldSetState = true;
+                        while (_model.loopCounter != _model.salaries?.length) {
+                          // delete each salary
+                          await _model.salaries![_model.loopCounter].reference
+                              .delete();
+                          // increment loop salaries
+                          _model.loopCounter = _model.loopCounter + 1;
+                          safeSetState(() {});
+                        }
+                        // deduct from stats
 
-                      await FFAppState().statsReference!.update({
-                        ...mapToFirestore(
-                          {
-                            'salaries':
-                                FieldValue.increment(-(widget.payroll!.total)),
-                          },
-                        ),
-                      });
-                      // delete payroll
-                      await widget.payroll!.reference.delete();
-                      // Payroll deleted
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'The duplicate has been removed!',
-                            style: TextStyle(
-                              color: FlutterFlowTheme.of(context).info,
-                            ),
+                        await FFAppState().statsReference!.update({
+                          ...mapToFirestore(
+                            {
+                              'salaries': FieldValue.increment(
+                                  -(widget.payroll!.total)),
+                            },
                           ),
-                          duration: const Duration(milliseconds: 4000),
-                          backgroundColor: FlutterFlowTheme.of(context).error,
-                        ),
-                      );
-                      context.safePop();
-                    } else {
-                      if (shouldSetState) safeSetState(() {});
-                      return;
-                    }
-
-                    if (shouldSetState) safeSetState(() {});
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                12.0, 0.0, 0.0, 0.0),
-                            child: Icon(
-                              Icons.remove,
-                              color: FlutterFlowTheme.of(context).error,
-                              size: 20.0,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                'Remove Duplicate',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0.0,
-                                    ),
+                        });
+                        // delete payroll
+                        await widget.payroll!.reference.delete();
+                        // Payroll deleted
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'The duplicate has been removed!',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
-                        ],
+                        );
+                        context.safePop();
+                      } else {
+                        if (shouldSetState) safeSetState(() {});
+                        return;
+                      }
+
+                      if (shouldSetState) safeSetState(() {});
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Icon(
+                                Icons.remove,
+                                color: FlutterFlowTheme.of(context).error,
+                                size: 20.0,
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 0.0, 0.0, 0.0),
+                                child: Text(
+                                  'Remove Duplicate',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

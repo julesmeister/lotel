@@ -782,24 +782,21 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
-                                                                  height: 410.0,
-                                                                  child:
-                                                                      OptionToBookingTransactionWidget(
-                                                                    ref: bookingsItem
-                                                                        .reference,
-                                                                    roomNo:
-                                                                        bookingsItem
-                                                                            .room,
-                                                                    description:
-                                                                        bookingsItem
-                                                                            .description,
-                                                                    price: bookingsItem
-                                                                        .total,
-                                                                    booking:
-                                                                        bookingsItem
-                                                                            .booking,
-                                                                  ),
+                                                                    OptionToBookingTransactionWidget(
+                                                                  ref: bookingsItem
+                                                                      .reference,
+                                                                  roomNo:
+                                                                      bookingsItem
+                                                                          .room,
+                                                                  description:
+                                                                      bookingsItem
+                                                                          .description,
+                                                                  price:
+                                                                      bookingsItem
+                                                                          .total,
+                                                                  booking:
+                                                                      bookingsItem
+                                                                          .booking,
                                                                 ),
                                                               ),
                                                             );
@@ -1169,18 +1166,15 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
-                                                                  height: 218.0,
-                                                                  child:
-                                                                      OptionToTransactionOnlyWidget(
-                                                                    ref: goodsItem
-                                                                        .reference,
-                                                                    description:
-                                                                        goodsItem
-                                                                            .description,
-                                                                    price: goodsItem
-                                                                        .total,
-                                                                  ),
+                                                                    OptionToTransactionOnlyWidget(
+                                                                  ref: goodsItem
+                                                                      .reference,
+                                                                  description:
+                                                                      goodsItem
+                                                                          .description,
+                                                                  price:
+                                                                      goodsItem
+                                                                          .total,
                                                                 ),
                                                               ),
                                                             );
@@ -1522,18 +1516,15 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
-                                                                  height: 218.0,
-                                                                  child:
-                                                                      OptionToTransactionOnlyWidget(
-                                                                    ref: expensesItem
-                                                                        .reference,
-                                                                    description:
-                                                                        expensesItem
-                                                                            .description,
-                                                                    price: expensesItem
-                                                                        .total,
-                                                                  ),
+                                                                    OptionToTransactionOnlyWidget(
+                                                                  ref: expensesItem
+                                                                      .reference,
+                                                                  description:
+                                                                      expensesItem
+                                                                          .description,
+                                                                  price:
+                                                                      expensesItem
+                                                                          .total,
                                                                 ),
                                                               ),
                                                             );
@@ -2141,24 +2132,21 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
-                                                                  height: 410.0,
-                                                                  child:
-                                                                      OptionToBookingTransactionWidget(
-                                                                    ref: bookingsOnlyItem
-                                                                        .reference,
-                                                                    roomNo:
-                                                                        bookingsOnlyItem
-                                                                            .room,
-                                                                    description:
-                                                                        bookingsOnlyItem
-                                                                            .description,
-                                                                    price: bookingsOnlyItem
-                                                                        .total,
-                                                                    booking:
-                                                                        bookingsOnlyItem
-                                                                            .booking,
-                                                                  ),
+                                                                    OptionToBookingTransactionWidget(
+                                                                  ref: bookingsOnlyItem
+                                                                      .reference,
+                                                                  roomNo:
+                                                                      bookingsOnlyItem
+                                                                          .room,
+                                                                  description:
+                                                                      bookingsOnlyItem
+                                                                          .description,
+                                                                  price:
+                                                                      bookingsOnlyItem
+                                                                          .total,
+                                                                  booking:
+                                                                      bookingsOnlyItem
+                                                                          .booking,
                                                                 ),
                                                               ),
                                                             );
@@ -2767,18 +2755,15 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
-                                                                  height: 218.0,
-                                                                  child:
-                                                                      OptionToTransactionOnlyWidget(
-                                                                    ref: goodsItem
-                                                                        .reference,
-                                                                    description:
-                                                                        goodsItem
-                                                                            .description,
-                                                                    price: goodsItem
-                                                                        .total,
-                                                                  ),
+                                                                    OptionToTransactionOnlyWidget(
+                                                                  ref: goodsItem
+                                                                      .reference,
+                                                                  description:
+                                                                      goodsItem
+                                                                          .description,
+                                                                  price:
+                                                                      goodsItem
+                                                                          .total,
                                                                 ),
                                                               ),
                                                             );
@@ -3373,18 +3358,15 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SizedBox(
-                                                                  height: 218.0,
-                                                                  child:
-                                                                      OptionToTransactionOnlyWidget(
-                                                                    ref: expenseItem
-                                                                        .reference,
-                                                                    description:
-                                                                        expenseItem
-                                                                            .description,
-                                                                    price: expenseItem
-                                                                        .total,
-                                                                  ),
+                                                                    OptionToTransactionOnlyWidget(
+                                                                  ref: expenseItem
+                                                                      .reference,
+                                                                  description:
+                                                                      expenseItem
+                                                                          .description,
+                                                                  price:
+                                                                      expenseItem
+                                                                          .total,
                                                                 ),
                                                               ),
                                                             );
@@ -3741,15 +3723,10 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                         padding: MediaQuery
                                                             .viewInsetsOf(
                                                                 context),
-                                                        child: SizedBox(
-                                                          height:
-                                                              double.infinity,
-                                                          child:
-                                                              ChangeDateWidget(
-                                                            date:
-                                                                listViewAbsencesRecord
-                                                                    .date!,
-                                                          ),
+                                                        child: ChangeDateWidget(
+                                                          date:
+                                                              listViewAbsencesRecord
+                                                                  .date!,
                                                         ),
                                                       ),
                                                     );

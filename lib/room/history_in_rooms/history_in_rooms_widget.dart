@@ -409,11 +409,8 @@ class _HistoryInRoomsWidgetState extends State<HistoryInRoomsWidget>
                                             child: Padding(
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
-                                              child: SizedBox(
-                                                height: 180.0,
-                                                child: OptionToHistoryWidget(
-                                                  history: historyItem,
-                                                ),
+                                              child: OptionToHistoryWidget(
+                                                history: historyItem,
                                               ),
                                             ),
                                           );

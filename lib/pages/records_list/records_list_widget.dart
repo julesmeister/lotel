@@ -967,13 +967,33 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                   curve: Curves.easeInOut,
                                                   width: double.infinity,
                                                   decoration: BoxDecoration(
-                                                    color: recordsItem
-                                                                    .receivedBy ==
-                                                                ''
-                                                        ? const Color(0x57FF5963)
-                                                        : FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent2,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryBackground,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: valueOrDefault<
+                                                            Color>(
+                                                          recordsItem
+                                                                          .receivedBy ==
+                                                                      ''
+                                                              ? FlutterFlowTheme
+                                                                      .of(
+                                                                          context)
+                                                                  .error
+                                                              : FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondary,
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
+                                                        ),
+                                                        offset: const Offset(
+                                                          3.0,
+                                                          3.0,
+                                                        ),
+                                                      )
+                                                    ],
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             12.0),
@@ -1008,6 +1028,21 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                                               .override(
                                                                 fontFamily:
                                                                     'Readex Pro',
+                                                                color:
+                                                                    valueOrDefault<
+                                                                        Color>(
+                                                                  recordsItem.receivedBy ==
+                                                                              ''
+                                                                      ? FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .error
+                                                                      : FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                                ),
                                                                 letterSpacing:
                                                                     0.0,
                                                               ),

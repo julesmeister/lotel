@@ -387,11 +387,8 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                 onTap: () => FocusScope.of(context).unfocus(),
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
-                                  child: SizedBox(
-                                    height: 410.0,
-                                    child: OptionToIssueWidget(
-                                      issue: listViewIssuesRecord,
-                                    ),
+                                  child: OptionToIssueWidget(
+                                    issue: listViewIssuesRecord,
                                   ),
                                 ),
                               );
@@ -717,12 +714,28 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                           curve: Curves.easeInOut,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
-                                            color: listViewIssuesRecord
-                                                        .status ==
-                                                    'pending'
-                                                ? const Color(0x57FF5963)
-                                                : FlutterFlowTheme.of(context)
-                                                    .accent2,
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: valueOrDefault<Color>(
+                                                  listViewIssuesRecord.status ==
+                                                          'pending'
+                                                      ? FlutterFlowTheme.of(
+                                                              context)
+                                                          .error
+                                                      : FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondary,
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                                offset: const Offset(
+                                                  3.0,
+                                                  3.0,
+                                                ),
+                                              )
+                                            ],
                                             borderRadius:
                                                 BorderRadius.circular(12.0),
                                             border: Border.all(
@@ -745,14 +758,30 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                                               children: [
                                                 Text(
                                                   listViewIssuesRecord.detail,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyLarge
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        letterSpacing: 0.0,
-                                                      ),
+                                                  style:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyLarge
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            color:
+                                                                valueOrDefault<
+                                                                    Color>(
+                                                              listViewIssuesRecord.status ==
+                                                                      'pending'
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .error
+                                                                  : FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondary,
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                            ),
+                                                            letterSpacing: 0.0,
+                                                          ),
                                                 ),
                                               ],
                                             ),

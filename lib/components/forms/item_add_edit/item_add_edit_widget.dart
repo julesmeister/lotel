@@ -216,6 +216,11 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                               validator: _model.descTextControllerValidator
                                   .asValidator(context),
                             ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
+                            ),
                             TextFormField(
                               controller: _model.priceTextController,
                               focusNode: _model.priceFocusNode,
@@ -261,6 +266,11 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                     RegExp('[0-9]'))
                               ],
                             ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
+                            ),
                             TextFormField(
                               controller: _model.quantityTextController,
                               focusNode: _model.quantityFocusNode,
@@ -304,6 +314,11 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                     RegExp('[0-9]'))
                               ],
                             ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
+                            ),
                             if (widget.edit)
                               TextFormField(
                                 controller: _model.whyTextController,
@@ -344,6 +359,11 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 validator: _model.whyTextControllerValidator
                                     .asValidator(context),
                               ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
+                            ),
                             Autocomplete<String>(
                               initialValue: TextEditingValue(
                                   text: widget.edit ? widget.category! : ''),

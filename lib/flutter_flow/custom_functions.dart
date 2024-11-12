@@ -408,7 +408,7 @@ String startBigLetter(String text) {
     return text;
   }
 
-  List<String> words = text.split(RegExp(r'\s+|\b(?=[()]|\b)'));
+  List<String> words = text.split(RegExp(r'\s+|\b(?!,\d)'));
   List<String> capitalizedWords = [];
 
   for (int i = 0; i < words.length; i++) {
@@ -437,7 +437,7 @@ String startBigLetter(String text) {
   // Define a regular expression to match spaces before periods and commas
   RegExp regex = RegExp(r' (?=[.,])');
 
-  // Replace spaces before periods and commas with an empty string
+  // Replace matched spaces with an empty string
   return resultText.replaceAll(regex, '');
 }
 

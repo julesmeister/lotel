@@ -310,13 +310,9 @@ class _RoomReplacementsWidgetState extends State<RoomReplacementsWidget>
                                       child: Padding(
                                         padding:
                                             MediaQuery.viewInsetsOf(context),
-                                        child: SizedBox(
-                                          height: 170.0,
-                                          child: OptionToReplacementWidget(
-                                            replacement: replacementItem,
-                                            location:
-                                                widget.location?.reference,
-                                          ),
+                                        child: OptionToReplacementWidget(
+                                          replacement: replacementItem,
+                                          location: widget.location?.reference,
                                         ),
                                       ),
                                     );

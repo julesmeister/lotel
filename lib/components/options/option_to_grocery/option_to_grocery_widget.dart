@@ -70,209 +70,206 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
         ),
         child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
-                child: Text(
-                  'Options',
-                  textAlign: TextAlign.start,
-                  style: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily: 'Readex Pro',
-                        letterSpacing: 0.0,
-                      ),
-                ),
-              ),
-              if (FFAppState().role == 'admin')
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      await showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        enableDrag: false,
-                        context: context,
-                        builder: (context) {
-                          return Padding(
-                            padding: MediaQuery.viewInsetsOf(context),
-                            child: SizedBox(
-                              height: double.infinity,
-                              child: EditGroceryWidget(
-                                grocery: widget.grocery!,
-                              ),
-                            ),
-                          );
-                        },
-                      ).then((value) => safeSetState(() {}));
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 0.0, 0.0, 0.0),
-                              child: Icon(
-                                Icons.edit_outlined,
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                size: 20.0,
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  'Change Details',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Readex Pro',
-                                        letterSpacing: 0.0,
-                                      ),
+                  padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                  child: Text(
+                    'Options',
+                    textAlign: TextAlign.start,
+                    style: FlutterFlowTheme.of(context).labelMedium.override(
+                          fontFamily: 'Readex Pro',
+                          letterSpacing: 0.0,
+                        ),
+                  ),
+                ),
+                if (FFAppState().role == 'admin')
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          enableDrag: false,
+                          context: context,
+                          builder: (context) {
+                            return Padding(
+                              padding: MediaQuery.viewInsetsOf(context),
+                              child: SizedBox(
+                                height: double.infinity,
+                                child: EditGroceryWidget(
+                                  grocery: widget.grocery!,
                                 ),
                               ),
-                            ),
-                          ],
+                            );
+                          },
+                        ).then((value) => safeSetState(() {}));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 8.0, 0.0, 8.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 0.0, 0.0, 0.0),
+                                child: Icon(
+                                  Icons.edit_outlined,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  size: 20.0,
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      12.0, 0.0, 0.0, 0.0),
+                                  child: Text(
+                                    'Change Details',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              if (FFAppState().role == 'admin')
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      await showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        enableDrag: false,
-                        context: context,
-                        builder: (context) {
-                          return Padding(
-                            padding: MediaQuery.viewInsetsOf(context),
-                            child: SizedBox(
-                              height: double.infinity,
-                              child: NewGroceryWidget(
-                                duplicate: widget.grocery?.remark,
-                              ),
-                            ),
-                          );
-                        },
-                      ).then((value) => safeSetState(() {}));
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 0.0, 0.0, 0.0),
-                              child: Icon(
-                                Icons.control_point_duplicate,
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                size: 20.0,
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  'Duplicate Grocery Info',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Readex Pro',
-                                        letterSpacing: 0.0,
-                                      ),
+                if (FFAppState().role == 'admin')
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          enableDrag: false,
+                          context: context,
+                          builder: (context) {
+                            return Padding(
+                              padding: MediaQuery.viewInsetsOf(context),
+                              child: SizedBox(
+                                height: double.infinity,
+                                child: NewGroceryWidget(
+                                  duplicate: widget.grocery?.remark,
                                 ),
                               ),
-                            ),
-                          ],
+                            );
+                          },
+                        ).then((value) => safeSetState(() {}));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 8.0, 0.0, 8.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 0.0, 0.0, 0.0),
+                                child: Icon(
+                                  Icons.control_point_duplicate,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  size: 20.0,
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      12.0, 0.0, 0.0, 0.0),
+                                  child: Text(
+                                    'Duplicate Grocery Info',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              if (FFAppState().role == 'admin')
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      var confirmDialogResponse = await showDialog<bool>(
-                            context: context,
-                            builder: (alertDialogContext) {
-                              return AlertDialog(
-                                title: const Text('Starting Point'),
-                                content: const Text(
-                                    'Are you sure you want to track revenue from this point forward?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(
-                                        alertDialogContext, false),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(alertDialogContext, true),
-                                    child: const Text('Confirm'),
-                                  ),
-                                ],
-                              );
-                            },
-                          ) ??
-                          false;
-                      if (confirmDialogResponse) {
-                        // get grocery
-                        _model.groceryToTrack =
-                            await GroceriesRecord.getDocumentOnce(
-                                widget.grocery!.reference);
-                        // count grr
-                        _model.countGrr =
-                            await queryGoodsRevenueRatioRecordCount(
-                          queryBuilder: (goodsRevenueRatioRecord) =>
-                              goodsRevenueRatioRecord
-                                  .where(
-                                    'hotel',
-                                    isEqualTo: FFAppState().hotel,
-                                  )
-                                  .orderBy('date', descending: true),
-                        );
-                        if (_model.countGrr! > 0) {
-                          // last grr
-                          _model.lastGrr =
-                              await queryGoodsRevenueRatioRecordOnce(
+                if (FFAppState().role == 'admin')
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        var confirmDialogResponse = await showDialog<bool>(
+                              context: context,
+                              builder: (alertDialogContext) {
+                                return AlertDialog(
+                                  title: const Text('Starting Point'),
+                                  content: const Text(
+                                      'Are you sure you want to track revenue from this point forward?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, false),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, true),
+                                      child: const Text('Confirm'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ) ??
+                            false;
+                        if (confirmDialogResponse) {
+                          // get grocery
+                          _model.groceryToTrack =
+                              await GroceriesRecord.getDocumentOnce(
+                                  widget.grocery!.reference);
+                          // count grr
+                          _model.countGrr =
+                              await queryGoodsRevenueRatioRecordCount(
                             queryBuilder: (goodsRevenueRatioRecord) =>
                                 goodsRevenueRatioRecord
                                     .where(
@@ -280,65 +277,204 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                                       isEqualTo: FFAppState().hotel,
                                     )
                                     .orderBy('date', descending: true),
-                            singleRecord: true,
-                          ).then((s) => s.firstOrNull);
-                          // decrement grocery
+                          );
+                          if (_model.countGrr! > 0) {
+                            // last grr
+                            _model.lastGrr =
+                                await queryGoodsRevenueRatioRecordOnce(
+                              queryBuilder: (goodsRevenueRatioRecord) =>
+                                  goodsRevenueRatioRecord
+                                      .where(
+                                        'hotel',
+                                        isEqualTo: FFAppState().hotel,
+                                      )
+                                      .orderBy('date', descending: true),
+                              singleRecord: true,
+                            ).then((s) => s.firstOrNull);
+                            // decrement grocery
 
-                          await _model.lastGrr!.reference.update({
+                            await _model.lastGrr!.reference.update({
+                              ...mapToFirestore(
+                                {
+                                  'grocery': FieldValue.increment(
+                                      -(_model.groceryToTrack!.amount)),
+                                },
+                              ),
+                            });
+                          }
+                          // create grr
+
+                          await GoodsRevenueRatioRecord.collection.doc().set({
+                            ...createGoodsRevenueRatioRecordData(
+                              grocery: _model.groceryToTrack?.amount,
+                              revenue: 0.0,
+                              hotel: FFAppState().hotel,
+                              daysToBreakEven: 0,
+                              daysPassed: valueOrDefault<int>(
+                                functions
+                                    .daysFrom(_model.groceryToTrack!.date!),
+                                0,
+                              ),
+                            ),
                             ...mapToFirestore(
                               {
-                                'grocery': FieldValue.increment(
-                                    -(_model.groceryToTrack!.amount)),
+                                'date': FieldValue.serverTimestamp(),
                               },
                             ),
                           });
-                        }
-                        // create grr
+                          // statsRef
+                          _model.statsRef = await StatsRecord.getDocumentOnce(
+                              FFAppState().statsReference!);
+                          if (_model.statsRef?.groceryExpenses == 0.0) {
+                            // set grocery expenses to amount
 
-                        await GoodsRevenueRatioRecord.collection.doc().set({
-                          ...createGoodsRevenueRatioRecordData(
-                            grocery: _model.groceryToTrack?.amount,
-                            revenue: 0.0,
-                            hotel: FFAppState().hotel,
-                            daysToBreakEven: 0,
-                            daysPassed: valueOrDefault<int>(
-                              functions.daysFrom(_model.groceryToTrack!.date!),
-                              0,
-                            ),
-                          ),
-                          ...mapToFirestore(
-                            {
-                              'date': FieldValue.serverTimestamp(),
-                            },
-                          ),
-                        });
-                        // statsRef
-                        _model.statsRef = await StatsRecord.getDocumentOnce(
-                            FFAppState().statsReference!);
-                        if (_model.statsRef?.groceryExpenses == 0.0) {
-                          // set grocery expenses to amount
-
-                          await FFAppState()
-                              .statsReference!
-                              .update(createStatsRecordData(
-                                groceryExpenses: _model.groceryToTrack?.amount,
-                              ));
-                        }
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'The sales will restart tracking from this day forward.',
-                              style: TextStyle(
-                                color: FlutterFlowTheme.of(context).primaryText,
+                            await FFAppState()
+                                .statsReference!
+                                .update(createStatsRecordData(
+                                  groceryExpenses:
+                                      _model.groceryToTrack?.amount,
+                                ));
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'The sales will restart tracking from this day forward.',
+                                style: TextStyle(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                ),
                               ),
+                              duration: const Duration(milliseconds: 4000),
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).secondary,
                             ),
-                            duration: const Duration(milliseconds: 4000),
-                            backgroundColor:
-                                FlutterFlowTheme.of(context).secondary,
+                          );
+                        }
+                        Navigator.pop(context);
+
+                        safeSetState(() {});
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 8.0, 0.0, 8.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 0.0, 0.0, 0.0),
+                                child: Icon(
+                                  Icons.start,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  size: 20.0,
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      12.0, 0.0, 0.0, 0.0),
+                                  child: Text(
+                                    'Mark as starting point',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        );
+                        ),
+                      ),
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      _model.grocery = await GroceriesRecord.getDocumentOnce(
+                          widget.grocery!.reference);
+                      // reduce from stat
+
+                      await FFAppState().statsReference!.update({
+                        ...mapToFirestore(
+                          {
+                            'groceryExpenses': FieldValue.increment(
+                                -(widget.grocery!.amount)),
+                          },
+                        ),
+                      });
+                      // count grr
+                      _model.countGrrr =
+                          await queryGoodsRevenueRatioRecordCount(
+                        queryBuilder: (goodsRevenueRatioRecord) =>
+                            goodsRevenueRatioRecord
+                                .where(
+                                  'hotel',
+                                  isEqualTo: FFAppState().hotel,
+                                )
+                                .orderBy('date', descending: true),
+                      );
+                      if (_model.countGrrr! > 0) {
+                        // last grr
+                        _model.lastGrrr =
+                            await queryGoodsRevenueRatioRecordOnce(
+                          queryBuilder: (goodsRevenueRatioRecord) =>
+                              goodsRevenueRatioRecord
+                                  .where(
+                                    'hotel',
+                                    isEqualTo: FFAppState().hotel,
+                                  )
+                                  .orderBy('date', descending: true),
+                          singleRecord: true,
+                        ).then((s) => s.firstOrNull);
+                        if (_model.grocery?.amount ==
+                            _model.lastGrrr?.grocery) {
+                          // delete lastGrrr
+                          await _model.lastGrrr!.reference.delete();
+                        } else {
+                          if (_model.grocery!.amount <
+                              _model.lastGrrr!.grocery) {
+                            // decrement grocery in lastGrrr
+
+                            await _model.lastGrrr!.reference
+                                .update(createGoodsRevenueRatioRecordData(
+                              grocery: _model.lastGrrr!.grocery -
+                                  _model.grocery!.amount,
+                            ));
+                          }
+                        }
                       }
+                      await widget.grocery!.reference.delete();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Grocery is removed!',
+                            style: TextStyle(
+                              color: FlutterFlowTheme.of(context).info,
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
+                      // clear groceryHome
+                      FFAppState().clearGroceryHomeCache();
                       Navigator.pop(context);
+                      context.safePop();
 
                       safeSetState(() {});
                     },
@@ -357,8 +493,8 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 0.0, 0.0, 0.0),
                               child: Icon(
-                                Icons.start,
-                                color: FlutterFlowTheme.of(context).primaryText,
+                                Icons.remove,
+                                color: FlutterFlowTheme.of(context).error,
                                 size: 20.0,
                               ),
                             ),
@@ -367,7 +503,7 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     12.0, 0.0, 0.0, 0.0),
                                 child: Text(
-                                  'Mark as starting point',
+                                  'Remove',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -383,125 +519,8 @@ class _OptionToGroceryWidgetState extends State<OptionToGroceryWidget> {
                     ),
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    _model.grocery = await GroceriesRecord.getDocumentOnce(
-                        widget.grocery!.reference);
-                    // reduce from stat
-
-                    await FFAppState().statsReference!.update({
-                      ...mapToFirestore(
-                        {
-                          'groceryExpenses':
-                              FieldValue.increment(-(widget.grocery!.amount)),
-                        },
-                      ),
-                    });
-                    // count grr
-                    _model.countGrrr = await queryGoodsRevenueRatioRecordCount(
-                      queryBuilder: (goodsRevenueRatioRecord) =>
-                          goodsRevenueRatioRecord
-                              .where(
-                                'hotel',
-                                isEqualTo: FFAppState().hotel,
-                              )
-                              .orderBy('date', descending: true),
-                    );
-                    if (_model.countGrrr! > 0) {
-                      // last grr
-                      _model.lastGrrr = await queryGoodsRevenueRatioRecordOnce(
-                        queryBuilder: (goodsRevenueRatioRecord) =>
-                            goodsRevenueRatioRecord
-                                .where(
-                                  'hotel',
-                                  isEqualTo: FFAppState().hotel,
-                                )
-                                .orderBy('date', descending: true),
-                        singleRecord: true,
-                      ).then((s) => s.firstOrNull);
-                      if (_model.grocery?.amount == _model.lastGrrr?.grocery) {
-                        // delete lastGrrr
-                        await _model.lastGrrr!.reference.delete();
-                      } else {
-                        if (_model.grocery!.amount < _model.lastGrrr!.grocery) {
-                          // decrement grocery in lastGrrr
-
-                          await _model.lastGrrr!.reference
-                              .update(createGoodsRevenueRatioRecordData(
-                            grocery: _model.lastGrrr!.grocery -
-                                _model.grocery!.amount,
-                          ));
-                        }
-                      }
-                    }
-                    await widget.grocery!.reference.delete();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Grocery is removed!',
-                          style: TextStyle(
-                            color: FlutterFlowTheme.of(context).info,
-                          ),
-                        ),
-                        duration: const Duration(milliseconds: 4000),
-                        backgroundColor: FlutterFlowTheme.of(context).error,
-                      ),
-                    );
-                    // clear groceryHome
-                    FFAppState().clearGroceryHomeCache();
-                    Navigator.pop(context);
-                    context.safePop();
-
-                    safeSetState(() {});
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                12.0, 0.0, 0.0, 0.0),
-                            child: Icon(
-                              Icons.remove,
-                              color: FlutterFlowTheme.of(context).error,
-                              size: 20.0,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                'Remove',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

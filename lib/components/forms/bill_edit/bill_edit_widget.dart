@@ -348,6 +348,11 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                               validator: _model.descTextControllerValidator
                                   .asValidator(context),
                             ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
+                            ),
                             TextFormField(
                               controller: _model.amountTextController,
                               focusNode: _model.amountFocusNode,
@@ -396,6 +401,11 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                       signed: true, decimal: true),
                               validator: _model.amountTextControllerValidator
                                   .asValidator(context),
+                            ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
                             ),
                             TextFormField(
                               controller: _model.afterdueTextController,

@@ -204,8 +204,6 @@ class _PayrollWidgetState extends State<PayrollWidget>
                             const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
                         child: AuthUserStreamWidget(
                           builder: (context) => FlutterFlowIconButton(
-                            borderColor:
-                                FlutterFlowTheme.of(context).primaryText,
                             borderRadius: 12.0,
                             borderWidth: 1.0,
                             buttonSize: 40.0,

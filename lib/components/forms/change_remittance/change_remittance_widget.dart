@@ -420,6 +420,11 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                               .asValidator(context),
                                         ),
                                       ),
+                                      const Divider(
+                                        height: 4.0,
+                                        thickness: 1.0,
+                                        color: Color(0xFFE0E3E7),
+                                      ),
                                       Padding(
                                         padding: const EdgeInsetsDirectional.fromSTEB(
                                             16.0, 16.0, 16.0, 0.0),

@@ -74,10 +74,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   builder: (context) {
                     return Padding(
                       padding: MediaQuery.viewInsetsOf(context),
-                      child: const SizedBox(
-                        height: 170.0,
-                        child: OptionToLogoutWidget(),
-                      ),
+                      child: const OptionToLogoutWidget(),
                     );
                   },
                 ).then((value) => safeSetState(() {}));

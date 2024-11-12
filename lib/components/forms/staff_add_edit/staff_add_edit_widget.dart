@@ -231,6 +231,11 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                               validator: _model.nameTextControllerValidator
                                   .asValidator(context),
                             ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
+                            ),
                             TextFormField(
                               controller: _model.sssTextController,
                               focusNode: _model.sssFocusNode,
@@ -275,6 +280,11 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                 FilteringTextInputFormatter.allow(
                                     RegExp('[0-9]'))
                               ],
+                            ),
+                            const Divider(
+                              height: 4.0,
+                              thickness: 1.0,
+                              color: Color(0xFFE0E3E7),
                             ),
                             TextFormField(
                               controller: _model.rateTextController,

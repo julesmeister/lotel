@@ -80,7 +80,7 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
   List<SalariesRecord>? existingSalaries;
   // Stores action output result for [Firestore Query - Query a collection] action in NewEditPayroll widget.
   List<StaffsRecord>? staffsOfThisHotel;
-  // Stores action output result for [Bottom Sheet - NewSalary] action in IconButton widget.
+  // Stores action output result for [Bottom Sheet - AddEditSalary] action in IconButton widget.
   SalariesRecord? salary;
   // Stores action output result for [Bottom Sheet - ChangeDate] action in Text widget.
   DateTime? adjustedDate;
@@ -98,7 +98,7 @@ class NewEditPayrollModel extends FlutterFlowModel<NewEditPayrollWidget> {
   String? Function(BuildContext, String?)? newSSSTextControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
   List<SalariesRecord>? updatedSalaries;
-  // Stores action output result for [Bottom Sheet - NewSalary] action in listContainer widget.
+  // Stores action output result for [Bottom Sheet - AddEditSalary] action in listContainer widget.
   SalariesRecord? updatedSalary;
   // Stores action output result for [Firestore Query - Query a collection] action in save widget.
   StatsRecord? appropriateStats;

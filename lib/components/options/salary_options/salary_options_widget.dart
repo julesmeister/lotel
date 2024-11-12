@@ -67,134 +67,138 @@ class _SalaryOptionsWidgetState extends State<SalaryOptionsWidget> {
         ),
         child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
-                child: Text(
-                  'Options',
-                  textAlign: TextAlign.start,
-                  style: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily: 'Readex Pro',
-                        letterSpacing: 0.0,
-                      ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                  child: Text(
+                    'Options',
+                    textAlign: TextAlign.start,
+                    style: FlutterFlowTheme.of(context).labelMedium.override(
+                          fontFamily: 'Readex Pro',
+                          letterSpacing: 0.0,
+                        ),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    if (valueOrDefault(currentUserDocument?.role, '') ==
-                        'admin') {
-                      // salary
-                      _model.salaryToGetTotal =
-                          await SalariesRecord.getDocumentOnce(widget.salary!);
-                      // reset loop counter
-                      _model.loopCACounter = 0;
-                      safeSetState(() {});
-                      while (_model.loopCACounter !=
-                          _model.salaryToGetTotal?.caRefs.length) {
-                        // unsettle ca
-
-                        await _model
-                            .salaryToGetTotal!.caRefs[_model.loopCACounter]
-                            .update(createAdvancesRecordData(
-                          settled: false,
-                        ));
-                        // increment loop
-                        _model.loopCACounter = _model.loopCACounter + 1;
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      if (valueOrDefault(currentUserDocument?.role, '') ==
+                          'admin') {
+                        // salary
+                        _model.salaryToGetTotal =
+                            await SalariesRecord.getDocumentOnce(
+                                widget.salary!);
+                        // reset loop counter
+                        _model.loopCACounter = 0;
                         safeSetState(() {});
-                      }
-                      // decrement salary in stats
+                        while (_model.loopCACounter !=
+                            _model.salaryToGetTotal?.caRefs.length) {
+                          // unsettle ca
 
-                      await FFAppState().statsReference!.update({
-                        ...mapToFirestore(
-                          {
-                            'salaries': FieldValue.increment(
-                                -(_model.salaryToGetTotal!.total)),
-                          },
-                        ),
-                      });
-                      // delete instance
-                      await widget.salary!.delete();
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Salary deleted',
-                            style: TextStyle(
-                              color: FlutterFlowTheme.of(context).info,
-                            ),
-                          ),
-                          duration: const Duration(milliseconds: 4000),
-                          backgroundColor: FlutterFlowTheme.of(context).error,
-                        ),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Consult Admin First!',
-                            style: TextStyle(
-                              color: FlutterFlowTheme.of(context).info,
-                            ),
-                          ),
-                          duration: const Duration(milliseconds: 4000),
-                          backgroundColor: FlutterFlowTheme.of(context).error,
-                        ),
-                      );
-                    }
+                          await _model
+                              .salaryToGetTotal!.caRefs[_model.loopCACounter]
+                              .update(createAdvancesRecordData(
+                            settled: false,
+                          ));
+                          // increment loop
+                          _model.loopCACounter = _model.loopCACounter + 1;
+                          safeSetState(() {});
+                        }
+                        // decrement salary in stats
 
-                    safeSetState(() {});
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                12.0, 0.0, 0.0, 0.0),
-                            child: Icon(
-                              Icons.delete_outlined,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20.0,
-                            ),
+                        await FFAppState().statsReference!.update({
+                          ...mapToFirestore(
+                            {
+                              'salaries': FieldValue.increment(
+                                  -(_model.salaryToGetTotal!.total)),
+                            },
                           ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                'Delete',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0.0,
-                                    ),
+                        });
+                        // delete instance
+                        await widget.salary!.delete();
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Salary deleted',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).info,
                               ),
                             ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor: FlutterFlowTheme.of(context).error,
                           ),
-                        ],
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Consult Admin First!',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).info,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor: FlutterFlowTheme.of(context).error,
+                          ),
+                        );
+                      }
+
+                      safeSetState(() {});
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 0.0, 0.0),
+                              child: Icon(
+                                Icons.delete_outlined,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 20.0,
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 0.0, 0.0, 0.0),
+                                child: Text(
+                                  'Delete',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

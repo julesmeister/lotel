@@ -273,12 +273,9 @@ class _AllReplacementsWidgetState extends State<AllReplacementsWidget>
                                       child: Padding(
                                         padding:
                                             MediaQuery.viewInsetsOf(context),
-                                        child: SizedBox(
-                                          height: 170.0,
-                                          child: OptionToReplacementWidget(
-                                            replacement: replacementItem,
-                                            location: replacementItem.location,
-                                          ),
+                                        child: OptionToReplacementWidget(
+                                          replacement: replacementItem,
+                                          location: replacementItem.location,
                                         ),
                                       ),
                                     );
